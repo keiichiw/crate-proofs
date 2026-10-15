@@ -1,0 +1,31 @@
+theory Coma
+  
+  (* use why3.BuiltIn.BuiltIn *)
+  
+  (* use why3.Bool.Bool *)
+  
+  (* use why3.Unit.Unit *)
+  
+  (* use creusot.slice.Slice64 *)
+  
+  (* use creusot.int.UInt8 *)
+  
+  (* use creusot.prelude.Any *)
+  
+  goal vc_slice_range : true
+  
+  (* meta compute_max_steps 1000000 *)
+  
+  (* meta select_lsinst "all" *)
+  
+  goal vc_empty_slice_at :
+    forall input:slice t, index:t1.
+     t'int index <= length (view input) ->
+     (t'int index <= t'int index /\ t'int index <= length (view input)) /\
+     (forall result:slice t.
+       view result = (view input)[t'int index..t'int index] ->
+       (view input)[t'int index..t'int index] = (empty: seq t) &&
+       view result = (empty: seq t))
+  
+end
+

@@ -1,0 +1,45 @@
+theory Coma
+  
+  (* use why3.BuiltIn.BuiltIn *)
+  
+  (* use why3.Bool.Bool *)
+  
+  (* use why3.Unit.Unit *)
+  
+  (* use creusot.slice.Slice64 *)
+  
+  (* use creusot.int.UInt8 *)
+  
+  (* use creusot.prelude.Any *)
+  
+  type t_Parse =
+    | T_Parse'mk (input:slice t)
+  
+  (* meta model_record function input *)
+  
+  type t_ParseIntoOwned =
+    | T_ParseIntoOwned'mk (inner:t_Parse)
+  
+  (* meta model_record function inner *)
+  
+  function remaining_input (self:t_Parse) : seq t = view (self.input)
+  
+  (* meta rewrite_def function remaining_input *)
+  
+  function remaining_owned_input (self:t_ParseIntoOwned) : seq t =
+    remaining_input (self.inner)
+  
+  (* meta rewrite_def function remaining_owned_input *)
+  
+  (* meta compute_max_steps 1000000 *)
+  
+  (* meta select_lsinst "all" *)
+  
+  goal vc_into_owned :
+    forall self:slice t.
+     let self1 = T_Parse'mk self in
+     remaining_owned_input (T_ParseIntoOwned'mk self1) =
+     remaining_input self1
+  
+end
+

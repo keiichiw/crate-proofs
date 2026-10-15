@@ -1,0 +1,87 @@
+(* <ord_model::Date as std::cmp::PartialOrd> *)
+
+use creusot.int.UInt16
+use creusot.int.UInt8
+use seq.Seq
+use int.Int
+
+type t_Date = { year: UInt16.t; month: UInt8.t; day: UInt8.t }
+
+type t_DateModel = { year'0: int; month'0: int; day'0: int }
+
+predicate lt_log_Seq_Int (self: Seq.seq int) (other: Seq.seq int) =
+  (exists i: int. 0 <= i
+      /\ i < Seq.length self
+      /\ i < Seq.length other
+      /\ (forall j: int. 0 <= j /\ j < i -> Seq.get self j = Seq.get other j) /\ Seq.get self i < Seq.get other i)
+  \/ Seq.length self < Seq.length other
+  /\ (forall i: int. 0 <= i /\ i < Seq.length self -> Seq.get self i = Seq.get other i)
+
+predicate le_log_Seq_Int [@inline:trivial] (self: Seq.seq int) (other: Seq.seq int) =
+  lt_log_Seq_Int self other \/ self = other
+
+meta "rewrite_def" predicate le_log_Seq_Int
+
+function le_lt_log_Seq_Int (self: Seq.seq int) (other: Seq.seq int) : ()
+
+axiom le_lt_log_Seq_Int_spec: forall self: Seq.seq int, other: Seq.seq int. le_log_Seq_Int self other
+    = (lt_log_Seq_Int self other \/ self = other)
+
+function transitive_Seq_Int (x: Seq.seq int) (y: Seq.seq int) (z: Seq.seq int) : ()
+
+axiom transitive_Seq_Int_spec: forall x: Seq.seq int, y: Seq.seq int, z: Seq.seq int. lt_log_Seq_Int x y
+    -> lt_log_Seq_Int y z -> lt_log_Seq_Int x z
+
+function irreflexive_Seq_Int (self: Seq.seq int) : ()
+
+axiom irreflexive_Seq_Int_spec: forall self: Seq.seq int. not lt_log_Seq_Int self self
+
+function lex_key (d: t_DateModel) : Seq.seq int =
+  Seq.snoc (Seq.snoc (Seq.snoc (Seq.empty: Seq.seq int) d.year'0) d.month'0) d.day'0
+
+predicate lt_log_DateModel (self: t_DateModel) (other: t_DateModel) = lt_log_Seq_Int (lex_key self) (lex_key other)
+
+predicate le_log_DateModel [@inline:trivial] (self: t_DateModel) (other: t_DateModel) =
+  lt_log_DateModel self other \/ self = other
+
+meta "rewrite_def" predicate le_log_DateModel
+
+function le_lt_log_DateModel (self: t_DateModel) (other: t_DateModel) : () = ()
+
+axiom le_lt_log_DateModel_spec: forall self: t_DateModel, other: t_DateModel. le_log_DateModel self other
+    = (lt_log_DateModel self other \/ self = other)
+
+function transitive_DateModel (x: t_DateModel) (y: t_DateModel) (z: t_DateModel) : () = ()
+
+axiom transitive_DateModel_spec: forall x: t_DateModel, y: t_DateModel, z: t_DateModel. lt_log_DateModel x y
+    -> lt_log_DateModel y z -> lt_log_DateModel x z
+
+function irreflexive_DateModel (self: t_DateModel) : () = ()
+
+axiom irreflexive_DateModel_spec: forall self: t_DateModel. not lt_log_DateModel self self
+
+type t_Ordering = Less | Equal | Greater
+
+type t_Option_Ordering = None | Some t_Ordering
+
+function partial_cmp_log_DateModel (self: t_DateModel) (other: t_DateModel) : t_Option_Ordering = if self = other then
+    Some (Equal)
+  else
+    if lt_log_DateModel self other then Some (Less) else if lt_log_DateModel other self then Some (Greater) else None
+
+
+function deep_model_Date (self: t_Date) : t_DateModel = { year'0 = UInt16.t'int self.year;
+                                                          month'0 = UInt8.t'int self.month;
+                                                          day'0 = UInt8.t'int self.day }
+
+function deep_model_ref_Date [@inline:trivial] (self: t_Date) : t_DateModel = deep_model_Date self
+
+meta "rewrite_def" function deep_model_ref_Date
+
+meta "compute_max_steps" 1000000
+
+meta "select_lsinst" "all"
+
+goal refines: forall self_: t_Date, rhs: t_Date. forall result: t_Option_Ordering. result
+        = partial_cmp_log_DateModel (deep_model_ref_Date self_) (deep_model_ref_Date rhs)
+      -> result = partial_cmp_log_DateModel (deep_model_Date self_) (deep_model_Date rhs)

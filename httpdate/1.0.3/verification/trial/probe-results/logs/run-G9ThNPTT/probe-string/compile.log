@@ -1,0 +1,37 @@
+FEATURE: probe-string
+COMMAND: cargo creusot --only=coma --span-mode off --output-dir /workspace/proof-env/httpdate/1.0.3/verification/trial/probes/verif/feature-run-run-G9ThNPTT/probe-string/coma -- --locked --features probe-string
+    Checking httpdate-api-probes v0.0.0 (/workspace/proof-env/httpdate/1.0.3/verification/trial/probes)
+warning: unused imports: `Int`, `ensures`, and `requires`
+ --> src/lib.rs:3:28
+  |
+3 | use creusot_std::prelude::{ensures, requires, Int};
+  |                            ^^^^^^^  ^^^^^^^^  ^^^
+  |
+  = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: calling external function `is_ascii` with no contract will yield an impossible precondition
+  --> src/lib.rs:28:5
+   |
+28 |     s.is_ascii() && s.trim().is_empty()
+   |     ^^^^^^^^^^^^ function called here
+   |
+   = note: `#[warn(creusot::contractless_external_function)]` on by default
+
+warning: calling external function `trim` with no contract will yield an impossible precondition
+  --> src/lib.rs:28:21
+   |
+28 |     s.is_ascii() && s.trim().is_empty()
+   |                     ^^^^^^^^ function called here
+
+warning: calling external function `is_empty` with no contract will yield an impossible precondition
+  --> src/lib.rs:28:21
+   |
+28 |     s.is_ascii() && s.trim().is_empty()
+   |                     ^^^^^^^^^^^^^^^^^^^ function called here
+
+warning: `httpdate-api-probes` (lib) generated 4 warnings (run `cargo fix --lib -p httpdate-api-probes` to apply 1 suggestion)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.22s
+Warning: found dangling files and directories:
+  verif/run-V5aFX37V/probe-formatter
+Run 'cargo creusot clean' to remove them
+compile exit: 0

@@ -1,0 +1,92 @@
+theory Coma
+  
+  (* use why3.BuiltIn.BuiltIn *)
+  
+  (* use why3.Bool.Bool *)
+  
+  (* use why3.Unit.Unit *)
+  
+  (* use creusot.int.UInt8 *)
+  
+  (* use seq.Seq *)
+  
+  function find_byte_before (seq t) int int int : int
+  
+  axiom find_byte_before_def :
+    forall input:seq t, start:int, end':int, byte:int
+     [find_byte_before input start end' byte].
+     0 <= start /\ start <= end' /\ end' <= length input ->
+     find_byte_before input start end' byte =
+     (if start < end' /\ not t'int (get input start) = byte
+      then find_byte_before input (start + 1) end' byte else start)
+  
+  axiom find_byte_before_spec :
+    forall input:seq t, start:int, end':int, byte:int
+     [find_byte_before input start end' byte].
+     0 <= start /\ start <= end' /\ end' <= length input ->
+     start <= find_byte_before input start end' byte /\
+     find_byte_before input start end' byte <= end'
+  
+  axiom find_byte_before_spec'0 :
+    forall input:seq t, start:int, end':int, byte:int
+     [find_byte_before input start end' byte].
+     0 <= start /\ start <= end' /\ end' <= length input ->
+     (forall i:int.
+       start <= i /\ i < find_byte_before input start end' byte ->
+       not t'int (get input i) = byte)
+  
+  axiom find_byte_before_spec'1 :
+    forall input:seq t, start:int, end':int, byte:int
+     [find_byte_before input start end' byte].
+     0 <= start /\ start <= end' /\ end' <= length input ->
+     find_byte_before input start end' byte = end' \/
+     t'int (get input (find_byte_before input start end' byte)) = byte
+  
+  predicate ge_log_Int (self:int) (other:int) = other <= self
+  
+  (* meta rewrite_def predicate ge_log_Int *)
+  
+  predicate gt_log_Int (self:int) (other:int) = other < self
+  
+  (* meta rewrite_def predicate gt_log_Int *)
+  
+  predicate well_founded_relation_Int (self:int) (other:int) =
+    ge_log_Int self 0 /\ gt_log_Int self other
+  
+  (* meta rewrite_def predicate well_founded_relation_Int *)
+  
+  (* meta compute_max_steps 1000000 *)
+  
+  (* meta select_lsinst "all" *)
+  
+  constant input : seq t
+  
+  constant start : int
+  
+  constant end' : int
+  
+  constant limit : int
+  
+  constant byte : int
+  
+  predicate find_byte_before_endpoint (seq t) int int int int
+  
+  goal vc_find_byte_before_endpoint :
+    0 <= start /\ start <= end' /\ end' <= limit /\ limit <= length input ->
+    (forall i:int. start <= i /\ i < end' -> not t'int (get input i) = byte) ->
+    end' = limit \/ t'int (get input end') = byte ->
+    (if start < end'
+     then (((0 <= (start + 1) /\
+             (start + 1) <= end' /\ end' <= limit /\ limit <= length input) /\
+            (forall i:int.
+              (start + 1) <= i /\ i < end' -> not t'int (get input i) = byte) /\
+            (end' = limit \/ t'int (get input end') = byte)) /\
+           well_founded_relation_Int (end' - start) (end' - (start + 1))) /\
+          (find_byte_before_endpoint input (start + 1) end' limit byte /\
+           find_byte_before input (start + 1) limit byte = end' ->
+           find_byte_before_endpoint input (start + 1) end' limit byte /\
+           find_byte_before input start limit byte = end')
+     else true /\ find_byte_before input start limit byte = end')
+  
+end
+

@@ -1,0 +1,52 @@
+theory Coma
+  
+  (* use why3.BuiltIn.BuiltIn *)
+  
+  (* use why3.Bool.Bool *)
+  
+  (* use why3.Unit.Unit *)
+  
+  (* use seq.Seq *)
+  
+  type t_T
+  
+  predicate gt_log_Int (self:int) (other:int) = other < self
+  
+  (* meta rewrite_def predicate gt_log_Int *)
+  
+  function tail_T (self:seq t_T) : seq t_T = self[1..length self]
+  
+  (* meta compute_max_steps 1000000 *)
+  
+  (* meta select_lsinst "all" *)
+  
+  constant left : seq t_T
+  
+  constant right : seq t_T
+  
+  predicate nonempty_left_concat_tail_T (seq t_T) (seq t_T)
+  
+  goal vc_nonempty_left_concat_tail_T :
+    gt_log_Int (length left) 0 ->
+    (let joined_tail = tail_T (left ++ right) in
+     let tail_joined = tail_T left ++ right in
+     let boundary = length left - 1 in
+     length joined_tail = length tail_joined &&
+     (forall i:int.
+       0 <= i /\ i < boundary -> get joined_tail i = get tail_joined i) &&
+     (forall i:int.
+       boundary <= i /\ i < length joined_tail ->
+       get joined_tail i = get right (i - boundary)) &&
+     (forall i:int.
+       boundary <= i /\ i < length tail_joined ->
+       get tail_joined i = get right (i - boundary)) &&
+     (forall i:int.
+       boundary <= i /\ i < length joined_tail ->
+       get joined_tail i = get tail_joined i) &&
+     joined_tail == tail_joined &&
+     true /\
+     tail_T (left ++ right) = (tail_T left ++ right) /\
+     tail_T (left ++ right) == (tail_T left ++ right))
+  
+end
+

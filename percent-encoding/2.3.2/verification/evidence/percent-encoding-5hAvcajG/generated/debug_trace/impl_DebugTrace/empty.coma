@@ -1,0 +1,99 @@
+(* debug_trace::DebugTrace<'a> *)
+
+use seq.Seq
+use creusot.int.UInt8
+use creusot.int.UInt32
+use creusot.prelude.Any
+
+let new_ref_str (return (x: Seq.seq string)) = any
+  [ return (result: Seq.seq string) -> {[@stop_split] [@expl:new ensures] result = (Seq.empty: Seq.seq string)}
+    (! return {result}) ]
+
+let into_inner_Seq_ref_str (self: Seq.seq string) (return (x: Seq.seq string)) = any
+  [ return (result: Seq.seq string) -> {[@stop_split] [@expl:into_inner ensures] result = self} (! return {result}) ]
+
+let new_u8 (return (x: Seq.seq UInt8.t)) = any
+  [ return (result: Seq.seq UInt8.t) -> {[@stop_split] [@expl:new ensures] result = (Seq.empty: Seq.seq UInt8.t)}
+    (! return {result}) ]
+
+let into_inner_Seq_u8 (self: Seq.seq UInt8.t) (return (x: Seq.seq UInt8.t)) = any
+  [ return (result: Seq.seq UInt8.t) -> {[@stop_split] [@expl:into_inner ensures] result = self} (! return {result}) ]
+
+let new_Snapshot_Seq_u32 (return (x: Seq.seq (Seq.seq UInt32.t))) = any
+  [ return (result: Seq.seq (Seq.seq UInt32.t)) -> {[@stop_split] [@expl:new ensures] result
+    = (Seq.empty: Seq.seq (Seq.seq UInt32.t))}
+    (! return {result}) ]
+
+let into_inner_Seq_Snapshot_Seq_u32 (self: Seq.seq (Seq.seq UInt32.t)) (return (x: Seq.seq (Seq.seq UInt32.t))) = any
+  [ return (result: Seq.seq (Seq.seq UInt32.t)) -> {[@stop_split] [@expl:into_inner ensures] result = self}
+    (! return {result}) ]
+
+let new_Snapshot_Seq_u8 (return (x: Seq.seq (Seq.seq UInt8.t))) = any
+  [ return (result: Seq.seq (Seq.seq UInt8.t)) -> {[@stop_split] [@expl:new ensures] result
+    = (Seq.empty: Seq.seq (Seq.seq UInt8.t))}
+    (! return {result}) ]
+
+let into_inner_Seq_Snapshot_Seq_u8 (self: Seq.seq (Seq.seq UInt8.t)) (return (x: Seq.seq (Seq.seq UInt8.t))) = any
+  [ return (result: Seq.seq (Seq.seq UInt8.t)) -> {[@stop_split] [@expl:into_inner ensures] result = self}
+    (! return {result}) ]
+
+type t_Option_bool = None | Some bool
+
+type t_DebugTrace = {
+  struct_name: string;
+  field_names: Seq.seq string;
+  field_type_tags: Seq.seq UInt8.t;
+  word_values: Seq.seq (Seq.seq UInt32.t);
+  byte_values: Seq.seq (Seq.seq UInt8.t);
+  iter_values: Seq.seq (Seq.seq UInt8.t);
+  ascii_set_values: Seq.seq (Seq.seq UInt32.t);
+  finish_status: t_Option_bool }
+
+let new_DebugTrace (x: t_DebugTrace) (return (x'0: t_DebugTrace)) = any
+  [ return (result: t_DebugTrace) -> {[@stop_split] [@expl:new ensures] result = x} (! return {result}) ]
+
+meta "compute_max_steps" 1000000
+
+meta "select_lsinst" "all"
+
+let empty (name: string) (return (x: t_DebugTrace)) = (! bb0
+  [ bb0 = s0
+    [ s0 = new_ref_str (fun (_x: Seq.seq string) -> [ &_5 <- _x ] s1)
+    | s1 = into_inner_Seq_ref_str {_5} (fun (_x: Seq.seq string) -> [ &_4 <- _x ] s2)
+    | s2 = new_u8 (fun (_x: Seq.seq UInt8.t) -> [ &_7 <- _x ] s3)
+    | s3 = into_inner_Seq_u8 {_7} (fun (_x: Seq.seq UInt8.t) -> [ &_6 <- _x ] s4)
+    | s4 = new_Snapshot_Seq_u32 (fun (_x: Seq.seq (Seq.seq UInt32.t)) -> [ &_9 <- _x ] s5)
+    | s5 = into_inner_Seq_Snapshot_Seq_u32 {_9} (fun (_x: Seq.seq (Seq.seq UInt32.t)) -> [ &_8 <- _x ] s6)
+    | s6 = new_Snapshot_Seq_u8 (fun (_x: Seq.seq (Seq.seq UInt8.t)) -> [ &_11 <- _x ] s7)
+    | s7 = into_inner_Seq_Snapshot_Seq_u8 {_11} (fun (_x: Seq.seq (Seq.seq UInt8.t)) -> [ &_10 <- _x ] s8)
+    | s8 = new_Snapshot_Seq_u8 (fun (_x: Seq.seq (Seq.seq UInt8.t)) -> [ &_13 <- _x ] s9)
+    | s9 = into_inner_Seq_Snapshot_Seq_u8 {_13} (fun (_x: Seq.seq (Seq.seq UInt8.t)) -> [ &_12 <- _x ] s10)
+    | s10 = new_Snapshot_Seq_u32 (fun (_x: Seq.seq (Seq.seq UInt32.t)) -> [ &_15 <- _x ] s11)
+    | s11 = into_inner_Seq_Snapshot_Seq_u32 {_15} (fun (_x: Seq.seq (Seq.seq UInt32.t)) -> [ &_14 <- _x ] s12)
+    | s12 = [ &_16 <- None ] s13
+    | s13 = [ &_2 <- { struct_name = name;
+                       field_names = _4;
+                       field_type_tags = _6;
+                       word_values = _8;
+                       byte_values = _10;
+                       iter_values = _12;
+                       ascii_set_values = _14;
+                       finish_status = _16 } ] s14
+    | s14 = new_DebugTrace {_2} (fun (_x: t_DebugTrace) -> [ &_ret <- _x ] s15)
+    | s15 = return {_ret} ] ]
+  [ & _ret: t_DebugTrace = Any.any_l ()
+  | & name: string = name
+  | & _2: t_DebugTrace = Any.any_l ()
+  | & _4: Seq.seq string = Any.any_l ()
+  | & _5: Seq.seq string = Any.any_l ()
+  | & _6: Seq.seq UInt8.t = Any.any_l ()
+  | & _7: Seq.seq UInt8.t = Any.any_l ()
+  | & _8: Seq.seq (Seq.seq UInt32.t) = Any.any_l ()
+  | & _9: Seq.seq (Seq.seq UInt32.t) = Any.any_l ()
+  | & _10: Seq.seq (Seq.seq UInt8.t) = Any.any_l ()
+  | & _11: Seq.seq (Seq.seq UInt8.t) = Any.any_l ()
+  | & _12: Seq.seq (Seq.seq UInt8.t) = Any.any_l ()
+  | & _13: Seq.seq (Seq.seq UInt8.t) = Any.any_l ()
+  | & _14: Seq.seq (Seq.seq UInt32.t) = Any.any_l ()
+  | & _15: Seq.seq (Seq.seq UInt32.t) = Any.any_l ()
+  | & _16: t_Option_bool = Any.any_l () ]) [ return (result: t_DebugTrace) -> (! return {result}) ]

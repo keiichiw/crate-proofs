@@ -1,0 +1,75 @@
+{
+  "generated_at_utc": "2026-10-15T05:21:35.520601+00:00",
+  "reference_run": "verif/httpdate-run-Nh8aCaki",
+  "checker_sha256": "27e72afc48746348b862e6deccb104c038ec531c36bd1836cf2ed40ec3e037fa",
+  "guard_runner_sha256": "f577e84877697e401485f065d213ef50abf77edd5a0a92243d0e076c71f9f41f",
+  "reference_manifest_sha256": "528cb7465e8de245d8509e6fcb5c21cb87a2396015faacf7c4c0bd0ee06192d0",
+  "cases": [
+    {
+      "case": "changed_input",
+      "exit": 1,
+      "evidence_unchanged": true,
+      "output": "Traceback (most recent call last):\n  File \"/Users/keiichiw/workspace/crate-proofs/httpdate/1.0.3/scripts/check-proofs.py\", line 277, in <module>\n    main()\n    ~~~~^^\n  File \"/Users/keiichiw/workspace/crate-proofs/httpdate/1.0.3/scripts/check-proofs.py\", line 184, in main\n    raise ValueError(\"Inputs changed after this run started; rerun verification.\")\nValueError: Inputs changed after this run started; rerun verification.\n"
+    },
+    {
+      "case": "zero_goals",
+      "exit": 1,
+      "evidence_unchanged": true,
+      "output": "Traceback (most recent call last):\n  File \"/Users/keiichiw/workspace/crate-proofs/httpdate/1.0.3/scripts/check-proofs.py\", line 277, in <module>\n    main()\n    ~~~~^^\n  File \"/Users/keiichiw/workspace/crate-proofs/httpdate/1.0.3/scripts/check-proofs.py\", line 196, in main\n    item = session(base, target)\n  File \"/Users/keiichiw/workspace/crate-proofs/httpdate/1.0.3/scripts/check-proofs.py\", line 76, in session\n    raise ValueError(f\"No proof modules: {path}\")\nValueError: No proof modules: /var/folders/v0/n80jlbjj76zf4g6vx62sz55h0000gn/T/httpdate-evidence-guards-2tu84fc9/zero_goals/coma/verif/httpdate_rlib/date/toint_1/proof.json\n"
+    },
+    {
+      "case": "missing_target_vc",
+      "exit": 1,
+      "evidence_unchanged": true,
+      "output": "Traceback (most recent call last):\n  File \"/Users/keiichiw/workspace/crate-proofs/httpdate/1.0.3/scripts/check-proofs.py\", line 277, in <module>\n    main()\n    ~~~~^^\n  File \"/Users/keiichiw/workspace/crate-proofs/httpdate/1.0.3/scripts/check-proofs.py\", line 196, in main\n    item = session(base, target)\n  File \"/Users/keiichiw/workspace/crate-proofs/httpdate/1.0.3/scripts/check-proofs.py\", line 93, in session\n    raise ValueError(f\"Target verification condition missing: {path}: {expected}\")\nValueError: Target verification condition missing: /var/folders/v0/n80jlbjj76zf4g6vx62sz55h0000gn/T/httpdate-evidence-guards-2tu84fc9/missing_target_vc/coma/verif/httpdate_rlib/date/toint_1/proof.json: vc_toint_1\n"
+    },
+    {
+      "case": "open_target_goal",
+      "exit": 1,
+      "evidence_unchanged": true,
+      "output": "Traceback (most recent call last):\n  File \"/Users/keiichiw/workspace/crate-proofs/httpdate/1.0.3/scripts/check-proofs.py\", line 277, in <module>\n    main()\n    ~~~~^^\n  File \"/Users/keiichiw/workspace/crate-proofs/httpdate/1.0.3/scripts/check-proofs.py\", line 198, in main\n    raise ValueError(f\"Unproved goals: {target}: {item['open_goals']}\")\nValueError: Unproved goals: date/toint_1: ['Coma.vc_toint_1']\n"
+    },
+    {
+      "case": "missing_auxiliary_goal",
+      "exit": 1,
+      "evidence_unchanged": true,
+      "output": "Traceback (most recent call last):\n  File \"/Users/keiichiw/workspace/crate-proofs/httpdate/1.0.3/scripts/check-proofs.py\", line 277, in <module>\n    main()\n    ~~~~^^\n  File \"/Users/keiichiw/workspace/crate-proofs/httpdate/1.0.3/scripts/check-proofs.py\", line 196, in main\n    item = session(base, target)\n  File \"/Users/keiichiw/workspace/crate-proofs/httpdate/1.0.3/scripts/check-proofs.py\", line 114, in session\n    raise ValueError(f\"Complete goal inventory mismatch: {target}: \"\n                     f\"missing={sorted(inventory - set(goals))}, \"\n                     f\"unexpected={sorted(set(goals) - inventory)}\")\nValueError: Complete goal inventory mismatch: date/toint_1: missing=['Coma.vc_wrapping_sub'], unexpected=[]\n"
+    },
+    {
+      "case": "unclassified_generated",
+      "exit": 1,
+      "evidence_unchanged": true,
+      "output": "Traceback (most recent call last):\n  File \"/Users/keiichiw/workspace/crate-proofs/httpdate/1.0.3/scripts/check-proofs.py\", line 277, in <module>\n    main()\n    ~~~~^^\n  File \"/Users/keiichiw/workspace/crate-proofs/httpdate/1.0.3/scripts/check-proofs.py\", line 189, in main\n    raise ValueError(f\"Generated inventory mismatch: missing={sorted(expected - generated)}, \"\n                     f\"unclassified={sorted(generated - expected)}\")\nValueError: Generated inventory mismatch: missing=[], unclassified=['unexpected']\n"
+    },
+    {
+      "case": "missing_generated",
+      "exit": 1,
+      "evidence_unchanged": true,
+      "output": "Traceback (most recent call last):\n  File \"/Users/keiichiw/workspace/crate-proofs/httpdate/1.0.3/scripts/check-proofs.py\", line 277, in <module>\n    main()\n    ~~~~^^\n  File \"/Users/keiichiw/workspace/crate-proofs/httpdate/1.0.3/scripts/check-proofs.py\", line 189, in main\n    raise ValueError(f\"Generated inventory mismatch: missing={sorted(expected - generated)}, \"\n                     f\"unclassified={sorted(generated - expected)}\")\nValueError: Generated inventory mismatch: missing=['date/toint_1'], unclassified=[]\n"
+    },
+    {
+      "case": "unexpected_open_goal",
+      "exit": 1,
+      "evidence_unchanged": true,
+      "output": "Traceback (most recent call last):\n  File \"/Users/keiichiw/workspace/crate-proofs/httpdate/1.0.3/scripts/check-proofs.py\", line 277, in <module>\n    main()\n    ~~~~^^\n  File \"/Users/keiichiw/workspace/crate-proofs/httpdate/1.0.3/scripts/check-proofs.py\", line 206, in main\n    item = session(base, target)\n  File \"/Users/keiichiw/workspace/crate-proofs/httpdate/1.0.3/scripts/check-proofs.py\", line 114, in session\n    raise ValueError(f\"Complete goal inventory mismatch: {target}: \"\n                     f\"missing={sorted(inventory - set(goals))}, \"\n                     f\"unexpected={sorted(set(goals) - inventory)}\")\nValueError: Complete goal inventory mismatch: date/impl_From_for_HttpDate/from__refines: missing=[], unexpected=['Coma.vc_unexpected']\n"
+    },
+    {
+      "case": "closed_expected_open",
+      "exit": 1,
+      "evidence_unchanged": true,
+      "output": "Traceback (most recent call last):\n  File \"/Users/keiichiw/workspace/crate-proofs/httpdate/1.0.3/scripts/check-proofs.py\", line 277, in <module>\n    main()\n    ~~~~^^\n  File \"/Users/keiichiw/workspace/crate-proofs/httpdate/1.0.3/scripts/check-proofs.py\", line 208, in main\n    raise ValueError(f\"Expected-open condition changed; review and reclassify: {target}\")\nValueError: Expected-open condition changed; review and reclassify: date/impl_From_for_HttpDate/from__refines\n"
+    },
+    {
+      "case": "missing_open_target_vc",
+      "exit": 1,
+      "evidence_unchanged": true,
+      "output": "Traceback (most recent call last):\n  File \"/Users/keiichiw/workspace/crate-proofs/httpdate/1.0.3/scripts/check-proofs.py\", line 277, in <module>\n    main()\n    ~~~~^^\n  File \"/Users/keiichiw/workspace/crate-proofs/httpdate/1.0.3/scripts/check-proofs.py\", line 206, in main\n    item = session(base, target)\n  File \"/Users/keiichiw/workspace/crate-proofs/httpdate/1.0.3/scripts/check-proofs.py\", line 93, in session\n    raise ValueError(f\"Target verification condition missing: {path}: {expected}\")\nValueError: Target verification condition missing: /var/folders/v0/n80jlbjj76zf4g6vx62sz55h0000gn/T/httpdate-evidence-guards-2tu84fc9/missing_open_target_vc/coma/verif/httpdate_rlib/date/impl_From_for_HttpDate/from__refines/proof.json: refines\n"
+    },
+    {
+      "case": "abnormal_open_exit",
+      "exit": 1,
+      "evidence_unchanged": true,
+      "output": "Traceback (most recent call last):\n  File \"/Users/keiichiw/workspace/crate-proofs/httpdate/1.0.3/scripts/check-proofs.py\", line 277, in <module>\n    main()\n    ~~~~^^\n  File \"/Users/keiichiw/workspace/crate-proofs/httpdate/1.0.3/scripts/check-proofs.py\", line 214, in main\n    raise ValueError(\"Expected-open proof must finish normally with why3find unproved-file exit 1.\")\nValueError: Expected-open proof must finish normally with why3find unproved-file exit 1.\n"
+    }
+  ]
+}

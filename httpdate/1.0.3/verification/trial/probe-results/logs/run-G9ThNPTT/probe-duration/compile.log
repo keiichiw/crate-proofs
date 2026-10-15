@@ -1,0 +1,17 @@
+FEATURE: probe-duration
+COMMAND: cargo creusot --only=coma --span-mode off --output-dir /workspace/proof-env/httpdate/1.0.3/verification/trial/probes/verif/feature-run-run-G9ThNPTT/probe-duration/coma -- --locked --features probe-duration
+    Checking httpdate-api-probes v0.0.0 (/workspace/proof-env/httpdate/1.0.3/verification/trial/probes)
+warning: unused imports: `Int` and `requires`
+ --> src/lib.rs:3:37
+  |
+3 | use creusot_std::prelude::{ensures, requires, Int};
+  |                                     ^^^^^^^^  ^^^
+  |
+  = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: `httpdate-api-probes` (lib) generated 1 warning (run `cargo fix --lib -p httpdate-api-probes` to apply 1 suggestion)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.14s
+Warning: found dangling files and directories:
+  verif/run-V5aFX37V/probe-formatter
+Run 'cargo creusot clean' to remove them
+compile exit: 0

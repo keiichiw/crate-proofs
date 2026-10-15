@@ -1,0 +1,148 @@
+(* <PercentEncode<'_> as core::cmp::PartialEq> *)
+
+use creusot.slice.Slice64
+use creusot.int.UInt8
+use seq.Seq
+use creusot.int.UInt32
+use creusot.prelude.Any
+use int.Int
+
+type t_AsciiSet
+
+type t_PercentEncode = { bytes: Slice64.slice UInt8.t; ascii_set: t_AsciiSet }
+
+function deep_model_u8 [@inline:trivial] (self: UInt8.t) : int = UInt8.t'int self
+
+meta "rewrite_def" function deep_model_u8
+
+function index_slice_u8 [@inline:trivial] (self: Slice64.slice UInt8.t) (ix: int) : UInt8.t =
+  Seq.get (Slice64.view self) ix
+
+meta "rewrite_def" function index_slice_u8
+
+function deep_model_slice_u8 (self: Slice64.slice UInt8.t) : Seq.seq int
+
+axiom deep_model_slice_u8_spec:
+  forall self: Slice64.slice UInt8.t [deep_model_slice_u8 self]. Seq.length (Slice64.view self)
+    = Seq.length (deep_model_slice_u8 self)
+
+axiom deep_model_slice_u8_spec'0: forall self: Slice64.slice UInt8.t [deep_model_slice_u8 self]. forall i: int. 0 <= i
+        /\ i < Seq.length (deep_model_slice_u8 self)
+      -> Seq.get (deep_model_slice_u8 self) i = deep_model_u8 (index_slice_u8 self i)
+
+function deep_model_ref_slice_u8 [@inline:trivial] (self: Slice64.slice UInt8.t) : Seq.seq int =
+  deep_model_slice_u8 self
+
+meta "rewrite_def" function deep_model_ref_slice_u8
+
+function deep_model_ref_ref_slice_u8 [@inline:trivial] (self: Slice64.slice UInt8.t) : Seq.seq int =
+  deep_model_ref_slice_u8 self
+
+meta "rewrite_def" function deep_model_ref_ref_slice_u8
+
+let eq_ref_slice_u8 (self_: Slice64.slice UInt8.t) (rhs: Slice64.slice UInt8.t) (return (x: bool)) = any
+  [ return (result: bool) -> {[@stop_split] [@expl:eq ensures] result
+    = (deep_model_ref_ref_slice_u8 self_ = deep_model_ref_ref_slice_u8 rhs)}
+    (! return {result}) ]
+
+predicate slice_byte_views_ext_eq_from_model (left: Slice64.slice UInt8.t) (right: Slice64.slice UInt8.t)
+
+axiom slice_byte_views_ext_eq_from_model_spec:
+  forall left: Slice64.slice UInt8.t, right: Slice64.slice UInt8.t [slice_byte_views_ext_eq_from_model left right]. deep_model_ref_slice_u8 left
+      = deep_model_ref_slice_u8 right -> slice_byte_views_ext_eq_from_model left right
+
+axiom slice_byte_views_ext_eq_from_model_spec'0:
+  forall left: Slice64.slice UInt8.t, right: Slice64.slice UInt8.t. deep_model_ref_slice_u8 left
+      = deep_model_ref_slice_u8 right -> Seq.(==) (Slice64.view left) (Slice64.view right)
+
+predicate inv_AsciiSet (_1: t_AsciiSet)
+
+predicate invariant_ref_AsciiSet [@inline:trivial] (self: t_AsciiSet) = inv_AsciiSet self
+
+meta "rewrite_def" predicate invariant_ref_AsciiSet
+
+predicate inv_ref_AsciiSet [@inline:trivial] (_1: t_AsciiSet) = invariant_ref_AsciiSet _1
+
+meta "rewrite_def" predicate inv_ref_AsciiSet
+
+predicate invariant_ref_ref_AsciiSet [@inline:trivial] (self: t_AsciiSet) = inv_ref_AsciiSet self
+
+meta "rewrite_def" predicate invariant_ref_ref_AsciiSet
+
+predicate inv_ref_ref_AsciiSet [@inline:trivial] (_1: t_AsciiSet) = invariant_ref_ref_AsciiSet _1
+
+meta "rewrite_def" predicate inv_ref_ref_AsciiSet
+
+function mask_words (self: t_AsciiSet) : Seq.seq UInt32.t
+
+axiom mask_words_spec: forall self: t_AsciiSet [mask_words self]. Seq.length (mask_words self) = 4
+
+function deep_model_AsciiSet (self: t_AsciiSet) : Seq.seq UInt32.t
+
+axiom deep_model_AsciiSet_spec: forall self: t_AsciiSet [deep_model_AsciiSet self]. deep_model_AsciiSet self
+    = mask_words self
+
+function deep_model_ref_AsciiSet [@inline:trivial] (self: t_AsciiSet) : Seq.seq UInt32.t = deep_model_AsciiSet self
+
+meta "rewrite_def" function deep_model_ref_AsciiSet
+
+function deep_model_ref_ref_AsciiSet [@inline:trivial] (self: t_AsciiSet) : Seq.seq UInt32.t =
+  deep_model_ref_AsciiSet self
+
+meta "rewrite_def" function deep_model_ref_ref_AsciiSet
+
+let eq_ref_AsciiSet (self_: t_AsciiSet) (rhs: t_AsciiSet) (return (x: bool)) =
+{[@stop_split] [@expl:eq_ref_AsciiSet requires] ([@stop_split] [@expl:eq 'self_' type invariant] inv_ref_ref_AsciiSet self_)
+  /\ ([@stop_split] [@expl:eq 'rhs' type invariant] inv_ref_ref_AsciiSet rhs)}
+  any
+  [ return (result: bool) -> {[@stop_split] [@expl:eq ensures] result
+    = (deep_model_ref_ref_AsciiSet self_ = deep_model_ref_ref_AsciiSet rhs)}
+    (! return {result}) ]
+
+predicate inv_PercentEncode (_1: t_PercentEncode)
+
+axiom inv_axiom [@rewrite]: forall x: t_PercentEncode [inv_PercentEncode x]. inv_PercentEncode x
+    = inv_ref_AsciiSet x.ascii_set
+
+predicate invariant_ref_PercentEncode [@inline:trivial] (self: t_PercentEncode) = inv_PercentEncode self
+
+meta "rewrite_def" predicate invariant_ref_PercentEncode
+
+predicate inv_ref_PercentEncode [@inline:trivial] (_1: t_PercentEncode) = invariant_ref_PercentEncode _1
+
+meta "rewrite_def" predicate inv_ref_PercentEncode
+
+predicate percent_encode_eq_model (left_input: Seq.seq UInt8.t) (left_set: Seq.seq UInt32.t) (right_input: Seq.seq UInt8.t) (right_set: Seq.seq UInt32.t) =
+  left_input = right_input /\ left_set = right_set
+
+function remaining_input [@inline:trivial] (self: t_PercentEncode) : Seq.seq UInt8.t = Slice64.view self.bytes
+
+meta "rewrite_def" function remaining_input
+
+function configured_set [@inline:trivial] (self: t_PercentEncode) : Seq.seq UInt32.t = mask_words self.ascii_set
+
+meta "rewrite_def" function configured_set
+
+meta "compute_max_steps" 1000000
+
+meta "select_lsinst" "all"
+
+let eq_PercentEncode (self: t_PercentEncode) (other: t_PercentEncode) (return (x: bool)) =
+{[@stop_split] [@expl:eq_PercentEncode requires] ([@stop_split] [@expl:eq 'self' type invariant] inv_ref_PercentEncode self)
+  /\ ([@stop_split] [@expl:eq 'other' type invariant] inv_ref_PercentEncode other)}
+  (! bb0
+  [ bb0 = s0
+    [ s0 = eq_ref_slice_u8 {self.bytes} {other.bytes} (fun (_x: bool) -> [ &bytes_equal <- _x ] s1)
+    | s1 = {[@expl:assertion] bytes_equal -> slice_byte_views_ext_eq_from_model self.bytes other.bytes} s2
+    | s2 = any [ br0 -> {bytes_equal = false} (! bb3) | br1 -> {bytes_equal} (! bb2) ] ]
+  | bb2 = s0
+    [ s0 = eq_ref_AsciiSet {self.ascii_set} {other.ascii_set} (fun (_x: bool) -> [ &_ret <- _x ] s1)
+    | s1 = return {_ret} ]
+  | bb3 = s0 [ s0 = [ &_ret <- false ] s1 | s1 = return {_ret} ] ]
+  [ & _ret: bool = Any.any_l ()
+  | & self: t_PercentEncode = self
+  | & other: t_PercentEncode = other
+  | & bytes_equal: bool = Any.any_l () ])
+  [ return (result: bool) -> {[@stop_split] [@expl:eq ensures] result
+    = percent_encode_eq_model (remaining_input self) (configured_set self) (remaining_input other) (configured_set other)}
+    (! return {result}) ]

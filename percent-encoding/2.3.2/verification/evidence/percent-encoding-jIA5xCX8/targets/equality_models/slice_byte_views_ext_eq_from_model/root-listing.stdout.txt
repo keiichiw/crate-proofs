@@ -1,0 +1,62 @@
+theory Coma
+  
+  (* use why3.BuiltIn.BuiltIn *)
+  
+  (* use why3.Bool.Bool *)
+  
+  (* use why3.Unit.Unit *)
+  
+  (* use creusot.slice.Slice64 *)
+  
+  (* use creusot.int.UInt8 *)
+  
+  function deep_model_u8 (self:t) : int = t'int self
+  
+  (* meta rewrite_def function deep_model_u8 *)
+  
+  function index_slice_u8 (self:slice t) (ix:int) : t = get (view self) ix
+  
+  (* meta rewrite_def function index_slice_u8 *)
+  
+  function deep_model_slice_u8 (slice t) : seq int
+  
+  axiom deep_model_slice_u8_spec :
+    forall self:slice t [deep_model_slice_u8 self].
+     length (view self) = length (deep_model_slice_u8 self)
+  
+  axiom deep_model_slice_u8_spec'0 :
+    forall self:slice t [deep_model_slice_u8 self].
+     forall i:int.
+      0 <= i /\ i < length (deep_model_slice_u8 self) ->
+      get (deep_model_slice_u8 self) i =
+      deep_model_u8 (index_slice_u8 self i)
+  
+  function deep_model_ref_slice_u8 (self:slice t) : seq int =
+    deep_model_slice_u8 self
+  
+  (* meta rewrite_def function deep_model_ref_slice_u8 *)
+  
+  (* meta compute_max_steps 1000000 *)
+  
+  (* meta select_lsinst "all" *)
+  
+  constant left : slice t
+  
+  constant right : slice t
+  
+  predicate slice_byte_views_ext_eq_from_model (slice t) (slice t)
+  
+  goal vc_slice_byte_views_ext_eq_from_model :
+    deep_model_ref_slice_u8 left = deep_model_ref_slice_u8 right ->
+    (let left_model = deep_model_ref_slice_u8 left in
+     let right_model = deep_model_ref_slice_u8 right in
+     length (view left) = length left_model &&
+     length (view right) = length right_model &&
+     length (view left) = length (view right) &&
+     (forall i:int.
+       0 <= i /\ i < length (view left) ->
+       t'int (get (view left) i) = t'int (get (view right) i)) &&
+     view left == view right && true /\ view left == view right)
+  
+end
+

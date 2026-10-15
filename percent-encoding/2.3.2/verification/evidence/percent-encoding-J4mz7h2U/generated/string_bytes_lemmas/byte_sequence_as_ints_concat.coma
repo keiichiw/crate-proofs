@@ -1,0 +1,77 @@
+use creusot.int.UInt8
+use seq.Seq
+use map.Map
+use int.Int
+
+function index_Mapping_u8_Int [@inline:trivial] (self: Map.map UInt8.t int) (a: UInt8.t) : int = Map.get self a
+
+meta "rewrite_def" function index_Mapping_u8_Int
+
+function map_u8 (self: Seq.seq UInt8.t) (m: Map.map UInt8.t int) : Seq.seq int
+
+axiom map_u8_spec: forall self: Seq.seq UInt8.t, m: Map.map UInt8.t int [map_u8 self m]. Seq.length (map_u8 self m)
+    = Seq.length self
+
+axiom map_u8_spec'0: forall self: Seq.seq UInt8.t, m: Map.map UInt8.t int [map_u8 self m]. forall i: int. 0 <= i
+        /\ i < Seq.length self -> Seq.get (map_u8 self m) i = index_Mapping_u8_Int m (Seq.get self i)
+
+function byte_sequence_as_ints (bytes: Seq.seq UInt8.t) : Seq.seq int =
+  map_u8 bytes (fun (byte: UInt8.t) -> UInt8.t'int byte)
+
+predicate gt_log_Int [@inline:trivial] (self: int) (other: int) = other < self
+
+meta "rewrite_def" predicate gt_log_Int
+
+function tail_u8 (self: Seq.seq UInt8.t) : Seq.seq UInt8.t = Seq.([..]) self 1 (Seq.length self)
+
+predicate nonempty_left_concat_tail_u8 (left: Seq.seq UInt8.t) (right: Seq.seq UInt8.t)
+
+axiom nonempty_left_concat_tail_u8_spec:
+  forall left: Seq.seq UInt8.t, right: Seq.seq UInt8.t [nonempty_left_concat_tail_u8 left right]. gt_log_Int (Seq.length left) 0
+    -> nonempty_left_concat_tail_u8 left right
+
+axiom nonempty_left_concat_tail_u8_spec'0:
+  forall left: Seq.seq UInt8.t, right: Seq.seq UInt8.t. gt_log_Int (Seq.length left) 0
+    -> Seq.(==) (tail_u8 (Seq.(++) left right)) (Seq.(++) (tail_u8 left) right)
+
+predicate ge_log_Int [@inline:trivial] (self: int) (other: int) = other <= self
+
+meta "rewrite_def" predicate ge_log_Int
+
+predicate well_founded_relation_Int [@inline:trivial] (self: int) (other: int) =
+  ge_log_Int self 0 /\ gt_log_Int self other
+
+meta "rewrite_def" predicate well_founded_relation_Int
+
+meta "compute_max_steps" 1000000
+
+meta "select_lsinst" "all"
+
+constant left : Seq.seq UInt8.t
+
+constant right : Seq.seq UInt8.t
+
+predicate byte_sequence_as_ints_concat (left: Seq.seq UInt8.t) (right: Seq.seq UInt8.t)
+
+goal vc_byte_sequence_as_ints_concat: if Seq.length left = 0 then
+    [@stop_split] [@expl:byte_sequence_as_ints_concat ensures] ([@stop_split] [@expl:byte_sequence_as_ints_concat ensures #0] true)
+    /\ ([@stop_split] [@expl:byte_sequence_as_ints_concat ensures #1] byte_sequence_as_ints (Seq.(++) left right)
+    = Seq.(++) (byte_sequence_as_ints left) (byte_sequence_as_ints right))
+  else
+    ([@stop_split] [@expl:nonempty_left_concat_tail requires] gt_log_Int (Seq.length left) 0)
+    /\ (([@stop_split] [@expl:nonempty_left_concat_tail ensures] ([@stop_split] [@expl:nonempty_left_concat_tail ensures #0] nonempty_left_concat_tail_u8 left right)
+      /\ ([@stop_split] [@expl:nonempty_left_concat_tail ensures #1] Seq.(==) (tail_u8 (Seq.(++) left right)) (Seq.(++) (tail_u8 left) right)))
+    -> (if nonempty_left_concat_tail_u8 left right then
+      ([@expl:variant decreases] well_founded_relation_Int (Seq.length left) (Seq.length (tail_u8 left)))
+      /\ (([@stop_split] [@expl:byte_sequence_as_ints_concat ensures] ([@stop_split] [@expl:byte_sequence_as_ints_concat ensures #0] byte_sequence_as_ints_concat (tail_u8 left) right)
+        /\ ([@stop_split] [@expl:byte_sequence_as_ints_concat ensures #1] byte_sequence_as_ints (Seq.(++) (tail_u8 left) right)
+        = Seq.(++) (byte_sequence_as_ints (tail_u8 left)) (byte_sequence_as_ints right)))
+      -> ([@stop_split] [@expl:byte_sequence_as_ints_concat ensures] ([@stop_split] [@expl:byte_sequence_as_ints_concat ensures #0] byte_sequence_as_ints_concat (tail_u8 left) right)
+      /\ ([@stop_split] [@expl:byte_sequence_as_ints_concat ensures #1] byte_sequence_as_ints (Seq.(++) left right)
+      = Seq.(++) (byte_sequence_as_ints left) (byte_sequence_as_ints right))))
+    else
+      [@stop_split] [@expl:byte_sequence_as_ints_concat ensures] ([@stop_split] [@expl:byte_sequence_as_ints_concat ensures #0] false)
+      /\ ([@stop_split] [@expl:byte_sequence_as_ints_concat ensures #1] byte_sequence_as_ints (Seq.(++) left right)
+      = Seq.(++) (byte_sequence_as_ints left) (byte_sequence_as_ints right))
+    ))
+  

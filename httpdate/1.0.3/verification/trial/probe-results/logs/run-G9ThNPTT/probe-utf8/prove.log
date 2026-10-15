@@ -1,0 +1,10 @@
+FEATURE: probe-utf8
+COMMAND: timeout --signal=TERM --kill-after=5s 60s cargo creusot --only=prove --no-cache --why3find-arg=-d --why3find-arg=1 /workspace/proof-env/httpdate/1.0.3/verification/trial/probes/verif/feature-run-run-G9ThNPTT/probe-utf8/coma/verif/httpdate_api_probes_rlib/ascii_is_utf8.coma
+TIME LIMIT: 60 seconds
+Warning: found dangling files and directories:
+  verif/run-V5aFX37V/probe-formatter
+Run 'cargo creusot clean' to remove them
+Goal Coma.vc_ascii_is_utf8: ✘
+Error: 1 unproved file
+Error: 'why3find prove' failed
+prove exit: 1

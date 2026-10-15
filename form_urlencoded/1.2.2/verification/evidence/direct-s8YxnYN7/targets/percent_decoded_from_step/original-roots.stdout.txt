@@ -1,0 +1,64 @@
+theory Coma
+  
+  (* use why3.BuiltIn.BuiltIn *)
+  
+  (* use why3.Bool.Bool *)
+  
+  (* use why3.Unit.Unit *)
+  
+  (* use seq.Seq *)
+  
+  function percent_hex_value_model (byte:int) : int =
+    if 48 <= byte /\ byte <= 57 then byte - 48
+    else if 65 <= byte /\ byte <= 70 then byte - 55
+         else if 97 <= byte /\ byte <= 102 then byte - 87 else (- 1)
+  
+  predicate ge_log_Int (self:int) (other:int) = other <= self
+  
+  (* meta rewrite_def predicate ge_log_Int *)
+  
+  function percent_decoded_from (seq int) int : seq int
+  
+  axiom percent_decoded_from_def :
+    forall bytes:seq int, index:int [percent_decoded_from bytes index].
+     0 <= index /\ index <= length bytes ->
+     percent_decoded_from bytes index =
+     (if index = length bytes then empty: seq int
+      else let first = get bytes index in
+           if first = 37 /\ (index + 3) <= length bytes
+           then let high = percent_hex_value_model (get bytes (index + 1)) in
+                let low = percent_hex_value_model (get bytes (index + 2)) in
+                if ge_log_Int high 0 /\ ge_log_Int low 0
+                then singleton ((high * 16) + low)
+                     ++ percent_decoded_from bytes (index + 3)
+                else singleton first
+                     ++ percent_decoded_from bytes (index + 1)
+           else singleton first ++ percent_decoded_from bytes (index + 1))
+  
+  (* meta compute_max_steps 1000000 *)
+  
+  (* meta select_lsinst "all" *)
+  
+  constant bytes : seq int
+  
+  constant index : int
+  
+  predicate percent_decoded_from_step (seq int) int
+  
+  goal vc_percent_decoded_from_step :
+    0 <= index /\ index < length bytes ->
+    true /\
+    percent_decoded_from bytes index =
+    (if get bytes index = 37 /\
+        (index + 3) <= length bytes /\
+        ge_log_Int (percent_hex_value_model (get bytes (index + 1))) 0 /\
+        ge_log_Int (percent_hex_value_model (get bytes (index + 2))) 0
+     then singleton
+          ((percent_hex_value_model (get bytes (index + 1)) * 16)
+           + percent_hex_value_model (get bytes (index + 2)))
+          ++ percent_decoded_from bytes (index + 3)
+     else singleton (get bytes index)
+          ++ percent_decoded_from bytes (index + 1))
+  
+end
+

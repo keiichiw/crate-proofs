@@ -1,0 +1,184 @@
+theory Coma
+  
+  (* use why3.BuiltIn.BuiltIn *)
+  
+  (* use why3.Bool.Bool *)
+  
+  (* use why3.Unit.Unit *)
+  
+  (* use creusot.slice.Slice64 *)
+  
+  (* use creusot.int.UInt8 *)
+  
+  (* use creusot.prelude.MutBorrow *)
+  
+  (* use map.Map *)
+  
+  (* use creusot.prelude.Any *)
+  
+  type t_Option_usize =
+    | None
+    | Some t
+  
+  goal vc_find_plus : true
+  
+  goal vc_elim_Some : true
+  
+  type t_Vec_u8_Global
+  
+  constant const_MAX : t = (18446744073709551615:t)
+  
+  function view_Vec_u8_Global t_Vec_u8_Global : seq t1
+  
+  axiom view_Vec_u8_Global_spec :
+    forall self:t_Vec_u8_Global [view_Vec_u8_Global self].
+     length (view_Vec_u8_Global self) <= t'int const_MAX
+  
+  goal vc_copy_bytes : true
+  
+  goal vc_deref_mut_Vec_u8_Global : true
+  
+  goal vc_replace_plus_in_place : true
+  
+  predicate resolve_refmut_Vec_u8_Global (_1:t2 t_Vec_u8_Global) =
+    _1.final = _1.current
+  
+  (* meta rewrite_def predicate resolve_refmut_Vec_u8_Global *)
+  
+  predicate resolve_refmut_slice_u8 (_1:t2 (slice t1)) =
+    _1.final = _1.current
+  
+  (* meta rewrite_def predicate resolve_refmut_slice_u8 *)
+  
+  function index_Mapping_u8_u8 (self:t1 -> t1) (a:t1) : t1 = get self a
+  
+  (* meta rewrite_def function index_Mapping_u8_u8 *)
+  
+  function map_u8 (seq t1) (t1 -> t1) : seq t1
+  
+  axiom map_u8_spec :
+    forall self:seq t1, m:t1 -> t1 [map_u8 self m].
+     length (map_u8 self m) = length self
+  
+  axiom map_u8_spec'0 :
+    forall self:seq t1, m:t1 -> t1 [map_u8 self m].
+     forall i:int.
+      0 <= i /\ i < length self ->
+      get1 (map_u8 self m) i = index_Mapping_u8_u8 m (get1 self i)
+  
+  function replace_plus_model (bytes:seq t1) : seq t1 =
+    map_u8 bytes
+    (fun (byte:t1) -> if t'int1 byte = 43 then (32:t1) else byte)
+  
+  predicate plus_result_exact (seq t1) (seq t1)
+  
+  axiom plus_result_exact_spec :
+    forall original:seq t1, result_bytes:seq t1
+     [plus_result_exact original result_bytes].
+     length result_bytes = length original ->
+     (forall i:int.
+       0 <= i /\ i < length original ->
+       t'int1 (get1 result_bytes i) =
+       (if t'int1 (get1 original i) = 43 then 32
+        else t'int1 (get1 original i))) ->
+     plus_result_exact original result_bytes
+  
+  axiom plus_result_exact_spec'0 :
+    forall original:seq t1, result_bytes:seq t1.
+     length result_bytes = length original ->
+     (forall i:int.
+       0 <= i /\ i < length original ->
+       t'int1 (get1 result_bytes i) =
+       (if t'int1 (get1 original i) = 43 then 32
+        else t'int1 (get1 original i))) ->
+     result_bytes = replace_plus_model original
+  
+  type t_Cow_slice_u8 =
+    | Borrowed (slice t1)
+    | Owned t_Vec_u8_Global
+  
+  predicate no_plus_identity (seq t1)
+  
+  axiom no_plus_identity_spec :
+    forall bytes:seq t1 [no_plus_identity bytes].
+     (forall i:int.
+       0 <= i /\ i < length bytes -> not t'int1 (get1 bytes i) = 43) ->
+     no_plus_identity bytes
+  
+  axiom no_plus_identity_spec'0 :
+    forall bytes:seq t1.
+     (forall i:int.
+       0 <= i /\ i < length bytes -> not t'int1 (get1 bytes i) = 43) ->
+     replace_plus_model bytes = bytes
+  
+  predicate cow_bytes_borrowed (value:t_Cow_slice_u8) =
+    match value with
+    | Borrowed _ -> true
+    | Owned _ -> false
+    end
+  
+  predicate no_plus (bytes:seq t1) =
+    forall i:int.
+     0 <= i /\ i < length bytes -> not t'int1 (get1 bytes i) = 43
+  
+  (* meta compute_max_steps 1000000 *)
+  
+  (* meta select_lsinst "all" *)
+  
+  goal vc_replace_plus :
+    forall input:slice t1.
+     forall result:t_Option_usize.
+      match result with
+      | Some i ->
+          t'int i < length (view input) /\
+          t'int1 (get1 (view input) (t'int i)) = 43 /\
+          (forall j:int.
+            0 <= j /\ j < t'int i -> not t'int1 (get1 (view input) j) = 43)
+      | None ->
+          forall j:int.
+           0 <= j /\ j < length (view input) ->
+           not t'int1 (get1 (view input) j) = 43
+      end ->
+      (result = None ->
+       no_plus_identity (view input) &&
+       (true /\ replace_plus_model (view input) = view input) /\
+       (cow_bytes_borrowed (Borrowed input) <-> no_plus (view input))) /\
+      (forall x0:t.
+        result = Some x0 ->
+        (forall f0:t.
+          Some f0 = result ->
+          (forall result1:t_Vec_u8_Global.
+            view_Vec_u8_Global result1 == view input ->
+            (forall fin:t_Vec_u8_Global, id:int.
+              forall fin1:t_Vec_u8_Global.
+               forall result2:t2 (slice t1).
+                view (result2.current) = view_Vec_u8_Global result1 /\
+                length (view_Vec_u8_Global fin1) =
+                length (view_Vec_u8_Global result1) /\
+                view (result2.final) = view_Vec_u8_Global fin1 ->
+                (forall fin2:slice t1.
+                  (t'int f0 < length (view (result2.current)) /\
+                   t'int1 (get1 (view (result2.current)) (t'int f0)) = 43 /\
+                   (forall i:int.
+                     0 <= i /\ i < t'int f0 ->
+                     not t'int1 (get1 (view (result2.current)) i) = 43)) /\
+                  (length (view fin2) = length (view (result2.current)) /\
+                   (forall i:int.
+                     0 <= i /\ i < length (view (result2.current)) ->
+                     (if t'int1 (get1 (view (result2.current)) i) = 43
+                      then t'int1 (get1 (view fin2) i) = 32
+                      else t'int1 (get1 (view fin2) i) =
+                           t'int1 (get1 (view (result2.current)) i))) ->
+                   resolve_refmut_Vec_u8_Global (t'mk fin1 fin id) ->
+                   resolve_refmut_slice_u8
+                   (t'mk fin2 (result2.final) (result2.id1)) ->
+                   plus_result_exact (view input) (view_Vec_u8_Global fin) &&
+                   view_Vec_u8_Global fin = replace_plus_model (view input) /\
+                   (cow_bytes_borrowed (Owned fin) <-> no_plus (view input))))))) /\
+        match result with
+        | Some _ -> true
+        | _ -> false
+        end)
+  
+end
+

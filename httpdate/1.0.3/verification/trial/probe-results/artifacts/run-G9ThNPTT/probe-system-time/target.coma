@@ -1,0 +1,45 @@
+use creusot.int.UInt64
+use creusot.prelude.Any
+
+type t_SystemTimeError
+
+type t_Result_u64_SystemTimeError = Ok UInt64.t | Err t_SystemTimeError
+
+type t_SystemTime
+
+type t_Duration
+
+type t_Result_Duration_SystemTimeError = Ok'0 t_Duration | Err'0 t_SystemTimeError
+
+predicate inv_SystemTime (_1: t_SystemTime)
+
+predicate inv_SystemTimeError (_1: t_SystemTimeError)
+
+predicate inv_Result_u64_SystemTimeError (_1: t_Result_u64_SystemTimeError)
+
+axiom inv_axiom [@rewrite]:
+  forall x: t_Result_u64_SystemTimeError [inv_Result_u64_SystemTimeError x]. inv_Result_u64_SystemTimeError x
+    = match x with
+      | Ok f0 -> true
+      | Err f0 -> inv_SystemTimeError f0
+      end
+
+meta "compute_max_steps" 1000000
+
+meta "select_lsinst" "all"
+
+let epoch_seconds (t: t_SystemTime) (return (x: t_Result_u64_SystemTimeError)) =
+{[@stop_split] [@expl:epoch_seconds 't' type invariant] inv_SystemTime t}
+  (! bb0
+  [ bb0 = {false} any ]
+  [ & _ret: t_Result_u64_SystemTimeError = Any.any_l ()
+  | & t: t_SystemTime = t
+  | & _2: t_Result_Duration_SystemTimeError = Any.any_l ()
+  | & d: t_Duration = Any.any_l ()
+  | & _6: UInt64.t = Any.any_l ()
+  | & _7: t_Duration = Any.any_l ()
+  | & e: t_SystemTimeError = Any.any_l ()
+  | & _9: t_SystemTimeError = Any.any_l () ])
+  [ return (result: t_Result_u64_SystemTimeError) ->
+  {[@stop_split] [@expl:epoch_seconds result type invariant] inv_Result_u64_SystemTimeError result}
+    (! return {result}) ]

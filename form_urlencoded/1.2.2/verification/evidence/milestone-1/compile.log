@@ -1,0 +1,120 @@
+    Checking form_urlencoded v1.2.2 (/workspace/proof-env/form_urlencoded/1.2.2/crate)
+warning: unused import: `Borrow`
+  --> crate/src/lib.rs:26:21
+   |
+26 | use alloc::borrow::{Borrow, Cow};
+   |                     ^^^^^^
+   |
+   = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: field `input` is never read
+  --> crate/src/lib.rs:47:5
+   |
+46 | pub struct Parse<'a> {
+   |            ----- field in this struct
+47 |     input: &'a [u8],
+   |     ^^^^^
+   |
+   = note: `Parse` has a derived impl for the trait `Clone`, but this is intentionally ignored during dead code analysis
+   = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: function `raw_pair_bounds` is never used
+  --> crate/src/lib.rs:61:4
+   |
+61 | fn raw_pair_bounds(input: &[u8]) -> Option<(usize, usize, usize, usize)> {
+   |    ^^^^^^^^^^^^^^^
+
+warning: function `decode` is never used
+   --> crate/src/lib.rs:110:4
+    |
+110 | fn decode(input: &[u8]) -> Cow<'_, str> {
+    |    ^^^^^^
+
+warning: function `find_plus` is never used
+   --> crate/src/lib.rs:123:4
+    |
+123 | fn find_plus(input: &[u8]) -> Option<usize> {
+    |    ^^^^^^^^^
+
+warning: function `replace_plus_in_place` is never used
+   --> crate/src/lib.rs:141:4
+    |
+141 | fn replace_plus_in_place(bytes: &mut [u8], first: usize) {
+    |    ^^^^^^^^^^^^^^^^^^^^^
+
+warning: function `replace_plus` is never used
+   --> crate/src/lib.rs:160:4
+    |
+160 | fn replace_plus(input: &[u8]) -> Cow<'_, [u8]> {
+    |    ^^^^^^^^^^^^
+
+warning: field `inner` is never read
+   --> crate/src/lib.rs:180:5
+    |
+179 | pub struct ParseIntoOwned<'a> {
+    |            -------------- field in this struct
+180 |     inner: Parse<'a>,
+    |     ^^^^^
+
+warning: field `bytes` is never read
+   --> crate/src/lib.rs:205:5
+    |
+204 | pub struct ByteSerialize<'a> {
+    |            ------------- field in this struct
+205 |     bytes: &'a [u8],
+    |     ^^^^^
+    |
+    = note: `ByteSerialize` has a derived impl for the trait `Debug`, but this is intentionally ignored during dead code analysis
+
+warning: function `byte_serialized_unchanged` is never used
+   --> crate/src/lib.rs:211:4
+    |
+211 | fn byte_serialized_unchanged(byte: u8) -> bool {
+    |    ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: function `percent_encoded_bytes` is never used
+   --> crate/src/lib.rs:219:4
+    |
+219 | fn percent_encoded_bytes(byte: u8) -> &'static [u8; 3] {
+    |    ^^^^^^^^^^^^^^^^^^^^^
+
+warning: function `decode_utf8_lossy` is never used
+   --> crate/src/lib.rs:759:15
+    |
+759 | pub(crate) fn decode_utf8_lossy(input: Cow<'_, [u8]>) -> Cow<'_, str> {
+    |               ^^^^^^^^^^^^^^^^^
+
+warning: calling external function `percent_decode` with no contract will yield an impossible precondition
+   --> crate/src/lib.rs:112:29
+    |
+112 |     decode_utf8_lossy(match percent_decode(&replaced).into() {
+    |                             ^^^^^^^^^^^^^^^^^^^^^^^^^ function called here
+    |
+    = note: `#[warn(creusot::contractless_external_function)]` on by default
+
+warning: calling external function `from_utf8_lossy` with no contract will yield an impossible precondition
+   --> crate/src/lib.rs:762:33
+    |
+762 |         Cow::Borrowed(bytes) => String::from_utf8_lossy(bytes),
+    |                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ function called here
+
+warning: calling external function `from_utf8_lossy` with no contract will yield an impossible precondition
+   --> crate/src/lib.rs:764:19
+    |
+764 |             match String::from_utf8_lossy(&bytes) {
+    |                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ function called here
+
+warning: calling external function `as_bytes` with no contract will yield an impossible precondition
+   --> crate/src/lib.rs:773:49
+    |
+773 |                     let raw_utf8: *const [u8] = utf8.as_bytes();
+    |                                                 ^^^^^^^^^^^^^^^ function called here
+
+warning: calling external function `eq` with no contract will yield an impossible precondition
+   --> crate/src/lib.rs:774:35
+    |
+774 |                     debug_assert!(core::ptr::eq(raw_utf8, &*bytes));
+    |                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ function called here
+
+warning: `form_urlencoded` (lib) generated 17 warnings (run `cargo fix --lib -p form_urlencoded` to apply 1 suggestion)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.51s

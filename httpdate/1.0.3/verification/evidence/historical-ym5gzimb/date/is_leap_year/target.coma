@@ -1,0 +1,43 @@
+use creusot.int.UInt16
+use creusot.prelude.Any
+use int.ComputerDivision
+
+meta "compute_max_steps" 1000000
+
+meta "select_lsinst" "all"
+
+let is_leap_year (y: UInt16.t) (return (x: bool)) = (! bb0
+  [ bb0 = s0
+    [ s0 = [ &_7 <- (4: UInt16.t) = (0: UInt16.t) ] s1
+    | s1 = {[@expl:remainder by zero] not _7} s2
+    | s2 = UInt16.rem {y} {(4: UInt16.t)} (fun (_x: UInt16.t) -> [ &_5 <- _x ] s3)
+    | s3 = [ &_4 <- _5 = (0: UInt16.t) ] s4
+    | s4 = any [ br0 -> {_4 = false} (! bb3) | br1 -> {_4} (! bb2) ] ]
+  | bb2 = s0
+    [ s0 = [ &_11 <- (100: UInt16.t) = (0: UInt16.t) ] s1
+    | s1 = {[@expl:remainder by zero] not _11} s2
+    | s2 = UInt16.rem {y} {(100: UInt16.t)} (fun (_x: UInt16.t) -> [ &_9 <- _x ] s3)
+    | s3 = [ &_8 <- _9 <> (0: UInt16.t) ] s4
+    | s4 = any [ br0 -> {_8 = false} (! bb6) | br1 -> {_8} (! bb5) ] ]
+  | bb5 = s0 [ s0 = [ &_ret <- true ] s1 | s1 = return {_ret} ]
+  | bb6 = s0
+    [ s0 = [ &_14 <- (400: UInt16.t) = (0: UInt16.t) ] s1
+    | s1 = {[@expl:remainder by zero] not _14} s2
+    | s2 = UInt16.rem {y} {(400: UInt16.t)} (fun (_x: UInt16.t) -> [ &_12 <- _x ] s3)
+    | s3 = [ &_ret <- _12 = (0: UInt16.t) ] s4
+    | s4 = return {_ret} ]
+  | bb3 = s0 [ s0 = [ &_ret <- false ] s1 | s1 = return {_ret} ] ]
+  [ & _ret: bool = Any.any_l ()
+  | & y: UInt16.t = y
+  | & _4: bool = Any.any_l ()
+  | & _5: UInt16.t = Any.any_l ()
+  | & _7: bool = Any.any_l ()
+  | & _8: bool = Any.any_l ()
+  | & _9: UInt16.t = Any.any_l ()
+  | & _11: bool = Any.any_l ()
+  | & _12: UInt16.t = Any.any_l ()
+  | & _14: bool = Any.any_l () ])
+  [ return (result: bool) -> {[@stop_split] [@expl:is_leap_year ensures] result
+    = (ComputerDivision.mod (UInt16.t'int y) 4 = 0
+    /\ (ComputerDivision.mod (UInt16.t'int y) 100 <> 0 \/ ComputerDivision.mod (UInt16.t'int y) 400 = 0))}
+    (! return {result}) ]

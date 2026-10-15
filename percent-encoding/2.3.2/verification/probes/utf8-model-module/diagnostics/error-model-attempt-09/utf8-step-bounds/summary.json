@@ -1,0 +1,30 @@
+{
+  "status": "passed",
+  "root_count": 1,
+  "direct_smt_goals": 2,
+  "results": [
+    {
+      "goal": "Coma.vc_utf8_step_bounds",
+      "status": "closed",
+      "export_mode": "transformed",
+      "smt_results": [
+        {
+          "file": "000-vc_utf8_step_bounds/transformed/utf8_step_bounds-Coma-vc_utf8_step_bounds.smt2",
+          "exit_code": 0,
+          "statuses": [
+            "unsat"
+          ],
+          "passed": true
+        },
+        {
+          "file": "000-vc_utf8_step_bounds/transformed/utf8_step_bounds-Coma-vc_utf8_step_bounds1.smt2",
+          "exit_code": 0,
+          "statuses": [
+            "unsat"
+          ],
+          "passed": true
+        }
+      ]
+    }
+  ]
+}

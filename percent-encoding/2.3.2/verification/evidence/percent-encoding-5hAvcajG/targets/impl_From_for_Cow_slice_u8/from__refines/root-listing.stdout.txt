@@ -1,0 +1,33 @@
+theory Coma
+  
+  (* use why3.BuiltIn.BuiltIn *)
+  
+  (* use why3.Bool.Bool *)
+  
+  (* use why3.Unit.Unit *)
+  
+  type t_Iter_u8
+  
+  type t_PercentDecode =
+    | T_PercentDecode'mk (bytes:t_Iter_u8)
+  
+  (* meta model_record function bytes *)
+  
+  predicate inv_Iter_u8 t_Iter_u8
+  
+  predicate inv_PercentDecode t_PercentDecode
+  
+  axiom inv_axiom :
+    forall x:t_PercentDecode [inv_PercentDecode x].
+     inv_PercentDecode x <-> inv_Iter_u8 (x.bytes)
+  
+  (* meta compute_max_steps 1000000 *)
+  
+  (* meta select_lsinst "all" *)
+  
+  goal refines :
+    forall value:t_PercentDecode.
+     inv_PercentDecode value -> inv_PercentDecode value
+  
+end
+

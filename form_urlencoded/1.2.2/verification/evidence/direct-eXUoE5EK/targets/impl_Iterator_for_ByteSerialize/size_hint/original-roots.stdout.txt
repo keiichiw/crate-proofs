@@ -1,0 +1,63 @@
+theory Coma
+  
+  (* use why3.BuiltIn.BuiltIn *)
+  
+  (* use why3.Bool.Bool *)
+  
+  (* use why3.Unit.Unit *)
+  
+  (* use creusot.slice.Slice64 *)
+  
+  (* use creusot.int.UInt8 *)
+  
+  (* use creusot.prelude.Any *)
+  
+  type t_ByteSerialize =
+    | T_ByteSerialize'mk (bytes:slice t)
+  
+  (* meta model_record function bytes *)
+  
+  type t_Option_usize =
+    | None
+    | Some t1
+  
+  type tup2_usize_Option_usize =
+    | Tup2_usize_Option_usize'mk (f0:t1) (f1:t_Option_usize)
+  
+  (* meta model_record function f1 *)
+  
+  (* meta model_record function f0 *)
+  
+  goal vc_byte_serialize_size_hint : true
+  
+  function remaining_bytes (self:t_ByteSerialize) : seq t = view (self.bytes)
+  
+  (* meta rewrite_def function remaining_bytes *)
+  
+  (* meta compute_max_steps 1000000 *)
+  
+  (* meta select_lsinst "all" *)
+  
+  goal vc_size_hint_ByteSerialize :
+    forall self:slice t.
+     let self1 = T_ByteSerialize'mk self in
+     forall result:tup2_usize_Option_usize.
+      (if length (view self) = 0 then t'int (result.f0) = 0
+       else t'int (result.f0) = 1) /\
+      match result.f1 with
+      | Some n ->
+          if length (view self) = 0 then t'int n = 0
+          else t'int n = length (view self)
+      | None -> false
+      end ->
+      (if length (remaining_bytes self1) = 0 then t'int (result.f0) = 0
+       else t'int (result.f0) = 1) /\
+      match result.f1 with
+      | Some n ->
+          if length (remaining_bytes self1) = 0 then t'int n = 0
+          else t'int n = length (remaining_bytes self1)
+      | None -> false
+      end
+  
+end
+

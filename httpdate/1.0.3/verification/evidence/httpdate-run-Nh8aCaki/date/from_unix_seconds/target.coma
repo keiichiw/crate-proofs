@@ -1,0 +1,727 @@
+use creusot.int.UInt64
+use creusot.int.Int64
+use int.ComputerDivision
+use creusot.prelude.Any
+use creusot.prelude.Bool
+use creusot.slice.Slice64
+use creusot.int.Int32
+use seq.Seq
+use creusot.prelude.MutBorrow
+use creusot.int.UInt16
+use creusot.int.UInt8
+use int.Int
+
+constant const_LEAPOCH: Int64.t = (11017: Int64.t)
+
+type tup2_i64_bool = { f0: Int64.t; f1: bool }
+
+constant const_DAYS_PER_400Y : Int64.t
+
+let set_DAYS_PER_400Y (return) = bb0
+  [ bb0 = s0
+    [ s0 = [ &_2 <- let (_fst, _snd) = Int64.mul_with_overflow (365: Int64.t) (400: Int64.t) in { f0 = _fst;
+                                                                                                  f1 = _snd } ] s1
+    | s1 = {[@expl:Mul overflow] not _2.f1} s2
+    | s2 = [ &_3 <- let (_fst, _snd) = Int64.add_with_overflow _2.f0 (97: Int64.t) in { f0 = _fst; f1 = _snd } ] s3
+    | s3 = {[@expl:Add overflow] not _3.f1} s4
+    | s4 = [ &_ret <- _3.f0 ] s5
+    | s5 = return {_ret} ] ]
+  [ & _ret: Int64.t = Any.any_l () | & _2: tup2_i64_bool = Any.any_l () | & _3: tup2_i64_bool = Any.any_l () ]
+  [ return (_const: Int64.t) -> -{const_DAYS_PER_400Y = _const}- return ]
+
+predicate ge_log_Int [@inline:trivial] (self: int) (other: int) = other <= self
+
+meta "rewrite_def" predicate ge_log_Int
+
+constant const_DAYS_PER_100Y : Int64.t
+
+let set_DAYS_PER_100Y (return) = bb0
+  [ bb0 = s0
+    [ s0 = [ &_2 <- let (_fst, _snd) = Int64.mul_with_overflow (365: Int64.t) (100: Int64.t) in { f0 = _fst;
+                                                                                                  f1 = _snd } ] s1
+    | s1 = {[@expl:Mul overflow] not _2.f1} s2
+    | s2 = [ &_3 <- let (_fst, _snd) = Int64.add_with_overflow _2.f0 (24: Int64.t) in { f0 = _fst; f1 = _snd } ] s3
+    | s3 = {[@expl:Add overflow] not _3.f1} s4
+    | s4 = [ &_ret <- _3.f0 ] s5
+    | s5 = return {_ret} ] ]
+  [ & _ret: Int64.t = Any.any_l () | & _2: tup2_i64_bool = Any.any_l () | & _3: tup2_i64_bool = Any.any_l () ]
+  [ return (_const: Int64.t) -> -{const_DAYS_PER_100Y = _const}- return ]
+
+constant const_DAYS_PER_4Y : Int64.t
+
+let set_DAYS_PER_4Y (return) = bb0
+  [ bb0 = s0
+    [ s0 = [ &_2 <- let (_fst, _snd) = Int64.mul_with_overflow (365: Int64.t) (4: Int64.t) in { f0 = _fst; f1 = _snd } ]
+      s1
+    | s1 = {[@expl:Mul overflow] not _2.f1} s2
+    | s2 = [ &_3 <- let (_fst, _snd) = Int64.add_with_overflow _2.f0 (1: Int64.t) in { f0 = _fst; f1 = _snd } ] s3
+    | s3 = {[@expl:Add overflow] not _3.f1} s4
+    | s4 = [ &_ret <- _3.f0 ] s5
+    | s5 = return {_ret} ] ]
+  [ & _ret: Int64.t = Any.any_l () | & _2: tup2_i64_bool = Any.any_l () | & _3: tup2_i64_bool = Any.any_l () ]
+  [ return (_const: Int64.t) -> -{const_DAYS_PER_4Y = _const}- return ]
+
+function leap_adjustment [@inline:trivial] (year: int) : int = if ComputerDivision.mod year 4 = 0
+  /\ (ComputerDivision.mod year 100 <> 0 \/ ComputerDivision.mod year 400 = 0) then
+    1
+  else
+    0
+
+
+meta "rewrite_def" function leap_adjustment
+
+function march_start [@inline:trivial] (year: int) : int = (year - 1970) * 365 + 59 + ComputerDivision.div year 4
+      - ComputerDivision.div year 100
+    + ComputerDivision.div year 400
+  - 477
+
+meta "rewrite_def" function march_start
+
+function january_start [@inline:trivial] (year: int) : int = (year - 1970) * 365 + ComputerDivision.div (year - 1969) 4
+    - ComputerDivision.div (year - 1901) 100
+  + ComputerDivision.div (year - 1601) 400
+
+meta "rewrite_def" function january_start
+
+type t_Iter_i64
+
+predicate inv_Iter_i64 (_1: t_Iter_i64)
+
+function view_Iter_i64 (self: t_Iter_i64) : Slice64.slice Int64.t
+
+let iter_i64 (self_: Slice64.slice Int64.t) (return (x: t_Iter_i64)) = any
+  [ return (result: t_Iter_i64) ->
+  {[@stop_split] [@expl:iter_i64 ensures] ([@stop_split] [@expl:iter result type invariant] inv_Iter_i64 result)
+    /\ ([@stop_split] [@expl:iter ensures] view_Iter_i64 result = self_)}
+    (! return {result}) ]
+
+let into_iter_Iter_i64 (self_: t_Iter_i64) (return (x: t_Iter_i64)) =
+{[@stop_split] [@expl:into_iter 'self_' type invariant] inv_Iter_i64 self_}
+  any
+  [ return (result: t_Iter_i64) ->
+  {[@stop_split] [@expl:into_iter_Iter_i64 ensures] ([@stop_split] [@expl:into_iter result type invariant] inv_Iter_i64 result)
+    /\ ([@stop_split] [@expl:into_iter ensures] result = self_)}
+    (! return {result}) ]
+
+type t_Option_ref_i64 = None | Some Int64.t
+
+predicate invariant_refmut_Iter_i64 [@inline:trivial] (self: MutBorrow.t t_Iter_i64) =
+  inv_Iter_i64 self.current /\ inv_Iter_i64 self.final
+
+meta "rewrite_def" predicate invariant_refmut_Iter_i64
+
+predicate inv_refmut_Iter_i64 [@inline:trivial] (_1: MutBorrow.t t_Iter_i64) = invariant_refmut_Iter_i64 _1
+
+meta "rewrite_def" predicate inv_refmut_Iter_i64
+
+function index_slice_i64 [@inline:trivial] (self: Slice64.slice Int64.t) (ix: int) : Int64.t =
+  Seq.get (Slice64.view self) ix
+
+meta "rewrite_def" function index_slice_i64
+
+function to_ref_seq_slice_i64 (self: Slice64.slice Int64.t) : Seq.seq Int64.t
+
+axiom to_ref_seq_slice_i64_spec:
+  forall self: Slice64.slice Int64.t [to_ref_seq_slice_i64 self]. Seq.length (to_ref_seq_slice_i64 self)
+    = Seq.length (Slice64.view self)
+
+axiom to_ref_seq_slice_i64_spec'0: forall self: Slice64.slice Int64.t [to_ref_seq_slice_i64 self]. forall i: int. 0 <= i
+        /\ i < Seq.length (to_ref_seq_slice_i64 self) -> Seq.get (to_ref_seq_slice_i64 self) i = index_slice_i64 self i
+
+predicate produces_Iter_i64 (self: t_Iter_i64) (visited: Seq.seq Int64.t) (tl: t_Iter_i64) =
+  to_ref_seq_slice_i64 (view_Iter_i64 self) = Seq.(++) visited (to_ref_seq_slice_i64 (view_Iter_i64 tl))
+
+function produces_trans_Iter_i64 (a: t_Iter_i64) (ab: Seq.seq Int64.t) (b: t_Iter_i64) (bc: Seq.seq Int64.t) (c: t_Iter_i64) : ()
+
+axiom produces_trans_Iter_i64_spec:
+  forall a: t_Iter_i64, ab: Seq.seq Int64.t, b: t_Iter_i64, bc: Seq.seq Int64.t, c: t_Iter_i64. produces_Iter_i64 a ab b
+    -> produces_Iter_i64 b bc c -> produces_Iter_i64 a (Seq.(++) ab bc) c
+
+function produces_refl_Iter_i64 (self: t_Iter_i64) : ()
+
+axiom produces_refl_Iter_i64_spec: forall self: t_Iter_i64. produces_Iter_i64 self (Seq.empty: Seq.seq Int64.t) self
+
+predicate resolve_refmut_Iter_i64 [@inline:trivial] (_1: MutBorrow.t t_Iter_i64) = _1.final = _1.current
+
+meta "rewrite_def" predicate resolve_refmut_Iter_i64
+
+predicate completed_Iter_i64 (self: MutBorrow.t t_Iter_i64) =
+  resolve_refmut_Iter_i64 self /\ Slice64.view (view_Iter_i64 self.current) = (Seq.empty: Seq.seq Int64.t)
+
+let next_Iter_i64 (self_: MutBorrow.t t_Iter_i64) (return (x: t_Option_ref_i64)) =
+{[@stop_split] [@expl:next 'self_' type invariant] inv_refmut_Iter_i64 self_}
+  any
+  [ return (result: t_Option_ref_i64) -> {[@stop_split] [@expl:next ensures] match result with
+      | None -> completed_Iter_i64 self_
+      | Some v -> produces_Iter_i64 self_.current (Seq.singleton v) self_.final
+      end}
+    (! return {result}) ]
+
+function march_prefix [@inline:trivial] (index: int) : int = if index = 0 then
+    0
+  else
+    if index = 1 then
+      31
+    else
+      if index = 2 then
+        61
+      else
+        if index = 3 then
+          92
+        else
+          if index = 4 then
+            122
+          else
+            if index = 5 then
+              153
+            else
+              if index = 6 then
+                184
+              else
+                if index = 7 then
+                  214
+                else
+                  if index = 8 then
+                    245
+                  else
+                    if index = 9 then 275 else if index = 10 then 306 else if index = 11 then 337 else 366
+                
+              
+            
+          
+        
+      
+    
+  
+
+
+meta "rewrite_def" function march_prefix
+
+predicate inv_Seq_ref_i64 [@inline:trivial] (_1: Seq.seq Int64.t) = true
+
+meta "rewrite_def" predicate inv_Seq_ref_i64
+
+let elim_Some (_x: t_Option_ref_i64) (return (f0'0: Int64.t)) = any
+  [ _k (f0'0: Int64.t) -> {Some f0'0 = _x} (! return {f0'0})
+  | _chk -> (! {[@expl:elim Some] match _x with
+      | Some _ -> true
+      | _ -> false
+      end}
+    any) ]
+
+predicate resolve_Iter_i64 (_1: t_Iter_i64)
+
+function january_offset [@inline:trivial] (month: int) : int = if month = 1 then
+    0
+  else
+    if month = 2 then
+      31
+    else
+      if month = 3 then
+        59
+      else
+        if month = 4 then
+          90
+        else
+          if month = 5 then
+            120
+          else
+            if month = 6 then
+              151
+            else
+              if month = 7 then
+                181
+              else
+                if month = 8 then
+                  212
+                else
+                  if month = 9 then 243 else if month = 10 then 273 else if month = 11 then 304 else 334
+              
+            
+          
+        
+      
+    
+  
+
+
+meta "rewrite_def" function january_offset
+
+predicate gt_log_Int [@inline:trivial] (self: int) (other: int) = other < self
+
+meta "rewrite_def" predicate gt_log_Int
+
+function month_length [@inline:trivial] (year: int) (month: int) : int = if month = 2 then
+    28 + leap_adjustment year
+  else
+    if month = 4 \/ month = 6 \/ month = 9 \/ month = 11 then 30 else 31
+
+
+meta "rewrite_def" function month_length
+
+type t_RawDate = {
+  sec: UInt8.t;
+  min: UInt8.t;
+  hour: UInt8.t;
+  day: UInt8.t;
+  mon: UInt8.t;
+  year: UInt16.t;
+  wday: UInt8.t }
+
+function gregorian_day [@inline:trivial] (d: t_RawDate) : int = january_start (UInt16.t'int d.year)
+        + january_offset (UInt8.t'int d.mon)
+      + UInt8.t'int d.day
+    - 1
+  + (if gt_log_Int (UInt8.t'int d.mon) 2 then leap_adjustment (UInt16.t'int d.year) else 0)
+
+meta "rewrite_def" function gregorian_day
+
+meta "compute_max_steps" 1000000
+
+meta "select_lsinst" "all"
+
+let from_unix_seconds (secs_since_epoch: UInt64.t) (return (x: t_RawDate)) =
+{[@stop_split] [@expl:from_unix_seconds requires] UInt64.t'int secs_since_epoch < 253402300800}
+  (! set_DAYS_PER_4Y
+    (set_DAYS_PER_100Y
+      (set_DAYS_PER_400Y
+        (bb0
+        [ bb0 = s0
+          [ s0 = [ &_16 <- (86400: UInt64.t) = (0: UInt64.t) ] s1
+          | s1 = {[@expl:division by zero] not _16} s2
+          | s2 = UInt64.div {secs_since_epoch} {(86400: UInt64.t)} (fun (_x: UInt64.t) -> [ &_14 <- _x ] s3)
+          | s3 = [ &_13 <- Int64.of_int (UInt64.t'int _14) ] s4
+          | s4 = Int64.sub {_13} {const_LEAPOCH} (fun (_x: Int64.t) -> [ &days <- _x ] s5)
+          | s5 = [ &_19 <- (86400: UInt64.t) = (0: UInt64.t) ] s6
+          | s6 = {[@expl:remainder by zero] not _19} s7
+          | s7 = UInt64.rem {secs_since_epoch} {(86400: UInt64.t)} (fun (_x: UInt64.t) -> [ &secs_of_day <- _x ] s8)
+          | s8 = {[@expl:assertion] ComputerDivision.mod (UInt64.t'int secs_of_day) 60
+            = ComputerDivision.mod (ComputerDivision.mod (UInt64.t'int secs_of_day) 3600) 60}
+            s9
+          | s9 = {[@expl:assertion] ComputerDivision.mod (UInt64.t'int secs_of_day) 60
+                + ComputerDivision.div (ComputerDivision.mod (UInt64.t'int secs_of_day) 3600) 60 * 60
+              + ComputerDivision.div (UInt64.t'int secs_of_day) 3600 * 3600
+            = UInt64.t'int secs_of_day}
+            s10
+          | s10 = {[@expl:assertion] - 11017 <= Int64.to_int days /\ Int64.to_int days <= 2921879} s11
+          | s11 = [ &_30 <- days ] s12
+          | s12 = [ &_31 <- const_DAYS_PER_400Y = (0: Int64.t) ] s13
+          | s13 = {[@expl:division by zero] not _31} s14
+          | s14 = [ &_32 <- const_DAYS_PER_400Y = (-1: Int64.t) ] s15
+          | s15 = [ &_33 <- _30 = (-9223372036854775808: Int64.t) ] s16
+          | s16 = [ &_34 <- Bool.bw_and _32 _33 ] s17
+          | s17 = {[@expl:Div overflow] not _34} s18
+          | s18 = Int64.div {_30} {const_DAYS_PER_400Y} (fun (_x: Int64.t) -> [ &qc_cycles <- _x ] s19)
+          | s19 = [ &_36 <- days ] s20
+          | s20 = [ &_37 <- const_DAYS_PER_400Y = (0: Int64.t) ] s21
+          | s21 = {[@expl:remainder by zero] not _37} s22
+          | s22 = [ &_38 <- const_DAYS_PER_400Y = (-1: Int64.t) ] s23
+          | s23 = [ &_39 <- _36 = (-9223372036854775808: Int64.t) ] s24
+          | s24 = [ &_40 <- Bool.bw_and _38 _39 ] s25
+          | s25 = {[@expl:Rem overflow] not _40} s26
+          | s26 = Int64.rem {_36} {const_DAYS_PER_400Y} (fun (_x: Int64.t) -> [ &remdays <- _x ] s27)
+          | s27 = [ &_42 <- Int64.lt remdays (0: Int64.t) ] s28
+          | s28 = any [ br0 -> {_42 = false} (! bb9) | br1 -> {_42} (! bb7) ] ]
+        | bb7 = s0
+          [ s0 = Int64.add {remdays} {const_DAYS_PER_400Y} (fun (_x: Int64.t) -> [ &remdays <- _x ] s1)
+          | s1 = Int64.sub {qc_cycles} {(1: Int64.t)} (fun (_x: Int64.t) -> [ &qc_cycles <- _x ] s2)
+          | s2 = bb9 ]
+        | bb9 = s0
+          [ s0 = {[@expl:assertion] - 1 <= Int64.to_int qc_cycles
+            /\ Int64.to_int qc_cycles <= 19
+            /\ 0 <= Int64.to_int remdays
+            /\ Int64.to_int remdays <= 146096
+            /\ Int64.to_int days = 146097 * Int64.to_int qc_cycles + Int64.to_int remdays
+            /\ (Int64.to_int qc_cycles = - 1 -> ge_log_Int (Int64.to_int remdays) 135080)}
+            s1
+          | s1 = [ &_50 <- remdays ] s2
+          | s2 = [ &_51 <- const_DAYS_PER_100Y = (0: Int64.t) ] s3
+          | s3 = {[@expl:division by zero] not _51} s4
+          | s4 = [ &_52 <- const_DAYS_PER_100Y = (-1: Int64.t) ] s5
+          | s5 = [ &_53 <- _50 = (-9223372036854775808: Int64.t) ] s6
+          | s6 = [ &_54 <- Bool.bw_and _52 _53 ] s7
+          | s7 = {[@expl:Div overflow] not _54} s8
+          | s8 = Int64.div {_50} {const_DAYS_PER_100Y} (fun (_x: Int64.t) -> [ &c_cycles <- _x ] s9)
+          | s9 = [ &_56 <- c_cycles = (4: Int64.t) ] s10
+          | s10 = any [ br0 -> {_56 = false} (! bb14) | br1 -> {_56} (! bb12) ] ]
+        | bb12 = s0
+          [ s0 = Int64.sub {c_cycles} {(1: Int64.t)} (fun (_x: Int64.t) -> [ &c_cycles <- _x ] s1) | s1 = bb14 ]
+        | bb14 = s0
+          [ s0 = Int64.mul {c_cycles} {const_DAYS_PER_100Y} (fun (_x: Int64.t) -> [ &_58 <- _x ] s1)
+          | s1 = Int64.sub {remdays} {_58} (fun (_x: Int64.t) -> [ &remdays <- _x ] s2)
+          | s2 = {[@expl:assertion] 0 <= Int64.to_int c_cycles
+            /\ Int64.to_int c_cycles <= 3
+            /\ 0 <= Int64.to_int remdays
+            /\ Int64.to_int remdays <= 36524
+            /\ Int64.to_int days
+              = 146097 * Int64.to_int qc_cycles + 36524 * Int64.to_int c_cycles + Int64.to_int remdays
+            /\ (Int64.to_int qc_cycles = - 1 -> Int64.to_int c_cycles = 3 /\ ge_log_Int (Int64.to_int remdays) 25508)
+            /\ (Int64.to_int c_cycles < 3 -> Int64.to_int remdays < 36524)}
+            s3
+          | s3 = [ &_67 <- remdays ] s4
+          | s4 = [ &_68 <- const_DAYS_PER_4Y = (0: Int64.t) ] s5
+          | s5 = {[@expl:division by zero] not _68} s6
+          | s6 = [ &_69 <- const_DAYS_PER_4Y = (-1: Int64.t) ] s7
+          | s7 = [ &_70 <- _67 = (-9223372036854775808: Int64.t) ] s8
+          | s8 = [ &_71 <- Bool.bw_and _69 _70 ] s9
+          | s9 = {[@expl:Div overflow] not _71} s10
+          | s10 = Int64.div {_67} {const_DAYS_PER_4Y} (fun (_x: Int64.t) -> [ &q_cycles <- _x ] s11)
+          | s11 = [ &_73 <- q_cycles = (25: Int64.t) ] s12
+          | s12 = any [ br0 -> {_73 = false} (! bb19) | br1 -> {_73} (! bb17) ] ]
+        | bb17 = s0
+          [ s0 = Int64.sub {q_cycles} {(1: Int64.t)} (fun (_x: Int64.t) -> [ &q_cycles <- _x ] s1) | s1 = bb19 ]
+        | bb19 = s0
+          [ s0 = Int64.mul {q_cycles} {const_DAYS_PER_4Y} (fun (_x: Int64.t) -> [ &_75 <- _x ] s1)
+          | s1 = Int64.sub {remdays} {_75} (fun (_x: Int64.t) -> [ &remdays <- _x ] s2)
+          | s2 = {[@expl:assertion] 0 <= Int64.to_int q_cycles
+            /\ Int64.to_int q_cycles <= 24
+            /\ 0 <= Int64.to_int remdays
+            /\ Int64.to_int remdays <= 1460
+            /\ Int64.to_int days
+              = 146097 * Int64.to_int qc_cycles + 36524 * Int64.to_int c_cycles + 1461 * Int64.to_int q_cycles
+              + Int64.to_int remdays
+            /\ (Int64.to_int qc_cycles = - 1 -> ge_log_Int (Int64.to_int q_cycles) 17)
+            /\ (Int64.to_int qc_cycles = - 1 /\ Int64.to_int q_cycles = 17 -> ge_log_Int (Int64.to_int remdays) 671)
+            /\ (Int64.to_int c_cycles < 3 /\ Int64.to_int q_cycles = 24 -> Int64.to_int remdays < 1460)}
+            s3
+          | s3 = [ &_85 <- remdays ] s4
+          | s4 = [ &_86 <- (365: Int64.t) = (0: Int64.t) ] s5
+          | s5 = {[@expl:division by zero] not _86} s6
+          | s6 = [ &_87 <- (365: Int64.t) = (-1: Int64.t) ] s7
+          | s7 = [ &_88 <- _85 = (-9223372036854775808: Int64.t) ] s8
+          | s8 = [ &_89 <- Bool.bw_and _87 _88 ] s9
+          | s9 = {[@expl:Div overflow] not _89} s10
+          | s10 = Int64.div {_85} {(365: Int64.t)} (fun (_x: Int64.t) -> [ &remyears <- _x ] s11)
+          | s11 = [ &_91 <- remyears = (4: Int64.t) ] s12
+          | s12 = any [ br0 -> {_91 = false} (! bb24) | br1 -> {_91} (! bb22) ] ]
+        | bb22 = s0
+          [ s0 = Int64.sub {remyears} {(1: Int64.t)} (fun (_x: Int64.t) -> [ &remyears <- _x ] s1) | s1 = bb24 ]
+        | bb24 = s0
+          [ s0 = Int64.mul {remyears} {(365: Int64.t)} (fun (_x: Int64.t) -> [ &_93 <- _x ] s1)
+          | s1 = Int64.sub {remdays} {_93} (fun (_x: Int64.t) -> [ &remdays <- _x ] s2)
+          | s2 = {[@expl:assertion] 0 <= Int64.to_int remyears
+            /\ Int64.to_int remyears <= 3
+            /\ 0 <= Int64.to_int remdays
+            /\ Int64.to_int remdays <= 365
+            /\ Int64.to_int days
+              = 146097 * Int64.to_int qc_cycles + 36524 * Int64.to_int c_cycles + 1461 * Int64.to_int q_cycles
+                + 365 * Int64.to_int remyears
+              + Int64.to_int remdays
+            /\ (Int64.to_int qc_cycles = - 1 /\ Int64.to_int q_cycles = 17 -> ge_log_Int (Int64.to_int remyears) 1)
+            /\ (Int64.to_int remdays = 365
+            -> Int64.to_int remyears = 3 /\ (Int64.to_int q_cycles < 24 \/ Int64.to_int c_cycles = 3))}
+            s3
+          | s3 = Int64.add {(2000: Int64.t)} {remyears} (fun (_x: Int64.t) -> [ &_106 <- _x ] s4)
+          | s4 = Int64.mul {(4: Int64.t)} {q_cycles} (fun (_x: Int64.t) -> [ &_108 <- _x ] s5)
+          | s5 = Int64.add {_106} {_108} (fun (_x: Int64.t) -> [ &_105 <- _x ] s6)
+          | s6 = Int64.mul {(100: Int64.t)} {c_cycles} (fun (_x: Int64.t) -> [ &_110 <- _x ] s7)
+          | s7 = Int64.add {_105} {_110} (fun (_x: Int64.t) -> [ &_104 <- _x ] s8)
+          | s8 = Int64.mul {(400: Int64.t)} {qc_cycles} (fun (_x: Int64.t) -> [ &_112 <- _x ] s9)
+          | s9 = Int64.add {_104} {_112} (fun (_x: Int64.t) -> [ &year'0 <- _x ] s10)
+          | s10 = {[@expl:assertion] 1969 <= Int64.to_int year'0
+            /\ Int64.to_int year'0 <= 9999
+            /\ (Int64.to_int year'0 = 1969 -> ge_log_Int (Int64.to_int remdays) 306)
+            /\ (Int64.to_int year'0 = 9999 -> Int64.to_int remdays <= 305)}
+            s11
+          | s11 = {[@expl:assertion] ComputerDivision.div (Int64.to_int year'0) 4
+              = 500 + 100 * Int64.to_int qc_cycles + 25 * Int64.to_int c_cycles + Int64.to_int q_cycles
+            /\ ComputerDivision.mod (Int64.to_int year'0) 4 = Int64.to_int remyears}
+            s12
+          | s12 = {[@expl:assertion] ComputerDivision.div (Int64.to_int year'0) 100
+              = 20 + 4 * Int64.to_int qc_cycles + Int64.to_int c_cycles
+            /\ ComputerDivision.mod (Int64.to_int year'0) 100 = 4 * Int64.to_int q_cycles + Int64.to_int remyears}
+            s13
+          | s13 = {[@expl:assertion] ComputerDivision.div (Int64.to_int year'0) 400 = 5 + Int64.to_int qc_cycles
+            /\ ComputerDivision.mod (Int64.to_int year'0) 400
+            = 100 * Int64.to_int c_cycles + 4 * Int64.to_int q_cycles + Int64.to_int remyears}
+            s14
+          | s14 = {[@expl:assertion] Int64.to_int remdays <= 364 + leap_adjustment (Int64.to_int year'0 + 1)} s15
+          | s15 = {[@expl:assertion] march_start (Int64.to_int year'0) + Int64.to_int remdays
+            = Int64.to_int days + 11017}
+            s16
+          | s16 = {[@expl:assertion] ComputerDivision.div (Int64.to_int year'0 - 1969) 4
+            = ComputerDivision.div (Int64.to_int year'0) 4 - 492
+            - (if ComputerDivision.mod (Int64.to_int year'0) 4 = 0 then 1 else 0)}
+            s17
+          | s17 = {[@expl:assertion] ComputerDivision.div (Int64.to_int year'0 - 1901) 100
+            = ComputerDivision.div (Int64.to_int year'0) 100 - 19
+            - (if ComputerDivision.mod (Int64.to_int year'0) 100 = 0 then 1 else 0)}
+            s18
+          | s18 = {[@expl:assertion] ComputerDivision.div (Int64.to_int year'0 - 1601) 400
+            = ComputerDivision.div (Int64.to_int year'0) 400 - 4
+            - (if ComputerDivision.mod (Int64.to_int year'0) 400 = 0 then 1 else 0)}
+            s19
+          | s19 = {[@expl:assertion] january_start (Int64.to_int year'0) + 59 + leap_adjustment (Int64.to_int year'0)
+            = march_start (Int64.to_int year'0)}
+            s20
+          | s20 = {[@expl:assertion] january_start (Int64.to_int year'0 + 1) = march_start (Int64.to_int year'0) + 306}
+            s21
+          | s21 = [ &march_origin <- march_start (Int64.to_int year'0) ] s22
+          | s22 = [ &doy <- Int64.to_int remdays ] s23
+          | s23 = any
+            [ any_ (__arr_temp: Slice64.array Int64.t) -> (! -{Seq.get __arr_temp.Slice64.elts 0 = (31: Int64.t)
+              /\ Seq.get __arr_temp.Slice64.elts 1 = (30: Int64.t)
+              /\ Seq.get __arr_temp.Slice64.elts 2 = (31: Int64.t)
+              /\ Seq.get __arr_temp.Slice64.elts 3 = (30: Int64.t)
+              /\ Seq.get __arr_temp.Slice64.elts 4 = (31: Int64.t)
+              /\ Seq.get __arr_temp.Slice64.elts 5 = (31: Int64.t)
+              /\ Seq.get __arr_temp.Slice64.elts 6 = (30: Int64.t)
+              /\ Seq.get __arr_temp.Slice64.elts 7 = (31: Int64.t)
+              /\ Seq.get __arr_temp.Slice64.elts 8 = (30: Int64.t)
+              /\ Seq.get __arr_temp.Slice64.elts 9 = (31: Int64.t)
+              /\ Seq.get __arr_temp.Slice64.elts 10 = (31: Int64.t)
+              /\ Seq.get __arr_temp.Slice64.elts 11 = (29: Int64.t) /\ Seq.length __arr_temp.Slice64.elts = 12}-
+              [ &months <- __arr_temp ] s24) ]
+          | s24 = [ &mon'0 <- (0: Int32.t) ] s25
+          | s25 = iter_i64 {months} (fun (_x: t_Iter_i64) -> [ &_173 <- _x ] s26)
+          | s26 = into_iter_Iter_i64 {_173} (fun (_x: t_Iter_i64) -> [ &iter <- _x ] s27)
+          | s27 = [ &iter_old <- iter ] s28
+          | s28 = [ &produced <- Seq.empty: Seq.seq Int64.t ] s29
+          | s29 = bb31 ]
+        | bb31 = bb31
+          [ bb31 = {[@expl:inferred invariant: type invariant] inv_Iter_i64 iter}
+            {[@expl:for invariant] inv_Seq_ref_i64 produced}
+            {[@expl:for invariant] produces_Iter_i64 iter_old produced iter}
+            {[@expl:loop invariant] Int32.to_int mon'0 = Seq.length produced
+            /\ 0 <= Int32.to_int mon'0
+            /\ Int32.to_int mon'0 <= 12
+            /\ 0 <= Int64.to_int remdays /\ Int64.to_int remdays + march_prefix (Int32.to_int mon'0) = doy}
+            (! s0)
+            [ s0 = MutBorrow.borrow_mut <t_Iter_i64> {iter}
+                (fun (_bor: MutBorrow.t t_Iter_i64) ->
+                  [ &_198 <- _bor ] -{inv_Iter_i64 _bor.final}-
+                  [ &iter <- _bor.final ] s1) [ _ck -> (! {[@expl:type invariant] inv_Iter_i64 iter} any) ]
+            | s1 = MutBorrow.borrow_final <t_Iter_i64> {_198.current} {MutBorrow.get_id _198}
+                (fun (_bor: MutBorrow.t t_Iter_i64) ->
+                  [ &_197 <- _bor ] -{inv_Iter_i64 _bor.final}-
+                  [ &_198 <- { _198 with current = _bor.final } ] s2)
+              [ _ck -> (! {[@expl:type invariant] inv_Iter_i64 _198.current} any) ]
+            | s2 = next_Iter_i64 {_197} (fun (_x: t_Option_ref_i64) -> [ &_196 <- _x ] s3)
+            | s3 = s4 [ _ck -> (! {[@expl:type invariant] inv_refmut_Iter_i64 _198} any) ]
+            | s4 = -{resolve_refmut_Iter_i64 _198}- s5
+            | s5 = any [ br0 -> {_196 = None} (! bb36) | br1 (x0: Int64.t) -> {_196 = Some x0} (! bb37) ] ]
+            [ bb37 = s0
+              [ s0 = elim_Some {_196} (fun (r0: Int64.t) -> [ &__creusot_proc_iter_elem <- r0 ] s1)
+              | s1 = [ &produced <- Seq.(++) produced (Seq.singleton __creusot_proc_iter_elem) ] s2
+              | s2 = [ &mon_len <- __creusot_proc_iter_elem ] s3
+              | s3 = {[@expl:assertion] Int64.to_int mon_len
+                  = march_prefix (Int32.to_int mon'0 + 1) - march_prefix (Int32.to_int mon'0)
+                /\ 29 <= Int64.to_int mon_len /\ Int64.to_int mon_len <= 31}
+                s4
+              | s4 = Int32.add {mon'0} {(1: Int32.t)} (fun (_x: Int32.t) -> [ &mon'0 <- _x ] s5)
+              | s5 = [ &_212 <- Int64.lt remdays mon_len ] s6
+              | s6 = any [ br0 -> {_212 = false} (! bb40) | br1 -> {_212} (! bb39) ] ]
+            | bb40 = s0
+              [ s0 = Int64.sub {remdays} {mon_len} (fun (_x: Int64.t) -> [ &remdays <- _x ] s1) | s1 = bb31 ] ] ]
+        | bb39 = s0
+          [ s0 = s1 [ _ck -> (! {[@expl:type invariant] inv_Iter_i64 iter} any) ]
+          | s1 = -{resolve_Iter_i64 iter}- s2
+          | s2 = bb41 ]
+        | bb36 = s0
+          [ s0 = s1 [ _ck -> (! {[@expl:type invariant] inv_Iter_i64 iter} any) ]
+          | s1 = -{resolve_Iter_i64 iter}- s2
+          | s2 = bb41 ]
+        | bb41 = s0
+          [ s0 = {[@expl:assertion] 1 <= Int32.to_int mon'0
+            /\ Int32.to_int mon'0 <= 12
+            /\ Int64.to_int remdays + march_prefix (Int32.to_int mon'0 - 1) = doy
+            /\ Int64.to_int remdays < march_prefix (Int32.to_int mon'0) - march_prefix (Int32.to_int mon'0 - 1)}
+            s1
+          | s1 = Int64.add {remdays} {(1: Int64.t)} (fun (_x: Int64.t) -> [ &mday <- _x ] s2)
+          | s2 = Int32.add {mon'0} {(2: Int32.t)} (fun (_x: Int32.t) -> [ &_227 <- _x ] s3)
+          | s3 = [ &_226 <- Int32.gt _227 (12: Int32.t) ] s4
+          | s4 = any [ br0 -> {_226 = false} (! bb43) | br1 -> {_226} (! bb42) ] ]
+        | bb42 = s0
+          [ s0 = {[@expl:assertion] january_offset (Int32.to_int mon'0 - 10)
+            = march_prefix (Int32.to_int mon'0 - 1) - 306}
+            s1
+          | s1 = Int64.add {year'0} {(1: Int64.t)} (fun (_x: Int64.t) -> [ &year'0 <- _x ] s2)
+          | s2 = {[@expl:assertion] january_start (Int64.to_int year'0) + january_offset (Int32.to_int mon'0 - 10)
+                + Int64.to_int mday
+              - 1
+            = march_origin + doy}
+            s3
+          | s3 = Int32.sub {mon'0} {(10: Int32.t)} (fun (_x: Int32.t) -> [ &mon'1 <- _x ] s4)
+          | s4 = bb44 ]
+        | bb43 = s0
+          [ s0 = {[@expl:assertion] january_offset (Int32.to_int mon'0 + 2)
+            = march_prefix (Int32.to_int mon'0 - 1) + 59}
+            s1
+          | s1 = {[@expl:assertion] january_start (Int64.to_int year'0) + january_offset (Int32.to_int mon'0 + 2)
+                  + Int64.to_int mday
+                - 1
+              + leap_adjustment (Int64.to_int year'0)
+            = march_origin + doy}
+            s2
+          | s2 = Int32.add {mon'0} {(2: Int32.t)} (fun (_x: Int32.t) -> [ &mon'1 <- _x ] s3)
+          | s3 = bb44 ]
+        | bb44 = s0
+          [ s0 = {[@expl:assertion] january_start (Int64.to_int year'0) + january_offset (Int32.to_int mon'1)
+                  + Int64.to_int mday
+                - 1
+              + (if gt_log_Int (Int32.to_int mon'1) 2 then leap_adjustment (Int64.to_int year'0) else 0)
+            = Int64.to_int days + 11017}
+            s1
+          | s1 = {[@expl:assertion] Int64.to_int mday <= month_length (Int64.to_int year'0) (Int32.to_int mon'1)} s2
+          | s2 = Int64.add {(3: Int64.t)} {days} (fun (_x: Int64.t) -> [ &_263 <- _x ] s3)
+          | s3 = [ &_265 <- (7: Int64.t) = (0: Int64.t) ] s4
+          | s4 = {[@expl:remainder by zero] not _265} s5
+          | s5 = [ &_266 <- (7: Int64.t) = (-1: Int64.t) ] s6
+          | s6 = [ &_267 <- _263 = (-9223372036854775808: Int64.t) ] s7
+          | s7 = [ &_268 <- Bool.bw_and _266 _267 ] s8
+          | s8 = {[@expl:Rem overflow] not _268} s9
+          | s9 = Int64.rem {_263} {(7: Int64.t)} (fun (_x: Int64.t) -> [ &wday'0 <- _x ] s10)
+          | s10 = [ &_270 <- Int64.le wday'0 (0: Int64.t) ] s11
+          | s11 = any [ br0 -> {_270 = false} (! bb49) | br1 -> {_270} (! bb47) ] ]
+        | bb47 = s0 [ s0 = Int64.add {wday'0} {(7: Int64.t)} (fun (_x: Int64.t) -> [ &wday'0 <- _x ] s1) | s1 = bb49 ]
+        | bb49 = s0
+          [ s0 = {[@expl:assertion] Int64.to_int wday'0
+            = ComputerDivision.mod (ComputerDivision.div (UInt64.t'int secs_since_epoch) 86400 + 3) 7 + 1}
+            s1
+          | s1 = {[@expl:assertion] 1970 <= Int64.to_int year'0
+            /\ Int64.to_int year'0 <= 9999
+            /\ 1 <= Int32.to_int mon'1
+            /\ Int32.to_int mon'1 <= 12
+            /\ 1 <= Int64.to_int mday
+            /\ Int64.to_int mday <= 31 /\ 1 <= Int64.to_int wday'0 /\ Int64.to_int wday'0 <= 7}
+            s2
+          | s2 = {[@expl:assertion] UInt16.t'int (UInt16.of_int (Int64.to_int year'0)) = Int64.to_int year'0
+            /\ UInt8.t'int (UInt8.of_int (Int32.to_int mon'1)) = Int32.to_int mon'1
+            /\ UInt8.t'int (UInt8.of_int (Int64.to_int mday)) = Int64.to_int mday
+            /\ UInt8.t'int (UInt8.of_int (Int64.to_int wday'0)) = Int64.to_int wday'0}
+            s3
+          | s3 = [ &_291 <- (60: UInt64.t) = (0: UInt64.t) ] s4
+          | s4 = {[@expl:remainder by zero] not _291} s5
+          | s5 = UInt64.rem {secs_of_day} {(60: UInt64.t)} (fun (_x: UInt64.t) -> [ &_289 <- _x ] s6)
+          | s6 = [ &_288 <- UInt8.of_int (UInt64.t'int _289) ] s7
+          | s7 = [ &_296 <- (3600: UInt64.t) = (0: UInt64.t) ] s8
+          | s8 = {[@expl:remainder by zero] not _296} s9
+          | s9 = UInt64.rem {secs_of_day} {(3600: UInt64.t)} (fun (_x: UInt64.t) -> [ &_294 <- _x ] s10)
+          | s10 = [ &_297 <- (60: UInt64.t) = (0: UInt64.t) ] s11
+          | s11 = {[@expl:division by zero] not _297} s12
+          | s12 = UInt64.div {_294} {(60: UInt64.t)} (fun (_x: UInt64.t) -> [ &_293 <- _x ] s13)
+          | s13 = [ &_292 <- UInt8.of_int (UInt64.t'int _293) ] s14
+          | s14 = [ &_301 <- (3600: UInt64.t) = (0: UInt64.t) ] s15
+          | s15 = {[@expl:division by zero] not _301} s16
+          | s16 = UInt64.div {secs_of_day} {(3600: UInt64.t)} (fun (_x: UInt64.t) -> [ &_299 <- _x ] s17)
+          | s17 = [ &_298 <- UInt8.of_int (UInt64.t'int _299) ] s18
+          | s18 = [ &_302 <- UInt8.of_int (Int64.to_int mday) ] s19
+          | s19 = [ &_304 <- UInt8.of_int (Int32.to_int mon'1) ] s20
+          | s20 = [ &_306 <- UInt16.of_int (Int64.to_int year'0) ] s21
+          | s21 = [ &_308 <- UInt8.of_int (Int64.to_int wday'0) ] s22
+          | s22 = [ &_ret <- { sec = _288; min = _292; hour = _298; day = _302; mon = _304; year = _306; wday = _308 } ]
+            s23
+          | s23 = return {_ret} ] ]
+        [ & _ret: t_RawDate = Any.any_l ()
+        | & secs_since_epoch: UInt64.t = secs_since_epoch
+        | & days: Int64.t = Any.any_l ()
+        | & _13: Int64.t = Any.any_l ()
+        | & _14: UInt64.t = Any.any_l ()
+        | & _16: bool = Any.any_l ()
+        | & secs_of_day: UInt64.t = Any.any_l ()
+        | & _19: bool = Any.any_l ()
+        | & qc_cycles: Int64.t = Any.any_l ()
+        | & _30: Int64.t = Any.any_l ()
+        | & _31: bool = Any.any_l ()
+        | & _32: bool = Any.any_l ()
+        | & _33: bool = Any.any_l ()
+        | & _34: bool = Any.any_l ()
+        | & remdays: Int64.t = Any.any_l ()
+        | & _36: Int64.t = Any.any_l ()
+        | & _37: bool = Any.any_l ()
+        | & _38: bool = Any.any_l ()
+        | & _39: bool = Any.any_l ()
+        | & _40: bool = Any.any_l ()
+        | & _42: bool = Any.any_l ()
+        | & c_cycles: Int64.t = Any.any_l ()
+        | & _50: Int64.t = Any.any_l ()
+        | & _51: bool = Any.any_l ()
+        | & _52: bool = Any.any_l ()
+        | & _53: bool = Any.any_l ()
+        | & _54: bool = Any.any_l ()
+        | & _56: bool = Any.any_l ()
+        | & _58: Int64.t = Any.any_l ()
+        | & q_cycles: Int64.t = Any.any_l ()
+        | & _67: Int64.t = Any.any_l ()
+        | & _68: bool = Any.any_l ()
+        | & _69: bool = Any.any_l ()
+        | & _70: bool = Any.any_l ()
+        | & _71: bool = Any.any_l ()
+        | & _73: bool = Any.any_l ()
+        | & _75: Int64.t = Any.any_l ()
+        | & remyears: Int64.t = Any.any_l ()
+        | & _85: Int64.t = Any.any_l ()
+        | & _86: bool = Any.any_l ()
+        | & _87: bool = Any.any_l ()
+        | & _88: bool = Any.any_l ()
+        | & _89: bool = Any.any_l ()
+        | & _91: bool = Any.any_l ()
+        | & _93: Int64.t = Any.any_l ()
+        | & year'0: Int64.t = Any.any_l ()
+        | & _104: Int64.t = Any.any_l ()
+        | & _105: Int64.t = Any.any_l ()
+        | & _106: Int64.t = Any.any_l ()
+        | & _108: Int64.t = Any.any_l ()
+        | & _110: Int64.t = Any.any_l ()
+        | & _112: Int64.t = Any.any_l ()
+        | & march_origin: int = Any.any_l ()
+        | & doy: int = Any.any_l ()
+        | & months: Slice64.array Int64.t = Any.any_l ()
+        | & mon'0: Int32.t = Any.any_l ()
+        | & iter: t_Iter_i64 = Any.any_l ()
+        | & _173: t_Iter_i64 = Any.any_l ()
+        | & iter_old: t_Iter_i64 = Any.any_l ()
+        | & produced: Seq.seq Int64.t = Any.any_l ()
+        | & _196: t_Option_ref_i64 = Any.any_l ()
+        | & _197: MutBorrow.t t_Iter_i64 = Any.any_l ()
+        | & _198: MutBorrow.t t_Iter_i64 = Any.any_l ()
+        | & __creusot_proc_iter_elem: Int64.t = Any.any_l ()
+        | & mon_len: Int64.t = Any.any_l ()
+        | & _212: bool = Any.any_l ()
+        | & mday: Int64.t = Any.any_l ()
+        | & mon'1: Int32.t = Any.any_l ()
+        | & _226: bool = Any.any_l ()
+        | & _227: Int32.t = Any.any_l ()
+        | & wday'0: Int64.t = Any.any_l ()
+        | & _263: Int64.t = Any.any_l ()
+        | & _265: bool = Any.any_l ()
+        | & _266: bool = Any.any_l ()
+        | & _267: bool = Any.any_l ()
+        | & _268: bool = Any.any_l ()
+        | & _270: bool = Any.any_l ()
+        | & _288: UInt8.t = Any.any_l ()
+        | & _289: UInt64.t = Any.any_l ()
+        | & _291: bool = Any.any_l ()
+        | & _292: UInt8.t = Any.any_l ()
+        | & _293: UInt64.t = Any.any_l ()
+        | & _294: UInt64.t = Any.any_l ()
+        | & _296: bool = Any.any_l ()
+        | & _297: bool = Any.any_l ()
+        | & _298: UInt8.t = Any.any_l ()
+        | & _299: UInt64.t = Any.any_l ()
+        | & _301: bool = Any.any_l ()
+        | & _302: UInt8.t = Any.any_l ()
+        | & _304: UInt8.t = Any.any_l ()
+        | & _306: UInt16.t = Any.any_l ()
+        | & _308: UInt8.t = Any.any_l () ]))))
+  [ return (result: t_RawDate) ->
+  {[@stop_split] [@expl:from_unix_seconds ensures] ([@stop_split] [@expl:from_unix_seconds ensures #0] UInt8.t'int result.sec
+        < 60
+      /\ UInt8.t'int result.min < 60
+      /\ UInt8.t'int result.hour < 24
+      /\ 1 <= UInt8.t'int result.day
+      /\ UInt8.t'int result.day <= 31
+      /\ 1 <= UInt8.t'int result.mon
+      /\ UInt8.t'int result.mon <= 12
+      /\ 1970 <= UInt16.t'int result.year
+      /\ UInt16.t'int result.year <= 9999 /\ 1 <= UInt8.t'int result.wday /\ UInt8.t'int result.wday <= 7)
+    /\ ([@stop_split] [@expl:from_unix_seconds ensures #1] gregorian_day result
+      = ComputerDivision.div (UInt64.t'int secs_since_epoch) 86400)
+    /\ ([@stop_split] [@expl:from_unix_seconds ensures #2] UInt8.t'int result.sec + UInt8.t'int result.min * 60
+        + UInt8.t'int result.hour * 3600
+      = ComputerDivision.mod (UInt64.t'int secs_since_epoch) 86400)
+    /\ ([@stop_split] [@expl:from_unix_seconds ensures #3] UInt8.t'int result.day
+      <= month_length (UInt16.t'int result.year) (UInt8.t'int result.mon))
+    /\ ([@stop_split] [@expl:from_unix_seconds ensures #4] UInt8.t'int result.wday
+    = ComputerDivision.mod (ComputerDivision.div (UInt64.t'int secs_since_epoch) 86400 + 3) 7 + 1)}
+    (! return {result}) ]

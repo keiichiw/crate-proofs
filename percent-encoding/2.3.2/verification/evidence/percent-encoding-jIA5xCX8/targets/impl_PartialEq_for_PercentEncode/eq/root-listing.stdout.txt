@@ -1,0 +1,174 @@
+theory Coma
+  
+  (* use why3.BuiltIn.BuiltIn *)
+  
+  (* use why3.Bool.Bool *)
+  
+  (* use why3.Unit.Unit *)
+  
+  (* use creusot.slice.Slice64 *)
+  
+  (* use creusot.int.UInt8 *)
+  
+  (* use creusot.int.UInt32 *)
+  
+  (* use creusot.prelude.Any *)
+  
+  type t_AsciiSet
+  
+  type t_PercentEncode =
+    | T_PercentEncode'mk (bytes:slice t) (ascii_set:t_AsciiSet)
+  
+  (* meta model_record function ascii_set *)
+  
+  (* meta model_record function bytes *)
+  
+  function deep_model_u8 (self:t) : int = t'int self
+  
+  (* meta rewrite_def function deep_model_u8 *)
+  
+  function index_slice_u8 (self:slice t) (ix:int) : t = get (view self) ix
+  
+  (* meta rewrite_def function index_slice_u8 *)
+  
+  function deep_model_slice_u8 (slice t) : seq int
+  
+  axiom deep_model_slice_u8_spec :
+    forall self:slice t [deep_model_slice_u8 self].
+     length (view self) = length (deep_model_slice_u8 self)
+  
+  axiom deep_model_slice_u8_spec'0 :
+    forall self:slice t [deep_model_slice_u8 self].
+     forall i:int.
+      0 <= i /\ i < length (deep_model_slice_u8 self) ->
+      get (deep_model_slice_u8 self) i =
+      deep_model_u8 (index_slice_u8 self i)
+  
+  function deep_model_ref_slice_u8 (self:slice t) : seq int =
+    deep_model_slice_u8 self
+  
+  (* meta rewrite_def function deep_model_ref_slice_u8 *)
+  
+  function deep_model_ref_ref_slice_u8 (self:slice t) : seq int =
+    deep_model_ref_slice_u8 self
+  
+  (* meta rewrite_def function deep_model_ref_ref_slice_u8 *)
+  
+  goal vc_eq_ref_slice_u8 : true
+  
+  predicate slice_byte_views_ext_eq_from_model (slice t) (slice t)
+  
+  axiom slice_byte_views_ext_eq_from_model_spec :
+    forall left:slice t, right:slice t
+     [slice_byte_views_ext_eq_from_model left right].
+     deep_model_ref_slice_u8 left = deep_model_ref_slice_u8 right ->
+     slice_byte_views_ext_eq_from_model left right
+  
+  axiom slice_byte_views_ext_eq_from_model_spec'0 :
+    forall left:slice t, right:slice t.
+     deep_model_ref_slice_u8 left = deep_model_ref_slice_u8 right ->
+     view left == view right
+  
+  predicate inv_AsciiSet t_AsciiSet
+  
+  predicate invariant_ref_AsciiSet (self:t_AsciiSet) = inv_AsciiSet self
+  
+  (* meta rewrite_def predicate invariant_ref_AsciiSet *)
+  
+  predicate inv_ref_AsciiSet (_1:t_AsciiSet) = invariant_ref_AsciiSet _1
+  
+  (* meta rewrite_def predicate inv_ref_AsciiSet *)
+  
+  predicate invariant_ref_ref_AsciiSet (self:t_AsciiSet) =
+    inv_ref_AsciiSet self
+  
+  (* meta rewrite_def predicate invariant_ref_ref_AsciiSet *)
+  
+  predicate inv_ref_ref_AsciiSet (_1:t_AsciiSet) =
+    invariant_ref_ref_AsciiSet _1
+  
+  (* meta rewrite_def predicate inv_ref_ref_AsciiSet *)
+  
+  function mask_words t_AsciiSet : seq t1
+  
+  axiom mask_words_spec :
+    forall self:t_AsciiSet [mask_words self]. length (mask_words self) = 4
+  
+  function deep_model_AsciiSet t_AsciiSet : seq t1
+  
+  axiom deep_model_AsciiSet_spec :
+    forall self:t_AsciiSet [deep_model_AsciiSet self].
+     deep_model_AsciiSet self = mask_words self
+  
+  function deep_model_ref_AsciiSet (self:t_AsciiSet) : seq t1 =
+    deep_model_AsciiSet self
+  
+  (* meta rewrite_def function deep_model_ref_AsciiSet *)
+  
+  function deep_model_ref_ref_AsciiSet (self:t_AsciiSet) : seq t1 =
+    deep_model_ref_AsciiSet self
+  
+  (* meta rewrite_def function deep_model_ref_ref_AsciiSet *)
+  
+  goal vc_eq_ref_AsciiSet : true
+  
+  predicate inv_PercentEncode t_PercentEncode
+  
+  axiom inv_axiom :
+    forall x:t_PercentEncode [inv_PercentEncode x].
+     inv_PercentEncode x <-> inv_ref_AsciiSet (x.ascii_set)
+  
+  predicate invariant_ref_PercentEncode (self:t_PercentEncode) =
+    inv_PercentEncode self
+  
+  (* meta rewrite_def predicate invariant_ref_PercentEncode *)
+  
+  predicate inv_ref_PercentEncode (_1:t_PercentEncode) =
+    invariant_ref_PercentEncode _1
+  
+  (* meta rewrite_def predicate inv_ref_PercentEncode *)
+  
+  predicate percent_encode_eq_model (left_input:seq t) (left_set:seq t1)
+    (right_input:seq t) (right_set:seq t1) =
+    left_input = right_input /\ left_set = right_set
+  
+  function remaining_input (self:t_PercentEncode) : seq t = view (self.bytes)
+  
+  (* meta rewrite_def function remaining_input *)
+  
+  function configured_set (self:t_PercentEncode) : seq t1 =
+    mask_words (self.ascii_set)
+  
+  (* meta rewrite_def function configured_set *)
+  
+  (* meta compute_max_steps 1000000 *)
+  
+  (* meta select_lsinst "all" *)
+  
+  goal vc_eq_PercentEncode :
+    forall self:t_PercentEncode, other:t_PercentEncode.
+     inv_ref_PercentEncode self /\ inv_ref_PercentEncode other ->
+     (forall result:bool.
+       (result = True <->
+        deep_model_ref_ref_slice_u8 (self.bytes) =
+        deep_model_ref_ref_slice_u8 (other.bytes)) ->
+       (result = True ->
+        slice_byte_views_ext_eq_from_model (self.bytes) (other.bytes)) &&
+       (result = False ->
+        false <->
+        percent_encode_eq_model (remaining_input self) (configured_set self)
+        (remaining_input other) (configured_set other)) /\
+       (result = True ->
+        (inv_ref_ref_AsciiSet (self.ascii_set) /\
+         inv_ref_ref_AsciiSet (other.ascii_set)) /\
+        (forall result1:bool.
+          (result1 = True <->
+           deep_model_ref_ref_AsciiSet (self.ascii_set) =
+           deep_model_ref_ref_AsciiSet (other.ascii_set)) ->
+          result1 = True <->
+          percent_encode_eq_model (remaining_input self)
+          (configured_set self) (remaining_input other)
+          (configured_set other))))
+  
+end
+

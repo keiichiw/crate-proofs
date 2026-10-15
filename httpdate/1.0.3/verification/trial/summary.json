@@ -1,0 +1,48 @@
+{
+  "started_at_utc": "2026-10-07T18:29:10+00:00",
+  "finished_at_utc": "2026-10-07T20:36:09.178812+00:00",
+  "elapsed_seconds": 7619.179,
+  "objective": "Settle a reusable verification method within a 2\u20134 hour trial, after committing the multi-crate layout.",
+  "layout_commit": "1a71594",
+  "main_replay": {
+    "run": "verif/httpdate-run-tb9BRAeZ",
+    "exit": 0,
+    "wall_seconds": 84.376,
+    "targets": 18,
+    "session_goals": 107,
+    "native_tests_passed": 24,
+    "manifest_sha256": "638877e9a90595d1b078322c2090a3f7848470da777a5d0ecc87185a6d951587",
+    "application_trusted_assumptions": [],
+    "scope": "Shared native byte/calendar cores, raw parsers, exact validator, parser-kernel valid success and all-three-format content, IMF completeness and closed roundtrips; public stdlib wrappers/traits excluded."
+  },
+  "separate_experiments": {
+    "trait_models": {
+      "files": 22,
+      "goals": 27,
+      "scope": "Abstract three-field Eq/Ord models, not HttpDate trait proofs."
+    },
+    "boundary_model": {
+      "targets": 5,
+      "goals": 18,
+      "native_tests": 3,
+      "additional_assumptions": 8,
+      "platform": "64-bit Linux",
+      "scope": "Conditional on reviewed stdlib extern specifications; not imported by main crate."
+    },
+    "original_std_probes": {
+      "proved_goals": 5,
+      "unproved_goals": 3,
+      "formatter_content_proved": false
+    },
+    "original_trait_probes": {
+      "unproved_goals": 6
+    }
+  },
+  "evidence_guard_cases": 4,
+  "adopted_method": "Prove shared byte/integer cores and all application callees; isolate and review stdlib models; connect native public wrappers later; separate raw records from validated public type for Eq/Ord.",
+  "delegation": "Luna for routine scaffolding, probes, tests, documentation; Astra for blocked calendar/RFC proof diagnosis; primary reviews and integrates.",
+  "token_usage": null,
+  "token_usage_note": "Actual model token telemetry is unavailable; no invented consumption totals.",
+  "cloud": "Updated start_skill draft saved; publication and fresh-task restoration unverified.",
+  "proofs_rs": "No public registration, SARIF, login, push or publication."
+}

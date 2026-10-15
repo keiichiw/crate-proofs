@@ -1,0 +1,548 @@
+use creusot.int.UInt16
+use creusot.int.UInt8
+use creusot.prelude.Char
+use creusot.slice.Slice64
+use seq.Seq
+use int.ComputerDivision
+use creusot.prelude.MutBorrow
+use creusot.int.UInt32
+use creusot.int.UInt64
+use creusot.prelude.Any
+use int.Int
+
+function literal_char (b: UInt8.t) : Char.t = if b = (10: UInt8.t) then
+    Char.of_int 10
+  else
+    if b = (32: UInt8.t) then
+      Char.of_int 32
+    else
+      if b = (123: UInt8.t) then
+        Char.of_int 123
+      else
+        if b = (125: UInt8.t) then
+          Char.of_int 125
+        else
+          if b = (40: UInt8.t) then
+            Char.of_int 40
+          else
+            if b = (41: UInt8.t) then
+              Char.of_int 41
+            else
+              if b = (58: UInt8.t) then
+                Char.of_int 58
+              else
+                if b = (44: UInt8.t) then
+                  Char.of_int 44
+                else
+                  if b = (72: UInt8.t) then
+                    Char.of_int 72
+                  else
+                    if b = (116: UInt8.t) then
+                      Char.of_int 116
+                    else
+                      if b = (112: UInt8.t) then
+                        Char.of_int 112
+                      else
+                        if b = (68: UInt8.t) then
+                          Char.of_int 68
+                        else
+                          if b = (97: UInt8.t) then
+                            Char.of_int 97
+                          else
+                            if b = (101: UInt8.t) then
+                              Char.of_int 101
+                            else
+                              if b = (115: UInt8.t) then
+                                Char.of_int 115
+                              else
+                                if b = (99: UInt8.t) then
+                                  Char.of_int 99
+                                else
+                                  if b = (109: UInt8.t) then
+                                    Char.of_int 109
+                                  else
+                                    if b = (105: UInt8.t) then
+                                      Char.of_int 105
+                                    else
+                                      if b = (110: UInt8.t) then
+                                        Char.of_int 110
+                                      else
+                                        if b = (104: UInt8.t) then
+                                          Char.of_int 104
+                                        else
+                                          if b = (111: UInt8.t) then
+                                            Char.of_int 111
+                                          else
+                                            if b = (117: UInt8.t) then
+                                              Char.of_int 117
+                                            else
+                                              if b = (114: UInt8.t) then
+                                                Char.of_int 114
+                                              else
+                                                if b = (100: UInt8.t) then
+                                                  Char.of_int 100
+                                                else
+                                                  if b = (121: UInt8.t) then
+                                                    Char.of_int 121
+                                                  else
+                                                    if b = (119: UInt8.t) then
+                                                      Char.of_int 119
+                                                    else
+                                                      if b = (69: UInt8.t) then
+                                                        Char.of_int 69
+                                                      else
+                                                        if b = (48: UInt8.t) then
+                                                          Char.of_int 48
+                                                        else
+                                                          if b = (49: UInt8.t) then
+                                                            Char.of_int 49
+                                                          else
+                                                            if b = (50: UInt8.t) then
+                                                              Char.of_int 50
+                                                            else
+                                                              if b = (51: UInt8.t) then
+                                                                Char.of_int 51
+                                                              else
+                                                                if b = (52: UInt8.t) then
+                                                                  Char.of_int 52
+                                                                else
+                                                                  if b = (53: UInt8.t) then
+                                                                    Char.of_int 53
+                                                                  else
+                                                                    if b = (54: UInt8.t) then
+                                                                      Char.of_int 54
+                                                                    else
+                                                                      if b = (55: UInt8.t) then
+                                                                        Char.of_int 55
+                                                                      else
+                                                                        if b = (56: UInt8.t) then
+                                                                          Char.of_int 56
+                                                                        else
+                                                                          if b = (57: UInt8.t) then
+                                                                            Char.of_int 57
+                                                                          else
+                                                                            Char.of_int 0
+                                                                        
+                                                                      
+                                                                    
+                                                                  
+                                                                
+                                                              
+                                                            
+                                                          
+                                                        
+                                                      
+                                                    
+                                                  
+                                                
+                                              
+                                            
+                                          
+                                        
+                                      
+                                    
+                                  
+                                
+                              
+                            
+                          
+                        
+                      
+                    
+                  
+                
+              
+            
+          
+        
+      
+    
+  
+
+
+function digit_char (d: int) : Char.t = if d = 0 then
+    Char.of_int 48
+  else
+    if d = 1 then
+      Char.of_int 49
+    else
+      if d = 2 then
+        Char.of_int 50
+      else
+        if d = 3 then
+          Char.of_int 51
+        else
+          if d = 4 then
+            Char.of_int 52
+          else
+            if d = 5 then
+              Char.of_int 53
+            else
+              if d = 6 then
+                Char.of_int 54
+              else
+                if d = 7 then Char.of_int 55 else if d = 8 then Char.of_int 56 else Char.of_int 57
+            
+          
+        
+      
+    
+  
+
+
+let digit_byte (n: UInt16.t) (return (x: UInt8.t)) = {[@stop_split] [@expl:digit_byte requires] UInt16.t'int n < 10}
+  any
+  [ return (result: UInt8.t) ->
+  {[@stop_split] [@expl:digit_byte ensures] ([@stop_split] [@expl:digit_byte ensures #0] UInt8.t'int result
+        = UInt16.t'int n + 48
+      /\ UInt8.t'int result < 128)
+    /\ ([@stop_split] [@expl:digit_byte ensures #1] literal_char result = digit_char (UInt16.t'int n)
+    /\ Char.to_int (literal_char result) = UInt8.t'int result)}
+    (! return {result}) ]
+
+function ascii_chars [@inline:trivial] (bytes: Seq.seq UInt8.t) : Seq.seq Char.t =
+  Seq.create (Seq.length bytes) (fun (i: int) -> literal_char (Seq.get bytes i))
+
+meta "rewrite_def" function ascii_chars
+
+function decimal_chars (v: int) : Seq.seq Char.t = if v < 10 then
+    Seq.create 1 [|digit_char v|]
+  else
+    if v < 100 then
+      Seq.create 2 [|digit_char (ComputerDivision.div v 10);digit_char (ComputerDivision.mod v 10)|]
+    else
+      if v < 1000 then
+        Seq.create 3 [|digit_char (ComputerDivision.div v 100);digit_char (ComputerDivision.mod (ComputerDivision.div v 10) 10);digit_char (ComputerDivision.mod v 10)|]
+      else
+        if v < 10000 then
+          Seq.create 4 [|digit_char (ComputerDivision.div v 1000);digit_char (ComputerDivision.mod (ComputerDivision.div v 100) 10);digit_char (ComputerDivision.mod (ComputerDivision.div v 10) 10);digit_char (ComputerDivision.mod v 10)|]
+        else
+          Seq.create 5 [|digit_char (ComputerDivision.div v 10000);digit_char (ComputerDivision.mod (ComputerDivision.div v 1000) 10);digit_char (ComputerDivision.mod (ComputerDivision.div v 100) 10);digit_char (ComputerDivision.mod (ComputerDivision.div v 10) 10);digit_char (ComputerDivision.mod v 10)|]
+      
+    
+  
+
+
+type t_Formatter
+
+predicate inv_Formatter (_1: t_Formatter)
+
+type t_Result_unit_Error = Ok () | Err ()
+
+predicate invariant_refmut_Formatter [@inline:trivial] (self: MutBorrow.t t_Formatter) =
+  inv_Formatter self.current /\ inv_Formatter self.final
+
+meta "rewrite_def" predicate invariant_refmut_Formatter
+
+predicate inv_refmut_Formatter [@inline:trivial] (_1: MutBorrow.t t_Formatter) = invariant_refmut_Formatter _1
+
+meta "rewrite_def" predicate inv_refmut_Formatter
+
+type t_Option_usize = None | Some UInt64.t
+
+type t_Alignment = Left | Right | Center
+
+type t_Option_Alignment = None'0 | Some'0 t_Alignment
+
+type t_DebugOptions = {
+  flags: UInt32.t;
+  width: t_Option_usize;
+  precision: t_Option_usize;
+  fill: Char.t;
+  align: t_Option_Alignment }
+
+function debug_options (_f: t_Formatter) : t_DebugOptions
+
+predicate append_sink (_f: t_Formatter)
+
+function formatter_output (_f: t_Formatter) : Seq.seq Char.t
+
+let write_ascii (f: MutBorrow.t t_Formatter) (bytes: Slice64.slice UInt8.t) (return (x: t_Result_unit_Error)) =
+{[@stop_split] [@expl:write_ascii requires] ([@stop_split] [@expl:write_ascii 'f' type invariant] inv_refmut_Formatter f)
+  /\ ([@stop_split] [@expl:write_ascii requires] forall i: int. 0 <= i /\ i < Seq.length (Slice64.view bytes)
+    -> UInt8.t'int (Seq.get (Slice64.view bytes) i) < 128
+    /\ Char.to_int (literal_char (Seq.get (Slice64.view bytes) i)) = UInt8.t'int (Seq.get (Slice64.view bytes) i))}
+  any
+  [ return (result: t_Result_unit_Error) -> {[@stop_split] [@expl:write_ascii ensures] match result with
+      | Ok () -> debug_options f.final = debug_options f.current
+      /\ (append_sink f.current
+      -> append_sink f.final
+      /\ formatter_output f.final = Seq.(++) (formatter_output f.current) (ascii_chars (Slice64.view bytes)))
+      | Err _ -> true
+      end}
+    (! return {result}) ]
+
+predicate resolve_refmut_Formatter [@inline:trivial] (_1: MutBorrow.t t_Formatter) = _1.final = _1.current
+
+meta "rewrite_def" predicate resolve_refmut_Formatter
+
+meta "compute_max_steps" 1000000
+
+meta "select_lsinst" "all"
+
+let write_decimal (f: MutBorrow.t t_Formatter) (value: UInt16.t) (return (x: t_Result_unit_Error)) =
+{[@stop_split] [@expl:write_decimal 'f' type invariant] inv_refmut_Formatter f}
+  (! bb0
+  [ bb0 = s0
+    [ s0 = [ &_6 <- UInt16.lt value (10: UInt16.t) ] s1
+    | s1 = any [ br0 -> {_6 = false} (! bb4) | br1 -> {_6} (! bb1) ] ]
+  | bb1 = s0
+    [ s0 = digit_byte {value} (fun (_x: UInt8.t) -> [ &_9 <- _x ] s1)
+    | s1 = any
+      [ any_ (__arr_temp: Slice64.array UInt8.t) -> (! -{Seq.get __arr_temp.Slice64.elts 0 = _9
+        /\ Seq.length __arr_temp.Slice64.elts = 1}-
+        [ &buf <- __arr_temp ] s2) ]
+    | s2 = {[@expl:assertion] Seq.(==) (ascii_chars (Slice64.view buf)) (decimal_chars (UInt16.t'int value))} s3
+    | s3 = [ &_18 <- buf ] s4
+    | s4 = MutBorrow.borrow_final <t_Formatter> {f.current} {MutBorrow.get_id f}
+        (fun (_bor: MutBorrow.t t_Formatter) ->
+          [ &_15 <- _bor ] -{inv_Formatter _bor.final}-
+          [ &f <- { f with current = _bor.final } ] s5)
+      [ _ck -> (! {[@expl:type invariant] inv_Formatter f.current} any) ]
+    | s5 = write_ascii {_15} {_18} (fun (_x: t_Result_unit_Error) -> [ &_ret <- _x ] s6)
+    | s6 = s7 [ _ck -> (! {[@expl:type invariant] inv_refmut_Formatter f} any) ]
+    | s7 = -{resolve_refmut_Formatter f}- s8
+    | s8 = return {_ret} ]
+  | bb4 = s0
+    [ s0 = [ &_19 <- UInt16.lt value (100: UInt16.t) ] s1
+    | s1 = any [ br0 -> {_19 = false} (! bb11) | br1 -> {_19} (! bb5) ] ]
+  | bb5 = s0
+    [ s0 = [ &_25 <- (10: UInt16.t) = (0: UInt16.t) ] s1
+    | s1 = {[@expl:division by zero] not _25} s2
+    | s2 = UInt16.div {value} {(10: UInt16.t)} (fun (_x: UInt16.t) -> [ &_23 <- _x ] s3)
+    | s3 = digit_byte {_23} (fun (_x: UInt8.t) -> [ &_22 <- _x ] s4)
+    | s4 = [ &_29 <- (10: UInt16.t) = (0: UInt16.t) ] s5
+    | s5 = {[@expl:remainder by zero] not _29} s6
+    | s6 = UInt16.rem {value} {(10: UInt16.t)} (fun (_x: UInt16.t) -> [ &_27 <- _x ] s7)
+    | s7 = digit_byte {_27} (fun (_x: UInt8.t) -> [ &_26 <- _x ] s8)
+    | s8 = any
+      [ any_ (__arr_temp: Slice64.array UInt8.t) -> (! -{Seq.get __arr_temp.Slice64.elts 0 = _22
+        /\ Seq.get __arr_temp.Slice64.elts 1 = _26 /\ Seq.length __arr_temp.Slice64.elts = 2}-
+        [ &buf'0 <- __arr_temp ] s9) ]
+    | s9 = {[@expl:assertion] Seq.(==) (ascii_chars (Slice64.view buf'0)) (decimal_chars (UInt16.t'int value))} s10
+    | s10 = [ &_37 <- buf'0 ] s11
+    | s11 = MutBorrow.borrow_final <t_Formatter> {f.current} {MutBorrow.get_id f}
+        (fun (_bor: MutBorrow.t t_Formatter) ->
+          [ &_34 <- _bor ] -{inv_Formatter _bor.final}-
+          [ &f <- { f with current = _bor.final } ] s12)
+      [ _ck -> (! {[@expl:type invariant] inv_Formatter f.current} any) ]
+    | s12 = write_ascii {_34} {_37} (fun (_x: t_Result_unit_Error) -> [ &_ret <- _x ] s13)
+    | s13 = s14 [ _ck -> (! {[@expl:type invariant] inv_refmut_Formatter f} any) ]
+    | s14 = -{resolve_refmut_Formatter f}- s15
+    | s15 = return {_ret} ]
+  | bb11 = s0
+    [ s0 = [ &_38 <- UInt16.lt value (1000: UInt16.t) ] s1
+    | s1 = any [ br0 -> {_38 = false} (! bb21) | br1 -> {_38} (! bb12) ] ]
+  | bb12 = s0
+    [ s0 = [ &_44 <- (100: UInt16.t) = (0: UInt16.t) ] s1
+    | s1 = {[@expl:division by zero] not _44} s2
+    | s2 = UInt16.div {value} {(100: UInt16.t)} (fun (_x: UInt16.t) -> [ &_42 <- _x ] s3)
+    | s3 = digit_byte {_42} (fun (_x: UInt8.t) -> [ &_41 <- _x ] s4)
+    | s4 = [ &_49 <- (10: UInt16.t) = (0: UInt16.t) ] s5
+    | s5 = {[@expl:division by zero] not _49} s6
+    | s6 = UInt16.div {value} {(10: UInt16.t)} (fun (_x: UInt16.t) -> [ &_47 <- _x ] s7)
+    | s7 = [ &_50 <- (10: UInt16.t) = (0: UInt16.t) ] s8
+    | s8 = {[@expl:remainder by zero] not _50} s9
+    | s9 = UInt16.rem {_47} {(10: UInt16.t)} (fun (_x: UInt16.t) -> [ &_46 <- _x ] s10)
+    | s10 = digit_byte {_46} (fun (_x: UInt8.t) -> [ &_45 <- _x ] s11)
+    | s11 = [ &_54 <- (10: UInt16.t) = (0: UInt16.t) ] s12
+    | s12 = {[@expl:remainder by zero] not _54} s13
+    | s13 = UInt16.rem {value} {(10: UInt16.t)} (fun (_x: UInt16.t) -> [ &_52 <- _x ] s14)
+    | s14 = digit_byte {_52} (fun (_x: UInt8.t) -> [ &_51 <- _x ] s15)
+    | s15 = any
+      [ any_ (__arr_temp: Slice64.array UInt8.t) -> (! -{Seq.get __arr_temp.Slice64.elts 0 = _41
+        /\ Seq.get __arr_temp.Slice64.elts 1 = _45
+        /\ Seq.get __arr_temp.Slice64.elts 2 = _51 /\ Seq.length __arr_temp.Slice64.elts = 3}-
+        [ &buf'1 <- __arr_temp ] s16) ]
+    | s16 = {[@expl:assertion] Seq.(==) (ascii_chars (Slice64.view buf'1)) (decimal_chars (UInt16.t'int value))} s17
+    | s17 = [ &_62 <- buf'1 ] s18
+    | s18 = MutBorrow.borrow_final <t_Formatter> {f.current} {MutBorrow.get_id f}
+        (fun (_bor: MutBorrow.t t_Formatter) ->
+          [ &_59 <- _bor ] -{inv_Formatter _bor.final}-
+          [ &f <- { f with current = _bor.final } ] s19)
+      [ _ck -> (! {[@expl:type invariant] inv_Formatter f.current} any) ]
+    | s19 = write_ascii {_59} {_62} (fun (_x: t_Result_unit_Error) -> [ &_ret <- _x ] s20)
+    | s20 = s21 [ _ck -> (! {[@expl:type invariant] inv_refmut_Formatter f} any) ]
+    | s21 = -{resolve_refmut_Formatter f}- s22
+    | s22 = return {_ret} ]
+  | bb21 = s0
+    [ s0 = [ &_63 <- UInt16.lt value (10000: UInt16.t) ] s1
+    | s1 = any [ br0 -> {_63 = false} (! bb34) | br1 -> {_63} (! bb22) ] ]
+  | bb22 = s0
+    [ s0 = [ &_69 <- (1000: UInt16.t) = (0: UInt16.t) ] s1
+    | s1 = {[@expl:division by zero] not _69} s2
+    | s2 = UInt16.div {value} {(1000: UInt16.t)} (fun (_x: UInt16.t) -> [ &_67 <- _x ] s3)
+    | s3 = digit_byte {_67} (fun (_x: UInt8.t) -> [ &_66 <- _x ] s4)
+    | s4 = [ &_74 <- (100: UInt16.t) = (0: UInt16.t) ] s5
+    | s5 = {[@expl:division by zero] not _74} s6
+    | s6 = UInt16.div {value} {(100: UInt16.t)} (fun (_x: UInt16.t) -> [ &_72 <- _x ] s7)
+    | s7 = [ &_75 <- (10: UInt16.t) = (0: UInt16.t) ] s8
+    | s8 = {[@expl:remainder by zero] not _75} s9
+    | s9 = UInt16.rem {_72} {(10: UInt16.t)} (fun (_x: UInt16.t) -> [ &_71 <- _x ] s10)
+    | s10 = digit_byte {_71} (fun (_x: UInt8.t) -> [ &_70 <- _x ] s11)
+    | s11 = [ &_80 <- (10: UInt16.t) = (0: UInt16.t) ] s12
+    | s12 = {[@expl:division by zero] not _80} s13
+    | s13 = UInt16.div {value} {(10: UInt16.t)} (fun (_x: UInt16.t) -> [ &_78 <- _x ] s14)
+    | s14 = [ &_81 <- (10: UInt16.t) = (0: UInt16.t) ] s15
+    | s15 = {[@expl:remainder by zero] not _81} s16
+    | s16 = UInt16.rem {_78} {(10: UInt16.t)} (fun (_x: UInt16.t) -> [ &_77 <- _x ] s17)
+    | s17 = digit_byte {_77} (fun (_x: UInt8.t) -> [ &_76 <- _x ] s18)
+    | s18 = [ &_85 <- (10: UInt16.t) = (0: UInt16.t) ] s19
+    | s19 = {[@expl:remainder by zero] not _85} s20
+    | s20 = UInt16.rem {value} {(10: UInt16.t)} (fun (_x: UInt16.t) -> [ &_83 <- _x ] s21)
+    | s21 = digit_byte {_83} (fun (_x: UInt8.t) -> [ &_82 <- _x ] s22)
+    | s22 = any
+      [ any_ (__arr_temp: Slice64.array UInt8.t) -> (! -{Seq.get __arr_temp.Slice64.elts 0 = _66
+        /\ Seq.get __arr_temp.Slice64.elts 1 = _70
+        /\ Seq.get __arr_temp.Slice64.elts 2 = _76
+        /\ Seq.get __arr_temp.Slice64.elts 3 = _82 /\ Seq.length __arr_temp.Slice64.elts = 4}-
+        [ &buf'2 <- __arr_temp ] s23) ]
+    | s23 = {[@expl:assertion] Seq.(==) (ascii_chars (Slice64.view buf'2)) (decimal_chars (UInt16.t'int value))} s24
+    | s24 = [ &_93 <- buf'2 ] s25
+    | s25 = MutBorrow.borrow_final <t_Formatter> {f.current} {MutBorrow.get_id f}
+        (fun (_bor: MutBorrow.t t_Formatter) ->
+          [ &_90 <- _bor ] -{inv_Formatter _bor.final}-
+          [ &f <- { f with current = _bor.final } ] s26)
+      [ _ck -> (! {[@expl:type invariant] inv_Formatter f.current} any) ]
+    | s26 = write_ascii {_90} {_93} (fun (_x: t_Result_unit_Error) -> [ &_ret <- _x ] s27)
+    | s27 = s28 [ _ck -> (! {[@expl:type invariant] inv_refmut_Formatter f} any) ]
+    | s28 = -{resolve_refmut_Formatter f}- s29
+    | s29 = return {_ret} ]
+  | bb34 = any [ br0 -> {false} (! bb50) | br1 -> (! bb35) ]
+  | bb35 = s0
+    [ s0 = [ &_99 <- (10000: UInt16.t) = (0: UInt16.t) ] s1
+    | s1 = {[@expl:division by zero] not _99} s2
+    | s2 = UInt16.div {value} {(10000: UInt16.t)} (fun (_x: UInt16.t) -> [ &_97 <- _x ] s3)
+    | s3 = digit_byte {_97} (fun (_x: UInt8.t) -> [ &_96 <- _x ] s4)
+    | s4 = [ &_104 <- (1000: UInt16.t) = (0: UInt16.t) ] s5
+    | s5 = {[@expl:division by zero] not _104} s6
+    | s6 = UInt16.div {value} {(1000: UInt16.t)} (fun (_x: UInt16.t) -> [ &_102 <- _x ] s7)
+    | s7 = [ &_105 <- (10: UInt16.t) = (0: UInt16.t) ] s8
+    | s8 = {[@expl:remainder by zero] not _105} s9
+    | s9 = UInt16.rem {_102} {(10: UInt16.t)} (fun (_x: UInt16.t) -> [ &_101 <- _x ] s10)
+    | s10 = digit_byte {_101} (fun (_x: UInt8.t) -> [ &_100 <- _x ] s11)
+    | s11 = [ &_110 <- (100: UInt16.t) = (0: UInt16.t) ] s12
+    | s12 = {[@expl:division by zero] not _110} s13
+    | s13 = UInt16.div {value} {(100: UInt16.t)} (fun (_x: UInt16.t) -> [ &_108 <- _x ] s14)
+    | s14 = [ &_111 <- (10: UInt16.t) = (0: UInt16.t) ] s15
+    | s15 = {[@expl:remainder by zero] not _111} s16
+    | s16 = UInt16.rem {_108} {(10: UInt16.t)} (fun (_x: UInt16.t) -> [ &_107 <- _x ] s17)
+    | s17 = digit_byte {_107} (fun (_x: UInt8.t) -> [ &_106 <- _x ] s18)
+    | s18 = [ &_116 <- (10: UInt16.t) = (0: UInt16.t) ] s19
+    | s19 = {[@expl:division by zero] not _116} s20
+    | s20 = UInt16.div {value} {(10: UInt16.t)} (fun (_x: UInt16.t) -> [ &_114 <- _x ] s21)
+    | s21 = [ &_117 <- (10: UInt16.t) = (0: UInt16.t) ] s22
+    | s22 = {[@expl:remainder by zero] not _117} s23
+    | s23 = UInt16.rem {_114} {(10: UInt16.t)} (fun (_x: UInt16.t) -> [ &_113 <- _x ] s24)
+    | s24 = digit_byte {_113} (fun (_x: UInt8.t) -> [ &_112 <- _x ] s25)
+    | s25 = [ &_121 <- (10: UInt16.t) = (0: UInt16.t) ] s26
+    | s26 = {[@expl:remainder by zero] not _121} s27
+    | s27 = UInt16.rem {value} {(10: UInt16.t)} (fun (_x: UInt16.t) -> [ &_119 <- _x ] s28)
+    | s28 = digit_byte {_119} (fun (_x: UInt8.t) -> [ &_118 <- _x ] s29)
+    | s29 = any
+      [ any_ (__arr_temp: Slice64.array UInt8.t) -> (! -{Seq.get __arr_temp.Slice64.elts 0 = _96
+        /\ Seq.get __arr_temp.Slice64.elts 1 = _100
+        /\ Seq.get __arr_temp.Slice64.elts 2 = _106
+        /\ Seq.get __arr_temp.Slice64.elts 3 = _112
+        /\ Seq.get __arr_temp.Slice64.elts 4 = _118 /\ Seq.length __arr_temp.Slice64.elts = 5}-
+        [ &buf'3 <- __arr_temp ] s30) ]
+    | s30 = {[@expl:assertion] Seq.(==) (ascii_chars (Slice64.view buf'3)) (decimal_chars (UInt16.t'int value))} s31
+    | s31 = [ &_129 <- buf'3 ] s32
+    | s32 = MutBorrow.borrow_final <t_Formatter> {f.current} {MutBorrow.get_id f}
+        (fun (_bor: MutBorrow.t t_Formatter) ->
+          [ &_126 <- _bor ] -{inv_Formatter _bor.final}-
+          [ &f <- { f with current = _bor.final } ] s33)
+      [ _ck -> (! {[@expl:type invariant] inv_Formatter f.current} any) ]
+    | s33 = write_ascii {_126} {_129} (fun (_x: t_Result_unit_Error) -> [ &_ret <- _x ] s34)
+    | s34 = s35 [ _ck -> (! {[@expl:type invariant] inv_refmut_Formatter f} any) ]
+    | s35 = -{resolve_refmut_Formatter f}- s36
+    | s36 = return {_ret} ]
+  | bb50 = s0
+    [ s0 = s1 [ _ck -> (! {[@expl:type invariant] inv_refmut_Formatter f} any) ]
+    | s1 = -{resolve_refmut_Formatter f}- s2
+    | s2 = {false} any ] ]
+  [ & _ret: t_Result_unit_Error = Any.any_l ()
+  | & f: MutBorrow.t t_Formatter = f
+  | & value: UInt16.t = value
+  | & _6: bool = Any.any_l ()
+  | & buf: Slice64.array UInt8.t = Any.any_l ()
+  | & _9: UInt8.t = Any.any_l ()
+  | & _15: MutBorrow.t t_Formatter = Any.any_l ()
+  | & _18: Slice64.array UInt8.t = Any.any_l ()
+  | & _19: bool = Any.any_l ()
+  | & buf'0: Slice64.array UInt8.t = Any.any_l ()
+  | & _22: UInt8.t = Any.any_l ()
+  | & _23: UInt16.t = Any.any_l ()
+  | & _25: bool = Any.any_l ()
+  | & _26: UInt8.t = Any.any_l ()
+  | & _27: UInt16.t = Any.any_l ()
+  | & _29: bool = Any.any_l ()
+  | & _34: MutBorrow.t t_Formatter = Any.any_l ()
+  | & _37: Slice64.array UInt8.t = Any.any_l ()
+  | & _38: bool = Any.any_l ()
+  | & buf'1: Slice64.array UInt8.t = Any.any_l ()
+  | & _41: UInt8.t = Any.any_l ()
+  | & _42: UInt16.t = Any.any_l ()
+  | & _44: bool = Any.any_l ()
+  | & _45: UInt8.t = Any.any_l ()
+  | & _46: UInt16.t = Any.any_l ()
+  | & _47: UInt16.t = Any.any_l ()
+  | & _49: bool = Any.any_l ()
+  | & _50: bool = Any.any_l ()
+  | & _51: UInt8.t = Any.any_l ()
+  | & _52: UInt16.t = Any.any_l ()
+  | & _54: bool = Any.any_l ()
+  | & _59: MutBorrow.t t_Formatter = Any.any_l ()
+  | & _62: Slice64.array UInt8.t = Any.any_l ()
+  | & _63: bool = Any.any_l ()
+  | & buf'2: Slice64.array UInt8.t = Any.any_l ()
+  | & _66: UInt8.t = Any.any_l ()
+  | & _67: UInt16.t = Any.any_l ()
+  | & _69: bool = Any.any_l ()
+  | & _70: UInt8.t = Any.any_l ()
+  | & _71: UInt16.t = Any.any_l ()
+  | & _72: UInt16.t = Any.any_l ()
+  | & _74: bool = Any.any_l ()
+  | & _75: bool = Any.any_l ()
+  | & _76: UInt8.t = Any.any_l ()
+  | & _77: UInt16.t = Any.any_l ()
+  | & _78: UInt16.t = Any.any_l ()
+  | & _80: bool = Any.any_l ()
+  | & _81: bool = Any.any_l ()
+  | & _82: UInt8.t = Any.any_l ()
+  | & _83: UInt16.t = Any.any_l ()
+  | & _85: bool = Any.any_l ()
+  | & _90: MutBorrow.t t_Formatter = Any.any_l ()
+  | & _93: Slice64.array UInt8.t = Any.any_l ()
+  | & buf'3: Slice64.array UInt8.t = Any.any_l ()
+  | & _96: UInt8.t = Any.any_l ()
+  | & _97: UInt16.t = Any.any_l ()
+  | & _99: bool = Any.any_l ()
+  | & _100: UInt8.t = Any.any_l ()
+  | & _101: UInt16.t = Any.any_l ()
+  | & _102: UInt16.t = Any.any_l ()
+  | & _104: bool = Any.any_l ()
+  | & _105: bool = Any.any_l ()
+  | & _106: UInt8.t = Any.any_l ()
+  | & _107: UInt16.t = Any.any_l ()
+  | & _108: UInt16.t = Any.any_l ()
+  | & _110: bool = Any.any_l ()
+  | & _111: bool = Any.any_l ()
+  | & _112: UInt8.t = Any.any_l ()
+  | & _113: UInt16.t = Any.any_l ()
+  | & _114: UInt16.t = Any.any_l ()
+  | & _116: bool = Any.any_l ()
+  | & _117: bool = Any.any_l ()
+  | & _118: UInt8.t = Any.any_l ()
+  | & _119: UInt16.t = Any.any_l ()
+  | & _121: bool = Any.any_l ()
+  | & _126: MutBorrow.t t_Formatter = Any.any_l ()
+  | & _129: Slice64.array UInt8.t = Any.any_l () ])
+  [ return (result: t_Result_unit_Error) -> {[@stop_split] [@expl:write_decimal ensures] match result with
+      | Ok () -> debug_options f.final = debug_options f.current
+      /\ (append_sink f.current
+      -> append_sink f.final
+      /\ formatter_output f.final = Seq.(++) (formatter_output f.current) (decimal_chars (UInt16.t'int value)))
+      | Err _ -> true
+      end}
+    (! return {result}) ]

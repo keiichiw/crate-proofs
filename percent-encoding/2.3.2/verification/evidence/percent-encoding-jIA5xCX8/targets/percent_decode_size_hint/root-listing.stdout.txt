@@ -1,0 +1,64 @@
+theory Coma
+  
+  (* use why3.BuiltIn.BuiltIn *)
+  
+  (* use why3.Bool.Bool *)
+  
+  (* use why3.Unit.Unit *)
+  
+  (* use creusot.int.UInt64 *)
+  
+  (* use creusot.prelude.Any *)
+  
+  type t_Option_usize =
+    | None
+    | Some t
+  
+  type tup2_usize_Option_usize =
+    | Tup2_usize_Option_usize'mk (f0:t) (f1:t_Option_usize)
+  
+  (* meta model_record function f1 *)
+  
+  (* meta model_record function f0 *)
+  
+  (* meta compute_max_steps 1000000 *)
+  
+  (* meta select_lsinst "all" *)
+  
+  goal vc_percent_decode_size_hint :
+    forall len:t.
+     forall _7:t, _9:bool, _10:t, _11:bool, _12:t, _14:bool.
+      (not (3:t) = (0:t) &&
+       not t'int (3:t) = 0 /\
+       (forall result:t.
+         t'int result = div (t'int len) (t'int (3:t)) ->
+         not (3:t) = (0:t) && not t'int (3:t) = 0)) /\
+      (not (3:t) = (0:t) /\
+       (exists result:t.
+         t'int result = div (t'int len) (t'int (3:t)) /\
+         not (3:t) = (0:t) /\
+         (exists result1:t.
+           t'int result1 = mod (t'int len) (t'int (3:t)) /\
+           (not result1 = (0:t) /\
+            _7 = result /\
+            (if (3:t) = (0:t) then _9 = True else _9 = False) /\
+            _10 = (1:t) /\
+            (if result1 = (0:t) then _11 = True else _11 = False) /\
+            _12 = result1 /\
+            (if (3:t) = (0:t) then _14 = True else _14 = False) \/
+            result1 = (0:t) /\
+            _7 = result /\
+            (if (3:t) = (0:t) then _9 = True else _9 = False) /\
+            _10 = (0:t) /\
+            (if result1 = (0:t) then _11 = True else _11 = False) /\
+            _12 = result1 /\
+            (if (3:t) = (0:t) then _14 = True else _14 = False)))) ->
+       in_bounds (t'int _7 + t'int _10) /\
+       (forall result:t.
+         t'int result = (t'int _7 + t'int _10) ->
+         t'int result =
+         (div (t'int len) 3 + (if mod (t'int len) 3 = 0 then 0 else 1)) /\
+         true))
+  
+end
+

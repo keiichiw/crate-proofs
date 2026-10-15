@@ -1,0 +1,37 @@
+(* <ord_model::Date as std::cmp::PartialEq> *)
+
+use creusot.int.UInt16
+use creusot.int.UInt8
+use creusot.prelude.Any
+
+type t_Date = { year: UInt16.t; month: UInt8.t; day: UInt8.t }
+
+type t_DateModel = { year'0: int; month'0: int; day'0: int }
+
+function deep_model_Date (self: t_Date) : t_DateModel = { year'0 = UInt16.t'int self.year;
+                                                          month'0 = UInt8.t'int self.month;
+                                                          day'0 = UInt8.t'int self.day }
+
+function deep_model_ref_Date [@inline:trivial] (self: t_Date) : t_DateModel = deep_model_Date self
+
+meta "rewrite_def" function deep_model_ref_Date
+
+meta "compute_max_steps" 1000000
+
+meta "select_lsinst" "all"
+
+let eq_Date (self: t_Date) (rhs: t_Date) (return (x: bool)) = (! bb0
+  [ bb0 = s0
+    [ s0 = [ &_6 <- self.year = rhs.year ] s1 | s1 = any [ br0 -> {_6 = false} (! bb5) | br1 -> {_6} (! bb1) ] ]
+  | bb1 = s0
+    [ s0 = [ &_9 <- self.month = rhs.month ] s1 | s1 = any [ br0 -> {_9 = false} (! bb5) | br1 -> {_9} (! bb2) ] ]
+  | bb2 = s0 [ s0 = [ &_ret <- self.day = rhs.day ] s1 | s1 = return {_ret} ]
+  | bb5 = s0 [ s0 = [ &_ret <- false ] s1 | s1 = return {_ret} ] ]
+  [ & _ret: bool = Any.any_l ()
+  | & self: t_Date = self
+  | & rhs: t_Date = rhs
+  | & _6: bool = Any.any_l ()
+  | & _9: bool = Any.any_l () ])
+  [ return (result: bool) -> {[@stop_split] [@expl:eq ensures] result
+    = (deep_model_ref_Date self = deep_model_ref_Date rhs)}
+    (! return {result}) ]

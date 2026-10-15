@@ -1,0 +1,6 @@
+COMMAND: timeout --signal=TERM --kill-after=5s 60s cargo creusot --only=prove --no-cache --why3find-arg=-d --why3find-arg=2 /workspace/proof-env/httpdate/1.0.3/verification/trial/trait-models/verif/model-run-run-32wFvngx/model-ord/coma/verif/httpdate_trait_model_probes_rlib/ord_model/impl_PartialOrdLogic_for_DateModel/transitive__refines.coma
+TIME LIMIT: 60 seconds
+Warning: found dangling files and directories:
+  verif/model-run-run-QtQb6EzV/model-ord
+Run 'cargo creusot clean' to remove them
+Proved (verif/model-run-run-32wFvngx/model-ord/coma/verif/httpdate_trait_model_probes_rlib/ord_model/impl_PartialOrdLogic_for_DateModel/transitive__refines.coma) ✔

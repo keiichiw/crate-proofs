@@ -1,0 +1,17 @@
+    Checking percent-encoding-utf8-model-module-probe v0.0.0 (/workspace/proof-env/percent-encoding/2.3.2/verification/probes/utf8-model-module)
+warning: calling external function `utf8_error` with no contract will yield an impossible precondition
+   --> src/../../../../crate/src/utf8_models.rs:103:25
+    |
+103 |                     Err(error.utf8_error())
+    |                         ^^^^^^^^^^^^^^^^^^ function called here
+    |
+    = note: `#[warn(creusot::contractless_external_function)]` on by default
+
+warning: calling external function `as_slice` with no contract will yield an impossible precondition
+   --> src/../../../../crate/src/utf8_models.rs:140:55
+    |
+140 |                     debug_assert_eq!(utf8.as_bytes(), bytes.as_slice());
+    |                                                       ^^^^^^^^^^^^^^^^ function called here
+
+warning: `percent-encoding-utf8-model-module-probe` (lib) generated 2 warnings
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.18s

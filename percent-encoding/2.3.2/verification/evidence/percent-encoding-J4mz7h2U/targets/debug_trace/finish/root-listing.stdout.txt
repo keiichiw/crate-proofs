@@ -1,0 +1,164 @@
+theory Coma
+  
+  (* use why3.BuiltIn.BuiltIn *)
+  
+  (* use why3.Bool.Bool *)
+  
+  (* use why3.Unit.Unit *)
+  
+  (* use creusot.prelude.MutBorrow *)
+  
+  (* use seq.Seq *)
+  
+  (* use creusot.int.UInt8 *)
+  
+  (* use creusot.int.UInt32 *)
+  
+  (* use creusot.prelude.Any *)
+  
+  type t_DebugStruct
+  
+  predicate inv_DebugStruct t_DebugStruct
+  
+  type t_Result_unit_Error =
+    | Ok unit
+    | Err unit
+  
+  predicate invariant_refmut_DebugStruct (self:t t_DebugStruct) =
+    inv_DebugStruct (self.current) /\ inv_DebugStruct (self.final)
+  
+  (* meta rewrite_def predicate invariant_refmut_DebugStruct *)
+  
+  predicate inv_refmut_DebugStruct (_1:t t_DebugStruct) =
+    invariant_refmut_DebugStruct _1
+  
+  (* meta rewrite_def predicate inv_refmut_DebugStruct *)
+  
+  goal vc_finish : true
+  
+  predicate resolve_refmut_DebugStruct (_1:t t_DebugStruct) =
+    _1.final = _1.current
+  
+  (* meta rewrite_def predicate resolve_refmut_DebugStruct *)
+  
+  type t_Option_bool =
+    | None
+    | Some bool
+  
+  type t_DebugTrace =
+    | T_DebugTrace'mk (struct_name:string) (field_names:seq string)
+        (field_type_tags:seq t1) (word_values:seq (seq t2)) (byte_values:seq
+        (seq t1)) (iter_values:seq (seq t1)) (ascii_set_values:seq (seq t2))
+        (finish_status:t_Option_bool)
+  
+  (* meta model_record function finish_status *)
+  
+  (* meta model_record function ascii_set_values *)
+  
+  (* meta model_record function iter_values *)
+  
+  (* meta model_record function byte_values *)
+  
+  (* meta model_record function word_values *)
+  
+  (* meta model_record function field_type_tags *)
+  
+  (* meta model_record function field_names *)
+  
+  (* meta model_record function struct_name *)
+  
+  goal vc_deref_mut_Ghost_refmut_DebugTrace : true
+  
+  predicate resolve_refmut_refmut_DebugTrace (_1:t (t t_DebugTrace)) =
+    _1.final = _1.current
+  
+  (* meta rewrite_def predicate resolve_refmut_refmut_DebugTrace *)
+  
+  predicate resolve_refmut_DebugTrace (_1:t t_DebugTrace) =
+    _1.final = _1.current
+  
+  (* meta rewrite_def predicate resolve_refmut_DebugTrace *)
+  
+  predicate resolve_Ghost_refmut_DebugTrace (self:t t_DebugTrace) =
+    resolve_refmut_DebugTrace self
+  
+  (* meta rewrite_def predicate resolve_Ghost_refmut_DebugTrace *)
+  
+  predicate resolve_Ghost_refmut_DebugTrace'0 (_1:t t_DebugTrace) =
+    resolve_Ghost_refmut_DebugTrace _1
+  
+  (* meta rewrite_def predicate resolve_Ghost_refmut_DebugTrace'0 *)
+  
+  goal vc_new_unit : true
+  
+  (* meta compute_max_steps 1000000 *)
+  
+  (* meta select_lsinst "all" *)
+  
+  goal vc_finish'0 :
+    forall builder:t t_DebugStruct, trace:t t_DebugTrace.
+     inv_refmut_DebugStruct builder ->
+     (forall fin:t_DebugStruct.
+       inv_DebugStruct fin ->
+       inv_refmut_DebugStruct (t'mk (builder.current) fin (get_id builder)) /\
+       (forall result:t_Result_unit_Error.
+         (resolve_refmut_DebugStruct (t'mk fin (builder.final) (builder.id)) ->
+          (result = Ok () ->
+           (forall fin1:t t_DebugTrace, id1:int.
+             resolve_refmut_refmut_DebugTrace
+             (t'mk
+              (t'mk
+               (T_DebugTrace'mk ((trace.current).struct_name)
+                ((trace.current).field_names)
+                ((trace.current).field_type_tags)
+                ((trace.current).word_values) ((trace.current).byte_values)
+                ((trace.current).iter_values)
+                ((trace.current).ascii_set_values) (Some True))
+               (trace.final) (trace.id))
+              fin1 id1) ->
+             resolve_Ghost_refmut_DebugTrace'0 fin1 ->
+             (trace.final).finish_status =
+             Some match result with
+             | Ok () -> True
+             | Err _ -> False
+             end /\
+             (trace.final).struct_name = (trace.current).struct_name /\
+             (trace.final).field_names = (trace.current).field_names /\
+             (trace.final).field_type_tags = (trace.current).field_type_tags /\
+             (trace.final).word_values = (trace.current).word_values /\
+             (trace.final).byte_values = (trace.current).byte_values /\
+             (trace.final).iter_values = (trace.current).iter_values /\
+             (trace.final).ascii_set_values =
+             (trace.current).ascii_set_values)) /\
+          (result = Err () ->
+           (forall fin1:t t_DebugTrace, id1:int.
+             resolve_refmut_refmut_DebugTrace
+             (t'mk
+              (t'mk
+               (T_DebugTrace'mk ((trace.current).struct_name)
+                ((trace.current).field_names)
+                ((trace.current).field_type_tags)
+                ((trace.current).word_values) ((trace.current).byte_values)
+                ((trace.current).iter_values)
+                ((trace.current).ascii_set_values) (Some False))
+               (trace.final) (trace.id))
+              fin1 id1) ->
+             resolve_Ghost_refmut_DebugTrace'0 fin1 ->
+             (trace.final).finish_status =
+             Some match result with
+             | Ok () -> True
+             | Err _ -> False
+             end /\
+             (trace.final).struct_name = (trace.current).struct_name /\
+             (trace.final).field_names = (trace.current).field_names /\
+             (trace.final).field_type_tags = (trace.current).field_type_tags /\
+             (trace.final).word_values = (trace.current).word_values /\
+             (trace.final).byte_values = (trace.current).byte_values /\
+             (trace.final).iter_values = (trace.current).iter_values /\
+             (trace.final).ascii_set_values =
+             (trace.current).ascii_set_values))) /\
+         inv_refmut_DebugStruct (t'mk fin (builder.final) (builder.id)))) /\
+     inv_DebugStruct (builder.current)
+  
+end
+

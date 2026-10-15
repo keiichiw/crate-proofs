@@ -1,0 +1,49 @@
+theory Coma
+  
+  (* use why3.BuiltIn.BuiltIn *)
+  
+  (* use why3.Bool.Bool *)
+  
+  (* use why3.Unit.Unit *)
+  
+  (* use creusot.prelude.MutBorrow *)
+  
+  type t_String
+  
+  predicate inv_String t_String
+  
+  predicate invariant_refmut_String (self:t t_String) =
+    inv_String (self.current) /\ inv_String (self.final)
+  
+  (* meta rewrite_def predicate invariant_refmut_String *)
+  
+  predicate inv_refmut_String (_1:t t_String) = invariant_refmut_String _1
+  
+  (* meta rewrite_def predicate inv_refmut_String *)
+  
+  predicate invariant_refmut_refmut_String (self:t (t t_String)) =
+    inv_refmut_String (self.current) /\ inv_refmut_String (self.final)
+  
+  (* meta rewrite_def predicate invariant_refmut_refmut_String *)
+  
+  predicate inv_refmut_refmut_String (_1:t (t t_String)) =
+    invariant_refmut_refmut_String _1
+  
+  (* meta rewrite_def predicate inv_refmut_refmut_String *)
+  
+  (* meta compute_max_steps 1000000 *)
+  
+  (* meta select_lsinst "all" *)
+  
+  goal refines :
+    forall self:t (t t_String).
+     inv_refmut_refmut_String self ->
+     inv_refmut_refmut_String self /\
+     (forall result:t t_String.
+       inv_refmut_String result /\
+       result.current = (self.current).current /\
+       result.final = (self.final).current /\
+       (self.current).final = (self.final).final -> inv_refmut_String result)
+  
+end
+

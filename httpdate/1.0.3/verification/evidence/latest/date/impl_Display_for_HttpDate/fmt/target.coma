@@ -1,0 +1,471 @@
+(* <date::HttpDate as std::fmt::Display> *)
+
+use creusot.int.UInt8
+use creusot.int.UInt16
+use int.ComputerDivision
+use creusot.slice.Slice64
+use seq.Seq
+use creusot.int.UInt64
+use creusot.prelude.Char
+use creusot.prelude.MutBorrow
+use creusot.int.UInt32
+use creusot.prelude.Any
+use int.Int
+
+type t_HttpDate = {
+  sec: UInt8.t;
+  min: UInt8.t;
+  hour: UInt8.t;
+  day: UInt8.t;
+  mon: UInt8.t;
+  year: UInt16.t;
+  wday: UInt8.t }
+
+type t_RawDate = {
+  sec'0: UInt8.t;
+  min'0: UInt8.t;
+  hour'0: UInt8.t;
+  day'0: UInt8.t;
+  mon'0: UInt8.t;
+  year'0: UInt16.t;
+  wday'0: UInt8.t }
+
+function leap_adjustment [@inline:trivial] (year'1: int) : int = if ComputerDivision.mod year'1 4 = 0
+  /\ (ComputerDivision.mod year'1 100 <> 0 \/ ComputerDivision.mod year'1 400 = 0) then
+    1
+  else
+    0
+
+
+meta "rewrite_def" function leap_adjustment
+
+function month_length [@inline:trivial] (year'1: int) (month: int) : int = if month = 2 then
+    28 + leap_adjustment year'1
+  else
+    if month = 4 \/ month = 6 \/ month = 9 \/ month = 11 then 30 else 31
+
+
+meta "rewrite_def" function month_length
+
+function january_start [@inline:trivial] (year'1: int) : int = (year'1 - 1970) * 365
+      + ComputerDivision.div (year'1 - 1969) 4
+    - ComputerDivision.div (year'1 - 1901) 100
+  + ComputerDivision.div (year'1 - 1601) 400
+
+meta "rewrite_def" function january_start
+
+function january_offset [@inline:trivial] (month: int) : int = if month = 1 then
+    0
+  else
+    if month = 2 then
+      31
+    else
+      if month = 3 then
+        59
+      else
+        if month = 4 then
+          90
+        else
+          if month = 5 then
+            120
+          else
+            if month = 6 then
+              151
+            else
+              if month = 7 then
+                181
+              else
+                if month = 8 then
+                  212
+                else
+                  if month = 9 then 243 else if month = 10 then 273 else if month = 11 then 304 else 334
+              
+            
+          
+        
+      
+    
+  
+
+
+meta "rewrite_def" function january_offset
+
+predicate gt_log_Int [@inline:trivial] (self: int) (other: int) = other < self
+
+meta "rewrite_def" predicate gt_log_Int
+
+function gregorian_day [@inline:trivial] (d: t_RawDate) : int = january_start (UInt16.t'int d.year'0)
+        + january_offset (UInt8.t'int d.mon'0)
+      + UInt8.t'int d.day'0
+    - 1
+  + (if gt_log_Int (UInt8.t'int d.mon'0) 2 then leap_adjustment (UInt16.t'int d.year'0) else 0)
+
+meta "rewrite_def" function gregorian_day
+
+predicate valid_calendar [@inline:trivial] (d: t_RawDate) =
+  UInt8.t'int d.sec'0 < 60
+  /\ UInt8.t'int d.min'0 < 60
+  /\ UInt8.t'int d.hour'0 < 24
+  /\ 1970 <= UInt16.t'int d.year'0
+  /\ UInt16.t'int d.year'0 <= 9999
+  /\ 1 <= UInt8.t'int d.mon'0
+  /\ UInt8.t'int d.mon'0 <= 12
+  /\ 1 <= UInt8.t'int d.day'0
+  /\ UInt8.t'int d.day'0 <= month_length (UInt16.t'int d.year'0) (UInt8.t'int d.mon'0)
+  /\ UInt8.t'int d.wday'0 = ComputerDivision.mod (gregorian_day d + 3) 7 + 1
+
+meta "rewrite_def" predicate valid_calendar
+
+function raw_model [@inline:trivial] (self: t_HttpDate) : t_RawDate = { sec'0 = self.sec;
+                                                                        min'0 = self.min;
+                                                                        hour'0 = self.hour;
+                                                                        day'0 = self.day;
+                                                                        mon'0 = self.mon;
+                                                                        year'0 = self.year;
+                                                                        wday'0 = self.wday }
+
+meta "rewrite_def" function raw_model
+
+predicate invariant_HttpDate (self: t_HttpDate) = valid_calendar (raw_model self)
+
+predicate inv_HttpDate (_1: t_HttpDate)
+
+axiom inv_axiom [@rewrite]: forall x: t_HttpDate [inv_HttpDate x]. inv_HttpDate x = invariant_HttpDate x
+
+predicate invariant_ref_HttpDate [@inline:trivial] (self: t_HttpDate) = inv_HttpDate self
+
+meta "rewrite_def" predicate invariant_ref_HttpDate
+
+predicate inv_ref_HttpDate [@inline:trivial] (_1: t_HttpDate) = invariant_ref_HttpDate _1
+
+meta "rewrite_def" predicate inv_ref_HttpDate
+
+let as_raw (self: t_HttpDate) (return (x: t_RawDate)) =
+{[@stop_split] [@expl:as_raw 'self' type invariant] inv_ref_HttpDate self}
+  any
+  [ return (result: t_RawDate) -> {[@stop_split] [@expl:as_raw ensures] result = raw_model self} (! return {result}) ]
+
+predicate inv_Seq_u8 [@inline:trivial] (_1: Seq.seq UInt8.t) = true
+
+meta "rewrite_def" predicate inv_Seq_u8
+
+predicate invariant_array_u8_29 (self: Slice64.array UInt8.t) =
+  inv_Seq_u8 (Slice64.view self) /\ Seq.length (Slice64.view self) = UInt64.t'int (29: UInt64.t)
+
+predicate inv_array_u8_29 [@inline:trivial] (_1: Slice64.array UInt8.t) = invariant_array_u8_29 _1
+
+meta "rewrite_def" predicate inv_array_u8_29
+
+function index_array_u8_29 [@inline:trivial] (self: Slice64.array UInt8.t) (ix: int) : UInt8.t =
+  Seq.get (Slice64.view self) ix
+
+meta "rewrite_def" function index_array_u8_29
+
+function imf_month [@inline:trivial] (s: Seq.seq UInt8.t) : int = if Seq.get s 7 <> (32: UInt8.t)
+  \/ Seq.get s 11 <> (32: UInt8.t) then
+    0
+  else
+    if Seq.get s 8 = (74: UInt8.t) /\ Seq.get s 9 = (97: UInt8.t) /\ Seq.get s 10 = (110: UInt8.t) then
+      1
+    else
+      if Seq.get s 8 = (70: UInt8.t) /\ Seq.get s 9 = (101: UInt8.t) /\ Seq.get s 10 = (98: UInt8.t) then
+        2
+      else
+        if Seq.get s 8 = (77: UInt8.t) /\ Seq.get s 9 = (97: UInt8.t) /\ Seq.get s 10 = (114: UInt8.t) then
+          3
+        else
+          if Seq.get s 8 = (65: UInt8.t) /\ Seq.get s 9 = (112: UInt8.t) /\ Seq.get s 10 = (114: UInt8.t) then
+            4
+          else
+            if Seq.get s 8 = (77: UInt8.t) /\ Seq.get s 9 = (97: UInt8.t) /\ Seq.get s 10 = (121: UInt8.t) then
+              5
+            else
+              if Seq.get s 8 = (74: UInt8.t) /\ Seq.get s 9 = (117: UInt8.t) /\ Seq.get s 10 = (110: UInt8.t) then
+                6
+              else
+                if Seq.get s 8 = (74: UInt8.t) /\ Seq.get s 9 = (117: UInt8.t) /\ Seq.get s 10 = (108: UInt8.t) then
+                  7
+                else
+                  if Seq.get s 8 = (65: UInt8.t) /\ Seq.get s 9 = (117: UInt8.t) /\ Seq.get s 10 = (103: UInt8.t) then
+                    8
+                  else
+                    if Seq.get s 8 = (83: UInt8.t) /\ Seq.get s 9 = (101: UInt8.t) /\ Seq.get s 10 = (112: UInt8.t) then
+                      9
+                    else
+                      if Seq.get s 8 = (79: UInt8.t)
+                      /\ Seq.get s 9 = (99: UInt8.t) /\ Seq.get s 10 = (116: UInt8.t) then
+                        10
+                      else
+                        if Seq.get s 8 = (78: UInt8.t)
+                        /\ Seq.get s 9 = (111: UInt8.t) /\ Seq.get s 10 = (118: UInt8.t) then
+                          11
+                        else
+                          if Seq.get s 8 = (68: UInt8.t)
+                          /\ Seq.get s 9 = (101: UInt8.t) /\ Seq.get s 10 = (99: UInt8.t) then
+                            12
+                          else
+                            0
+                        
+                      
+                    
+                  
+                
+              
+            
+          
+        
+      
+    
+  
+
+
+meta "rewrite_def" function imf_month
+
+function imf_weekday [@inline:trivial] (s: Seq.seq UInt8.t) : int = if Seq.get s 3 <> (44: UInt8.t)
+  \/ Seq.get s 4 <> (32: UInt8.t) then
+    0
+  else
+    if Seq.get s 0 = (77: UInt8.t) /\ Seq.get s 1 = (111: UInt8.t) /\ Seq.get s 2 = (110: UInt8.t) then
+      1
+    else
+      if Seq.get s 0 = (84: UInt8.t) /\ Seq.get s 1 = (117: UInt8.t) /\ Seq.get s 2 = (101: UInt8.t) then
+        2
+      else
+        if Seq.get s 0 = (87: UInt8.t) /\ Seq.get s 1 = (101: UInt8.t) /\ Seq.get s 2 = (100: UInt8.t) then
+          3
+        else
+          if Seq.get s 0 = (84: UInt8.t) /\ Seq.get s 1 = (104: UInt8.t) /\ Seq.get s 2 = (117: UInt8.t) then
+            4
+          else
+            if Seq.get s 0 = (70: UInt8.t) /\ Seq.get s 1 = (114: UInt8.t) /\ Seq.get s 2 = (105: UInt8.t) then
+              5
+            else
+              if Seq.get s 0 = (83: UInt8.t) /\ Seq.get s 1 = (97: UInt8.t) /\ Seq.get s 2 = (116: UInt8.t) then
+                6
+              else
+                if Seq.get s 0 = (83: UInt8.t) /\ Seq.get s 1 = (117: UInt8.t) /\ Seq.get s 2 = (110: UInt8.t) then
+                  7
+                else
+                  0
+              
+            
+          
+        
+      
+    
+  
+
+
+meta "rewrite_def" function imf_weekday
+
+predicate imf_digit [@inline:trivial] (b: UInt8.t) = 48 <= UInt8.t'int b /\ UInt8.t'int b <= 57
+
+meta "rewrite_def" predicate imf_digit
+
+predicate imf_syntax [@inline:trivial] (s: Seq.seq UInt8.t) =
+  Seq.length s = 29
+  /\ gt_log_Int (imf_month s) 0
+  /\ gt_log_Int (imf_weekday s) 0
+  /\ Seq.get s 16 = (32: UInt8.t)
+  /\ Seq.get s 19 = (58: UInt8.t)
+  /\ Seq.get s 22 = (58: UInt8.t)
+  /\ Seq.get s 25 = (32: UInt8.t)
+  /\ Seq.get s 26 = (71: UInt8.t)
+  /\ Seq.get s 27 = (77: UInt8.t)
+  /\ Seq.get s 28 = (84: UInt8.t)
+  /\ imf_digit (Seq.get s 5)
+  /\ imf_digit (Seq.get s 6)
+  /\ imf_digit (Seq.get s 12)
+  /\ imf_digit (Seq.get s 13)
+  /\ imf_digit (Seq.get s 14)
+  /\ imf_digit (Seq.get s 15)
+  /\ imf_digit (Seq.get s 17)
+  /\ imf_digit (Seq.get s 18)
+  /\ imf_digit (Seq.get s 20) /\ imf_digit (Seq.get s 21) /\ imf_digit (Seq.get s 23) /\ imf_digit (Seq.get s 24)
+
+meta "rewrite_def" predicate imf_syntax
+
+predicate imf_encoding [@inline:trivial] (s: Seq.seq UInt8.t) (d: t_RawDate) =
+  imf_syntax s
+  /\ imf_month s = UInt8.t'int d.mon'0
+  /\ imf_weekday s = UInt8.t'int d.wday'0
+  /\ (UInt8.t'int (Seq.get s 5) - 48) * 10 + UInt8.t'int (Seq.get s 6) - 48 = UInt8.t'int d.day'0
+  /\ (UInt8.t'int (Seq.get s 12) - 48) * 1000 + (UInt8.t'int (Seq.get s 13) - 48) * 100
+          + (UInt8.t'int (Seq.get s 14) - 48) * 10
+        + UInt8.t'int (Seq.get s 15)
+      - 48
+    = UInt16.t'int d.year'0
+  /\ (UInt8.t'int (Seq.get s 17) - 48) * 10 + UInt8.t'int (Seq.get s 18) - 48 = UInt8.t'int d.hour'0
+  /\ (UInt8.t'int (Seq.get s 20) - 48) * 10 + UInt8.t'int (Seq.get s 21) - 48 = UInt8.t'int d.min'0
+  /\ (UInt8.t'int (Seq.get s 23) - 48) * 10 + UInt8.t'int (Seq.get s 24) - 48 = UInt8.t'int d.sec'0
+
+meta "rewrite_def" predicate imf_encoding
+
+let imf_bytes (d: t_RawDate) (return (x: Slice64.array UInt8.t)) =
+{[@stop_split] [@expl:imf_bytes requires] UInt8.t'int d.sec'0 < 60
+  /\ UInt8.t'int d.min'0 < 60
+  /\ UInt8.t'int d.hour'0 < 24
+  /\ 1 <= UInt8.t'int d.day'0
+  /\ UInt8.t'int d.day'0 <= 31
+  /\ 1 <= UInt8.t'int d.mon'0
+  /\ UInt8.t'int d.mon'0 <= 12
+  /\ 1970 <= UInt16.t'int d.year'0
+  /\ UInt16.t'int d.year'0 <= 9999 /\ 1 <= UInt8.t'int d.wday'0 /\ UInt8.t'int d.wday'0 <= 7}
+  any
+  [ return (result: Slice64.array UInt8.t) ->
+  {[@stop_split] [@expl:imf_bytes ensures] ([@stop_split] [@expl:imf_bytes result type invariant] inv_array_u8_29 result)
+    /\ ([@stop_split] [@expl:imf_bytes ensures #0] Seq.length (Slice64.view result) = 29
+      /\ (forall i: int. 0 <= i /\ i < 29 -> UInt8.t'int (Seq.get (Slice64.view result) i) < 128))
+    /\ ([@stop_split] [@expl:imf_bytes ensures #1] UInt8.t'int (index_array_u8_29 result 5)
+        = 48 + ComputerDivision.div (UInt8.t'int d.day'0) 10
+      /\ UInt8.t'int (index_array_u8_29 result 6) = 48 + ComputerDivision.mod (UInt8.t'int d.day'0) 10
+      /\ UInt8.t'int (index_array_u8_29 result 12) = 48 + ComputerDivision.div (UInt16.t'int d.year'0) 1000
+      /\ UInt8.t'int (index_array_u8_29 result 13)
+        = 48 + ComputerDivision.mod (ComputerDivision.div (UInt16.t'int d.year'0) 100) 10
+      /\ UInt8.t'int (index_array_u8_29 result 14)
+        = 48 + ComputerDivision.mod (ComputerDivision.div (UInt16.t'int d.year'0) 10) 10
+      /\ UInt8.t'int (index_array_u8_29 result 15) = 48 + ComputerDivision.mod (UInt16.t'int d.year'0) 10
+      /\ UInt8.t'int (index_array_u8_29 result 17) = 48 + ComputerDivision.div (UInt8.t'int d.hour'0) 10
+      /\ UInt8.t'int (index_array_u8_29 result 18) = 48 + ComputerDivision.mod (UInt8.t'int d.hour'0) 10
+      /\ UInt8.t'int (index_array_u8_29 result 20) = 48 + ComputerDivision.div (UInt8.t'int d.min'0) 10
+      /\ UInt8.t'int (index_array_u8_29 result 21) = 48 + ComputerDivision.mod (UInt8.t'int d.min'0) 10
+      /\ UInt8.t'int (index_array_u8_29 result 23) = 48 + ComputerDivision.div (UInt8.t'int d.sec'0) 10
+      /\ UInt8.t'int (index_array_u8_29 result 24) = 48 + ComputerDivision.mod (UInt8.t'int d.sec'0) 10)
+    /\ ([@stop_split] [@expl:imf_bytes ensures #2] imf_encoding (Slice64.view result) d)}
+    (! return {result}) ]
+
+type t_Utf8Error
+
+type t_Result_ref_str_Utf8Error = Ok string | Err t_Utf8Error
+
+predicate inv_Utf8Error (_1: t_Utf8Error)
+
+predicate inv_Result_ref_str_Utf8Error (_1: t_Result_ref_str_Utf8Error)
+
+axiom inv_axiom'0 [@rewrite]:
+  forall x: t_Result_ref_str_Utf8Error [inv_Result_ref_str_Utf8Error x]. inv_Result_ref_str_Utf8Error x
+    = match x with
+      | Ok f0 -> true
+      | Err f0 -> inv_Utf8Error f0
+      end
+
+function view_str (self: string) : Seq.seq Char.t
+
+let from_utf8 (v: Slice64.slice UInt8.t) (return (x: t_Result_ref_str_Utf8Error)) =
+{[@stop_split] [@expl:from_utf8 requires] forall i: int. 0 <= i /\ i < Seq.length (Slice64.view v)
+    -> UInt8.t'int (Seq.get (Slice64.view v) i) < 128}
+  any
+  [ return (result: t_Result_ref_str_Utf8Error) ->
+  {[@stop_split] [@expl:from_utf8 ensures] ([@stop_split] [@expl:from_utf8 result type invariant] inv_Result_ref_str_Utf8Error result)
+    /\ ([@stop_split] [@expl:from_utf8 ensures] match result with
+      | Ok s -> Seq.length (view_str s) = Seq.length (Slice64.view v)
+      /\ (forall i: int. 0 <= i /\ i < Seq.length (Slice64.view v)
+        -> Char.to_int (Seq.get (view_str s) i) = UInt8.t'int (Seq.get (Slice64.view v) i))
+      | Err _ -> false
+      end)}
+    (! return {result}) ]
+
+let unwrap_ref_str (self_: t_Result_ref_str_Utf8Error) (return (x: string)) =
+{[@stop_split] [@expl:unwrap_ref_str requires] ([@stop_split] [@expl:unwrap 'self_' type invariant] inv_Result_ref_str_Utf8Error self_)
+  /\ ([@stop_split] [@expl:unwrap requires] exists t: string. self_ = Ok t)}
+  any [ return (result: string) -> {[@stop_split] [@expl:unwrap ensures] Ok result = self_} (! return {result}) ]
+
+type t_Formatter
+
+predicate inv_Formatter (_1: t_Formatter)
+
+type t_Result_unit_Error = Ok'0 () | Err'0 ()
+
+predicate invariant_refmut_Formatter [@inline:trivial] (self: MutBorrow.t t_Formatter) =
+  inv_Formatter self.current /\ inv_Formatter self.final
+
+meta "rewrite_def" predicate invariant_refmut_Formatter
+
+predicate inv_refmut_Formatter [@inline:trivial] (_1: MutBorrow.t t_Formatter) = invariant_refmut_Formatter _1
+
+meta "rewrite_def" predicate inv_refmut_Formatter
+
+type t_Option_usize = None | Some UInt64.t
+
+type t_Alignment = Left | Right | Center
+
+type t_Option_Alignment = None'0 | Some'0 t_Alignment
+
+type t_DebugOptions = {
+  flags: UInt32.t;
+  width: t_Option_usize;
+  precision: t_Option_usize;
+  fill: Char.t;
+  align: t_Option_Alignment }
+
+function debug_options (_f: t_Formatter) : t_DebugOptions
+
+predicate append_sink (_f: t_Formatter)
+
+function formatter_output (_f: t_Formatter) : Seq.seq Char.t
+
+let write_str_Formatter (self_: MutBorrow.t t_Formatter) (data: string) (return (x: t_Result_unit_Error)) =
+{[@stop_split] [@expl:write_str 'self_' type invariant] inv_refmut_Formatter self_}
+  any
+  [ return (result: t_Result_unit_Error) ->
+  {[@stop_split] [@expl:write_str_Formatter ensures] ([@stop_split] [@expl:write_str ensures #0] debug_options self_.final
+      = debug_options self_.current)
+    /\ ([@stop_split] [@expl:write_str ensures #1] append_sink self_.current -> append_sink self_.final)
+    /\ ([@stop_split] [@expl:write_str ensures #2] match result with
+      | Ok'0 () -> append_sink self_.current
+      -> formatter_output self_.final = Seq.(++) (formatter_output self_.current) (view_str data)
+      | Err'0 _ -> true
+      end)}
+    (! return {result}) ]
+
+predicate resolve_refmut_Formatter [@inline:trivial] (_1: MutBorrow.t t_Formatter) = _1.final = _1.current
+
+meta "rewrite_def" predicate resolve_refmut_Formatter
+
+predicate ascii_content [@inline:trivial] (chars: Seq.seq Char.t) (bytes: Seq.seq UInt8.t) =
+  Seq.length chars = Seq.length bytes
+  /\ (forall i: int. 0 <= i /\ i < Seq.length chars -> Char.to_int (Seq.get chars i) = UInt8.t'int (Seq.get bytes i))
+
+meta "rewrite_def" predicate ascii_content
+
+meta "compute_max_steps" 1000000
+
+meta "select_lsinst" "all"
+
+let fmt_HttpDate (self: t_HttpDate) (f: MutBorrow.t t_Formatter) (return (x: t_Result_unit_Error)) =
+{[@stop_split] [@expl:fmt_HttpDate requires] ([@stop_split] [@expl:fmt 'self' type invariant] inv_ref_HttpDate self)
+  /\ ([@stop_split] [@expl:fmt 'f' type invariant] inv_refmut_Formatter f)}
+  (! bb0
+  [ bb0 = s0
+    [ s0 = as_raw {self} (fun (_x: t_RawDate) -> [ &_9 <- _x ] s1)
+    | s1 = [ &_8 <- _9 ] s2
+    | s2 = imf_bytes {_8} (fun (_x: Slice64.array UInt8.t) -> [ &buf <- _x ] s3)
+    | s3 = [ &_17 <- buf ] s4
+    | s4 = from_utf8 {_17} (fun (_x: t_Result_ref_str_Utf8Error) -> [ &_14 <- _x ] s5)
+    | s5 = unwrap_ref_str {_14} (fun (_x: string) -> [ &_13 <- _x ] s6)
+    | s6 = MutBorrow.borrow_final <t_Formatter> {f.current} {MutBorrow.get_id f}
+        (fun (_bor: MutBorrow.t t_Formatter) ->
+          [ &_11 <- _bor ] -{inv_Formatter _bor.final}-
+          [ &f <- { f with current = _bor.final } ] s7)
+      [ _ck -> (! {[@expl:type invariant] inv_Formatter f.current} any) ]
+    | s7 = write_str_Formatter {_11} {_13} (fun (_x: t_Result_unit_Error) -> [ &_ret <- _x ] s8)
+    | s8 = s9 [ _ck -> (! {[@expl:type invariant] inv_refmut_Formatter f} any) ]
+    | s9 = -{resolve_refmut_Formatter f}- s10
+    | s10 = return {_ret} ] ]
+  [ & _ret: t_Result_unit_Error = Any.any_l ()
+  | & self: t_HttpDate = self
+  | & f: MutBorrow.t t_Formatter = f
+  | & buf: Slice64.array UInt8.t = Any.any_l ()
+  | & _8: t_RawDate = Any.any_l ()
+  | & _9: t_RawDate = Any.any_l ()
+  | & _11: MutBorrow.t t_Formatter = Any.any_l ()
+  | & _13: string = Any.any_l ()
+  | & _14: t_Result_ref_str_Utf8Error = Any.any_l ()
+  | & _17: Slice64.array UInt8.t = Any.any_l () ])
+  [ return (result: t_Result_unit_Error) -> {[@stop_split] [@expl:fmt ensures] match result with
+      | Ok'0 () -> append_sink f.current
+      -> (exists chars: Seq.seq Char.t, bytes: Seq.seq UInt8.t. imf_encoding bytes (raw_model self)
+        /\ ascii_content chars bytes /\ formatter_output f.final = Seq.(++) (formatter_output f.current) chars)
+      | Err'0 _ -> true
+      end}
+    (! return {result}) ]

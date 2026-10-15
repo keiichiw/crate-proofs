@@ -1,0 +1,92 @@
+theory Coma
+  
+  (* use why3.BuiltIn.BuiltIn *)
+  
+  (* use why3.Bool.Bool *)
+  
+  (* use why3.Unit.Unit *)
+  
+  (* use seq.Seq *)
+  
+  (* use map.Map *)
+  
+  (* use creusot.int.UInt8 *)
+  
+  (* use creusot.prelude.Char *)
+  
+  function index_Mapping_ref_str_Seq_Int (self:string -> seq int) (a:
+    string) : seq int = get self a
+  
+  (* meta rewrite_def function index_Mapping_ref_str_Seq_Int *)
+  
+  function map_ref_str (seq string) (string -> seq int) : seq (seq int)
+  
+  axiom map_ref_str_spec :
+    forall self:seq string, m:string -> seq int [map_ref_str self m].
+     length (map_ref_str self m) = length self
+  
+  axiom map_ref_str_spec'0 :
+    forall self:seq string, m:string -> seq int [map_ref_str self m].
+     forall i:int.
+      0 <= i /\ i < length self ->
+      get1 (map_ref_str self m) i =
+      index_Mapping_ref_str_Seq_Int m (get1 self i)
+  
+  function index_Mapping_u8_Int (self:t -> int) (a:t) : int = get self a
+  
+  (* meta rewrite_def function index_Mapping_u8_Int *)
+  
+  function map_u8 (seq t) (t -> int) : seq int
+  
+  axiom map_u8_spec :
+    forall self:seq t, m:t -> int [map_u8 self m].
+     length (map_u8 self m) = length self
+  
+  axiom map_u8_spec'0 :
+    forall self:seq t, m:t -> int [map_u8 self m].
+     forall i:int.
+      0 <= i /\ i < length self ->
+      get1 (map_u8 self m) i = index_Mapping_u8_Int m (get1 self i)
+  
+  function tail_char (self:seq t1) : seq t1 = self[1..length self]
+  
+  function flat_map_char (seq t1) (t1 -> seq t) : seq t
+  
+  axiom flat_map_char_def :
+    forall self:seq t1, other:t1 -> seq t [flat_map_char self other].
+     flat_map_char self other =
+     (if length self = 0 then empty: seq t
+      else get other (get1 self 0) ++ flat_map_char (tail_char self) other)
+  
+  function to_utf8_char t1 : seq t
+  
+  axiom to_utf8_char_spec :
+    forall self:t1 [to_utf8_char self].
+     1 <= length (to_utf8_char self) /\ length (to_utf8_char self) <= 4
+  
+  function to_bytes (self:seq t1) : seq t =
+    flat_map_char self (fun (c:t1) -> to_utf8_char c)
+  
+  function view_str string : seq t1
+  
+  function string_chunk_bytes (s:string) : seq int =
+    map_u8 (to_bytes (view_str s)) (fun (b:t) -> t'int b)
+  
+  (* meta compute_max_steps 1000000 *)
+  
+  (* meta select_lsinst "all" *)
+  
+  constant ab : seq string
+  
+  constant bc : seq string
+  
+  predicate string_chunk_map_concat (seq string) (seq string)
+  
+  goal vc_string_chunk_map_concat :
+    true /\
+    map_ref_str (ab ++ bc) (fun (s:string) -> string_chunk_bytes s) =
+    (map_ref_str ab (fun (s:string) -> string_chunk_bytes s)
+     ++ map_ref_str bc (fun (s:string) -> string_chunk_bytes s))
+  
+end
+

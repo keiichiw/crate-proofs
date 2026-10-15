@@ -1,0 +1,360 @@
+(* PercentDecode<'a> *)
+
+use creusot.slice.Slice64
+use creusot.int.UInt8
+use seq.Seq
+use map.Map
+use creusot.int.UInt64
+use creusot.prelude.Char
+use creusot.prelude.Any
+use int.Int
+
+type t_Iter_u8
+
+type t_PercentDecode = { bytes: t_Iter_u8 }
+
+type t_Vec_u8_Global
+
+type t_Cow_slice_u8 = Borrowed (Slice64.slice UInt8.t) | Owned t_Vec_u8_Global
+
+predicate inv_Iter_u8 (_1: t_Iter_u8)
+
+predicate inv_PercentDecode (_1: t_PercentDecode)
+
+axiom inv_axiom [@rewrite]: forall x: t_PercentDecode [inv_PercentDecode x]. inv_PercentDecode x = inv_Iter_u8 x.bytes
+
+predicate precondition_from (self: ()) (args: t_PercentDecode) = let iter = args in inv_PercentDecode iter
+
+meta "rewrite_def" predicate precondition_from
+
+function view_Iter_u8 (self: t_Iter_u8) : Slice64.slice UInt8.t
+
+function remaining_input [@inline:trivial] (self: t_PercentDecode) : Seq.seq UInt8.t =
+  Slice64.view (view_Iter_u8 self.bytes)
+
+meta "rewrite_def" function remaining_input
+
+function index_Mapping_u8_Int [@inline:trivial] (self: Map.map UInt8.t int) (a: UInt8.t) : int = Map.get self a
+
+meta "rewrite_def" function index_Mapping_u8_Int
+
+function map_u8 (self: Seq.seq UInt8.t) (m: Map.map UInt8.t int) : Seq.seq int
+
+axiom map_u8_spec: forall self: Seq.seq UInt8.t, m: Map.map UInt8.t int [map_u8 self m]. Seq.length (map_u8 self m)
+    = Seq.length self
+
+axiom map_u8_spec'0: forall self: Seq.seq UInt8.t, m: Map.map UInt8.t int [map_u8 self m]. forall i: int. 0 <= i
+        /\ i < Seq.length self -> Seq.get (map_u8 self m) i = index_Mapping_u8_Int m (Seq.get self i)
+
+function byte_sequence_as_ints (bytes'0: Seq.seq UInt8.t) : Seq.seq int =
+  map_u8 bytes'0 (fun (byte: UInt8.t) -> UInt8.t'int byte)
+
+predicate ge_log_Int [@inline:trivial] (self: int) (other: int) = other <= self
+
+meta "rewrite_def" predicate ge_log_Int
+
+function percent_hex_value_model (byte: int) : int = if 48 <= byte /\ byte <= 57 then
+    byte - 48
+  else
+    if 65 <= byte /\ byte <= 70 then byte - 55 else if 97 <= byte /\ byte <= 102 then byte - 87 else - 1
+
+
+function decoded_trace (input: Seq.seq int) : Seq.seq int
+
+axiom decoded_trace_def: forall input: Seq.seq int [decoded_trace input]. decoded_trace input
+    = (if Seq.length input = 0 then
+      Seq.empty: Seq.seq int
+    else
+      if ge_log_Int (Seq.length input) 3
+      /\ Seq.get input 0 = 37
+      /\ ge_log_Int (percent_hex_value_model (Seq.get input 1)) 0
+      /\ ge_log_Int (percent_hex_value_model (Seq.get input 2)) 0 then
+        Seq.(++) (Seq.singleton (percent_hex_value_model (Seq.get input 1) * 16
+        + percent_hex_value_model (Seq.get input 2))) (decoded_trace (Seq.([..]) input 3 (Seq.length input)))
+      else
+        Seq.(++) (Seq.singleton (Seq.get input 0)) (decoded_trace (Seq.([..]) input 1 (Seq.length input)))
+    
+    )
+
+constant const_MAX: UInt64.t = (18446744073709551615: UInt64.t)
+
+function view_Vec_u8_Global (self: t_Vec_u8_Global) : Seq.seq UInt8.t
+
+axiom view_Vec_u8_Global_spec:
+  forall self: t_Vec_u8_Global [view_Vec_u8_Global self]. Seq.length (view_Vec_u8_Global self) <= UInt64.t'int const_MAX
+
+let from_Cow_slice_u8 (iter: t_PercentDecode) (return (x: t_Cow_slice_u8)) =
+{[@stop_split] [@expl:from 'iter' type invariant] inv_PercentDecode iter}
+  any
+  [ return (result: t_Cow_slice_u8) -> {[@stop_split] [@expl:from ensures] match result with
+      | Borrowed bytes'0 -> Slice64.view bytes'0 = remaining_input iter
+      /\ byte_sequence_as_ints (Slice64.view bytes'0) = decoded_trace (byte_sequence_as_ints (remaining_input iter))
+      | Owned bytes'0 -> byte_sequence_as_ints (view_Vec_u8_Global bytes'0)
+        = decoded_trace (byte_sequence_as_ints (remaining_input iter))
+      /\ Seq.length (view_Vec_u8_Global bytes'0) < Seq.length (remaining_input iter)
+      end}
+    (! return {result}) ]
+
+predicate postcondition_from (self: ()) (args: t_PercentDecode) (result: t_Cow_slice_u8) =
+  let iter = args in match result with
+    | Borrowed bytes'0 -> Slice64.view bytes'0 = remaining_input iter
+    /\ byte_sequence_as_ints (Slice64.view bytes'0) = decoded_trace (byte_sequence_as_ints (remaining_input iter))
+    | Owned bytes'0 -> byte_sequence_as_ints (view_Vec_u8_Global bytes'0)
+      = decoded_trace (byte_sequence_as_ints (remaining_input iter))
+    /\ Seq.length (view_Vec_u8_Global bytes'0) < Seq.length (remaining_input iter)
+    end
+
+meta "rewrite_def" predicate postcondition_from
+
+let into_PercentDecode (self_: t_PercentDecode) (return (x: t_Cow_slice_u8)) =
+{[@stop_split] [@expl:into_PercentDecode requires] ([@stop_split] [@expl:into 'self_' type invariant] inv_PercentDecode self_)
+  /\ ([@stop_split] [@expl:into requires] precondition_from () self_)}
+  any
+  [ return (result: t_Cow_slice_u8) -> {[@stop_split] [@expl:into ensures] postcondition_from () self_ result}
+    (! return {result}) ]
+
+type t_String
+
+type t_Cow_str = Borrowed'0 string | Owned'0 t_String
+
+predicate inv_String (_1: t_String)
+
+predicate inv_Cow_str (_1: t_Cow_str)
+
+axiom inv_axiom'0 [@rewrite]: forall x: t_Cow_str [inv_Cow_str x]. inv_Cow_str x
+    = match x with
+      | Borrowed'0 f0 -> true
+      | Owned'0 f0 -> inv_String f0
+      end
+
+type tup3_Int_Int_bool = { f0: int; f1: int; f2: bool }
+
+function utf8_step (bytes'0: Seq.seq int) (pos: int) : tup3_Int_Int_bool =
+  let b0 = Seq.get bytes'0 pos in let remaining = Seq.length bytes'0 - pos in if 0 <= b0 /\ b0 <= 127 then
+    { f0 = b0; f1 = 1; f2 = true }
+  else
+    if 194 <= b0 /\ b0 <= 223 then
+      if remaining < 2 then
+        { f0 = 65533; f1 = remaining; f2 = false }
+      else
+        let b1 = Seq.get bytes'0 (pos + 1) in if 128 <= b1 /\ b1 <= 191 then
+          { f0 = (b0 - 192) * 64 + (b1 - 128); f1 = 2; f2 = true }
+        else
+          { f0 = 65533; f1 = 1; f2 = false }
+      
+    
+    else
+      if 224 <= b0 /\ b0 <= 239 then
+        if remaining < 2 then
+          { f0 = 65533; f1 = remaining; f2 = false }
+        else
+          let b1 = Seq.get bytes'0 (pos + 1) in let second_ok = if b0 = 224 then
+            160 <= b1 /\ b1 <= 191
+          else
+            if b0 = 237 then 128 <= b1 /\ b1 <= 159 else 128 <= b1 /\ b1 <= 191
+           in if not second_ok then
+            { f0 = 65533; f1 = 1; f2 = false }
+          else
+            if remaining < 3 then
+              { f0 = 65533; f1 = remaining; f2 = false }
+            else
+              let b2 = Seq.get bytes'0 (pos + 2) in if 128 <= b2 /\ b2 <= 191 then
+                { f0 = (b0 - 224) * 4096 + (b1 - 128) * 64 + (b2 - 128); f1 = 3; f2 = true }
+              else
+                { f0 = 65533; f1 = 2; f2 = false }
+            
+          
+        
+      
+      else
+        if 240 <= b0 /\ b0 <= 244 then
+          if remaining < 2 then
+            { f0 = 65533; f1 = remaining; f2 = false }
+          else
+            let b1 = Seq.get bytes'0 (pos + 1) in let second_ok = if b0 = 240 then
+              144 <= b1 /\ b1 <= 191
+            else
+              if b0 = 244 then 128 <= b1 /\ b1 <= 143 else 128 <= b1 /\ b1 <= 191
+             in if not second_ok then
+              { f0 = 65533; f1 = 1; f2 = false }
+            else
+              if remaining < 3 then
+                { f0 = 65533; f1 = remaining; f2 = false }
+              else
+                let b2 = Seq.get bytes'0 (pos + 2) in if not (128 <= b2 /\ b2 <= 191) then
+                  { f0 = 65533; f1 = 2; f2 = false }
+                else
+                  if remaining < 4 then
+                    { f0 = 65533; f1 = remaining; f2 = false }
+                  else
+                    let b3 = Seq.get bytes'0 (pos + 3) in if 128 <= b3 /\ b3 <= 191 then
+                      { f0 = (b0 - 240) * 262144 + (b1 - 128) * 4096 + (b2 - 128) * 64 + (b3 - 128); f1 = 4; f2 = true }
+                    else
+                      { f0 = 65533; f1 = 3; f2 = false }
+                  
+                
+              
+            
+          
+        
+        else
+          { f0 = 65533; f1 = 1; f2 = false }
+      
+    
+  
+
+
+axiom utf8_step_spec: forall bytes'0: Seq.seq int, pos: int [utf8_step bytes'0 pos]. 0 <= pos
+      /\ pos < Seq.length bytes'0
+    -> 1 <= (utf8_step bytes'0 pos).f1 /\ (utf8_step bytes'0 pos).f1 <= Seq.length bytes'0 - pos
+
+axiom utf8_step_spec'0: forall bytes'0: Seq.seq int, pos: int [utf8_step bytes'0 pos]. 0 <= pos
+      /\ pos < Seq.length bytes'0
+    -> (utf8_step bytes'0 pos).f0 = 65533
+    \/ 0 <= (utf8_step bytes'0 pos).f0 /\ (utf8_step bytes'0 pos).f0 <= 55295
+    \/ 57344 <= (utf8_step bytes'0 pos).f0 /\ (utf8_step bytes'0 pos).f0 <= 1114111
+
+predicate utf8_is_valid (bytes'0: Seq.seq int)
+
+axiom utf8_is_valid_def: forall bytes'0: Seq.seq int [utf8_is_valid bytes'0]. utf8_is_valid bytes'0
+    = (if Seq.length bytes'0 = 0 then
+      true
+    else
+      let {f1 = consumed; f2 = valid} = utf8_step bytes'0 0 in valid
+      /\ utf8_is_valid (Seq.([..]) bytes'0 consumed (Seq.length bytes'0))
+    )
+
+function index_Mapping_char_Int [@inline:trivial] (self: Map.map Char.t int) (a: Char.t) : int = Map.get self a
+
+meta "rewrite_def" function index_Mapping_char_Int
+
+function map_char (self: Seq.seq Char.t) (m: Map.map Char.t int) : Seq.seq int
+
+axiom map_char_spec: forall self: Seq.seq Char.t, m: Map.map Char.t int [map_char self m]. Seq.length (map_char self m)
+    = Seq.length self
+
+axiom map_char_spec'0: forall self: Seq.seq Char.t, m: Map.map Char.t int [map_char self m]. forall i: int. 0 <= i
+        /\ i < Seq.length self -> Seq.get (map_char self m) i = index_Mapping_char_Int m (Seq.get self i)
+
+function chars_as_scalars [@inline:trivial] (chars: Seq.seq Char.t) : Seq.seq int =
+  map_char chars (fun (c: Char.t) -> Char.to_int c)
+
+meta "rewrite_def" function chars_as_scalars
+
+function view_str (self: string) : Seq.seq Char.t
+
+function utf8_lossy_model (bytes'0: Seq.seq int) : Seq.seq int
+
+axiom utf8_lossy_model_def: forall bytes'0: Seq.seq int [utf8_lossy_model bytes'0]. utf8_lossy_model bytes'0
+    = (if Seq.length bytes'0 = 0 then
+      Seq.empty: Seq.seq int
+    else
+      let {f0 = scalar; f1 = consumed} = utf8_step bytes'0 0 in Seq.(++) (Seq.singleton scalar) (utf8_lossy_model (Seq.([..]) bytes'0 consumed (Seq.length bytes'0)))
+    )
+
+function tail_char (self: Seq.seq Char.t) : Seq.seq Char.t = Seq.([..]) self 1 (Seq.length self)
+
+function flat_map_char (self: Seq.seq Char.t) (other: Map.map Char.t (Seq.seq UInt8.t)) : Seq.seq UInt8.t
+
+axiom flat_map_char_def:
+  forall self: Seq.seq Char.t, other: Map.map Char.t (Seq.seq UInt8.t) [flat_map_char self other]. flat_map_char self other
+    = (if Seq.length self = 0 then
+      Seq.empty: Seq.seq UInt8.t
+    else
+      Seq.(++) (Map.get other (Seq.get self 0)) (flat_map_char (tail_char self) other)
+    )
+
+function to_utf8_char (self: Char.t) : Seq.seq UInt8.t
+
+axiom to_utf8_char_spec: forall self: Char.t [to_utf8_char self]. 1 <= Seq.length (to_utf8_char self)
+    /\ Seq.length (to_utf8_char self) <= 4
+
+function to_bytes (self: Seq.seq Char.t) : Seq.seq UInt8.t = flat_map_char self (fun (c: Char.t) -> to_utf8_char c)
+
+function view_String (self: t_String) : Seq.seq Char.t
+
+predicate postcondition_from_utf8_lossy (self: ()) (args: Slice64.slice UInt8.t) (result: t_Cow_str) =
+  let bytes'0 = args in inv_Cow_str result
+  /\ match result with
+    | Borrowed'0 s -> utf8_is_valid (map_u8 (Slice64.view bytes'0) (fun (b: UInt8.t) -> UInt8.t'int b))
+    /\ chars_as_scalars (view_str s)
+      = utf8_lossy_model (map_u8 (Slice64.view bytes'0) (fun (b: UInt8.t) -> UInt8.t'int b))
+    /\ to_bytes (view_str s) = Slice64.view bytes'0
+    | Owned'0 s -> not utf8_is_valid (map_u8 (Slice64.view bytes'0) (fun (b: UInt8.t) -> UInt8.t'int b))
+    /\ chars_as_scalars (view_String s)
+    = utf8_lossy_model (map_u8 (Slice64.view bytes'0) (fun (b: UInt8.t) -> UInt8.t'int b))
+    end
+
+meta "rewrite_def" predicate postcondition_from_utf8_lossy
+
+function string_scalars (s: Seq.seq Char.t) : Seq.seq int = map_char s (fun (c: Char.t) -> Char.to_int c)
+
+function cow_str_scalars (value: t_Cow_str) : Seq.seq int = match value with
+    | Borrowed'0 s -> string_scalars (view_str s)
+    | Owned'0 s -> string_scalars (view_String s)
+    end
+
+predicate lossy_bytes_relation (bytes'0: Seq.seq UInt8.t) (output: Seq.seq int) =
+  exists raw: Slice64.slice UInt8.t, decoded: t_Cow_str. Slice64.view raw = bytes'0
+    /\ postcondition_from_utf8_lossy () raw decoded /\ cow_str_scalars decoded = output
+
+function cow_bytes (value: t_Cow_slice_u8) : Seq.seq UInt8.t = match value with
+    | Borrowed bytes'0 -> Slice64.view bytes'0
+    | Owned bytes'0 -> view_Vec_u8_Global bytes'0
+    end
+
+let from_utf8_lossy (bytes'0: Slice64.slice UInt8.t) (return (x: t_Cow_str)) = any
+  [ return (result: t_Cow_str) ->
+  {[@stop_split] [@expl:from_utf8_lossy ensures] ([@stop_split] [@expl:from_utf8_lossy result type invariant] inv_Cow_str result)
+    /\ ([@stop_split] [@expl:from_utf8_lossy ensures] match result with
+      | Borrowed'0 s -> utf8_is_valid (map_u8 (Slice64.view bytes'0) (fun (b: UInt8.t) -> UInt8.t'int b))
+      /\ chars_as_scalars (view_str s)
+        = utf8_lossy_model (map_u8 (Slice64.view bytes'0) (fun (b: UInt8.t) -> UInt8.t'int b))
+      /\ to_bytes (view_str s) = Slice64.view bytes'0
+      | Owned'0 s -> not utf8_is_valid (map_u8 (Slice64.view bytes'0) (fun (b: UInt8.t) -> UInt8.t'int b))
+      /\ chars_as_scalars (view_String s)
+      = utf8_lossy_model (map_u8 (Slice64.view bytes'0) (fun (b: UInt8.t) -> UInt8.t'int b))
+      end)}
+    (! return {result}) ]
+
+let decode_utf8_lossy (input: t_Cow_slice_u8) (return (x: t_Cow_str)) = any
+  [ return (result: t_Cow_str) ->
+  {[@stop_split] [@expl:decode_utf8_lossy ensures] ([@stop_split] [@expl:decode_utf8_lossy result type invariant] inv_Cow_str result)
+    /\ ([@stop_split] [@expl:decode_utf8_lossy ensures #0] lossy_bytes_relation (cow_bytes input) (cow_str_scalars result))
+    /\ ([@stop_split] [@expl:decode_utf8_lossy ensures #1] match input with
+      | Borrowed bytes'0 -> postcondition_from_utf8_lossy () bytes'0 result
+      | Owned _ -> match result with
+        | Borrowed'0 _ -> false
+        | Owned'0 _ -> true
+        end
+      end)}
+    (! return {result}) ]
+
+predicate lossy_int_relation (bytes'0: Seq.seq int) (output: Seq.seq int) =
+  exists raw: Slice64.slice UInt8.t, decoded: t_Cow_str. byte_sequence_as_ints (Slice64.view raw) = bytes'0
+    /\ postcondition_from_utf8_lossy () raw decoded /\ cow_str_scalars decoded = output
+
+meta "compute_max_steps" 1000000
+
+meta "select_lsinst" "all"
+
+let decode_utf8_lossy'0 (self: t_PercentDecode) (return (x: t_Cow_str)) =
+{[@stop_split] [@expl:decode_utf8_lossy 'self' type invariant] inv_PercentDecode self}
+  (! bb0
+  [ bb0 = s0
+    [ s0 = into_PercentDecode {self} (fun (_x: t_Cow_slice_u8) -> [ &_4 <- _x ] s1)
+    | s1 = decode_utf8_lossy {_4} (fun (_x: t_Cow_str) -> [ &_ret <- _x ] s2)
+    | s2 = return {_ret} ] ]
+  [ & _ret: t_Cow_str = Any.any_l () | & self: t_PercentDecode = self | & _4: t_Cow_slice_u8 = Any.any_l () ])
+  [ return (result: t_Cow_str) ->
+  {[@stop_split] [@expl:decode_utf8_lossy ensures] ([@stop_split] [@expl:decode_utf8_lossy result type invariant] inv_Cow_str result)
+    /\ ([@stop_split] [@expl:decode_utf8_lossy ensures] let source = byte_sequence_as_ints (remaining_input self) in let decoded = decoded_trace source in let scalars = cow_str_scalars result in lossy_int_relation decoded scalars
+    /\ (if decoded = source then
+      postcondition_from_utf8_lossy () (view_Iter_u8 self.bytes) result
+    else
+      match result with
+        | Owned'0 _ -> true
+        | Borrowed'0 _ -> false
+        end
+    ))}
+    (! return {result}) ]

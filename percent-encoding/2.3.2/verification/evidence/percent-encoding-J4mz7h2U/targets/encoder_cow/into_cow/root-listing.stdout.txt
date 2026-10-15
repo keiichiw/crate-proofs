@@ -1,0 +1,932 @@
+theory Coma
+  
+  (* use why3.BuiltIn.BuiltIn *)
+  
+  (* use why3.Bool.Bool *)
+  
+  (* use why3.Unit.Unit *)
+  
+  (* use creusot.slice.Slice64 *)
+  
+  (* use creusot.int.UInt8 *)
+  
+  (* use creusot.int.UInt32 *)
+  
+  (* use creusot.prelude.MutBorrow *)
+  
+  (* use map.Map *)
+  
+  (* use creusot.prelude.Char *)
+  
+  (* use creusot.prelude.Any *)
+  
+  type t_AsciiSet
+  
+  type t_PercentEncode =
+    | T_PercentEncode'mk (bytes:slice t) (ascii_set:t_AsciiSet)
+  
+  (* meta model_record function ascii_set *)
+  
+  (* meta model_record function bytes *)
+  
+  predicate inv_AsciiSet t_AsciiSet
+  
+  predicate invariant_ref_AsciiSet (self:t_AsciiSet) = inv_AsciiSet self
+  
+  (* meta rewrite_def predicate invariant_ref_AsciiSet *)
+  
+  predicate inv_ref_AsciiSet (_1:t_AsciiSet) = invariant_ref_AsciiSet _1
+  
+  (* meta rewrite_def predicate inv_ref_AsciiSet *)
+  
+  predicate inv_PercentEncode t_PercentEncode
+  
+  axiom inv_axiom :
+    forall x:t_PercentEncode [inv_PercentEncode x].
+     inv_PercentEncode x <-> inv_ref_AsciiSet (x.ascii_set)
+  
+  predicate invariant_ref_PercentEncode (self:t_PercentEncode) =
+    inv_PercentEncode self
+  
+  (* meta rewrite_def predicate invariant_ref_PercentEncode *)
+  
+  predicate inv_ref_PercentEncode (_1:t_PercentEncode) =
+    invariant_ref_PercentEncode _1
+  
+  (* meta rewrite_def predicate inv_ref_PercentEncode *)
+  
+  function remaining_input (self:t_PercentEncode) : seq t = view (self.bytes)
+  
+  (* meta rewrite_def function remaining_input *)
+  
+  function mask_words t_AsciiSet : seq t1
+  
+  axiom mask_words_spec :
+    forall self:t_AsciiSet [mask_words self]. length (mask_words self) = 4
+  
+  function configured_set (self:t_PercentEncode) : seq t1 =
+    mask_words (self.ascii_set)
+  
+  (* meta rewrite_def function configured_set *)
+  
+  goal vc_clone_PercentEncode : true
+  
+  type t_Option_ref_str =
+    | None
+    | Some string
+  
+  predicate invariant_refmut_PercentEncode (self:t2 t_PercentEncode) =
+    inv_PercentEncode (self.current) /\ inv_PercentEncode (self.final)
+  
+  (* meta rewrite_def predicate invariant_refmut_PercentEncode *)
+  
+  predicate inv_refmut_PercentEncode (_1:t2 t_PercentEncode) =
+    invariant_refmut_PercentEncode _1
+  
+  (* meta rewrite_def predicate inv_refmut_PercentEncode *)
+  
+  function index_Mapping_ref_str_Seq_Int (self:string -> seq int) (a:
+    string) : seq int = get self a
+  
+  (* meta rewrite_def function index_Mapping_ref_str_Seq_Int *)
+  
+  function map_ref_str (seq string) (string -> seq int) : seq (seq int)
+  
+  axiom map_ref_str_spec :
+    forall self:seq string, m:string -> seq int [map_ref_str self m].
+     length (map_ref_str self m) = length self
+  
+  axiom map_ref_str_spec'0 :
+    forall self:seq string, m:string -> seq int [map_ref_str self m].
+     forall i:int.
+      0 <= i /\ i < length self ->
+      get1 (map_ref_str self m) i =
+      index_Mapping_ref_str_Seq_Int m (get1 self i)
+  
+  function index_Mapping_u8_Int (self:t -> int) (a:t) : int = get self a
+  
+  (* meta rewrite_def function index_Mapping_u8_Int *)
+  
+  function map_u8 (seq t) (t -> int) : seq int
+  
+  axiom map_u8_spec :
+    forall self:seq t, m:t -> int [map_u8 self m].
+     length (map_u8 self m) = length self
+  
+  axiom map_u8_spec'0 :
+    forall self:seq t, m:t -> int [map_u8 self m].
+     forall i:int.
+      0 <= i /\ i < length self ->
+      get1 (map_u8 self m) i = index_Mapping_u8_Int m (get1 self i)
+  
+  function tail_char (self:seq t3) : seq t3 = self[1..length self]
+  
+  function flat_map_char (seq t3) (t3 -> seq t) : seq t
+  
+  axiom flat_map_char_def :
+    forall self:seq t3, other:t3 -> seq t [flat_map_char self other].
+     flat_map_char self other =
+     (if length self = 0 then empty: seq t
+      else get other (get1 self 0) ++ flat_map_char (tail_char self) other)
+  
+  function to_utf8_char t3 : seq t
+  
+  axiom to_utf8_char_spec :
+    forall self:t3 [to_utf8_char self].
+     1 <= length (to_utf8_char self) /\ length (to_utf8_char self) <= 4
+  
+  function to_bytes (self:seq t3) : seq t =
+    flat_map_char self (fun (c:t3) -> to_utf8_char c)
+  
+  function view_str string : seq t3
+  
+  function string_chunk_bytes (s:string) : seq int =
+    map_u8 (to_bytes (view_str s)) (fun (b:t) -> t'int b)
+  
+  predicate gt_log_Int (self:int) (other:int) = other < self
+  
+  (* meta rewrite_def predicate gt_log_Int *)
+  
+  predicate ge_log_Int (self:int) (other:int) = other <= self
+  
+  (* meta rewrite_def predicate ge_log_Int *)
+  
+  predicate should_encode_model (mask:seq t1) (byte:t) =
+    ge_log_Int (t'int byte) 128 \/
+    not bw_and (get1 mask (div (t'int byte) 32))
+        (shl (1:t1) (of_int (t'int (bw_and1 byte (31:t))))) = (0:t1)
+  
+  function uppercase_hex (digit:int) : int =
+    if digit < 10 then 48 + digit else 55 + digit
+  
+  axiom uppercase_hex_spec :
+    forall digit:int [uppercase_hex digit].
+     uppercase_hex digit = (if digit < 10 then 48 + digit else 55 + digit)
+  
+  function uppercase_hex'0 (digit:int) : int = uppercase_hex digit
+  
+  function encoded_byte_model (byte:int) : seq int =
+    (singleton 37 ++ singleton (uppercase_hex'0 (div byte 16)))
+    ++ singleton (uppercase_hex'0 (mod byte 16))
+  
+  function safe_run_end (seq t) int (seq t1) : int
+  
+  axiom safe_run_end_spec :
+    forall input:seq t, start:int, mask:seq t1
+     [safe_run_end input start mask].
+     0 <= start /\ start <= length input ->
+     length mask = 4 ->
+     start <= safe_run_end input start mask /\
+     safe_run_end input start mask <= length input
+  
+  axiom safe_run_end_spec'0 :
+    forall input:seq t, start:int, mask:seq t1
+     [safe_run_end input start mask].
+     0 <= start /\ start <= length input ->
+     length mask = 4 ->
+     (forall i:int.
+       start <= i /\ i < safe_run_end input start mask ->
+       not should_encode_model mask (get1 input i))
+  
+  axiom safe_run_end_spec'1 :
+    forall input:seq t, start:int, mask:seq t1
+     [safe_run_end input start mask].
+     0 <= start /\ start <= length input ->
+     length mask = 4 ->
+     safe_run_end input start mask = length input \/
+     should_encode_model mask (get1 input (safe_run_end input start mask))
+  
+  axiom safe_run_end_spec'2 :
+    forall input:seq t, start:int, mask:seq t1
+     [safe_run_end input start mask].
+     0 <= start /\ start <= length input ->
+     length mask = 4 ->
+     start < length input /\ not should_encode_model mask (get1 input start) ->
+     start < safe_run_end input start mask
+  
+  function byte_sequence_as_ints (bytes'0:seq t) : seq int =
+    map_u8 bytes'0 (fun (byte:t) -> t'int byte)
+  
+  function encoded_chunks (seq t1) (seq t) : seq (seq int)
+  
+  axiom encoded_chunks_def :
+    forall mask:seq t1, input:seq t [encoded_chunks mask input].
+     length mask = 4 ->
+     encoded_chunks mask input =
+     (if length input = 0 then empty: seq (seq int)
+      else if should_encode_model mask (get1 input 0)
+           then singleton (encoded_byte_model (t'int (get1 input 0)))
+                ++ encoded_chunks mask input[1..length input]
+           else let end' = safe_run_end input 0 mask in
+                singleton (byte_sequence_as_ints input[0..end'])
+                ++ encoded_chunks mask input[end'..length input])
+  
+  axiom encoded_chunks_spec :
+    forall mask:seq t1, input:seq t [encoded_chunks mask input].
+     length mask = 4 ->
+     (if length input = 0 then length (encoded_chunks mask input) = 0
+      else gt_log_Int (length (encoded_chunks mask input)) 0 /\
+           (if should_encode_model mask (get1 input 0)
+            then get1 (encoded_chunks mask input) 0 =
+                 encoded_byte_model (t'int (get1 input 0)) /\
+                 (encoded_chunks mask input)[1..length
+                                                (encoded_chunks mask input)] =
+                 encoded_chunks mask input[1..length input]
+            else let end' = safe_run_end input 0 mask in
+                 get1 (encoded_chunks mask input) 0 =
+                 byte_sequence_as_ints input[0..end'] /\
+                 (encoded_chunks mask input)[1..length
+                                                (encoded_chunks mask input)] =
+                 encoded_chunks mask input[end'..length input]))
+  
+  function concat_empty_Seq_Int (seq (seq int)) : unit
+  
+  axiom concat_empty_Seq_Int_spec :
+    forall self:seq (seq int). (self ++ (empty: seq (seq int))) = self
+  
+  axiom concat_empty_Seq_Int_spec'0 :
+    forall self:seq (seq int). ((empty: seq (seq int)) ++ self) = self
+  
+  predicate produces_PercentEncode (self:t_PercentEncode) (visited:seq
+    string) (o:t_PercentEncode) =
+    encoded_chunks (configured_set self) (remaining_input self) =
+    (map_ref_str visited (fun (chunk:string) -> string_chunk_bytes chunk)
+     ++ encoded_chunks (configured_set o) (remaining_input o))
+  
+  function produces_trans_PercentEncode (a:t_PercentEncode) (ab:seq string)
+    (b:t_PercentEncode) (bc:seq string) (c:t_PercentEncode) : unit = ()
+  
+  axiom produces_trans_PercentEncode_spec :
+    forall a:t_PercentEncode, ab:seq string, b:t_PercentEncode, bc:seq
+     string, c:t_PercentEncode.
+     produces_PercentEncode a ab b ->
+     produces_PercentEncode b bc c -> produces_PercentEncode a (ab ++ bc) c
+  
+  function produces_refl_PercentEncode (self:t_PercentEncode) : unit =
+    let empty_chunks =
+      map_ref_str (empty: seq string)
+      (fun (chunk:string) -> string_chunk_bytes chunk)
+    in
+    let encoded =
+      encoded_chunks (configured_set self) (remaining_input self)
+    in let _ = concat_empty_Seq_Int encoded in ()
+  
+  axiom produces_refl_PercentEncode_spec :
+    forall self:t_PercentEncode.
+     produces_PercentEncode self (empty: seq string) self
+  
+  predicate resolve_refmut_PercentEncode (_1:t2 t_PercentEncode) =
+    _1.final = _1.current
+  
+  (* meta rewrite_def predicate resolve_refmut_PercentEncode *)
+  
+  predicate completed_PercentEncode (self:t2 t_PercentEncode) =
+    length (remaining_input (self.current)) = 0 /\
+    resolve_refmut_PercentEncode self
+  
+  goal vc_next_PercentEncode : true
+  
+  goal vc_elim_Some : true
+  
+  type t_String
+  
+  predicate inv_String t_String
+  
+  function view_String t_String : seq t3
+  
+  goal vc_new : true
+  
+  predicate empty_prefix_to_bytes (seq t3)
+  
+  axiom empty_prefix_to_bytes_spec :
+    forall prefix:seq t3 [empty_prefix_to_bytes prefix].
+     length prefix = 0 -> empty_prefix_to_bytes prefix
+  
+  axiom empty_prefix_to_bytes_spec'0 :
+    forall prefix:seq t3. length prefix = 0 -> prefix == (empty: seq t3)
+  
+  axiom empty_prefix_to_bytes_spec'1 :
+    forall prefix:seq t3.
+     length prefix = 0 -> to_bytes prefix == (empty: seq t)
+  
+  predicate invariant_refmut_String (self:t2 t_String) =
+    inv_String (self.current) /\ inv_String (self.final)
+  
+  (* meta rewrite_def predicate invariant_refmut_String *)
+  
+  predicate inv_refmut_String (_1:t2 t_String) = invariant_refmut_String _1
+  
+  (* meta rewrite_def predicate inv_refmut_String *)
+  
+  goal vc_append_string : true
+  
+  predicate resolve_refmut_String (_1:t2 t_String) = _1.final = _1.current
+  
+  (* meta rewrite_def predicate resolve_refmut_String *)
+  
+  goal vc_new_ref_str : true
+  
+  goal vc_into_inner_Seq_ref_str : true
+  
+  goal vc_new_Seq_ref_str : true
+  
+  goal vc_deref_mut_Ghost_Seq_ref_str : true
+  
+  goal vc_push_back_ghost_ref_str : true
+  
+  predicate resolve_refmut_Seq_ref_str (_1:t2 (seq string)) =
+    _1.final = _1.current
+  
+  (* meta rewrite_def predicate resolve_refmut_Seq_ref_str *)
+  
+  goal vc_new_unit : true
+  
+  function tail_ref_str (self:seq string) : seq string = self[1..length self]
+  
+  function flat_map_ref_str (seq string) (string -> seq int) : seq int
+  
+  axiom flat_map_ref_str_def :
+    forall self:seq string, other:string -> seq int
+     [flat_map_ref_str self other].
+     flat_map_ref_str self other =
+     (if length self = 0 then empty: seq int
+      else get other (get1 self 0)
+           ++ flat_map_ref_str (tail_ref_str self) other)
+  
+  function encoder_chunks_bytes (chunks:seq string) : seq int =
+    flat_map_ref_str chunks (fun (chunk:string) -> string_chunk_bytes chunk)
+  
+  predicate append_encoder_chunk (seq string) string
+  
+  axiom append_encoder_chunk_spec :
+    forall chunks:seq string, chunk:string
+     [append_encoder_chunk chunks chunk]. append_encoder_chunk chunks chunk
+  
+  axiom append_encoder_chunk_spec'0 :
+    forall chunks:seq string, chunk:string.
+     encoder_chunks_bytes (snoc chunks chunk) =
+     (encoder_chunks_bytes chunks ++ string_chunk_bytes chunk)
+  
+  predicate string_bytes_concat (seq t3) (seq t3)
+  
+  axiom string_bytes_concat_spec :
+    forall prefix:seq t3, suffix:seq t3 [string_bytes_concat prefix suffix].
+     string_bytes_concat prefix suffix
+  
+  axiom string_bytes_concat_spec'0 :
+    forall prefix:seq t3, suffix:seq t3.
+     to_bytes (prefix ++ suffix) = (to_bytes prefix ++ to_bytes suffix)
+  
+  axiom string_bytes_concat_spec'1 :
+    forall prefix:seq t3, suffix:seq t3.
+     byte_sequence_as_ints (to_bytes (prefix ++ suffix)) =
+     (byte_sequence_as_ints (to_bytes prefix)
+      ++ byte_sequence_as_ints (to_bytes suffix))
+  
+  predicate well_founded_relation_Int (self:int) (other:int) =
+    ge_log_Int self 0 /\ gt_log_Int self other
+  
+  (* meta rewrite_def predicate well_founded_relation_Int *)
+  
+  predicate produces_append t_PercentEncode (seq string) t_PercentEncode
+    string t_PercentEncode
+  
+  axiom produces_append_spec :
+    forall initial:t_PercentEncode, prefix:seq string, before:
+     t_PercentEncode, chunk:string, after:t_PercentEncode
+     [produces_append initial prefix before chunk after].
+     produces_PercentEncode initial prefix before ->
+     produces_PercentEncode before (singleton chunk) after ->
+     produces_append initial prefix before chunk after
+  
+  axiom produces_append_spec'0 :
+    forall initial:t_PercentEncode, prefix:seq string, before:
+     t_PercentEncode, chunk:string, after:t_PercentEncode.
+     produces_PercentEncode initial prefix before ->
+     produces_PercentEncode before (singleton chunk) after ->
+     produces_PercentEncode initial (snoc prefix chunk) after
+  
+  function flatten_chunks (seq (seq int)) : seq int
+  
+  axiom flatten_chunks_spec :
+    forall chunks:seq (seq int) [flatten_chunks chunks].
+     if length chunks = 0 then length (flatten_chunks chunks) = 0
+     else flatten_chunks chunks =
+          (get1 chunks 0 ++ flatten_chunks chunks[1..length chunks])
+  
+  predicate encoder_chunks_flatten (seq string)
+  
+  axiom encoder_chunks_flatten_spec :
+    forall chunks:seq string [encoder_chunks_flatten chunks].
+     encoder_chunks_flatten chunks
+  
+  axiom encoder_chunks_flatten_spec'0 :
+    forall chunks:seq string.
+     encoder_chunks_bytes chunks =
+     flatten_chunks
+     (map_ref_str chunks (fun (chunk:string) -> string_chunk_bytes chunk))
+  
+  predicate produces_complete t_PercentEncode (seq string) t_PercentEncode
+  
+  axiom produces_complete_spec :
+    forall initial:t_PercentEncode, visited:seq string, iter:t_PercentEncode
+     [produces_complete initial visited iter].
+     produces_PercentEncode initial visited iter ->
+     configured_set initial = configured_set iter ->
+     length (remaining_input iter) = 0 ->
+     produces_complete initial visited iter
+  
+  axiom produces_complete_spec'0 :
+    forall initial:t_PercentEncode, visited:seq string, iter:t_PercentEncode.
+     produces_PercentEncode initial visited iter ->
+     configured_set initial = configured_set iter ->
+     length (remaining_input iter) = 0 ->
+     encoded_chunks (configured_set initial) (remaining_input initial) =
+     map_ref_str visited (fun (chunk:string) -> string_chunk_bytes chunk)
+  
+  type t_Cow_str =
+    | Borrowed string
+    | Owned t_String
+  
+  goal vc_from_utf8_unchecked : true
+  
+  predicate inv_Cow_str t_Cow_str
+  
+  axiom inv_axiom'0 :
+    forall x:t_Cow_str [inv_Cow_str x].
+     inv_Cow_str x <->
+     match x with
+     | Borrowed f0 -> true
+     | Owned f0 -> inv_String f0
+     end
+  
+  function cow_string_bytes (value:t_Cow_str) : seq int =
+    match value with
+    | Borrowed s -> byte_sequence_as_ints (to_bytes (view_str s))
+    | Owned s -> byte_sequence_as_ints (to_bytes (view_String s))
+    end
+  
+  (* meta compute_max_steps 1000000 *)
+  
+  (* meta select_lsinst "all" *)
+  
+  goal vc_into_cow :
+    forall iter:t_PercentEncode.
+     inv_PercentEncode iter ->
+     (forall initial:t_PercentEncode, iter'0:t_PercentEncode, _9:
+       t_Option_ref_str, _10:t2 t_PercentEncode, first:string, _19:
+       t_Option_ref_str, _20:t2 t_PercentEncode, second:string, output:
+       t_String, _32:t2 t_String, _33:t2 t_String, _36:t2 t_String, _37:t2
+       t_String, visited:seq string, _40:seq string, _41:seq string, _45:t2
+       (seq string), _46:t2 (seq string), _47:t2 (seq string), _50:t2 (seq
+       string), _51:t2 (seq string), _52:t2 (seq string), before:
+       t_PercentEncode, _114:t_Option_ref_str, _115:t2 t_PercentEncode,
+       variant_old_bb24:int.
+       (inv_ref_PercentEncode iter /\
+        (forall result:t_PercentEncode.
+          inv_PercentEncode result /\
+          remaining_input result = remaining_input iter /\
+          configured_set result = configured_set iter ->
+          ((forall fin:t_PercentEncode, id:int.
+             inv_PercentEncode fin ->
+             inv_refmut_PercentEncode (t'mk iter fin id) /\
+             (forall result1:t_Option_ref_str.
+               match result1 with
+               | Some item ->
+                   produces_PercentEncode iter (singleton item) fin
+               | None -> completed_PercentEncode (t'mk iter fin id)
+               end /\
+               configured_set fin = configured_set iter /\
+               match result1 with
+               | Some _ ->
+                   length (remaining_input fin)
+                   < length (remaining_input iter)
+               | None -> fin = iter
+               end ->
+               (result1 = None ->
+                (forall __arr_temp:slice t.
+                  length (__arr_temp.elts) = 0 ->
+                  ((forall i:int.
+                     0 <= i /\ i < length (view __arr_temp) ->
+                     t'int (get1 (view __arr_temp) i) < 128) \/
+                   (exists s:seq t3. to_bytes s = view __arr_temp)) /\
+                  (forall result2:string.
+                    to_bytes (view_str result2) = view __arr_temp ->
+                    inv_Cow_str (Borrowed result2) /\
+                    cow_string_bytes (Borrowed result2) =
+                    flatten_chunks
+                    (encoded_chunks (configured_set iter)
+                     (remaining_input iter)) /\
+                    length
+                    (encoded_chunks (configured_set iter)
+                     (remaining_input iter))
+                    <= 1)) /\
+                inv_PercentEncode fin) /\
+               (forall x0:string.
+                 result1 = Some x0 ->
+                 (forall f0:string.
+                   Some f0 = result1 ->
+                   (forall fin1:t_PercentEncode, id1:int.
+                     inv_PercentEncode fin1 ->
+                     inv_refmut_PercentEncode (t'mk fin fin1 id1) /\
+                     (forall result2:t_Option_ref_str.
+                       match result2 with
+                       | Some item ->
+                           produces_PercentEncode fin (singleton item) fin1
+                       | None -> completed_PercentEncode (t'mk fin fin1 id1)
+                       end /\
+                       configured_set fin1 = configured_set fin /\
+                       match result2 with
+                       | Some _ ->
+                           length (remaining_input fin1)
+                           < length (remaining_input fin)
+                       | None -> fin1 = fin
+                       end ->
+                       (result2 = None ->
+                        (inv_Cow_str (Borrowed f0) /\
+                         cow_string_bytes (Borrowed f0) =
+                         flatten_chunks
+                         (encoded_chunks (configured_set iter)
+                          (remaining_input iter)) /\
+                         length
+                         (encoded_chunks (configured_set iter)
+                          (remaining_input iter))
+                         <= 1) /\
+                        inv_PercentEncode fin1) /\
+                       (forall x01:string.
+                         result2 = Some x01 ->
+                         (forall f01:string.
+                           Some f01 = result2 ->
+                           (forall result3:t_String.
+                             inv_String result3 /\
+                             view_String result3 = (empty: seq t3) ->
+                             empty_prefix_to_bytes (view_String result3) &&
+                             byte_sequence_as_ints
+                             (to_bytes (view_String result3))
+                             == (empty: seq int) &&
+                             (forall fin2:t_String, id2:int.
+                               inv_String fin2 ->
+                               (forall fin3:t_String.
+                                 inv_String fin3 ->
+                                 inv_refmut_String
+                                 (t'mk result3 fin3
+                                  (get_id (t'mk result3 fin2 id2))) /\
+                                 (view_String fin3 =
+                                  (view_String result3 ++ view_str f0) /\
+                                  byte_sequence_as_ints
+                                  (to_bytes (view_String fin3)) =
+                                  (byte_sequence_as_ints
+                                   (to_bytes (view_String result3))
+                                   ++ string_chunk_bytes f0) ->
+                                  (resolve_refmut_String (t'mk fin3 fin2 id2) ->
+                                   (forall fin4:t_String, id3:int.
+                                     inv_String fin4 ->
+                                     (forall fin5:t_String.
+                                       inv_String fin5 ->
+                                       inv_refmut_String
+                                       (t'mk fin2 fin5
+                                        (get_id (t'mk fin2 fin4 id3))) /\
+                                       (view_String fin5 =
+                                        (view_String fin2 ++ view_str f01) /\
+                                        byte_sequence_as_ints
+                                        (to_bytes (view_String fin5)) =
+                                        (byte_sequence_as_ints
+                                         (to_bytes (view_String fin2))
+                                         ++ string_chunk_bytes f01) ->
+                                        (resolve_refmut_String
+                                         (t'mk fin5 fin4 id3) ->
+                                         (forall fin6:seq string, id4:int.
+                                           resolve_refmut_Seq_ref_str
+                                           (t'mk
+                                            (snoc (empty: seq string) f0)
+                                            fin6 id4) ->
+                                           (forall fin7:seq string, id5:int.
+                                             resolve_refmut_Seq_ref_str
+                                             (t'mk (snoc fin6 f01) fin7 id5) ->
+                                             fin7
+                                             == (singleton f0
+                                                 ++ singleton f01) &&
+                                             fin7 =
+                                             (singleton f0 ++ singleton f01) &&
+                                             snoc (singleton f0) f01 =
+                                             (singleton f0 ++ singleton f01) &&
+                                             encoder_chunks_bytes
+                                             (singleton f0) =
+                                             string_chunk_bytes f0 &&
+                                             append_encoder_chunk
+                                             (singleton f0) f01 &&
+                                             produces_PercentEncode result
+                                             (singleton f0 ++ singleton f01)
+                                             fin1 &&
+                                             string_bytes_concat
+                                             (view_str f0) (view_str f01) &&
+                                             byte_sequence_as_ints
+                                             (to_bytes (view_String fin4)) =
+                                             encoder_chunks_bytes fin7 &&
+                                             configured_set result =
+                                             configured_set fin1 &&
+                                             ge_log_Int
+                                             (length
+                                              (encoded_chunks
+                                               (configured_set result)
+                                               (remaining_input result)))
+                                             2 &&
+                                             (inv_String fin4 &&
+                                              inv_PercentEncode fin1 &&
+                                              produces_PercentEncode result
+                                              fin7 fin1 &&
+                                              configured_set result =
+                                              configured_set fin1 &&
+                                              byte_sequence_as_ints
+                                              (to_bytes (view_String fin4)) =
+                                              encoder_chunks_bytes fin7) /\
+                                             (forall iter'01:t_PercentEncode,
+                                               output1:t_String, visited1:seq
+                                               string.
+                                               inv_String output1 ->
+                                               inv_PercentEncode iter'01 ->
+                                               produces_PercentEncode result
+                                               visited1 iter'01 ->
+                                               configured_set result =
+                                               configured_set iter'01 ->
+                                               byte_sequence_as_ints
+                                               (to_bytes
+                                                (view_String output1)) =
+                                               encoder_chunks_bytes visited1 ->
+                                               (forall fin8:t_PercentEncode,
+                                                 id6:int.
+                                                 inv_PercentEncode fin8 ->
+                                                 inv_refmut_PercentEncode
+                                                 (t'mk iter'01 fin8 id6) /\
+                                                 (forall result4:
+                                                   t_Option_ref_str.
+                                                   match result4 with
+                                                   | Some item ->
+                                                       produces_PercentEncode
+                                                       iter'01
+                                                       (singleton item) fin8
+                                                   | None ->
+                                                       completed_PercentEncode
+                                                       (t'mk iter'01 fin8 id6)
+                                                   end /\
+                                                   configured_set fin8 =
+                                                   configured_set iter'01 /\
+                                                   match result4 with
+                                                   | Some _ ->
+                                                       length
+                                                       (remaining_input fin8)
+                                                       < length
+                                                         (remaining_input
+                                                          iter'01)
+                                                   | None -> fin8 = iter'01
+                                                   end ->
+                                                   (forall x02:string.
+                                                     result4 = Some x02 ->
+                                                     (forall f02:string.
+                                                       Some f02 = result4 ->
+                                                       (forall fin9:t_String,
+                                                         id7:int.
+                                                         inv_String fin9 ->
+                                                         (forall fin10:
+                                                           t_String.
+                                                           inv_String fin10 ->
+                                                           inv_refmut_String
+                                                           (t'mk output1
+                                                            fin10
+                                                            (get_id
+                                                             (t'mk output1
+                                                              fin9 id7))) /\
+                                                           (view_String fin10 =
+                                                            (view_String
+                                                             output1
+                                                             ++ view_str f02) /\
+                                                            byte_sequence_as_ints
+                                                            (to_bytes
+                                                             (view_String
+                                                              fin10)) =
+                                                            (byte_sequence_as_ints
+                                                             (to_bytes
+                                                              (view_String
+                                                               output1))
+                                                             ++ string_chunk_bytes
+                                                                f02) ->
+                                                            (resolve_refmut_String
+                                                             (t'mk fin10 fin9
+                                                              id7) ->
+                                                             produces_append
+                                                             result visited1
+                                                             iter'01 f02 fin8 &&
+                                                             append_encoder_chunk
+                                                             visited1 f02 &&
+                                                             (forall fin11:
+                                                               seq string,
+                                                               id8:int.
+                                                               resolve_refmut_Seq_ref_str
+                                                               (t'mk
+                                                                (snoc
+                                                                 visited1 f02)
+                                                                fin11 id8) ->
+                                                               well_founded_relation_Int
+                                                               (length
+                                                                (remaining_input
+                                                                 iter'01))
+                                                               (length
+                                                                (remaining_input
+                                                                 fin8)) &&
+                                                               inv_String
+                                                               fin9 &&
+                                                               inv_PercentEncode
+                                                               fin8 &&
+                                                               produces_PercentEncode
+                                                               result fin11
+                                                               fin8 &&
+                                                               configured_set
+                                                               result =
+                                                               configured_set
+                                                               fin8 &&
+                                                               byte_sequence_as_ints
+                                                               (to_bytes
+                                                                (view_String
+                                                                 fin9)) =
+                                                               encoder_chunks_bytes
+                                                               fin11)) /\
+                                                            inv_refmut_String
+                                                            (t'mk fin10 fin9
+                                                             id7))) /\
+                                                         inv_String output1) /\
+                                                       inv_String output1) /\
+                                                     match result4 with
+                                                     | Some _ -> true
+                                                     | _ -> false
+                                                     end))) /\
+                                               inv_PercentEncode iter'01)))) /\
+                                        inv_refmut_String
+                                        (t'mk fin5 fin4 id3))) /\
+                                     inv_String fin2) /\
+                                   inv_String fin2) /\
+                                  inv_refmut_String (t'mk fin3 fin2 id2))) /\
+                               inv_String result3) /\
+                             inv_String result3)) /\
+                         match result2 with
+                         | Some _ -> true
+                         | _ -> false
+                         end))) /\
+                   inv_PercentEncode fin) /\
+                 match result1 with
+                 | Some _ -> true
+                 | _ -> false
+                 end))) /\
+           inv_PercentEncode iter) /\
+          inv_PercentEncode result)) /\
+       ((inv_PercentEncode initial /\
+         remaining_input initial = remaining_input iter /\
+         configured_set initial = configured_set iter) /\
+        (exists fin:t_PercentEncode, id:int.
+          inv_PercentEncode fin /\
+          (match _9 with
+           | Some item -> produces_PercentEncode iter (singleton item) fin
+           | None -> completed_PercentEncode (t'mk iter fin id)
+           end /\
+           configured_set fin = configured_set iter /\
+           match _9 with
+           | Some _ ->
+               length (remaining_input fin) < length (remaining_input iter)
+           | None -> fin = iter
+           end) /\
+          (exists x0:string.
+            _9 = Some x0 /\
+            Some first = _9 /\
+            (exists fin1:t_PercentEncode, id1:int.
+              inv_PercentEncode fin1 /\
+              (match _19 with
+               | Some item ->
+                   produces_PercentEncode fin (singleton item) fin1
+               | None -> completed_PercentEncode (t'mk fin fin1 id1)
+               end /\
+               configured_set fin1 = configured_set fin /\
+               match _19 with
+               | Some _ ->
+                   length (remaining_input fin1)
+                   < length (remaining_input fin)
+               | None -> fin1 = fin
+               end) /\
+              (exists x01:string.
+                _19 = Some x01 /\
+                Some second = _19 /\
+                (exists result:t_String.
+                  (inv_String result /\ view_String result = (empty: seq t3)) /\
+                  empty_prefix_to_bytes (view_String result) /\
+                  byte_sequence_as_ints (to_bytes (view_String result))
+                  == (empty: seq int) /\
+                  (exists fin2:t_String, id2:int.
+                    inv_String fin2 /\
+                    (exists fin3:t_String.
+                      inv_String fin3 /\
+                      (view_String fin3 =
+                       (view_String result ++ view_str first) /\
+                       byte_sequence_as_ints (to_bytes (view_String fin3)) =
+                       (byte_sequence_as_ints (to_bytes (view_String result))
+                        ++ string_chunk_bytes first)) /\
+                      resolve_refmut_String (t'mk fin3 fin2 id2) /\
+                      (exists fin4:t_String, id3:int.
+                        inv_String fin4 /\
+                        (exists fin5:t_String.
+                          inv_String fin5 /\
+                          (view_String fin5 =
+                           (view_String fin2 ++ view_str second) /\
+                           byte_sequence_as_ints
+                           (to_bytes (view_String fin5)) =
+                           (byte_sequence_as_ints
+                            (to_bytes (view_String fin2))
+                            ++ string_chunk_bytes second)) /\
+                          resolve_refmut_String (t'mk fin5 fin4 id3) /\
+                          _40 = (empty: seq string) /\
+                          (exists fin6:seq string, id4:int.
+                            resolve_refmut_Seq_ref_str
+                            (t'mk (snoc _40 first) fin6 id4) /\
+                            (exists id5:int.
+                              resolve_refmut_Seq_ref_str
+                              (t'mk (snoc fin6 second)
+                               (singleton first ++ singleton second) id5) /\
+                              (singleton first ++ singleton second)
+                              == (singleton first ++ singleton second) /\
+                              snoc (singleton first) second =
+                              (singleton first ++ singleton second) /\
+                              encoder_chunks_bytes (singleton first) =
+                              string_chunk_bytes first /\
+                              append_encoder_chunk (singleton first) second /\
+                              produces_PercentEncode initial
+                              (singleton first ++ singleton second) fin1 /\
+                              string_bytes_concat (view_str first)
+                              (view_str second) /\
+                              byte_sequence_as_ints
+                              (to_bytes (view_String fin4)) =
+                              encoder_chunks_bytes
+                              (singleton first ++ singleton second) /\
+                              configured_set initial = configured_set fin1 /\
+                              ge_log_Int
+                              (length
+                               (encoded_chunks (configured_set initial)
+                                (remaining_input initial)))
+                              2 /\
+                              inv_String output /\
+                              inv_PercentEncode before /\
+                              produces_PercentEncode initial visited before /\
+                              configured_set initial = configured_set before /\
+                              byte_sequence_as_ints
+                              (to_bytes (view_String output)) =
+                              encoder_chunks_bytes visited /\
+                              (exists id6:int.
+                                inv_PercentEncode iter'0 /\
+                                (completed_PercentEncode
+                                 (t'mk before iter'0 id6) /\
+                                 configured_set iter'0 =
+                                 configured_set before /\ iter'0 = before) /\
+                                _10 = t'mk iter fin id /\
+                                _20 = t'mk fin fin1 id1 /\
+                                _32 =
+                                t'mk result fin3
+                                (get_id (t'mk result fin2 id2)) /\
+                                _33 = t'mk fin3 fin2 id2 /\
+                                _36 =
+                                t'mk fin2 fin5 (get_id (t'mk fin2 fin4 id3)) /\
+                                _37 = t'mk fin5 fin4 id3 /\
+                                _41 = (empty: seq string) /\
+                                () = (any_l (): unit) /\
+                                _45 =
+                                t'mk _40 (snoc _40 first)
+                                (get_id (t'mk _40 fin6 id4)) /\
+                                _46 = t'mk (snoc _40 first) fin6 id4 /\
+                                _47 = t'mk _40 fin6 id4 /\
+                                _50 =
+                                t'mk fin6 (snoc fin6 second)
+                                (get_id
+                                 (t'mk fin6
+                                  (singleton first ++ singleton second) id5)) /\
+                                _51 =
+                                t'mk (snoc fin6 second)
+                                (singleton first ++ singleton second) id5 /\
+                                _52 =
+                                t'mk fin6
+                                (singleton first ++ singleton second) id5 /\
+                                _114 = None /\
+                                _115 = t'mk before iter'0 id6 /\
+                                variant_old_bb24 =
+                                length (remaining_input before))))))))))))) ->
+        (encoder_chunks_flatten visited &&
+         produces_complete initial visited iter'0 &&
+         encoder_chunks_bytes visited =
+         flatten_chunks
+         (encoded_chunks (configured_set initial) (remaining_input initial)) &&
+         inv_Cow_str (Owned output) /\
+         cow_string_bytes (Owned output) =
+         flatten_chunks
+         (encoded_chunks (configured_set iter) (remaining_input iter)) /\
+         ge_log_Int
+         (length
+          (encoded_chunks (configured_set iter) (remaining_input iter)))
+         2) /\
+        inv_PercentEncode iter'0))
+  
+end
+

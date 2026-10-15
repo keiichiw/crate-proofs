@@ -1,0 +1,110 @@
+theory Coma
+  
+  (* use why3.BuiltIn.BuiltIn *)
+  
+  (* use why3.Bool.Bool *)
+  
+  (* use why3.Unit.Unit *)
+  
+  (* use seq.Seq *)
+  
+  (* use creusot.int.UInt8 *)
+  
+  (* use map.Map *)
+  
+  (* use creusot.prelude.Char *)
+  
+  type tup2_ref_str_bool =
+    | Tup2_ref_str_bool'mk (f0:string) (f1:bool)
+  
+  (* meta model_record function f1 *)
+  
+  (* meta model_record function f0 *)
+  
+  function index_Mapping_u8_Int (self:t -> int) (a:t) : int = get self a
+  
+  (* meta rewrite_def function index_Mapping_u8_Int *)
+  
+  function map_u8 (seq t) (t -> int) : seq int
+  
+  axiom map_u8_spec :
+    forall self:seq t, m:t -> int [map_u8 self m].
+     length (map_u8 self m) = length self
+  
+  axiom map_u8_spec'0 :
+    forall self:seq t, m:t -> int [map_u8 self m].
+     forall i:int.
+      0 <= i /\ i < length self ->
+      get1 (map_u8 self m) i = index_Mapping_u8_Int m (get1 self i)
+  
+  function tail_char (self:seq t1) : seq t1 = self[1..length self]
+  
+  function flat_map_char (seq t1) (t1 -> seq t) : seq t
+  
+  axiom flat_map_char_def :
+    forall self:seq t1, other:t1 -> seq t [flat_map_char self other].
+     flat_map_char self other =
+     (if length self = 0 then empty: seq t
+      else get other (get1 self 0) ++ flat_map_char (tail_char self) other)
+  
+  function to_utf8_char t1 : seq t
+  
+  axiom to_utf8_char_spec :
+    forall self:t1 [to_utf8_char self].
+     1 <= length (to_utf8_char self) /\ length (to_utf8_char self) <= 4
+  
+  function to_bytes (self:seq t1) : seq t =
+    flat_map_char self (fun (c:t1) -> to_utf8_char c)
+  
+  function view_str string : seq t1
+  
+  function string_chunk_bytes (s:string) : seq int =
+    map_u8 (to_bytes (view_str s)) (fun (b:t) -> t'int b)
+  
+  predicate successful_model_prefix (expected:seq (seq int)) (trace:seq
+    tup2_ref_str_bool) (count:int) =
+    0 <= count /\
+    count <= length expected /\
+    length trace = count /\
+    (forall j:int.
+      0 <= j /\ j < count ->
+      string_chunk_bytes ((get1 trace j).f0) = get1 expected j /\
+      (get1 trace j).f1 = True)
+  
+  predicate failed_model_prefix (expected:seq (seq int)) (trace:seq
+    tup2_ref_str_bool) (count:int) =
+    0 <= count /\
+    count < length expected /\
+    length trace = (count + 1) /\
+    (forall j:int.
+      0 <= j /\ j < count ->
+      string_chunk_bytes ((get1 trace j).f0) = get1 expected j /\
+      (get1 trace j).f1 = True) /\
+    string_chunk_bytes ((get1 trace count).f0) = get1 expected count /\
+    not (get1 trace count).f1 = True
+  
+  (* meta compute_max_steps 1000000 *)
+  
+  (* meta select_lsinst "all" *)
+  
+  constant expected : seq (seq int)
+  
+  constant trace : seq tup2_ref_str_bool
+  
+  constant count : int
+  
+  constant chunk : string
+  
+  predicate failed_model_prefix_push (seq (seq int)) (seq tup2_ref_str_bool)
+    int string
+  
+  goal vc_failed_model_prefix_push :
+    successful_model_prefix expected trace count ->
+    count < length expected ->
+    string_chunk_bytes chunk = get1 expected count ->
+    true /\
+    failed_model_prefix expected
+    (snoc trace (Tup2_ref_str_bool'mk chunk False)) count
+  
+end
+

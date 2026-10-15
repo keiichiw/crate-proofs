@@ -1,0 +1,71 @@
+use creusot.slice.Slice64
+use creusot.int.UInt8
+use creusot.prelude.Char
+use seq.Seq
+use map.Map
+use creusot.prelude.Any
+use int.Int
+
+function tail_char (self: Seq.seq Char.t) : Seq.seq Char.t = Seq.([..]) self 1 (Seq.length self)
+
+function flat_map_char (self: Seq.seq Char.t) (other: Map.map Char.t (Seq.seq UInt8.t)) : Seq.seq UInt8.t
+
+axiom flat_map_char_def:
+  forall self: Seq.seq Char.t, other: Map.map Char.t (Seq.seq UInt8.t) [flat_map_char self other]. flat_map_char self other
+    = (if Seq.length self = 0 then
+      Seq.empty: Seq.seq UInt8.t
+    else
+      Seq.(++) (Map.get other (Seq.get self 0)) (flat_map_char (tail_char self) other)
+    )
+
+function to_utf8_char (self: Char.t) : Seq.seq UInt8.t
+
+axiom to_utf8_char_spec: forall self: Char.t [to_utf8_char self]. 1 <= Seq.length (to_utf8_char self)
+    /\ Seq.length (to_utf8_char self) <= 4
+
+function to_bytes (self: Seq.seq Char.t) : Seq.seq UInt8.t = flat_map_char self (fun (c: Char.t) -> to_utf8_char c)
+
+function view_str (self: string) : Seq.seq Char.t
+
+let as_bytes (self_: string) (return (x: Slice64.slice UInt8.t)) = any
+  [ return (result: Slice64.slice UInt8.t) -> {[@stop_split] [@expl:as_bytes ensures] Slice64.view result
+    = to_bytes (view_str self_)}
+    (! return {result}) ]
+
+type t_Iter_u8
+
+type t_PercentDecode = { bytes: t_Iter_u8 }
+
+predicate inv_Iter_u8 (_1: t_Iter_u8)
+
+predicate inv_PercentDecode (_1: t_PercentDecode)
+
+axiom inv_axiom [@rewrite]: forall x: t_PercentDecode [inv_PercentDecode x]. inv_PercentDecode x = inv_Iter_u8 x.bytes
+
+function view_Iter_u8 (self: t_Iter_u8) : Slice64.slice UInt8.t
+
+function remaining_input [@inline:trivial] (self: t_PercentDecode) : Seq.seq UInt8.t =
+  Slice64.view (view_Iter_u8 self.bytes)
+
+meta "rewrite_def" function remaining_input
+
+let percent_decode (input: Slice64.slice UInt8.t) (return (x: t_PercentDecode)) = any
+  [ return (result: t_PercentDecode) ->
+  {[@stop_split] [@expl:percent_decode ensures] ([@stop_split] [@expl:percent_decode result type invariant] inv_PercentDecode result)
+    /\ ([@stop_split] [@expl:percent_decode ensures] remaining_input result = Slice64.view input)}
+    (! return {result}) ]
+
+meta "compute_max_steps" 1000000
+
+meta "select_lsinst" "all"
+
+let percent_decode_str (input: string) (return (x: t_PercentDecode)) = (! bb0
+  [ bb0 = s0
+    [ s0 = as_bytes {input} (fun (_x: Slice64.slice UInt8.t) -> [ &_5 <- _x ] s1)
+    | s1 = percent_decode {_5} (fun (_x: t_PercentDecode) -> [ &_ret <- _x ] s2)
+    | s2 = return {_ret} ] ]
+  [ & _ret: t_PercentDecode = Any.any_l () | & input: string = input | & _5: Slice64.slice UInt8.t = Any.any_l () ])
+  [ return (result: t_PercentDecode) ->
+  {[@stop_split] [@expl:percent_decode_str ensures] ([@stop_split] [@expl:percent_decode_str result type invariant] inv_PercentDecode result)
+    /\ ([@stop_split] [@expl:percent_decode_str ensures] remaining_input result = to_bytes (view_str input))}
+    (! return {result}) ]

@@ -1,0 +1,152 @@
+theory Coma
+  
+  (* use why3.BuiltIn.BuiltIn *)
+  
+  (* use why3.Bool.Bool *)
+  
+  (* use why3.Unit.Unit *)
+  
+  (* use creusot.int.UInt8 *)
+  
+  (* use seq.Seq *)
+  
+  type tup4_Int_Int_Int_Int =
+    | Tup4_Int_Int_Int_Int'mk (f0:int) (f1:int) (f2:int) (f3:int)
+  
+  (* meta model_record function f3 *)
+  
+  (* meta model_record function f2 *)
+  
+  (* meta model_record function f1 *)
+  
+  (* meta model_record function f0 *)
+  
+  type t_Option_tup4_Int_Int_Int_Int =
+    | None
+    | Some tup4_Int_Int_Int_Int
+  
+  function skip_ampersands (seq t) int : int
+  
+  axiom skip_ampersands_def :
+    forall input:seq t, start:int [skip_ampersands input start].
+     0 <= start /\ start <= length input ->
+     skip_ampersands input start =
+     (if start < length input /\ t'int (get input start) = 38
+      then skip_ampersands input (start + 1) else start)
+  
+  axiom skip_ampersands_spec :
+    forall input:seq t, start:int [skip_ampersands input start].
+     0 <= start /\ start <= length input ->
+     start <= skip_ampersands input start /\
+     skip_ampersands input start <= length input
+  
+  axiom skip_ampersands_spec'0 :
+    forall input:seq t, start:int [skip_ampersands input start].
+     0 <= start /\ start <= length input ->
+     (forall i:int.
+       start <= i /\ i < skip_ampersands input start ->
+       t'int (get input i) = 38)
+  
+  axiom skip_ampersands_spec'1 :
+    forall input:seq t, start:int [skip_ampersands input start].
+     0 <= start /\ start <= length input ->
+     skip_ampersands input start = length input \/
+     not t'int (get input (skip_ampersands input start)) = 38
+  
+  function find_byte_before (seq t) int int int : int
+  
+  axiom find_byte_before_def :
+    forall input:seq t, start:int, end':int, byte:int
+     [find_byte_before input start end' byte].
+     0 <= start /\ start <= end' /\ end' <= length input ->
+     find_byte_before input start end' byte =
+     (if start < end' /\ not t'int (get input start) = byte
+      then find_byte_before input (start + 1) end' byte else start)
+  
+  axiom find_byte_before_spec :
+    forall input:seq t, start:int, end':int, byte:int
+     [find_byte_before input start end' byte].
+     0 <= start /\ start <= end' /\ end' <= length input ->
+     start <= find_byte_before input start end' byte /\
+     find_byte_before input start end' byte <= end'
+  
+  axiom find_byte_before_spec'0 :
+    forall input:seq t, start:int, end':int, byte:int
+     [find_byte_before input start end' byte].
+     0 <= start /\ start <= end' /\ end' <= length input ->
+     (forall i:int.
+       start <= i /\ i < find_byte_before input start end' byte ->
+       not t'int (get input i) = byte)
+  
+  axiom find_byte_before_spec'1 :
+    forall input:seq t, start:int, end':int, byte:int
+     [find_byte_before input start end' byte].
+     0 <= start /\ start <= end' /\ end' <= length input ->
+     find_byte_before input start end' byte = end' \/
+     t'int (get input (find_byte_before input start end' byte)) = byte
+  
+  (* meta compute_max_steps 1000000 *)
+  
+  (* meta select_lsinst "all" *)
+  
+  constant input : seq t
+  
+  constant start : int
+  
+  function raw_pair_model (seq t) int : t_Option_tup4_Int_Int_Int_Int
+  
+  goal vc_raw_pair_model :
+    start = skip_ampersands input 0 ->
+    start < length input ->
+    (0 <= start /\ start <= length input /\ length input <= length input) /\
+    ((start <= find_byte_before input start (length input) 38 /\
+      find_byte_before input start (length input) 38 <= length input) /\
+     (forall i:int.
+       start <= i /\ i < find_byte_before input start (length input) 38 ->
+       not t'int (get input i) = 38) /\
+     (find_byte_before input start (length input) 38 = length input \/
+      t'int (get input (find_byte_before input start (length input) 38)) = 38) ->
+     (let end' = find_byte_before input start (length input) 38 in
+      (0 <= start /\ start <= end' /\ end' <= length input) /\
+      ((start <= find_byte_before input start end' 61 /\
+        find_byte_before input start end' 61 <= end') /\
+       (forall i:int.
+         start <= i /\ i < find_byte_before input start end' 61 ->
+         not t'int (get input i) = 61) /\
+       (find_byte_before input start end' 61 = end' \/
+        t'int (get input (find_byte_before input start end' 61)) = 61) ->
+       (let eq = find_byte_before input start end' 61 in
+        if end' < length input
+        then let next = end' + 1 in
+             match Some (Tup4_Int_Int_Int_Int'mk start eq end' next) with
+             | Some (Tup4_Int_Int_Int_Int'mk pair_start eq'0 end''0
+                 next'0) ->
+                 pair_start = start /\
+                 pair_start < end''0 /\
+                 end''0 <= length input /\
+                 pair_start <= eq'0 /\
+                 eq'0 <= end''0 /\
+                 (eq'0 < end''0 -> t'int (get input eq'0) = 61) /\
+                 (end''0 = length input \/ t'int (get input end''0) = 38) /\
+                 next'0 =
+                 (if end''0 < length input then end''0 + 1 else end''0)
+             | None -> false
+             end
+        else let next = end' in
+             match Some (Tup4_Int_Int_Int_Int'mk start eq end' next) with
+             | Some (Tup4_Int_Int_Int_Int'mk pair_start eq'0 end''0
+                 next'0) ->
+                 pair_start = start /\
+                 pair_start < end''0 /\
+                 end''0 <= length input /\
+                 pair_start <= eq'0 /\
+                 eq'0 <= end''0 /\
+                 (eq'0 < end''0 -> t'int (get input eq'0) = 61) /\
+                 (end''0 = length input \/ t'int (get input end''0) = 38) /\
+                 next'0 =
+                 (if end''0 < length input then end''0 + 1 else end''0)
+             | None -> false
+             end))))
+  
+end
+

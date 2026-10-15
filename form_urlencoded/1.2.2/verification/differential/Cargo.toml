@@ -1,0 +1,10 @@
+[package]
+name = "form-urlencoded-differential"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+fork = { package = "form_urlencoded", path = "../../crate" }
+upstream = { package = "form_urlencoded_upstream", path = "upstream-copy" }
+
+[workspace]

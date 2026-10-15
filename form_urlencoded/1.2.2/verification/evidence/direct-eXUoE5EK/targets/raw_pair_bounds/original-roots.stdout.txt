@@ -1,0 +1,603 @@
+theory Coma
+  
+  (* use why3.BuiltIn.BuiltIn *)
+  
+  (* use why3.Bool.Bool *)
+  
+  (* use why3.Unit.Unit *)
+  
+  (* use creusot.int.UInt64 *)
+  
+  (* use creusot.slice.Slice64 *)
+  
+  (* use creusot.int.UInt8 *)
+  
+  (* use creusot.prelude.Any *)
+  
+  goal vc_len_u8 : true
+  
+  function skip_ampersands (seq t) int : int
+  
+  axiom skip_ampersands_def :
+    forall input:seq t, start:int [skip_ampersands input start].
+     0 <= start /\ start <= length input ->
+     skip_ampersands input start =
+     (if start < length input /\ t'int (get input start) = 38
+      then skip_ampersands input (start + 1) else start)
+  
+  axiom skip_ampersands_spec :
+    forall input:seq t, start:int [skip_ampersands input start].
+     0 <= start /\ start <= length input ->
+     start <= skip_ampersands input start /\
+     skip_ampersands input start <= length input
+  
+  axiom skip_ampersands_spec'0 :
+    forall input:seq t, start:int [skip_ampersands input start].
+     0 <= start /\ start <= length input ->
+     (forall i:int.
+       start <= i /\ i < skip_ampersands input start ->
+       t'int (get input i) = 38)
+  
+  axiom skip_ampersands_spec'1 :
+    forall input:seq t, start:int [skip_ampersands input start].
+     0 <= start /\ start <= length input ->
+     skip_ampersands input start = length input \/
+     not t'int (get input (skip_ampersands input start)) = 38
+  
+  predicate skip_ampersands_endpoint (seq t) int int
+  
+  axiom skip_ampersands_endpoint_def :
+    forall input:seq t, start:int, end':int
+     [skip_ampersands_endpoint input start end'].
+     0 <= start /\ start <= end' /\ end' <= length input ->
+     (forall i:int. start <= i /\ i < end' -> t'int (get input i) = 38) ->
+     end' = length input \/ not t'int (get input end') = 38 ->
+     skip_ampersands_endpoint input start end' <->
+     (if start < end' then skip_ampersands_endpoint input (start + 1) end'
+      else true)
+  
+  axiom skip_ampersands_endpoint_spec :
+    forall input:seq t, start:int, end':int
+     [skip_ampersands_endpoint input start end'].
+     0 <= start /\ start <= end' /\ end' <= length input ->
+     (forall i:int. start <= i /\ i < end' -> t'int (get input i) = 38) ->
+     end' = length input \/ not t'int (get input end') = 38 ->
+     skip_ampersands_endpoint input start end'
+  
+  axiom skip_ampersands_endpoint_spec'0 :
+    forall input:seq t, start:int, end':int.
+     0 <= start /\ start <= end' /\ end' <= length input ->
+     (forall i:int. start <= i /\ i < end' -> t'int (get input i) = 38) ->
+     end' = length input \/ not t'int (get input end') = 38 ->
+     skip_ampersands input start = end'
+  
+  type tup4_usize_usize_usize_usize =
+    | Tup4_usize_usize_usize_usize'mk (f0:t1) (f1:t1) (f2:t1) (f3:t1)
+  
+  (* meta model_record function f3 *)
+  
+  (* meta model_record function f2 *)
+  
+  (* meta model_record function f1 *)
+  
+  (* meta model_record function f0 *)
+  
+  type t_Option_tup4_usize_usize_usize_usize =
+    | None
+    | Some tup4_usize_usize_usize_usize
+  
+  function find_byte_before (seq t) int int int : int
+  
+  axiom find_byte_before_def :
+    forall input:seq t, start:int, end':int, byte:int
+     [find_byte_before input start end' byte].
+     0 <= start /\ start <= end' /\ end' <= length input ->
+     find_byte_before input start end' byte =
+     (if start < end' /\ not t'int (get input start) = byte
+      then find_byte_before input (start + 1) end' byte else start)
+  
+  axiom find_byte_before_spec :
+    forall input:seq t, start:int, end':int, byte:int
+     [find_byte_before input start end' byte].
+     0 <= start /\ start <= end' /\ end' <= length input ->
+     start <= find_byte_before input start end' byte /\
+     find_byte_before input start end' byte <= end'
+  
+  axiom find_byte_before_spec'0 :
+    forall input:seq t, start:int, end':int, byte:int
+     [find_byte_before input start end' byte].
+     0 <= start /\ start <= end' /\ end' <= length input ->
+     (forall i:int.
+       start <= i /\ i < find_byte_before input start end' byte ->
+       not t'int (get input i) = byte)
+  
+  axiom find_byte_before_spec'1 :
+    forall input:seq t, start:int, end':int, byte:int
+     [find_byte_before input start end' byte].
+     0 <= start /\ start <= end' /\ end' <= length input ->
+     find_byte_before input start end' byte = end' \/
+     t'int (get input (find_byte_before input start end' byte)) = byte
+  
+  predicate find_byte_before_endpoint (seq t) int int int int
+  
+  axiom find_byte_before_endpoint_def :
+    forall input:seq t, start:int, end':int, limit:int, byte:int
+     [find_byte_before_endpoint input start end' limit byte].
+     0 <= start /\ start <= end' /\ end' <= limit /\ limit <= length input ->
+     (forall i:int. start <= i /\ i < end' -> not t'int (get input i) = byte) ->
+     end' = limit \/ t'int (get input end') = byte ->
+     find_byte_before_endpoint input start end' limit byte <->
+     (if start < end'
+      then find_byte_before_endpoint input (start + 1) end' limit byte
+      else true)
+  
+  axiom find_byte_before_endpoint_spec :
+    forall input:seq t, start:int, end':int, limit:int, byte:int
+     [find_byte_before_endpoint input start end' limit byte].
+     0 <= start /\ start <= end' /\ end' <= limit /\ limit <= length input ->
+     (forall i:int. start <= i /\ i < end' -> not t'int (get input i) = byte) ->
+     end' = limit \/ t'int (get input end') = byte ->
+     find_byte_before_endpoint input start end' limit byte
+  
+  axiom find_byte_before_endpoint_spec'0 :
+    forall input:seq t, start:int, end':int, limit:int, byte:int.
+     0 <= start /\ start <= end' /\ end' <= limit /\ limit <= length input ->
+     (forall i:int. start <= i /\ i < end' -> not t'int (get input i) = byte) ->
+     end' = limit \/ t'int (get input end') = byte ->
+     find_byte_before input start limit byte = end'
+  
+  type tup4_Int_Int_Int_Int =
+    | Tup4_Int_Int_Int_Int'mk (f0'0:int) (f1'0:int) (f2'0:int) (f3'0:int)
+  
+  (* meta model_record function f3'0 *)
+  
+  (* meta model_record function f2'0 *)
+  
+  (* meta model_record function f1'0 *)
+  
+  (* meta model_record function f0'0 *)
+  
+  type t_Option_tup4_Int_Int_Int_Int =
+    | None'0
+    | Some'0 tup4_Int_Int_Int_Int
+  
+  function raw_pair_model (input:seq t) (start:int) :
+    t_Option_tup4_Int_Int_Int_Int =
+    let end' = find_byte_before input start (length input) 38 in
+    let eq = find_byte_before input start end' 61 in
+    let next = (if end' < length input then end' + 1 else end') in
+    Some'0 (Tup4_Int_Int_Int_Int'mk start eq end' next)
+  
+  axiom raw_pair_model_spec :
+    forall input:seq t, start:int [raw_pair_model input start].
+     start = skip_ampersands input 0 ->
+     start < length input ->
+     match raw_pair_model input start with
+     | Some'0 (Tup4_Int_Int_Int_Int'mk pair_start eq end' next) ->
+         pair_start = start /\
+         pair_start < end' /\
+         end' <= length input /\
+         pair_start <= eq /\
+         eq <= end' /\
+         (eq < end' -> t'int (get input eq) = 61) /\
+         (end' = length input \/ t'int (get input end') = 38) /\
+         next = (if end' < length input then end' + 1 else end')
+     | None'0 -> false
+     end
+  
+  (* meta compute_max_steps 1000000 *)
+  
+  (* meta select_lsinst "all" *)
+  
+  goal vc_raw_pair_bounds :
+    forall input:slice t.
+     forall start:t1, _11:bool, _13:t1, _15:bool, _16:t, _17:t1, _18:t1, _19:
+      bool, _22:bool, _24:t1, end':t1, _42:bool, _44:t1, _46:bool, _47:t,
+      _48:t1, _49:t1, _50:bool, eq:t1, _65:bool, _68:bool, _69:t, _70:t1,
+      _71:t1, _72:bool.
+      (forall start1:t1, _111:bool, _131:t1, _151:bool, _161:t, _171:t1,
+        _181:t1, _191:bool, _221:bool, _241:t1, end'1:t1, _421:bool, _441:t1,
+        _461:bool, _471:t, _481:t1, _491:t1, _501:bool.
+        (forall start2:t1, _112:bool, _132:t1, _152:bool, _162:t, _172:t1,
+          _182:t1, _192:bool.
+          ((0 <= t'int1 (0:t1) /\
+            t'int1 (0:t1) <= length (view input) /\
+            (forall i:int.
+              0 <= i /\ i < t'int1 (0:t1) -> t'int (get (view input) i) = 38)) /\
+           (forall start3:t1.
+             0 <= t'int1 start3 /\
+             t'int1 start3 <= length (view input) /\
+             (forall i:int.
+               0 <= i /\ i < t'int1 start3 -> t'int (get (view input) i) = 38) ->
+             (forall result:t1.
+               length (view input) = t'int1 result ->
+               lt start3 result ->
+               lt start3 (length1 input) &&
+               t'int1 start3 < length (input.elts) &&
+               (get (input.elts) (t'int1 start3) = (38:t) ->
+                in_bounds (t'int1 start3 + t'int1 (1:t1)) /\
+                (forall result1:t1.
+                  t'int1 result1 = (t'int1 start3 + t'int1 (1:t1)) ->
+                  0 <= t'int1 result1 /\
+                  t'int1 result1 <= length (view input) /\
+                  (forall i:int.
+                    0 <= i /\ i < t'int1 result1 ->
+                    t'int (get (view input) i) = 38)))))) /\
+          ((exists start3:t1, _153:bool, _163:t, _173:t1, _183:t1, _193:bool.
+             (0 <= t'int1 start3 /\
+              t'int1 start3 <= length (view input) /\
+              (forall i:int.
+                0 <= i /\ i < t'int1 start3 ->
+                t'int (get (view input) i) = 38)) /\
+             (exists result:t1.
+               length (view input) = t'int1 result /\
+               (not lt start3 result /\
+                start2 = start3 /\
+                (if lt start3 result then _112 = True else _112 = False) /\
+                _132 = result /\
+                _152 = _153 /\
+                _162 = _163 /\ _172 = _173 /\ _182 = _183 /\ _192 = _193 \/
+                lt start3 result /\
+                lt start3 (length1 input) /\
+                t'int1 start3 < length (input.elts) /\
+                not get (input.elts) (t'int1 start3) = (38:t) /\
+                start2 = start3 /\
+                (if lt start3 result then _112 = True else _112 = False) /\
+                _132 = result /\
+                (if get (input.elts) (t'int1 start3) = (38:t)
+                 then _152 = True else _152 = False) /\
+                _162 = get (input.elts) (t'int1 start3) /\
+                _172 = start3 /\
+                _182 = length1 input /\
+                (if lt start3 (length1 input) then _192 = True
+                 else _192 = False)))) ->
+           (forall result:t1.
+             length (view input) = t'int1 result ->
+             (not start2 = result ->
+              skip_ampersands_endpoint (view input) 0 (t'int1 start2) &&
+              (t'int1 start2 <= t'int1 start2 /\
+               t'int1 start2 <= length (view input) /\
+               (forall i:int.
+                 t'int1 start2 <= i /\ i < t'int1 start2 ->
+                 not t'int (get (view input) i) = 38)) /\
+              (forall end'2:t1.
+                t'int1 start2 <= t'int1 end'2 /\
+                t'int1 end'2 <= length (view input) /\
+                (forall i:int.
+                  t'int1 start2 <= i /\ i < t'int1 end'2 ->
+                  not t'int (get (view input) i) = 38) ->
+                (forall result1:t1.
+                  length (view input) = t'int1 result1 ->
+                  lt end'2 result1 ->
+                  lt end'2 (length1 input) &&
+                  t'int1 end'2 < length (input.elts) &&
+                  (not get (input.elts) (t'int1 end'2) = (38:t) ->
+                   in_bounds (t'int1 end'2 + t'int1 (1:t1)) /\
+                   (forall result2:t1.
+                     t'int1 result2 = (t'int1 end'2 + t'int1 (1:t1)) ->
+                     t'int1 start2 <= t'int1 result2 /\
+                     t'int1 result2 <= length (view input) /\
+                     (forall i:int.
+                       t'int1 start2 <= i /\ i < t'int1 result2 ->
+                       not t'int (get (view input) i) = 38)))))) /\
+             (start2 = result ->
+              skip_ampersands_endpoint (view input) 0 (t'int1 start2) &&
+              (forall i:int.
+                0 <= i /\ i < length (view input) ->
+                t'int (get (view input) i) = 38))))) /\
+        ((exists start2:t1, _112:bool, _132:t1, _152:bool, _162:t, _172:t1,
+           _182:t1, _192:bool.
+           (exists start3:t1, _153:bool, _163:t, _173:t1, _183:t1, _193:bool.
+             (0 <= t'int1 start3 /\
+              t'int1 start3 <= length (view input) /\
+              (forall i:int.
+                0 <= i /\ i < t'int1 start3 ->
+                t'int (get (view input) i) = 38)) /\
+             (exists result:t1.
+               length (view input) = t'int1 result /\
+               (not lt start3 result /\
+                start2 = start3 /\
+                (if lt start3 result then _112 = True else _112 = False) /\
+                _132 = result /\
+                _152 = _153 /\
+                _162 = _163 /\ _172 = _173 /\ _182 = _183 /\ _192 = _193 \/
+                lt start3 result /\
+                lt start3 (length1 input) /\
+                t'int1 start3 < length (input.elts) /\
+                not get (input.elts) (t'int1 start3) = (38:t) /\
+                start2 = start3 /\
+                (if lt start3 result then _112 = True else _112 = False) /\
+                _132 = result /\
+                (if get (input.elts) (t'int1 start3) = (38:t)
+                 then _152 = True else _152 = False) /\
+                _162 = get (input.elts) (t'int1 start3) /\
+                _172 = start3 /\
+                _182 = length1 input /\
+                (if lt start3 (length1 input) then _192 = True
+                 else _192 = False)))) /\
+           (exists result:t1.
+             length (view input) = t'int1 result /\
+             not start2 = result /\
+             skip_ampersands_endpoint (view input) 0 (t'int1 start2) /\
+             (exists end'2:t1, _462:bool, _472:t, _482:t1, _492:t1, _502:
+               bool.
+               (t'int1 start2 <= t'int1 end'2 /\
+                t'int1 end'2 <= length (view input) /\
+                (forall i:int.
+                  t'int1 start2 <= i /\ i < t'int1 end'2 ->
+                  not t'int (get (view input) i) = 38)) /\
+               (exists result1:t1.
+                 length (view input) = t'int1 result1 /\
+                 (not lt end'2 result1 /\
+                  start1 = start2 /\
+                  _111 = _112 /\
+                  _131 = _132 /\
+                  _151 = _152 /\
+                  _161 = _162 /\
+                  _171 = _172 /\
+                  _181 = _182 /\
+                  _191 = _192 /\
+                  (if start2 = result then _221 = True else _221 = False) /\
+                  _241 = result /\
+                  end'1 = end'2 /\
+                  (if lt end'2 result1 then _421 = True else _421 = False) /\
+                  _441 = result1 /\
+                  _461 = _462 /\
+                  _471 = _472 /\ _481 = _482 /\ _491 = _492 /\ _501 = _502 \/
+                  lt end'2 result1 /\
+                  lt end'2 (length1 input) /\
+                  t'int1 end'2 < length (input.elts) /\
+                  get (input.elts) (t'int1 end'2) = (38:t) /\
+                  start1 = start2 /\
+                  _111 = _112 /\
+                  _131 = _132 /\
+                  _151 = _152 /\
+                  _161 = _162 /\
+                  _171 = _172 /\
+                  _181 = _182 /\
+                  _191 = _192 /\
+                  (if start2 = result then _221 = True else _221 = False) /\
+                  _241 = result /\
+                  end'1 = end'2 /\
+                  (if lt end'2 result1 then _421 = True else _421 = False) /\
+                  _441 = result1 /\
+                  (if not get (input.elts) (t'int1 end'2) = (38:t)
+                   then _461 = True else _461 = False) /\
+                  _471 = get (input.elts) (t'int1 end'2) /\
+                  _481 = end'2 /\
+                  _491 = length1 input /\
+                  (if lt end'2 (length1 input) then _501 = True
+                   else _501 = False)))))) ->
+         find_byte_before_endpoint (view input) (t'int1 start1)
+         (t'int1 end'1) (length (view input)) 38 &&
+         (t'int1 start1 <= t'int1 start1 /\
+          t'int1 start1 <= t'int1 end'1 /\
+          (forall i:int.
+            t'int1 start1 <= i /\ i < t'int1 start1 ->
+            not t'int (get (view input) i) = 61)) /\
+         (forall eq1:t1.
+           t'int1 start1 <= t'int1 eq1 /\
+           t'int1 eq1 <= t'int1 end'1 /\
+           (forall i:int.
+             t'int1 start1 <= i /\ i < t'int1 eq1 ->
+             not t'int (get (view input) i) = 61) ->
+           lt eq1 end'1 ->
+           lt eq1 (length1 input) &&
+           t'int1 eq1 < length (input.elts) &&
+           (not get (input.elts) (t'int1 eq1) = (61:t) ->
+            in_bounds (t'int1 eq1 + t'int1 (1:t1)) /\
+            (forall result:t1.
+              t'int1 result = (t'int1 eq1 + t'int1 (1:t1)) ->
+              t'int1 start1 <= t'int1 result /\
+              t'int1 result <= t'int1 end'1 /\
+              (forall i:int.
+                t'int1 start1 <= i /\ i < t'int1 result ->
+                not t'int (get (view input) i) = 61)))))) /\
+      ((exists start1:t1, _111:bool, _131:t1, _151:bool, _161:t, _171:t1,
+         _181:t1, _191:bool, _221:bool, _241:t1, end'1:t1, _421:bool, _441:
+         t1, _461:bool, _471:t, _481:t1, _491:t1, _501:bool.
+         (exists start2:t1, _112:bool, _132:t1, _152:bool, _162:t, _172:t1,
+           _182:t1, _192:bool.
+           (exists start3:t1, _153:bool, _163:t, _173:t1, _183:t1, _193:bool.
+             (0 <= t'int1 start3 /\
+              t'int1 start3 <= length (view input) /\
+              (forall i:int.
+                0 <= i /\ i < t'int1 start3 ->
+                t'int (get (view input) i) = 38)) /\
+             (exists result:t1.
+               length (view input) = t'int1 result /\
+               (not lt start3 result /\
+                start2 = start3 /\
+                (if lt start3 result then _112 = True else _112 = False) /\
+                _132 = result /\
+                _152 = _153 /\
+                _162 = _163 /\ _172 = _173 /\ _182 = _183 /\ _192 = _193 \/
+                lt start3 result /\
+                lt start3 (length1 input) /\
+                t'int1 start3 < length (input.elts) /\
+                not get (input.elts) (t'int1 start3) = (38:t) /\
+                start2 = start3 /\
+                (if lt start3 result then _112 = True else _112 = False) /\
+                _132 = result /\
+                (if get (input.elts) (t'int1 start3) = (38:t)
+                 then _152 = True else _152 = False) /\
+                _162 = get (input.elts) (t'int1 start3) /\
+                _172 = start3 /\
+                _182 = length1 input /\
+                (if lt start3 (length1 input) then _192 = True
+                 else _192 = False)))) /\
+           (exists result:t1.
+             length (view input) = t'int1 result /\
+             not start2 = result /\
+             skip_ampersands_endpoint (view input) 0 (t'int1 start2) /\
+             (exists end'2:t1, _462:bool, _472:t, _482:t1, _492:t1, _502:
+               bool.
+               (t'int1 start2 <= t'int1 end'2 /\
+                t'int1 end'2 <= length (view input) /\
+                (forall i:int.
+                  t'int1 start2 <= i /\ i < t'int1 end'2 ->
+                  not t'int (get (view input) i) = 38)) /\
+               (exists result1:t1.
+                 length (view input) = t'int1 result1 /\
+                 (not lt end'2 result1 /\
+                  start1 = start2 /\
+                  _111 = _112 /\
+                  _131 = _132 /\
+                  _151 = _152 /\
+                  _161 = _162 /\
+                  _171 = _172 /\
+                  _181 = _182 /\
+                  _191 = _192 /\
+                  (if start2 = result then _221 = True else _221 = False) /\
+                  _241 = result /\
+                  end'1 = end'2 /\
+                  (if lt end'2 result1 then _421 = True else _421 = False) /\
+                  _441 = result1 /\
+                  _461 = _462 /\
+                  _471 = _472 /\ _481 = _482 /\ _491 = _492 /\ _501 = _502 \/
+                  lt end'2 result1 /\
+                  lt end'2 (length1 input) /\
+                  t'int1 end'2 < length (input.elts) /\
+                  get (input.elts) (t'int1 end'2) = (38:t) /\
+                  start1 = start2 /\
+                  _111 = _112 /\
+                  _131 = _132 /\
+                  _151 = _152 /\
+                  _161 = _162 /\
+                  _171 = _172 /\
+                  _181 = _182 /\
+                  _191 = _192 /\
+                  (if start2 = result then _221 = True else _221 = False) /\
+                  _241 = result /\
+                  end'1 = end'2 /\
+                  (if lt end'2 result1 then _421 = True else _421 = False) /\
+                  _441 = result1 /\
+                  (if not get (input.elts) (t'int1 end'2) = (38:t)
+                   then _461 = True else _461 = False) /\
+                  _471 = get (input.elts) (t'int1 end'2) /\
+                  _481 = end'2 /\
+                  _491 = length1 input /\
+                  (if lt end'2 (length1 input) then _501 = True
+                   else _501 = False)))))) /\
+         find_byte_before_endpoint (view input) (t'int1 start1)
+         (t'int1 end'1) (length (view input)) 38 /\
+         (exists eq1:t1, _681:bool, _691:t, _701:t1, _711:t1, _721:bool.
+           (t'int1 start1 <= t'int1 eq1 /\
+            t'int1 eq1 <= t'int1 end'1 /\
+            (forall i:int.
+              t'int1 start1 <= i /\ i < t'int1 eq1 ->
+              not t'int (get (view input) i) = 61)) /\
+           (not lt eq1 end'1 /\
+            start = start1 /\
+            _11 = _111 /\
+            _13 = _131 /\
+            _15 = _151 /\
+            _16 = _161 /\
+            _17 = _171 /\
+            _18 = _181 /\
+            _19 = _191 /\
+            _22 = _221 /\
+            _24 = _241 /\
+            end' = end'1 /\
+            _42 = _421 /\
+            _44 = _441 /\
+            _46 = _461 /\
+            _47 = _471 /\
+            _48 = _481 /\
+            _49 = _491 /\
+            _50 = _501 /\
+            eq = eq1 /\
+            (if lt eq1 end'1 then _65 = True else _65 = False) /\
+            _68 = _681 /\
+            _69 = _691 /\ _70 = _701 /\ _71 = _711 /\ _72 = _721 \/
+            lt eq1 end'1 /\
+            lt eq1 (length1 input) /\
+            t'int1 eq1 < length (input.elts) /\
+            get (input.elts) (t'int1 eq1) = (61:t) /\
+            start = start1 /\
+            _11 = _111 /\
+            _13 = _131 /\
+            _15 = _151 /\
+            _16 = _161 /\
+            _17 = _171 /\
+            _18 = _181 /\
+            _19 = _191 /\
+            _22 = _221 /\
+            _24 = _241 /\
+            end' = end'1 /\
+            _42 = _421 /\
+            _44 = _441 /\
+            _46 = _461 /\
+            _47 = _471 /\
+            _48 = _481 /\
+            _49 = _491 /\
+            _50 = _501 /\
+            eq = eq1 /\
+            (if lt eq1 end'1 then _65 = True else _65 = False) /\
+            (if not get (input.elts) (t'int1 eq1) = (61:t) then _68 = True
+             else _68 = False) /\
+            _69 = get (input.elts) (t'int1 eq1) /\
+            _70 = eq1 /\
+            _71 = length1 input /\
+            (if lt eq1 (length1 input) then _72 = True else _72 = False)))) ->
+       find_byte_before_endpoint (view input) (t'int1 start) (t'int1 eq)
+       (t'int1 end') 61 &&
+       (forall result:t1.
+         length (view input) = t'int1 result ->
+         (not lt end' result ->
+          0 <= t'int1 start /\
+          t'int1 start < t'int1 end' /\
+          t'int1 end' <= length (view input) /\
+          t'int1 start = skip_ampersands (view input) 0 /\
+          t'int1 start <= t'int1 eq /\
+          t'int1 eq <= t'int1 end' /\
+          (forall i:int.
+            0 <= i /\ i < t'int1 start -> t'int (get (view input) i) = 38) /\
+          (forall i:int.
+            t'int1 start <= i /\ i < t'int1 end' ->
+            not t'int (get (view input) i) = 38) /\
+          (forall i:int.
+            t'int1 start <= i /\ i < t'int1 eq ->
+            not t'int (get (view input) i) = 61) /\
+          (t'int1 eq < t'int1 end' ->
+           t'int (get (view input) (t'int1 eq)) = 61) /\
+          (t'int1 end' < length (view input) ->
+           t'int (get (view input) (t'int1 end')) = 38) /\
+          raw_pair_model (view input) (t'int1 start) =
+          Some'0
+          (Tup4_Int_Int_Int_Int'mk (t'int1 start) (t'int1 eq) (t'int1 end')
+           (t'int1 end')) /\
+          t'int1 end' =
+          (t'int1 end' + (if t'int1 end' < length (view input) then 1 else 0))) /\
+         (lt end' result ->
+          in_bounds (t'int1 end' + t'int1 (1:t1)) /\
+          (forall result1:t1.
+            t'int1 result1 = (t'int1 end' + t'int1 (1:t1)) ->
+            0 <= t'int1 start /\
+            t'int1 start < t'int1 end' /\
+            t'int1 end' <= length (view input) /\
+            t'int1 start = skip_ampersands (view input) 0 /\
+            t'int1 start <= t'int1 eq /\
+            t'int1 eq <= t'int1 end' /\
+            (forall i:int.
+              0 <= i /\ i < t'int1 start -> t'int (get (view input) i) = 38) /\
+            (forall i:int.
+              t'int1 start <= i /\ i < t'int1 end' ->
+              not t'int (get (view input) i) = 38) /\
+            (forall i:int.
+              t'int1 start <= i /\ i < t'int1 eq ->
+              not t'int (get (view input) i) = 61) /\
+            (t'int1 eq < t'int1 end' ->
+             t'int (get (view input) (t'int1 eq)) = 61) /\
+            (t'int1 end' < length (view input) ->
+             t'int (get (view input) (t'int1 end')) = 38) /\
+            raw_pair_model (view input) (t'int1 start) =
+            Some'0
+            (Tup4_Int_Int_Int_Int'mk (t'int1 start) (t'int1 eq) (t'int1 end')
+             (t'int1 result1)) /\
+            t'int1 result1 =
+            (t'int1 end'
+             + (if t'int1 end' < length (view input) then 1 else 0))))))
+  
+end
+

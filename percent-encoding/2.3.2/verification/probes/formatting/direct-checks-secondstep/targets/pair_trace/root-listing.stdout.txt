@@ -1,0 +1,129 @@
+theory Coma
+  
+  (* use why3.BuiltIn.BuiltIn *)
+  
+  (* use why3.Bool.Bool *)
+  
+  (* use why3.Unit.Unit *)
+  
+  (* use seq.Seq *)
+  
+  (* use creusot.prelude.MutBorrow *)
+  
+  (* use creusot.prelude.Any *)
+  
+  type tup2_ref_str_bool =
+    | Tup2_ref_str_bool'mk (f0:string) (f1:bool)
+  
+  (* meta model_record function f1 *)
+  
+  (* meta model_record function f0 *)
+  
+  goal vc_new_tup2_ref_str_bool : true
+  
+  goal vc_borrow_mut_Seq_tup2_ref_str_bool : true
+  
+  type t_Formatter
+  
+  predicate inv_Formatter t_Formatter
+  
+  type t_Result_unit_Error =
+    | Ok unit
+    | Err unit
+  
+  predicate invariant_refmut_Formatter (self:t t_Formatter) =
+    inv_Formatter (self.current) /\ inv_Formatter (self.final)
+  
+  (* meta rewrite_def predicate invariant_refmut_Formatter *)
+  
+  predicate inv_refmut_Formatter (_1:t t_Formatter) =
+    invariant_refmut_Formatter _1
+  
+  (* meta rewrite_def predicate inv_refmut_Formatter *)
+  
+  goal vc_request_write : true
+  
+  predicate resolve_refmut_Formatter (_1:t t_Formatter) =
+    _1.final = _1.current
+  
+  (* meta rewrite_def predicate resolve_refmut_Formatter *)
+  
+  goal vc_elim_Err : true
+  
+  (* meta compute_max_steps 1000000 *)
+  
+  (* meta select_lsinst "all" *)
+  
+  goal vc_pair_trace :
+    forall f:t t_Formatter, left:string, right:string.
+     inv_refmut_Formatter f ->
+     (forall fin:seq tup2_ref_str_bool.
+       (forall fin1:t_Formatter, id:int.
+         inv_Formatter fin1 ->
+         inv_refmut_Formatter (t'mk (f.current) fin1 id) /\
+         (forall result:t_Result_unit_Error.
+           fin =
+           snoc (empty: seq tup2_ref_str_bool)
+           (Tup2_ref_str_bool'mk left
+            match result with
+            | Ok () -> True
+            | Err _ -> False
+            end) ->
+           (result = Ok () ->
+            fin =
+            create 1
+            (fun (x'x:int) ->
+              if x'x = 0 then Tup2_ref_str_bool'mk left True
+              else Tup2_ref_str_bool'mk left True) &&
+            (forall fin2:seq tup2_ref_str_bool.
+              (forall fin3:t_Formatter.
+                inv_Formatter fin3 ->
+                inv_refmut_Formatter
+                (t'mk fin1 fin3 (get_id (t'mk fin1 (f.final) (f.id1)))) /\
+                (forall result1:t_Result_unit_Error.
+                  fin2 =
+                  snoc fin
+                  (Tup2_ref_str_bool'mk right
+                   match result1 with
+                   | Ok () -> True
+                   | Err _ -> False
+                   end) ->
+                  (resolve_refmut_Formatter (t'mk fin3 (f.final) (f.id1)) ->
+                   (result1 = Ok () ->
+                    fin2 =
+                    create 2
+                    (fun (x'x:int) ->
+                      if x'x = 0 then Tup2_ref_str_bool'mk left True
+                      else if x'x = 1 then Tup2_ref_str_bool'mk right True
+                           else Tup2_ref_str_bool'mk right True)) /\
+                   (result1 = Err () ->
+                    (Err () = result1 ->
+                     fin2 =
+                     create 2
+                     (fun (x'x:int) ->
+                       if x'x = 0 then Tup2_ref_str_bool'mk left True
+                       else if x'x = 1 then Tup2_ref_str_bool'mk right False
+                            else Tup2_ref_str_bool'mk right False)) /\
+                    match result1 with
+                    | Err _ -> true
+                    | _ -> false
+                    end)) /\
+                  inv_refmut_Formatter (t'mk fin3 (f.final) (f.id1)))) /\
+              inv_Formatter fin1)) /\
+           (result = Err () ->
+            (resolve_refmut_Formatter (t'mk fin1 (f.final) (f.id1)) ->
+             (Err () = result ->
+              fin =
+              create 1
+              (fun (x'x:int) ->
+                if x'x = 0 then Tup2_ref_str_bool'mk left False
+                else Tup2_ref_str_bool'mk left False)) /\
+             match result with
+             | Err _ -> true
+             | _ -> false
+             end) /\
+            inv_refmut_Formatter (t'mk fin1 (f.final) (f.id1))))) /\
+       inv_Formatter (f.current))
+  
+end
+

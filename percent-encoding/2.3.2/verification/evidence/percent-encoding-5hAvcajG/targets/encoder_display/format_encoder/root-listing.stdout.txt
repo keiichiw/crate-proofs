@@ -1,0 +1,667 @@
+theory Coma
+  
+  (* use why3.BuiltIn.BuiltIn *)
+  
+  (* use why3.Bool.Bool *)
+  
+  (* use why3.Unit.Unit *)
+  
+  (* use creusot.slice.Slice64 *)
+  
+  (* use creusot.int.UInt8 *)
+  
+  (* use creusot.int.UInt32 *)
+  
+  (* use map.Map *)
+  
+  (* use creusot.prelude.MutBorrow *)
+  
+  (* use creusot.prelude.Char *)
+  
+  (* use creusot.prelude.Any *)
+  
+  type t_AsciiSet
+  
+  type t_PercentEncode =
+    | T_PercentEncode'mk (bytes:slice t) (ascii_set:t_AsciiSet)
+  
+  (* meta model_record function ascii_set *)
+  
+  (* meta model_record function bytes *)
+  
+  predicate inv_AsciiSet t_AsciiSet
+  
+  predicate invariant_ref_AsciiSet (self:t_AsciiSet) = inv_AsciiSet self
+  
+  (* meta rewrite_def predicate invariant_ref_AsciiSet *)
+  
+  predicate inv_ref_AsciiSet (_1:t_AsciiSet) = invariant_ref_AsciiSet _1
+  
+  (* meta rewrite_def predicate inv_ref_AsciiSet *)
+  
+  predicate inv_PercentEncode t_PercentEncode
+  
+  axiom inv_axiom :
+    forall x:t_PercentEncode [inv_PercentEncode x].
+     inv_PercentEncode x <-> inv_ref_AsciiSet (x.ascii_set)
+  
+  predicate invariant_ref_PercentEncode (self:t_PercentEncode) =
+    inv_PercentEncode self
+  
+  (* meta rewrite_def predicate invariant_ref_PercentEncode *)
+  
+  predicate inv_ref_PercentEncode (_1:t_PercentEncode) =
+    invariant_ref_PercentEncode _1
+  
+  (* meta rewrite_def predicate inv_ref_PercentEncode *)
+  
+  function remaining_input (self:t_PercentEncode) : seq t = view (self.bytes)
+  
+  (* meta rewrite_def function remaining_input *)
+  
+  function mask_words t_AsciiSet : seq t1
+  
+  axiom mask_words_spec :
+    forall self:t_AsciiSet [mask_words self]. length (mask_words self) = 4
+  
+  function configured_set (self:t_PercentEncode) : seq t1 =
+    mask_words (self.ascii_set)
+  
+  (* meta rewrite_def function configured_set *)
+  
+  goal vc_clone_PercentEncode : true
+  
+  predicate gt_log_Int (self:int) (other:int) = other < self
+  
+  (* meta rewrite_def predicate gt_log_Int *)
+  
+  predicate ge_log_Int (self:int) (other:int) = other <= self
+  
+  (* meta rewrite_def predicate ge_log_Int *)
+  
+  predicate should_encode_model (mask:seq t1) (byte:t) =
+    ge_log_Int (t'int byte) 128 \/
+    not bw_and (get mask (div (t'int byte) 32))
+        (shl (1:t1) (of_int (t'int (bw_and1 byte (31:t))))) = (0:t1)
+  
+  function uppercase_hex (digit:int) : int =
+    if digit < 10 then 48 + digit else 55 + digit
+  
+  axiom uppercase_hex_spec :
+    forall digit:int [uppercase_hex digit].
+     uppercase_hex digit = (if digit < 10 then 48 + digit else 55 + digit)
+  
+  function uppercase_hex'0 (digit:int) : int = uppercase_hex digit
+  
+  function encoded_byte_model (byte:int) : seq int =
+    (singleton 37 ++ singleton (uppercase_hex'0 (div byte 16)))
+    ++ singleton (uppercase_hex'0 (mod byte 16))
+  
+  function safe_run_end (seq t) int (seq t1) : int
+  
+  axiom safe_run_end_spec :
+    forall input:seq t, start:int, mask:seq t1
+     [safe_run_end input start mask].
+     0 <= start /\ start <= length input ->
+     length mask = 4 ->
+     start <= safe_run_end input start mask /\
+     safe_run_end input start mask <= length input
+  
+  axiom safe_run_end_spec'0 :
+    forall input:seq t, start:int, mask:seq t1
+     [safe_run_end input start mask].
+     0 <= start /\ start <= length input ->
+     length mask = 4 ->
+     (forall i:int.
+       start <= i /\ i < safe_run_end input start mask ->
+       not should_encode_model mask (get input i))
+  
+  axiom safe_run_end_spec'1 :
+    forall input:seq t, start:int, mask:seq t1
+     [safe_run_end input start mask].
+     0 <= start /\ start <= length input ->
+     length mask = 4 ->
+     safe_run_end input start mask = length input \/
+     should_encode_model mask (get input (safe_run_end input start mask))
+  
+  axiom safe_run_end_spec'2 :
+    forall input:seq t, start:int, mask:seq t1
+     [safe_run_end input start mask].
+     0 <= start /\ start <= length input ->
+     length mask = 4 ->
+     start < length input /\ not should_encode_model mask (get input start) ->
+     start < safe_run_end input start mask
+  
+  function index_Mapping_u8_Int (self:t -> int) (a:t) : int = get1 self a
+  
+  (* meta rewrite_def function index_Mapping_u8_Int *)
+  
+  function map_u8 (seq t) (t -> int) : seq int
+  
+  axiom map_u8_spec :
+    forall self:seq t, m:t -> int [map_u8 self m].
+     length (map_u8 self m) = length self
+  
+  axiom map_u8_spec'0 :
+    forall self:seq t, m:t -> int [map_u8 self m].
+     forall i:int.
+      0 <= i /\ i < length self ->
+      get (map_u8 self m) i = index_Mapping_u8_Int m (get self i)
+  
+  function byte_sequence_as_ints (bytes'0:seq t) : seq int =
+    map_u8 bytes'0 (fun (byte:t) -> t'int byte)
+  
+  function encoded_chunks (seq t1) (seq t) : seq (seq int)
+  
+  axiom encoded_chunks_def :
+    forall mask:seq t1, input:seq t [encoded_chunks mask input].
+     length mask = 4 ->
+     encoded_chunks mask input =
+     (if length input = 0 then empty: seq (seq int)
+      else if should_encode_model mask (get input 0)
+           then singleton (encoded_byte_model (t'int (get input 0)))
+                ++ encoded_chunks mask input[1..length input]
+           else let end' = safe_run_end input 0 mask in
+                singleton (byte_sequence_as_ints input[0..end'])
+                ++ encoded_chunks mask input[end'..length input])
+  
+  axiom encoded_chunks_spec :
+    forall mask:seq t1, input:seq t [encoded_chunks mask input].
+     length mask = 4 ->
+     (if length input = 0 then length (encoded_chunks mask input) = 0
+      else gt_log_Int (length (encoded_chunks mask input)) 0 /\
+           (if should_encode_model mask (get input 0)
+            then get (encoded_chunks mask input) 0 =
+                 encoded_byte_model (t'int (get input 0)) /\
+                 (encoded_chunks mask input)[1..length
+                                                (encoded_chunks mask input)] =
+                 encoded_chunks mask input[1..length input]
+            else let end' = safe_run_end input 0 mask in
+                 get (encoded_chunks mask input) 0 =
+                 byte_sequence_as_ints input[0..end'] /\
+                 (encoded_chunks mask input)[1..length
+                                                (encoded_chunks mask input)] =
+                 encoded_chunks mask input[end'..length input]))
+  
+  goal vc_new_ref_str : true
+  
+  type tup2_ref_str_bool =
+    | Tup2_ref_str_bool'mk (f0:string) (f1:bool)
+  
+  (* meta model_record function f1 *)
+  
+  (* meta model_record function f0 *)
+  
+  goal vc_new_tup2_ref_str_bool : true
+  
+  predicate well_founded_relation_Int (self:int) (other:int) =
+    ge_log_Int self 0 /\ gt_log_Int self other
+  
+  (* meta rewrite_def predicate well_founded_relation_Int *)
+  
+  type t_Option_ref_str =
+    | None
+    | Some string
+  
+  predicate invariant_refmut_PercentEncode (self:t2 t_PercentEncode) =
+    inv_PercentEncode (self.current) /\ inv_PercentEncode (self.final)
+  
+  (* meta rewrite_def predicate invariant_refmut_PercentEncode *)
+  
+  predicate inv_refmut_PercentEncode (_1:t2 t_PercentEncode) =
+    invariant_refmut_PercentEncode _1
+  
+  (* meta rewrite_def predicate inv_refmut_PercentEncode *)
+  
+  function index_Mapping_ref_str_Seq_Int (self:string -> seq int) (a:
+    string) : seq int = get1 self a
+  
+  (* meta rewrite_def function index_Mapping_ref_str_Seq_Int *)
+  
+  function map_ref_str (seq string) (string -> seq int) : seq (seq int)
+  
+  axiom map_ref_str_spec :
+    forall self:seq string, m:string -> seq int [map_ref_str self m].
+     length (map_ref_str self m) = length self
+  
+  axiom map_ref_str_spec'0 :
+    forall self:seq string, m:string -> seq int [map_ref_str self m].
+     forall i:int.
+      0 <= i /\ i < length self ->
+      get (map_ref_str self m) i =
+      index_Mapping_ref_str_Seq_Int m (get self i)
+  
+  function tail_char (self:seq t3) : seq t3 = self[1..length self]
+  
+  function flat_map_char (seq t3) (t3 -> seq t) : seq t
+  
+  axiom flat_map_char_def :
+    forall self:seq t3, other:t3 -> seq t [flat_map_char self other].
+     flat_map_char self other =
+     (if length self = 0 then empty: seq t
+      else get1 other (get self 0) ++ flat_map_char (tail_char self) other)
+  
+  function to_utf8_char t3 : seq t
+  
+  axiom to_utf8_char_spec :
+    forall self:t3 [to_utf8_char self].
+     1 <= length (to_utf8_char self) /\ length (to_utf8_char self) <= 4
+  
+  function to_bytes (self:seq t3) : seq t =
+    flat_map_char self (fun (c:t3) -> to_utf8_char c)
+  
+  function view_str string : seq t3
+  
+  function string_chunk_bytes (s:string) : seq int =
+    map_u8 (to_bytes (view_str s)) (fun (b:t) -> t'int b)
+  
+  function concat_empty_Seq_Int (seq (seq int)) : unit
+  
+  axiom concat_empty_Seq_Int_spec :
+    forall self:seq (seq int). (self ++ (empty: seq (seq int))) = self
+  
+  axiom concat_empty_Seq_Int_spec'0 :
+    forall self:seq (seq int). ((empty: seq (seq int)) ++ self) = self
+  
+  predicate produces_PercentEncode (self:t_PercentEncode) (visited:seq
+    string) (o:t_PercentEncode) =
+    encoded_chunks (configured_set self) (remaining_input self) =
+    (map_ref_str visited (fun (chunk:string) -> string_chunk_bytes chunk)
+     ++ encoded_chunks (configured_set o) (remaining_input o))
+  
+  function produces_trans_PercentEncode (a:t_PercentEncode) (ab:seq string)
+    (b:t_PercentEncode) (bc:seq string) (c:t_PercentEncode) : unit = ()
+  
+  axiom produces_trans_PercentEncode_spec :
+    forall a:t_PercentEncode, ab:seq string, b:t_PercentEncode, bc:seq
+     string, c:t_PercentEncode.
+     produces_PercentEncode a ab b ->
+     produces_PercentEncode b bc c -> produces_PercentEncode a (ab ++ bc) c
+  
+  function produces_refl_PercentEncode (self:t_PercentEncode) : unit =
+    let empty_chunks =
+      map_ref_str (empty: seq string)
+      (fun (chunk:string) -> string_chunk_bytes chunk)
+    in
+    let encoded =
+      encoded_chunks (configured_set self) (remaining_input self)
+    in let _ = concat_empty_Seq_Int encoded in ()
+  
+  axiom produces_refl_PercentEncode_spec :
+    forall self:t_PercentEncode.
+     produces_PercentEncode self (empty: seq string) self
+  
+  predicate resolve_refmut_PercentEncode (_1:t2 t_PercentEncode) =
+    _1.final = _1.current
+  
+  (* meta rewrite_def predicate resolve_refmut_PercentEncode *)
+  
+  predicate completed_PercentEncode (self:t2 t_PercentEncode) =
+    length (remaining_input (self.current)) = 0 /\
+    resolve_refmut_PercentEncode self
+  
+  goal vc_next_PercentEncode : true
+  
+  predicate successful_model_prefix (expected:seq (seq int)) (trace:seq
+    tup2_ref_str_bool) (count:int) =
+    0 <= count /\
+    count <= length expected /\
+    length trace = count /\
+    (forall j:int.
+      0 <= j /\ j < count ->
+      string_chunk_bytes ((get trace j).f0) = get expected j /\
+      (get trace j).f1 = True)
+  
+  type t_Formatter
+  
+  predicate inv_Formatter t_Formatter
+  
+  predicate invariant_refmut_Formatter (self:t2 t_Formatter) =
+    inv_Formatter (self.current) /\ inv_Formatter (self.final)
+  
+  (* meta rewrite_def predicate invariant_refmut_Formatter *)
+  
+  predicate inv_refmut_Formatter (_1:t2 t_Formatter) =
+    invariant_refmut_Formatter _1
+  
+  (* meta rewrite_def predicate inv_refmut_Formatter *)
+  
+  goal vc_elim_Some : true
+  
+  goal vc_deref_mut_Ghost_Seq_ref_str : true
+  
+  goal vc_push_back_ghost_ref_str : true
+  
+  predicate resolve_refmut_Seq_ref_str (_1:t2 (seq string)) =
+    _1.final = _1.current
+  
+  (* meta rewrite_def predicate resolve_refmut_Seq_ref_str *)
+  
+  goal vc_new_unit : true
+  
+  predicate produces_append t_PercentEncode (seq string) t_PercentEncode
+    string t_PercentEncode
+  
+  axiom produces_append_spec :
+    forall initial:t_PercentEncode, prefix:seq string, before:
+     t_PercentEncode, chunk:string, after:t_PercentEncode
+     [produces_append initial prefix before chunk after].
+     produces_PercentEncode initial prefix before ->
+     produces_PercentEncode before (singleton chunk) after ->
+     produces_append initial prefix before chunk after
+  
+  axiom produces_append_spec'0 :
+    forall initial:t_PercentEncode, prefix:seq string, before:
+     t_PercentEncode, chunk:string, after:t_PercentEncode.
+     produces_PercentEncode initial prefix before ->
+     produces_PercentEncode before (singleton chunk) after ->
+     produces_PercentEncode initial (snoc prefix chunk) after
+  
+  goal vc_borrow_mut_Seq_tup2_ref_str_bool : true
+  
+  type t_Result_unit_Error =
+    | Ok unit
+    | Err unit
+  
+  goal vc_request_write : true
+  
+  predicate produced_chunk_matches (seq (seq int)) t_PercentEncode (seq
+    string) string t_PercentEncode
+  
+  axiom produced_chunk_matches_spec :
+    forall expected:seq (seq int), initial:t_PercentEncode, prefix:seq
+     string, chunk:string, after:t_PercentEncode
+     [produced_chunk_matches expected initial prefix chunk after].
+     expected =
+     encoded_chunks (configured_set initial) (remaining_input initial) ->
+     produces_PercentEncode initial (snoc prefix chunk) after ->
+     produced_chunk_matches expected initial prefix chunk after
+  
+  axiom produced_chunk_matches_spec'0 :
+    forall expected:seq (seq int), initial:t_PercentEncode, prefix:seq
+     string, chunk:string, after:t_PercentEncode.
+     expected =
+     encoded_chunks (configured_set initial) (remaining_input initial) ->
+     produces_PercentEncode initial (snoc prefix chunk) after ->
+     length prefix < length expected
+  
+  axiom produced_chunk_matches_spec'1 :
+    forall expected:seq (seq int), initial:t_PercentEncode, prefix:seq
+     string, chunk:string, after:t_PercentEncode.
+     expected =
+     encoded_chunks (configured_set initial) (remaining_input initial) ->
+     produces_PercentEncode initial (snoc prefix chunk) after ->
+     string_chunk_bytes chunk = get expected (length prefix)
+  
+  predicate successful_model_prefix_push (seq (seq int)) (seq
+    tup2_ref_str_bool) int string
+  
+  axiom successful_model_prefix_push_spec :
+    forall expected:seq (seq int), trace:seq tup2_ref_str_bool, count:int,
+     chunk:string [successful_model_prefix_push expected trace count chunk].
+     successful_model_prefix expected trace count ->
+     count < length expected ->
+     string_chunk_bytes chunk = get expected count ->
+     successful_model_prefix_push expected trace count chunk
+  
+  axiom successful_model_prefix_push_spec'0 :
+    forall expected:seq (seq int), trace:seq tup2_ref_str_bool, count:int,
+     chunk:string.
+     successful_model_prefix expected trace count ->
+     count < length expected ->
+     string_chunk_bytes chunk = get expected count ->
+     successful_model_prefix expected
+     (snoc trace (Tup2_ref_str_bool'mk chunk True)) (count + 1)
+  
+  predicate resolve_refmut_Formatter (_1:t2 t_Formatter) =
+    _1.final = _1.current
+  
+  (* meta rewrite_def predicate resolve_refmut_Formatter *)
+  
+  goal vc_elim_Err : true
+  
+  predicate failed_model_prefix (expected:seq (seq int)) (trace:seq
+    tup2_ref_str_bool) (count:int) =
+    0 <= count /\
+    count < length expected /\
+    length trace = (count + 1) /\
+    (forall j:int.
+      0 <= j /\ j < count ->
+      string_chunk_bytes ((get trace j).f0) = get expected j /\
+      (get trace j).f1 = True) /\
+    string_chunk_bytes ((get trace count).f0) = get expected count /\
+    not (get trace count).f1 = True
+  
+  predicate failed_model_prefix_push (seq (seq int)) (seq tup2_ref_str_bool)
+    int string
+  
+  axiom failed_model_prefix_push_spec :
+    forall expected:seq (seq int), trace:seq tup2_ref_str_bool, count:int,
+     chunk:string [failed_model_prefix_push expected trace count chunk].
+     successful_model_prefix expected trace count ->
+     count < length expected ->
+     string_chunk_bytes chunk = get expected count ->
+     failed_model_prefix_push expected trace count chunk
+  
+  axiom failed_model_prefix_push_spec'0 :
+    forall expected:seq (seq int), trace:seq tup2_ref_str_bool, count:int,
+     chunk:string.
+     successful_model_prefix expected trace count ->
+     count < length expected ->
+     string_chunk_bytes chunk = get expected count ->
+     failed_model_prefix expected
+     (snoc trace (Tup2_ref_str_bool'mk chunk False)) count
+  
+  (* meta compute_max_steps 1000000 *)
+  
+  (* meta select_lsinst "all" *)
+  
+  goal vc_format_encoder :
+    forall encoder:t_PercentEncode, formatter:t2 t_Formatter.
+     inv_ref_PercentEncode encoder /\ inv_refmut_Formatter formatter ->
+     (forall formatter1:t2 t_Formatter, iter:t_PercentEncode, expected:seq
+       (seq int), visited:seq string, trace:seq tup2_ref_str_bool, initial:
+       t_PercentEncode, before:t_PercentEncode, _31:t_Option_ref_str, _32:t2
+       t_PercentEncode, chunk:string, prefix:seq string, after:
+       t_PercentEncode, _46:t2 (seq string), _47:t2 (seq string), _48:t2 (seq
+       string), trace_before:seq tup2_ref_str_bool, result:
+       t_Result_unit_Error, _61:t2 t_Formatter, _63:t2 (seq
+       tup2_ref_str_bool), _64:t2 (seq tup2_ref_str_bool), _old:t_Formatter,
+       variant_old_bb6:int.
+       (forall formatter2:t2 t_Formatter, iter1:t_PercentEncode, expected1:
+         seq (seq int), visited1:seq string, trace1:seq tup2_ref_str_bool,
+         initial1:t_PercentEncode, before1:t_PercentEncode, _311:
+         t_Option_ref_str, _321:t2 t_PercentEncode, _old1:t_Formatter,
+         variant_old_bb61:int.
+         (inv_ref_PercentEncode encoder /\
+          (forall result1:t_PercentEncode.
+            inv_PercentEncode result1 /\
+            remaining_input result1 = remaining_input encoder /\
+            configured_set result1 = configured_set encoder ->
+            (inv_PercentEncode result1 &&
+             inv_refmut_Formatter formatter &&
+             length (empty: seq string) =
+             length (empty: seq tup2_ref_str_bool) &&
+             produces_PercentEncode result1 (empty: seq string) result1 &&
+             successful_model_prefix
+             (encoded_chunks (configured_set encoder)
+              (remaining_input encoder))
+             (empty: seq tup2_ref_str_bool)
+             (length (empty: seq tup2_ref_str_bool))) /\
+            (forall formatter3:t2 t_Formatter, iter2:t_PercentEncode,
+              visited2:seq string, trace2:seq tup2_ref_str_bool.
+              inv_PercentEncode iter2 ->
+              inv_refmut_Formatter formatter3 ->
+              formatter.final = formatter3.final ->
+              length visited2 = length trace2 ->
+              produces_PercentEncode result1 visited2 iter2 ->
+              successful_model_prefix
+              (encoded_chunks (configured_set encoder)
+               (remaining_input encoder))
+              trace2 (length trace2) ->
+              (forall fin:t_PercentEncode, id:int.
+                inv_PercentEncode fin ->
+                inv_refmut_PercentEncode (t'mk iter2 fin id) /\
+                (forall result2:t_Option_ref_str.
+                  match result2 with
+                  | Some item ->
+                      produces_PercentEncode iter2 (singleton item) fin
+                  | None -> completed_PercentEncode (t'mk iter2 fin id)
+                  end /\
+                  configured_set fin = configured_set iter2 /\
+                  match result2 with
+                  | Some _ ->
+                      length (remaining_input fin)
+                      < length (remaining_input iter2)
+                  | None -> fin = iter2
+                  end ->
+                  (forall x0:string.
+                    result2 = Some x0 ->
+                    (forall f0'0:string.
+                      Some f0'0 = result2 ->
+                      (forall fin1:seq string, id1:int.
+                        resolve_refmut_Seq_ref_str
+                        (t'mk (snoc visited2 f0'0) fin1 id1) ->
+                        produces_append result1 visited2 iter2 f0'0 fin &&
+                        (forall fin2:seq tup2_ref_str_bool.
+                          (forall fin3:t_Formatter, id2:int.
+                            inv_Formatter fin3 ->
+                            inv_refmut_Formatter
+                            (t'mk (formatter3.current) fin3 id2) /\
+                            (forall result3:t_Result_unit_Error.
+                              fin2 =
+                              snoc trace2
+                              (Tup2_ref_str_bool'mk f0'0
+                               match result3 with
+                               | Ok () -> True
+                               | Err _ -> False
+                               end) ->
+                              result3 = Ok () ->
+                              produced_chunk_matches
+                              (encoded_chunks (configured_set encoder)
+                               (remaining_input encoder))
+                              result1 visited2 f0'0 fin &&
+                              successful_model_prefix_push
+                              (encoded_chunks (configured_set encoder)
+                               (remaining_input encoder))
+                              trace2 (length trace2) f0'0 &&
+                              well_founded_relation_Int
+                              (length (remaining_input iter2))
+                              (length (remaining_input fin)) &&
+                              inv_PercentEncode fin &&
+                              inv_refmut_Formatter
+                              (t'mk fin3 (formatter3.final) (formatter3.id3)) &&
+                              formatter.final = formatter3.final &&
+                              length fin1 = length fin2 &&
+                              produces_PercentEncode result1 fin1 fin &&
+                              successful_model_prefix
+                              (encoded_chunks (configured_set encoder)
+                               (remaining_input encoder))
+                              fin2 (length fin2))) /\
+                          inv_Formatter (formatter3.current)))) /\
+                    match result2 with
+                    | Some _ -> true
+                    | _ -> false
+                    end))) /\
+              inv_PercentEncode iter2))) /\
+         ((inv_PercentEncode initial1 /\
+           remaining_input initial1 = remaining_input encoder /\
+           configured_set initial1 = configured_set encoder) /\
+          inv_PercentEncode before1 /\
+          inv_refmut_Formatter formatter2 /\
+          formatter.final = formatter2.final /\
+          length visited1 = length trace1 /\
+          produces_PercentEncode initial1 visited1 before1 /\
+          successful_model_prefix
+          (encoded_chunks (configured_set encoder) (remaining_input encoder))
+          trace1 (length trace1) /\
+          (exists id:int.
+            inv_PercentEncode iter1 /\
+            (completed_PercentEncode (t'mk before1 iter1 id) /\
+             configured_set iter1 = configured_set before1 /\ iter1 = before1) /\
+            expected1 =
+            encoded_chunks (configured_set encoder) (remaining_input encoder) /\
+            _311 = None /\
+            _321 = t'mk before1 iter1 id /\
+            _old1 = formatter.final /\
+            variant_old_bb61 = length (remaining_input before1)) ->
+          ((resolve_refmut_Formatter formatter2 ->
+            successful_model_prefix expected1 trace1 (length trace1) &&
+            length visited1 = length expected1) /\
+           inv_refmut_Formatter formatter2) /\
+          inv_PercentEncode iter1)) /\
+       ((inv_PercentEncode initial /\
+         remaining_input initial = remaining_input encoder /\
+         configured_set initial = configured_set encoder) /\
+        (exists formatter2:t2 t_Formatter.
+          inv_PercentEncode before /\
+          inv_refmut_Formatter formatter2 /\
+          formatter.final = formatter2.final /\
+          length prefix = length trace_before /\
+          produces_PercentEncode initial prefix before /\
+          successful_model_prefix
+          (encoded_chunks (configured_set encoder) (remaining_input encoder))
+          trace_before (length trace_before) /\
+          (exists id:int.
+            inv_PercentEncode iter /\
+            (match _31 with
+             | Some item ->
+                 produces_PercentEncode before (singleton item) iter
+             | None -> completed_PercentEncode (t'mk before iter id)
+             end /\
+             configured_set iter = configured_set before /\
+             match _31 with
+             | Some _ ->
+                 length (remaining_input iter)
+                 < length (remaining_input before)
+             | None -> iter = before
+             end) /\
+            (exists x0:string.
+              _31 = Some x0 /\
+              Some chunk = _31 /\
+              (exists id1:int.
+                resolve_refmut_Seq_ref_str
+                (t'mk (snoc prefix chunk) visited id1) /\
+                produces_append initial prefix before chunk iter /\
+                (exists id2:int.
+                  _63 = t'mk trace_before trace id2 /\
+                  (exists fin:t_Formatter, id4:int.
+                    inv_Formatter fin /\
+                    _63.final =
+                    snoc (_63.current)
+                    (Tup2_ref_str_bool'mk chunk
+                     match result with
+                     | Ok () -> True
+                     | Err _ -> False
+                     end) /\
+                    result = Err () /\
+                    formatter1 = t'mk fin (formatter2.final) (formatter2.id3) /\
+                    expected =
+                    encoded_chunks (configured_set encoder)
+                    (remaining_input encoder) /\
+                    _32 = t'mk before iter id /\
+                    after = iter /\
+                    () = (any_l (): unit) /\
+                    _46 =
+                    t'mk prefix (snoc prefix chunk)
+                    (get_id (t'mk prefix visited id1)) /\
+                    _47 = t'mk (snoc prefix chunk) visited id1 /\
+                    _48 = t'mk prefix visited id1 /\
+                    _61 = t'mk (formatter2.current) fin id4 /\
+                    _64 = t'mk trace_before trace id2 /\
+                    _old = formatter.final /\
+                    variant_old_bb6 = length (remaining_input before))))))) ->
+        ((resolve_refmut_Formatter formatter1 ->
+          (Err () = result ->
+           produced_chunk_matches expected initial prefix chunk after &&
+           failed_model_prefix_push expected trace_before
+           (length trace_before) chunk) /\
+          match result with
+          | Err _ -> true
+          | _ -> false
+          end) /\
+         inv_refmut_Formatter formatter1) /\
+        inv_PercentEncode iter))
+  
+end
+

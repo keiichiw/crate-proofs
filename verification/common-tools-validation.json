@@ -1,0 +1,46 @@
+{
+  "generated_at_utc": "2026-10-08T02:51:04.033186+00:00",
+  "scope": "Validation of reusable utilities against synthetic failure fixtures and the unchanged httpdate release/proof bundle; no new crate proofs.",
+  "script_sha256": {
+    "scripts/capture-crate-release.py": "0f4ed4894892fc0d126123ae277130b185682be3236e495928414e5398575420",
+    "scripts/audit-proof-evidence.py": "8dc29edffceeecb360f8021fffdea580b5cca5cd91b3a9903b99c62e347dace1",
+    "scripts/tests/test_verification_tools.py": "c4f5b662775d8392c3c8d273c8f5f2edf73fd0c7a43c385231cca0adbb1f7f88"
+  },
+  "synthetic_tests": {
+    "command": "source scripts/activate.sh && python3 -m unittest discover -s scripts/tests -v",
+    "passed": 25,
+    "failed": 0,
+    "skipped": 0,
+    "not_formal_evidence": true
+  },
+  "existing_httpdate_evidence_audit": {
+    "command": "python3 scripts/audit-proof-evidence.py httpdate/1.0.3 --reconstruct-root-goals --generated-dir httpdate/1.0.3/verif/httpdate-run-DaoqOhtz/coma/verif/httpdate_rlib",
+    "result": {
+      "status": "passed",
+      "manifest_sha256": "0860e781887c263fc5af70a45870ee2a2070d0538b6ea7f91b84f37b40ea0a05",
+      "selected_targets": 64,
+      "closed_root_goals": 268,
+      "expected_open_targets": 1,
+      "excluded_generated_targets": 1,
+      "why3_root_reconstruction": true,
+      "complete_generated_inventory_checked": true,
+      "limitations": "Checks saved record consistency against current inputs; does not run provers, recheck certificates, prove upstream equivalence, or establish freshness independently of the recorded run."
+    },
+    "formal_evidence_unchanged": true,
+    "correspondence_evidence_unchanged": true
+  },
+  "release_capture_validation": {
+    "crate": {
+      "name": "httpdate",
+      "version": "1.0.3"
+    },
+    "archive_sha256": "df3b46402a9d5adb4c86a0cf463f42e19994e3ee891101b1841f30a545cb49a9",
+    "source_files": 11,
+    "network_capture_passed": true,
+    "offline_capture_passed": true,
+    "offline_recheck_passed": true,
+    "temporary_capture_only": true
+  },
+  "limitations": "Saved evidence audit re-enumerates Why3 roots but does not rerun SMT/certificates. Synthetic tests are utility regression tests, not additional formal goals. Release checks do not prove Git/fork equivalence.",
+  "python_version": "3.12.14"
+}

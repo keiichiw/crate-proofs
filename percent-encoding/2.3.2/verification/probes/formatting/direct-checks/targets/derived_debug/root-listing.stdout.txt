@@ -1,0 +1,59 @@
+theory Coma
+  
+  (* use why3.BuiltIn.BuiltIn *)
+  
+  (* use why3.Bool.Bool *)
+  
+  (* use why3.Unit.Unit *)
+  
+  (* use creusot.prelude.MutBorrow *)
+  
+  (* use creusot.int.UInt8 *)
+  
+  (* use creusot.prelude.Any *)
+  
+  type t_Formatter
+  
+  predicate inv_Formatter t_Formatter
+  
+  type t_DebugPayload =
+    | T_DebugPayload'mk (f0:t)
+  
+  (* meta model_record function f0 *)
+  
+  type t_Result_unit_Error =
+    | Ok unit
+    | Err unit
+  
+  predicate invariant_refmut_Formatter (self:t1 t_Formatter) =
+    inv_Formatter (self.current) /\ inv_Formatter (self.final)
+  
+  (* meta rewrite_def predicate invariant_refmut_Formatter *)
+  
+  predicate inv_refmut_Formatter (_1:t1 t_Formatter) =
+    invariant_refmut_Formatter _1
+  
+  (* meta rewrite_def predicate inv_refmut_Formatter *)
+  
+  goal vc_fmt_DebugPayload : true
+  
+  predicate resolve_refmut_Formatter (_1:t1 t_Formatter) =
+    _1.final = _1.current
+  
+  (* meta rewrite_def predicate resolve_refmut_Formatter *)
+  
+  (* meta compute_max_steps 1000000 *)
+  
+  (* meta select_lsinst "all" *)
+  
+  goal vc_derived_debug :
+    forall f:t1 t_Formatter.
+     inv_refmut_Formatter f ->
+     (forall fin:t_Formatter.
+       inv_Formatter fin ->
+       inv_refmut_Formatter (t'mk (f.current) fin (get_id f)) /\
+       inv_refmut_Formatter (t'mk fin (f.final) (f.id))) /\
+     inv_Formatter (f.current)
+  
+end
+

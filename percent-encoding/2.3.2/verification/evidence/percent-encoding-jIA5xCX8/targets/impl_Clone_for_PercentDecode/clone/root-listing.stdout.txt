@@ -1,0 +1,76 @@
+theory Coma
+  
+  (* use why3.BuiltIn.BuiltIn *)
+  
+  (* use why3.Bool.Bool *)
+  
+  (* use why3.Unit.Unit *)
+  
+  (* use creusot.slice.Slice64 *)
+  
+  (* use creusot.int.UInt8 *)
+  
+  (* use creusot.prelude.Any *)
+  
+  type t_Iter_u8
+  
+  type t_PercentDecode =
+    | T_PercentDecode'mk (bytes:t_Iter_u8)
+  
+  (* meta model_record function bytes *)
+  
+  predicate inv_Iter_u8 t_Iter_u8
+  
+  predicate invariant_ref_Iter_u8 (self:t_Iter_u8) = inv_Iter_u8 self
+  
+  (* meta rewrite_def predicate invariant_ref_Iter_u8 *)
+  
+  predicate inv_ref_Iter_u8 (_1:t_Iter_u8) = invariant_ref_Iter_u8 _1
+  
+  (* meta rewrite_def predicate inv_ref_Iter_u8 *)
+  
+  function view_Iter_u8 t_Iter_u8 : slice t
+  
+  goal vc_as_slice_u8 : true
+  
+  goal vc_iter_u8 : true
+  
+  predicate inv_PercentDecode t_PercentDecode
+  
+  axiom inv_axiom :
+    forall x:t_PercentDecode [inv_PercentDecode x].
+     inv_PercentDecode x <-> inv_Iter_u8 (x.bytes)
+  
+  predicate invariant_ref_PercentDecode (self:t_PercentDecode) =
+    inv_PercentDecode self
+  
+  (* meta rewrite_def predicate invariant_ref_PercentDecode *)
+  
+  predicate inv_ref_PercentDecode (_1:t_PercentDecode) =
+    invariant_ref_PercentDecode _1
+  
+  (* meta rewrite_def predicate inv_ref_PercentDecode *)
+  
+  function remaining_input (self:t_PercentDecode) : seq t =
+    view (view_Iter_u8 (self.bytes))
+  
+  (* meta rewrite_def function remaining_input *)
+  
+  (* meta compute_max_steps 1000000 *)
+  
+  (* meta select_lsinst "all" *)
+  
+  goal vc_clone_PercentDecode :
+    forall self:t_Iter_u8.
+     let self1 = T_PercentDecode'mk self in
+     inv_PercentDecode self1 ->
+     inv_ref_Iter_u8 self /\
+     (forall result:slice t.
+       view result = view (view_Iter_u8 self) ->
+       (forall result1:t_Iter_u8.
+         inv_Iter_u8 result1 /\ view_Iter_u8 result1 = result ->
+         inv_PercentDecode (T_PercentDecode'mk result1) /\
+         remaining_input (T_PercentDecode'mk result1) = remaining_input self1))
+  
+end
+

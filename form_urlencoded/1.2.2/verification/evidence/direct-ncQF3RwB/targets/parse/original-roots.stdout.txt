@@ -1,0 +1,33 @@
+theory Coma
+  
+  (* use why3.BuiltIn.BuiltIn *)
+  
+  (* use why3.Bool.Bool *)
+  
+  (* use why3.Unit.Unit *)
+  
+  (* use creusot.slice.Slice64 *)
+  
+  (* use creusot.int.UInt8 *)
+  
+  (* use creusot.prelude.Any *)
+  
+  type t_Parse =
+    | T_Parse'mk (input:slice t)
+  
+  (* meta model_record function input *)
+  
+  function remaining_input (self:t_Parse) : seq t = view (self.input)
+  
+  (* meta rewrite_def function remaining_input *)
+  
+  (* meta compute_max_steps 1000000 *)
+  
+  (* meta select_lsinst "all" *)
+  
+  goal vc_parse :
+    forall input'0:slice t.
+     remaining_input (T_Parse'mk input'0) = view input'0
+  
+end
+

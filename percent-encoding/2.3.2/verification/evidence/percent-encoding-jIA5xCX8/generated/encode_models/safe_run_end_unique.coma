@@ -1,0 +1,66 @@
+use creusot.int.UInt8
+use seq.Seq
+use creusot.int.UInt32
+use int.ComputerDivision
+use int.Int
+
+predicate gt_log_Int [@inline:trivial] (self: int) (other: int) = other < self
+
+meta "rewrite_def" predicate gt_log_Int
+
+predicate ge_log_Int [@inline:trivial] (self: int) (other: int) = other <= self
+
+meta "rewrite_def" predicate ge_log_Int
+
+predicate should_encode_model (mask: Seq.seq UInt32.t) (byte: UInt8.t) =
+  ge_log_Int (UInt8.t'int byte) 128
+  \/ UInt32.bw_and (Seq.get mask (ComputerDivision.div (UInt8.t'int byte) 32)) (UInt32.shl (1: UInt32.t) (UInt32.of_int (UInt8.t'int (UInt8.bw_and byte (31: UInt8.t)))))
+  <> (0: UInt32.t)
+
+function safe_run_end (input: Seq.seq UInt8.t) (start: int) (mask: Seq.seq UInt32.t) : int
+
+axiom safe_run_end_spec:
+  forall input: Seq.seq UInt8.t, start: int, mask: Seq.seq UInt32.t [safe_run_end input start mask]. 0 <= start
+      /\ start <= Seq.length input
+    -> Seq.length mask = 4
+    -> start <= safe_run_end input start mask /\ safe_run_end input start mask <= Seq.length input
+
+axiom safe_run_end_spec'0:
+  forall input: Seq.seq UInt8.t, start: int, mask: Seq.seq UInt32.t [safe_run_end input start mask]. 0 <= start
+      /\ start <= Seq.length input
+    -> Seq.length mask = 4
+    -> (forall i: int. start <= i /\ i < safe_run_end input start mask
+      -> not should_encode_model mask (Seq.get input i))
+
+axiom safe_run_end_spec'1:
+  forall input: Seq.seq UInt8.t, start: int, mask: Seq.seq UInt32.t [safe_run_end input start mask]. 0 <= start
+      /\ start <= Seq.length input
+    -> Seq.length mask = 4
+    -> safe_run_end input start mask = Seq.length input
+    \/ should_encode_model mask (Seq.get input (safe_run_end input start mask))
+
+axiom safe_run_end_spec'2:
+  forall input: Seq.seq UInt8.t, start: int, mask: Seq.seq UInt32.t [safe_run_end input start mask]. 0 <= start
+      /\ start <= Seq.length input
+    -> Seq.length mask = 4
+    -> start < Seq.length input /\ not should_encode_model mask (Seq.get input start)
+    -> start < safe_run_end input start mask
+
+meta "compute_max_steps" 1000000
+
+meta "select_lsinst" "all"
+
+constant input : Seq.seq UInt8.t
+
+constant end' : int
+
+constant mask : Seq.seq UInt32.t
+
+predicate safe_run_end_unique (input: Seq.seq UInt8.t) (end': int) (mask: Seq.seq UInt32.t)
+
+goal vc_safe_run_end_unique: gt_log_Int (Seq.length input) 0 /\ Seq.length mask = 4
+  -> 0 <= end' /\ end' <= Seq.length input
+  -> (forall i: int. 0 <= i /\ i < end' -> not should_encode_model mask (Seq.get input i))
+  -> end' = Seq.length input \/ should_encode_model mask (Seq.get input end')
+  -> ([@stop_split] [@expl:safe_run_end_unique ensures] ([@stop_split] [@expl:safe_run_end_unique ensures #0] true)
+  /\ ([@stop_split] [@expl:safe_run_end_unique ensures #1] end' = safe_run_end input 0 mask))

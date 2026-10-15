@@ -1,0 +1,171 @@
+theory Coma
+  
+  (* use why3.BuiltIn.BuiltIn *)
+  
+  (* use why3.Bool.Bool *)
+  
+  (* use why3.Unit.Unit *)
+  
+  (* use int.Int *)
+  
+  (* meta compute_max_steps 1000000 *)
+  
+  (* meta select_lsinst "all" *)
+  
+  constant byte : int
+  
+  predicate unchanged_byte int
+  
+  goal vc_unchanged_byte :
+    if byte = 42
+    then true <->
+         byte = 42 \/
+         byte = 45 \/
+         byte = 46 \/
+         48 <= byte /\ byte <= 57 \/
+         65 <= byte /\ byte <= 90 \/ byte = 95 \/ 97 <= byte /\ byte <= 122
+    else if byte = 45
+         then true <->
+              byte = 42 \/
+              byte = 45 \/
+              byte = 46 \/
+              48 <= byte /\ byte <= 57 \/
+              65 <= byte /\ byte <= 90 \/
+              byte = 95 \/ 97 <= byte /\ byte <= 122
+         else if byte = 46
+              then true <->
+                   byte = 42 \/
+                   byte = 45 \/
+                   byte = 46 \/
+                   48 <= byte /\ byte <= 57 \/
+                   65 <= byte /\ byte <= 90 \/
+                   byte = 95 \/ 97 <= byte /\ byte <= 122
+              else if 48 <= byte
+                   then if byte <= 57
+                        then true <->
+                             byte = 42 \/
+                             byte = 45 \/
+                             byte = 46 \/
+                             48 <= byte /\ byte <= 57 \/
+                             65 <= byte /\ byte <= 90 \/
+                             byte = 95 \/ 97 <= byte /\ byte <= 122
+                        else if 65 <= byte
+                             then if byte <= 90
+                                  then true <->
+                                       byte = 42 \/
+                                       byte = 45 \/
+                                       byte = 46 \/
+                                       48 <= byte /\ byte <= 57 \/
+                                       65 <= byte /\ byte <= 90 \/
+                                       byte = 95 \/ 97 <= byte /\ byte <= 122
+                                  else if byte = 95
+                                       then true <->
+                                            byte = 42 \/
+                                            byte = 45 \/
+                                            byte = 46 \/
+                                            48 <= byte /\ byte <= 57 \/
+                                            65 <= byte /\ byte <= 90 \/
+                                            byte = 95 \/
+                                            97 <= byte /\ byte <= 122
+                                       else if 97 <= byte
+                                            then byte <= 122 <->
+                                                 byte = 42 \/
+                                                 byte = 45 \/
+                                                 byte = 46 \/
+                                                 48 <= byte /\ byte <= 57 \/
+                                                 65 <= byte /\ byte <= 90 \/
+                                                 byte = 95 \/
+                                                 97 <= byte /\ byte <= 122
+                                            else false <->
+                                                 byte = 42 \/
+                                                 byte = 45 \/
+                                                 byte = 46 \/
+                                                 48 <= byte /\ byte <= 57 \/
+                                                 65 <= byte /\ byte <= 90 \/
+                                                 byte = 95 \/
+                                                 97 <= byte /\ byte <= 122
+                             else if byte = 95
+                                  then true <->
+                                       byte = 42 \/
+                                       byte = 45 \/
+                                       byte = 46 \/
+                                       48 <= byte /\ byte <= 57 \/
+                                       65 <= byte /\ byte <= 90 \/
+                                       byte = 95 \/ 97 <= byte /\ byte <= 122
+                                  else if 97 <= byte
+                                       then byte <= 122 <->
+                                            byte = 42 \/
+                                            byte = 45 \/
+                                            byte = 46 \/
+                                            48 <= byte /\ byte <= 57 \/
+                                            65 <= byte /\ byte <= 90 \/
+                                            byte = 95 \/
+                                            97 <= byte /\ byte <= 122
+                                       else false <->
+                                            byte = 42 \/
+                                            byte = 45 \/
+                                            byte = 46 \/
+                                            48 <= byte /\ byte <= 57 \/
+                                            65 <= byte /\ byte <= 90 \/
+                                            byte = 95 \/
+                                            97 <= byte /\ byte <= 122
+                   else if 65 <= byte
+                        then if byte <= 90
+                             then true <->
+                                  byte = 42 \/
+                                  byte = 45 \/
+                                  byte = 46 \/
+                                  48 <= byte /\ byte <= 57 \/
+                                  65 <= byte /\ byte <= 90 \/
+                                  byte = 95 \/ 97 <= byte /\ byte <= 122
+                             else if byte = 95
+                                  then true <->
+                                       byte = 42 \/
+                                       byte = 45 \/
+                                       byte = 46 \/
+                                       48 <= byte /\ byte <= 57 \/
+                                       65 <= byte /\ byte <= 90 \/
+                                       byte = 95 \/ 97 <= byte /\ byte <= 122
+                                  else if 97 <= byte
+                                       then byte <= 122 <->
+                                            byte = 42 \/
+                                            byte = 45 \/
+                                            byte = 46 \/
+                                            48 <= byte /\ byte <= 57 \/
+                                            65 <= byte /\ byte <= 90 \/
+                                            byte = 95 \/
+                                            97 <= byte /\ byte <= 122
+                                       else false <->
+                                            byte = 42 \/
+                                            byte = 45 \/
+                                            byte = 46 \/
+                                            48 <= byte /\ byte <= 57 \/
+                                            65 <= byte /\ byte <= 90 \/
+                                            byte = 95 \/
+                                            97 <= byte /\ byte <= 122
+                        else if byte = 95
+                             then true <->
+                                  byte = 42 \/
+                                  byte = 45 \/
+                                  byte = 46 \/
+                                  48 <= byte /\ byte <= 57 \/
+                                  65 <= byte /\ byte <= 90 \/
+                                  byte = 95 \/ 97 <= byte /\ byte <= 122
+                             else if 97 <= byte
+                                  then byte <= 122 <->
+                                       byte = 42 \/
+                                       byte = 45 \/
+                                       byte = 46 \/
+                                       48 <= byte /\ byte <= 57 \/
+                                       65 <= byte /\ byte <= 90 \/
+                                       byte = 95 \/ 97 <= byte /\ byte <= 122
+                                  else false <->
+                                       byte = 42 \/
+                                       byte = 45 \/
+                                       byte = 46 \/
+                                       48 <= byte /\ byte <= 57 \/
+                                       65 <= byte /\ byte <= 90 \/
+                                       byte = 95 \/ 97 <= byte /\ byte <= 122
+  
+end
+

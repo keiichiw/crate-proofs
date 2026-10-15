@@ -1,0 +1,39 @@
+RUN_ID=percent-encoding-2.3.2-full-scope-20261014T030934Z-119616
+   Compiling percent-encoding v2.3.2 (/workspace/proof-env/percent-encoding/2.3.2/crate)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.33s
+     Running unittests src/lib.rs (verification/differential/target-fork-full-scope/debug/deps/percent_encoding-350640c30c9254c2)
+
+running 18 tests
+test ascii_set::tests::not_op ... ok
+test ascii_set::tests::add_op ... ok
+test ascii_set::tests::complement ... ok
+test ascii_set::tests::union ... ok
+test tests::percent_decode ... ok
+test tests::percent_decode_collect ... ok
+test tests::percent_decode_cow ... ok
+test tests::percent_decode_invalid_utf8 ... ok
+test tests::percent_decode_str ... ok
+test tests::percent_decode_utf8_lossy ... ok
+test tests::percent_decode_utf8_lossy_invalid_utf8 ... ok
+test tests::percent_encode_accepts_ascii_set_ref ... ok
+test tests::percent_encode_byte ... ok
+test tests::percent_encode_collect ... ok
+test tests::percent_encode_cow ... ok
+test tests::percent_encode_display ... ok
+test tests::utf8_percent_encode ... ok
+test tests::utf8_percent_encode_accepts_ascii_set_ref ... ok
+
+test result: ok. 18 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests percent_encoding
+
+running 6 tests
+test src/ascii_set.rs - ascii_set::AsciiSet (line 23) ... ok
+test src/lib.rs - percent_encode (line 450) ... ok
+test src/lib.rs - (line 31) ... ok
+test src/lib.rs - percent_decode (line 808) ... ok
+test src/lib.rs - percent_encode_byte (line 148) ... ok
+test src/lib.rs - utf8_percent_encode (line 471) ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.25s
+

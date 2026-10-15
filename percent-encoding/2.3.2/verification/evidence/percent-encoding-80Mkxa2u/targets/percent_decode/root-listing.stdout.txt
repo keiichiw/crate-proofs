@@ -1,0 +1,51 @@
+theory Coma
+  
+  (* use why3.BuiltIn.BuiltIn *)
+  
+  (* use why3.Bool.Bool *)
+  
+  (* use why3.Unit.Unit *)
+  
+  (* use creusot.slice.Slice64 *)
+  
+  (* use creusot.int.UInt8 *)
+  
+  (* use creusot.prelude.Any *)
+  
+  type t_Iter_u8
+  
+  predicate inv_Iter_u8 t_Iter_u8
+  
+  function view_Iter_u8 t_Iter_u8 : slice t
+  
+  goal vc_iter_u8 : true
+  
+  type t_PercentDecode =
+    | T_PercentDecode'mk (bytes:t_Iter_u8)
+  
+  (* meta model_record function bytes *)
+  
+  predicate inv_PercentDecode t_PercentDecode
+  
+  axiom inv_axiom :
+    forall x:t_PercentDecode [inv_PercentDecode x].
+     inv_PercentDecode x <-> inv_Iter_u8 (x.bytes)
+  
+  function remaining_input (self:t_PercentDecode) : seq t =
+    view (view_Iter_u8 (self.bytes))
+  
+  (* meta rewrite_def function remaining_input *)
+  
+  (* meta compute_max_steps 1000000 *)
+  
+  (* meta select_lsinst "all" *)
+  
+  goal vc_percent_decode :
+    forall input:slice t.
+     forall result:t_Iter_u8.
+      inv_Iter_u8 result /\ view_Iter_u8 result = input ->
+      inv_PercentDecode (T_PercentDecode'mk result) /\
+      remaining_input (T_PercentDecode'mk result) = view input
+  
+end
+

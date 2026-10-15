@@ -1,0 +1,50 @@
+    Checking form-urlencoded-encoding-override-probe v0.0.0 (/workspace/proof-env/form_urlencoded/1.2.2/verification/probes/encoding-override)
+warning: unexpected `cfg` condition name: `creusot`
+ --> src/lib.rs:6:7
+  |
+6 | #[cfg(creusot)]
+  |       ^^^^^^^
+  |
+  = help: expected names are: `docsrs`, `feature`, and `test` and 32 more
+  = help: consider using a Cargo feature instead
+  = help: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:
+           [lints.rust]
+           unexpected_cfgs = { level = "warn", check-cfg = ['cfg(creusot)'] }
+  = help: or consider adding `println!("cargo::rustc-check-cfg=cfg(creusot)");` to the top of the `build.rs`
+  = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+  = note: `#[warn(unexpected_cfgs)]` on by default
+
+warning: unexpected `cfg` condition name: `creusot`
+  --> src/lib.rs:33:7
+   |
+33 | #[cfg(creusot)]
+   |       ^^^^^^^
+   |
+   = help: consider using a Cargo feature instead
+   = help: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:
+            [lints.rust]
+            unexpected_cfgs = { level = "warn", check-cfg = ['cfg(creusot)'] }
+   = help: or consider adding `println!("cargo::rustc-check-cfg=cfg(creusot)");` to the top of the `build.rs`
+   = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+
+warning: unused import: `creusot_std::prelude::*`
+ --> src/lib.rs:7:5
+  |
+7 | use creusot_std::prelude::*;
+  |     ^^^^^^^^^^^^^^^^^^^^^^^
+  |
+  = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: support for trait objects (dyn) is limited and experimental
+  --> src/lib.rs:25:38
+   |
+25 |         self.callback.map(|callback| callback(input))
+   |                                      ^^^^^^^^
+   |
+   = note: `#[warn(creusot::experimental)]` on by default
+
+error: forbidden dyn type: dyn for<'a> core::ops::Fn(&'a str) -> alloc::borrow::Cow<'_, [u8]> (dyn support is currently minimal, please open an issue to improve this feature)
+
+warning: `form-urlencoded-encoding-override-probe` (lib) generated 4 warnings
+error: could not compile `form-urlencoded-encoding-override-probe` (lib) due to 1 previous error; 4 warnings emitted
+Error: Compilation failed

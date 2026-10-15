@@ -1,0 +1,223 @@
+use creusot.int.UInt8
+use creusot.int.UInt16
+use creusot.int.UInt64
+use int.ComputerDivision
+use creusot.prelude.Any
+use int.Int
+
+type t_RawDate = {
+  sec: UInt8.t;
+  min: UInt8.t;
+  hour: UInt8.t;
+  day: UInt8.t;
+  mon: UInt8.t;
+  year: UInt16.t;
+  wday: UInt8.t }
+
+function january_start [@inline:trivial] (year'0: int) : int = (year'0 - 1970) * 365
+      + ComputerDivision.div (year'0 - 1969) 4
+    - ComputerDivision.div (year'0 - 1901) 100
+  + ComputerDivision.div (year'0 - 1601) 400
+
+meta "rewrite_def" function january_start
+
+function january_offset [@inline:trivial] (month: int) : int = if month = 1 then
+    0
+  else
+    if month = 2 then
+      31
+    else
+      if month = 3 then
+        59
+      else
+        if month = 4 then
+          90
+        else
+          if month = 5 then
+            120
+          else
+            if month = 6 then
+              151
+            else
+              if month = 7 then
+                181
+              else
+                if month = 8 then
+                  212
+                else
+                  if month = 9 then 243 else if month = 10 then 273 else if month = 11 then 304 else 334
+              
+            
+          
+        
+      
+    
+  
+
+
+meta "rewrite_def" function january_offset
+
+predicate gt_log_Int [@inline:trivial] (self: int) (other: int) = other < self
+
+meta "rewrite_def" predicate gt_log_Int
+
+function leap_adjustment [@inline:trivial] (year'0: int) : int = if ComputerDivision.mod year'0 4 = 0
+  /\ (ComputerDivision.mod year'0 100 <> 0 \/ ComputerDivision.mod year'0 400 = 0) then
+    1
+  else
+    0
+
+
+meta "rewrite_def" function leap_adjustment
+
+function gregorian_day [@inline:trivial] (d: t_RawDate) : int = january_start (UInt16.t'int d.year)
+        + january_offset (UInt8.t'int d.mon)
+      + UInt8.t'int d.day
+    - 1
+  + (if gt_log_Int (UInt8.t'int d.mon) 2 then leap_adjustment (UInt16.t'int d.year) else 0)
+
+meta "rewrite_def" function gregorian_day
+
+let to_unix_seconds (v: t_RawDate) (return (x: UInt64.t)) =
+{[@stop_split] [@expl:to_unix_seconds requires] UInt8.t'int v.sec < 60
+  /\ UInt8.t'int v.min < 60
+  /\ UInt8.t'int v.hour < 24
+  /\ 1 <= UInt8.t'int v.day
+  /\ UInt8.t'int v.day <= 31
+  /\ 1 <= UInt8.t'int v.mon /\ UInt8.t'int v.mon <= 12 /\ 1970 <= UInt16.t'int v.year /\ UInt16.t'int v.year <= 9999}
+  any
+  [ return (result: UInt64.t) ->
+  {[@stop_split] [@expl:to_unix_seconds ensures] ([@stop_split] [@expl:to_unix_seconds ensures #0] UInt64.t'int result
+      < 253402300800)
+    /\ ([@stop_split] [@expl:to_unix_seconds ensures #1] UInt64.t'int result
+    = gregorian_day v * 86400 + UInt8.t'int v.hour * 3600 + UInt8.t'int v.min * 60 + UInt8.t'int v.sec)}
+    (! return {result}) ]
+
+function month_length [@inline:trivial] (year'0: int) (month: int) : int = if month = 2 then
+    28 + leap_adjustment year'0
+  else
+    if month = 4 \/ month = 6 \/ month = 9 \/ month = 11 then 30 else 31
+
+
+meta "rewrite_def" function month_length
+
+let from_unix_seconds (secs_since_epoch: UInt64.t) (return (x: t_RawDate)) =
+{[@stop_split] [@expl:from_unix_seconds requires] UInt64.t'int secs_since_epoch < 253402300800}
+  any
+  [ return (result: t_RawDate) ->
+  {[@stop_split] [@expl:from_unix_seconds ensures] ([@stop_split] [@expl:from_unix_seconds ensures #0] UInt8.t'int result.sec
+        < 60
+      /\ UInt8.t'int result.min < 60
+      /\ UInt8.t'int result.hour < 24
+      /\ 1 <= UInt8.t'int result.day
+      /\ UInt8.t'int result.day <= 31
+      /\ 1 <= UInt8.t'int result.mon
+      /\ UInt8.t'int result.mon <= 12
+      /\ 1970 <= UInt16.t'int result.year
+      /\ UInt16.t'int result.year <= 9999 /\ 1 <= UInt8.t'int result.wday /\ UInt8.t'int result.wday <= 7)
+    /\ ([@stop_split] [@expl:from_unix_seconds ensures #1] gregorian_day result
+      = ComputerDivision.div (UInt64.t'int secs_since_epoch) 86400)
+    /\ ([@stop_split] [@expl:from_unix_seconds ensures #2] UInt8.t'int result.sec + UInt8.t'int result.min * 60
+        + UInt8.t'int result.hour * 3600
+      = ComputerDivision.mod (UInt64.t'int secs_since_epoch) 86400)
+    /\ ([@stop_split] [@expl:from_unix_seconds ensures #3] UInt8.t'int result.day
+      <= month_length (UInt16.t'int result.year) (UInt8.t'int result.mon))
+    /\ ([@stop_split] [@expl:from_unix_seconds ensures #4] UInt8.t'int result.wday
+    = ComputerDivision.mod (ComputerDivision.div (UInt64.t'int secs_since_epoch) 86400 + 3) 7 + 1)}
+    (! return {result}) ]
+
+predicate valid_calendar [@inline:trivial] (d: t_RawDate) =
+  UInt8.t'int d.sec < 60
+  /\ UInt8.t'int d.min < 60
+  /\ UInt8.t'int d.hour < 24
+  /\ 1970 <= UInt16.t'int d.year
+  /\ UInt16.t'int d.year <= 9999
+  /\ 1 <= UInt8.t'int d.mon
+  /\ UInt8.t'int d.mon <= 12
+  /\ 1 <= UInt8.t'int d.day
+  /\ UInt8.t'int d.day <= month_length (UInt16.t'int d.year) (UInt8.t'int d.mon)
+  /\ UInt8.t'int d.wday = ComputerDivision.mod (gregorian_day d + 3) 7 + 1
+
+meta "rewrite_def" predicate valid_calendar
+
+meta "compute_max_steps" 1000000
+
+meta "select_lsinst" "all"
+
+let is_valid_date (d: t_RawDate) (return (x: bool)) = (! bb0
+  [ bb0 = s0
+    [ s0 = [ &_5 <- UInt8.lt d.sec (60: UInt8.t) ] s1
+    | s1 = any [ br0 -> {_5 = false} (! bb19) | br1 -> {_5} (! bb1) ] ]
+  | bb1 = s0
+    [ s0 = [ &_7 <- UInt8.lt d.min (60: UInt8.t) ] s1
+    | s1 = any [ br0 -> {_7 = false} (! bb19) | br1 -> {_7} (! bb2) ] ]
+  | bb2 = s0
+    [ s0 = [ &_9 <- UInt8.lt d.hour (24: UInt8.t) ] s1
+    | s1 = any [ br0 -> {_9 = false} (! bb19) | br1 -> {_9} (! bb3) ] ]
+  | bb3 = s0
+    [ s0 = [ &_11 <- UInt8.gt d.day (0: UInt8.t) ] s1
+    | s1 = any [ br0 -> {_11 = false} (! bb19) | br1 -> {_11} (! bb4) ] ]
+  | bb4 = s0
+    [ s0 = [ &_13 <- UInt8.lt d.day (32: UInt8.t) ] s1
+    | s1 = any [ br0 -> {_13 = false} (! bb19) | br1 -> {_13} (! bb5) ] ]
+  | bb5 = s0
+    [ s0 = [ &_15 <- UInt8.gt d.mon (0: UInt8.t) ] s1
+    | s1 = any [ br0 -> {_15 = false} (! bb19) | br1 -> {_15} (! bb6) ] ]
+  | bb6 = s0
+    [ s0 = [ &_17 <- UInt8.le d.mon (12: UInt8.t) ] s1
+    | s1 = any [ br0 -> {_17 = false} (! bb19) | br1 -> {_17} (! bb7) ] ]
+  | bb7 = s0
+    [ s0 = [ &_19 <- UInt16.ge d.year (1970: UInt16.t) ] s1
+    | s1 = any [ br0 -> {_19 = false} (! bb19) | br1 -> {_19} (! bb8) ] ]
+  | bb8 = s0
+    [ s0 = [ &_21 <- UInt16.le d.year (9999: UInt16.t) ] s1
+    | s1 = any [ br0 -> {_21 = false} (! bb19) | br1 -> {_21} (! bb9) ] ]
+  | bb9 = s0
+    [ s0 = to_unix_seconds {d} (fun (_x: UInt64.t) -> [ &_25 <- _x ] s1)
+    | s1 = from_unix_seconds {_25} (fun (_x: t_RawDate) -> [ &canonical <- _x ] s2)
+    | s2 = {[@expl:assertion] gregorian_day canonical = gregorian_day d} s3
+    | s3 = {[@expl:assertion] UInt8.t'int d.day <= month_length (UInt16.t'int d.year) (UInt8.t'int d.mon)
+      -> canonical.year = d.year}
+      s4
+    | s4 = {[@expl:assertion] UInt8.t'int d.day <= month_length (UInt16.t'int d.year) (UInt8.t'int d.mon)
+      -> canonical.mon = d.mon}
+      s5
+    | s5 = {[@expl:assertion] UInt8.t'int d.day <= month_length (UInt16.t'int d.year) (UInt8.t'int d.mon)
+      -> canonical.day = d.day}
+      s6
+    | s6 = [ &_43 <- canonical.sec = d.sec ] s7
+    | s7 = any [ br0 -> {_43 = false} (! bb34) | br1 -> {_43} (! bb22) ] ]
+  | bb22 = s0
+    [ s0 = [ &_46 <- canonical.min = d.min ] s1 | s1 = any [ br0 -> {_46 = false} (! bb34) | br1 -> {_46} (! bb23) ] ]
+  | bb23 = s0
+    [ s0 = [ &_49 <- canonical.hour = d.hour ] s1 | s1 = any [ br0 -> {_49 = false} (! bb34) | br1 -> {_49} (! bb24) ] ]
+  | bb24 = s0
+    [ s0 = [ &_52 <- canonical.day = d.day ] s1 | s1 = any [ br0 -> {_52 = false} (! bb34) | br1 -> {_52} (! bb25) ] ]
+  | bb25 = s0
+    [ s0 = [ &_55 <- canonical.mon = d.mon ] s1 | s1 = any [ br0 -> {_55 = false} (! bb34) | br1 -> {_55} (! bb26) ] ]
+  | bb26 = s0
+    [ s0 = [ &_58 <- canonical.year = d.year ] s1 | s1 = any [ br0 -> {_58 = false} (! bb34) | br1 -> {_58} (! bb27) ] ]
+  | bb27 = s0 [ s0 = [ &_ret <- canonical.wday = d.wday ] s1 | s1 = return {_ret} ]
+  | bb34 = s0 [ s0 = [ &_ret <- false ] s1 | s1 = return {_ret} ]
+  | bb19 = s0 [ s0 = [ &_ret <- false ] s1 | s1 = return {_ret} ] ]
+  [ & _ret: bool = Any.any_l ()
+  | & d: t_RawDate = d
+  | & _5: bool = Any.any_l ()
+  | & _7: bool = Any.any_l ()
+  | & _9: bool = Any.any_l ()
+  | & _11: bool = Any.any_l ()
+  | & _13: bool = Any.any_l ()
+  | & _15: bool = Any.any_l ()
+  | & _17: bool = Any.any_l ()
+  | & _19: bool = Any.any_l ()
+  | & _21: bool = Any.any_l ()
+  | & canonical: t_RawDate = Any.any_l ()
+  | & _25: UInt64.t = Any.any_l ()
+  | & _43: bool = Any.any_l ()
+  | & _46: bool = Any.any_l ()
+  | & _49: bool = Any.any_l ()
+  | & _52: bool = Any.any_l ()
+  | & _55: bool = Any.any_l ()
+  | & _58: bool = Any.any_l () ])
+  [ return (result: bool) -> {[@stop_split] [@expl:is_valid_date ensures] result = valid_calendar d}
+    (! return {result}) ]

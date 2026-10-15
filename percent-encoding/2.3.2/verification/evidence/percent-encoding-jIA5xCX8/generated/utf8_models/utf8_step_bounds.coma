@@ -1,0 +1,100 @@
+use seq.Seq
+use creusot.prelude.Any
+use int.Int
+
+type tup3_Int_Int_bool = { f0: int; f1: int; f2: bool }
+
+function utf8_step (bytes: Seq.seq int) (pos: int) : tup3_Int_Int_bool =
+  let b0 = Seq.get bytes pos in let remaining = Seq.length bytes - pos in if 0 <= b0 /\ b0 <= 127 then
+    { f0 = b0; f1 = 1; f2 = true }
+  else
+    if 194 <= b0 /\ b0 <= 223 then
+      if remaining < 2 then
+        { f0 = 65533; f1 = remaining; f2 = false }
+      else
+        let b1 = Seq.get bytes (pos + 1) in if 128 <= b1 /\ b1 <= 191 then
+          { f0 = (b0 - 192) * 64 + (b1 - 128); f1 = 2; f2 = true }
+        else
+          { f0 = 65533; f1 = 1; f2 = false }
+      
+    
+    else
+      if 224 <= b0 /\ b0 <= 239 then
+        if remaining < 2 then
+          { f0 = 65533; f1 = remaining; f2 = false }
+        else
+          let b1 = Seq.get bytes (pos + 1) in let second_ok = if b0 = 224 then
+            160 <= b1 /\ b1 <= 191
+          else
+            if b0 = 237 then 128 <= b1 /\ b1 <= 159 else 128 <= b1 /\ b1 <= 191
+           in if not second_ok then
+            { f0 = 65533; f1 = 1; f2 = false }
+          else
+            if remaining < 3 then
+              { f0 = 65533; f1 = remaining; f2 = false }
+            else
+              let b2 = Seq.get bytes (pos + 2) in if 128 <= b2 /\ b2 <= 191 then
+                { f0 = (b0 - 224) * 4096 + (b1 - 128) * 64 + (b2 - 128); f1 = 3; f2 = true }
+              else
+                { f0 = 65533; f1 = 2; f2 = false }
+            
+          
+        
+      
+      else
+        if 240 <= b0 /\ b0 <= 244 then
+          if remaining < 2 then
+            { f0 = 65533; f1 = remaining; f2 = false }
+          else
+            let b1 = Seq.get bytes (pos + 1) in let second_ok = if b0 = 240 then
+              144 <= b1 /\ b1 <= 191
+            else
+              if b0 = 244 then 128 <= b1 /\ b1 <= 143 else 128 <= b1 /\ b1 <= 191
+             in if not second_ok then
+              { f0 = 65533; f1 = 1; f2 = false }
+            else
+              if remaining < 3 then
+                { f0 = 65533; f1 = remaining; f2 = false }
+              else
+                let b2 = Seq.get bytes (pos + 2) in if not (128 <= b2 /\ b2 <= 191) then
+                  { f0 = 65533; f1 = 2; f2 = false }
+                else
+                  if remaining < 4 then
+                    { f0 = 65533; f1 = remaining; f2 = false }
+                  else
+                    let b3 = Seq.get bytes (pos + 3) in if 128 <= b3 /\ b3 <= 191 then
+                      { f0 = (b0 - 240) * 262144 + (b1 - 128) * 4096 + (b2 - 128) * 64 + (b3 - 128); f1 = 4; f2 = true }
+                    else
+                      { f0 = 65533; f1 = 3; f2 = false }
+                  
+                
+              
+            
+          
+        
+        else
+          { f0 = 65533; f1 = 1; f2 = false }
+      
+    
+  
+
+
+meta "compute_max_steps" 1000000
+
+meta "select_lsinst" "all"
+
+let utf8_step_bounds (bytes: Seq.seq int) (pos: int) (return (x: ())) =
+{[@stop_split] [@expl:utf8_step_bounds requires] ([@stop_split] [@expl:utf8_step_bounds requires #0] forall i: int. 0
+          <= i
+        /\ i < Seq.length bytes -> 0 <= Seq.get bytes i /\ Seq.get bytes i <= 255)
+  /\ ([@stop_split] [@expl:utf8_step_bounds requires #1] 0 <= pos /\ pos < Seq.length bytes)}
+  (! bb0
+  [ bb0 = s0
+    [ s0 = {[@expl:assertion] let {f1 = consumed} = utf8_step bytes pos in 1 <= consumed
+      /\ consumed <= Seq.length bytes - pos}
+      s1
+    | s1 = return {_ret} ] ] [ & _ret: () = Any.any_l () | & bytes: Seq.seq int = bytes | & pos: int = pos ])
+  [ return (result: ()) ->
+  {[@stop_split] [@expl:utf8_step_bounds ensures] let {f1 = consumed} = utf8_step bytes pos in 1 <= consumed
+    /\ consumed <= Seq.length bytes - pos}
+    (! return {result}) ]

@@ -1,0 +1,56 @@
+theory Coma
+  
+  (* use why3.BuiltIn.BuiltIn *)
+  
+  (* use why3.Bool.Bool *)
+  
+  (* use why3.Unit.Unit *)
+  
+  (* use seq.Seq *)
+  
+  predicate ge_log_Int (self:int) (other:int) = other <= self
+  
+  (* meta rewrite_def predicate ge_log_Int *)
+  
+  function percent_hex_value_model (byte:int) : int =
+    if 48 <= byte /\ byte <= 57 then byte - 48
+    else if 65 <= byte /\ byte <= 70 then byte - 55
+         else if 97 <= byte /\ byte <= 102 then byte - 87 else (- 1)
+  
+  predicate gt_log_Int (self:int) (other:int) = other < self
+  
+  (* meta rewrite_def predicate gt_log_Int *)
+  
+  predicate well_founded_relation_Int (self:int) (other:int) =
+    ge_log_Int self 0 /\ gt_log_Int self other
+  
+  (* meta rewrite_def predicate well_founded_relation_Int *)
+  
+  (* meta compute_max_steps 1000000 *)
+  
+  (* meta select_lsinst "all" *)
+  
+  constant input : seq int
+  
+  function decoded_trace (seq int) : seq int
+  
+  goal vc_decoded_trace :
+    if length input = 0 then true
+    else if ge_log_Int (length input) 3
+         then if get input 0 = 37
+              then if ge_log_Int (percent_hex_value_model (get input 1)) 0
+                   then if ge_log_Int (percent_hex_value_model (get input 2))
+                           0
+                        then well_founded_relation_Int (length input)
+                             (length input[3..length input])
+                        else well_founded_relation_Int (length input)
+                             (length input[1..length input])
+                   else well_founded_relation_Int (length input)
+                        (length input[1..length input])
+              else well_founded_relation_Int (length input)
+                   (length input[1..length input])
+         else well_founded_relation_Int (length input)
+              (length input[1..length input])
+  
+end
+

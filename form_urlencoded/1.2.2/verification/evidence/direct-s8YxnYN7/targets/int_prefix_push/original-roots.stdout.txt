@@ -1,0 +1,27 @@
+theory Coma
+  
+  (* use why3.BuiltIn.BuiltIn *)
+  
+  (* use why3.Bool.Bool *)
+  
+  (* use why3.Unit.Unit *)
+  
+  (* use seq.Seq *)
+  
+  (* meta compute_max_steps 1000000 *)
+  
+  (* meta select_lsinst "all" *)
+  
+  constant bytes : seq int
+  
+  constant index : int
+  
+  predicate int_prefix_push (seq int) int
+  
+  goal vc_int_prefix_push :
+    0 <= index /\ index < length bytes ->
+    true /\
+    bytes[0..(index + 1)] = (bytes[0..index] ++ singleton (get bytes index))
+  
+end
+

@@ -1,0 +1,24 @@
+(* <ord_model::Date as std::cmp::PartialEq> *)
+
+use creusot.int.UInt16
+use creusot.int.UInt8
+
+type t_Date = { year: UInt16.t; month: UInt8.t; day: UInt8.t }
+
+type t_DateModel = { year'0: int; month'0: int; day'0: int }
+
+function deep_model_Date (self: t_Date) : t_DateModel = { year'0 = UInt16.t'int self.year;
+                                                          month'0 = UInt8.t'int self.month;
+                                                          day'0 = UInt8.t'int self.day }
+
+function deep_model_ref_Date [@inline:trivial] (self: t_Date) : t_DateModel = deep_model_Date self
+
+meta "rewrite_def" function deep_model_ref_Date
+
+meta "compute_max_steps" 1000000
+
+meta "select_lsinst" "all"
+
+goal refines: forall self_: t_Date, rhs: t_Date. forall result: bool. result
+        = (deep_model_ref_Date self_ = deep_model_ref_Date rhs)
+      -> result = (deep_model_ref_Date self_ = deep_model_ref_Date rhs)

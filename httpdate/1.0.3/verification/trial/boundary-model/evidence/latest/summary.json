@@ -1,0 +1,75 @@
+{
+  "generated_at_utc": "2026-10-07T20:09:07.312187+00:00",
+  "scope": "Conditional proofs in an isolated candidate-model crate; not public httpdate API proofs or stdlib implementation verification.",
+  "target_platform": "64-bit Linux",
+  "trusted_assumptions_review": "README.md",
+  "input_sha256": {
+    "Cargo.toml": "c3adc5035b74b2038b2f32b59c3e184ce99c6d7766b8bf0ddf539fe7797c5bf9",
+    "Cargo.lock": "785779f10729fb7e8bd4af967c020d201400cda6346e5f3dffcb32f095f5893f",
+    "src/lib.rs": "d35589653c2d8c96400d2ac91f3f7f02887bfdcd05a08061d650dd2b06e58cdc",
+    "why3find.json": "7ab52d429e4b4b74e3b79507ec72c8c3998b58420c64f6e09b3841701531e174",
+    "run.sh": "6174765fb85b3d52d204c1d5f65ec4d0f6adc3aadd4ea09aa9779281815c063a",
+    "check.py": "65366a43e028b5b46d0123f4601d148bc49f1551d2e68584f7373d04c2909abd",
+    "README.md": "12b7b74ef5a7b8abe343b6bc3842f13cdbb169f06cc4a1c4195acb249dccbfb7",
+    "reference/manifest.json": "867c5ea0117b87f1df75eb9afd02e62870ab035e5ea9620ea8200d3f2c23ee85",
+    "/workspace/proof-env/httpdate/1.0.3/scripts/check-proofs.py": "03607e669c64e3295a1c190b3cce8f57a5d31f3cfd14a90f8302114fb74ac7a1",
+    "/workspace/proof-env/scripts/activate.sh": "f8d14eaf2943e76e3c43c042f8afce06370bcde579f4489dbfe8ba9047f8a662",
+    "/workspace/proof-env/rust-toolchain.toml": "57da15ac9b199a5169602f55715ebac933e4c0d59aa3560e6096f5494ee62f0c"
+  },
+  "versions": [
+    "cargo-creusot 0.13.0",
+    "Rust toolchain nightly-2026-06-22",
+    "Why3 platform, version 1.8.2+git",
+    "why3find v1.3.0+dev",
+    "alt-ergo 2.6.2",
+    "z3 4.15.3",
+    "cvc4 1.8",
+    "cvc5 1.3.1",
+    "cargo proofs 0.3.4",
+    "rustc 1.91.0 (f8297e351 2025-10-28)",
+    "binary: rustc",
+    "commit-hash: f8297e351a40c1439a467bbbb6879088047f50b3",
+    "commit-date: 2025-10-28",
+    "host: x86_64-unknown-linux-gnu",
+    "release: 1.91.0",
+    "LLVM version: 21.1.2",
+    "rustc 1.98.0-nightly (91fe22da8 2026-06-21)",
+    "binary: rustc",
+    "commit-hash: 91fe22da8084a1c9e993d78d4a56f22ab8396236",
+    "commit-date: 2026-06-21",
+    "host: x86_64-unknown-linux-gnu",
+    "release: 1.98.0-nightly",
+    "LLVM version: 22.1.7"
+  ],
+  "targets": {
+    "bounded_epoch_seconds": {
+      "session_goals": 5,
+      "proof_json_sha256": "681fc51d27cf1ad4ad6a6274aab18047d22daca33cd2108da743a0441166c62a",
+      "coma_sha256": "db9092a82c2f727f73b9bea16f34bd19bd9eabb885438d4b908f6e460244b140"
+    },
+    "epoch_time": {
+      "session_goals": 3,
+      "proof_json_sha256": "49cdba2a90af56341575c9d9920d9c32412e325b5893486809c55c9a846a7d37",
+      "coma_sha256": "016a952631e47e721da01d51584f1958827e77ad5e378e8f6b14612a19529116"
+    },
+    "time_boundary_roundtrip": {
+      "session_goals": 3,
+      "proof_json_sha256": "b334d4e2d5f8539e655c32e08e750b895d3a5845577059e315fa9fb6ef1d2333",
+      "coma_sha256": "1a12d95cc4397b616cbd1f886b34e8d36f363ae6e12d26451d87454ca3b8e758"
+    },
+    "ascii_text": {
+      "session_goals": 3,
+      "proof_json_sha256": "27b35aea2b19c54a45e4ab32d8dc1dc30e9ff0e8d4bd6e19e70b8bb4e07d1836",
+      "coma_sha256": "a2ed5ab741d71d972b9a822cc1397ee4eef5a6e30eabd413029669bd45089ea0"
+    },
+    "normalized_ascii": {
+      "session_goals": 4,
+      "proof_json_sha256": "a135aa2e53fc91adeacf8a4e1413fea9ec6ef73797a24b30a88fc79567efad86",
+      "coma_sha256": "23b93796898fa47fd60e4eb273d13b01b6ece9a864eb5d08fa73926c4d1b77ac"
+    }
+  },
+  "total_session_goals": 18,
+  "cache": false,
+  "native_tests": "cargo test --locked: three sanity-check tests (see tests.log)",
+  "command": "bash httpdate/1.0.3/verification/trial/boundary-model/run.sh"
+}

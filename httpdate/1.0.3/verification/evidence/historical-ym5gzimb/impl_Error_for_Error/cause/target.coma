@@ -1,0 +1,17 @@
+(* <Error as std::error::Error> *)
+
+use creusot.prelude.Any
+
+type dyn_Error
+
+type t_Option_ref_dyn_Error = None | Some dyn_Error
+
+type t_Error = { f0: () }
+
+meta "compute_max_steps" 1000000
+
+meta "select_lsinst" "all"
+
+let cause_Error (self: t_Error) (return (x: t_Option_ref_dyn_Error)) = (! bb0
+  [ bb0 = s0 [ s0 = [ &_ret <- None ] s1 | s1 = return {_ret} ] ] [ & _ret: t_Option_ref_dyn_Error = Any.any_l () ])
+  [ return (result: t_Option_ref_dyn_Error) -> {[@stop_split] [@expl:cause ensures] result = None} (! return {result}) ]

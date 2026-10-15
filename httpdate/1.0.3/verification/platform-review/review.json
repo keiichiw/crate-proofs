@@ -1,0 +1,62 @@
+{
+  "platform": "aarch64-apple-darwin",
+  "scope": "Existing conditional std models on supported dates; no standard-library proof or clock-read guarantee",
+  "sources": [
+    {
+      "channel": "1.91.0",
+      "commit": "f8297e351a40c1439a467bbbb6879088047f50b3",
+      "source_path": "library/std/src/time.rs",
+      "local_copy": "verification/platform-review/native/library/std/src/time.rs",
+      "sha256": "704203028634d1c790a24834662842649a0dc150ac9b228dc7b1909c08f46157"
+    },
+    {
+      "channel": "1.91.0",
+      "commit": "f8297e351a40c1439a467bbbb6879088047f50b3",
+      "source_path": "library/std/src/sys/pal/mod.rs",
+      "local_copy": "verification/platform-review/native/library/std/src/sys/pal/mod.rs",
+      "sha256": "faa73800b86ba38c3eb2c6aaa7f6fd1eb9ee2c60d7510537868757e6606db6b6"
+    },
+    {
+      "channel": "1.91.0",
+      "commit": "f8297e351a40c1439a467bbbb6879088047f50b3",
+      "source_path": "library/std/src/sys/pal/unix/time.rs",
+      "local_copy": "verification/platform-review/native/library/std/src/sys/pal/unix/time.rs",
+      "sha256": "232601c14439fe17b50f4a72e4c8eae545a81b050c431c5c2b424759de8c25e6"
+    },
+    {
+      "channel": "nightly-2026-06-22",
+      "commit": "91fe22da8084a1c9e993d78d4a56f22ab8396236",
+      "source_path": "library/std/src/time.rs",
+      "local_copy": "verification/platform-review/translation/library/std/src/time.rs",
+      "sha256": "dbf93afc64e22548a08fbcfa68290a63b657933eb006ee6670270f6eddc0f9c3"
+    },
+    {
+      "channel": "nightly-2026-06-22",
+      "commit": "91fe22da8084a1c9e993d78d4a56f22ab8396236",
+      "source_path": "library/std/src/sys/time/mod.rs",
+      "local_copy": "verification/platform-review/translation/library/std/src/sys/time/mod.rs",
+      "sha256": "449afdd86955252a302d889032a6cb2cbb04dd786f8cb81d9a9059ad933e7e4c"
+    },
+    {
+      "channel": "nightly-2026-06-22",
+      "commit": "91fe22da8084a1c9e993d78d4a56f22ab8396236",
+      "source_path": "library/std/src/sys/time/unix.rs",
+      "local_copy": "verification/platform-review/translation/library/std/src/sys/time/unix.rs",
+      "sha256": "2250ca181d117737d32734c50156a7a9e74852251a17bf70b2a002b8d6fbac43"
+    },
+    {
+      "channel": "nightly-2026-06-22",
+      "commit": "91fe22da8084a1c9e993d78d4a56f22ab8396236",
+      "source_path": "library/std/src/sys/pal/unix/time.rs",
+      "local_copy": "verification/platform-review/translation/library/std/src/sys/pal/unix/time.rs",
+      "sha256": "cf1a487f16db0c317ddef14d71ba3d0c523cda7ddf79e6e161a1cebea50a0839"
+    }
+  ],
+  "findings": [
+    "Both selected toolchains dispatch macOS SystemTime to Unix SystemTime/Timespec; the internal second field is i64 and nanoseconds are normalized.",
+    "UNIX_EPOCH is the zero Timespec. Public SystemTime Add calls checked_add and expects success; Unix checked_add uses checked integer seconds and normalized nanosecond carry.",
+    "Adding nonnegative Duration below 253402300800 seconds to zero is representable in i64; the existing epoch-only, year-10000-exclusive precondition is preserved.",
+    "duration_since delegates to sub_time/sub_timespec, comparing the normalized timestamp and returning the nonnegative Duration difference or an error. Existing Duration-domain restriction and unconstrained error payload remain.",
+    "Apple-specific normalization concerns conversion of external pre-epoch timespec values. This does not change epoch addition in the selected domain. Clock reads, arbitrary OS timespec conversion, and Instant are not modeled."
+  ]
+}

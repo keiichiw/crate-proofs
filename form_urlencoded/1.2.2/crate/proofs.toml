@@ -1,0 +1,111 @@
+# Editorial draft only. Recorder/tool configuration and machine-readable claims
+# have not been created. No proofs.rs recording or publication is asserted.
+
+[report]
+title = "Form parsing and byte encoding correctness in the form_urlencoded 1.2.2 verification fork"
+
+explanation = """
+form_urlencoded converts form/query bytes into name-value pairs and encodes bytes
+for application/x-www-form-urlencoded. The archived proofs establish the following
+behavior for the selected implementation in a verification fork, under the
+standard-library assumptions below.
+
+For every byte slice, parse skips empty ampersand-separated segments and splits
+each remaining segment at its first equals sign; a missing equals sign gives an
+empty value. It replaces literal plus signs with spaces, decodes valid percent
+escapes once, preserves invalid or incomplete escapes as literal bytes, and
+converts the result with lossy UTF-8 replacement. For example, %2526 becomes %26,
+while %2B becomes a plus sign rather than a space. The contracts specify the
+returned text and exact remaining input across successive iterator calls. Each
+field is borrowed exactly when it needs neither plus replacement nor a valid
+percent-escape replacement and its bytes are valid UTF-8. Clone preserves the
+current unconsumed suffix; converting the parser with into_owned preserves that
+suffix and yields the same text pairs as owned strings.
+
+byte_serialize leaves ASCII letters, digits, *, -, ., and _ unchanged, encodes
+space as +, and encodes every other byte with uppercase %HH. Each iterator step
+returns a maximal unchanged run or one escaped-byte chunk, consuming exactly
+the corresponding input. Its size_hint is (0, Some(0)) at exhaustion and
+(1, Some(remaining byte count)) otherwise. The built-in Target implementations
+for String and &mut String preserve contents through mutable access and finish.
+The generated checks also discharge the selected code's slice-bound, arithmetic,
+and unchecked UTF-8 call preconditions under the library models. These checks
+do not cover allocator failure or establish complete Rust memory safety.
+
+The proof includes the called helpers and iterator laws/refinements, rather than
+assuming that a correct single step proves the whole iterator. Its custom direct
+SMT runner handles some difficult quantified goals by removing assumptions while
+keeping the goal unchanged. Proving a goal with fewer assumptions implies it
+under the original assumptions. The saved original/reduced inputs and audit make
+this proof-search transformation inspectable; it does not strengthen the models
+or add application axioms.
+"""
+
+trusted_assumptions = """
+Text and ownership guarantees depend on the correctness of the standard-library
+contracts used by Creusot and the local boundary specifications. In particular,
+String::from_utf8_lossy is assumed to match the explicit UTF-8 model: valid bytes
+retain their scalars, malformed input uses maximal-subpart U+FFFD replacement,
+and borrowing occurs exactly for valid UTF-8. The model distinguishes overlong
+encodings, surrogates, truncated sequences, and values above U+10FFFF, making the
+assumed conversion behavior explicit and testable rather than unconstrained.
+
+Slice splitting, vector copying, concrete str ownership conversion, and String
+operations are assumed to preserve the specified contents and borrow relations.
+Before unchecked string construction, the caller proves ASCII contents or an
+explicit scalar sequence whose UTF-8 bytes equal the input. This supplies the
+conversion's validity precondition; the implementation of the unsafe library
+operation and pointer provenance are not proved. Application scanning, plus
+replacement, percent decoding, encoding, and their helper lemmas are checked,
+not trusted. The evidence also relies on the verifier translation, logical
+models, solver, and audited export/transformation code. See the assumption ledger
+and standard-library model design referenced in the environment field.
+"""
+
+limitations = """
+The result is for the adapted fork, not a formal proof of the unmodified crates.io
+release. To make state and ownership transitions verifiable, the fork replaces
+split-based scanning and dependency percent decoding with local indexed scanners
+and checked buffer helpers. It explicitly matches borrowed/owned strings, builds
+encoding chunks from proven ASCII bytes, and replaces a pointer-identity debug
+assertion with a content assertion. These changes are shared by native and proof
+builds. Comparison against the captured release includes every one- and two-byte
+input and directed escape/UTF-8 cases, checking text, ownership, partial iteration,
+cloning, chunks, and size hints. This is finite correspondence evidence, not an
+all-input equivalence theorem or a pointer/allocation guarantee.
+
+Serializer and EncodingOverride are unverified: the verifier rejects their actual
+dynamic encoding-callback type. The concrete Target proofs do not prove Serializer
+or arbitrary user-defined Target implementations. Derived Debug, individual
+standard-library iterator defaults/adaptors, allocation counts, capacity, pointer
+identity, and OOM behavior are outside scope. Formal evidence uses the default std
+configuration on x86_64 Linux; a separate alloc-only compile check is not a proof
+of that configuration. The added verification dependency also means this result
+does not establish the release's Rust 1.51 minimum compiler support.
+"""
+
+environment = """
+The archived run used Creusot/creusot-std 0.13, nightly-2026-06-22, Why3 and Z3;
+native comparison used Rust 1.91.0. The installed compiler matches the pinned
+Creusot build; no compiler semantic patch was identified. The custom proof-search
+transformation is implemented in form_urlencoded/1.2.2/scripts/prove-direct.py
+and independently checked by scripts/audit-direct-evidence.py in that directory.
+
+The manifest pins source contents preserved in repository commit
+20783d34e26ab3ab36d9572e1037c366618ee050. Evidence and run configuration:
+https://github.com/0xudon/crate-proofs/blob/20783d34e26ab3ab36d9572e1037c366618ee050/form_urlencoded/1.2.2/verification/evidence/direct-ncQF3RwB/manifest.json
+Scope, assumptions, model design, and release correspondence are in that commit's
+form_urlencoded/1.2.2/verification directory. The captured 1.2.2 archive checksum is
+cb4cb245038516f5f85277875cdaa4f7d2c9a0fa0468de06ed190163b1581fcf.
+The later English translation changed three fingerprinted guidance documents;
+the archive remains evidence for its frozen inputs, not a new proof of the
+translated tree. Reproduction uses the matching inputs, scripts/activate.sh,
+and scripts/verify-direct.sh --ground-fallback under the target version.
+
+No cargo-proofs run or SARIF submission has been recorded. The direct-SMT bundle
+does not contain the proof.json sessions expected by the inspected importer,
+and source spans were disabled. Recorder/API alignment and a fresh submission
+record remain missing. The inspected Creusot importer records panic_contract,
+not functional-correctness or no_ub claims; this functional account is supporting
+evidence, not a claim that those properties have been registered.
+"""

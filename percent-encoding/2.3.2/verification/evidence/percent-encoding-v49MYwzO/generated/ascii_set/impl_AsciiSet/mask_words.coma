@@ -1,0 +1,19 @@
+(* ascii_set::AsciiSet *)
+
+use creusot.slice.Slice64
+use creusot.int.UInt32
+use seq.Seq
+
+type t_AsciiSet = { mask: Slice64.array UInt32.t }
+
+meta "compute_max_steps" 1000000
+
+meta "select_lsinst" "all"
+
+constant self : t_AsciiSet
+
+function mask_words (self: t_AsciiSet) : Seq.seq UInt32.t
+
+goal vc_mask_words:
+  [@stop_split] [@expl:mask_words ensures] Seq.length (Seq.create 4 (fun (i: int) -> Seq.get (Slice64.view self.mask) i))
+  = 4

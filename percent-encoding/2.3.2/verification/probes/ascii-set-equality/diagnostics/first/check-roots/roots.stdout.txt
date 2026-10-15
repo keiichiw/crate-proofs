@@ -1,0 +1,66 @@
+theory Coma
+  
+  (* use why3.BuiltIn.BuiltIn *)
+  
+  (* use why3.Bool.Bool *)
+  
+  (* use why3.Unit.Unit *)
+  
+  (* use creusot.int.UInt32 *)
+  
+  (* use seq.Seq *)
+  
+  (* use creusot.prelude.Any *)
+  
+  type t_AsciiSet
+  
+  predicate inv_AsciiSet t_AsciiSet
+  
+  predicate invariant_ref_AsciiSet (self:t_AsciiSet) = inv_AsciiSet self
+  
+  (* meta rewrite_def predicate invariant_ref_AsciiSet *)
+  
+  predicate inv_ref_AsciiSet (_1:t_AsciiSet) = invariant_ref_AsciiSet _1
+  
+  (* meta rewrite_def predicate inv_ref_AsciiSet *)
+  
+  predicate invariant_ref_ref_AsciiSet (self:t_AsciiSet) =
+    inv_ref_AsciiSet self
+  
+  (* meta rewrite_def predicate invariant_ref_ref_AsciiSet *)
+  
+  predicate inv_ref_ref_AsciiSet (_1:t_AsciiSet) =
+    invariant_ref_ref_AsciiSet _1
+  
+  (* meta rewrite_def predicate inv_ref_ref_AsciiSet *)
+  
+  function deep_model_AsciiSet t_AsciiSet : seq t
+  
+  function deep_model_ref_AsciiSet (self:t_AsciiSet) : seq t =
+    deep_model_AsciiSet self
+  
+  (* meta rewrite_def function deep_model_ref_AsciiSet *)
+  
+  function deep_model_ref_ref_AsciiSet (self:t_AsciiSet) : seq t =
+    deep_model_ref_AsciiSet self
+  
+  (* meta rewrite_def function deep_model_ref_ref_AsciiSet *)
+  
+  goal vc_eq_ref_AsciiSet : true
+  
+  (* meta compute_max_steps 1000000 *)
+  
+  (* meta select_lsinst "all" *)
+  
+  goal vc_check_ascii_set_equality :
+    forall left:t_AsciiSet, right:t_AsciiSet.
+     inv_ref_AsciiSet left /\ inv_ref_AsciiSet right ->
+     (inv_ref_ref_AsciiSet left /\ inv_ref_ref_AsciiSet right) /\
+     (forall result:bool.
+       (result = True <->
+        deep_model_ref_ref_AsciiSet left = deep_model_ref_ref_AsciiSet right) ->
+       result = True <->
+       deep_model_ref_AsciiSet left = deep_model_ref_AsciiSet right)
+  
+end
+

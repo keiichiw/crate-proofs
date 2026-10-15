@@ -1,0 +1,17 @@
+FEATURE: probe-utf8
+COMMAND: cargo creusot --only=coma --span-mode off --output-dir /workspace/proof-env/httpdate/1.0.3/verification/trial/probes/verif/feature-run-run-G9ThNPTT/probe-utf8/coma -- --locked --features probe-utf8
+    Checking httpdate-api-probes v0.0.0 (/workspace/proof-env/httpdate/1.0.3/verification/trial/probes)
+warning: calling external function `from_utf8` with no contract will yield an impossible precondition
+  --> src/lib.rs:23:5
+   |
+23 |     std::str::from_utf8(&bytes).is_ok()
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^ function called here
+   |
+   = note: `#[warn(creusot::contractless_external_function)]` on by default
+
+warning: `httpdate-api-probes` (lib) generated 1 warning
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.13s
+Warning: found dangling files and directories:
+  verif/run-V5aFX37V/probe-formatter
+Run 'cargo creusot clean' to remove them
+compile exit: 0

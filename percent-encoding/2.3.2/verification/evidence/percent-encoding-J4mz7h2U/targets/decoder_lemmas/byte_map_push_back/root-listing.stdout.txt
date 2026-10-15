@@ -1,0 +1,67 @@
+theory Coma
+  
+  (* use why3.BuiltIn.BuiltIn *)
+  
+  (* use why3.Bool.Bool *)
+  
+  (* use why3.Unit.Unit *)
+  
+  (* use creusot.int.UInt8 *)
+  
+  (* use seq.Seq *)
+  
+  (* use map.Map *)
+  
+  function index_Mapping_u8_Int (self:t -> int) (a:t) : int = get self a
+  
+  (* meta rewrite_def function index_Mapping_u8_Int *)
+  
+  function map_u8 (seq t) (t -> int) : seq int
+  
+  axiom map_u8_spec :
+    forall self:seq t, m:t -> int [map_u8 self m].
+     length (map_u8 self m) = length self
+  
+  axiom map_u8_spec'0 :
+    forall self:seq t, m:t -> int [map_u8 self m].
+     forall i:int.
+      0 <= i /\ i < length self ->
+      get1 (map_u8 self m) i = index_Mapping_u8_Int m (get1 self i)
+  
+  function byte_sequence_as_ints (bytes:seq t) : seq int =
+    map_u8 bytes (fun (byte:t) -> t'int byte)
+  
+  predicate byte_map_concat (seq t) (seq t)
+  
+  axiom byte_map_concat_spec :
+    forall left:seq t, right:seq t [byte_map_concat left right].
+     byte_map_concat left right
+  
+  axiom byte_map_concat_spec'0 :
+    forall left:seq t, right:seq t.
+     byte_sequence_as_ints (left ++ right) =
+     (byte_sequence_as_ints left ++ byte_sequence_as_ints right)
+  
+  (* meta compute_max_steps 1000000 *)
+  
+  (* meta select_lsinst "all" *)
+  
+  constant bytes : seq t
+  
+  constant byte : t
+  
+  predicate byte_map_push_back (seq t) t
+  
+  goal vc_byte_map_push_back :
+    byte_map_concat bytes (singleton byte) /\
+    byte_sequence_as_ints (bytes ++ singleton byte) =
+    (byte_sequence_as_ints bytes ++ byte_sequence_as_ints (singleton byte)) ->
+    (let _ =
+       (if byte_map_concat bytes (singleton byte) then True else False)
+     in
+     true /\
+     byte_sequence_as_ints (snoc bytes byte) =
+     (byte_sequence_as_ints bytes ++ singleton (t'int byte)))
+  
+end
+

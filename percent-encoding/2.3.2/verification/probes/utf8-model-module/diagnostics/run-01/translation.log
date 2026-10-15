@@ -1,0 +1,182 @@
+   Compiling proc-macro2 v1.0.107
+   Compiling unicode-ident v1.0.27
+   Compiling quote v1.0.47
+   Compiling libc v0.2.190
+   Compiling getrandom v0.4.3
+   Compiling cfg-if v1.0.5
+    Checking percent-encoding v2.3.2
+   Compiling syn v2.0.119
+   Compiling uuid v1.28.0
+   Compiling pearlite-syn v0.13.0
+   Compiling creusot-std-proc v0.13.0
+    Checking creusot-std v0.13.0
+    Checking form_urlencoded v1.2.2 (/workspace/proof-env/form_urlencoded/1.2.2/crate)
+    Checking percent-encoding-utf8-model-module-probe v0.0.0 (/workspace/proof-env/percent-encoding/2.3.2/verification/probes/utf8-model-module)
+error[E0425]: cannot find function `cow_bytes` in module `utf8_models`
+  --> src/lib.rs:29:56
+   |
+29 |     Err(_) => !utf8_models::utf8_is_valid(utf8_models::cow_bytes(input)),
+   |                                                        ^^^^^^^^^ not found in `utf8_models`
+   |
+note: found an item that was configured out
+  --> src/../../../../crate/src/utf8_models.rs:25:15
+   |
+23 | #[cfg(all(feature = "alloc", creusot))]
+   |           ----------------- the item is gated behind the `alloc` feature
+24 | #[logic(open)]
+25 | pub(crate) fn cow_bytes(value: Cow<'_, [u8]>) -> Seq<u8> {
+   |               ^^^^^^^^^
+
+error[E0425]: cannot find function `decode_utf8` in module `utf8_models`
+  --> src/lib.rs:32:18
+   |
+32 |     utf8_models::decode_utf8(input)
+   |                  ^^^^^^^^^^^ not found in `utf8_models`
+   |
+note: found an item that was configured out
+  --> src/../../../../crate/src/utf8_models.rs:89:15
+   |
+75 | #[cfg(feature = "alloc")]
+   |       ----------------- the item is gated behind the `alloc` feature
+...
+89 | pub(crate) fn decode_utf8(input: Cow<'_, [u8]>) -> Result<Cow<'_, str>, Utf8Error> {
+   |               ^^^^^^^^^^^
+
+error[E0425]: cannot find function `lossy_bytes_relation` in module `utf8_models`
+  --> src/lib.rs:36:24
+   |
+36 | #[ensures(utf8_models::lossy_bytes_relation(
+   |                        ^^^^^^^^^^^^^^^^^^^^ not found in `utf8_models`
+   |
+note: found an item that was configured out
+  --> src/../../../../crate/src/utf8_models.rs:36:15
+   |
+34 | #[cfg(all(feature = "alloc", creusot))]
+   |           ----------------- the item is gated behind the `alloc` feature
+35 | #[logic(open, prophetic)]
+36 | pub(crate) fn lossy_bytes_relation(bytes: Seq<u8>, output: Seq<Int>) -> bool {
+   |               ^^^^^^^^^^^^^^^^^^^^
+
+error[E0425]: cannot find function `cow_bytes` in module `utf8_models`
+  --> src/lib.rs:37:18
+   |
+37 |     utf8_models::cow_bytes(input), form_model::cow_str_scalars(result)
+   |                  ^^^^^^^^^ not found in `utf8_models`
+   |
+note: found an item that was configured out
+  --> src/../../../../crate/src/utf8_models.rs:25:15
+   |
+23 | #[cfg(all(feature = "alloc", creusot))]
+   |           ----------------- the item is gated behind the `alloc` feature
+24 | #[logic(open)]
+25 | pub(crate) fn cow_bytes(value: Cow<'_, [u8]>) -> Seq<u8> {
+   |               ^^^^^^^^^
+
+error[E0425]: cannot find function `decode_utf8_lossy` in module `utf8_models`
+   --> src/lib.rs:40:18
+    |
+ 40 |     utf8_models::decode_utf8_lossy(input)
+    |                  ^^^^^^^^^^^^^^^^^ not found in `utf8_models`
+    |
+note: found an item that was configured out
+   --> src/../../../../crate/src/utf8_models.rs:122:15
+    |
+111 | #[cfg(feature = "alloc")]
+    |       ----------------- the item is gated behind the `alloc` feature
+...
+122 | pub(crate) fn decode_utf8_lossy(input: Cow<'_, [u8]>) -> Cow<'_, str> {
+    |               ^^^^^^^^^^^^^^^^^
+
+warning: unexpected `cfg` condition value: `alloc`
+ --> src/../../../../crate/src/utf8_models.rs:7:7
+  |
+7 | #[cfg(feature = "alloc")]
+  |       ^^^^^^^^^^^^^^^^^ help: remove the condition
+  |
+  = note: no expected values for `feature`
+  = help: consider adding `alloc` as a feature in `Cargo.toml`
+  = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+  = note: requested on the command line with `-W unexpected-cfgs`
+
+warning: unexpected `cfg` condition value: `alloc`
+ --> src/../../../../crate/src/utf8_models.rs:9:7
+  |
+9 | #[cfg(feature = "alloc")]
+  |       ^^^^^^^^^^^^^^^^^ help: remove the condition
+  |
+  = note: no expected values for `feature`
+  = help: consider adding `alloc` as a feature in `Cargo.toml`
+  = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+
+warning: unexpected `cfg` condition value: `alloc`
+  --> src/../../../../crate/src/utf8_models.rs:23:11
+   |
+23 | #[cfg(all(feature = "alloc", creusot))]
+   |           ^^^^^^^^^^^^^^^^^ help: remove the condition
+   |
+   = note: no expected values for `feature`
+   = help: consider adding `alloc` as a feature in `Cargo.toml`
+   = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+
+warning: unexpected `cfg` condition value: `alloc`
+  --> src/../../../../crate/src/utf8_models.rs:34:11
+   |
+34 | #[cfg(all(feature = "alloc", creusot))]
+   |           ^^^^^^^^^^^^^^^^^ help: remove the condition
+   |
+   = note: no expected values for `feature`
+   = help: consider adding `alloc` as a feature in `Cargo.toml`
+   = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+
+warning: unexpected `cfg` condition value: `alloc`
+  --> src/../../../../crate/src/utf8_models.rs:45:11
+   |
+45 | #[cfg(all(feature = "alloc", creusot))]
+   |           ^^^^^^^^^^^^^^^^^ help: remove the condition
+   |
+   = note: no expected values for `feature`
+   = help: consider adding `alloc` as a feature in `Cargo.toml`
+   = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+
+warning: unexpected `cfg` condition value: `alloc`
+  --> src/../../../../crate/src/utf8_models.rs:75:7
+   |
+75 | #[cfg(feature = "alloc")]
+   |       ^^^^^^^^^^^^^^^^^ help: remove the condition
+   |
+   = note: no expected values for `feature`
+   = help: consider adding `alloc` as a feature in `Cargo.toml`
+   = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+
+warning: unexpected `cfg` condition value: `alloc`
+   --> src/../../../../crate/src/utf8_models.rs:111:7
+    |
+111 | #[cfg(feature = "alloc")]
+    |       ^^^^^^^^^^^^^^^^^ help: remove the condition
+    |
+    = note: no expected values for `feature`
+    = help: consider adding `alloc` as a feature in `Cargo.toml`
+    = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+
+error[E0308]: mismatched types
+  --> src/lib.rs:44:33
+   |
+44 | #[ensures(result@.to_bytes() == input@)]
+   |           ----------------------^^^^^^
+   |           |                     |
+   |           |                     expected `Seq<u8>`, found `Seq<char>`
+   |           arguments to this function are incorrect
+   |
+   = note: expected struct `creusot_std::logic::Seq<u8>`
+              found struct `creusot_std::logic::Seq<char>`
+note: function defined here
+  --> /workspace/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/stubs.rs:9:8
+   |
+ 9 | pub fn equal<T: ?Sized>(_: T, _: T) -> bool {
+   |        ^^^^^
+
+Some errors have detailed explanations: E0308, E0425.
+For more information about an error, try `rustc --explain E0308`.
+warning: `percent-encoding-utf8-model-module-probe` (lib) generated 7 warnings
+error: could not compile `percent-encoding-utf8-model-module-probe` (lib) due to 6 previous errors; 7 warnings emitted
+Error: Compilation failed

@@ -1,0 +1,81 @@
+theory Coma
+  
+  (* use why3.BuiltIn.BuiltIn *)
+  
+  (* use why3.Bool.Bool *)
+  
+  (* use why3.Unit.Unit *)
+  
+  (* use creusot.slice.Slice64 *)
+  
+  (* use creusot.int.UInt8 *)
+  
+  (* use creusot.prelude.Char *)
+  
+  (* use map.Map *)
+  
+  (* use creusot.prelude.Any *)
+  
+  function tail_char (self:seq t) : seq t = self[1..length self]
+  
+  function flat_map_char (seq t) (t -> seq t1) : seq t1
+  
+  axiom flat_map_char_def :
+    forall self:seq t, other:t -> seq t1 [flat_map_char self other].
+     flat_map_char self other =
+     (if length self = 0 then empty: seq t1
+      else get other (get1 self 0) ++ flat_map_char (tail_char self) other)
+  
+  function to_utf8_char t : seq t1
+  
+  axiom to_utf8_char_spec :
+    forall self:t [to_utf8_char self].
+     1 <= length (to_utf8_char self) /\ length (to_utf8_char self) <= 4
+  
+  function to_bytes (self:seq t) : seq t1 =
+    flat_map_char self (fun (c:t) -> to_utf8_char c)
+  
+  function view_str string : seq t
+  
+  goal vc_as_bytes : true
+  
+  type t_Iter_u8
+  
+  type t_PercentDecode =
+    | T_PercentDecode'mk (bytes:t_Iter_u8)
+  
+  (* meta model_record function bytes *)
+  
+  predicate inv_Iter_u8 t_Iter_u8
+  
+  predicate inv_PercentDecode t_PercentDecode
+  
+  axiom inv_axiom :
+    forall x:t_PercentDecode [inv_PercentDecode x].
+     inv_PercentDecode x <-> inv_Iter_u8 (x.bytes)
+  
+  function view_Iter_u8 t_Iter_u8 : slice t1
+  
+  function remaining_input (self:t_PercentDecode) : seq t1 =
+    view (view_Iter_u8 (self.bytes))
+  
+  (* meta rewrite_def function remaining_input *)
+  
+  goal vc_percent_decode : true
+  
+  (* meta compute_max_steps 1000000 *)
+  
+  (* meta select_lsinst "all" *)
+  
+  goal vc_percent_decode_str :
+    forall input:string.
+     forall result:slice t1.
+      view result = to_bytes (view_str input) ->
+      (forall result1:t_Iter_u8.
+        let result2 = T_PercentDecode'mk result1 in
+        inv_PercentDecode result2 /\ remaining_input result2 = view result ->
+        inv_PercentDecode result2 /\
+        remaining_input result2 = to_bytes (view_str input))
+  
+end
+

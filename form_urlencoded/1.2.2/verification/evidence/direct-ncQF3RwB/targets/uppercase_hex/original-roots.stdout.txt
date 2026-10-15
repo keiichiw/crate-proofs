@@ -1,0 +1,25 @@
+theory Coma
+  
+  (* use why3.BuiltIn.BuiltIn *)
+  
+  (* use why3.Bool.Bool *)
+  
+  (* use why3.Unit.Unit *)
+  
+  (* use int.Int *)
+  
+  (* meta compute_max_steps 1000000 *)
+  
+  (* meta select_lsinst "all" *)
+  
+  constant digit : int
+  
+  function uppercase_hex int : int
+  
+  goal vc_uppercase_hex :
+    if digit < 10
+    then (48 + digit) = (if digit < 10 then 48 + digit else 55 + digit)
+    else (55 + digit) = (if digit < 10 then 48 + digit else 55 + digit)
+  
+end
+

@@ -1,0 +1,353 @@
+theory Coma
+  
+  (* use why3.BuiltIn.BuiltIn *)
+  
+  (* use why3.Bool.Bool *)
+  
+  (* use why3.Unit.Unit *)
+  
+  (* use creusot.slice.Slice64 *)
+  
+  (* use creusot.int.UInt8 *)
+  
+  (* use creusot.prelude.MutBorrow *)
+  
+  (* use creusot.prelude.Any *)
+  
+  (* use map.Map *)
+  
+  type t_Iter_u8
+  
+  predicate inv_Iter_u8 t_Iter_u8
+  
+  predicate invariant_ref_Iter_u8 (self:t_Iter_u8) = inv_Iter_u8 self
+  
+  (* meta rewrite_def predicate invariant_ref_Iter_u8 *)
+  
+  predicate inv_ref_Iter_u8 (_1:t_Iter_u8) = invariant_ref_Iter_u8 _1
+  
+  (* meta rewrite_def predicate inv_ref_Iter_u8 *)
+  
+  function view_Iter_u8 t_Iter_u8 : slice t
+  
+  goal vc_as_slice_u8 : true
+  
+  goal vc_len_u8 : true
+  
+  predicate invariant_refmut_Iter_u8 (self:t1 t_Iter_u8) =
+    inv_Iter_u8 (self.current) /\ inv_Iter_u8 (self.final)
+  
+  (* meta rewrite_def predicate invariant_refmut_Iter_u8 *)
+  
+  predicate inv_refmut_Iter_u8 (_1:t1 t_Iter_u8) =
+    invariant_refmut_Iter_u8 _1
+  
+  (* meta rewrite_def predicate inv_refmut_Iter_u8 *)
+  
+  predicate resolve_refmut_Iter_u8 (_1:t1 t_Iter_u8) = _1.final = _1.current
+  
+  (* meta rewrite_def predicate resolve_refmut_Iter_u8 *)
+  
+  type t_Option_u8 =
+    | None
+    | Some t
+  
+  function percent_hex_value_model (byte:int) : int =
+    if 48 <= byte /\ byte <= 57 then byte - 48
+    else if 65 <= byte /\ byte <= 70 then byte - 55
+         else if 97 <= byte /\ byte <= 102 then byte - 87 else (- 1)
+  
+  goal vc_percent_hex_value : true
+  
+  type t_Option_Infallible =
+    | None'0
+    | Some'0 unit
+  
+  type t_ControlFlow_Option_Infallible_u8 =
+    | Continue t
+    | Break t_Option_Infallible
+  
+  predicate inv_Infallible (_1:unit) = false
+  
+  (* meta rewrite_def predicate inv_Infallible *)
+  
+  predicate inv_Option_Infallible t_Option_Infallible
+  
+  axiom inv_axiom :
+    forall x:t_Option_Infallible [inv_Option_Infallible x].
+     inv_Option_Infallible x <->
+     match x with
+     | None'0 -> true
+     | Some'0 f0 -> inv_Infallible f0
+     end
+  
+  predicate inv_ControlFlow_Option_Infallible_u8
+    t_ControlFlow_Option_Infallible_u8
+  
+  axiom inv_axiom'0 :
+    forall x:t_ControlFlow_Option_Infallible_u8
+     [inv_ControlFlow_Option_Infallible_u8 x].
+     inv_ControlFlow_Option_Infallible_u8 x <->
+     match x with
+     | Continue f0 -> true
+     | Break f0 -> inv_Option_Infallible f0
+     end
+  
+  goal vc_branch_Option_u8 : true
+  
+  goal vc_elim_Break : true
+  
+  goal vc_from_residual_Option_u8 : true
+  
+  goal vc_elim_Continue : true
+  
+  type t_RangeFrom_usize =
+    | T_RangeFrom_usize'mk (start:t2)
+  
+  (* meta model_record function start *)
+  
+  predicate in_bounds_RangeFrom_usize (self:t_RangeFrom_usize) (seq:seq t) =
+    t'int (self.start) <= length seq
+  
+  predicate has_value_RangeFrom_usize (self:t_RangeFrom_usize) (seq:seq t)
+    (out:slice t) = seq[t'int (self.start)..length seq] = view out
+  
+  goal vc_index_slice_u8 : true
+  
+  goal vc_iter_u8 : true
+  
+  predicate resolve_Iter_u8 t_Iter_u8
+  
+  function index_Mapping_u8_Int (self:t -> int) (a:t) : int = get self a
+  
+  (* meta rewrite_def function index_Mapping_u8_Int *)
+  
+  function map_u8 (seq t) (t -> int) : seq int
+  
+  axiom map_u8_spec :
+    forall self:seq t, m:t -> int [map_u8 self m].
+     length (map_u8 self m) = length self
+  
+  axiom map_u8_spec'0 :
+    forall self:seq t, m:t -> int [map_u8 self m].
+     forall i:int.
+      0 <= i /\ i < length self ->
+      get1 (map_u8 self m) i = index_Mapping_u8_Int m (get1 self i)
+  
+  function byte_sequence_as_ints (bytes:seq t) : seq int =
+    map_u8 bytes (fun (byte:t) -> t'int1 byte)
+  
+  predicate ge_log_Int (self:int) (other:int) = other <= self
+  
+  (* meta rewrite_def predicate ge_log_Int *)
+  
+  (* meta compute_max_steps 1000000 *)
+  
+  (* meta select_lsinst "all" *)
+  
+  goal vc_after_percent_sign :
+    forall iter:t1 t_Iter_u8.
+     inv_refmut_Iter_u8 iter ->
+     inv_ref_Iter_u8 (iter.current) /\
+     (forall result:slice t.
+       view result = view (view_Iter_u8 (iter.current)) ->
+       (forall result1:t2.
+         length (view result) = t'int result1 ->
+         (not lt result1 (2:t2) ->
+          lt (0:t2) (length1 result) &&
+          t'int (0:t2) < length (result.elts) &&
+          (forall result2:t_Option_u8.
+            match result2 with
+            | Some value ->
+                percent_hex_value_model
+                (t'int1 (get1 (result.elts) (t'int (0:t2)))) = t'int1 value
+            | None ->
+                percent_hex_value_model
+                (t'int1 (get1 (result.elts) (t'int (0:t2)))) = (- 1)
+            end ->
+            (forall result3:t_ControlFlow_Option_Infallible_u8.
+              inv_ControlFlow_Option_Infallible_u8 result3 /\
+              match result2 with
+              | Some v -> result3 = Continue v
+              | None -> result3 = Break None'0
+              end ->
+              (forall x0:t.
+                result3 = Continue x0 ->
+                (forall f0:t.
+                  Continue f0 = result3 ->
+                  lt (1:t2) (length1 result) &&
+                  t'int (1:t2) < length (result.elts) &&
+                  (forall result4:t_Option_u8.
+                    match result4 with
+                    | Some value ->
+                        percent_hex_value_model
+                        (t'int1 (get1 (result.elts) (t'int (1:t2)))) =
+                        t'int1 value
+                    | None ->
+                        percent_hex_value_model
+                        (t'int1 (get1 (result.elts) (t'int (1:t2)))) = (- 1)
+                    end ->
+                    (forall result5:t_ControlFlow_Option_Infallible_u8.
+                      inv_ControlFlow_Option_Infallible_u8 result5 /\
+                      match result4 with
+                      | Some v -> result5 = Continue v
+                      | None -> result5 = Break None'0
+                      end ->
+                      (forall x01:t.
+                        result5 = Continue x01 ->
+                        (forall f01:t.
+                          Continue f01 = result5 ->
+                          in_bounds_RangeFrom_usize
+                          (T_RangeFrom_usize'mk (2:t2)) (view result) /\
+                          (forall result6:slice t.
+                            has_value_RangeFrom_usize
+                            (T_RangeFrom_usize'mk (2:t2)) (view result)
+                            result6 ->
+                            (forall result7:t_Iter_u8.
+                              inv_Iter_u8 result7 /\
+                              view_Iter_u8 result7 = result6 ->
+                              (resolve_Iter_u8 (iter.current) ->
+                               (resolve_refmut_Iter_u8
+                                (t'mk result7 (iter.final) (iter.id)) ->
+                                in_bounds (t'int1 f0 * t'int1 (16:t)) /\
+                                (forall result8:t.
+                                  t'int1 result8 =
+                                  (t'int1 f0 * t'int1 (16:t)) ->
+                                  in_bounds (t'int1 result8 + t'int1 f01) /\
+                                  (forall result9:t.
+                                    t'int1 result9 =
+                                    (t'int1 result8 + t'int1 f01) ->
+                                    (let before =
+                                       byte_sequence_as_ints
+                                       (view (view_Iter_u8 (iter.current)))
+                                     in
+                                     ge_log_Int (length before) 2 /\
+                                     ge_log_Int
+                                     (percent_hex_value_model (get1 before 0))
+                                     0 /\
+                                     ge_log_Int
+                                     (percent_hex_value_model (get1 before 1))
+                                     0 /\
+                                     t'int1 result9 =
+                                     ((percent_hex_value_model
+                                       (get1 before 0) * 16)
+                                      + percent_hex_value_model
+                                        (get1 before 1)) /\
+                                     byte_sequence_as_ints
+                                     (view (view_Iter_u8 (iter.final))) =
+                                     before[2..length before])))) /\
+                               inv_refmut_Iter_u8
+                               (t'mk result7 (iter.final) (iter.id))) /\
+                              inv_Iter_u8 (iter.current)))) /\
+                        match result5 with
+                        | Continue _ -> true
+                        | _ -> false
+                        end) /\
+                      (forall x01:t_Option_Infallible.
+                        result5 = Break x01 ->
+                        (resolve_refmut_Iter_u8 iter ->
+                         (forall f01:t_Option_Infallible.
+                           Break f01 = result5 ->
+                           inv_Option_Infallible f01 /\
+                           view (view_Iter_u8 (iter.final)) =
+                           view (view_Iter_u8 (iter.current)) /\
+                           (length
+                            (byte_sequence_as_ints
+                             (view (view_Iter_u8 (iter.current))))
+                            < 2 \/
+                            ge_log_Int
+                            (length
+                             (byte_sequence_as_ints
+                              (view (view_Iter_u8 (iter.current)))))
+                            2 /\
+                            percent_hex_value_model
+                            (get1
+                             (byte_sequence_as_ints
+                              (view (view_Iter_u8 (iter.current))))
+                             0)
+                            < 0 \/
+                            ge_log_Int
+                            (length
+                             (byte_sequence_as_ints
+                              (view (view_Iter_u8 (iter.current)))))
+                            2 /\
+                            percent_hex_value_model
+                            (get1
+                             (byte_sequence_as_ints
+                              (view (view_Iter_u8 (iter.current))))
+                             1)
+                            < 0)) /\
+                         match result5 with
+                         | Break _ -> true
+                         | _ -> false
+                         end) /\
+                        inv_refmut_Iter_u8 iter)))) /\
+                match result3 with
+                | Continue _ -> true
+                | _ -> false
+                end) /\
+              (forall x0:t_Option_Infallible.
+                result3 = Break x0 ->
+                (resolve_refmut_Iter_u8 iter ->
+                 (forall f0:t_Option_Infallible.
+                   Break f0 = result3 ->
+                   inv_Option_Infallible f0 /\
+                   view (view_Iter_u8 (iter.final)) =
+                   view (view_Iter_u8 (iter.current)) /\
+                   (length
+                    (byte_sequence_as_ints
+                     (view (view_Iter_u8 (iter.current))))
+                    < 2 \/
+                    ge_log_Int
+                    (length
+                     (byte_sequence_as_ints
+                      (view (view_Iter_u8 (iter.current)))))
+                    2 /\
+                    percent_hex_value_model
+                    (get1
+                     (byte_sequence_as_ints
+                      (view (view_Iter_u8 (iter.current))))
+                     0)
+                    < 0 \/
+                    ge_log_Int
+                    (length
+                     (byte_sequence_as_ints
+                      (view (view_Iter_u8 (iter.current)))))
+                    2 /\
+                    percent_hex_value_model
+                    (get1
+                     (byte_sequence_as_ints
+                      (view (view_Iter_u8 (iter.current))))
+                     1)
+                    < 0)) /\
+                 match result3 with
+                 | Break _ -> true
+                 | _ -> false
+                 end) /\
+                inv_refmut_Iter_u8 iter)))) /\
+         (lt result1 (2:t2) ->
+          (resolve_refmut_Iter_u8 iter ->
+           view (view_Iter_u8 (iter.final)) =
+           view (view_Iter_u8 (iter.current)) /\
+           (length
+            (byte_sequence_as_ints (view (view_Iter_u8 (iter.current)))) < 2 \/
+            ge_log_Int
+            (length
+             (byte_sequence_as_ints (view (view_Iter_u8 (iter.current)))))
+            2 /\
+            percent_hex_value_model
+            (get1
+             (byte_sequence_as_ints (view (view_Iter_u8 (iter.current)))) 0)
+            < 0 \/
+            ge_log_Int
+            (length
+             (byte_sequence_as_ints (view (view_Iter_u8 (iter.current)))))
+            2 /\
+            percent_hex_value_model
+            (get1
+             (byte_sequence_as_ints (view (view_Iter_u8 (iter.current)))) 1)
+            < 0)) /\
+          inv_refmut_Iter_u8 iter)))
+  
+end
+

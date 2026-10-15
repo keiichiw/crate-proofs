@@ -1,0 +1,75 @@
+{
+  "status": "passed",
+  "root_count": 4,
+  "direct_smt_goals": 5,
+  "results": [
+    {
+      "goal": "Coma.vc_from_Cow_slice_u8",
+      "status": "closed",
+      "export_mode": "untransformed",
+      "smt_results": [
+        {
+          "file": "000-vc_from_Cow_slice_u8/untransformed/decode_utf8-Coma-vc_from_Cow_slice_u8.smt2",
+          "exit_code": 0,
+          "statuses": [
+            "unsat"
+          ],
+          "passed": true
+        }
+      ]
+    },
+    {
+      "goal": "Coma.vc_into_PercentDecode",
+      "status": "closed",
+      "export_mode": "untransformed",
+      "smt_results": [
+        {
+          "file": "001-vc_into_PercentDecode/untransformed/decode_utf8-Coma-vc_into_PercentDecode.smt2",
+          "exit_code": 0,
+          "statuses": [
+            "unsat"
+          ],
+          "passed": true
+        }
+      ]
+    },
+    {
+      "goal": "Coma.vc_decode_utf8",
+      "status": "closed",
+      "export_mode": "untransformed",
+      "smt_results": [
+        {
+          "file": "002-vc_decode_utf8/untransformed/decode_utf8-Coma-vc_decode_utf8.smt2",
+          "exit_code": 0,
+          "statuses": [
+            "unsat"
+          ],
+          "passed": true
+        }
+      ]
+    },
+    {
+      "goal": "Coma.vc_decode_utf8'0",
+      "status": "closed",
+      "export_mode": "transformed",
+      "smt_results": [
+        {
+          "file": "003-vc_decode_utf8'0/transformed/decode_utf8-Coma-vc_decode_utf8qt0.smt2",
+          "exit_code": 0,
+          "statuses": [
+            "unsat"
+          ],
+          "passed": true
+        },
+        {
+          "file": "003-vc_decode_utf8'0/transformed/decode_utf8-Coma-vc_decode_utf8qt01.smt2",
+          "exit_code": 0,
+          "statuses": [
+            "unsat"
+          ],
+          "passed": true
+        }
+      ]
+    }
+  ]
+}

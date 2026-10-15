@@ -1,0 +1,51 @@
+theory Coma
+  
+  (* use why3.BuiltIn.BuiltIn *)
+  
+  (* use why3.Bool.Bool *)
+  
+  (* use why3.Unit.Unit *)
+  
+  (* use creusot.prelude.Char *)
+  
+  (* use seq.Seq *)
+  
+  (* use creusot.int.UInt8 *)
+  
+  (* use map.Map *)
+  
+  function tail_char (self:seq t) : seq t = self[1..length self]
+  
+  function flat_map_char (seq t) (t -> seq t1) : seq t1
+  
+  axiom flat_map_char_def :
+    forall self:seq t, other:t -> seq t1 [flat_map_char self other].
+     flat_map_char self other =
+     (if length self = 0 then empty: seq t1
+      else get other (get1 self 0) ++ flat_map_char (tail_char self) other)
+  
+  function to_utf8_char t : seq t1
+  
+  axiom to_utf8_char_spec :
+    forall self:t [to_utf8_char self].
+     1 <= length (to_utf8_char self) /\ length (to_utf8_char self) <= 4
+  
+  function to_bytes (self:seq t) : seq t1 =
+    flat_map_char self (fun (c:t) -> to_utf8_char c)
+  
+  (* meta compute_max_steps 1000000 *)
+  
+  (* meta select_lsinst "all" *)
+  
+  constant prefix : seq t
+  
+  predicate empty_prefix_to_bytes (seq t)
+  
+  goal vc_empty_prefix_to_bytes :
+    length prefix = 0 ->
+    prefix == (empty: seq t) &&
+    to_bytes prefix == (empty: seq t1) &&
+    true /\ prefix == (empty: seq t) /\ to_bytes prefix == (empty: seq t1)
+  
+end
+

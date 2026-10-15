@@ -1,0 +1,45 @@
+COMMAND: cargo creusot --only=coma --span-mode off --output-dir /workspace/proof-env/httpdate/1.0.3/verification/trial/trait-probes/verif/trait-run-run-69pC19na/probe-ord/coma -- --locked --features probe-ord
+    Checking httpdate-trait-probes v0.0.0 (/workspace/proof-env/httpdate/1.0.3/verification/trial/trait-probes)
+warning: unused import: `pearlite`
+  --> src/lib.rs:19:48
+   |
+19 |     use creusot_std::prelude::{ensures, logic, pearlite};
+   |                                                ^^^^^^^^
+   |
+   = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: struct `Date` is never constructed
+  --> src/lib.rs:25:16
+   |
+25 |     pub struct Date { pub year: u16, pub month: u8, pub day: u8 }
+   |                ^^^^
+   |
+   = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: struct `DateModel` is never constructed
+  --> src/lib.rs:28:16
+   |
+28 |     pub struct DateModel { pub year: u16, pub month: u8, pub day: u8 }
+   |                ^^^^^^^^^
+
+warning: function `chronological_cmp` is never used
+  --> src/lib.rs:73:12
+   |
+73 |     pub fn chronological_cmp(a: Date, b: Date) -> Ordering { a.cmp(&b) }
+   |            ^^^^^^^^^^^^^^^^^
+
+warning: `httpdate-trait-probes` (lib) generated 4 warnings (run `cargo fix --lib -p httpdate-trait-probes` to apply 1 suggestion)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.19s
+Warning: found dangling files and directories:
+  verif/trait-run-run-Lr01KruH/probe-ord
+  verif/trait-run-run-u8lKg1SH/probe-ord
+  verif/trait-run-run-TM3ZItNc/probe-ord
+  verif/trait-run-run-TM3ZItNc/probe-eq
+  verif/trait-run-run-XzANC4VC/probe-ord
+  verif/trait-run-run-XzANC4VC/probe-eq
+  verif/trait-run-run-L9ZIBNqO/probe-ord
+  verif/trait-run-run-aLEpYlap/probe-ord
+  verif/trait-run-run-pkrgdNMg/probe-ord
+  verif/trait-run-run-pkrgdNMg/probe-error
+  verif/trait-run-run-pkrgdNMg/probe-hash
+Run 'cargo creusot clean' to remove them

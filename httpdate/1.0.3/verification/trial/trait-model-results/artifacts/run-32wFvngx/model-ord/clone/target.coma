@@ -1,0 +1,15 @@
+(* <ord_model::Date as std::clone::Clone> *)
+
+use creusot.int.UInt16
+use creusot.int.UInt8
+use creusot.prelude.Any
+
+type t_Date = { year: UInt16.t; month: UInt8.t; day: UInt8.t }
+
+meta "compute_max_steps" 1000000
+
+meta "select_lsinst" "all"
+
+let clone_Date (self: t_Date) (return (x: t_Date)) = (! bb0
+  [ bb0 = s0 [ s0 = [ &_ret <- self ] s1 | s1 = return {_ret} ] ]
+  [ & _ret: t_Date = Any.any_l () | & self: t_Date = self ]) [ return (result: t_Date) -> (! return {result}) ]

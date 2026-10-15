@@ -1,0 +1,48 @@
+use creusot.int.UInt64
+use creusot.prelude.Any
+use int.ComputerDivision
+use int.Int
+
+type t_Option_usize = None | Some UInt64.t
+
+type tup2_usize_Option_usize = { f0: UInt64.t; f1: t_Option_usize }
+
+meta "compute_max_steps" 1000000
+
+meta "select_lsinst" "all"
+
+let percent_decode_size_hint (len: UInt64.t) (return (x: tup2_usize_Option_usize)) = (! bb0
+  [ bb0 = s0
+    [ s0 = [ &_9 <- (3: UInt64.t) = (0: UInt64.t) ] s1
+    | s1 = {[@expl:division by zero] not _9} s2
+    | s2 = UInt64.div {len} {(3: UInt64.t)} (fun (_x: UInt64.t) -> [ &_7 <- _x ] s3)
+    | s3 = [ &_14 <- (3: UInt64.t) = (0: UInt64.t) ] s4
+    | s4 = {[@expl:remainder by zero] not _14} s5
+    | s5 = UInt64.rem {len} {(3: UInt64.t)} (fun (_x: UInt64.t) -> [ &_12 <- _x ] s6)
+    | s6 = [ &_11 <- _12 = (0: UInt64.t) ] s7
+    | s7 = any [ br0 -> {_11 = false} (! bb4) | br1 -> {_11} (! bb3) ] ]
+  | bb3 = s0 [ s0 = [ &_10 <- (0: UInt64.t) ] s1 | s1 = bb5 ]
+  | bb4 = s0 [ s0 = [ &_10 <- (1: UInt64.t) ] s1 | s1 = bb5 ]
+  | bb5 = s0
+    [ s0 = UInt64.add {_7} {_10} (fun (_x: UInt64.t) -> [ &lower_bound <- _x ] s1)
+    | s1 = [ &_16 <- Some len ] s2
+    | s2 = [ &_ret <- { f0 = lower_bound; f1 = _16 } ] s3
+    | s3 = return {_ret} ] ]
+  [ & _ret: tup2_usize_Option_usize = Any.any_l ()
+  | & len: UInt64.t = len
+  | & lower_bound: UInt64.t = Any.any_l ()
+  | & _7: UInt64.t = Any.any_l ()
+  | & _9: bool = Any.any_l ()
+  | & _10: UInt64.t = Any.any_l ()
+  | & _11: bool = Any.any_l ()
+  | & _12: UInt64.t = Any.any_l ()
+  | & _14: bool = Any.any_l ()
+  | & _16: t_Option_usize = Any.any_l () ])
+  [ return (result: tup2_usize_Option_usize) ->
+  {[@stop_split] [@expl:percent_decode_size_hint ensures] ([@stop_split] [@expl:percent_decode_size_hint ensures #0] UInt64.t'int result.f0
+      = ComputerDivision.div (UInt64.t'int len) 3 + (if ComputerDivision.mod (UInt64.t'int len) 3 = 0 then 0 else 1))
+    /\ ([@stop_split] [@expl:percent_decode_size_hint ensures #1] match result.f1 with
+      | Some upper -> UInt64.t'int upper = UInt64.t'int len
+      | None -> false
+      end)}
+    (! return {result}) ]

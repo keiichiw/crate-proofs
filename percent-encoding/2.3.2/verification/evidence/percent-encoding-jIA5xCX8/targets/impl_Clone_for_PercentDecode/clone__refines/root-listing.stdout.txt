@@ -1,0 +1,61 @@
+theory Coma
+  
+  (* use why3.BuiltIn.BuiltIn *)
+  
+  (* use why3.Bool.Bool *)
+  
+  (* use why3.Unit.Unit *)
+  
+  (* use creusot.int.UInt8 *)
+  
+  (* use seq.Seq *)
+  
+  (* use creusot.slice.Slice64 *)
+  
+  type t_Iter_u8
+  
+  type t_PercentDecode =
+    | T_PercentDecode'mk (bytes:t_Iter_u8)
+  
+  (* meta model_record function bytes *)
+  
+  predicate inv_Iter_u8 t_Iter_u8
+  
+  predicate inv_PercentDecode t_PercentDecode
+  
+  axiom inv_axiom :
+    forall x:t_PercentDecode [inv_PercentDecode x].
+     inv_PercentDecode x <-> inv_Iter_u8 (x.bytes)
+  
+  predicate invariant_ref_PercentDecode (self:t_PercentDecode) =
+    inv_PercentDecode self
+  
+  (* meta rewrite_def predicate invariant_ref_PercentDecode *)
+  
+  predicate inv_ref_PercentDecode (_1:t_PercentDecode) =
+    invariant_ref_PercentDecode _1
+  
+  (* meta rewrite_def predicate inv_ref_PercentDecode *)
+  
+  function view_Iter_u8 t_Iter_u8 : slice t
+  
+  function remaining_input (self:t_PercentDecode) : seq t =
+    view (view_Iter_u8 (self.bytes))
+  
+  (* meta rewrite_def function remaining_input *)
+  
+  (* meta compute_max_steps 1000000 *)
+  
+  (* meta select_lsinst "all" *)
+  
+  goal refines :
+    forall self_:t_PercentDecode.
+     inv_ref_PercentDecode self_ ->
+     inv_ref_PercentDecode self_ /\
+     (forall result:t_PercentDecode.
+       inv_PercentDecode result /\
+       remaining_input result = remaining_input self_ ->
+       inv_PercentDecode result)
+  
+end
+

@@ -1,0 +1,53 @@
+use creusot.slice.Slice64
+use creusot.int.UInt8
+use creusot.prelude.Any
+use seq.Seq
+use creusot.int.UInt32
+
+type t_AsciiSet
+
+type t_PercentEncode = { bytes: Slice64.slice UInt8.t; ascii_set: t_AsciiSet }
+
+predicate inv_AsciiSet (_1: t_AsciiSet)
+
+predicate invariant_ref_AsciiSet [@inline:trivial] (self: t_AsciiSet) = inv_AsciiSet self
+
+meta "rewrite_def" predicate invariant_ref_AsciiSet
+
+predicate inv_ref_AsciiSet [@inline:trivial] (_1: t_AsciiSet) = invariant_ref_AsciiSet _1
+
+meta "rewrite_def" predicate inv_ref_AsciiSet
+
+predicate inv_PercentEncode (_1: t_PercentEncode)
+
+axiom inv_axiom [@rewrite]: forall x: t_PercentEncode [inv_PercentEncode x]. inv_PercentEncode x
+    = inv_ref_AsciiSet x.ascii_set
+
+function remaining_input [@inline:trivial] (self: t_PercentEncode) : Seq.seq UInt8.t = Slice64.view self.bytes
+
+meta "rewrite_def" function remaining_input
+
+function mask_words (self: t_AsciiSet) : Seq.seq UInt32.t
+
+axiom mask_words_spec: forall self: t_AsciiSet [mask_words self]. Seq.length (mask_words self) = 4
+
+function configured_set [@inline:trivial] (self: t_PercentEncode) : Seq.seq UInt32.t = mask_words self.ascii_set
+
+meta "rewrite_def" function configured_set
+
+meta "compute_max_steps" 1000000
+
+meta "select_lsinst" "all"
+
+let percent_encode (input: Slice64.slice UInt8.t) (ascii_set'0: t_AsciiSet) (return (x: t_PercentEncode)) =
+{[@stop_split] [@expl:percent_encode 'ascii_set' type invariant] inv_ref_AsciiSet ascii_set'0}
+  (! bb0
+  [ bb0 = s0 [ s0 = [ &_ret <- { bytes = input; ascii_set = ascii_set'0 } ] s1 | s1 = return {_ret} ] ]
+  [ & _ret: t_PercentEncode = Any.any_l ()
+  | & input: Slice64.slice UInt8.t = input
+  | & ascii_set'0: t_AsciiSet = ascii_set'0 ])
+  [ return (result: t_PercentEncode) ->
+  {[@stop_split] [@expl:percent_encode ensures] ([@stop_split] [@expl:percent_encode result type invariant] inv_PercentEncode result)
+    /\ ([@stop_split] [@expl:percent_encode ensures #0] remaining_input result = Slice64.view input)
+    /\ ([@stop_split] [@expl:percent_encode ensures #1] configured_set result = mask_words ascii_set'0)}
+    (! return {result}) ]

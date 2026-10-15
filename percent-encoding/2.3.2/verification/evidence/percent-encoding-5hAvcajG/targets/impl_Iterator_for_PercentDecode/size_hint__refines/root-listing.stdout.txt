@@ -1,0 +1,174 @@
+theory Coma
+  
+  (* use why3.BuiltIn.BuiltIn *)
+  
+  (* use why3.Bool.Bool *)
+  
+  (* use why3.Unit.Unit *)
+  
+  (* use creusot.int.UInt64 *)
+  
+  (* use seq.Seq *)
+  
+  (* use creusot.slice.Slice64 *)
+  
+  (* use creusot.int.UInt8 *)
+  
+  (* use map.Map *)
+  
+  (* use creusot.prelude.MutBorrow *)
+  
+  type t_Iter_u8
+  
+  type t_PercentDecode =
+    | T_PercentDecode'mk (bytes:t_Iter_u8)
+  
+  (* meta model_record function bytes *)
+  
+  predicate inv_Iter_u8 t_Iter_u8
+  
+  predicate inv_PercentDecode t_PercentDecode
+  
+  axiom inv_axiom :
+    forall x:t_PercentDecode [inv_PercentDecode x].
+     inv_PercentDecode x <-> inv_Iter_u8 (x.bytes)
+  
+  predicate invariant_ref_PercentDecode (self:t_PercentDecode) =
+    inv_PercentDecode self
+  
+  (* meta rewrite_def predicate invariant_ref_PercentDecode *)
+  
+  predicate inv_ref_PercentDecode (_1:t_PercentDecode) =
+    invariant_ref_PercentDecode _1
+  
+  (* meta rewrite_def predicate inv_ref_PercentDecode *)
+  
+  type t_Option_usize =
+    | None
+    | Some t
+  
+  type tup2_usize_Option_usize =
+    | Tup2_usize_Option_usize'mk (f0:t) (f1:t_Option_usize)
+  
+  (* meta model_record function f1 *)
+  
+  (* meta model_record function f0 *)
+  
+  function view_Iter_u8 t_Iter_u8 : slice t1
+  
+  predicate ge_log_Int (self:int) (other:int) = other <= self
+  
+  (* meta rewrite_def predicate ge_log_Int *)
+  
+  function percent_hex_value_model (byte:int) : int =
+    if 48 <= byte /\ byte <= 57 then byte - 48
+    else if 65 <= byte /\ byte <= 70 then byte - 55
+         else if 97 <= byte /\ byte <= 102 then byte - 87 else (- 1)
+  
+  function decoded_trace (seq int) : seq int
+  
+  axiom decoded_trace_def :
+    forall input:seq int [decoded_trace input].
+     decoded_trace input =
+     (if length input = 0 then empty: seq int
+      else if ge_log_Int (length input) 3 /\
+              get input 0 = 37 /\
+              ge_log_Int (percent_hex_value_model (get input 1)) 0 /\
+              ge_log_Int (percent_hex_value_model (get input 2)) 0
+           then singleton
+                ((percent_hex_value_model (get input 1) * 16)
+                 + percent_hex_value_model (get input 2))
+                ++ decoded_trace input[3..length input]
+           else singleton (get input 0)
+                ++ decoded_trace input[1..length input])
+  
+  function index_Mapping_u8_Int (self:t1 -> int) (a:t1) : int = get1 self a
+  
+  (* meta rewrite_def function index_Mapping_u8_Int *)
+  
+  function map_u8 (seq t1) (t1 -> int) : seq int
+  
+  axiom map_u8_spec :
+    forall self:seq t1, m:t1 -> int [map_u8 self m].
+     length (map_u8 self m) = length self
+  
+  axiom map_u8_spec'0 :
+    forall self:seq t1, m:t1 -> int [map_u8 self m].
+     forall i:int.
+      0 <= i /\ i < length self ->
+      get (map_u8 self m) i = index_Mapping_u8_Int m (get self i)
+  
+  function byte_sequence_as_ints (bytes'0:seq t1) : seq int =
+    map_u8 bytes'0 (fun (byte:t1) -> t'int byte)
+  
+  function remaining_input (self:t_PercentDecode) : seq t1 =
+    view (view_Iter_u8 (self.bytes))
+  
+  (* meta rewrite_def function remaining_input *)
+  
+  predicate produces_PercentDecode (self:t_PercentDecode) (visited:seq t1)
+    (o:t_PercentDecode) =
+    decoded_trace (byte_sequence_as_ints (remaining_input self)) =
+    (byte_sequence_as_ints visited
+     ++ decoded_trace (byte_sequence_as_ints (remaining_input o)))
+  
+  function produces_trans_PercentDecode (a:t_PercentDecode) (ab:seq t1) (b:
+    t_PercentDecode) (bc:seq t1) (c:t_PercentDecode) : unit = ()
+  
+  axiom produces_trans_PercentDecode_spec :
+    forall a:t_PercentDecode, ab:seq t1, b:t_PercentDecode, bc:seq t1, c:
+     t_PercentDecode.
+     produces_PercentDecode a ab b ->
+     produces_PercentDecode b bc c -> produces_PercentDecode a (ab ++ bc) c
+  
+  function produces_refl_PercentDecode (self:t_PercentDecode) : unit = ()
+  
+  axiom produces_refl_PercentDecode_spec :
+    forall self:t_PercentDecode.
+     produces_PercentDecode self (empty: seq t1) self
+  
+  predicate resolve_refmut_PercentDecode (_1:t2 t_PercentDecode) =
+    _1.final = _1.current
+  
+  (* meta rewrite_def predicate resolve_refmut_PercentDecode *)
+  
+  predicate completed_PercentDecode (self:t2 t_PercentDecode) =
+    length (remaining_input (self.current)) = 0 /\
+    resolve_refmut_PercentDecode self
+  
+  (* meta compute_max_steps 1000000 *)
+  
+  (* meta select_lsinst "all" *)
+  
+  goal refines :
+    forall self_:t_PercentDecode.
+     inv_ref_PercentDecode self_ ->
+     inv_ref_PercentDecode self_ /\
+     (forall result:tup2_usize_Option_usize.
+       t'int1 (result.f0) =
+       (div (length (view (view_Iter_u8 (self_.bytes)))) 3
+        + (if mod (length (view (view_Iter_u8 (self_.bytes)))) 3 = 0 then 0
+           else 1)) /\
+       match result.f1 with
+       | Some upper ->
+           t'int1 upper = length (view (view_Iter_u8 (self_.bytes)))
+       | None -> false
+       end /\
+       length (decoded_trace (byte_sequence_as_ints (remaining_input self_)))
+       <= length (remaining_input self_) /\
+       length (remaining_input self_)
+       <= (3
+           * length
+             (decoded_trace (byte_sequence_as_ints (remaining_input self_)))) ->
+       (forall s:seq t1, i:t2 t_PercentDecode.
+         produces_PercentDecode self_ s (i.current) /\
+         completed_PercentDecode i -> t'int1 (result.f0) <= length s) /\
+       match result.f1 with
+       | Some r ->
+           forall s:seq t1, i:t_PercentDecode.
+            produces_PercentDecode self_ s i -> length s <= t'int1 r
+       | None -> true
+       end)
+  
+end
+

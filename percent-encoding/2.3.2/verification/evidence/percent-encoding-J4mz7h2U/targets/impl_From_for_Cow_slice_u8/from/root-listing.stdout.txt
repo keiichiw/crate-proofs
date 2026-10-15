@@ -1,0 +1,182 @@
+theory Coma
+  
+  (* use why3.BuiltIn.BuiltIn *)
+  
+  (* use why3.Bool.Bool *)
+  
+  (* use why3.Unit.Unit *)
+  
+  (* use creusot.int.UInt8 *)
+  
+  (* use seq.Seq *)
+  
+  (* use map.Map *)
+  
+  (* use creusot.int.UInt64 *)
+  
+  (* use creusot.slice.Slice64 *)
+  
+  (* use creusot.prelude.Any *)
+  
+  type t_Iter_u8
+  
+  type t_PercentDecode =
+    | T_PercentDecode'mk (bytes:t_Iter_u8)
+  
+  (* meta model_record function bytes *)
+  
+  type t_Vec_u8_Global
+  
+  type t_Option_Vec_u8_Global =
+    | None
+    | Some t_Vec_u8_Global
+  
+  predicate inv_Iter_u8 t_Iter_u8
+  
+  predicate inv_PercentDecode t_PercentDecode
+  
+  axiom inv_axiom :
+    forall x:t_PercentDecode [inv_PercentDecode x].
+     inv_PercentDecode x <-> inv_Iter_u8 (x.bytes)
+  
+  predicate invariant_ref_PercentDecode (self:t_PercentDecode) =
+    inv_PercentDecode self
+  
+  (* meta rewrite_def predicate invariant_ref_PercentDecode *)
+  
+  predicate inv_ref_PercentDecode (_1:t_PercentDecode) =
+    invariant_ref_PercentDecode _1
+  
+  (* meta rewrite_def predicate inv_ref_PercentDecode *)
+  
+  function index_Mapping_u8_Int (self:t -> int) (a:t) : int = get self a
+  
+  (* meta rewrite_def function index_Mapping_u8_Int *)
+  
+  function map_u8 (seq t) (t -> int) : seq int
+  
+  axiom map_u8_spec :
+    forall self:seq t, m:t -> int [map_u8 self m].
+     length (map_u8 self m) = length self
+  
+  axiom map_u8_spec'0 :
+    forall self:seq t, m:t -> int [map_u8 self m].
+     forall i:int.
+      0 <= i /\ i < length self ->
+      get1 (map_u8 self m) i = index_Mapping_u8_Int m (get1 self i)
+  
+  function byte_sequence_as_ints (bytes'0:seq t) : seq int =
+    map_u8 bytes'0 (fun (byte:t) -> t'int byte)
+  
+  constant const_MAX : t1 = (18446744073709551615:t1)
+  
+  function view_Vec_u8_Global t_Vec_u8_Global : seq t
+  
+  axiom view_Vec_u8_Global_spec :
+    forall self:t_Vec_u8_Global [view_Vec_u8_Global self].
+     length (view_Vec_u8_Global self) <= t'int1 const_MAX
+  
+  predicate ge_log_Int (self:int) (other:int) = other <= self
+  
+  (* meta rewrite_def predicate ge_log_Int *)
+  
+  function percent_hex_value_model (byte:int) : int =
+    if 48 <= byte /\ byte <= 57 then byte - 48
+    else if 65 <= byte /\ byte <= 70 then byte - 55
+         else if 97 <= byte /\ byte <= 102 then byte - 87 else (- 1)
+  
+  function decoded_trace (seq int) : seq int
+  
+  axiom decoded_trace_def :
+    forall input:seq int [decoded_trace input].
+     decoded_trace input =
+     (if length input = 0 then empty: seq int
+      else if ge_log_Int (length input) 3 /\
+              get1 input 0 = 37 /\
+              ge_log_Int (percent_hex_value_model (get1 input 1)) 0 /\
+              ge_log_Int (percent_hex_value_model (get1 input 2)) 0
+           then singleton
+                ((percent_hex_value_model (get1 input 1) * 16)
+                 + percent_hex_value_model (get1 input 2))
+                ++ decoded_trace input[3..length input]
+           else singleton (get1 input 0)
+                ++ decoded_trace input[1..length input])
+  
+  function view_Iter_u8 t_Iter_u8 : slice t
+  
+  function remaining_input (self:t_PercentDecode) : seq t =
+    view (view_Iter_u8 (self.bytes))
+  
+  (* meta rewrite_def function remaining_input *)
+  
+  goal vc_if_any : true
+  
+  predicate resolve_Iter_u8 t_Iter_u8
+  
+  predicate resolve_PercentDecode t_PercentDecode
+  
+  axiom resolve_axiom :
+    forall x:t_PercentDecode [resolve_PercentDecode x].
+     resolve_PercentDecode x <-> resolve_Iter_u8 (x.bytes)
+  
+  goal vc_elim_Some : true
+  
+  type t_Cow_slice_u8 =
+    | Borrowed (slice t)
+    | Owned t_Vec_u8_Global
+  
+  predicate invariant_ref_Iter_u8 (self:t_Iter_u8) = inv_Iter_u8 self
+  
+  (* meta rewrite_def predicate invariant_ref_Iter_u8 *)
+  
+  predicate inv_ref_Iter_u8 (_1:t_Iter_u8) = invariant_ref_Iter_u8 _1
+  
+  (* meta rewrite_def predicate inv_ref_Iter_u8 *)
+  
+  goal vc_as_slice_u8 : true
+  
+  (* meta compute_max_steps 1000000 *)
+  
+  (* meta select_lsinst "all" *)
+  
+  goal vc_from_Cow_slice_u8 :
+    forall iter:t_Iter_u8.
+     let iter1 = T_PercentDecode'mk iter in
+     inv_PercentDecode iter1 ->
+     inv_PercentDecode iter1 /\
+     (forall result:t_Option_Vec_u8_Global.
+       match result with
+       | Some bytes'0 ->
+           byte_sequence_as_ints (view_Vec_u8_Global bytes'0) =
+           decoded_trace (byte_sequence_as_ints (remaining_input iter1)) /\
+           length (view_Vec_u8_Global bytes'0)
+           < length (remaining_input iter1)
+       | None ->
+           decoded_trace (byte_sequence_as_ints (remaining_input iter1)) =
+           byte_sequence_as_ints (remaining_input iter1)
+       end ->
+       (result = None ->
+        (resolve_PercentDecode iter1 ->
+         inv_ref_Iter_u8 iter /\
+         (forall result1:slice t.
+           view result1 = view (view_Iter_u8 iter) ->
+           view result1 = remaining_input iter1 /\
+           byte_sequence_as_ints (view result1) =
+           decoded_trace (byte_sequence_as_ints (remaining_input iter1)))) /\
+        inv_PercentDecode iter1) /\
+       (forall x0:t_Vec_u8_Global.
+         result = Some x0 ->
+         (resolve_PercentDecode iter1 ->
+          (forall f0:t_Vec_u8_Global.
+            Some f0 = result ->
+            byte_sequence_as_ints (view_Vec_u8_Global f0) =
+            decoded_trace (byte_sequence_as_ints (remaining_input iter1)) /\
+            length (view_Vec_u8_Global f0) < length (remaining_input iter1)) /\
+          match result with
+          | Some _ -> true
+          | _ -> false
+          end) /\
+         inv_PercentDecode iter1))
+  
+end
+

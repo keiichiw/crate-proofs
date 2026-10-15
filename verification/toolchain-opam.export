@@ -1,0 +1,1769 @@
+opam-version: "2.0"
+compiler: [
+  "base-bigarray.base"
+  "base-domains.base"
+  "base-effects.base"
+  "base-nnp.base"
+  "base-threads.base"
+  "base-unix.base"
+  "ocaml.5.3.0"
+  "ocaml-base-compiler.5.3.0"
+  "ocaml-compiler.5.3.0"
+  "ocaml-config.3"
+  "ocaml-options-vanilla.1"
+]
+roots: [
+  "camlzip.1.14"
+  "creusot-deps.dev"
+  "dune.3.24.2"
+  "dune-site.3.24.2"
+  "menhir.20260209"
+  "ocaml-base-compiler.5.3.0"
+  "ocamlfind.1.9.8"
+  "ocamlgraph.2.2.0"
+  "terminal_size.0.2.0"
+  "yojson.3.0.0"
+  "zarith.1.14"
+]
+installed: [
+  "base-bigarray.base"
+  "base-domains.base"
+  "base-effects.base"
+  "base-nnp.base"
+  "base-threads.base"
+  "base-unix.base"
+  "camlzip.1.14"
+  "conf-autoconf.1"
+  "conf-gmp.5"
+  "conf-pkg-config.5"
+  "conf-zlib.1"
+  "creusot-deps.dev"
+  "csexp.1.5.2"
+  "dune.3.24.2"
+  "dune-private-libs.3.24.2"
+  "dune-site.3.24.2"
+  "dyn.3.24.2"
+  "fs-io.3.24.2"
+  "menhir.20260209"
+  "menhirCST.20260209"
+  "menhirGLR.20260209"
+  "menhirLib.20260209"
+  "menhirSdk.20260209"
+  "ocaml.5.3.0"
+  "ocaml-base-compiler.5.3.0"
+  "ocaml-compiler.5.3.0"
+  "ocaml-config.3"
+  "ocaml-options-vanilla.1"
+  "ocamlfind.1.9.8"
+  "ocamlgraph.2.2.0"
+  "ordering.3.24.2"
+  "pp.2.0.0"
+  "stdune.3.24.2"
+  "terminal_size.0.2.0"
+  "top-closure.3.24.2"
+  "why3.git-54c92f96"
+  "why3find.git-eab37557"
+  "yojson.3.0.0"
+  "zarith.1.14"
+]
+pinned: [
+  "creusot-deps.dev"
+  "why3.git-54c92f96"
+  "why3-ide.git-54c92f96"
+  "why3find.git-eab37557"
+]
+package "base-bigarray" {
+  opam-version: "2.0"
+  version: "base"
+  synopsis: ""
+  description: "Bigarray library distributed with the OCaml compiler"
+  maintainer: "https://github.com/ocaml/opam-repository/issues"
+}
+package "base-domains" {
+  opam-version: "2.0"
+  version: "base"
+  synopsis: ""
+  description:
+    "Domains-based parallelism distributed with the Multicore OCaml compiler\""
+  maintainer: "https://github.com/ocaml-multicore/multicore-opam/issues"
+  depends: [
+    "ocaml" {>= "5.0"} |
+    "ocaml-variants"
+      {= "4.14.0+domains" | = "4.12.0+domains+effects" | = "4.12.0+domains" |
+       = "4.10.0+multicore" |
+       = "4.10.0+multicore+no-effect-syntax" |
+       = "4.06.1+multicore"}
+  ]
+}
+package "base-effects" {
+  opam-version: "2.0"
+  version: "base"
+  synopsis: ""
+  description:
+    "Effects-based variant distributed with the Multicore OCaml compiler\""
+  maintainer: "https://github.com/ocaml-multicore/multicore-opam/issues"
+  depends: [
+    "ocaml-variants" {= "4.12.0+domains+effects" | = "5.1.1+effect-syntax"} |
+    "ocaml" {>= "5.3.0"}
+  ]
+}
+package "base-nnp" {
+  opam-version: "2.0"
+  version: "base"
+  synopsis: "Naked pointers prohibited in the OCaml heap"
+  description: """\
+Installed when the compiler does not permit naked pointers in
+the heap. Prior to OCaml 5.00.0, this mode was expressly selected
+by configuring with --disable-naked-pointers. The shared memory
+parallelism added in OCaml 5.00.0 requires this mode."""
+  maintainer: "https://github.com/ocaml/opam-repository/issues"
+  depends: [
+    "base-domains" | "ocaml-option-nnp" |
+    "ocaml-variants" {= "4.06.1+no-naked-pointers+flambda"}
+  ]
+}
+package "base-threads" {
+  opam-version: "2.0"
+  version: "base"
+  synopsis: ""
+  description: "Threads library distributed with the OCaml compiler"
+  maintainer: "https://github.com/ocaml/opam-repository/issues"
+}
+package "base-unix" {
+  opam-version: "2.0"
+  version: "base"
+  synopsis: ""
+  description: "Unix library distributed with the OCaml compiler"
+  maintainer: "https://github.com/ocaml/opam-repository/issues"
+}
+package "camlzip" {
+  opam-version: "2.0"
+  version: "1.14"
+  synopsis: "Accessing compressed files in ZIP, GZIP and JAR format"
+  description:
+    "The Camlzip library provides easy access to compressed files in ZIP and GZIP format, as well as to Java JAR files.  It provides functions for reading from and writing to compressed files in these formats."
+  maintainer: "Xavier Leroy <xavier.leroy@college-de-france.fr>"
+  authors: "Xavier Leroy"
+  license: "LGPL-2.1-or-later WITH OCaml-LGPL-linking-exception"
+  homepage: "https://github.com/xavierleroy/camlzip"
+  bug-reports: "https://github.com/xavierleroy/camlzip/issues"
+  depends: [
+    "ocaml" {>= "4.13.0"}
+    "ocamlfind" {build}
+    "conf-zlib"
+  ]
+  build: [make "all"]
+  install: [make "install"]
+  dev-repo: "git+https://github.com/xavierleroy/camlzip.git"
+  url {
+    src:
+      "https://github.com/xavierleroy/camlzip/archive/refs/tags/v1.14.tar.gz"
+    checksum: [
+      "sha256=d2ce7ebc4d3b7c029daecd0b491a36163b22f7e1d95e86224d4a27a101f36177"
+      "sha512=b623efc5c5cfc28bad54dcb74f3d08e8cc4b9216d739e23cf3886d2490ef78c518ec37a344121fe1dab0a40e61b5c6e9908c8f12305a0754aaf9278a32c1dba6"
+    ]
+  }
+  x-maintenance-intent: ["(latest)"]
+}
+package "conf-autoconf" {
+  opam-version: "2.0"
+  version: "1"
+  synopsis: "Virtual package relying on autoconf installation"
+  description: """\
+This package can only install if the autoconf command
+is available on the system."""
+  maintainer: "unixjunkie@sdf.org"
+  authors: "https://www.gnu.org/software/autoconf/autoconf.html#maintainer"
+  license: "GPL-3.0-only"
+  homepage: "http://www.gnu.org/software/autoconf"
+  bug-reports: "https://github.com/ocaml/opam-repository/issues"
+  flags: conf
+  build: [
+    ["sh" "-exc" "autoconf -V"]
+      {os = "win32" & os-distribution != "cygwinports"}
+    ["autoconf" "-V"] {os != "win32" | os-distribution = "cygwinports"}
+  ]
+  depexts: [
+    ["autoconf"] {os-family = "debian" | os-family = "ubuntu"}
+    ["autoconf"] {os-distribution = "centos"}
+    ["autoconf"] {os-family = "fedora"}
+    ["autoconf"] {os-distribution = "arch"}
+    ["dev-build/autoconf"] {os-distribution = "gentoo"}
+    ["autoconf"] {os-distribution = "nixos"}
+    ["autoconf" "automake"] {os = "macos" & os-distribution = "homebrew"}
+    ["autoconf"] {os = "macos" & os-distribution = "macports"}
+    ["devel/autoconf"] {os = "openbsd"}
+    ["autoconf"] {os = "freebsd"}
+    ["autoconf"] {os = "netbsd"}
+    ["autoconf"] {os-distribution = "alpine"}
+    ["autoconf"] {os-distribution = "ol"}
+    ["autoconf"] {os-distribution = "rhel"}
+    ["system:autoconf"] {os = "win32" & os-distribution = "cygwinports"}
+    ["autoconf"] {os-distribution = "cygwin"}
+    ["autoconf"] {os-family = "suse" | os-family = "opensuse"}
+    ["autoconf"] {os-family = "altlinux"}
+  ]
+}
+package "conf-gmp" {
+  opam-version: "2.0"
+  version: "5"
+  synopsis: "Virtual package relying on a GMP lib system installation"
+  description:
+    "This package can only install if the GMP lib is installed on the system."
+  maintainer: "nbraud"
+  authors: "nbraud"
+  license: "GPL-1.0-or-later"
+  homepage: "http://gmplib.org/"
+  bug-reports: "https://github.com/ocaml/opam-repository/issues"
+  depends: [
+    "conf-pkg-config" {os = "macos"}
+    (("host-arch-x86_32" {os = "win32" & os-distribution != "cygwinports"} &
+      "conf-mingw-w64-gmp-i686"
+        {os = "win32" & os-distribution != "cygwinports"}) |
+     ("host-arch-x86_64" {os = "win32" & os-distribution != "cygwinports"} &
+      "conf-mingw-w64-gmp-x86_64"
+        {os = "win32" & os-distribution != "cygwinports"}))
+  ]
+  flags: conf
+  build: [
+    [
+      "sh"
+      "-c"
+      "pkg-config --print-errors --exists gmp || cc -c $CFLAGS -I/usr/local/include test.c"
+    ] {os != "win32"}
+    [
+      "sh"
+      "-exc"
+      "$(ocamlc -config-var c_compiler) -c $CFLAGS -I/usr/local/include test.c"
+    ] {os = "win32" & os-distribution = "cygwinports"}
+    [
+      "sh"
+      "-exc"
+      "%{host-arch-x86_64:installed?x86_64:}%%{host-arch-x86_32:installed?i686:}%-w64-mingw32-gcc -c $CFLAGS test.c"
+    ] {os = "win32" & os-distribution != "cygwinports"}
+  ]
+  depexts: [
+    ["libgmp-dev"] {os-family = "debian"}
+    ["libgmp-dev"] {os-family = "ubuntu"}
+    ["gmp"] {os = "macos" & os-distribution = "homebrew"}
+    ["gmp"] {os-distribution = "macports" & os = "macos"}
+    ["gmp" "gmp-devel"] {os-distribution = "centos"}
+    ["gmp" "gmp-devel"] {os-family = "fedora" | os-family = "fedora"}
+    ["gmp" "gmp-devel"] {os-distribution = "ol"}
+    ["gmp"] {os = "openbsd"}
+    ["gmp"] {os = "freebsd"}
+    ["gmp"] {os-distribution = "arch"}
+    ["gmp-dev"] {os-distribution = "alpine"}
+    ["gmp-devel"] {os-family = "suse" | os-family = "opensuse"}
+    ["gmp"] {os = "win32" & os-distribution = "cygwinports"}
+    ["gmp"] {os-distribution = "nixos"}
+    ["libgmp-devel"] {os-family = "altlinux"}
+  ]
+  extra-source "test.c" {
+    src:
+      "https://raw.githubusercontent.com/ocaml/opam-source-archives/main/patches/conf-gmp/test.c.4"
+    checksum: [
+      "sha256=54a30735f1f271a2531526747e75716f4490dd7bc1546efd6498ccfe3cc4d6fb"
+      "md5=2fd2970c293c36222a6d299ec155823f"
+    ]
+  }
+}
+package "conf-pkg-config" {
+  opam-version: "2.0"
+  version: "5"
+  synopsis:
+    "Check if pkg-config is installed and create an opam switch local pkgconfig folder"
+  description: """\
+This package can only install if the pkg-config package is installed
+on the system."""
+  maintainer: "David Allsopp <dra27@dra27.uk>"
+  authors: [
+    "James Henstridge" "Tim Janik" "Havoc Pennington" "Scott Remnant"
+  ]
+  license: "GPL-2.0-or-later"
+  homepage: "http://www.freedesktop.org/wiki/Software/pkg-config/"
+  bug-reports: "https://github.com/ocaml/opam-repository/issues"
+  depends: [
+    ("host-arch-x86_64"
+       {os = "win32" &
+        (os-distribution = "cygwin" | os-distribution = "msys2")} &
+     "conf-mingw-w64-gcc-x86_64"
+       {os = "win32" &
+        (os-distribution = "cygwin" | os-distribution = "msys2")} &
+     "conf-mingw-w64-pkgconf-x86_64"
+       {os = "win32" & os-distribution = "msys2"} |
+     "host-arch-x86_32"
+       {os = "win32" &
+        (os-distribution = "cygwin" | os-distribution = "msys2")} &
+     "conf-mingw-w64-gcc-i686"
+       {os = "win32" &
+        (os-distribution = "cygwin" | os-distribution = "msys2")} &
+     "conf-mingw-w64-pkgconf-i686" {os = "win32" & os-distribution = "msys2"})
+  ]
+  conflicts: [
+    "mingw-w64-shims" {< "1.0.0"}
+  ]
+  build: [
+    ["pkg-config" "--help"]
+      {os != "win32" & !(os = "macos" & os-distribution = "homebrew")}
+    ["pkgconf" "--version"]
+      {os = "win32" & os-distribution != "msys2" |
+       os = "macos" & os-distribution = "homebrew"}
+    [
+      "sh"
+      "./write-config.sh"
+      name
+      "-v"
+      "command:list"
+      "EOL"
+      "pkg-config"
+        {os != "win32" & !(os = "macos" & os-distribution = "homebrew")}
+      "pkgconf"
+        {os = "win32" & os-distribution != "msys2" |
+         os = "macos" & os-distribution = "homebrew"}
+      "i686-w64-mingw32-pkgconf"
+        {os = "win32" & os-distribution = "msys2" &
+         host-arch-x86_32:installed}
+      "--personality=i686-w64-mingw32"
+        {os = "win32" & os-distribution = "cygwin" &
+         host-arch-x86_32:installed}
+      "x86_64-w64-mingw32-pkgconf"
+        {os = "win32" & os-distribution = "msys2" &
+         host-arch-x86_64:installed}
+      "--personality=x86_64-w64-mingw32"
+        {os = "win32" & os-distribution = "cygwin" &
+         host-arch-x86_64:installed}
+      "EOL"
+    ]
+    ["sh" "./install-shim.sh" name "pkgconf" bin]
+      {os = "win32" & os-distribution = "cygwin"}
+  ]
+  depexts: [
+    ["pkg-config"] {os-family = "debian" | os-family = "ubuntu"}
+    ["pkgconf"] {os-distribution = "arch"}
+    ["pkgconf-pkg-config"] {os-family = "fedora"}
+    ["pkgconfig"] {os-distribution = "centos" & os-version <= "7"}
+    ["pkgconf-pkg-config"] {os-distribution = "mageia"}
+    ["pkgconfig"] {os-distribution = "rhel" & os-version <= "7"}
+    ["pkgconfig"] {os-distribution = "ol" & os-version <= "7"}
+    ["pkgconf"] {os-distribution = "alpine"}
+    ["pkg-config"] {os-distribution = "nixos"}
+    ["pkgconf"] {os = "macos" & os-distribution = "homebrew"}
+    ["pkgconfig"] {os = "macos" & os-distribution = "macports"}
+    ["pkgconf"] {os = "freebsd"}
+    ["pkgconf-pkg-config"] {os-distribution = "rhel" & os-version >= "8"}
+    ["pkgconf-pkg-config"] {os-distribution = "centos" & os-version >= "8"}
+    ["pkgconf-pkg-config"] {os-distribution = "ol" & os-version >= "8"}
+    ["system:pkgconf"] {os = "win32" & os-distribution = "cygwinports"}
+    ["pkgconf"] {os-distribution = "cygwin"}
+  ]
+  dev-repo: "git+https://github.com/dra27/mingw-w64-shims.git"
+  extra-source "install-shim.sh" {
+    src:
+      "https://raw.githubusercontent.com/dra27/mingw-w64-shims/refs/tags/1.0.1/install-shim.sh"
+    checksum: [
+      "sha256=9f99322c38b0889f5b1dafbb35ab31dc012ae98c4f98b0f740a89f943142d961"
+      "sha512=0b76a529454b00027b5768fa6ead1b8dda6bc3adab55f4288a702f4cc5d7b280be938cced6841b1556e8cf98f56ecc95b7b22006859d7a91f0ef852aea74e88c"
+    ]
+  }
+  extra-source "write-config.sh" {
+    src:
+      "https://raw.githubusercontent.com/dra27/mingw-w64-shims/refs/tags/1.0.1/write-config.sh"
+    checksum: [
+      "sha256=b6cc5f98c2cfc23a7bc7774038621a2e7e7b94ed3d3080db40bc455a2575fc7a"
+      "sha512=00c4e7c605e46c8fb4d24c40da0a9317e31e3ec723a7aac59546b1cfb180024cc76dbd27c2aca8d223047ad4b0a4bcd047443fc64a6e218a21931aaa672c3e71"
+    ]
+  }
+}
+package "conf-zlib" {
+  opam-version: "2.0"
+  version: "1"
+  synopsis: "Virtual package relying on zlib"
+  description:
+    "This package can only install if the zlib library is installed on the system."
+  maintainer: "tim@gfxmonk.net"
+  authors: ["Jean-loup Gailly" "Mark Adler"]
+  license: "zlib"
+  homepage: "http://www.zlib.net/"
+  bug-reports: "https://github.com/ocaml/opam-repository/issues"
+  depends: [
+    "conf-pkg-config" {build}
+    (("host-arch-x86_64" {os = "win32" & os-distribution != "cygwinports"} &
+      "conf-mingw-w64-zlib-x86_64"
+        {os = "win32" & os-distribution != "cygwinports"}) |
+     ("host-arch-x86_32" {os = "win32" & os-distribution != "cygwinports"} &
+      "conf-mingw-w64-zlib-i686"
+        {os = "win32" & os-distribution != "cygwinports"}))
+  ]
+  flags: conf
+  build: [
+    "pkgconf" {os = "win32" & os-distribution != "cygwinports"}
+    "pkg-config" {os != "win32" | os-distribution = "cygwinports"}
+    "--personality=i686-w64-mingw32"
+      {os = "win32" & os-distribution != "cygwinports" &
+       host-arch-x86_32:installed}
+    "--personality=x86_64-w64-mingw32"
+      {os = "win32" & os-distribution != "cygwinports" &
+       host-arch-x86_64:installed}
+    "zlib"
+  ]
+  depexts: [
+    ["zlib-dev"] {os-distribution = "alpine"}
+    ["zlib1g-dev"] {os-family = "debian"}
+    ["zlib1g-dev"] {os-family = "ubuntu"}
+    ["zlib-devel" "zlib-static"]
+      {os-distribution = "centos" & os-version < "10"}
+    ["zlib-ng-compat-devel" "zlib-ng-compat-static"]
+      {os-distribution = "centos" & os-version >= "10"}
+    ["zlib-devel"] {os-family = "fedora" & os-version < "40"}
+    ["zlib-ng-compat-devel" "zlib-ng-compat-static"]
+      {os-family = "fedora" & os-version >= "40"}
+    ["zlib-devel"] {os-distribution = "ol"}
+    ["zlib"] {os-distribution = "nixos"}
+    ["zlib"] {os-distribution = "homebrew" & os = "macos"}
+    ["zlib"] {os-family = "arch"}
+    ["zlib"] {os = "win32" & os-distribution = "cygwinports"}
+    ["zlib-devel"] {os = "cygwin"}
+    ["zlib-ng-compat-devel"] {os-family = "opensuse"}
+    ["zlib-devel"] {os-family = "suse" & os-version < "16"}
+    ["zlib-ng-compat-devel"] {os-family = "suse" & os-version >= "16"}
+  ]
+}
+package "creusot-deps" {
+  opam-version: "2.0"
+  version: "dev"
+  synopsis: "Opam dependencies for Creusot"
+  maintainer: "Armaël Guéneau <armael.gueneau@inria.fr>"
+  authors: "the creusot authors"
+  depends: [
+    "ocaml" {= "5.3.0"}
+    "why3" {= "git-54c92f96"}
+    "why3-ide" {= "git-54c92f96" & !?in-creusot-ci}
+    "why3find" {= "git-eab37557"}
+    "ocamlgraph"
+    "camlzip"
+    "zarith"
+  ]
+  pin-depends: [
+    [
+      "why3.git-54c92f96"
+      "git+https://gitlab.inria.fr/why3/why3.git#54c92f96bb0711d6e991c18f10bfbc08d90d028b"
+    ]
+    [
+      "why3-ide.git-54c92f96"
+      "git+https://gitlab.inria.fr/why3/why3.git#54c92f96bb0711d6e991c18f10bfbc08d90d028b"
+    ]
+    [
+      "why3find.git-eab37557"
+      "git+https://github.com/creusot-rs/why3find.git#eab37557d3e24e1913a3c4f44bc5528ef497c6c9"
+    ]
+  ]
+  url {
+    src: "file:///workspace/.local/share/creusot"
+  }
+}
+package "csexp" {
+  opam-version: "2.0"
+  version: "1.5.2"
+  synopsis: "Parsing and printing of S-expressions in Canonical form"
+  description: """\
+This library provides minimal support for Canonical S-expressions
+[1]. Canonical S-expressions are a binary encoding of S-expressions
+that is super simple and well suited for communication between
+programs.
+
+This library only provides a few helpers for simple applications. If
+you need more advanced support, such as parsing from more fancy input
+sources, you should consider copying the code of this library given
+how simple parsing S-expressions in canonical form is.
+
+To avoid a dependency on a particular S-expression library, the only
+module of this library is parameterised by the type of S-expressions.
+
+[1] https://en.wikipedia.org/wiki/Canonical_S-expressions"""
+  maintainer: "Jeremie Dimino <jeremie@dimino.org>"
+  authors: [
+    "Quentin Hocquet <mefyl@gruntech.org>"
+    "Jane Street Group, LLC <opensource@janestreet.com>"
+    "Jeremie Dimino <jeremie@dimino.org>"
+  ]
+  license: "MIT"
+  homepage: "https://github.com/ocaml-dune/csexp"
+  doc: "https://ocaml-dune.github.io/csexp/"
+  bug-reports: "https://github.com/ocaml-dune/csexp/issues"
+  depends: [
+    "dune" {>= "3.4"}
+    "ocaml" {>= "4.03.0"}
+    "odoc" {with-doc}
+  ]
+  build: [
+    ["dune" "subst"] {dev}
+    ["dune" "build" "-p" name "-j" jobs "@install" "@doc" {with-doc}]
+  ]
+  dev-repo: "git+https://github.com/ocaml-dune/csexp.git"
+  url {
+    src:
+      "https://github.com/ocaml-dune/csexp/releases/download/1.5.2/csexp-1.5.2.tbz"
+    checksum: [
+      "sha256=1a14dd04bb4379a41990248550628c77913a9c07f3c35c1370b6960e697787ff"
+      "sha512=be281018bcfc20d4db14894ef51c4b836d6338d2fdfe22e63d46f405f8dea7349e16f1c0ecd65f73d4c85a2a80e618cdbb8c9dafcbb9f229f04f1adca5b1973c"
+    ]
+  }
+  x-commit-hash: "e6c4768e10c61bcb04d09748744dad55602149c6"
+}
+package "dune" {
+  opam-version: "2.0"
+  version: "3.24.2"
+  synopsis: "Fast, portable, and opinionated build system"
+  description: """\
+Dune is a build system that was designed to simplify the release of
+Jane Street packages. It reads metadata from "dune" files following a
+very simple s-expression syntax.
+
+Dune is fast, has very low-overhead, and supports parallel builds on
+all platforms. It has no system dependencies; all you need to build
+dune or packages using dune is OCaml. You don't need make or bash
+as long as the packages themselves don't use bash explicitly.
+
+Dune is composable; supporting multi-package development by simply
+dropping multiple repositories into the same directory.
+
+Dune also supports multi-context builds, such as building against
+several opam roots/switches simultaneously. This helps maintaining
+packages across several versions of OCaml and gives cross-compilation
+for free."""
+  maintainer: "Jane Street Group, LLC <opensource@janestreet.com>"
+  authors: "Jane Street Group, LLC <opensource@janestreet.com>"
+  license: "MIT"
+  homepage: "https://github.com/ocaml/dune"
+  doc: "https://dune.readthedocs.io/"
+  bug-reports: "https://github.com/ocaml/dune/issues"
+  depends: [
+    ("ocaml" {>= "4.14"} |
+     ("ocaml" {>= "4.02" & < "4.14~~"} & "ocamlfind-secondary" &
+      "ocaml-secondary-compiler" {>= "4.14"}))
+    "base-unix"
+    "base-threads"
+    "lwt" {with-dev-setup & os != "win32"}
+    "cinaps" {with-dev-setup}
+    "csexp" {with-dev-setup & >= "1.3.0"}
+    "js_of_ocaml" {with-dev-setup & >= "6.1.0" & < "6.4" & os != "win32"}
+    "js_of_ocaml-compiler"
+      {with-dev-setup & >= "6.1.0" & < "6.4" & os != "win32"}
+    "mdx" {with-dev-setup & >= "2.3.0" & os != "win32"}
+    "menhir" {with-dev-setup & os != "win32"}
+    "ocamlfind" {with-dev-setup & os != "win32"}
+    "odoc" {with-dev-setup & >= "3.2.0" & os != "win32"}
+    "ppx_expect" {with-dev-setup & >= "v0.17" & os != "win32"}
+    "ppx_optcomp" {with-dev-setup}
+    "spawn" {with-dev-setup}
+    "ppx_inline_test" {with-dev-setup & os != "win32"}
+    "ppxlib" {with-dev-setup & >= "0.37.0" & os != "win32"}
+    "ctypes" {with-dev-setup & os != "win32"}
+    "utop" {with-dev-setup & >= "2.6.0" & os != "win32"}
+    "melange" {with-dev-setup & >= "5.1.0-51" & < "7.0" & os != "win32"}
+    "uutf" {with-dev-setup}
+    "conf-git-daemon" {with-test}
+  ]
+  conflicts: [
+    "merlin" {< "3.4.0"}
+    "ocaml-lsp-server" {< "1.3.0"}
+    "dune-configurator" {< "2.3.0"}
+    "odoc" {< "2.0.1"}
+    "dune-release" {< "2.0.0"}
+    "js_of_ocaml-compiler" {< "3.6.0"}
+    "jbuilder" {= "transition"}
+  ]
+  build: [
+    ["ocaml" "boot/bootstrap.ml" "-j" jobs]
+    [
+      "./_boot/dune.exe"
+      "build"
+      "dune.install"
+      "--release"
+      "--profile"
+      "dune-bootstrap"
+      "-j"
+      jobs
+    ]
+  ]
+  dev-repo: "git+https://github.com/ocaml/dune.git"
+  url {
+    src:
+      "https://github.com/ocaml/dune/releases/download/3.24.2/dune-3.24.2.tbz"
+    checksum: [
+      "sha256=472798691b0216daf538709f0f4703b3617ef24ad0866c9096068baaba4d762a"
+      "sha512=13082a66a28e940d4b3c9f78b556f6c1455987cd522355ba4502e01e60a3d002d3101b51284726ae21aa87494efa2dc54d016173f05b616bbc5dad714d5714a3"
+    ]
+  }
+  x-commit-hash: "ce734ac25ffb06994a4530426bb06ee8cda19e50"
+  x-maintenance-intent: ["(latest)"]
+}
+package "dune-private-libs" {
+  opam-version: "2.0"
+  version: "3.24.2"
+  synopsis: "Private libraries of Dune"
+  description: """\
+!!!!!!!!!!!!!!!!!!!!!!
+!!!!! DO NOT USE !!!!!
+!!!!!!!!!!!!!!!!!!!!!!
+
+This package contains code that is shared between various dune-xxx
+packages. However, it is not meant for public consumption and provides
+no stability guarantee."""
+  maintainer: "Jane Street Group, LLC <opensource@janestreet.com>"
+  authors: "Jane Street Group, LLC <opensource@janestreet.com>"
+  license: "MIT"
+  homepage: "https://github.com/ocaml/dune"
+  doc: "https://dune.readthedocs.io/"
+  bug-reports: "https://github.com/ocaml/dune/issues"
+  depends: [
+    "dune" {>= "3.24"}
+    "csexp" {>= "1.5.0"}
+    "pp" {>= "1.1.0"}
+    "dyn" {= version}
+    "stdune" {= version}
+    "ocaml" {>= "4.14"}
+    "odoc" {with-doc}
+  ]
+  build: [
+    ["dune" "subst"] {dev}
+    ["dune" "build" "-p" name "-j" jobs "@install" "@doc" {with-doc}]
+  ]
+  dev-repo: "git+https://github.com/ocaml/dune.git"
+  url {
+    src:
+      "https://github.com/ocaml/dune/releases/download/3.24.2/dune-3.24.2.tbz"
+    checksum: [
+      "sha256=472798691b0216daf538709f0f4703b3617ef24ad0866c9096068baaba4d762a"
+      "sha512=13082a66a28e940d4b3c9f78b556f6c1455987cd522355ba4502e01e60a3d002d3101b51284726ae21aa87494efa2dc54d016173f05b616bbc5dad714d5714a3"
+    ]
+  }
+  x-commit-hash: "ce734ac25ffb06994a4530426bb06ee8cda19e50"
+  x-maintenance-intent: ["none"]
+}
+package "dune-site" {
+  opam-version: "2.0"
+  version: "3.24.2"
+  synopsis: "Embed locations information inside executable and libraries"
+  maintainer: "Jane Street Group, LLC <opensource@janestreet.com>"
+  authors: "Jane Street Group, LLC <opensource@janestreet.com>"
+  license: "MIT"
+  homepage: "https://github.com/ocaml/dune"
+  doc: "https://dune.readthedocs.io/"
+  bug-reports: "https://github.com/ocaml/dune/issues"
+  depends: [
+    "dune" {>= "3.24"}
+    "dune-private-libs" {= version}
+    "odoc" {with-doc}
+  ]
+  build: [
+    ["dune" "subst"] {dev}
+    ["dune" "build" "-p" name "-j" jobs "@install" "@doc" {with-doc}]
+  ]
+  dev-repo: "git+https://github.com/ocaml/dune.git"
+  url {
+    src:
+      "https://github.com/ocaml/dune/releases/download/3.24.2/dune-3.24.2.tbz"
+    checksum: [
+      "sha256=472798691b0216daf538709f0f4703b3617ef24ad0866c9096068baaba4d762a"
+      "sha512=13082a66a28e940d4b3c9f78b556f6c1455987cd522355ba4502e01e60a3d002d3101b51284726ae21aa87494efa2dc54d016173f05b616bbc5dad714d5714a3"
+    ]
+  }
+  x-commit-hash: "ce734ac25ffb06994a4530426bb06ee8cda19e50"
+  x-maintenance-intent: ["(latest)"]
+}
+package "dyn" {
+  opam-version: "2.0"
+  version: "3.24.2"
+  synopsis: "Dynamic type"
+  description: "Dynamic type"
+  maintainer: "Jane Street Group, LLC <opensource@janestreet.com>"
+  authors: "Jane Street Group, LLC <opensource@janestreet.com>"
+  license: "MIT"
+  homepage: "https://github.com/ocaml/dune"
+  doc: "https://dune.readthedocs.io/"
+  bug-reports: "https://github.com/ocaml/dune/issues"
+  depends: [
+    "dune" {>= "3.24"}
+    "ocaml" {>= "4.14"}
+    "ordering" {= version}
+    "pp" {>= "1.1.0"}
+    "odoc" {with-doc}
+  ]
+  build: [
+    ["dune" "subst"] {dev}
+    ["dune" "build" "-p" name "-j" jobs "@install" "@doc" {with-doc}]
+  ]
+  dev-repo: "git+https://github.com/ocaml/dune.git"
+  url {
+    src:
+      "https://github.com/ocaml/dune/releases/download/3.24.2/dune-3.24.2.tbz"
+    checksum: [
+      "sha256=472798691b0216daf538709f0f4703b3617ef24ad0866c9096068baaba4d762a"
+      "sha512=13082a66a28e940d4b3c9f78b556f6c1455987cd522355ba4502e01e60a3d002d3101b51284726ae21aa87494efa2dc54d016173f05b616bbc5dad714d5714a3"
+    ]
+  }
+  x-commit-hash: "ce734ac25ffb06994a4530426bb06ee8cda19e50"
+  x-maintenance-intent: ["none"]
+}
+package "fs-io" {
+  opam-version: "2.0"
+  version: "3.24.2"
+  synopsis: "File System Operations"
+  description: "Misc. Collection of File System Operations"
+  maintainer: "Jane Street Group, LLC <opensource@janestreet.com>"
+  authors: "Jane Street Group, LLC <opensource@janestreet.com>"
+  license: "MIT"
+  homepage: "https://github.com/ocaml/dune"
+  doc: "https://dune.readthedocs.io/"
+  bug-reports: "https://github.com/ocaml/dune/issues"
+  depends: [
+    "dune" {>= "3.24"}
+    "base-unix"
+    "ocaml" {>= "4.14"}
+    "odoc" {with-doc}
+  ]
+  build: [
+    ["dune" "subst"] {dev}
+    ["dune" "build" "-p" name "-j" jobs "@install" "@doc" {with-doc}]
+  ]
+  dev-repo: "git+https://github.com/ocaml/dune.git"
+  url {
+    src:
+      "https://github.com/ocaml/dune/releases/download/3.24.2/dune-3.24.2.tbz"
+    checksum: [
+      "sha256=472798691b0216daf538709f0f4703b3617ef24ad0866c9096068baaba4d762a"
+      "sha512=13082a66a28e940d4b3c9f78b556f6c1455987cd522355ba4502e01e60a3d002d3101b51284726ae21aa87494efa2dc54d016173f05b616bbc5dad714d5714a3"
+    ]
+  }
+  x-commit-hash: "ce734ac25ffb06994a4530426bb06ee8cda19e50"
+  x-maintenance-intent: ["none"]
+}
+package "menhir" {
+  opam-version: "2.0"
+  version: "20260209"
+  synopsis: "An LR(1) parser generator"
+  maintainer: "francois.pottier@inria.fr"
+  authors: [
+    "François Pottier <francois.pottier@inria.fr>"
+    "Yann Régis-Gianas <yrg@pps.univ-paris-diderot.fr>"
+  ]
+  license: "GPL-2.0-only"
+  homepage: "http://gitlab.inria.fr/fpottier/menhir"
+  bug-reports: "https://gitlab.inria.fr/fpottier/menhir/-/issues"
+  depends: [
+    "ocaml" {>= "4.08"}
+    "dune" {>= "2.8.0"}
+    "menhirLib" {= version}
+    "menhirSdk" {= version}
+    "menhirCST" {= version}
+    "menhirGLR" {= version}
+  ]
+  build: ["dune" "build" "-p" name "-j" jobs]
+  dev-repo: "git+https://gitlab.inria.fr/fpottier/menhir.git"
+  url {
+    src:
+      "https://gitlab.inria.fr/fpottier/menhir/-/archive/20260209/archive.tar.gz"
+    checksum: [
+      "md5=e993231085db95ab011ffe0cd606d9dd"
+      "sha512=aafad186f328ae8dd4cc69af0f30c1a0b208cf5148a7a94c150099be03838503c5ec12918de26cd7f794b5a72f114bc1bae8d81058bd0ea10372a3b06818687e"
+    ]
+  }
+  x-maintenance-intent: ["(latest)"]
+}
+package "menhirCST" {
+  opam-version: "2.0"
+  version: "20260209"
+  synopsis: "Runtime support library for unparsers generated by Menhir"
+  maintainer: "francois.pottier@inria.fr"
+  authors: "François Pottier <francois.pottier@inria.fr>"
+  license: "LGPL-2.0-only WITH OCaml-LGPL-linking-exception"
+  homepage: "http://gitlab.inria.fr/fpottier/menhir"
+  bug-reports: "https://gitlab.inria.fr/fpottier/menhir/-/issues"
+  depends: [
+    "ocaml" {>= "4.08"}
+    "dune" {>= "2.8.0"}
+  ]
+  conflicts: [
+    "menhir" {!= version}
+  ]
+  build: ["dune" "build" "-p" name "-j" jobs]
+  dev-repo: "git+https://gitlab.inria.fr/fpottier/menhir.git"
+  url {
+    src:
+      "https://gitlab.inria.fr/fpottier/menhir/-/archive/20260209/archive.tar.gz"
+    checksum: [
+      "md5=e993231085db95ab011ffe0cd606d9dd"
+      "sha512=aafad186f328ae8dd4cc69af0f30c1a0b208cf5148a7a94c150099be03838503c5ec12918de26cd7f794b5a72f114bc1bae8d81058bd0ea10372a3b06818687e"
+    ]
+  }
+  x-maintenance-intent: ["(latest)"]
+}
+package "menhirGLR" {
+  opam-version: "2.0"
+  version: "20260209"
+  synopsis: "Runtime support library for GLR parsers generated by Menhir"
+  maintainer: "francois.pottier@inria.fr"
+  authors: "François Pottier <francois.pottier@inria.fr>"
+  license: "LGPL-2.0-only WITH OCaml-LGPL-linking-exception"
+  homepage: "http://gitlab.inria.fr/fpottier/menhir"
+  bug-reports: "https://gitlab.inria.fr/fpottier/menhir/-/issues"
+  depends: [
+    "ocaml" {>= "4.08"}
+    "dune" {>= "2.8.0"}
+  ]
+  conflicts: [
+    "menhir" {!= version}
+  ]
+  build: ["dune" "build" "-p" name "-j" jobs]
+  dev-repo: "git+https://gitlab.inria.fr/fpottier/menhir.git"
+  url {
+    src:
+      "https://gitlab.inria.fr/fpottier/menhir/-/archive/20260209/archive.tar.gz"
+    checksum: [
+      "md5=e993231085db95ab011ffe0cd606d9dd"
+      "sha512=aafad186f328ae8dd4cc69af0f30c1a0b208cf5148a7a94c150099be03838503c5ec12918de26cd7f794b5a72f114bc1bae8d81058bd0ea10372a3b06818687e"
+    ]
+  }
+  x-maintenance-intent: ["(latest)"]
+}
+package "menhirLib" {
+  opam-version: "2.0"
+  version: "20260209"
+  synopsis: "Runtime support library for parsers generated by Menhir"
+  maintainer: "francois.pottier@inria.fr"
+  authors: [
+    "François Pottier <francois.pottier@inria.fr>"
+    "Yann Régis-Gianas <yrg@pps.univ-paris-diderot.fr>"
+  ]
+  license: "LGPL-2.0-only WITH OCaml-LGPL-linking-exception"
+  homepage: "http://gitlab.inria.fr/fpottier/menhir"
+  bug-reports: "https://gitlab.inria.fr/fpottier/menhir/-/issues"
+  depends: [
+    "ocaml" {>= "4.08"}
+    "dune" {>= "2.8.0"}
+  ]
+  conflicts: [
+    "menhir" {!= version}
+  ]
+  build: ["dune" "build" "-p" name "-j" jobs]
+  dev-repo: "git+https://gitlab.inria.fr/fpottier/menhir.git"
+  url {
+    src:
+      "https://gitlab.inria.fr/fpottier/menhir/-/archive/20260209/archive.tar.gz"
+    checksum: [
+      "md5=e993231085db95ab011ffe0cd606d9dd"
+      "sha512=aafad186f328ae8dd4cc69af0f30c1a0b208cf5148a7a94c150099be03838503c5ec12918de26cd7f794b5a72f114bc1bae8d81058bd0ea10372a3b06818687e"
+    ]
+  }
+  x-maintenance-intent: ["(latest)"]
+}
+package "menhirSdk" {
+  opam-version: "2.0"
+  version: "20260209"
+  synopsis: "Compile-time library for auxiliary tools related to Menhir"
+  maintainer: "francois.pottier@inria.fr"
+  authors: [
+    "François Pottier <francois.pottier@inria.fr>"
+    "Yann Régis-Gianas <yrg@pps.univ-paris-diderot.fr>"
+  ]
+  license: "LGPL-2.0-only WITH OCaml-LGPL-linking-exception"
+  homepage: "http://gitlab.inria.fr/fpottier/menhir"
+  bug-reports: "https://gitlab.inria.fr/fpottier/menhir/-/issues"
+  depends: [
+    "ocaml" {>= "4.08"}
+    "dune" {>= "2.8.0"}
+  ]
+  conflicts: [
+    "menhir" {!= version}
+  ]
+  build: ["dune" "build" "-p" name "-j" jobs]
+  dev-repo: "git+https://gitlab.inria.fr/fpottier/menhir.git"
+  url {
+    src:
+      "https://gitlab.inria.fr/fpottier/menhir/-/archive/20260209/archive.tar.gz"
+    checksum: [
+      "md5=e993231085db95ab011ffe0cd606d9dd"
+      "sha512=aafad186f328ae8dd4cc69af0f30c1a0b208cf5148a7a94c150099be03838503c5ec12918de26cd7f794b5a72f114bc1bae8d81058bd0ea10372a3b06818687e"
+    ]
+  }
+  x-maintenance-intent: ["(latest)"]
+}
+package "ocaml" {
+  opam-version: "2.0"
+  version: "5.3.0"
+  synopsis: "The OCaml compiler (virtual package)"
+  description: """\
+This package requires a matching implementation of OCaml,
+and polls it to initialise specific variables like `ocaml:native-dynlink`"""
+  maintainer: "David Allsopp <dra27@dra27.uk>"
+  authors: [
+    "Xavier Leroy"
+    "Damien Doligez"
+    "Alain Frisch"
+    "Jacques Garrigue"
+    "Didier Rémy"
+    "KC Sivaramakrishnan"
+    "Jérôme Vouillon"
+  ]
+  license: "LGPL-2.1-or-later WITH OCaml-LGPL-linking-exception"
+  homepage: "https://ocaml.org"
+  bug-reports: "https://github.com/ocaml/opam-repository/issues"
+  depends: [
+    "ocaml-config" {>= "3"}
+    "ocaml-base-compiler" {>= "5.3.0~" & < "5.3.1~"} |
+    "ocaml-variants" {>= "5.3.0~" & < "5.3.1~"} |
+    "ocaml-system" {>= "5.3.0~" & < "5.3.1~"} |
+    "dkml-base-compiler" {>= "5.3.0~" & < "5.3.1~"}
+    ("ocaml-env-mingw64" {os = "win32"} | "ocaml-env-mingw32" {os = "win32"} |
+     "ocaml-env-msvc64" {os = "win32"} |
+     "ocaml-env-msvc32" {os = "win32"})
+  ]
+  flags: conf
+  setenv: [
+    [OCAMLTOP_INCLUDE_PATH += "%{toplevel}%"]
+    [CAML_LD_LIBRARY_PATH = "%{_:stubsdir}%"]
+    [CAML_LD_LIBRARY_PATH += "%{lib}%/stublibs"]
+    [OCAML_TOPLEVEL_PATH = "%{toplevel}%"]
+  ]
+  build: [
+    "ocaml" "%{ocaml-config:share}%/gen_ocaml_config.ml" _:version _:name
+  ]
+  build-env: [
+    [CAML_LD_LIBRARY_PATH = ""]
+    [LSAN_OPTIONS = "detect_leaks=0,exitcode=0"]
+    [ASAN_OPTIONS = "detect_leaks=0,exitcode=0"]
+  ]
+  x-env-path-rewrite: [
+    [CAML_LD_LIBRARY_PATH (";" {os = "win32"} ":" {os != "win32"}) "target"]
+    [OCAMLTOP_INCLUDE_PATH (";" {os = "win32"} ":" {os != "win32"}) "target"]
+  ]
+  x-revision: "4"
+}
+package "ocaml-base-compiler" {
+  opam-version: "2.0"
+  version: "5.3.0"
+  synopsis: "Official release of OCaml 5.3.0"
+  maintainer: [
+    "David Allsopp <david@tarides.com>"
+    "Florian Angeletti <florian.angeletti@inria.fr>"
+  ]
+  authors: "Xavier Leroy and many contributors"
+  license: "LGPL-2.1-or-later WITH OCaml-LGPL-linking-exception"
+  homepage: "https://ocaml.org"
+  bug-reports: "https://github.com/ocaml/opam-repository/issues"
+  depends: [
+    "ocaml-compiler" {= "5.3.0"}
+    "ocaml-options-vanilla" {post}
+  ]
+  conflict-class: "ocaml-core-compiler"
+  flags: compiler
+  dev-repo: "git+https://github.com/ocaml/ocaml#5.3"
+}
+package "ocaml-compiler" {
+  opam-version: "2.0"
+  version: "5.3.0"
+  synopsis: "Official release of OCaml 5.3.0"
+  maintainer: [
+    "David Allsopp <dra27@dra27.uk>"
+    "Florian Angeletti <florian.angeletti@inria.fr>"
+  ]
+  authors: [
+    "Xavier Leroy"
+    "Damien Doligez"
+    "Alain Frisch"
+    "Jacques Garrigue"
+    "Didier Rémy"
+    "KC Sivaramakrishnan"
+    "Jérôme Vouillon"
+  ]
+  license: "LGPL-2.1-or-later WITH OCaml-LGPL-linking-exception"
+  homepage: "https://ocaml.org"
+  bug-reports: "https://github.com/ocaml/opam-repository/issues"
+  depends: [
+    "ocaml" {= "5.3.0" & post}
+    "base-unix" {post}
+    "base-bigarray" {post}
+    "base-threads" {post}
+    "base-domains" {post}
+    "base-nnp" {post}
+    "base-effects" {post}
+    (("arch-x86_64" {os = "win32" & arch = "x86_64"} &
+      ("system-mingw" |
+       ("system-msvc" & "winpthreads" &
+        "ocaml-option-no-compression" {os = "win32"}))) |
+     ("arch-x86_32" {os = "win32"} &
+      "ocaml-option-bytecode-only" {os = "win32"} &
+      ("system-mingw" |
+       ("system-msvc" & "winpthreads" &
+        "ocaml-option-no-compression" {os = "win32"}))) |
+     "base-unix" {os != "win32" & post})
+    "ocaml-option-bytecode-only"
+      {arch != "arm64" & arch != "x86_64" & arch != "s390x" &
+       arch != "riscv64" &
+       arch != "ppc64"}
+    "flexdll" {>= "0.42" & os = "win32"}
+  ]
+  depopts: [
+    "ocaml-option-32bit"
+    "ocaml-option-afl"
+    "ocaml-option-bytecode-only"
+    "ocaml-option-no-flat-float-array"
+    "ocaml-option-flambda"
+    "ocaml-option-fp"
+    "ocaml-option-no-compression"
+    "ocaml-option-musl"
+    "ocaml-option-leak-sanitizer"
+    "ocaml-option-address-sanitizer"
+    "ocaml-option-static"
+    "ocaml-option-tsan"
+  ]
+  conflicts: ["relocatable"]
+  setenv: CAML_LD_LIBRARY_PATH = "%{lib}%/stublibs"
+  build: [
+    [
+      "./configure"
+      "--host=x86_64-pc-windows"
+        {system-msvc:installed & arch-x86_64:installed}
+      "--host=x86_64-w64-mingw32"
+        {os-distribution = "cygwin" & system-mingw:installed &
+         arch-x86_64:installed}
+      "--host=i686-pc-windows"
+        {system-msvc:installed & arch-x86_32:installed}
+      "--host=i686-w64-mingw32"
+        {os-distribution = "cygwin" & system-mingw:installed &
+         arch-x86_32:installed}
+      "--prefix=%{prefix}%"
+      "--docdir=%{doc}%/ocaml"
+      "--with-flexdll=%{flexdll:share}%" {os = "win32" & flexdll:installed}
+      "--with-winpthreads-msvc=%{winpthreads:share}%" {system-msvc:installed}
+      "-C"
+      "--with-afl" {ocaml-option-afl:installed}
+      "--disable-native-compiler" {ocaml-option-bytecode-only:installed}
+      "--disable-flat-float-array"
+        {ocaml-option-no-flat-float-array:installed}
+      "--enable-flambda" {ocaml-option-flambda:installed}
+      "--enable-frame-pointers" {ocaml-option-fp:installed}
+      "--without-zstd" {ocaml-option-no-compression:installed}
+      "--enable-tsan" {ocaml-option-tsan:installed}
+      "CC=cc"
+        {!ocaml-option-32bit:installed & !ocaml-option-musl:installed &
+         (os = "openbsd" | os = "macos")}
+      "CC=clang" {ocaml-option-tsan:installed & os = "macos"}
+      "CC=musl-gcc"
+        {ocaml-option-musl:installed & os-distribution != "alpine"}
+      "CFLAGS=-Os" {ocaml-option-musl:installed & arch != "arm64"}
+      "CFLAGS=-Os -mno-outline-atomics"
+        {ocaml-option-musl:installed & arch = "arm64"}
+      "LDFLAGS=-Wl,--no-as-needed,-ldl"
+        {ocaml-option-leak-sanitizer:installed |
+         ocaml-option-address-sanitizer:installed & os != "macos"}
+      "CC=gcc -ldl -fsanitize=leak -fno-omit-frame-pointer -O1 -g"
+        {ocaml-option-leak-sanitizer:installed}
+      "CC=gcc -ldl -fsanitize=address -fno-omit-frame-pointer -O1 -g"
+        {ocaml-option-address-sanitizer:installed & os != "macos"}
+      "CC=clang -fsanitize=address -fno-omit-frame-pointer -O1 -g"
+        {ocaml-option-address-sanitizer:installed & os = "macos"}
+      "CC=gcc -m32" {ocaml-option-32bit:installed & os = "linux"}
+      "CC=gcc -Wl,-read_only_relocs,suppress -arch i386 -m32"
+        {ocaml-option-32bit:installed & os = "macos"}
+      "ASPP=musl-gcc -c"
+        {ocaml-option-musl:installed & os-distribution != "alpine"}
+      "--host=i386-linux" {ocaml-option-32bit:installed & os = "linux"}
+      "--host=i386-apple-darwin13.2.0"
+        {ocaml-option-32bit:installed & os = "macos"}
+      "LIBS=-static" {ocaml-option-static:installed}
+      "--disable-warn-error"
+    ]
+    [make "-j%{jobs}%"]
+  ]
+  install: [make "install"]
+  build-env: [
+    [MSYS2_ARG_CONV_EXCL = "*"]
+    [LSAN_OPTIONS = "detect_leaks=0,exitcode=0"]
+    [ASAN_OPTIONS = "detect_leaks=0,exitcode=0"]
+  ]
+  dev-repo: "git+https://github.com/ocaml/ocaml.git#5.3"
+  url {
+    src:
+      "https://github.com/ocaml/ocaml/releases/download/5.3.0/ocaml-5.3.0.tar.gz"
+    checksum:
+      "sha256=22c1dd9de21bf43b62d1909041fb5fad648905227bf69550a6a6bef31e654f38"
+  }
+  extra-source "ocaml-compiler.install" {
+    src:
+      "https://raw.githubusercontent.com/ocaml/ocaml/899b8f3bece45f55161dad72eaa223c2bb7202e8/ocaml-variants.install"
+    checksum: [
+      "sha256=7af3dc34e6f9f3be2ffd8d32cd64fa650d6a036c86c4821a7033d24a90fba11c"
+      "md5=781ea69255fd0cb643a9617ff56fd6ba"
+    ]
+  }
+  x-env-path-rewrite: [
+    [CAML_LD_LIBRARY_PATH (";" {os = "win32"} ":" {os != "win32"}) "target"]
+  ]
+  x-revision: "3"
+}
+package "ocaml-config" {
+  opam-version: "2.0"
+  version: "3"
+  synopsis: "OCaml Switch Configuration"
+  description:
+    "This package is used by the OCaml package to set-up its variables."
+  maintainer: "David Allsopp <david@tarides.com>"
+  authors: [
+    "Louis Gesbert <louis.gesbert@ocamlpro.com>"
+    "David Allsopp <david.allsopp@metastack.com>"
+  ]
+  license: "ISC"
+  homepage: "https://opam.ocaml.org/"
+  bug-reports: "https://github.com/ocaml/opam/issues"
+  depends: [
+    "ocaml-base-compiler" {>= "5.0.0~" | os = "win32"} |
+    "ocaml-variants" {>= "5.0.0~" | os = "win32"} |
+    "ocaml-system" {>= "5.0.0~" | os = "win32"} |
+    "dkml-base-compiler" {>= "4.12.0~"}
+  ]
+  substs: "gen_ocaml_config.ml"
+  extra-source "gen_ocaml_config.ml.in" {
+    src:
+      "https://raw.githubusercontent.com/ocaml/ocaml/66f33f6e08857f3c3cb53fc1759fbad6860c59bd/tools/opam/gen_ocaml_config.ml.in"
+    checksum: [
+      "sha256=a9ad8d84a08961159653a978db92d10f694510182b206cacb96d5c9f63b5121e"
+      "md5=c0a50fb1f6ffe7a48bf8600e83ae6d38"
+    ]
+  }
+  extra-source "ocaml-config.install" {
+    src:
+      "https://raw.githubusercontent.com/ocaml/ocaml/363fb9f5a2fb87dbd5f8cc579af87dd04e14343b/tools/opam/ocaml-config.install"
+    checksum: [
+      "sha256=6e4fd93f4cce6bad0ed3c08afd0248dbe7d7817109281de6294e5b5ef5597051"
+      "md5=8e50c5e2517d3463b3aad649748cafd7"
+    ]
+  }
+}
+package "ocaml-options-vanilla" {
+  opam-version: "2.0"
+  version: "1"
+  synopsis: "Ensure that OCaml is compiled with no special options enabled"
+  maintainer: "David Allsopp <david@tarides.com>"
+  authors: ["David Allsopp" "Louis Gesbert"]
+  license: "CC0-1.0+"
+  homepage: "https://opam.ocaml.org"
+  bug-reports: "https://github.com/ocaml/opam-repository/issues"
+  depends: [
+    "ocaml-base-compiler" {post} | "ocaml-system" {post} |
+    "ocaml-variants" {post & >= "4.12.0~"}
+  ]
+  conflicts: [
+    "ocaml-option-32bit"
+    "ocaml-option-afl"
+    "ocaml-option-bytecode-only"
+      {arch = "arm64" | (arch = "x86_64" & os != "win32")}
+    "ocaml-option-default-unsafe-string"
+    "ocaml-option-flambda"
+    "ocaml-option-fp"
+    "ocaml-option-musl"
+    "ocaml-option-no-flat-float-array"
+    "ocaml-option-no-compression" {os != "win32"}
+    "ocaml-option-spacetime"
+    "ocaml-option-static"
+    "ocaml-option-nnp"
+    "ocaml-option-nnpchecker"
+    "ocaml-option-address-sanitizer"
+    "ocaml-option-leak-sanitizer"
+    "ocaml-option-tsan"
+    "ocaml-option-mingw"
+  ]
+  flags: compiler
+}
+package "ocamlfind" {
+  opam-version: "2.0"
+  version: "1.9.8"
+  synopsis: "A library manager for OCaml"
+  description: """\
+Findlib is a library manager for OCaml. It provides a convention how
+to store libraries, and a file format ("META") to describe the
+properties of libraries. There is also a tool (ocamlfind) for
+interpreting the META files, so that it is very easy to use libraries
+in programs and scripts."""
+  maintainer: "Thomas Gazagnaire <thomas@gazagnaire.org>"
+  authors: "Gerd Stolpmann <gerd@gerd-stolpmann.de>"
+  license: "MIT"
+  homepage: "http://projects.camlcity.org/projects/findlib.html"
+  bug-reports: "https://github.com/ocaml/ocamlfind/issues"
+  depends: [
+    "ocaml"
+      {>= "3.08.0" & (os != "cygwin" & os-distribution != "msys2" | < "5.0") &
+       < "5.5.0~"}
+  ]
+  depopts: ["graphics"]
+  conflicts: ["relocatable"]
+  build: [
+    [
+      "./configure"
+      "-bindir"
+      bin
+      "-sitelib"
+      lib
+      "-mandir"
+      man
+      "-config"
+      "%{lib}%/findlib.conf"
+      "-no-custom"
+      "-no-camlp4" {!ocaml:preinstalled & ocaml:version >= "4.02.0"}
+      "-no-topfind" {ocaml:preinstalled}
+    ]
+    [make "all"]
+    [make "opt"] {ocaml:native}
+  ]
+  install: [
+    [make "install"]
+    ["install" "-m" "0755" "ocaml-stub" "%{bin}%/ocaml"] {ocaml:preinstalled}
+  ]
+  dev-repo: "git+https://github.com/ocaml/ocamlfind.git"
+  url {
+    src:
+      "https://github.com/ocaml/ocamlfind/archive/refs/tags/findlib-1.9.8.tar.gz"
+    checksum: [
+      "md5=ca770e5806032a96131b670f6e07f146"
+      "sha512=8967986de2ab4ec5993f437b0a4206742adf37aa7a292a3bba0a04438d78539b84d001191e60b2d5bde98a695b38cba2593b7051f7749adbdb964a0df3c4b661"
+    ]
+  }
+}
+package "ocamlgraph" {
+  opam-version: "2.0"
+  version: "2.2.0"
+  synopsis: "A generic graph library for OCaml"
+  description: "Provides both graph data structures and graph algorithms"
+  maintainer: "jean-christophe.filliatre@cnrs.fr"
+  authors: ["Sylvain Conchon" "Jean-Christophe Filliâtre" "Julien Signoles"]
+  license: "LGPL-2.1-only"
+  tags: [
+    "graph"
+    "library"
+    "algorithms"
+    "directed graph"
+    "vertice"
+    "edge"
+    "persistent"
+    "imperative"
+    "data-structures"
+  ]
+  homepage: "https://github.com/backtracking/ocamlgraph/"
+  doc: "https://backtracking.github.io/ocamlgraph"
+  bug-reports: "https://github.com/backtracking/ocamlgraph/issues/new"
+  depends: [
+    "ocaml" {>= "4.08.0"}
+    "dune" {>= "2.0"}
+    "graphics" {with-test}
+  ]
+  build: [
+    ["dune" "subst"] {dev}
+    [
+      "dune"
+      "build"
+      "-p"
+      name
+      "-j"
+      jobs
+      "@install"
+      "@runtest" {with-test}
+      "@doc" {with-doc}
+    ]
+  ]
+  dev-repo: "git+https://github.com/backtracking/ocamlgraph.git"
+  url {
+    src:
+      "https://github.com/backtracking/ocamlgraph/releases/download/2.2.0/ocamlgraph-2.2.0.tbz"
+    checksum: [
+      "sha256=b0956210863cc24f480203ba3c2ef06dfae5579536a05744364e7de58822b230"
+      "sha512=257cdd5fb90337b3e3682cade1269c1d181f3124e569a731909f49bbfbe581ab529ac401472fb9ef57166ac34d8ebadfa6a32c93665f38f5a335982d5e5dc0e1"
+    ]
+  }
+  x-commit-hash: "710007690fb2286f9f2ce10e19fa47a67b634670"
+}
+package "ordering" {
+  opam-version: "2.0"
+  version: "3.24.2"
+  synopsis: "Element ordering"
+  description: "Element ordering"
+  maintainer: "Jane Street Group, LLC <opensource@janestreet.com>"
+  authors: "Jane Street Group, LLC <opensource@janestreet.com>"
+  license: "MIT"
+  homepage: "https://github.com/ocaml/dune"
+  doc: "https://dune.readthedocs.io/"
+  bug-reports: "https://github.com/ocaml/dune/issues"
+  depends: [
+    "dune" {>= "3.24"}
+    "ocaml" {>= "4.14"}
+    "odoc" {with-doc}
+  ]
+  build: [
+    ["dune" "subst"] {dev}
+    ["dune" "build" "-p" name "-j" jobs "@install" "@doc" {with-doc}]
+  ]
+  dev-repo: "git+https://github.com/ocaml/dune.git"
+  url {
+    src:
+      "https://github.com/ocaml/dune/releases/download/3.24.2/dune-3.24.2.tbz"
+    checksum: [
+      "sha256=472798691b0216daf538709f0f4703b3617ef24ad0866c9096068baaba4d762a"
+      "sha512=13082a66a28e940d4b3c9f78b556f6c1455987cd522355ba4502e01e60a3d002d3101b51284726ae21aa87494efa2dc54d016173f05b616bbc5dad714d5714a3"
+    ]
+  }
+  x-commit-hash: "ce734ac25ffb06994a4530426bb06ee8cda19e50"
+  x-maintenance-intent: ["none"]
+}
+package "pp" {
+  opam-version: "2.0"
+  version: "2.0.0"
+  synopsis: "Pretty-printing library"
+  description: """\
+This library provides a lean alternative to the Format [1] module of
+the OCaml standard library. It aims to make it easy for users to do
+the right thing. If you have tried Format before but find its API
+complicated and difficult to use, then Pp might be a good choice for
+you.
+
+Pp uses the same concepts of boxes and break hints, and the final
+rendering is done to formatter from the Format module. However it
+defines its own algebra which some might find easier to work with and
+reason about. No previous knowledge is required to start using this
+library, however the various guides for the Format module such as this
+one [2] should be applicable to Pp as well.
+
+[1]: https://caml.inria.fr/pub/docs/manual-ocaml/libref/Format.html
+[2]: http://caml.inria.fr/resources/doc/guides/format.en.html"""
+  maintainer: "Jeremie Dimino <jeremie@dimino.org>"
+  authors: [
+    "Jane Street Group, LLC <opensource@janestreet.com>"
+    "Jeremie Dimino <jeremie@dimino.org>"
+  ]
+  license: "MIT"
+  homepage: "https://github.com/ocaml-dune/pp"
+  doc: "https://ocaml-dune.github.io/pp/"
+  bug-reports: "https://github.com/ocaml-dune/pp/issues"
+  depends: [
+    "dune" {>= "2.8"}
+    "ocaml" {>= "4.08"}
+    "ppx_expect" {with-test}
+    "ocamlformat" {with-dev-setup & = "0.26.2"}
+    "odoc" {with-doc}
+  ]
+  build: [
+    ["dune" "subst"] {dev}
+    [
+      "dune"
+      "build"
+      "-p"
+      name
+      "-j"
+      jobs
+      "@install"
+      "@runtest" {with-test}
+      "@doc" {with-doc}
+    ]
+  ]
+  dev-repo: "git+https://github.com/ocaml-dune/pp.git"
+  url {
+    src:
+      "https://github.com/ocaml-dune/pp/releases/download/2.0.0/pp-2.0.0.tbz"
+    checksum: [
+      "sha256=8651351518b092b4a2def4e08171c276152f92fb6a84a8b19b6b929ccdb44419"
+      "sha512=78cb68f35c0b975dd1e91bd83d5e33bcec1ee642431585d55864c483c70a032755dfcf21ec5697691e7e7554381ddb580639fd149e28ba6f74d04d2ee43d360d"
+    ]
+  }
+  x-commit-hash: "b6741dd41ef5fc5bda8b3640097ac29818a43577"
+}
+package "stdune" {
+  opam-version: "2.0"
+  version: "3.24.2"
+  synopsis: "Dune's unstable standard library"
+  description:
+    "This library offers no backwards compatibility guarantees. Use at your own risk."
+  maintainer: "Jane Street Group, LLC <opensource@janestreet.com>"
+  authors: "Jane Street Group, LLC <opensource@janestreet.com>"
+  license: "MIT"
+  homepage: "https://github.com/ocaml/dune"
+  doc: "https://dune.readthedocs.io/"
+  bug-reports: "https://github.com/ocaml/dune/issues"
+  depends: [
+    "dune" {>= "3.24"}
+    "ocaml" {>= "4.14"}
+    "base-unix"
+    "csexp" {>= "1.5.0"}
+    "dyn" {= version}
+    "fs-io" {= version}
+    "ordering" {= version}
+    "pp" {>= "2.0.0"}
+    "top-closure" {= version}
+    "odoc" {with-doc}
+  ]
+  build: [
+    ["dune" "subst"] {dev}
+    ["dune" "build" "-p" name "-j" jobs "@install" "@doc" {with-doc}]
+  ]
+  dev-repo: "git+https://github.com/ocaml/dune.git"
+  url {
+    src:
+      "https://github.com/ocaml/dune/releases/download/3.24.2/dune-3.24.2.tbz"
+    checksum: [
+      "sha256=472798691b0216daf538709f0f4703b3617ef24ad0866c9096068baaba4d762a"
+      "sha512=13082a66a28e940d4b3c9f78b556f6c1455987cd522355ba4502e01e60a3d002d3101b51284726ae21aa87494efa2dc54d016173f05b616bbc5dad714d5714a3"
+    ]
+  }
+  x-commit-hash: "ce734ac25ffb06994a4530426bb06ee8cda19e50"
+  x-maintenance-intent: ["none"]
+}
+package "terminal_size" {
+  opam-version: "2.0"
+  version: "0.2.0"
+  synopsis: "Get the dimensions of the terminal"
+  description: """\
+You can use this small library to detect the dimensions of the terminal window
+attached to a process."""
+  maintainer: "Cryptosense <opensource@cryptosense.com>"
+  authors: [
+    "Cryptosense <opensource@cryptosense.com>"
+    "Etienne Millon <etienne@cryptosense.com>"
+  ]
+  license: "BSD-2-Clause"
+  homepage: "https://github.com/cryptosense/terminal_size"
+  doc: "https://cryptosense.github.io/terminal_size/doc"
+  bug-reports: "https://github.com/cryptosense/terminal_size/issues"
+  depends: [
+    "alcotest" {with-test}
+    "dune" {>= "2.0.0"}
+    "ocaml" {>= "4.08.0"}
+  ]
+  build: ["dune" "build" "-p" name "-j" jobs]
+  run-test: ["dune" "runtest" "-p" name "-j" jobs]
+  dev-repo: "git+https://github.com/cryptosense/terminal_size.git"
+  url {
+    src:
+      "https://github.com/cryptosense/terminal_size/releases/download/v0.2.0/terminal_size-0.2.0.tbz"
+    checksum: [
+      "sha256=d6b62cd28c4071ac85ca9528088745c124c9094efeae91722514736f9973b0fb"
+      "sha512=fd91266b156f52c28338fc8ba5c5c0626b93afa6388fb9e0f98d0f7c200ded02eac56af82b10a3da8d7ec2ef7a91a95fcb113f051a8ec077e155e2ffda75d1c0"
+    ]
+  }
+  x-commit-hash: "9eb137173b2c9885e75e156494f9f508fdaff379"
+}
+package "top-closure" {
+  opam-version: "2.0"
+  version: "3.24.2"
+  synopsis: "Topological Closure"
+  description: "Generic Topological Closure"
+  maintainer: "Jane Street Group, LLC <opensource@janestreet.com>"
+  authors: "Jane Street Group, LLC <opensource@janestreet.com>"
+  license: "MIT"
+  homepage: "https://github.com/ocaml/dune"
+  doc: "https://dune.readthedocs.io/"
+  bug-reports: "https://github.com/ocaml/dune/issues"
+  depends: [
+    "dune" {>= "3.24"}
+    "ocaml" {>= "4.14"}
+    "odoc" {with-doc}
+  ]
+  build: [
+    ["dune" "subst"] {dev}
+    ["dune" "build" "-p" name "-j" jobs "@install" "@doc" {with-doc}]
+  ]
+  dev-repo: "git+https://github.com/ocaml/dune.git"
+  url {
+    src:
+      "https://github.com/ocaml/dune/releases/download/3.24.2/dune-3.24.2.tbz"
+    checksum: [
+      "sha256=472798691b0216daf538709f0f4703b3617ef24ad0866c9096068baaba4d762a"
+      "sha512=13082a66a28e940d4b3c9f78b556f6c1455987cd522355ba4502e01e60a3d002d3101b51284726ae21aa87494efa2dc54d016173f05b616bbc5dad714d5714a3"
+    ]
+  }
+  x-commit-hash: "ce734ac25ffb06994a4530426bb06ee8cda19e50"
+  x-maintenance-intent: ["none"]
+}
+package "why3" {
+  opam-version: "2.0"
+  version: "git-54c92f96"
+  synopsis: "Why3 environment for deductive program verification"
+  description: """\
+Why3 provides a rich language for specification and programming, called WhyML, and relies on external theorem provers, both automated and interactive, to discharge verification conditions. Why3 comes with a standard library of logical theories (integer and real arithmetic, Boolean operations, sets and maps, etc.) and basic programming data structures (arrays, queues, hash tables, etc.). A user can write WhyML programs directly and get correct-by-construction OCaml or C programs through an automated extraction mechanism. WhyML is also used as an intermediate language for the verification of C, Java, Rust, and Ada programs.
+
+Why3 is a complete reimplementation of the former Why platform. Among the new features are: numerous extensions to the input language, a new architecture for calling external provers, and a well-designed API, allowing to use Why3 as a software library. An important emphasis is put on modularity and genericity, giving the end user a possibility to easily reuse Why3 formalizations or to add support for a new external prover if wanted."""
+  maintainer: "Claude.Marche@inria.fr"
+  authors: [
+    "François Bobot"
+    "Jean-Christophe Filliâtre"
+    "Claude Marché"
+    "Guillaume Melquiond"
+    "Andrei Paskevich"
+  ]
+  license: "LGPL-2.1-only"
+  tags: [
+    "deductive"
+    "program verification"
+    "formal specification"
+    "automated theorem prover"
+    "interactive theorem prover"
+  ]
+  homepage: "https://www.why3.org/"
+  doc: "https://www.why3.org/doc/"
+  bug-reports: "https://gitlab.inria.fr/why3/why3/issues"
+  depends: [
+    "conf-autoconf" {build & dev}
+    "ocaml" {>= "4.09"}
+    "ocamlfind" {build}
+    "dune" {>= "2.9"}
+    "menhir" {>= "20200211"}
+    "zarith"
+  ]
+  depopts: [
+    "camlzip"
+    "ocamlgraph"
+    "sexplib"
+    "ppx_deriving" {build}
+    "ppx_sexp_conv" {build}
+    "ppxlib" {build}
+    "mlmpfr"
+  ]
+  conflicts: [
+    "why3-base"
+    "ocamlgraph" {< "1.8.2"}
+    "mlmpfr" {< "4.0.0"}
+  ]
+  build: [
+    ["./autogen.sh"] {dev}
+    ["touch" "configure"]
+    [
+      "./configure"
+      "--prefix"
+      prefix
+      "--disable-frama-c"
+      "--disable-coq-libs"
+      "--disable-js-of-ocaml"
+      "--disable-re"
+      "--enable-ocamlfind"
+      "--disable-mpfr" {!mlmpfr:installed}
+      "--enable-mpfr" {mlmpfr:installed}
+      "--disable-zip" {!camlzip:installed}
+      "--enable-zip" {camlzip:installed}
+      "--disable-hypothesis-selection" {!ocamlgraph:installed}
+      "--enable-hypothesis-selection" {ocamlgraph:installed}
+      "--disable-stackify" {!ocamlgraph:installed | ocaml:version < "4.12"}
+      "--enable-stackify" {ocamlgraph:installed & ocaml:version >= "4.12"}
+      "--disable-ide"
+    ]
+    [make "DUNEJOBS=%{jobs}%" "all" "byte"]
+    [make "doc" "stdlibdoc" "apidoc"] {with-doc}
+  ]
+  install: [
+    [make "install" "install-lib"]
+    [make "DOCDIR=%{_:doc}%" "install-doc"] {with-doc}
+  ]
+  dev-repo: "git+https://gitlab.inria.fr/why3/why3.git"
+  url {
+    src: "file:///workspace/.setup/why3-source"
+  }
+  x-maintenance-intent: ["(latest)"]
+}
+package "why3-ide" {
+  opam-version: "2.0"
+  version: "git-54c92f96"
+  synopsis: "Why3 environment for deductive program verification"
+  description: """\
+Why3 provides a rich language for specification and programming, called WhyML, and relies on external theorem provers, both automated and interactive, to discharge verification conditions. Why3 comes with a standard library of logical theories (integer and real arithmetic, Boolean operations, sets and maps, etc.) and basic programming data structures (arrays, queues, hash tables, etc.). A user can write WhyML programs directly and get correct-by-construction OCaml programs through an automated extraction mechanism. WhyML is also used as an intermediate language for the verification of C, Java, Rust, and Ada programs.
+
+Why3 is a complete reimplementation of the former Why platform. Among the new features are: numerous extensions to the input language, a new architecture for calling external provers, and a well-designed API, allowing to use Why3 as a software library. An important emphasis is put on modularity and genericity, giving the end user a possibility to easily reuse Why3 formalizations or to add support for a new external prover if wanted.
+
+This package provides an IDE for Why3."""
+  maintainer: "Claude.Marche@inria.fr"
+  authors: [
+    "François Bobot"
+    "Jean-Christophe Filliâtre"
+    "Claude Marché"
+    "Guillaume Melquiond"
+    "Andrei Paskevich"
+  ]
+  license: "LGPL-2.1-only"
+  tags: [
+    "deductive"
+    "program verification"
+    "formal specification"
+    "automated theorem prover"
+    "interactive theorem prover"
+  ]
+  homepage: "https://www.why3.org/"
+  doc: "https://www.why3.org/doc/"
+  bug-reports: "https://gitlab.inria.fr/why3/why3/issues"
+  depends: [
+    "conf-autoconf" {build & dev}
+    "ocaml" {>= "4.09"}
+    "ocamlfind" {build}
+    "dune" {>= "2.9"}
+    "why3" {= version}
+    "lablgtk3"
+    "lablgtk3-sourceview3"
+  ]
+  build: [
+    ["./autogen.sh"] {dev}
+    ["touch" "configure"]
+    [
+      "./configure"
+      "--prefix"
+      prefix
+      "--disable-why3-lib"
+      "--disable-frama-c"
+      "--disable-coq-libs"
+      "--disable-js-of-ocaml"
+      "--disable-re"
+      "--enable-ocamlfind"
+      "--enable-ide"
+    ]
+    [make "DUNEJOBS=%{jobs}%" "ide"]
+  ]
+  install: [make "install-ide"]
+  dev-repo: "git+https://gitlab.inria.fr/why3/why3.git"
+  url {
+    src: "file:///workspace/.setup/why3-source"
+  }
+  x-maintenance-intent: ["(latest)"]
+}
+package "why3find" {
+  opam-version: "2.0"
+  version: "git-eab37557"
+  synopsis: "A Why3 Package Manager"
+  description:
+    "The why3find utility is designed for managing packages for why3 developpers and associated OCaml extracted code."
+  maintainer: ["benjamin.jorge@cea.fr" "loic.correnson@cea.fr"]
+  authors: [
+    "Loïc Correnson <loic.correnson@cea.fr>"
+    "Benjamin Jorge <benjamin.jorge@cea.fr>"
+  ]
+  license: "LGPL-2.1-only"
+  tags: "why3"
+  homepage: "https://git.frama-c.com/pub/why3find"
+  doc: "https://git.frama-c.com/pub/why3find"
+  bug-reports: "https://git.frama-c.com/pub/why3find/issues"
+  depends: [
+    "dune" {>= "3.12"}
+    "dune-site" {>= "3.12"}
+    "why3" {>= "1.8.0"}
+    "ocaml" {>= "4.13.0"}
+    "yojson" {>= "1.7.0"}
+    "terminal_size" {>= "0.2.0"}
+    "zmq" {with-test}
+    "alt-ergo" {with-test & = "2.4.2"}
+    "ocp-indent" {with-test & = "1.9.0"}
+    "headache" {with-test & = "1.08"}
+    "odoc" {with-doc}
+  ]
+  depopts: [
+    "zmq" {>= "5.0.0"}
+  ]
+  build: [
+    ["dune" "subst"] {dev}
+    [
+      "dune"
+      "build"
+      "-p"
+      name
+      "-j"
+      jobs
+      "--promote-install-files=false"
+      "@install"
+      "@runtest" {with-test}
+      "@doc" {with-doc}
+    ]
+    ["dune" "install" "-p" name "--create-install-files" name]
+  ]
+  dev-repo: "git+https://git.frama-c.com/pub/why3find.git"
+  url {
+    src:
+      "git+https://github.com/creusot-rs/why3find.git#eab37557d3e24e1913a3c4f44bc5528ef497c6c9"
+  }
+}
+package "yojson" {
+  opam-version: "2.0"
+  version: "3.0.0"
+  synopsis:
+    "Yojson is an optimized parsing and printing library for the JSON format"
+  description: """\
+Yojson is an optimized parsing and printing library for the JSON format.
+
+ydump is a pretty-printing command-line program provided with the
+yojson package."""
+  maintainer: [
+    "paul-elliot@tarides.com" "nathan@tarides.com" "marek@tarides.com"
+  ]
+  authors: "Martin Jambon"
+  license: "BSD-3-Clause"
+  homepage: "https://github.com/ocaml-community/yojson"
+  doc: "https://ocaml.org/p/yojson/latest"
+  bug-reports: "https://github.com/ocaml-community/yojson/issues"
+  depends: [
+    "dune" {>= "2.7"}
+    "ocaml" {>= "4.08"}
+    "alcotest" {with-test & >= "0.8.5"}
+    "odoc" {with-doc}
+  ]
+  build: [
+    ["dune" "subst"] {dev}
+    [
+      "dune"
+      "build"
+      "-p"
+      name
+      "-j"
+      jobs
+      "@install"
+      "@runtest" {with-test}
+      "@doc" {with-doc}
+    ]
+  ]
+  dev-repo: "git+https://github.com/ocaml-community/yojson.git"
+  url {
+    src:
+      "https://github.com/ocaml-community/yojson/releases/download/3.0.0/yojson-3.0.0.tbz"
+    checksum: [
+      "sha256=99414da7609b92a02474ef4b49ecda15edc8cbba5229341b124e7e4695c39610"
+      "sha512=896d0ea829a36ccadba6628800369c1a3ab9e7c64dbda8b76331889c9db481cd64e137f467481ae80a8dd5fca45d748bfa71f58641806cc1bb1a007f8291789f"
+    ]
+  }
+  x-commit-hash: "b2193e8e0c88c6501710d08b836b3219673383f3"
+}
+package "zarith" {
+  opam-version: "2.0"
+  version: "1.14"
+  synopsis:
+    "Implements arithmetic and logical operations over arbitrary-precision integers"
+  description: """\
+The Zarith library implements arithmetic and logical operations over
+arbitrary-precision integers. It uses GMP to efficiently implement
+arithmetic over big integers. Small integers are represented as Caml
+unboxed integers, for speed and space economy."""
+  maintainer: "Xavier Leroy <xavier.leroy@inria.fr>"
+  authors: ["Antoine Miné" "Xavier Leroy" "Pascal Cuoq"]
+  license: "LGPL-2.0-only WITH OCaml-LGPL-linking-exception"
+  homepage: "https://github.com/ocaml/Zarith"
+  bug-reports: "https://github.com/ocaml/Zarith/issues"
+  depends: [
+    "ocaml" {>= "4.07.0"}
+    "ocamlfind"
+    "conf-pkg-config"
+    "conf-gmp"
+  ]
+  build: [
+    ["./configure"]
+    [make]
+  ]
+  install: [make "install"]
+  dev-repo: "git+https://github.com/ocaml/Zarith.git"
+  url {
+    src: "https://github.com/ocaml/Zarith/archive/release-1.14.tar.gz"
+    checksum: [
+      "sha256=5db9dcbd939153942a08581fabd846d0f3f2b8c67fe68b855127e0472d4d1859"
+      "sha512=8a7f3e82dfa5699c8dda54dd5398c712f3ac4fe04f5208d43d8ba198fb8152de5f91cbb59c15c0a4ba010d4dfcc79f52e405bdd0abbf2798167e9e4216bcb3dd"
+    ]
+  }
+  x-maintenance-intent: ["(latest)"]
+}

@@ -1,0 +1,141 @@
+theory Coma
+  
+  (* use why3.BuiltIn.BuiltIn *)
+  
+  (* use why3.Bool.Bool *)
+  
+  (* use why3.Unit.Unit *)
+  
+  (* use seq.Seq *)
+  
+  type tup3_Int_Int_bool =
+    | Tup3_Int_Int_bool'mk (f0:int) (f1:int) (f2:bool)
+  
+  (* meta model_record function f2 *)
+  
+  (* meta model_record function f1 *)
+  
+  (* meta model_record function f0 *)
+  
+  function utf8_step (bytes:seq int) (pos:int) : tup3_Int_Int_bool =
+    let b0 = get bytes pos in
+    let remaining = length bytes - pos in
+    if 0 <= b0 /\ b0 <= 127 then Tup3_Int_Int_bool'mk b0 1 True
+    else if 194 <= b0 /\ b0 <= 223
+         then if remaining < 2
+              then Tup3_Int_Int_bool'mk 65533 remaining False
+              else let b1 = get bytes (pos + 1) in
+                   if 128 <= b1 /\ b1 <= 191
+                   then Tup3_Int_Int_bool'mk (((b0 - 192) * 64) + (b1 - 128))
+                        2 True
+                   else Tup3_Int_Int_bool'mk 65533 1 False
+         else if 224 <= b0 /\ b0 <= 239
+              then if remaining < 2
+                   then Tup3_Int_Int_bool'mk 65533 remaining False
+                   else let b1 = get bytes (pos + 1) in
+                        let second_ok =
+                          (if if b0 = 224 then 160 <= b1 /\ b1 <= 191
+                              else if b0 = 237 then 128 <= b1 /\ b1 <= 159
+                                   else 128 <= b1 /\ b1 <= 191
+                           then True else False)
+                        in
+                        if not second_ok = True
+                        then Tup3_Int_Int_bool'mk 65533 1 False
+                        else if remaining < 3
+                             then Tup3_Int_Int_bool'mk 65533 remaining False
+                             else let b2 = get bytes (pos + 2) in
+                                  if 128 <= b2 /\ b2 <= 191
+                                  then Tup3_Int_Int_bool'mk
+                                       ((((b0 - 224) * 4096)
+                                         + ((b1 - 128) * 64))
+                                        + (b2 - 128))
+                                       3 True
+                                  else Tup3_Int_Int_bool'mk 65533 2 False
+              else if 240 <= b0 /\ b0 <= 244
+                   then if remaining < 2
+                        then Tup3_Int_Int_bool'mk 65533 remaining False
+                        else let b1 = get bytes (pos + 1) in
+                             let second_ok =
+                               (if if b0 = 240 then 144 <= b1 /\ b1 <= 191
+                                   else if b0 = 244
+                                        then 128 <= b1 /\ b1 <= 143
+                                        else 128 <= b1 /\ b1 <= 191
+                                then True else False)
+                             in
+                             if not second_ok = True
+                             then Tup3_Int_Int_bool'mk 65533 1 False
+                             else if remaining < 3
+                                  then Tup3_Int_Int_bool'mk 65533 remaining
+                                       False
+                                  else let b2 = get bytes (pos + 2) in
+                                       if not (128 <= b2 /\ b2 <= 191)
+                                       then Tup3_Int_Int_bool'mk 65533 2
+                                            False
+                                       else if remaining < 4
+                                            then Tup3_Int_Int_bool'mk 65533
+                                                 remaining False
+                                            else let b3 =
+                                                   get bytes (pos + 3)
+                                                 in
+                                                 if 128 <= b3 /\ b3 <= 191
+                                                 then Tup3_Int_Int_bool'mk
+                                                      (((((b0 - 240) * 262144)
+                                                         + ((b1 - 128) * 4096))
+                                                        + ((b2 - 128) * 64))
+                                                       + (b3 - 128))
+                                                      4 True
+                                                 else Tup3_Int_Int_bool'mk
+                                                      65533 3 False
+                   else Tup3_Int_Int_bool'mk 65533 1 False
+  
+  axiom utf8_step_spec :
+    forall bytes:seq int, pos:int [utf8_step bytes pos].
+     0 <= pos /\ pos < length bytes ->
+     1 <= (utf8_step bytes pos).f1 /\
+     (utf8_step bytes pos).f1 <= (length bytes - pos)
+  
+  axiom utf8_step_spec'0 :
+    forall bytes:seq int, pos:int [utf8_step bytes pos].
+     0 <= pos /\ pos < length bytes ->
+     (utf8_step bytes pos).f0 = 65533 \/
+     0 <= (utf8_step bytes pos).f0 /\ (utf8_step bytes pos).f0 <= 55295 \/
+     57344 <= (utf8_step bytes pos).f0 /\ (utf8_step bytes pos).f0 <= 1114111
+  
+  predicate ge_log_Int (self:int) (other:int) = other <= self
+  
+  (* meta rewrite_def predicate ge_log_Int *)
+  
+  predicate gt_log_Int (self:int) (other:int) = other < self
+  
+  (* meta rewrite_def predicate gt_log_Int *)
+  
+  predicate well_founded_relation_Int (self:int) (other:int) =
+    ge_log_Int self 0 /\ gt_log_Int self other
+  
+  (* meta rewrite_def predicate well_founded_relation_Int *)
+  
+  (* meta compute_max_steps 1000000 *)
+  
+  (* meta select_lsinst "all" *)
+  
+  constant bytes : seq int
+  
+  function utf8_lossy_model (seq int) : seq int
+  
+  goal vc_utf8_lossy_model :
+    if length bytes = 0 then true
+    else (0 <= 0 /\ 0 < length bytes) /\
+         ((1 <= (utf8_step bytes 0).f1 /\
+           (utf8_step bytes 0).f1 <= (length bytes - 0)) /\
+          ((utf8_step bytes 0).f0 = 65533 \/
+           0 <= (utf8_step bytes 0).f0 /\ (utf8_step bytes 0).f0 <= 55295 \/
+           57344 <= (utf8_step bytes 0).f0 /\
+           (utf8_step bytes 0).f0 <= 1114111) ->
+          match utf8_step bytes 0 with
+          | Tup3_Int_Int_bool'mk scalar consumed _ ->
+              well_founded_relation_Int (length bytes)
+              (length bytes[consumed..length bytes])
+          end)
+  
+end
+

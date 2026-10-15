@@ -1,0 +1,35 @@
+theory Coma
+  
+  (* use why3.BuiltIn.BuiltIn *)
+  
+  (* use why3.Bool.Bool *)
+  
+  (* use why3.Unit.Unit *)
+  
+  (* use seq.Seq *)
+  
+  type t_T
+  
+  function concat_assoc_T (seq t_T) (seq t_T) (seq t_T) : unit
+  
+  axiom concat_assoc_T_spec :
+    forall self:seq t_T, other1:seq t_T, other2:seq t_T.
+     ((self ++ other1) ++ other2) = (self ++ (other1 ++ other2))
+  
+  (* meta compute_max_steps 1000000 *)
+  
+  (* meta select_lsinst "all" *)
+  
+  constant left : seq t_T
+  
+  constant middle : seq t_T
+  
+  constant right : seq t_T
+  
+  predicate concat_assoc_T'0 (seq t_T) (seq t_T) (seq t_T)
+  
+  goal vc_concat_assoc_T :
+    true /\ (left ++ (middle ++ right)) = ((left ++ middle) ++ right)
+  
+end
+

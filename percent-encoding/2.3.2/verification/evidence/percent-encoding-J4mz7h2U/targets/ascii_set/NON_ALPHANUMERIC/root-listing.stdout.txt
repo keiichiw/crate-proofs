@@ -1,0 +1,963 @@
+theory Coma
+  
+  (* use why3.BuiltIn.BuiltIn *)
+  
+  (* use why3.Bool.Bool *)
+  
+  (* use why3.Unit.Unit *)
+  
+  (* use creusot.slice.Slice64BW *)
+  
+  (* use creusot.int.UInt32BW *)
+  
+  (* use creusot.int.UInt8BW *)
+  
+  (* use creusot.prelude.Any *)
+  
+  type t_AsciiSet =
+    | T_AsciiSet'mk (mask:slice t)
+  
+  (* meta model_record function mask *)
+  
+  predicate inv_Seq_u32 (_1:seq t) = true
+  
+  (* meta rewrite_def predicate inv_Seq_u32 *)
+  
+  predicate invariant_array_u32_4 (self:slice t) =
+    inv_Seq_u32 (view self) /\ length (view self) = t'int (4:t1)
+  
+  predicate inv_array_u32_4 (_1:slice t) = invariant_array_u32_4 _1
+  
+  (* meta rewrite_def predicate inv_array_u32_4 *)
+  
+  predicate inv_AsciiSet t_AsciiSet
+  
+  axiom inv_axiom :
+    forall x:t_AsciiSet [inv_AsciiSet x].
+     inv_AsciiSet x <-> inv_array_u32_4 (x.mask)
+  
+  predicate invariant_ref_AsciiSet (self:t_AsciiSet) = inv_AsciiSet self
+  
+  (* meta rewrite_def predicate invariant_ref_AsciiSet *)
+  
+  predicate inv_ref_AsciiSet (_1:t_AsciiSet) = invariant_ref_AsciiSet _1
+  
+  (* meta rewrite_def predicate inv_ref_AsciiSet *)
+  
+  constant const_NON_ALPHANUMERIC : t_AsciiSet
+  
+  axiom const_NON_ALPHANUMERIC_spec : inv_ref_AsciiSet const_NON_ALPHANUMERIC
+  
+  function mask_words (self:t_AsciiSet) : seq t =
+    create 4 (fun (i:int) -> get (view (self.mask)) i)
+  
+  axiom mask_words_spec :
+    forall self:t_AsciiSet [mask_words self]. length (mask_words self) = 4
+  
+  constant const_CONTROLS : t_AsciiSet
+  
+  axiom const_CONTROLS_spec : inv_ref_AsciiSet const_CONTROLS
+  
+  axiom const_CONTROLS_spec'0 : length (mask_words const_CONTROLS) = 4
+  
+  axiom const_CONTROLS_spec'1 :
+    get (mask_words const_CONTROLS) 0 = (4294967295:t) /\
+    get (mask_words const_CONTROLS) 1 = (0:t) /\
+    get (mask_words const_CONTROLS) 2 = (0:t) /\
+    get (mask_words const_CONTROLS) 3 = (2147483648:t)
+  
+  goal vc_add : true
+  
+  (* meta compute_max_steps 1000000 *)
+  
+  (* meta select_lsinst "all" *)
+  
+  goal vc_const_NON_ALPHANUMERIC_def :
+    (inv_AsciiSet const_CONTROLS /\ t'int1 (32:t2) < 128) /\
+    (forall result:slice t.
+      let result1 = T_AsciiSet'mk result in
+      inv_AsciiSet result1 /\
+      (forall i:int.
+        0 <= i /\ i < 4 ->
+        (if i = div (t'int1 (32:t2)) 32
+         then get (mask_words result1) i =
+              bw_or (get (mask_words const_CONTROLS) i)
+              (shl (1:t) (of_BV256 (to_BV256 (bw_and (32:t2) (31:t2)))))
+         else get (mask_words result1) i = get (mask_words const_CONTROLS) i)) ->
+      (inv_AsciiSet result1 /\ t'int1 (33:t2) < 128) /\
+      (forall result2:slice t.
+        let result3 = T_AsciiSet'mk result2 in
+        inv_AsciiSet result3 /\
+        (forall i:int.
+          0 <= i /\ i < 4 ->
+          (if i = div (t'int1 (33:t2)) 32
+           then get (mask_words result3) i =
+                bw_or (get (mask_words result1) i)
+                (shl (1:t) (of_BV256 (to_BV256 (bw_and (33:t2) (31:t2)))))
+           else get (mask_words result3) i = get (mask_words result1) i)) ->
+        (inv_AsciiSet result3 /\ t'int1 (34:t2) < 128) /\
+        (forall result4:slice t.
+          let result5 = T_AsciiSet'mk result4 in
+          inv_AsciiSet result5 /\
+          (forall i:int.
+            0 <= i /\ i < 4 ->
+            (if i = div (t'int1 (34:t2)) 32
+             then get (mask_words result5) i =
+                  bw_or (get (mask_words result3) i)
+                  (shl (1:t) (of_BV256 (to_BV256 (bw_and (34:t2) (31:t2)))))
+             else get (mask_words result5) i = get (mask_words result3) i)) ->
+          (inv_AsciiSet result5 /\ t'int1 (35:t2) < 128) /\
+          (forall result6:slice t.
+            let result7 = T_AsciiSet'mk result6 in
+            inv_AsciiSet result7 /\
+            (forall i:int.
+              0 <= i /\ i < 4 ->
+              (if i = div (t'int1 (35:t2)) 32
+               then get (mask_words result7) i =
+                    bw_or (get (mask_words result5) i)
+                    (shl (1:t) (of_BV256 (to_BV256 (bw_and (35:t2) (31:t2)))))
+               else get (mask_words result7) i = get (mask_words result5) i)) ->
+            (inv_AsciiSet result7 /\ t'int1 (36:t2) < 128) /\
+            (forall result8:slice t.
+              let result9 = T_AsciiSet'mk result8 in
+              inv_AsciiSet result9 /\
+              (forall i:int.
+                0 <= i /\ i < 4 ->
+                (if i = div (t'int1 (36:t2)) 32
+                 then get (mask_words result9) i =
+                      bw_or (get (mask_words result7) i)
+                      (shl (1:t)
+                       (of_BV256 (to_BV256 (bw_and (36:t2) (31:t2)))))
+                 else get (mask_words result9) i = get (mask_words result7) i)) ->
+              (inv_AsciiSet result9 /\ t'int1 (37:t2) < 128) /\
+              (forall result10:slice t.
+                let result11 = T_AsciiSet'mk result10 in
+                inv_AsciiSet result11 /\
+                (forall i:int.
+                  0 <= i /\ i < 4 ->
+                  (if i = div (t'int1 (37:t2)) 32
+                   then get (mask_words result11) i =
+                        bw_or (get (mask_words result9) i)
+                        (shl (1:t)
+                         (of_BV256 (to_BV256 (bw_and (37:t2) (31:t2)))))
+                   else get (mask_words result11) i =
+                        get (mask_words result9) i)) ->
+                (inv_AsciiSet result11 /\ t'int1 (38:t2) < 128) /\
+                (forall result12:slice t.
+                  let result13 = T_AsciiSet'mk result12 in
+                  inv_AsciiSet result13 /\
+                  (forall i:int.
+                    0 <= i /\ i < 4 ->
+                    (if i = div (t'int1 (38:t2)) 32
+                     then get (mask_words result13) i =
+                          bw_or (get (mask_words result11) i)
+                          (shl (1:t)
+                           (of_BV256 (to_BV256 (bw_and (38:t2) (31:t2)))))
+                     else get (mask_words result13) i =
+                          get (mask_words result11) i)) ->
+                  (inv_AsciiSet result13 /\ t'int1 (39:t2) < 128) /\
+                  (forall result14:slice t.
+                    let result15 = T_AsciiSet'mk result14 in
+                    inv_AsciiSet result15 /\
+                    (forall i:int.
+                      0 <= i /\ i < 4 ->
+                      (if i = div (t'int1 (39:t2)) 32
+                       then get (mask_words result15) i =
+                            bw_or (get (mask_words result13) i)
+                            (shl (1:t)
+                             (of_BV256 (to_BV256 (bw_and (39:t2) (31:t2)))))
+                       else get (mask_words result15) i =
+                            get (mask_words result13) i)) ->
+                    (inv_AsciiSet result15 /\ t'int1 (40:t2) < 128) /\
+                    (forall result16:slice t.
+                      let result17 = T_AsciiSet'mk result16 in
+                      inv_AsciiSet result17 /\
+                      (forall i:int.
+                        0 <= i /\ i < 4 ->
+                        (if i = div (t'int1 (40:t2)) 32
+                         then get (mask_words result17) i =
+                              bw_or (get (mask_words result15) i)
+                              (shl (1:t)
+                               (of_BV256 (to_BV256 (bw_and (40:t2) (31:t2)))))
+                         else get (mask_words result17) i =
+                              get (mask_words result15) i)) ->
+                      (inv_AsciiSet result17 /\ t'int1 (41:t2) < 128) /\
+                      (forall result18:slice t.
+                        let result19 = T_AsciiSet'mk result18 in
+                        inv_AsciiSet result19 /\
+                        (forall i:int.
+                          0 <= i /\ i < 4 ->
+                          (if i = div (t'int1 (41:t2)) 32
+                           then get (mask_words result19) i =
+                                bw_or (get (mask_words result17) i)
+                                (shl (1:t)
+                                 (of_BV256
+                                  (to_BV256 (bw_and (41:t2) (31:t2)))))
+                           else get (mask_words result19) i =
+                                get (mask_words result17) i)) ->
+                        (inv_AsciiSet result19 /\ t'int1 (42:t2) < 128) /\
+                        (forall result20:slice t.
+                          let result21 = T_AsciiSet'mk result20 in
+                          inv_AsciiSet result21 /\
+                          (forall i:int.
+                            0 <= i /\ i < 4 ->
+                            (if i = div (t'int1 (42:t2)) 32
+                             then get (mask_words result21) i =
+                                  bw_or (get (mask_words result19) i)
+                                  (shl (1:t)
+                                   (of_BV256
+                                    (to_BV256 (bw_and (42:t2) (31:t2)))))
+                             else get (mask_words result21) i =
+                                  get (mask_words result19) i)) ->
+                          (inv_AsciiSet result21 /\ t'int1 (43:t2) < 128) /\
+                          (forall result22:slice t.
+                            let result23 = T_AsciiSet'mk result22 in
+                            inv_AsciiSet result23 /\
+                            (forall i:int.
+                              0 <= i /\ i < 4 ->
+                              (if i = div (t'int1 (43:t2)) 32
+                               then get (mask_words result23) i =
+                                    bw_or (get (mask_words result21) i)
+                                    (shl (1:t)
+                                     (of_BV256
+                                      (to_BV256 (bw_and (43:t2) (31:t2)))))
+                               else get (mask_words result23) i =
+                                    get (mask_words result21) i)) ->
+                            (inv_AsciiSet result23 /\ t'int1 (44:t2) < 128) /\
+                            (forall result24:slice t.
+                              let result25 = T_AsciiSet'mk result24 in
+                              inv_AsciiSet result25 /\
+                              (forall i:int.
+                                0 <= i /\ i < 4 ->
+                                (if i = div (t'int1 (44:t2)) 32
+                                 then get (mask_words result25) i =
+                                      bw_or (get (mask_words result23) i)
+                                      (shl (1:t)
+                                       (of_BV256
+                                        (to_BV256 (bw_and (44:t2) (31:t2)))))
+                                 else get (mask_words result25) i =
+                                      get (mask_words result23) i)) ->
+                              (inv_AsciiSet result25 /\ t'int1 (45:t2) < 128) /\
+                              (forall result26:slice t.
+                                let result27 = T_AsciiSet'mk result26 in
+                                inv_AsciiSet result27 /\
+                                (forall i:int.
+                                  0 <= i /\ i < 4 ->
+                                  (if i = div (t'int1 (45:t2)) 32
+                                   then get (mask_words result27) i =
+                                        bw_or (get (mask_words result25) i)
+                                        (shl (1:t)
+                                         (of_BV256
+                                          (to_BV256 (bw_and (45:t2) (31:t2)))))
+                                   else get (mask_words result27) i =
+                                        get (mask_words result25) i)) ->
+                                (inv_AsciiSet result27 /\
+                                 t'int1 (46:t2) < 128) /\
+                                (forall result28:slice t.
+                                  let result29 = T_AsciiSet'mk result28 in
+                                  inv_AsciiSet result29 /\
+                                  (forall i:int.
+                                    0 <= i /\ i < 4 ->
+                                    (if i = div (t'int1 (46:t2)) 32
+                                     then get (mask_words result29) i =
+                                          bw_or (get (mask_words result27) i)
+                                          (shl (1:t)
+                                           (of_BV256
+                                            (to_BV256
+                                             (bw_and (46:t2) (31:t2)))))
+                                     else get (mask_words result29) i =
+                                          get (mask_words result27) i)) ->
+                                  (inv_AsciiSet result29 /\
+                                   t'int1 (47:t2) < 128) /\
+                                  (forall result30:slice t.
+                                    let result31 = T_AsciiSet'mk result30 in
+                                    inv_AsciiSet result31 /\
+                                    (forall i:int.
+                                      0 <= i /\ i < 4 ->
+                                      (if i = div (t'int1 (47:t2)) 32
+                                       then get (mask_words result31) i =
+                                            bw_or
+                                            (get (mask_words result29) i)
+                                            (shl (1:t)
+                                             (of_BV256
+                                              (to_BV256
+                                               (bw_and (47:t2) (31:t2)))))
+                                       else get (mask_words result31) i =
+                                            get (mask_words result29) i)) ->
+                                    (inv_AsciiSet result31 /\
+                                     t'int1 (58:t2) < 128) /\
+                                    (forall result32:slice t.
+                                      let result33 =
+                                        T_AsciiSet'mk result32
+                                      in
+                                      inv_AsciiSet result33 /\
+                                      (forall i:int.
+                                        0 <= i /\ i < 4 ->
+                                        (if i = div (t'int1 (58:t2)) 32
+                                         then get (mask_words result33) i =
+                                              bw_or
+                                              (get (mask_words result31) i)
+                                              (shl (1:t)
+                                               (of_BV256
+                                                (to_BV256
+                                                 (bw_and (58:t2) (31:t2)))))
+                                         else get (mask_words result33) i =
+                                              get (mask_words result31) i)) ->
+                                      (inv_AsciiSet result33 /\
+                                       t'int1 (59:t2) < 128) /\
+                                      (forall result34:slice t.
+                                        let result35 =
+                                          T_AsciiSet'mk result34
+                                        in
+                                        inv_AsciiSet result35 /\
+                                        (forall i:int.
+                                          0 <= i /\ i < 4 ->
+                                          (if i = div (t'int1 (59:t2)) 32
+                                           then get (mask_words result35) i =
+                                                bw_or
+                                                (get (mask_words result33) i)
+                                                (shl (1:t)
+                                                 (of_BV256
+                                                  (to_BV256
+                                                   (bw_and (59:t2) (31:t2)))))
+                                           else get (mask_words result35) i =
+                                                get (mask_words result33) i)) ->
+                                        (inv_AsciiSet result35 /\
+                                         t'int1 (60:t2) < 128) /\
+                                        (forall result36:slice t.
+                                          let result37 =
+                                            T_AsciiSet'mk result36
+                                          in
+                                          inv_AsciiSet result37 /\
+                                          (forall i:int.
+                                            0 <= i /\ i < 4 ->
+                                            (if i = div (t'int1 (60:t2)) 32
+                                             then get (mask_words result37) i =
+                                                  bw_or
+                                                  (get (mask_words result35)
+                                                   i)
+                                                  (shl (1:t)
+                                                   (of_BV256
+                                                    (to_BV256
+                                                     (bw_and (60:t2) (31:t2)))))
+                                             else get (mask_words result37) i =
+                                                  get (mask_words result35) i)) ->
+                                          (inv_AsciiSet result37 /\
+                                           t'int1 (61:t2) < 128) /\
+                                          (forall result38:slice t.
+                                            let result39 =
+                                              T_AsciiSet'mk result38
+                                            in
+                                            inv_AsciiSet result39 /\
+                                            (forall i:int.
+                                              0 <= i /\ i < 4 ->
+                                              (if i = div (t'int1 (61:t2)) 32
+                                               then get (mask_words result39)
+                                                    i =
+                                                    bw_or
+                                                    (get
+                                                     (mask_words result37) i)
+                                                    (shl (1:t)
+                                                     (of_BV256
+                                                      (to_BV256
+                                                       (bw_and (61:t2)
+                                                        (31:t2)))))
+                                               else get (mask_words result39)
+                                                    i =
+                                                    get (mask_words result37)
+                                                    i)) ->
+                                            (inv_AsciiSet result39 /\
+                                             t'int1 (62:t2) < 128) /\
+                                            (forall result40:slice t.
+                                              let result41 =
+                                                T_AsciiSet'mk result40
+                                              in
+                                              inv_AsciiSet result41 /\
+                                              (forall i:int.
+                                                0 <= i /\ i < 4 ->
+                                                (if i =
+                                                    div (t'int1 (62:t2)) 32
+                                                 then get
+                                                      (mask_words result41) i =
+                                                      bw_or
+                                                      (get
+                                                       (mask_words result39)
+                                                       i)
+                                                      (shl (1:t)
+                                                       (of_BV256
+                                                        (to_BV256
+                                                         (bw_and (62:t2)
+                                                          (31:t2)))))
+                                                 else get
+                                                      (mask_words result41) i =
+                                                      get
+                                                      (mask_words result39) i)) ->
+                                              (inv_AsciiSet result41 /\
+                                               t'int1 (63:t2) < 128) /\
+                                              (forall result42:slice t.
+                                                let result43 =
+                                                  T_AsciiSet'mk result42
+                                                in
+                                                inv_AsciiSet result43 /\
+                                                (forall i:int.
+                                                  0 <= i /\ i < 4 ->
+                                                  (if i =
+                                                      div (t'int1 (63:t2)) 32
+                                                   then get
+                                                        (mask_words result43)
+                                                        i =
+                                                        bw_or
+                                                        (get
+                                                         (mask_words result41)
+                                                         i)
+                                                        (shl (1:t)
+                                                         (of_BV256
+                                                          (to_BV256
+                                                           (bw_and (63:t2)
+                                                            (31:t2)))))
+                                                   else get
+                                                        (mask_words result43)
+                                                        i =
+                                                        get
+                                                        (mask_words result41)
+                                                        i)) ->
+                                                (inv_AsciiSet result43 /\
+                                                 t'int1 (64:t2) < 128) /\
+                                                (forall result44:slice t.
+                                                  let result45 =
+                                                    T_AsciiSet'mk result44
+                                                  in
+                                                  inv_AsciiSet result45 /\
+                                                  (forall i:int.
+                                                    0 <= i /\ i < 4 ->
+                                                    (if i =
+                                                        div (t'int1 (64:t2))
+                                                        32
+                                                     then get
+                                                          (mask_words
+                                                           result45)
+                                                          i =
+                                                          bw_or
+                                                          (get
+                                                           (mask_words
+                                                            result43)
+                                                           i)
+                                                          (shl (1:t)
+                                                           (of_BV256
+                                                            (to_BV256
+                                                             (bw_and (64:t2)
+                                                              (31:t2)))))
+                                                     else get
+                                                          (mask_words
+                                                           result45)
+                                                          i =
+                                                          get
+                                                          (mask_words
+                                                           result43)
+                                                          i)) ->
+                                                  (inv_AsciiSet result45 /\
+                                                   t'int1 (91:t2) < 128) /\
+                                                  (forall result46:slice t.
+                                                    let result47 =
+                                                      T_AsciiSet'mk result46
+                                                    in
+                                                    inv_AsciiSet result47 /\
+                                                    (forall i:int.
+                                                      0 <= i /\ i < 4 ->
+                                                      (if i =
+                                                          div
+                                                          (t'int1 (91:t2)) 32
+                                                       then get
+                                                            (mask_words
+                                                             result47)
+                                                            i =
+                                                            bw_or
+                                                            (get
+                                                             (mask_words
+                                                              result45)
+                                                             i)
+                                                            (shl (1:t)
+                                                             (of_BV256
+                                                              (to_BV256
+                                                               (bw_and
+                                                                (91:t2)
+                                                                (31:t2)))))
+                                                       else get
+                                                            (mask_words
+                                                             result47)
+                                                            i =
+                                                            get
+                                                            (mask_words
+                                                             result45)
+                                                            i)) ->
+                                                    (inv_AsciiSet result47 /\
+                                                     t'int1 (92:t2) < 128) /\
+                                                    (forall result48:slice t.
+                                                      let result49 =
+                                                        T_AsciiSet'mk
+                                                        result48
+                                                      in
+                                                      inv_AsciiSet result49 /\
+                                                      (forall i:int.
+                                                        0 <= i /\ i < 4 ->
+                                                        (if i =
+                                                            div
+                                                            (t'int1 (92:t2))
+                                                            32
+                                                         then get
+                                                              (mask_words
+                                                               result49)
+                                                              i =
+                                                              bw_or
+                                                              (get
+                                                               (mask_words
+                                                                result47)
+                                                               i)
+                                                              (shl (1:t)
+                                                               (of_BV256
+                                                                (to_BV256
+                                                                 (bw_and
+                                                                  (92:t2)
+                                                                  (31:t2)))))
+                                                         else get
+                                                              (mask_words
+                                                               result49)
+                                                              i =
+                                                              get
+                                                              (mask_words
+                                                               result47)
+                                                              i)) ->
+                                                      (inv_AsciiSet result49 /\
+                                                       t'int1 (93:t2) < 128) /\
+                                                      (forall result50:slice
+                                                        t.
+                                                        let result51 =
+                                                          T_AsciiSet'mk
+                                                          result50
+                                                        in
+                                                        inv_AsciiSet result51 /\
+                                                        (forall i:int.
+                                                          0 <= i /\ i < 4 ->
+                                                          (if i =
+                                                              div
+                                                              (t'int1 (93:t2))
+                                                              32
+                                                           then get
+                                                                (mask_words
+                                                                 result51)
+                                                                i =
+                                                                bw_or
+                                                                (get
+                                                                 (mask_words
+                                                                  result49)
+                                                                 i)
+                                                                (shl (1:t)
+                                                                 (of_BV256
+                                                                  (to_BV256
+                                                                   (bw_and
+                                                                    (93:t2)
+                                                                    (31:t2)))))
+                                                           else get
+                                                                (mask_words
+                                                                 result51)
+                                                                i =
+                                                                get
+                                                                (mask_words
+                                                                 result49)
+                                                                i)) ->
+                                                        (inv_AsciiSet
+                                                         result51 /\
+                                                         t'int1 (94:t2) < 128) /\
+                                                        (forall result52:
+                                                          slice t.
+                                                          let result53 =
+                                                            T_AsciiSet'mk
+                                                            result52
+                                                          in
+                                                          inv_AsciiSet
+                                                          result53 /\
+                                                          (forall i:int.
+                                                            0 <= i /\ i < 4 ->
+                                                            (if i =
+                                                                div
+                                                                (t'int1
+                                                                 (94:t2))
+                                                                32
+                                                             then get
+                                                                  (mask_words
+                                                                   result53)
+                                                                  i =
+                                                                  bw_or
+                                                                  (get
+                                                                   (mask_words
+                                                                    result51)
+                                                                   i)
+                                                                  (shl (1:t)
+                                                                   (of_BV256
+                                                                    (
+                                                                    to_BV256
+                                                                    (
+                                                                    bw_and
+                                                                    (94:t2)
+                                                                    (31:t2)))))
+                                                             else get
+                                                                  (mask_words
+                                                                   result53)
+                                                                  i =
+                                                                  get
+                                                                  (mask_words
+                                                                   result51)
+                                                                  i)) ->
+                                                          (inv_AsciiSet
+                                                           result53 /\
+                                                           t'int1 (95:t2)
+                                                           < 128) /\
+                                                          (forall result54:
+                                                            slice t.
+                                                            let result55 =
+                                                              T_AsciiSet'mk
+                                                              result54
+                                                            in
+                                                            inv_AsciiSet
+                                                            result55 /\
+                                                            (forall i:int.
+                                                              0 <= i /\ i < 4 ->
+                                                              (if i =
+                                                                  div
+                                                                  (t'int1
+                                                                   (95:t2))
+                                                                  32
+                                                               then get
+                                                                    (
+                                                                    mask_words
+                                                                    result55)
+                                                                    i =
+                                                                    bw_or
+                                                                    (
+                                                                    get
+                                                                    (
+                                                                    mask_words
+                                                                    result53)
+                                                                    i)
+                                                                    (
+                                                                    shl (1:t)
+                                                                    (
+                                                                    of_BV256
+                                                                    (
+                                                                    to_BV256
+                                                                    (
+                                                                    bw_and
+                                                                    (95:t2)
+                                                                    (31:t2)))))
+                                                               else get
+                                                                    (
+                                                                    mask_words
+                                                                    result55)
+                                                                    i =
+                                                                    get
+                                                                    (
+                                                                    mask_words
+                                                                    result53)
+                                                                    i)) ->
+                                                            (inv_AsciiSet
+                                                             result55 /\
+                                                             t'int1 (96:t2)
+                                                             < 128) /\
+                                                            (forall result56:
+                                                              slice t.
+                                                              let result57 =
+                                                                T_AsciiSet'mk
+                                                                result56
+                                                              in
+                                                              inv_AsciiSet
+                                                              result57 /\
+                                                              (forall i:int.
+                                                                0 <= i /\
+                                                                i < 4 ->
+                                                                (if i =
+                                                                    div
+                                                                    (
+                                                                    t'int1
+                                                                    (96:t2))
+                                                                    32
+                                                                 then 
+                                                                 get
+                                                                 (mask_words
+                                                                  result57)
+                                                                 i =
+                                                                 bw_or
+                                                                 (get
+                                                                  (mask_words
+                                                                   result55)
+                                                                  i)
+                                                                 (shl (1:t)
+                                                                  (of_BV256
+                                                                   (to_BV256
+                                                                    (
+                                                                    bw_and
+                                                                    (96:t2)
+                                                                    (31:t2)))))
+                                                                 else 
+                                                                 get
+                                                                 (mask_words
+                                                                  result57)
+                                                                 i =
+                                                                 get
+                                                                 (mask_words
+                                                                  result55)
+                                                                 i)) ->
+                                                              (inv_AsciiSet
+                                                               result57 /\
+                                                               t'int1
+                                                               (123:t2) < 128) /\
+                                                              (forall result58:
+                                                                slice t.
+                                                                let result59 =
+                                                                  T_AsciiSet'mk
+                                                                  result58
+                                                                in
+                                                                inv_AsciiSet
+                                                                result59 /\
+                                                                (forall i:
+                                                                  int.
+                                                                  0 <= i /\
+                                                                  i < 4 ->
+                                                                  (if 
+                                                                   i =
+                                                                   div
+                                                                   (t'int1
+                                                                    (123:t2))
+                                                                   32
+                                                                   then 
+                                                                   get
+                                                                   (mask_words
+                                                                    result59)
+                                                                   i =
+                                                                   bw_or
+                                                                   (get
+                                                                    (
+                                                                    mask_words
+                                                                    result57)
+                                                                    i)
+                                                                   (shl (1:t)
+                                                                    (
+                                                                    of_BV256
+                                                                    (
+                                                                    to_BV256
+                                                                    (
+                                                                    bw_and
+                                                                    (123:t2)
+                                                                    (31:t2)))))
+                                                                   else 
+                                                                   get
+                                                                   (mask_words
+                                                                    result59)
+                                                                   i =
+                                                                   get
+                                                                   (mask_words
+                                                                    result57)
+                                                                   i)) ->
+                                                                (inv_AsciiSet
+                                                                 result59 /\
+                                                                 t'int1
+                                                                 (124:t2)
+                                                                 < 128) /\
+                                                                (forall result60:
+                                                                  slice t.
+                                                                  let result61 =
+                                                                    T_AsciiSet'mk
+                                                                    result60
+                                                                  in
+                                                                  inv_AsciiSet
+                                                                  result61 /\
+                                                                  (forall i:
+                                                                    int.
+                                                                    0 <= i /\
+                                                                    i < 4 ->
+                                                                    (
+                                                                    if 
+                                                                    i =
+                                                                    div
+                                                                    (
+                                                                    t'int1
+                                                                    (124:t2))
+                                                                    32
+                                                                    then 
+                                                                    get
+                                                                    (
+                                                                    mask_words
+                                                                    result61)
+                                                                    i =
+                                                                    bw_or
+                                                                    (
+                                                                    get
+                                                                    (
+                                                                    mask_words
+                                                                    result59)
+                                                                    i)
+                                                                    (
+                                                                    shl (1:t)
+                                                                    (
+                                                                    of_BV256
+                                                                    (
+                                                                    to_BV256
+                                                                    (
+                                                                    bw_and
+                                                                    (124:t2)
+                                                                    (31:t2)))))
+                                                                    else 
+                                                                    get
+                                                                    (
+                                                                    mask_words
+                                                                    result61)
+                                                                    i =
+                                                                    get
+                                                                    (
+                                                                    mask_words
+                                                                    result59)
+                                                                    i)) ->
+                                                                  (inv_AsciiSet
+                                                                   result61 /\
+                                                                   t'int1
+                                                                   (125:t2)
+                                                                   < 128) /\
+                                                                  (forall result62:
+                                                                    slice t.
+                                                                    let result63 =
+                                                                    T_AsciiSet'mk
+                                                                    result62
+                                                                    in
+                                                                    inv_AsciiSet
+                                                                    result63 /\
+                                                                    (
+                                                                    forall i:
+                                                                    int.
+                                                                    0 <= i /\
+                                                                    i < 4 ->
+                                                                    (
+                                                                    if 
+                                                                    i =
+                                                                    div
+                                                                    (
+                                                                    t'int1
+                                                                    (125:t2))
+                                                                    32
+                                                                    then 
+                                                                    get
+                                                                    (
+                                                                    mask_words
+                                                                    result63)
+                                                                    i =
+                                                                    bw_or
+                                                                    (
+                                                                    get
+                                                                    (
+                                                                    mask_words
+                                                                    result61)
+                                                                    i)
+                                                                    (
+                                                                    shl (1:t)
+                                                                    (
+                                                                    of_BV256
+                                                                    (
+                                                                    to_BV256
+                                                                    (
+                                                                    bw_and
+                                                                    (125:t2)
+                                                                    (31:t2)))))
+                                                                    else 
+                                                                    get
+                                                                    (
+                                                                    mask_words
+                                                                    result63)
+                                                                    i =
+                                                                    get
+                                                                    (
+                                                                    mask_words
+                                                                    result61)
+                                                                    i)) ->
+                                                                    (
+                                                                    inv_AsciiSet
+                                                                    result63 /\
+                                                                    t'int1
+                                                                    (126:t2)
+                                                                    < 128) /\
+                                                                    (
+                                                                    inv_AsciiSet
+                                                                    const_NON_ALPHANUMERIC /\
+                                                                    (
+                                                                    forall i:
+                                                                    int.
+                                                                    0 <= i /\
+                                                                    i < 4 ->
+                                                                    (
+                                                                    if 
+                                                                    i =
+                                                                    div
+                                                                    (
+                                                                    t'int1
+                                                                    (126:t2))
+                                                                    32
+                                                                    then 
+                                                                    get
+                                                                    (
+                                                                    mask_words
+                                                                    const_NON_ALPHANUMERIC)
+                                                                    i =
+                                                                    bw_or
+                                                                    (
+                                                                    get
+                                                                    (
+                                                                    mask_words
+                                                                    result63)
+                                                                    i)
+                                                                    (
+                                                                    shl (1:t)
+                                                                    (
+                                                                    of_BV256
+                                                                    (
+                                                                    to_BV256
+                                                                    (
+                                                                    bw_and
+                                                                    (126:t2)
+                                                                    (31:t2)))))
+                                                                    else 
+                                                                    get
+                                                                    (
+                                                                    mask_words
+                                                                    const_NON_ALPHANUMERIC)
+                                                                    i =
+                                                                    get
+                                                                    (
+                                                                    mask_words
+                                                                    result63)
+                                                                    i)) ->
+                                                                    inv_AsciiSet
+                                                                    const_NON_ALPHANUMERIC /\
+                                                                    get
+                                                                    (
+                                                                    mask_words
+                                                                    const_NON_ALPHANUMERIC)
+                                                                    0 =
+                                                                    (4294967295:t) /\
+                                                                    get
+                                                                    (
+                                                                    mask_words
+                                                                    const_NON_ALPHANUMERIC)
+                                                                    1 =
+                                                                    (4227923967:t) /\
+                                                                    get
+                                                                    (
+                                                                    mask_words
+                                                                    const_NON_ALPHANUMERIC)
+                                                                    2 =
+                                                                    (4160749569:t) /\
+                                                                    get
+                                                                    (
+                                                                    mask_words
+                                                                    const_NON_ALPHANUMERIC)
+                                                                    3 =
+                                                                    (4160749569:t))))))))))))))))))))))))))))))))))
+  
+end
+

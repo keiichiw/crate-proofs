@@ -1,0 +1,25 @@
+use creusot.prelude.Char
+use seq.Seq
+use creusot.int.UInt8
+use int.Int
+
+predicate ascii_content [@inline:trivial] (chars: Seq.seq Char.t) (bytes: Seq.seq UInt8.t) =
+  Seq.length chars = Seq.length bytes
+  /\ (forall i: int. 0 <= i /\ i < Seq.length chars -> Char.to_int (Seq.get chars i) = UInt8.t'int (Seq.get bytes i))
+
+meta "rewrite_def" predicate ascii_content
+
+meta "compute_max_steps" 1000000
+
+meta "select_lsinst" "all"
+
+constant s : Seq.seq Char.t
+
+constant a : Seq.seq UInt8.t
+
+constant b : Seq.seq UInt8.t
+
+function bytes_unique (s: Seq.seq Char.t) (a: Seq.seq UInt8.t) (b: Seq.seq UInt8.t) : ()
+
+goal vc_bytes_unique: ascii_content s a /\ ascii_content s b
+  -> Seq.(==) a b && ([@stop_split] [@expl:bytes_unique ensures] a = b)

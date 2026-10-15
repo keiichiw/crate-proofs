@@ -1,0 +1,34 @@
+theory Coma
+  
+  (* use why3.BuiltIn.BuiltIn *)
+  
+  (* use why3.Bool.Bool *)
+  
+  (* use why3.Unit.Unit *)
+  
+  (* use seq.Seq *)
+  
+  type t_T
+  
+  predicate gt_log_Int (self:int) (other:int) = other < self
+  
+  (* meta rewrite_def predicate gt_log_Int *)
+  
+  function tail_T (self:seq t_T) : seq t_T = self[1..length self]
+  
+  (* meta compute_max_steps 1000000 *)
+  
+  (* meta select_lsinst "all" *)
+  
+  constant left : seq t_T
+  
+  constant right : seq t_T
+  
+  predicate nonempty_left_concat_tail_T (seq t_T) (seq t_T)
+  
+  goal vc_nonempty_left_concat_tail_T :
+    gt_log_Int (length left) 0 ->
+    true /\ tail_T (left ++ right) = (tail_T left ++ right)
+  
+end
+

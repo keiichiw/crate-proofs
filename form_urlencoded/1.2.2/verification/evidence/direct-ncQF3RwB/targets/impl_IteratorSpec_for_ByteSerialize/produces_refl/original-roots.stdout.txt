@@ -1,0 +1,225 @@
+theory Coma
+  
+  (* use why3.BuiltIn.BuiltIn *)
+  
+  (* use why3.Bool.Bool *)
+  
+  (* use why3.Unit.Unit *)
+  
+  (* use creusot.slice.Slice64 *)
+  
+  (* use creusot.int.UInt8 *)
+  
+  (* use map.Map *)
+  
+  (* use creusot.prelude.Char *)
+  
+  type t_ByteSerialize =
+    | T_ByteSerialize'mk (bytes:slice t)
+  
+  (* meta model_record function bytes *)
+  
+  predicate gt_log_Int (self:int) (other:int) = other < self
+  
+  (* meta rewrite_def predicate gt_log_Int *)
+  
+  predicate unchanged_byte (byte:int) =
+    byte = 42 \/
+    byte = 45 \/
+    byte = 46 \/
+    48 <= byte /\ byte <= 57 \/
+    65 <= byte /\ byte <= 90 \/ byte = 95 \/ 97 <= byte /\ byte <= 122
+  
+  axiom unchanged_byte_spec :
+    forall byte:int [unchanged_byte byte].
+     unchanged_byte byte <->
+     byte = 42 \/
+     byte = 45 \/
+     byte = 46 \/
+     48 <= byte /\ byte <= 57 \/
+     65 <= byte /\ byte <= 90 \/ byte = 95 \/ 97 <= byte /\ byte <= 122
+  
+  function safe_run_end (seq t) int : int
+  
+  axiom safe_run_end_def :
+    forall bytes'0:seq t, start:int [safe_run_end bytes'0 start].
+     0 <= start /\ start <= length bytes'0 ->
+     safe_run_end bytes'0 start =
+     (if start < length bytes'0 /\ unchanged_byte (t'int (get bytes'0 start))
+      then safe_run_end bytes'0 (start + 1) else start)
+  
+  axiom safe_run_end_spec :
+    forall bytes'0:seq t, start:int [safe_run_end bytes'0 start].
+     0 <= start /\ start <= length bytes'0 ->
+     start <= safe_run_end bytes'0 start /\
+     safe_run_end bytes'0 start <= length bytes'0
+  
+  axiom safe_run_end_spec'0 :
+    forall bytes'0:seq t, start:int [safe_run_end bytes'0 start].
+     0 <= start /\ start <= length bytes'0 ->
+     (forall i:int.
+       start <= i /\ i < safe_run_end bytes'0 start ->
+       unchanged_byte (t'int (get bytes'0 i)))
+  
+  axiom safe_run_end_spec'1 :
+    forall bytes'0:seq t, start:int [safe_run_end bytes'0 start].
+     0 <= start /\ start <= length bytes'0 ->
+     safe_run_end bytes'0 start = length bytes'0 \/
+     not unchanged_byte (t'int (get bytes'0 (safe_run_end bytes'0 start)))
+  
+  axiom safe_run_end_spec'2 :
+    forall bytes'0:seq t, start:int [safe_run_end bytes'0 start].
+     0 <= start /\ start <= length bytes'0 ->
+     start < length bytes'0 /\ unchanged_byte (t'int (get bytes'0 start)) ->
+     start < safe_run_end bytes'0 start
+  
+  function index_Mapping_u8_Int (self:t -> int) (a:t) : int = get1 self a
+  
+  (* meta rewrite_def function index_Mapping_u8_Int *)
+  
+  function map_u8 (seq t) (t -> int) : seq int
+  
+  axiom map_u8_spec :
+    forall self:seq t, m:t -> int [map_u8 self m].
+     length (map_u8 self m) = length self
+  
+  axiom map_u8_spec'0 :
+    forall self:seq t, m:t -> int [map_u8 self m].
+     forall i:int.
+      0 <= i /\ i < length self ->
+      get (map_u8 self m) i = index_Mapping_u8_Int m (get self i)
+  
+  function uppercase_hex (digit:int) : int =
+    if digit < 10 then 48 + digit else 55 + digit
+  
+  axiom uppercase_hex_spec :
+    forall digit:int [uppercase_hex digit].
+     uppercase_hex digit = (if digit < 10 then 48 + digit else 55 + digit)
+  
+  function escaped_byte_chunk (byte:int) : seq int =
+    if byte = 32 then singleton 43
+    else (singleton 37 ++ singleton (uppercase_hex (div byte 16)))
+         ++ singleton (uppercase_hex (mod byte 16))
+  
+  function encoded_chunks (seq t) : seq (seq int)
+  
+  axiom encoded_chunks_def :
+    forall bytes'0:seq t [encoded_chunks bytes'0].
+     encoded_chunks bytes'0 =
+     (if length bytes'0 = 0 then empty: seq (seq int)
+      else let byte = t'int (get bytes'0 0) in
+           if unchanged_byte byte
+           then let end' = safe_run_end bytes'0 0 in
+                singleton (map_u8 bytes'0[0..end'] (fun (b:t) -> t'int b))
+                ++ encoded_chunks bytes'0[end'..length bytes'0]
+           else singleton (escaped_byte_chunk byte)
+                ++ encoded_chunks bytes'0[1..length bytes'0])
+  
+  axiom encoded_chunks_spec :
+    forall bytes'0:seq t [encoded_chunks bytes'0].
+     length bytes'0 = 0 <-> length (encoded_chunks bytes'0) = 0
+  
+  axiom encoded_chunks_spec'0 :
+    forall bytes'0:seq t [encoded_chunks bytes'0].
+     gt_log_Int (length bytes'0) 0 ->
+     1 <= length (encoded_chunks bytes'0) /\
+     length (encoded_chunks bytes'0) <= length bytes'0
+  
+  function remaining_bytes (self:t_ByteSerialize) : seq t = view (self.bytes)
+  
+  (* meta rewrite_def function remaining_bytes *)
+  
+  function index_Mapping_ref_str_Seq_Int (self:string -> seq int) (a:
+    string) : seq int = get1 self a
+  
+  (* meta rewrite_def function index_Mapping_ref_str_Seq_Int *)
+  
+  function map_ref_str (seq string) (string -> seq int) : seq (seq int)
+  
+  axiom map_ref_str_spec :
+    forall self:seq string, m:string -> seq int [map_ref_str self m].
+     length (map_ref_str self m) = length self
+  
+  axiom map_ref_str_spec'0 :
+    forall self:seq string, m:string -> seq int [map_ref_str self m].
+     forall i:int.
+      0 <= i /\ i < length self ->
+      get (map_ref_str self m) i =
+      index_Mapping_ref_str_Seq_Int m (get self i)
+  
+  function tail_char (self:seq t1) : seq t1 = self[1..length self]
+  
+  function flat_map_char (seq t1) (t1 -> seq t) : seq t
+  
+  axiom flat_map_char_def :
+    forall self:seq t1, other:t1 -> seq t [flat_map_char self other].
+     flat_map_char self other =
+     (if length self = 0 then empty: seq t
+      else get1 other (get self 0) ++ flat_map_char (tail_char self) other)
+  
+  function to_utf8_char t1 : seq t
+  
+  axiom to_utf8_char_spec :
+    forall self:t1 [to_utf8_char self].
+     1 <= length (to_utf8_char self) /\ length (to_utf8_char self) <= 4
+  
+  function to_bytes (self:seq t1) : seq t =
+    flat_map_char self (fun (c:t1) -> to_utf8_char c)
+  
+  function view_str string : seq t1
+  
+  function string_chunk_bytes (s:string) : seq int =
+    map_u8 (to_bytes (view_str s)) (fun (b:t) -> t'int b)
+  
+  predicate produces_ByteSerialize (self:t_ByteSerialize) (visited:seq
+    string) (o:t_ByteSerialize) =
+    encoded_chunks (remaining_bytes self) =
+    (map_ref_str visited (fun (s:string) -> string_chunk_bytes s)
+     ++ encoded_chunks (remaining_bytes o))
+  
+  function concat_empty_Seq_Int (seq (seq int)) : unit
+  
+  axiom concat_empty_Seq_Int_spec :
+    forall self:seq (seq int). (self ++ (empty: seq (seq int))) = self
+  
+  axiom concat_empty_Seq_Int_spec'0 :
+    forall self:seq (seq int). ((empty: seq (seq int)) ++ self) = self
+  
+  (* meta compute_max_steps 1000000 *)
+  
+  (* meta select_lsinst "all" *)
+  
+  constant self : t_ByteSerialize
+  
+  function produces_refl_ByteSerialize t_ByteSerialize : unit
+  
+  goal vc_produces_refl_ByteSerialize :
+    length
+    (map_ref_str (empty: seq string) (fun (s:string) -> string_chunk_bytes s)) =
+    length (empty: seq string) /\
+    (forall i:int.
+      0 <= i /\ i < length (empty: seq string) ->
+      get
+      (map_ref_str (empty: seq string)
+       (fun (s:string) -> string_chunk_bytes s))
+      i =
+      index_Mapping_ref_str_Seq_Int (fun (s:string) -> string_chunk_bytes s)
+      (get (empty: seq string) i)) ->
+    map_ref_str (empty: seq string) (fun (s:string) -> string_chunk_bytes s)
+    == (empty: seq (seq int)) &&
+    ((length (remaining_bytes self) = 0 <->
+      length (encoded_chunks (remaining_bytes self)) = 0) /\
+     (gt_log_Int (length (remaining_bytes self)) 0 ->
+      1 <= length (encoded_chunks (remaining_bytes self)) /\
+      length (encoded_chunks (remaining_bytes self))
+      <= length (remaining_bytes self)) ->
+     (let trace = encoded_chunks (remaining_bytes self) in
+      (trace ++ (empty: seq (seq int))) = trace /\
+      ((empty: seq (seq int)) ++ trace) = trace ->
+      (if concat_empty_Seq_Int trace = ()
+       then trace = ((empty: seq (seq int)) ++ trace) &&
+            produces_ByteSerialize self (empty: seq string) self
+       else false && produces_ByteSerialize self (empty: seq string) self)))
+  
+end
+

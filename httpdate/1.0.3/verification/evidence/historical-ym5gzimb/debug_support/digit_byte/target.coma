@@ -1,0 +1,203 @@
+use creusot.int.UInt16
+use creusot.int.UInt8
+use creusot.prelude.Any
+use creusot.prelude.Char
+use int.Int
+
+function literal_char (b: UInt8.t) : Char.t = if b = (10: UInt8.t) then
+    Char.of_int 10
+  else
+    if b = (32: UInt8.t) then
+      Char.of_int 32
+    else
+      if b = (123: UInt8.t) then
+        Char.of_int 123
+      else
+        if b = (125: UInt8.t) then
+          Char.of_int 125
+        else
+          if b = (40: UInt8.t) then
+            Char.of_int 40
+          else
+            if b = (41: UInt8.t) then
+              Char.of_int 41
+            else
+              if b = (58: UInt8.t) then
+                Char.of_int 58
+              else
+                if b = (44: UInt8.t) then
+                  Char.of_int 44
+                else
+                  if b = (72: UInt8.t) then
+                    Char.of_int 72
+                  else
+                    if b = (116: UInt8.t) then
+                      Char.of_int 116
+                    else
+                      if b = (112: UInt8.t) then
+                        Char.of_int 112
+                      else
+                        if b = (68: UInt8.t) then
+                          Char.of_int 68
+                        else
+                          if b = (97: UInt8.t) then
+                            Char.of_int 97
+                          else
+                            if b = (101: UInt8.t) then
+                              Char.of_int 101
+                            else
+                              if b = (115: UInt8.t) then
+                                Char.of_int 115
+                              else
+                                if b = (99: UInt8.t) then
+                                  Char.of_int 99
+                                else
+                                  if b = (109: UInt8.t) then
+                                    Char.of_int 109
+                                  else
+                                    if b = (105: UInt8.t) then
+                                      Char.of_int 105
+                                    else
+                                      if b = (110: UInt8.t) then
+                                        Char.of_int 110
+                                      else
+                                        if b = (104: UInt8.t) then
+                                          Char.of_int 104
+                                        else
+                                          if b = (111: UInt8.t) then
+                                            Char.of_int 111
+                                          else
+                                            if b = (117: UInt8.t) then
+                                              Char.of_int 117
+                                            else
+                                              if b = (114: UInt8.t) then
+                                                Char.of_int 114
+                                              else
+                                                if b = (100: UInt8.t) then
+                                                  Char.of_int 100
+                                                else
+                                                  if b = (121: UInt8.t) then
+                                                    Char.of_int 121
+                                                  else
+                                                    if b = (119: UInt8.t) then
+                                                      Char.of_int 119
+                                                    else
+                                                      if b = (69: UInt8.t) then
+                                                        Char.of_int 69
+                                                      else
+                                                        if b = (48: UInt8.t) then
+                                                          Char.of_int 48
+                                                        else
+                                                          if b = (49: UInt8.t) then
+                                                            Char.of_int 49
+                                                          else
+                                                            if b = (50: UInt8.t) then
+                                                              Char.of_int 50
+                                                            else
+                                                              if b = (51: UInt8.t) then
+                                                                Char.of_int 51
+                                                              else
+                                                                if b = (52: UInt8.t) then
+                                                                  Char.of_int 52
+                                                                else
+                                                                  if b = (53: UInt8.t) then
+                                                                    Char.of_int 53
+                                                                  else
+                                                                    if b = (54: UInt8.t) then
+                                                                      Char.of_int 54
+                                                                    else
+                                                                      if b = (55: UInt8.t) then
+                                                                        Char.of_int 55
+                                                                      else
+                                                                        if b = (56: UInt8.t) then
+                                                                          Char.of_int 56
+                                                                        else
+                                                                          if b = (57: UInt8.t) then
+                                                                            Char.of_int 57
+                                                                          else
+                                                                            Char.of_int 0
+                                                                        
+                                                                      
+                                                                    
+                                                                  
+                                                                
+                                                              
+                                                            
+                                                          
+                                                        
+                                                      
+                                                    
+                                                  
+                                                
+                                              
+                                            
+                                          
+                                        
+                                      
+                                    
+                                  
+                                
+                              
+                            
+                          
+                        
+                      
+                    
+                  
+                
+              
+            
+          
+        
+      
+    
+  
+
+
+function digit_char (d: int) : Char.t = if d = 0 then
+    Char.of_int 48
+  else
+    if d = 1 then
+      Char.of_int 49
+    else
+      if d = 2 then
+        Char.of_int 50
+      else
+        if d = 3 then
+          Char.of_int 51
+        else
+          if d = 4 then
+            Char.of_int 52
+          else
+            if d = 5 then
+              Char.of_int 53
+            else
+              if d = 6 then
+                Char.of_int 54
+              else
+                if d = 7 then Char.of_int 55 else if d = 8 then Char.of_int 56 else Char.of_int 57
+            
+          
+        
+      
+    
+  
+
+
+meta "compute_max_steps" 1000000
+
+meta "select_lsinst" "all"
+
+let digit_byte (n: UInt16.t) (return (x: UInt8.t)) = {[@stop_split] [@expl:digit_byte requires] UInt16.t'int n < 10}
+  (! bb0
+  [ bb0 = s0
+    [ s0 = [ &_8 <- UInt8.of_int (UInt16.t'int n) ] s1
+    | s1 = UInt8.add {(48: UInt8.t)} {_8} (fun (_x: UInt8.t) -> [ &_ret <- _x ] s2)
+    | s2 = return {_ret} ] ] [ & _ret: UInt8.t = Any.any_l () | & n: UInt16.t = n | & _8: UInt8.t = Any.any_l () ])
+  [ return (result: UInt8.t) ->
+  {[@stop_split] [@expl:digit_byte ensures] ([@stop_split] [@expl:digit_byte ensures #0] UInt8.t'int result
+        = UInt16.t'int n + 48
+      /\ UInt8.t'int result < 128)
+    /\ ([@stop_split] [@expl:digit_byte ensures #1] literal_char result = digit_char (UInt16.t'int n)
+    /\ Char.to_int (literal_char result) = UInt8.t'int result)}
+    (! return {result}) ]

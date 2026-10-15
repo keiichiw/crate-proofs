@@ -1,0 +1,1104 @@
+{
+  "generated_at_utc": "2026-10-08T00:44:18.292635+00:00",
+  "scope": "Byte/calendar core and actual public parse/format/conversion/comparison/clone/Display/Hash/Error/Debug bodies and equality-compatible Hash/IO observation harnesses; public boundaries conditional on reviewed stdlib models; one forward-From trait refinement open.",
+  "input_base": "httpdate/1.0.3",
+  "command": "bash httpdate/1.0.3/scripts/verify.sh",
+  "cache": false,
+  "versions": [
+    "cargo-creusot 0.13.0",
+    "Rust toolchain nightly-2026-06-22",
+    "Why3 platform, version 1.8.2+git",
+    "why3find v1.3.0+dev",
+    "alt-ergo 2.6.2",
+    "z3 4.15.3",
+    "cvc4 1.8",
+    "cvc5 1.3.1",
+    "cargo proofs 0.3.4",
+    "rustc 1.91.0 (f8297e351 2025-10-28)",
+    "binary: rustc",
+    "commit-hash: f8297e351a40c1439a467bbbb6879088047f50b3",
+    "commit-date: 2025-10-28",
+    "host: x86_64-unknown-linux-gnu",
+    "release: 1.91.0",
+    "LLVM version: 21.1.2",
+    "rustc 1.98.0-nightly (91fe22da8 2026-06-21)",
+    "binary: rustc",
+    "commit-hash: 91fe22da8084a1c9e993d78d4a56f22ab8396236",
+    "commit-date: 2026-06-21",
+    "host: x86_64-unknown-linux-gnu",
+    "release: 1.98.0-nightly",
+    "LLVM version: 22.1.7",
+    "Why3 platform, version 1.8.2+git",
+    "why3find v1.3.0+dev",
+    "v2.6.2",
+    "Z3 version 4.15.3 - 64 bit",
+    "This is CVC4 version 1.8 [git HEAD 52479010]",
+    "compiled with GCC version 5.4.0 20160609",
+    "on Aug 25 2020 00:35:00",
+    "",
+    "Copyright (c) 2009-2020 by the authors and their institutional",
+    "affiliations listed at http://cvc4.cs.stanford.edu/authors",
+    "",
+    "This build of CVC4 uses GPLed libraries, and is thus covered by",
+    "the GNU General Public License (GPL) version 3.  Versions of CVC4",
+    "are available that are covered by the (modified) BSD license. If",
+    "you want to license CVC4 under this license, please configure CVC4",
+    "with the \"--no-gpl\" option before building from sources.",
+    "",
+    "THIS SOFTWARE IS PROVIDED AS-IS, WITHOUT ANY WARRANTIES.",
+    "USE AT YOUR OWN RISK.",
+    "",
+    "CVC4 incorporates code from ANTLR3 (http://www.antlr.org).",
+    "See licenses/antlr3-LICENSE for copyright and licensing information.",
+    "",
+    "This version of CVC4 is linked against the following non-(L)GPL'ed",
+    "third party libraries.",
+    "",
+    "  CaDiCaL - Simplified Satisfiability Solver",
+    "  See https://github.com/arminbiere/cadical for copyright information.",
+    "",
+    "  CryptoMiniSat - An Advanced SAT Solver",
+    "  See https://github.com/msoos/cryptominisat for copyright information.",
+    "",
+    "  SymFPU - The Symbolic Floating Point Unit",
+    "  See https://github.com/martin-cs/symfpu/tree/CVC4 for copyright information.",
+    "",
+    "This version of CVC4 is linked against the following third party",
+    "libraries covered by the GPLv3 license.",
+    "See licenses/gpl-3.0.txt for more information.",
+    "",
+    "  CLN - Class Library for Numbers",
+    "  See http://www.ginac.de/CLN for copyright information.",
+    "",
+    "  GNU Readline",
+    "  See http://cnswww.cns.cwru.edu/php/chet/readline/rltop.html",
+    "  for copyright information.",
+    "",
+    "See the file COPYING (distributed with the source code, and with",
+    "all binaries) for the full CVC4 copyright, licensing, and (lack of)",
+    "warranty information.",
+    "This is cvc5 version 1.3.1 [git ea1b484 on branch HEAD]",
+    "compiled with GCC version 11.4.0",
+    "on Sep 24 2025 18:57:07",
+    "",
+    "Copyright (c) 2009-2025 by the authors and their institutional",
+    "affiliations listed at https://cvc5.github.io/people.html",
+    "",
+    "This build of cvc5 uses GPLed libraries, and is thus covered by",
+    "the GNU General Public License (GPL) version 3.  Versions of cvc5",
+    "are available that are covered by the (modified) BSD license. If",
+    "you want to license cvc5 under this license, please configure cvc5",
+    "with the \"--no-gpl\" option before building from sources.",
+    "",
+    "THIS SOFTWARE IS PROVIDED AS-IS, WITHOUT ANY WARRANTIES.",
+    "USE AT YOUR OWN RISK.",
+    "",
+    "This version of cvc5 is linked against the following non-(L)GPL'ed",
+    "third party libraries.",
+    "",
+    "  CaDiCaL - Simplified Satisfiability Solver",
+    "  See https://github.com/arminbiere/cadical for copyright information.",
+    "",
+    "  Editline Library",
+    "  See https://thrysoee.dk/editline",
+    "  for copyright information.",
+    "",
+    "  SymFPU - The Symbolic Floating Point Unit",
+    "  See https://github.com/martin-cs/symfpu/tree/CVC4 for copyright information.",
+    "",
+    "This version of cvc5 is linked against the following third party",
+    "libraries covered by the LGPLv3 license.",
+    "See licenses/lgpl-3.0.txt for more information.",
+    "",
+    "  LibPoly polynomial library",
+    "  See https://github.com/SRI-CSL/libpoly for copyright and",
+    "  licensing information.",
+    "",
+    "cvc5 is statically linked against these libraries. To recompile",
+    "this version of cvc5 with different versions of these libraries",
+    "follow the instructions on https://github.com/cvc5/cvc5/blob/main/INSTALL.md",
+    "",
+    "This version of cvc5 is linked against the following third party",
+    "libraries covered by the GPLv3 license.",
+    "See licenses/gpl-3.0.txt for more information.",
+    "",
+    "  CLN - Class Library for Numbers",
+    "  See http://www.ginac.de/CLN for copyright information.",
+    "",
+    "  glpk-cut-log - a modified version of GPLK, the GNU Linear Programming Kit",
+    "  See http://github.com/timothy-king/glpk-cut-log for copyright information",
+    "",
+    "  CoCoALib - a computer algebra library",
+    "  See https://cocoa.dima.unige.it/cocoa/cocoalib/index.shtml for copyright information",
+    "",
+    "See the file COPYING (distributed with the source code, and with",
+    "all binaries) for the full cvc5 copyright, licensing, and (lack of)",
+    "warranty information.",
+    ""
+  ],
+  "inputs_sha256": {
+    "Cargo.toml": "30ba561e59af90c8ba73108988c12e9dc27512c1de2807945a57f3a04e825437",
+    "Cargo.lock": "d7f4639bcf4f78b15efaee1527fb1ed2a442b97111695268eedccd9d258b424a",
+    "../../rust-toolchain.toml": "57da15ac9b199a5169602f55715ebac933e4c0d59aa3560e6096f5494ee62f0c",
+    "../../scripts/activate.sh": "f8d14eaf2943e76e3c43c042f8afce06370bcde579f4489dbfe8ba9047f8a662",
+    "why3find.json": "7ab52d429e4b4b74e3b79507ec72c8c3998b58420c64f6e09b3841701531e174",
+    "scripts/verify.sh": "66f7c2eef7fcf8390e7cda7a8b40e6027c776cb64e45d4ba4f30bda8bcce677a",
+    "scripts/check-proofs.py": "7deaa585ef25443c21ce3726565ef45b7b1b74647a37d2734f16d8bcdb48d1e6",
+    "crate/Cargo.toml": "f9885d691d6f4a8b7bc80698ad9683a44f880bc749c2898f35573d6bc52fa8e7",
+    "../../verification/toolchain-repositories.json": "bb1c797e7ef648ab27c3e377499827c5f37ee40c145a890cb7723b3cb974b218",
+    "../../verification/toolchain-opam.export": "552eb83275214f016aa4e6d961dc67346abd4b743685799a57194ebcb3b99f08",
+    "verification/trial/reference/date.rs": "87e7de1394f6b0d37128bfbf5943e256c886c35ed3f9078d15a08309c2206c69",
+    "verification/stdlib-assumptions.md": "8ba975232ea58b3fc56aa28fb8ec679fd37dea4e8c373d6ac44ee24700bf52d0",
+    "verification/specification.md": "ae6683c92eb3f91d05f6c1434b19574961583b054c3969177ee3c6c6f3320d03",
+    "verification/stdlib-reference.json": "ffbcb3c1bd40b4069b8c4eafb02035f9be822310b6c1e171e0c6cba537d288db",
+    "verification/trial/check-evidence-guards.py": "f577e84877697e401485f065d213ef50abf77edd5a0a92243d0e076c71f9f41f",
+    "crate/src/date/asctime.rs": "52851f422f58ce3138ed3642b91c1c74a5a86b4fea598bd123b1f44bbc8e42e5",
+    "crate/src/date/asctime_tests.rs": "b83f0ceb990c17e51d902bfb9951115900e540e68f4265f3ce048af8a0c0d8b3",
+    "crate/src/date/debug.rs": "555d36c3042129b5d22484c2123bb2fe9071d54a37c77d75b5637e60a743e95f",
+    "crate/src/date/hash.rs": "9e1bb4dfcbb79ef3c069ac121f6339c0d1c644ecfe18fd2ce8ef4c460cab33f2",
+    "crate/src/date/hash_tests.rs": "0042628d9811e1de0965411dda3f88e218f74ea78d6d518dac2ea224107a8e9b",
+    "crate/src/date/rfc850.rs": "6e7759e11938bd32cbc69e04b7bfed20dc243ed4eae25b7cf439560eed918aef",
+    "crate/src/date.rs": "d4e1d283e1552509beb04fcb237feca0e61341ccbdb36b5ee437e7226a3d3628",
+    "crate/src/debug_support.rs": "1f3c54ea7fec90f002264434a0f10397126caf09145b083f9f13c9fb7c675885",
+    "crate/src/debug_tests.rs": "e6a63e4ebfc7886b68444a647bb89b61a64b65300da19878dbaa9cccb5f8e685",
+    "crate/src/error_tests.rs": "fea243b4118c6228022643d8ba0365601807ba6e19a3dabd78239608804ee565",
+    "crate/src/lib.rs": "d55c5e259a9ef44b925c3b8d88709d0809f3270427f1ccd55f55369e8e6fcd0c",
+    "crate/src/stdlib_specs.rs": "e281179b78df4ea0c91829d78b61fb2e4787eeb9075b12d3d7eb8a0d4fdcd26f",
+    "crate/src/trial_tests.rs": "d80b3bf6189a560934acb8b8f1324d53fb63ae51b8aec4fbf376b5da7614f2cb",
+    "crate/src/verification_tests.rs": "a391f3320d09020be5295ee0898179c364656512ebe407861137ba3dee2e894b",
+    "/workspace/.cargo/bin/cargo-creusot": "c9b3d2a8ea0a6fb2284a43225fbbb4507a4d2b0d6600f0f02d68e51d19d23f27",
+    "/workspace/.cargo/bin/cargo-proofs": "cbf576ce298e7c6a457c6b0daffa763d647c43d18101087d829418b9ca8ea97e",
+    "/workspace/.local/share/creusot/_opam/bin/why3find": "f9b17cc9b7973e7234e05c48fe5a5c8bd9af6bc93a4a2fff920cf770d3f9a3cc",
+    "/workspace/.local/share/creusot/_opam/bin/why3": "214edb9b77b9544fedcc5aec422be1d797875611aebf5ba8606c35ee49738950",
+    "/workspace/.local/share/creusot/bin/alt-ergo": "bdc4e487f2bdfd421011c82f545df3f50530aee6d6e406b1e847d433650ca3c1",
+    "/workspace/.local/share/creusot/bin/z3": "80ee070b8ffc2fa964b0b879250b2110c47f84c1256a1f9ab76fc7cf95e46292",
+    "/workspace/.local/share/creusot/bin/cvc4": "d38a79cf984592785eda41ec888d94ca107ac1f13058740238041e28c8472e51",
+    "/workspace/.local/share/creusot/bin/cvc5": "88e0445c1e30739e356aacb34bf664956efaf31c96f4a428e12b78b22a65da6e",
+    "/workspace/.cargo/bin/rustup": "dda7234360b7f578ca8b0ddcb80145646fa61a67c1720a5abc7051b35c9fcb71",
+    "/workspace/.rustup/toolchains/1.91.0-x86_64-unknown-linux-gnu/bin/rustc": "1b4a8971db9b9f440d55f64c0c592e4f3cfe0efc085c1b1a0e4972dfffaa238b",
+    "/workspace/.rustup/toolchains/nightly-2026-06-22-x86_64-unknown-linux-gnu/bin/rustc": "2be7d800c465b19551289c142e37868deb3240a30de862188e68fa5a4b1ce87d",
+    "/workspace/.local/share/creusot/toolchains/nightly-2026-06-22/bin/creusot-rustc": "7eac0acee2a8c0c1a04b6d36504f96b881dc17cbbf19f9bb87aa41f04a77278a"
+  },
+  "targets": {
+    "date/toint_1": {
+      "goals": 2,
+      "proof_json_sha256": "ff469dc62ec25a5b3593bfb54d1e0d2fc0cbce6f315fa968185c28c91dadf2da",
+      "coma_sha256": "41ca70c494ec17e44eaaa55d828697f3cc6d95b03be0562428dd1cb58e40b148",
+      "open_goals": [],
+      "goal_inventory": [
+        "Coma.vc_toint_1",
+        "Coma.vc_wrapping_sub"
+      ],
+      "boundary": "Creusot/creusot-std only"
+    },
+    "date/toint_2": {
+      "goals": 2,
+      "proof_json_sha256": "bfa1e21552d7edbc879dd6b8ac3fcc4e7d4b14a3a9b94e86cf50fedac54a9b6b",
+      "coma_sha256": "f28749222e80a1daa4af0524719f223a92ce57c737fb7a577db17c3ab0419c3c",
+      "open_goals": [],
+      "goal_inventory": [
+        "Coma.vc_toint_2",
+        "Coma.vc_wrapping_sub"
+      ],
+      "boundary": "Creusot/creusot-std only"
+    },
+    "date/toint_4": {
+      "goals": 3,
+      "proof_json_sha256": "0cce8e3405bb230e426075bd397f84f01b161cc8312294cb5c23930bf8d98fb5",
+      "coma_sha256": "240fb2c9ebdeecf2b6898e8ef09cdf6b750ce5fe6a9afb60961cae9e187a6741",
+      "open_goals": [],
+      "goal_inventory": [
+        "Coma.vc_from_u16",
+        "Coma.vc_toint_4",
+        "Coma.vc_wrapping_sub"
+      ],
+      "boundary": "Creusot/creusot-std only"
+    },
+    "date/parse_imf_fixdate": {
+      "goals": 13,
+      "proof_json_sha256": "6164b03aed0cbe7452cca8731fe14a59b77d107ae1f1c46d14aab20413fdd151",
+      "coma_sha256": "70d6dd55015e7483e4510ecdb56e07acf43640aadcf62880060e946fffdaf2fe",
+      "open_goals": [],
+      "goal_inventory": [
+        "Coma.vc_branch_Result_u16_Error",
+        "Coma.vc_branch_Result_u8_Error",
+        "Coma.vc_elim_Break",
+        "Coma.vc_elim_Break'0",
+        "Coma.vc_elim_Continue",
+        "Coma.vc_elim_Continue'0",
+        "Coma.vc_from_Error",
+        "Coma.vc_from_residual_Result_RawDate_Error",
+        "Coma.vc_index_slice_u8",
+        "Coma.vc_len_u8",
+        "Coma.vc_parse_imf_fixdate",
+        "Coma.vc_toint_2",
+        "Coma.vc_toint_4"
+      ],
+      "boundary": "Creusot/creusot-std only"
+    },
+    "date/imf_bytes": {
+      "goals": 1,
+      "proof_json_sha256": "8c782779c65f9bda4cba8e67641bea9610f1fd9ec189438df83931822903610d",
+      "coma_sha256": "fbcdc73133b32ee05c01afe4e6d3382ff9bbb9aea7958ec5aca0c413d433771c",
+      "open_goals": [],
+      "goal_inventory": [
+        "Coma.vc_imf_bytes"
+      ],
+      "boundary": "Creusot/creusot-std only"
+    },
+    "date/is_leap_year": {
+      "goals": 1,
+      "proof_json_sha256": "5a59077b640a4fe58ee12555b99ea5f347b22e70df302b3df7848843a533a8fa",
+      "coma_sha256": "5a7cd1f664c280db4a07b56b7d6668fcf45acdb2613c219f7cdda846f8c47504",
+      "open_goals": [],
+      "goal_inventory": [
+        "Coma.vc_is_leap_year"
+      ],
+      "boundary": "Creusot/creusot-std only"
+    },
+    "date/from_unix_seconds": {
+      "goals": 8,
+      "proof_json_sha256": "e851b3d64994cb6fbe8b2b31476aebe74c20ce001da7d15ee1c64469144c20ce",
+      "coma_sha256": "dfb3d0725baa4f21f3345039f596117329f54171a753bf20b83e8a7749e3ac7c",
+      "open_goals": [],
+      "goal_inventory": [
+        "Coma.vc_elim_Some",
+        "Coma.vc_from_unix_seconds",
+        "Coma.vc_into_iter_Iter_i64",
+        "Coma.vc_iter_i64",
+        "Coma.vc_next_Iter_i64",
+        "Coma.vc_set_DAYS_PER_100Y",
+        "Coma.vc_set_DAYS_PER_400Y",
+        "Coma.vc_set_DAYS_PER_4Y"
+      ],
+      "boundary": "Creusot/creusot-std only"
+    },
+    "date/to_unix_seconds": {
+      "goals": 2,
+      "proof_json_sha256": "2fb1c43bc8c87292d41862cd8fe5982219ea0841fa135020826da80dc77c7791",
+      "coma_sha256": "f94640e9180fabf05a29493541008633be80ed83de315b1adb291499af2a5c99",
+      "open_goals": [],
+      "goal_inventory": [
+        "Coma.vc_is_leap_year",
+        "Coma.vc_to_unix_seconds"
+      ],
+      "boundary": "Creusot/creusot-std only"
+    },
+    "date/imf_roundtrip": {
+      "goals": 3,
+      "proof_json_sha256": "b2bb0a458d5b353521d1488584cb3130412105cb71b443d1483f05ed6ccb0cfa",
+      "coma_sha256": "1b2b0a3f1677f0bdfc88bd4325a26df64475948e07a862610df7f92ea565a9ae",
+      "open_goals": [],
+      "goal_inventory": [
+        "Coma.vc_imf_bytes",
+        "Coma.vc_imf_roundtrip",
+        "Coma.vc_parse_imf_fixdate"
+      ],
+      "boundary": "Creusot/creusot-std only"
+    },
+    "date/seconds_roundtrip": {
+      "goals": 3,
+      "proof_json_sha256": "dc13e90fbe8ee08181e9b32c4021650171da0597c839a591537bc9a2b99eccce",
+      "coma_sha256": "18fc92b61e57468d4efe678aa4041418399d292ea18bc64d3e4bcac97c5cc266",
+      "open_goals": [],
+      "goal_inventory": [
+        "Coma.vc_from_unix_seconds",
+        "Coma.vc_seconds_roundtrip",
+        "Coma.vc_to_unix_seconds"
+      ],
+      "boundary": "Creusot/creusot-std only"
+    },
+    "date/civil_day_injective": {
+      "goals": 1,
+      "proof_json_sha256": "ea2511c98426c05e3c79d0f52aaf9299cca5fc716924d741b9de06cf5a5ac375",
+      "coma_sha256": "7bb3afc5f5328b634c2c01688391e04d01d1b6d8ae7b29cb1a0678f73e8f98dc",
+      "open_goals": [],
+      "goal_inventory": [
+        "Coma.vc_civil_day_injective"
+      ],
+      "boundary": "Creusot/creusot-std only"
+    },
+    "date/calendar_roundtrip": {
+      "goals": 4,
+      "proof_json_sha256": "95a9e4bcd02e059fcaa20596189b1082f93c9d3f0287581f5815830da8910b5f",
+      "coma_sha256": "bda77276997ea0de84d26c9c0bdf64086f941d696f312fb1400941902b6c050c",
+      "open_goals": [],
+      "goal_inventory": [
+        "Coma.vc_calendar_roundtrip",
+        "Coma.vc_civil_day_injective",
+        "Coma.vc_from_unix_seconds",
+        "Coma.vc_to_unix_seconds"
+      ],
+      "boundary": "Creusot/creusot-std only"
+    },
+    "date/is_valid_date": {
+      "goals": 3,
+      "proof_json_sha256": "b77e144e468a85aae621d3080ea57d5de5d47aa25c21d35e03626aed607c8f53",
+      "coma_sha256": "7aa50f82a4db1485e55482e6f28c792e081ef61dd60638e09c52dee3f60bd968",
+      "open_goals": [],
+      "goal_inventory": [
+        "Coma.vc_from_unix_seconds",
+        "Coma.vc_is_valid_date",
+        "Coma.vc_to_unix_seconds"
+      ],
+      "boundary": "Creusot/creusot-std only"
+    },
+    "date/parse_date_bytes": {
+      "goals": 11,
+      "proof_json_sha256": "3383152468c80b0999dcc1684fd1c01f20433aea8d6d1a5fc2b626f50b9ed816",
+      "coma_sha256": "1f20e6a880485e9e4780fa1808e4073b27099662aae675c26d6047eff6239720",
+      "open_goals": [],
+      "goal_inventory": [
+        "Coma.vc_branch_Result_RawDate_Error",
+        "Coma.vc_elim_Break",
+        "Coma.vc_elim_Continue",
+        "Coma.vc_elim_Ok",
+        "Coma.vc_from_Error",
+        "Coma.vc_from_residual_Result_RawDate_Error",
+        "Coma.vc_is_valid_date",
+        "Coma.vc_parse_asctime",
+        "Coma.vc_parse_date_bytes",
+        "Coma.vc_parse_imf_fixdate",
+        "Coma.vc_parse_rfc850_date"
+      ],
+      "boundary": "Creusot/creusot-std only"
+    },
+    "date/valid_imf_roundtrip": {
+      "goals": 3,
+      "proof_json_sha256": "91dbb18a8ca48d2d33adec0e81c1d3552eed2b469c717d2320ed60bd7da074bd",
+      "coma_sha256": "91240402e6459049161699292aac1c7ffd496329f46860ac4b73474bb3e93200",
+      "open_goals": [],
+      "goal_inventory": [
+        "Coma.vc_imf_bytes",
+        "Coma.vc_parse_date_bytes",
+        "Coma.vc_valid_imf_roundtrip"
+      ],
+      "boundary": "Creusot/creusot-std only"
+    },
+    "date/asctime/parse_asctime": {
+      "goals": 14,
+      "proof_json_sha256": "142caec4dc1a417d533dcc0ab81e787fbb643eba115d91394e776d6f85ed9a22",
+      "coma_sha256": "7c6a54cbd8e6f3d0e42814ce17886ab2c554f479f7c8a316d058e4845c3c73e4",
+      "open_goals": [],
+      "goal_inventory": [
+        "Coma.vc_branch_Result_u16_Error",
+        "Coma.vc_branch_Result_u8_Error",
+        "Coma.vc_elim_Break",
+        "Coma.vc_elim_Break'0",
+        "Coma.vc_elim_Continue",
+        "Coma.vc_elim_Continue'0",
+        "Coma.vc_from_Error",
+        "Coma.vc_from_residual_Result_RawDate_Error",
+        "Coma.vc_index_slice_u8",
+        "Coma.vc_len_u8",
+        "Coma.vc_parse_asctime",
+        "Coma.vc_toint_1",
+        "Coma.vc_toint_2",
+        "Coma.vc_toint_4"
+      ],
+      "boundary": "Creusot/creusot-std only"
+    },
+    "date/rfc850/parse_rfc850_date": {
+      "goals": 28,
+      "proof_json_sha256": "5f27511e666babc5976d369a989f16668d42a3601291fbddd4d5f2a18ed873ab",
+      "coma_sha256": "425fd590ccdeed8027e3bc499ef5045ca859993eeffc7e7960853819509008c9",
+      "open_goals": [],
+      "goal_inventory": [
+        "Coma.vc_branch_Result_tup2_u8_ref_slice_u8_Error",
+        "Coma.vc_branch_Result_u8_Error",
+        "Coma.vc_closure0",
+        "Coma.vc_closure1",
+        "Coma.vc_closure2",
+        "Coma.vc_closure3",
+        "Coma.vc_closure4",
+        "Coma.vc_closure5",
+        "Coma.vc_elim_Break",
+        "Coma.vc_elim_Break'0",
+        "Coma.vc_elim_Continue",
+        "Coma.vc_elim_Continue'0",
+        "Coma.vc_from_Error",
+        "Coma.vc_from_residual_Result_RawDate_Error",
+        "Coma.vc_from_u16",
+        "Coma.vc_index_slice_u8'0",
+        "Coma.vc_len_u8",
+        "Coma.vc_ne_tup4_u8_u8_u8_u8",
+        "Coma.vc_ok_or_tup2_u8_ref_slice_u8",
+        "Coma.vc_or_else_tup2_u8_ref_slice_u8",
+        "Coma.vc_or_else_tup2_u8_ref_slice_u8'0",
+        "Coma.vc_or_else_tup2_u8_ref_slice_u8'1",
+        "Coma.vc_or_else_tup2_u8_ref_slice_u8'2",
+        "Coma.vc_or_else_tup2_u8_ref_slice_u8'3",
+        "Coma.vc_or_else_tup2_u8_ref_slice_u8'4",
+        "Coma.vc_parse_rfc850_date",
+        "Coma.vc_toint_2",
+        "Coma.vc_wday'0"
+      ],
+      "boundary": "Creusot/creusot-std only"
+    },
+    "date/rfc850/parse_rfc850_date/wday": {
+      "goals": 5,
+      "proof_json_sha256": "bd0fe43743db433cab890133925790efb855de5fe962daeabf8a47455e186da7",
+      "coma_sha256": "78fc5a39b571a251eae47b99ff34fa2dae4b287a5af2b1b2debedde7b0108da1",
+      "open_goals": [],
+      "goal_inventory": [
+        "Coma.vc_eq_ref_slice_u8",
+        "Coma.vc_index_slice_u8",
+        "Coma.vc_index_slice_u8'1",
+        "Coma.vc_len_u8",
+        "Coma.vc_wday"
+      ],
+      "boundary": "Creusot/creusot-std only"
+    },
+    "date/asctime/encoding_laws": {
+      "goals": 1,
+      "proof_json_sha256": "ebd34dd5ab363e5cbbcd011324939aa8ded03eea5b36aa5115415a227d4a90bd",
+      "coma_sha256": "7eb9a90ec238f149bd100c299dadd11650c5fba70bfc9e994eb99eab89bdc356",
+      "open_goals": [],
+      "goal_inventory": [
+        "Coma.vc_encoding_laws"
+      ],
+      "boundary": "Creusot/creusot-std only"
+    },
+    "date/rfc850/encoding_laws": {
+      "goals": 1,
+      "proof_json_sha256": "05b51d78913ed02f88b8fca86595e70dbcf719ce44c88b29d085404d5d6b06a6",
+      "coma_sha256": "e26cb69b82d03afe955a2876a23684e95cd74662cec9e25c29645b73f44d9107",
+      "open_goals": [],
+      "goal_inventory": [
+        "Coma.vc_encoding_laws"
+      ],
+      "boundary": "Creusot/creusot-std only"
+    },
+    "date/valid_datetime_injective": {
+      "goals": 2,
+      "proof_json_sha256": "1f912ae29f7f2ab349317597d3b459440f738300dd1b640c6b0a3f55a63360c1",
+      "coma_sha256": "8e116a985d4c30172aa77483ccb0da31f67e6adce4b3f51dfe3e3b2b2c769eb5",
+      "open_goals": [],
+      "goal_inventory": [
+        "Coma.vc_civil_day_injective",
+        "Coma.vc_valid_datetime_injective"
+      ],
+      "boundary": "Creusot/creusot-std only"
+    },
+    "parse_http_date": {
+      "goals": 5,
+      "proof_json_sha256": "7f6fd181838a76d50da7bc2c1be553aeeb8397a3c34e8c5e19d761e88db91a04",
+      "coma_sha256": "e97ebc30c9f718b045b02df6aaa421155ad7f160a3b527e4ff5bb40c309c0886",
+      "open_goals": [],
+      "goal_inventory": [
+        "Coma.vc_elim_Err",
+        "Coma.vc_elim_Ok",
+        "Coma.vc_from_SystemTime",
+        "Coma.vc_from_str_HttpDate",
+        "Coma.vc_parse_http_date"
+      ],
+      "boundary": "Conditional reviewed standard-library model; see assumption ledger"
+    },
+    "fmt_http_date": {
+      "goals": 3,
+      "proof_json_sha256": "18e6a6ad4cb713638904922461d98a44c499cc09d870a4ca056edbdab1591f19",
+      "coma_sha256": "d96e815793aadd284e54304d0d552af1b73c464aeaac85e69827c6252170d62c",
+      "open_goals": [],
+      "goal_inventory": [
+        "Coma.vc_fmt_http_date",
+        "Coma.vc_from_HttpDate",
+        "Coma.vc_imf_string"
+      ],
+      "boundary": "Conditional reviewed standard-library model; see assumption ledger"
+    },
+    "date/system_time_roundtrip": {
+      "goals": 3,
+      "proof_json_sha256": "e86056804afe969e09ed8c52382ddbe7be93217ad65e668e86740545eeb87c10",
+      "coma_sha256": "10544a93fcfbfe228c31dbafdbaa1bec9732985012eda6ba7b21444ae40052e1",
+      "open_goals": [],
+      "goal_inventory": [
+        "Coma.vc_from_HttpDate",
+        "Coma.vc_from_SystemTime",
+        "Coma.vc_system_time_roundtrip"
+      ],
+      "boundary": "Conditional reviewed standard-library model; see assumption ledger"
+    },
+    "date/impl_HttpDate/as_raw": {
+      "goals": 1,
+      "proof_json_sha256": "9199330c6838807f19ce81bef96ddc68c3e46b57d1e9b4ca80a65c0cd73b7e3e",
+      "coma_sha256": "579fe959b625256a9263885911523739911a6c01e112d2f52b1286bc7548efb1",
+      "open_goals": [],
+      "goal_inventory": [
+        "Coma.vc_as_raw"
+      ],
+      "boundary": "Creusot/creusot-std only"
+    },
+    "date/impl_HttpDate/from_raw": {
+      "goals": 1,
+      "proof_json_sha256": "7285e24addcba753670901138264c41cad2c63d9cb9db4aa32844d0d31373d52",
+      "coma_sha256": "81c8f4ecdaad15efb60e10647a1f1f0068e860e3dc999f92e03e4df089002221",
+      "open_goals": [],
+      "goal_inventory": [
+        "Coma.vc_from_raw"
+      ],
+      "boundary": "Creusot/creusot-std only"
+    },
+    "date/impl_HttpDate/imf_string": {
+      "goals": 6,
+      "proof_json_sha256": "213ffefff7074b979420ba089f83a64cc24a72abd307b091eaf0dfac6a03e885",
+      "coma_sha256": "d57ddd15f1db978c9658713c45bc0ea51025b565c0413d0fedfcd2d2120504c5",
+      "open_goals": [],
+      "goal_inventory": [
+        "Coma.vc_as_raw",
+        "Coma.vc_from_String",
+        "Coma.vc_from_utf8",
+        "Coma.vc_imf_bytes",
+        "Coma.vc_imf_string",
+        "Coma.vc_unwrap_ref_str"
+      ],
+      "boundary": "Conditional reviewed standard-library model; see assumption ledger"
+    },
+    "date/impl_FromStr_for_HttpDate/from_str": {
+      "goals": 8,
+      "proof_json_sha256": "5e1ea1af9ca70a7d620800a46d22d6f1abe21ae0f3747193a2a195571c31ecfd",
+      "coma_sha256": "34b6219e8efe8a5df1425c1a6133668b038eddbf75855f8f6c73db387e10bb8b",
+      "open_goals": [],
+      "goal_inventory": [
+        "Coma.vc_as_bytes",
+        "Coma.vc_elim_Err",
+        "Coma.vc_elim_Ok",
+        "Coma.vc_from_raw",
+        "Coma.vc_from_str_HttpDate",
+        "Coma.vc_is_ascii",
+        "Coma.vc_parse_date_bytes",
+        "Coma.vc_trim"
+      ],
+      "boundary": "Conditional reviewed standard-library model; see assumption ledger"
+    },
+    "date/impl_From_for_HttpDate/from": {
+      "goals": 7,
+      "proof_json_sha256": "c9b147ab649e0e39d140866c00bf0f1a6cb0d9779c4ed63a4b3f4c87de8d6676",
+      "coma_sha256": "de09f53dbd4e7216d03f84f6ac84442b93bfa1295d3052b3dc488230ac5ed7b0",
+      "open_goals": [],
+      "goal_inventory": [
+        "Coma.vc_as_secs",
+        "Coma.vc_duration_since",
+        "Coma.vc_expect_Duration",
+        "Coma.vc_from_HttpDate",
+        "Coma.vc_from_raw",
+        "Coma.vc_from_str",
+        "Coma.vc_from_unix_seconds"
+      ],
+      "boundary": "Conditional reviewed standard-library model; see assumption ledger"
+    },
+    "date/impl_From_for_SystemTime/from": {
+      "goals": 5,
+      "proof_json_sha256": "86649ee922908684ec895773eccd6612faa9603b86e2a2439507898dd4576013",
+      "coma_sha256": "22c00d17fc9bbc87ec7b1ede1e31d40b90a53f61a90971c53ccded6ca10d09b8",
+      "open_goals": [],
+      "goal_inventory": [
+        "Coma.vc_add_SystemTime",
+        "Coma.vc_as_raw",
+        "Coma.vc_from_SystemTime",
+        "Coma.vc_from_secs",
+        "Coma.vc_to_unix_seconds"
+      ],
+      "boundary": "Conditional reviewed standard-library model; see assumption ledger"
+    },
+    "date/impl_From_for_SystemTime/from__refines": {
+      "goals": 1,
+      "proof_json_sha256": "4baedc69ecb0868a607522c4a9130fedfdefaa862d5860ade6e324d8844dcf73",
+      "coma_sha256": "26046e0012a71a199863f96e3d814d170587ec77a77f209c9c1f40e1a944b452",
+      "open_goals": [],
+      "goal_inventory": [
+        "Coma.refines"
+      ],
+      "boundary": "Conditional reviewed standard-library model; see assumption ledger"
+    },
+    "date/impl_PartialEq_for_HttpDate/eq": {
+      "goals": 4,
+      "proof_json_sha256": "6c02ff7728a9be5dfca25bd3512b34e649e3e0ab005ba5d45d0fdbd44a29926c",
+      "coma_sha256": "cc99b0d9674bfe9d5e952d203ff0a0bbf9c74e5c4a6e0c01da6226e67184732f",
+      "open_goals": [],
+      "goal_inventory": [
+        "Coma.vc_as_raw",
+        "Coma.vc_eq_HttpDate",
+        "Coma.vc_to_unix_seconds",
+        "Coma.vc_valid_datetime_injective"
+      ],
+      "boundary": "Creusot/creusot-std only"
+    },
+    "date/impl_PartialEq_for_HttpDate/eq__refines": {
+      "goals": 1,
+      "proof_json_sha256": "bc26eb9654c46c0a3d6b4c1590034d9e9e8547b2c3c91eff5b62aee71c853588",
+      "coma_sha256": "c799bf04bac921f26432bcb76d02af1864aca121b98cf29e923c9e20ee33a59f",
+      "open_goals": [],
+      "goal_inventory": [
+        "Coma.refines"
+      ],
+      "boundary": "Creusot/creusot-std only"
+    },
+    "date/impl_Ord_for_HttpDate/cmp": {
+      "goals": 4,
+      "proof_json_sha256": "76841a38e0b77a8766fa9b4c254d73ecb430b9dcadcf9fa6bae32f6b746b7171",
+      "coma_sha256": "591b626ed9fc89ffb485156cb31343bbe7c8c1bc49bb1b13f3a72ee331ca1808",
+      "open_goals": [],
+      "goal_inventory": [
+        "Coma.vc_as_raw",
+        "Coma.vc_cmp_HttpDate",
+        "Coma.vc_cmp_u64",
+        "Coma.vc_to_unix_seconds"
+      ],
+      "boundary": "Creusot/creusot-std only"
+    },
+    "date/impl_Ord_for_HttpDate/cmp__refines": {
+      "goals": 1,
+      "proof_json_sha256": "72315148ac27faf8bbdf52ad28843093a8e2cd2678c7b7ca1e18feb3835b5199",
+      "coma_sha256": "fc8d65247ca5b34a46d4edb9593249884d98ccd73323fdaf217286058558b719",
+      "open_goals": [],
+      "goal_inventory": [
+        "Coma.refines"
+      ],
+      "boundary": "Creusot/creusot-std only"
+    },
+    "date/impl_PartialOrd_for_HttpDate/partial_cmp": {
+      "goals": 2,
+      "proof_json_sha256": "d608290b2d144db025fc7516c3c4a380d2a349cfd2fd3793c8e2518d0940db78",
+      "coma_sha256": "2e757a905f51d6a90e42a075bb36d85aafd0eca341520cc2623f3d079c4543f1",
+      "open_goals": [],
+      "goal_inventory": [
+        "Coma.vc_cmp_HttpDate",
+        "Coma.vc_partial_cmp_HttpDate"
+      ],
+      "boundary": "Creusot/creusot-std only"
+    },
+    "date/impl_PartialOrd_for_HttpDate/partial_cmp__refines": {
+      "goals": 1,
+      "proof_json_sha256": "e8031987c6be3c696edb1fb39674b0f46283f2ac77f40cdeeb727b3334cdf62b",
+      "coma_sha256": "7aa8d829cae27f69ab93699113ac83dba9df3b346c205377b081818399ca1fff",
+      "open_goals": [],
+      "goal_inventory": [
+        "Coma.refines"
+      ],
+      "boundary": "Creusot/creusot-std only"
+    },
+    "date/impl_Clone_for_HttpDate/clone": {
+      "goals": 1,
+      "proof_json_sha256": "fc1765e4b207cf209335137ef11ccb9795888b4ad8a2537d81fcfa11f5b146e0",
+      "coma_sha256": "c8a15ff8f18093c2b057fda5cd69b909a88bac27d4459aaa8f44c28371127a77",
+      "open_goals": [],
+      "goal_inventory": [
+        "Coma.vc_clone_HttpDate"
+      ],
+      "boundary": "Creusot/creusot-std only"
+    },
+    "date/impl_Clone_for_HttpDate/clone__refines": {
+      "goals": 1,
+      "proof_json_sha256": "bae6b26b6eb501f6c59b9ba65d25a4a84e3f4cb283c0f1afde479fb614a170a1",
+      "coma_sha256": "a54b4e6cf1eb3a280adc7ae6a8901f4ebb48a8064dd05721b2223e70ee35819b",
+      "open_goals": [],
+      "goal_inventory": [
+        "Coma.refines"
+      ],
+      "boundary": "Creusot/creusot-std only"
+    },
+    "date/impl_Clone_for_RawDate/clone": {
+      "goals": 1,
+      "proof_json_sha256": "1a05f2f06f9cea05a941077c18a573e818bb656ef692a3161e074d4aa1cbb36d",
+      "coma_sha256": "fb2d73d9f35312a0ca40aadb9f5fa0c95ba127b569e020e8a56044f00a60d764",
+      "open_goals": [],
+      "goal_inventory": [
+        "Coma.vc_clone_RawDate"
+      ],
+      "boundary": "Creusot/creusot-std only"
+    },
+    "date/impl_Display_for_HttpDate/fmt": {
+      "goals": 6,
+      "proof_json_sha256": "59d60684e8c1cbd2764c940cd49b243851c1be1ae6d15ee044477ac8bd0c9efd",
+      "coma_sha256": "5fa781fe226f391411531e134ea319166cfe5f51b3888c1abe1733dc7825ed45",
+      "open_goals": [],
+      "goal_inventory": [
+        "Coma.vc_as_raw",
+        "Coma.vc_fmt_HttpDate",
+        "Coma.vc_from_utf8",
+        "Coma.vc_imf_bytes",
+        "Coma.vc_unwrap_ref_str",
+        "Coma.vc_write_str_Formatter"
+      ],
+      "boundary": "Conditional reviewed standard-library model; see assumption ledger"
+    },
+    "impl_Display_for_Error/fmt": {
+      "goals": 4,
+      "proof_json_sha256": "44791f1c8df9cdce67a56b6cbbfed4e17ee742e998b5c8fca2e591d421c6344f",
+      "coma_sha256": "cdbb996f7d72497df8589a8efecc7a952fbc9b5c2cbf510b67a1bc8a57501f78",
+      "open_goals": [],
+      "goal_inventory": [
+        "Coma.vc_fmt_Error",
+        "Coma.vc_from_utf8",
+        "Coma.vc_unwrap_ref_str",
+        "Coma.vc_write_str_Formatter"
+      ],
+      "boundary": "Conditional reviewed standard-library model; see assumption ledger"
+    },
+    "stdlib_specs/trim_unique": {
+      "goals": 1,
+      "proof_json_sha256": "763c093bcd51e23adec0871e16f7e70cf0027628e487dbbd224313c448b30425",
+      "coma_sha256": "628fa4759e29801ff7e30632c8db9bffbeb6a02f7cc07813120ea11fa070c171",
+      "open_goals": [],
+      "goal_inventory": [
+        "Coma.vc_trim_unique"
+      ],
+      "boundary": "Creusot/creusot-std only"
+    },
+    "stdlib_specs/bytes_unique": {
+      "goals": 1,
+      "proof_json_sha256": "de0b234d81117fb938af3a94c31544bdd18be110a12e56dc0386cc968012555e",
+      "coma_sha256": "a1fd80ac9d4fc8b8f4c303f24455e8f77d46f1a1462e48de2bf1f402a69b2f1f",
+      "open_goals": [],
+      "goal_inventory": [
+        "Coma.vc_bytes_unique"
+      ],
+      "boundary": "Creusot/creusot-std only"
+    },
+    "date/hash/impl_Hash_for_HttpDate/hash": {
+      "goals": 3,
+      "proof_json_sha256": "cb6db99f94ae5b7e7b380ae92137c0a1a59caef95e45aa02935c19529be24515",
+      "coma_sha256": "65c1b647ad1362cee3aaa5f03064a0c26be82aca0475fdc00547ca690d30726c",
+      "open_goals": [],
+      "goal_inventory": [
+        "Coma.vc_hash_HttpDate",
+        "Coma.vc_hash_u16",
+        "Coma.vc_hash_u8"
+      ],
+      "boundary": "Conditional reviewed standard-library model; see assumption ledger"
+    },
+    "date/hash/impl_Hash_for_HttpDate/hash__refines": {
+      "goals": 1,
+      "proof_json_sha256": "3fa921fb8beb397864e109eaa2c83806baf01e2405807fbf283c5b3b11e0edb9",
+      "coma_sha256": "7263d027141d87fcc212797af1fefcaebd16ea21bada5fe98fb19603fc2e6406",
+      "open_goals": [],
+      "goal_inventory": [
+        "Coma.refines"
+      ],
+      "boundary": "Conditional reviewed standard-library model; see assumption ledger"
+    },
+    "date/hash/equal_dates_hash_equally": {
+      "goals": 5,
+      "proof_json_sha256": "6ab1ea33d1abe8235db90827faac4c4d591ff28a7ce3ce0e73eb63e4018f0ff2",
+      "coma_sha256": "53f82489635ad213897bd7fbe22876d9750e42198068571d82a4f72cd7fba304",
+      "open_goals": [],
+      "goal_inventory": [
+        "Coma.vc_as_raw",
+        "Coma.vc_equal_dates_hash_equally_H",
+        "Coma.vc_finish_H",
+        "Coma.vc_hash_HttpDate",
+        "Coma.vc_valid_datetime_injective"
+      ],
+      "boundary": "Conditional reviewed standard-library model; see assumption ledger"
+    },
+    "date/hash/default_hasher_equality": {
+      "goals": 3,
+      "proof_json_sha256": "cc941457200b92c62c2a63aadcc04e6a436c9c7453c603541b6cde63756802db",
+      "coma_sha256": "847c8e596add3a49371d8f8a92a66d497fbab3f3dca3b6138c6282ec44722ec8",
+      "open_goals": [],
+      "goal_inventory": [
+        "Coma.vc_default_hasher_equality",
+        "Coma.vc_equal_dates_hash_equally_DefaultHasher",
+        "Coma.vc_new"
+      ],
+      "boundary": "Conditional reviewed standard-library model; see assumption ledger"
+    },
+    "impl_Error_for_Error/source": {
+      "goals": 1,
+      "proof_json_sha256": "69f945f6b8720800b8ec4d508664fa3b46e1041c95f12618c97784424e8759a5",
+      "coma_sha256": "2403579329d78d54449deb6f16e8653285d96dc32c6a0bfea8027ab3d812e6ae",
+      "open_goals": [],
+      "goal_inventory": [
+        "Coma.vc_source_Error"
+      ],
+      "boundary": "Conditional reviewed standard-library model; see assumption ledger"
+    },
+    "impl_Error_for_Error/cause": {
+      "goals": 1,
+      "proof_json_sha256": "c3fc1113deba7d10f7d1498509642c0b7fa986227cf4b2ec22383ead972170d3",
+      "coma_sha256": "47d59fdb2c7ae949ce9ab701208280e16a447a33dd464e40da649b048f79045c",
+      "open_goals": [],
+      "goal_inventory": [
+        "Coma.vc_cause_Error"
+      ],
+      "boundary": "Conditional reviewed standard-library model; see assumption ledger"
+    },
+    "impl_Error_for_Error/description": {
+      "goals": 3,
+      "proof_json_sha256": "fff220b9482a02d556593cf631cd1d579c020093c8dbe91d4e60b1241b3b56ba",
+      "coma_sha256": "eb51e4fae28d56652169e34a1d512dda6907ff2609b27f1812315e7c59c82415",
+      "open_goals": [],
+      "goal_inventory": [
+        "Coma.vc_description_Error",
+        "Coma.vc_from_utf8",
+        "Coma.vc_unwrap_ref_str"
+      ],
+      "boundary": "Conditional reviewed standard-library model; see assumption ledger"
+    },
+    "impl_From_for_Error/from": {
+      "goals": 2,
+      "proof_json_sha256": "7765d00054684c15ce857740142c5011a891bbae345523cd13ea8b10c48ccaa2",
+      "coma_sha256": "3c7b422cc63f821b49e4d4a5b8b5614de279bcc834e32c7d17a1d20913bfa586",
+      "open_goals": [],
+      "goal_inventory": [
+        "Coma.vc_from_Error",
+        "Coma.vc_new_Error"
+      ],
+      "boundary": "Conditional reviewed standard-library model; see assumption ledger"
+    },
+    "impl_From_for_Error/from__refines": {
+      "goals": 1,
+      "proof_json_sha256": "bc26eb9654c46c0a3d6b4c1590034d9e9e8547b2c3c91eff5b62aee71c853588",
+      "coma_sha256": "ed9499975703ad52240b59eb6a61fd5d86b2ee275470f69646ccb9e670179e40",
+      "open_goals": [],
+      "goal_inventory": [
+        "Coma.refines"
+      ],
+      "boundary": "Conditional reviewed standard-library model; see assumption ledger"
+    },
+    "error_conversion_observable": {
+      "goals": 3,
+      "proof_json_sha256": "8277ac43556c27df71f67baaba55d12279c0e601a83612abe1b4179c2629d5d4",
+      "coma_sha256": "e9a3aaa6b51f81affc7947c213e6e596f82e113214d5cb22a7ff0b3ba4c32898",
+      "open_goals": [],
+      "goal_inventory": [
+        "Coma.vc_error_conversion_observable",
+        "Coma.vc_from_Error",
+        "Coma.vc_kind"
+      ],
+      "boundary": "Conditional reviewed standard-library model; see assumption ledger"
+    },
+    "debug_support/debug_mode": {
+      "goals": 8,
+      "proof_json_sha256": "b1da8ffa6544c0e5000d3370631791f2bdb7ee7fda967bde5e1af9ed35e30255",
+      "coma_sha256": "9a2c51edcddffe8f0c59b0e37907395c1619a1748852cb97498d9322a5e09dfc",
+      "open_goals": [],
+      "goal_inventory": [
+        "Coma.vc_align'0",
+        "Coma.vc_debug_mode",
+        "Coma.vc_fill'0",
+        "Coma.vc_flags'0",
+        "Coma.vc_is_none_Alignment",
+        "Coma.vc_is_none_usize",
+        "Coma.vc_precision'0",
+        "Coma.vc_width'0"
+      ],
+      "boundary": "Conditional reviewed standard-library model; see assumption ledger"
+    },
+    "debug_support/write_ascii": {
+      "goals": 4,
+      "proof_json_sha256": "b082f1017ae14d3ed9f0907528018d35b31de5802de374f4677f39624c75b3a6",
+      "coma_sha256": "d720f02e2c1d404075dec2627ddbe412419a24be5e41db9ca707b9b2a19eb17c",
+      "open_goals": [],
+      "goal_inventory": [
+        "Coma.vc_from_utf8",
+        "Coma.vc_unwrap_ref_str",
+        "Coma.vc_write_ascii",
+        "Coma.vc_write_str_Formatter"
+      ],
+      "boundary": "Conditional reviewed standard-library model; see assumption ledger"
+    },
+    "debug_support/concat_law": {
+      "goals": 1,
+      "proof_json_sha256": "dbdc50cbc33489f3b639e052d6f8f15b6bb42e1630fb61a68e9b882e1b1fbf60",
+      "coma_sha256": "22ff83982799e5830acf775c93b1a4b02215ee998d93adb0f1a6217fd9b1e59c",
+      "open_goals": [],
+      "goal_inventory": [
+        "Coma.vc_concat_law"
+      ],
+      "boundary": "Conditional reviewed standard-library model; see assumption ledger"
+    },
+    "debug_support/write_prefix": {
+      "goals": 6,
+      "proof_json_sha256": "b4e50a579411b0ee519d0c0d1bb0536b5b21435b1f2e408a4f1546e043c1977b",
+      "coma_sha256": "353da10d0c3759a3f7331bf55c1688dee7f8dc080cf923c824d6dc797a71da74",
+      "open_goals": [],
+      "goal_inventory": [
+        "Coma.vc_branch_Result_unit_Error",
+        "Coma.vc_elim_Break",
+        "Coma.vc_from_Error",
+        "Coma.vc_from_residual_Result_unit_Error",
+        "Coma.vc_write_ascii",
+        "Coma.vc_write_prefix"
+      ],
+      "boundary": "Conditional reviewed standard-library model; see assumption ledger"
+    },
+    "debug_support/digit_byte": {
+      "goals": 1,
+      "proof_json_sha256": "1292f218eb1bb0a7abcf249c5363e415a36bb1548aa742d0e0067606c06586d7",
+      "coma_sha256": "28840c9fcc8020dc3f47748f3edfa90682875dda6168071c4ed57dc9240eb836",
+      "open_goals": [],
+      "goal_inventory": [
+        "Coma.vc_digit_byte"
+      ],
+      "boundary": "Conditional reviewed standard-library model; see assumption ledger"
+    },
+    "debug_support/write_decimal": {
+      "goals": 3,
+      "proof_json_sha256": "6bba997af6ab26cd526c542e60fac03123e0cb66b1fdf83d9fbfe03926ff2c1c",
+      "coma_sha256": "7bed71f3edba3d21f9e9ebdbf27e6bb258ef58e81478c455f0fd76b0802dfafb",
+      "open_goals": [],
+      "goal_inventory": [
+        "Coma.vc_digit_byte",
+        "Coma.vc_write_ascii",
+        "Coma.vc_write_decimal"
+      ],
+      "boundary": "Conditional reviewed standard-library model; see assumption ledger"
+    },
+    "debug_support/write_field_u8": {
+      "goals": 9,
+      "proof_json_sha256": "9f984f6026462a5285a1339b11f95c968c62d94da4d8e314d685449ae15a29bf",
+      "coma_sha256": "c712fa1dd11753920424ad898475ba8b4d1d31493640baf4f8bf6e958a076c08",
+      "open_goals": [],
+      "goal_inventory": [
+        "Coma.vc_branch_Result_unit_Error",
+        "Coma.vc_elim_Break",
+        "Coma.vc_fmt_u8",
+        "Coma.vc_from_Error",
+        "Coma.vc_from_residual_Result_unit_Error",
+        "Coma.vc_write_ascii",
+        "Coma.vc_write_decimal",
+        "Coma.vc_write_field_u8",
+        "Coma.vc_write_prefix"
+      ],
+      "boundary": "Conditional reviewed standard-library model; see assumption ledger"
+    },
+    "debug_support/write_field_u16": {
+      "goals": 9,
+      "proof_json_sha256": "791321fd06980b721a26d426c024edbe8a31c6f9ab5b12db03c79ecda1a09bfa",
+      "coma_sha256": "5f4dbd0b80245b88c93cadbb76d639917e928f10c5b1331960c0daa7c1d5f34d",
+      "open_goals": [],
+      "goal_inventory": [
+        "Coma.vc_branch_Result_unit_Error",
+        "Coma.vc_elim_Break",
+        "Coma.vc_fmt_u16",
+        "Coma.vc_from_Error",
+        "Coma.vc_from_residual_Result_unit_Error",
+        "Coma.vc_write_ascii",
+        "Coma.vc_write_decimal",
+        "Coma.vc_write_field_u16",
+        "Coma.vc_write_prefix"
+      ],
+      "boundary": "Conditional reviewed standard-library model; see assumption ledger"
+    },
+    "date/debug/impl_Debug_for_HttpDate/fmt": {
+      "goals": 13,
+      "proof_json_sha256": "433e23a0ff8edf46d71f9f6a2af0aef230c6e8304e24414cf2cd4cef02247a68",
+      "coma_sha256": "bbc0dcc00e70344386ec0e99085814b97e5f3909cb18ab1bf6198c2349e08e16",
+      "open_goals": [],
+      "goal_inventory": [
+        "Coma.vc_branch_Result_unit_Error",
+        "Coma.vc_debug_mode",
+        "Coma.vc_debug_struct",
+        "Coma.vc_elim_Break",
+        "Coma.vc_elim_Some",
+        "Coma.vc_field",
+        "Coma.vc_finish",
+        "Coma.vc_fmt_HttpDate",
+        "Coma.vc_from_Error",
+        "Coma.vc_from_residual_Result_unit_Error",
+        "Coma.vc_write_ascii",
+        "Coma.vc_write_field_u16",
+        "Coma.vc_write_field_u8"
+      ],
+      "boundary": "Conditional reviewed standard-library model; see assumption ledger"
+    },
+    "impl_Debug_for_Error/fmt": {
+      "goals": 12,
+      "proof_json_sha256": "fa7b6b387678f69667ddd4fc7d2df55896324049c775b61a2a897cf73cc7b980",
+      "coma_sha256": "218989869b3dfe295b61c8384bdeff9d7c2bd0d5cc849b6e3bdaa3664f85e70f",
+      "open_goals": [],
+      "goal_inventory": [
+        "Coma.vc_branch_Result_unit_Error",
+        "Coma.vc_debug_mode",
+        "Coma.vc_debug_tuple",
+        "Coma.vc_elim_Break",
+        "Coma.vc_elim_Some",
+        "Coma.vc_field",
+        "Coma.vc_finish",
+        "Coma.vc_fmt_Error",
+        "Coma.vc_fmt_unit",
+        "Coma.vc_from_Error",
+        "Coma.vc_from_residual_Result_unit_Error",
+        "Coma.vc_write_ascii"
+      ],
+      "boundary": "Conditional reviewed standard-library model; see assumption ledger"
+    }
+  },
+  "total_session_goals": 268,
+  "native_tests": "cargo test --locked --release -p httpdate (see tests.log)",
+  "application_trusted_assumptions": [],
+  "standard_library_assumptions": [
+    "time_ns",
+    "UNIX_EPOCH",
+    "SystemTime::duration_since",
+    "SystemTime + Duration",
+    "str::from_utf8 (ASCII)",
+    "str::is_ascii",
+    "str::trim (ASCII)",
+    "str::as_bytes (ASCII)",
+    "formatter_output",
+    "append_sink",
+    "Formatter as fmt::Write::write_str (conditional Ok append)",
+    "supported_hasher",
+    "hash_state",
+    "hash_step_u8",
+    "hash_step_u16",
+    "hash_finish",
+    "Hash::hash (supported hasher domain)",
+    "Hasher::finish",
+    "u8::hash",
+    "u16::hash",
+    "DefaultHasher::new",
+    "DefaultHasher::finish",
+    "io_kind",
+    "io_payload",
+    "io::Error::new (direct concrete Error payload)",
+    "io::Error::kind",
+    "debug_options",
+    "Formatter::flags",
+    "Formatter::width",
+    "Formatter::precision",
+    "Formatter::fill",
+    "Formatter::align",
+    "Formatter::debug_struct",
+    "Formatter::debug_tuple",
+    "DebugStruct::field",
+    "DebugStruct::finish",
+    "DebugTuple::field",
+    "DebugTuple::finish",
+    "u8::Debug::fmt (conditional decimal)",
+    "u16::Debug::fmt (conditional decimal)",
+    "unit::Debug::fmt (conditional unit text)"
+  ],
+  "assumption_ledger": "verification/stdlib-assumptions.md",
+  "platform": "64-bit Linux; supported timestamp range; Display and normal/pretty Debug content require a faithful append sink; Debug additionally requires plain_options; Hash requires deterministic nonpanicking supported hashers and equal initial state",
+  "expected_open": {
+    "date/impl_From_for_HttpDate/from__refines": {
+      "goals": 1,
+      "proof_json_sha256": "290b953a3201c087c1d7a40c2a29de683a844dd2f649a3f9ab9f08051b2ceefb",
+      "coma_sha256": "0536b0008e04b14c8ee55a0095bd7ce5c92b9f5a9a9c74987e624473ad44214b",
+      "open_goals": [
+        "Coma.refines"
+      ],
+      "goal_inventory": [
+        "Coma.refines"
+      ],
+      "reason": "Unconditional std From precondition cannot imply the supported SystemTime range; native pre-epoch/year-10000 inputs panic. Bounded implementation body is proved separately."
+    }
+  },
+  "excluded_generated": {
+    "date/impl_Debug_for_RawDate/fmt": "Private diagnostic formatting; content unmodeled."
+  },
+  "generated_target_count": 66,
+  "goal_inventory_validation": "Why3 reconstructs every root goal from fresh Coma; proof.json must match exactly.",
+  "unmodeled_native_interfaces": [
+    "Debug content with non-plain formatting options",
+    "Private RawDate Debug",
+    "Hash::hash_slice operational semantics",
+    "dyn std::error::Error payload observers (get_ref/downcast/into_inner)",
+    "unstable Error::provide and hidden type_id"
+  ],
+  "interface_limitations": "FromStr and Display method bodies are proved but their standard trait interfaces have no general external contract; no claim about unselected inherited or specialized default methods.",
+  "proofs_rs_report": "Not recorded or published; local Creusot evidence only."
+}

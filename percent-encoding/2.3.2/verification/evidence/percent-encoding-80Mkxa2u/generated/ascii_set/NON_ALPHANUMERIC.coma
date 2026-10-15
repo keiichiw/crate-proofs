@@ -1,0 +1,134 @@
+use creusot.slice.Slice64
+use creusot.int.UInt32
+use seq.Seq
+use creusot.int.UInt64
+use creusot.int.UInt8
+use creusot.prelude.Any
+
+type t_AsciiSet = { mask: Slice64.array UInt32.t }
+
+predicate inv_Seq_u32 [@inline:trivial] (_1: Seq.seq UInt32.t) = true
+
+meta "rewrite_def" predicate inv_Seq_u32
+
+predicate invariant_array_u32_4 (self: Slice64.array UInt32.t) =
+  inv_Seq_u32 (Slice64.view self) /\ Seq.length (Slice64.view self) = UInt64.t'int (4: UInt64.t)
+
+predicate inv_array_u32_4 [@inline:trivial] (_1: Slice64.array UInt32.t) = invariant_array_u32_4 _1
+
+meta "rewrite_def" predicate inv_array_u32_4
+
+predicate inv_AsciiSet (_1: t_AsciiSet)
+
+axiom inv_axiom [@rewrite]: forall x: t_AsciiSet [inv_AsciiSet x]. inv_AsciiSet x = inv_array_u32_4 x.mask
+
+predicate invariant_ref_AsciiSet [@inline:trivial] (self: t_AsciiSet) = inv_AsciiSet self
+
+meta "rewrite_def" predicate invariant_ref_AsciiSet
+
+predicate inv_ref_AsciiSet [@inline:trivial] (_1: t_AsciiSet) = invariant_ref_AsciiSet _1
+
+meta "rewrite_def" predicate inv_ref_AsciiSet
+
+constant const_NON_ALPHANUMERIC : t_AsciiSet
+
+axiom const_NON_ALPHANUMERIC_spec: inv_ref_AsciiSet const_NON_ALPHANUMERIC
+
+constant const_CONTROLS : t_AsciiSet
+
+axiom const_CONTROLS_spec: inv_ref_AsciiSet const_CONTROLS
+
+axiom const_CONTROLS_spec'0: true
+
+let add (self: t_AsciiSet) (byte: UInt8.t) (return (x: t_AsciiSet)) =
+{[@stop_split] [@expl:add 'self' type invariant] inv_ref_AsciiSet self}
+  any
+  [ return (result: t_AsciiSet) -> {[@stop_split] [@expl:add result type invariant] inv_AsciiSet result}
+    (! return {result}) ]
+
+meta "compute_max_steps" 1000000
+
+meta "select_lsinst" "all"
+
+let const_NON_ALPHANUMERIC_def (return (x: t_AsciiSet)) = (! bb0
+  [ bb0 = s0
+    [ s0 = bb0'0
+      [ bb0'0 = s0'0
+        [ s0'0 = [ &_67 <- const_CONTROLS ] s1'0
+        | s1'0 = add {_67} {(32: UInt8.t)} (fun (_x: t_AsciiSet) -> [ &_65 <- _x ] s2'0)
+        | s2'0 = add {_65} {(33: UInt8.t)} (fun (_x: t_AsciiSet) -> [ &_63 <- _x ] s3'0)
+        | s3'0 = add {_63} {(34: UInt8.t)} (fun (_x: t_AsciiSet) -> [ &_61 <- _x ] s4)
+        | s4 = add {_61} {(35: UInt8.t)} (fun (_x: t_AsciiSet) -> [ &_59 <- _x ] s5)
+        | s5 = add {_59} {(36: UInt8.t)} (fun (_x: t_AsciiSet) -> [ &_57 <- _x ] s6)
+        | s6 = add {_57} {(37: UInt8.t)} (fun (_x: t_AsciiSet) -> [ &_55 <- _x ] s7)
+        | s7 = add {_55} {(38: UInt8.t)} (fun (_x: t_AsciiSet) -> [ &_53 <- _x ] s8)
+        | s8 = add {_53} {(39: UInt8.t)} (fun (_x: t_AsciiSet) -> [ &_51 <- _x ] s9)
+        | s9 = add {_51} {(40: UInt8.t)} (fun (_x: t_AsciiSet) -> [ &_49 <- _x ] s10)
+        | s10 = add {_49} {(41: UInt8.t)} (fun (_x: t_AsciiSet) -> [ &_47 <- _x ] s11)
+        | s11 = add {_47} {(42: UInt8.t)} (fun (_x: t_AsciiSet) -> [ &_45 <- _x ] s12)
+        | s12 = add {_45} {(43: UInt8.t)} (fun (_x: t_AsciiSet) -> [ &_43 <- _x ] s13)
+        | s13 = add {_43} {(44: UInt8.t)} (fun (_x: t_AsciiSet) -> [ &_41 <- _x ] s14)
+        | s14 = add {_41} {(45: UInt8.t)} (fun (_x: t_AsciiSet) -> [ &_39 <- _x ] s15)
+        | s15 = add {_39} {(46: UInt8.t)} (fun (_x: t_AsciiSet) -> [ &_37 <- _x ] s16)
+        | s16 = add {_37} {(47: UInt8.t)} (fun (_x: t_AsciiSet) -> [ &_35 <- _x ] s17)
+        | s17 = add {_35} {(58: UInt8.t)} (fun (_x: t_AsciiSet) -> [ &_33 <- _x ] s18)
+        | s18 = add {_33} {(59: UInt8.t)} (fun (_x: t_AsciiSet) -> [ &_31 <- _x ] s19)
+        | s19 = add {_31} {(60: UInt8.t)} (fun (_x: t_AsciiSet) -> [ &_29 <- _x ] s20)
+        | s20 = add {_29} {(61: UInt8.t)} (fun (_x: t_AsciiSet) -> [ &_27 <- _x ] s21)
+        | s21 = add {_27} {(62: UInt8.t)} (fun (_x: t_AsciiSet) -> [ &_25 <- _x ] s22)
+        | s22 = add {_25} {(63: UInt8.t)} (fun (_x: t_AsciiSet) -> [ &_23 <- _x ] s23)
+        | s23 = add {_23} {(64: UInt8.t)} (fun (_x: t_AsciiSet) -> [ &_21 <- _x ] s24)
+        | s24 = add {_21} {(91: UInt8.t)} (fun (_x: t_AsciiSet) -> [ &_19 <- _x ] s25)
+        | s25 = add {_19} {(92: UInt8.t)} (fun (_x: t_AsciiSet) -> [ &_17 <- _x ] s26)
+        | s26 = add {_17} {(93: UInt8.t)} (fun (_x: t_AsciiSet) -> [ &_15 <- _x ] s27)
+        | s27 = add {_15} {(94: UInt8.t)} (fun (_x: t_AsciiSet) -> [ &_13 <- _x ] s28)
+        | s28 = add {_13} {(95: UInt8.t)} (fun (_x: t_AsciiSet) -> [ &_11 <- _x ] s29)
+        | s29 = add {_11} {(96: UInt8.t)} (fun (_x: t_AsciiSet) -> [ &_9 <- _x ] s30)
+        | s30 = add {_9} {(123: UInt8.t)} (fun (_x: t_AsciiSet) -> [ &_7 <- _x ] s31)
+        | s31 = add {_7} {(124: UInt8.t)} (fun (_x: t_AsciiSet) -> [ &_5 <- _x ] s32)
+        | s32 = add {_5} {(125: UInt8.t)} (fun (_x: t_AsciiSet) -> [ &_3 <- _x ] s33)
+        | s33 = add {_3} {(126: UInt8.t)} (fun (_x: t_AsciiSet) -> [ &_1'0 <- _x ] s34)
+        | s34 = [ &_ret'0 <- _1'0 ] s35
+        | s35 = _const_ret {_ret'0} ] ]
+      [ & _ret'0: t_AsciiSet = Any.any_l ()
+      | & _1'0: t_AsciiSet = Any.any_l ()
+      | & _3: t_AsciiSet = Any.any_l ()
+      | & _5: t_AsciiSet = Any.any_l ()
+      | & _7: t_AsciiSet = Any.any_l ()
+      | & _9: t_AsciiSet = Any.any_l ()
+      | & _11: t_AsciiSet = Any.any_l ()
+      | & _13: t_AsciiSet = Any.any_l ()
+      | & _15: t_AsciiSet = Any.any_l ()
+      | & _17: t_AsciiSet = Any.any_l ()
+      | & _19: t_AsciiSet = Any.any_l ()
+      | & _21: t_AsciiSet = Any.any_l ()
+      | & _23: t_AsciiSet = Any.any_l ()
+      | & _25: t_AsciiSet = Any.any_l ()
+      | & _27: t_AsciiSet = Any.any_l ()
+      | & _29: t_AsciiSet = Any.any_l ()
+      | & _31: t_AsciiSet = Any.any_l ()
+      | & _33: t_AsciiSet = Any.any_l ()
+      | & _35: t_AsciiSet = Any.any_l ()
+      | & _37: t_AsciiSet = Any.any_l ()
+      | & _39: t_AsciiSet = Any.any_l ()
+      | & _41: t_AsciiSet = Any.any_l ()
+      | & _43: t_AsciiSet = Any.any_l ()
+      | & _45: t_AsciiSet = Any.any_l ()
+      | & _47: t_AsciiSet = Any.any_l ()
+      | & _49: t_AsciiSet = Any.any_l ()
+      | & _51: t_AsciiSet = Any.any_l ()
+      | & _53: t_AsciiSet = Any.any_l ()
+      | & _55: t_AsciiSet = Any.any_l ()
+      | & _57: t_AsciiSet = Any.any_l ()
+      | & _59: t_AsciiSet = Any.any_l ()
+      | & _61: t_AsciiSet = Any.any_l ()
+      | & _63: t_AsciiSet = Any.any_l ()
+      | & _65: t_AsciiSet = Any.any_l ()
+      | & _67: t_AsciiSet = Any.any_l () ] [ _const_ret (_const: t_AsciiSet) -> [ &_69 <- _const ] s1 ]
+    | s1 = [ &_1 <- _69 ] s2
+    | s2 = [ &_ret <- _1 ] s3
+    | s3 = return {_ret} ] ]
+  [ & _ret: t_AsciiSet = Any.any_l () | & _1: t_AsciiSet = Any.any_l () | & _69: t_AsciiSet = Any.any_l () ])
+  [ return (result: t_AsciiSet) -> -{const_NON_ALPHANUMERIC = result}-
+    {[@stop_split] [@expl:NON_ALPHANUMERIC result type invariant] inv_ref_AsciiSet result}
+    (! return {result}) ]

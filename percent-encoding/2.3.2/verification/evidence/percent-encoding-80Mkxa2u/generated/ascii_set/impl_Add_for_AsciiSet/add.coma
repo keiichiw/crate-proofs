@@ -1,0 +1,55 @@
+(* <ascii_set::AsciiSet as core::ops::Add> *)
+
+use creusot.slice.Slice64
+use creusot.int.UInt32
+use seq.Seq
+use creusot.int.UInt64
+use creusot.prelude.Any
+
+predicate inv_Seq_u32 [@inline:trivial] (_1: Seq.seq UInt32.t) = true
+
+meta "rewrite_def" predicate inv_Seq_u32
+
+predicate invariant_array_u32_4 (self: Slice64.array UInt32.t) =
+  inv_Seq_u32 (Slice64.view self) /\ Seq.length (Slice64.view self) = UInt64.t'int (4: UInt64.t)
+
+predicate inv_array_u32_4 [@inline:trivial] (_1: Slice64.array UInt32.t) = invariant_array_u32_4 _1
+
+meta "rewrite_def" predicate inv_array_u32_4
+
+type t_AsciiSet = { mask: Slice64.array UInt32.t }
+
+predicate inv_AsciiSet (_1: t_AsciiSet)
+
+axiom inv_axiom [@rewrite]: forall x: t_AsciiSet [inv_AsciiSet x]. inv_AsciiSet x = inv_array_u32_4 x.mask
+
+predicate invariant_ref_AsciiSet [@inline:trivial] (self: t_AsciiSet) = inv_AsciiSet self
+
+meta "rewrite_def" predicate invariant_ref_AsciiSet
+
+predicate inv_ref_AsciiSet [@inline:trivial] (_1: t_AsciiSet) = invariant_ref_AsciiSet _1
+
+meta "rewrite_def" predicate inv_ref_AsciiSet
+
+let union (self: t_AsciiSet) (other: t_AsciiSet) (return (x: t_AsciiSet)) =
+{[@stop_split] [@expl:union requires] ([@stop_split] [@expl:union 'self' type invariant] inv_ref_AsciiSet self)
+  /\ ([@stop_split] [@expl:union 'other' type invariant] inv_AsciiSet other)}
+  any
+  [ return (result: t_AsciiSet) -> {[@stop_split] [@expl:union result type invariant] inv_AsciiSet result}
+    (! return {result}) ]
+
+meta "compute_max_steps" 1000000
+
+meta "select_lsinst" "all"
+
+let add_AsciiSet (self: t_AsciiSet) (other: t_AsciiSet) (return (x: t_AsciiSet)) =
+{[@stop_split] [@expl:add_AsciiSet requires] ([@stop_split] [@expl:add 'self' type invariant] inv_AsciiSet self)
+  /\ ([@stop_split] [@expl:add 'other' type invariant] inv_AsciiSet other)}
+  (! bb0
+  [ bb0 = s0
+    [ s0 = s1 [ _ck -> (! {[@expl:type invariant] inv_AsciiSet self} any) ]
+    | s1 = union {self} {other} (fun (_x: t_AsciiSet) -> [ &_ret <- _x ] s2)
+    | s2 = return {_ret} ] ]
+  [ & _ret: t_AsciiSet = Any.any_l () | & self: t_AsciiSet = self | & other: t_AsciiSet = other ])
+  [ return (result: t_AsciiSet) -> {[@stop_split] [@expl:add result type invariant] inv_AsciiSet result}
+    (! return {result}) ]

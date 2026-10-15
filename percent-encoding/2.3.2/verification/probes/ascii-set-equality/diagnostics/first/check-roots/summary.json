@@ -1,0 +1,45 @@
+{
+  "status": "passed",
+  "root_count": 2,
+  "direct_smt_goals": 3,
+  "results": [
+    {
+      "goal": "Coma.vc_eq_ref_AsciiSet",
+      "status": "closed",
+      "export_mode": "untransformed",
+      "smt_results": [
+        {
+          "file": "000-vc_eq_ref_AsciiSet/untransformed/check_ascii_set_equality-Coma-vc_eq_ref_AsciiSet.smt2",
+          "exit_code": 0,
+          "statuses": [
+            "unsat"
+          ],
+          "passed": true
+        }
+      ]
+    },
+    {
+      "goal": "Coma.vc_check_ascii_set_equality",
+      "status": "closed",
+      "export_mode": "transformed",
+      "smt_results": [
+        {
+          "file": "001-vc_check_ascii_set_equality/transformed/check_ascii_set_equality-Coma-vc_check_ascii_set_equality.smt2",
+          "exit_code": 0,
+          "statuses": [
+            "unsat"
+          ],
+          "passed": true
+        },
+        {
+          "file": "001-vc_check_ascii_set_equality/transformed/check_ascii_set_equality-Coma-vc_check_ascii_set_equality1.smt2",
+          "exit_code": 0,
+          "statuses": [
+            "unsat"
+          ],
+          "passed": true
+        }
+      ]
+    }
+  ]
+}

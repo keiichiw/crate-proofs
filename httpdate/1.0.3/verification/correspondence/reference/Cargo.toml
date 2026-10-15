@@ -1,0 +1,13 @@
+[package]
+name = "httpdate-release-reference"
+version = "1.0.3"
+edition = "2021"
+rust-version = "1.56"
+license = "MIT OR Apache-2.0"
+description = "Unchanged httpdate 1.0.3 crates.io source for correspondence checks"
+
+[lib]
+path = "src/lib.rs"
+
+# This wrapper package renames the unchanged released library to keep it distinct
+# from the verification fork. It adds no dependencies and does not alter runtime source.

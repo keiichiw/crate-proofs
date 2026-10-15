@@ -1,0 +1,127 @@
+use creusot.int.UInt32
+use creusot.int.UInt64
+use creusot.prelude.Char
+use creusot.prelude.Any
+
+type t_Formatter
+
+predicate inv_Formatter (_1: t_Formatter)
+
+predicate invariant_ref_Formatter [@inline:trivial] (self: t_Formatter) = inv_Formatter self
+
+meta "rewrite_def" predicate invariant_ref_Formatter
+
+predicate inv_ref_Formatter [@inline:trivial] (_1: t_Formatter) = invariant_ref_Formatter _1
+
+meta "rewrite_def" predicate inv_ref_Formatter
+
+type t_Option_usize = None | Some UInt64.t
+
+type t_Alignment = Left | Right | Center
+
+type t_Option_Alignment = None'0 | Some'0 t_Alignment
+
+type t_DebugOptions = {
+  flags: UInt32.t;
+  width: t_Option_usize;
+  precision: t_Option_usize;
+  fill: Char.t;
+  align: t_Option_Alignment }
+
+function debug_options (_f: t_Formatter) : t_DebugOptions
+
+let flags'0 (self_: t_Formatter) (return (x: UInt32.t)) =
+{[@stop_split] [@expl:flags 'self_' type invariant] inv_ref_Formatter self_}
+  any
+  [ return (result: UInt32.t) -> {[@stop_split] [@expl:flags ensures] result = (debug_options self_).flags}
+    (! return {result}) ]
+
+let width'0 (self_: t_Formatter) (return (x: t_Option_usize)) =
+{[@stop_split] [@expl:width 'self_' type invariant] inv_ref_Formatter self_}
+  any
+  [ return (result: t_Option_usize) -> {[@stop_split] [@expl:width ensures] result = (debug_options self_).width}
+    (! return {result}) ]
+
+let is_none_usize (self_: t_Option_usize) (return (x: bool)) = any
+  [ return (result: bool) -> {[@stop_split] [@expl:is_none ensures] result = (self_ = None)} (! return {result}) ]
+
+let precision'0 (self_: t_Formatter) (return (x: t_Option_usize)) =
+{[@stop_split] [@expl:precision 'self_' type invariant] inv_ref_Formatter self_}
+  any
+  [ return (result: t_Option_usize) -> {[@stop_split] [@expl:precision ensures] result
+    = (debug_options self_).precision}
+    (! return {result}) ]
+
+let align'0 (self_: t_Formatter) (return (x: t_Option_Alignment)) =
+{[@stop_split] [@expl:align 'self_' type invariant] inv_ref_Formatter self_}
+  any
+  [ return (result: t_Option_Alignment) -> {[@stop_split] [@expl:align ensures] result = (debug_options self_).align}
+    (! return {result}) ]
+
+let is_none_Alignment (self_: t_Option_Alignment) (return (x: bool)) = any
+  [ return (result: bool) -> {[@stop_split] [@expl:is_none ensures] result = (self_ = None'0)} (! return {result}) ]
+
+let fill'0 (self_: t_Formatter) (return (x: Char.t)) =
+{[@stop_split] [@expl:fill 'self_' type invariant] inv_ref_Formatter self_}
+  any
+  [ return (result: Char.t) -> {[@stop_split] [@expl:fill ensures] result = (debug_options self_).fill}
+    (! return {result}) ]
+
+type t_Option_bool = None'1 | Some'1 bool
+
+predicate plain_options [@inline:trivial] (o: t_DebugOptions) =
+  (o.flags = (0: UInt32.t) \/ o.flags = (4: UInt32.t))
+  /\ o.width = None /\ o.precision = None /\ o.fill = Char.of_int 32 /\ o.align = None'0
+
+meta "rewrite_def" predicate plain_options
+
+meta "compute_max_steps" 1000000
+
+meta "select_lsinst" "all"
+
+let debug_mode (f: t_Formatter) (return (x: t_Option_bool)) =
+{[@stop_split] [@expl:debug_mode 'f' type invariant] inv_ref_Formatter f}
+  (! bb0
+  [ bb0 = s0
+    [ s0 = flags'0 {f} (fun (_x: UInt32.t) -> [ &flags'1 <- _x ] s1)
+    | s1 = [ &_6 <- flags'1 = (0: UInt32.t) ] s2
+    | s2 = any [ br0 -> {_6 = false} (! bb3) | br1 -> {_6} (! bb5) ] ]
+  | bb3 = s0
+    [ s0 = [ &_8 <- flags'1 = (4: UInt32.t) ] s1 | s1 = any [ br0 -> {_8 = false} (! bb22) | br1 -> {_8} (! bb5) ] ]
+  | bb5 = s0
+    [ s0 = width'0 {f} (fun (_x: t_Option_usize) -> [ &_12 <- _x ] s1)
+    | s1 = is_none_usize {_12} (fun (_x: bool) -> [ &_10 <- _x ] s2)
+    | s2 = any [ br0 -> {_10 = false} (! bb22) | br1 -> {_10} (! bb8) ] ]
+  | bb8 = s0
+    [ s0 = precision'0 {f} (fun (_x: t_Option_usize) -> [ &_16 <- _x ] s1)
+    | s1 = is_none_usize {_16} (fun (_x: bool) -> [ &_14 <- _x ] s2)
+    | s2 = any [ br0 -> {_14 = false} (! bb22) | br1 -> {_14} (! bb11) ] ]
+  | bb11 = s0
+    [ s0 = align'0 {f} (fun (_x: t_Option_Alignment) -> [ &_20 <- _x ] s1)
+    | s1 = is_none_Alignment {_20} (fun (_x: bool) -> [ &_18 <- _x ] s2)
+    | s2 = any [ br0 -> {_18 = false} (! bb22) | br1 -> {_18} (! bb14) ] ]
+  | bb14 = s0
+    [ s0 = fill'0 {f} (fun (_x: Char.t) -> [ &_23 <- _x ] s1)
+    | s1 = [ &_22 <- _23 = Char.of_int 32 ] s2
+    | s2 = any [ br0 -> {_22 = false} (! bb22) | br1 -> {_22} (! bb16) ] ]
+  | bb16 = s0 [ s0 = [ &_25 <- flags'1 = (4: UInt32.t) ] s1 | s1 = [ &_ret <- Some'1 _25 ] s2 | s2 = return {_ret} ]
+  | bb22 = s0 [ s0 = [ &_ret <- None'1 ] s1 | s1 = return {_ret} ] ]
+  [ & _ret: t_Option_bool = Any.any_l ()
+  | & f: t_Formatter = f
+  | & flags'1: UInt32.t = Any.any_l ()
+  | & _6: bool = Any.any_l ()
+  | & _8: bool = Any.any_l ()
+  | & _10: bool = Any.any_l ()
+  | & _12: t_Option_usize = Any.any_l ()
+  | & _14: bool = Any.any_l ()
+  | & _16: t_Option_usize = Any.any_l ()
+  | & _18: bool = Any.any_l ()
+  | & _20: t_Option_Alignment = Any.any_l ()
+  | & _22: bool = Any.any_l ()
+  | & _23: Char.t = Any.any_l ()
+  | & _25: bool = Any.any_l () ])
+  [ return (result: t_Option_bool) -> {[@stop_split] [@expl:debug_mode ensures] match result with
+      | Some'1 pretty -> plain_options (debug_options f) /\ pretty = ((debug_options f).flags = (4: UInt32.t))
+      | None'1 -> not plain_options (debug_options f)
+      end}
+    (! return {result}) ]

@@ -1,0 +1,65 @@
+use creusot.int.UInt64
+use creusot.prelude.Any
+use int.Int
+
+type t_Duration
+
+predicate inv_Duration (_1: t_Duration)
+
+predicate ge_log_Int [@inline:trivial] (self: int) (other: int) = other <= self
+
+meta "rewrite_def" predicate ge_log_Int
+
+function secs_to_nanos (secs: int) : int = secs * 1000000000
+
+constant const_MAX: UInt64.t = (18446744073709551615: UInt64.t)
+
+function view_Duration (self: t_Duration) : int
+
+axiom view_Duration_spec: forall self: t_Duration [view_Duration self]. ge_log_Int (view_Duration self) 0
+    /\ view_Duration self <= secs_to_nanos (UInt64.t'int const_MAX) + 999999999
+
+let from_secs (secs: UInt64.t) (return (x: t_Duration)) = any
+  [ return (result: t_Duration) ->
+  {[@stop_split] [@expl:from_secs ensures] ([@stop_split] [@expl:from_secs result type invariant] inv_Duration result)
+    /\ ([@stop_split] [@expl:from_secs ensures] view_Duration result = secs_to_nanos (UInt64.t'int secs))}
+    (! return {result}) ]
+
+type t_SystemTime
+
+predicate inv_SystemTime (_1: t_SystemTime)
+
+function time_ns (_t: t_SystemTime) : int
+
+constant const_UNIX_EPOCH : t_SystemTime
+
+axiom const_UNIX_EPOCH_spec: inv_SystemTime const_UNIX_EPOCH
+
+axiom const_UNIX_EPOCH_spec'0: time_ns const_UNIX_EPOCH = 0
+
+let add_SystemTime (self_: t_SystemTime) (rhs: t_Duration) (return (x: t_SystemTime)) =
+{[@stop_split] [@expl:add_SystemTime requires] ([@stop_split] [@expl:add 'self_' type invariant] inv_SystemTime self_)
+  /\ ([@stop_split] [@expl:add 'rhs' type invariant] inv_Duration rhs)
+  /\ ([@stop_split] [@expl:add requires] time_ns self_ = 0 /\ view_Duration rhs < 253402300800000000000)}
+  any
+  [ return (result: t_SystemTime) ->
+  {[@stop_split] [@expl:add_SystemTime ensures] ([@stop_split] [@expl:add result type invariant] inv_SystemTime result)
+    /\ ([@stop_split] [@expl:add ensures] time_ns result = time_ns self_ + view_Duration rhs)}
+    (! return {result}) ]
+
+meta "compute_max_steps" 1000000
+
+meta "select_lsinst" "all"
+
+let epoch_time (seconds: UInt64.t) (return (x: t_SystemTime)) =
+{[@stop_split] [@expl:epoch_time requires] UInt64.t'int seconds < 253402300800}
+  (! bb0
+  [ bb0 = s0
+    [ s0 = from_secs {seconds} (fun (_x: t_Duration) -> [ &_6 <- _x ] s1)
+    | s1 = add_SystemTime {const_UNIX_EPOCH} {_6} (fun (_x: t_SystemTime) -> [ &_ret <- _x ] s2)
+    | s2 = return {_ret} ] ]
+  [ & _ret: t_SystemTime = Any.any_l () | & seconds: UInt64.t = seconds | & _6: t_Duration = Any.any_l () ])
+  [ return (result: t_SystemTime) ->
+  {[@stop_split] [@expl:epoch_time ensures] ([@stop_split] [@expl:epoch_time result type invariant] inv_SystemTime result)
+    /\ ([@stop_split] [@expl:epoch_time ensures] time_ns result = UInt64.t'int seconds * 1000000000)}
+    (! return {result}) ]

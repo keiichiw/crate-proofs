@@ -1,0 +1,140 @@
+use creusot.prelude.Any
+
+type t_Error = { f0: () }
+
+type t_Error'0
+
+predicate inv_Error (_1: t_Error'0)
+
+type t_ErrorKind =
+  | NotFound
+  | PermissionDenied
+  | ConnectionRefused
+  | ConnectionReset
+  | HostUnreachable
+  | NetworkUnreachable
+  | ConnectionAborted
+  | NotConnected
+  | AddrInUse
+  | AddrNotAvailable
+  | NetworkDown
+  | BrokenPipe
+  | AlreadyExists
+  | WouldBlock
+  | NotADirectory
+  | IsADirectory
+  | DirectoryNotEmpty
+  | ReadOnlyFilesystem
+  | FilesystemLoop
+  | StaleNetworkFileHandle
+  | InvalidInput
+  | InvalidData
+  | TimedOut
+  | WriteZero
+  | StorageFull
+  | NotSeekable
+  | QuotaExceeded
+  | FileTooLarge
+  | ResourceBusy
+  | ExecutableFileBusy
+  | Deadlock
+  | CrossesDevices
+  | TooManyLinks
+  | InvalidFilename
+  | ArgumentListTooLong
+  | Interrupted
+  | Unsupported
+  | UnexpectedEof
+  | OutOfMemory
+  | InProgress
+  | Other
+  | Uncategorized
+
+function io_kind (_e: t_Error'0) : t_ErrorKind
+
+type t_Option_Error = None | Some t_Error
+
+function io_payload_Error (_e: t_Error'0) : t_Option_Error
+
+let from_Error (e: t_Error) (return (x: t_Error'0)) = any
+  [ return (result: t_Error'0) ->
+  {[@stop_split] [@expl:from_Error ensures] ([@stop_split] [@expl:from result type invariant] inv_Error result)
+    /\ ([@stop_split] [@expl:from ensures #0] io_kind result = Other)
+    /\ ([@stop_split] [@expl:from ensures #1] io_payload_Error result = Some e)}
+    (! return {result}) ]
+
+predicate resolve_Error (_1: t_Error'0)
+
+predicate invariant_ref_Error [@inline:trivial] (self: t_Error'0) = inv_Error self
+
+meta "rewrite_def" predicate invariant_ref_Error
+
+predicate inv_ref_Error [@inline:trivial] (_1: t_Error'0) = invariant_ref_Error _1
+
+meta "rewrite_def" predicate inv_ref_Error
+
+let kind (self_: t_Error'0) (return (x: t_ErrorKind)) =
+{[@stop_split] [@expl:kind 'self_' type invariant] inv_ref_Error self_}
+  any
+  [ return (result: t_ErrorKind) -> {[@stop_split] [@expl:kind ensures] result = io_kind self_} (! return {result}) ]
+
+meta "compute_max_steps" 1000000
+
+meta "select_lsinst" "all"
+
+let error_conversion_observable (e: t_Error) (return (x: bool)) = (! bb0
+  [ bb0 = s0
+    [ s0 = from_Error {e} (fun (_x: t_Error'0) -> [ &converted <- _x ] s1)
+    | s1 = s2 [ _ck -> (! {[@expl:type invariant] inv_Error converted} any) ]
+    | s2 = -{resolve_Error converted}- s3
+    | s3 = kind {converted} (fun (_x: t_ErrorKind) -> [ &_5 <- _x ] s4)
+    | s4 = any
+      [ br0 -> {_5 = NotFound} (! bb3)
+      | br1 -> {_5 = PermissionDenied} (! bb3)
+      | br2 -> {_5 = ConnectionRefused} (! bb3)
+      | br3 -> {_5 = ConnectionReset} (! bb3)
+      | br4 -> {_5 = HostUnreachable} (! bb3)
+      | br5 -> {_5 = NetworkUnreachable} (! bb3)
+      | br6 -> {_5 = ConnectionAborted} (! bb3)
+      | br7 -> {_5 = NotConnected} (! bb3)
+      | br8 -> {_5 = AddrInUse} (! bb3)
+      | br9 -> {_5 = AddrNotAvailable} (! bb3)
+      | br10 -> {_5 = NetworkDown} (! bb3)
+      | br11 -> {_5 = BrokenPipe} (! bb3)
+      | br12 -> {_5 = AlreadyExists} (! bb3)
+      | br13 -> {_5 = WouldBlock} (! bb3)
+      | br14 -> {_5 = NotADirectory} (! bb3)
+      | br15 -> {_5 = IsADirectory} (! bb3)
+      | br16 -> {_5 = DirectoryNotEmpty} (! bb3)
+      | br17 -> {_5 = ReadOnlyFilesystem} (! bb3)
+      | br18 -> {_5 = FilesystemLoop} (! bb3)
+      | br19 -> {_5 = StaleNetworkFileHandle} (! bb3)
+      | br20 -> {_5 = InvalidInput} (! bb3)
+      | br21 -> {_5 = InvalidData} (! bb3)
+      | br22 -> {_5 = TimedOut} (! bb3)
+      | br23 -> {_5 = WriteZero} (! bb3)
+      | br24 -> {_5 = StorageFull} (! bb3)
+      | br25 -> {_5 = NotSeekable} (! bb3)
+      | br26 -> {_5 = QuotaExceeded} (! bb3)
+      | br27 -> {_5 = FileTooLarge} (! bb3)
+      | br28 -> {_5 = ResourceBusy} (! bb3)
+      | br29 -> {_5 = ExecutableFileBusy} (! bb3)
+      | br30 -> {_5 = Deadlock} (! bb3)
+      | br31 -> {_5 = CrossesDevices} (! bb3)
+      | br32 -> {_5 = TooManyLinks} (! bb3)
+      | br33 -> {_5 = InvalidFilename} (! bb3)
+      | br34 -> {_5 = ArgumentListTooLong} (! bb3)
+      | br35 -> {_5 = Interrupted} (! bb3)
+      | br36 -> {_5 = Unsupported} (! bb3)
+      | br37 -> {_5 = UnexpectedEof} (! bb3)
+      | br38 -> {_5 = OutOfMemory} (! bb3)
+      | br39 -> {_5 = InProgress} (! bb3)
+      | br40 -> {_5 = Other} (! bb5)
+      | br41 -> {_5 = Uncategorized} (! bb3) ] ]
+  | bb3 = s0 [ s0 = [ &_ret <- false ] s1 | s1 = return {_ret} ]
+  | bb5 = s0 [ s0 = [ &_ret <- true ] s1 | s1 = return {_ret} ] ]
+  [ & _ret: bool = Any.any_l ()
+  | & e: t_Error = e
+  | & converted: t_Error'0 = Any.any_l ()
+  | & _5: t_ErrorKind = Any.any_l () ])
+  [ return (result: bool) -> {[@stop_split] [@expl:error_conversion_observable ensures] result} (! return {result}) ]

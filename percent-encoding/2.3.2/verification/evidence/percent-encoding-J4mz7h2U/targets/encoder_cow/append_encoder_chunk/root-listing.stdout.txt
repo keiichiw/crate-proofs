@@ -1,0 +1,115 @@
+theory Coma
+  
+  (* use why3.BuiltIn.BuiltIn *)
+  
+  (* use why3.Bool.Bool *)
+  
+  (* use why3.Unit.Unit *)
+  
+  (* use seq.Seq *)
+  
+  (* use map.Map *)
+  
+  (* use creusot.int.UInt8 *)
+  
+  (* use creusot.prelude.Char *)
+  
+  function tail_ref_str (self:seq string) : seq string = self[1..length self]
+  
+  function flat_map_ref_str (seq string) (string -> seq int) : seq int
+  
+  axiom flat_map_ref_str_def :
+    forall self:seq string, other:string -> seq int
+     [flat_map_ref_str self other].
+     flat_map_ref_str self other =
+     (if length self = 0 then empty: seq int
+      else get other (get1 self 0)
+           ++ flat_map_ref_str (tail_ref_str self) other)
+  
+  function index_Mapping_u8_Int (self:t -> int) (a:t) : int = get self a
+  
+  (* meta rewrite_def function index_Mapping_u8_Int *)
+  
+  function map_u8 (seq t) (t -> int) : seq int
+  
+  axiom map_u8_spec :
+    forall self:seq t, m:t -> int [map_u8 self m].
+     length (map_u8 self m) = length self
+  
+  axiom map_u8_spec'0 :
+    forall self:seq t, m:t -> int [map_u8 self m].
+     forall i:int.
+      0 <= i /\ i < length self ->
+      get1 (map_u8 self m) i = index_Mapping_u8_Int m (get1 self i)
+  
+  function tail_char (self:seq t1) : seq t1 = self[1..length self]
+  
+  function flat_map_char (seq t1) (t1 -> seq t) : seq t
+  
+  axiom flat_map_char_def :
+    forall self:seq t1, other:t1 -> seq t [flat_map_char self other].
+     flat_map_char self other =
+     (if length self = 0 then empty: seq t
+      else get other (get1 self 0) ++ flat_map_char (tail_char self) other)
+  
+  function to_utf8_char t1 : seq t
+  
+  axiom to_utf8_char_spec :
+    forall self:t1 [to_utf8_char self].
+     1 <= length (to_utf8_char self) /\ length (to_utf8_char self) <= 4
+  
+  function to_bytes (self:seq t1) : seq t =
+    flat_map_char self (fun (c:t1) -> to_utf8_char c)
+  
+  function view_str string : seq t1
+  
+  function string_chunk_bytes (s:string) : seq int =
+    map_u8 (to_bytes (view_str s)) (fun (b:t) -> t'int b)
+  
+  function encoder_chunks_bytes (chunks:seq string) : seq int =
+    flat_map_ref_str chunks (fun (chunk:string) -> string_chunk_bytes chunk)
+  
+  predicate gt_log_Int (self:int) (other:int) = other < self
+  
+  (* meta rewrite_def predicate gt_log_Int *)
+  
+  function flat_map_push_back_ref_str (seq string) string (string -> seq
+    int) : unit
+  
+  axiom flat_map_push_back_ref_str_def :
+    forall self:seq string, x:string, f:string -> seq int
+     [flat_map_push_back_ref_str self x f].
+     flat_map_push_back_ref_str self x f =
+     (if gt_log_Int (length self) 0
+      then let _ = flat_map_push_back_ref_str (tail_ref_str self) x f in ()
+      else ())
+  
+  axiom flat_map_push_back_ref_str_spec :
+    forall self:seq string, x:string, f:string -> seq int.
+     flat_map_ref_str (snoc self x) f = (flat_map_ref_str self f ++ get f x)
+  
+  (* meta compute_max_steps 1000000 *)
+  
+  (* meta select_lsinst "all" *)
+  
+  constant chunks : seq string
+  
+  constant chunk : string
+  
+  predicate append_encoder_chunk (seq string) string
+  
+  goal vc_append_encoder_chunk :
+    flat_map_ref_str (snoc chunks chunk)
+    (fun (item:string) -> string_chunk_bytes item) =
+    (flat_map_ref_str chunks (fun (item:string) -> string_chunk_bytes item)
+     ++ get (fun (item:string) -> string_chunk_bytes item) chunk) ->
+    (let _ =
+       flat_map_push_back_ref_str chunks chunk
+       (fun (item:string) -> string_chunk_bytes item)
+     in
+     true /\
+     encoder_chunks_bytes (snoc chunks chunk) =
+     (encoder_chunks_bytes chunks ++ string_chunk_bytes chunk))
+  
+end
+

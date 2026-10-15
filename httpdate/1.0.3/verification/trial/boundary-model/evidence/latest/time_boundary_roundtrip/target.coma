@@ -1,0 +1,49 @@
+use creusot.int.UInt64
+use int.ComputerDivision
+use creusot.prelude.Any
+use int.Int
+
+type t_SystemTime
+
+predicate inv_SystemTime (_1: t_SystemTime)
+
+function time_ns (_t: t_SystemTime) : int
+
+let epoch_time (seconds: UInt64.t) (return (x: t_SystemTime)) =
+{[@stop_split] [@expl:epoch_time requires] UInt64.t'int seconds < 253402300800}
+  any
+  [ return (result: t_SystemTime) ->
+  {[@stop_split] [@expl:epoch_time ensures] ([@stop_split] [@expl:epoch_time result type invariant] inv_SystemTime result)
+    /\ ([@stop_split] [@expl:epoch_time ensures] time_ns result = UInt64.t'int seconds * 1000000000)}
+    (! return {result}) ]
+
+constant const_UNIX_EPOCH : t_SystemTime
+
+axiom const_UNIX_EPOCH_spec: inv_SystemTime const_UNIX_EPOCH
+
+axiom const_UNIX_EPOCH_spec'0: time_ns const_UNIX_EPOCH = 0
+
+let bounded_epoch_seconds (t: t_SystemTime) (return (x: UInt64.t)) =
+{[@stop_split] [@expl:bounded_epoch_seconds requires] ([@stop_split] [@expl:bounded_epoch_seconds 't' type invariant] inv_SystemTime t)
+  /\ ([@stop_split] [@expl:bounded_epoch_seconds requires] 0 <= time_ns t - time_ns const_UNIX_EPOCH
+  /\ time_ns t - time_ns const_UNIX_EPOCH < 253402300800000000000)}
+  any
+  [ return (result: UInt64.t) -> {[@stop_split] [@expl:bounded_epoch_seconds ensures] UInt64.t'int result
+      = ComputerDivision.div (time_ns t - time_ns const_UNIX_EPOCH) 1000000000
+    /\ UInt64.t'int result < 253402300800}
+    (! return {result}) ]
+
+meta "compute_max_steps" 1000000
+
+meta "select_lsinst" "all"
+
+let time_boundary_roundtrip (seconds: UInt64.t) (return (x: UInt64.t)) =
+{[@stop_split] [@expl:time_boundary_roundtrip requires] UInt64.t'int seconds < 253402300800}
+  (! bb0
+  [ bb0 = s0
+    [ s0 = epoch_time {seconds} (fun (_x: t_SystemTime) -> [ &_6 <- _x ] s1)
+    | s1 = bounded_epoch_seconds {_6} (fun (_x: UInt64.t) -> [ &_ret <- _x ] s2)
+    | s2 = return {_ret} ] ]
+  [ & _ret: UInt64.t = Any.any_l () | & seconds: UInt64.t = seconds | & _6: t_SystemTime = Any.any_l () ])
+  [ return (result: UInt64.t) -> {[@stop_split] [@expl:time_boundary_roundtrip ensures] result = seconds}
+    (! return {result}) ]

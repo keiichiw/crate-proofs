@@ -1,0 +1,23 @@
+(* <date::RawDate as std::clone::Clone> *)
+
+use creusot.int.UInt8
+use creusot.int.UInt16
+use creusot.prelude.Any
+
+type t_RawDate = {
+  sec: UInt8.t;
+  min: UInt8.t;
+  hour: UInt8.t;
+  day: UInt8.t;
+  mon: UInt8.t;
+  year: UInt16.t;
+  wday: UInt8.t }
+
+meta "compute_max_steps" 1000000
+
+meta "select_lsinst" "all"
+
+let clone_RawDate (self: t_RawDate) (return (x: t_RawDate)) = (! bb0
+  [ bb0 = s0 [ s0 = [ &_ret <- self ] s1 | s1 = return {_ret} ] ]
+  [ & _ret: t_RawDate = Any.any_l () | & self: t_RawDate = self ])
+  [ return (result: t_RawDate) -> {[@stop_split] [@expl:clone ensures] result = self} (! return {result}) ]

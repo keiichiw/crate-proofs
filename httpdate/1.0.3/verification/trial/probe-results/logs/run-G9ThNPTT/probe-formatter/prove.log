@@ -1,0 +1,8 @@
+FEATURE: probe-formatter
+COMMAND: timeout --signal=TERM --kill-after=5s 60s cargo creusot --only=prove --no-cache --why3find-arg=-d --why3find-arg=1 /workspace/proof-env/httpdate/1.0.3/verification/trial/probes/verif/feature-run-run-G9ThNPTT/probe-formatter/coma/verif/httpdate_api_probes_rlib/formatter_write.coma
+TIME LIMIT: 60 seconds
+Warning: found dangling files and directories:
+  verif/run-V5aFX37V/probe-formatter
+Run 'cargo creusot clean' to remove them
+Proved (verif/feature-run-run-G9ThNPTT/probe-formatter/coma/verif/httpdate_api_probes_rlib/formatter_write.coma) ✔
+prove exit: 0

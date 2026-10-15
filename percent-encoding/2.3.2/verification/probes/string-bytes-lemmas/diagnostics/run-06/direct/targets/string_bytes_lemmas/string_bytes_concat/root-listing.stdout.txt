@@ -1,0 +1,181 @@
+theory Coma
+  
+  (* use why3.BuiltIn.BuiltIn *)
+  
+  (* use why3.Bool.Bool *)
+  
+  (* use why3.Unit.Unit *)
+  
+  (* use creusot.prelude.Char *)
+  
+  (* use seq.Seq *)
+  
+  (* use creusot.int.UInt8 *)
+  
+  (* use map.Map *)
+  
+  function tail_char (self:seq t) : seq t = self[1..length self]
+  
+  function flat_map_char (seq t) (t -> seq t1) : seq t1
+  
+  axiom flat_map_char_def :
+    forall self:seq t, other:t -> seq t1 [flat_map_char self other].
+     flat_map_char self other =
+     (if length self = 0 then empty: seq t1
+      else get other (get1 self 0) ++ flat_map_char (tail_char self) other)
+  
+  function to_utf8_char t : seq t1
+  
+  axiom to_utf8_char_spec :
+    forall self:t [to_utf8_char self].
+     1 <= length (to_utf8_char self) /\ length (to_utf8_char self) <= 4
+  
+  function to_bytes (self:seq t) : seq t1 =
+    flat_map_char self (fun (c:t) -> to_utf8_char c)
+  
+  function index_Mapping_u8_Int (self:t1 -> int) (a:t1) : int = get self a
+  
+  (* meta rewrite_def function index_Mapping_u8_Int *)
+  
+  function map_u8 (seq t1) (t1 -> int) : seq int
+  
+  axiom map_u8_spec :
+    forall self:seq t1, m:t1 -> int [map_u8 self m].
+     length (map_u8 self m) = length self
+  
+  axiom map_u8_spec'0 :
+    forall self:seq t1, m:t1 -> int [map_u8 self m].
+     forall i:int.
+      0 <= i /\ i < length self ->
+      get1 (map_u8 self m) i = index_Mapping_u8_Int m (get1 self i)
+  
+  function byte_sequence_as_ints (bytes:seq t1) : seq int =
+    map_u8 bytes (fun (byte:t1) -> t'int byte)
+  
+  function concat_empty_char (seq t) : unit
+  
+  axiom concat_empty_char_spec :
+    forall self:seq t. (self ++ (empty: seq t)) = self
+  
+  axiom concat_empty_char_spec'0 :
+    forall self:seq t. ((empty: seq t) ++ self) = self
+  
+  predicate byte_sequence_as_ints_concat (seq t1) (seq t1)
+  
+  axiom byte_sequence_as_ints_concat_spec :
+    forall left:seq t1, right:seq t1
+     [byte_sequence_as_ints_concat left right].
+     byte_sequence_as_ints_concat left right
+  
+  axiom byte_sequence_as_ints_concat_spec'0 :
+    forall left:seq t1, right:seq t1.
+     byte_sequence_as_ints (left ++ right) =
+     (byte_sequence_as_ints left ++ byte_sequence_as_ints right)
+  
+  predicate gt_log_Int (self:int) (other:int) = other < self
+  
+  (* meta rewrite_def predicate gt_log_Int *)
+  
+  predicate nonempty_left_concat_tail_char (seq t) (seq t)
+  
+  axiom nonempty_left_concat_tail_char_spec :
+    forall left:seq t, right:seq t
+     [nonempty_left_concat_tail_char left right].
+     gt_log_Int (length left) 0 -> nonempty_left_concat_tail_char left right
+  
+  axiom nonempty_left_concat_tail_char_spec'0 :
+    forall left:seq t, right:seq t.
+     gt_log_Int (length left) 0 ->
+     tail_char (left ++ right) = (tail_char left ++ right)
+  
+  axiom nonempty_left_concat_tail_char_spec'1 :
+    forall left:seq t, right:seq t.
+     gt_log_Int (length left) 0 ->
+     tail_char (left ++ right) == (tail_char left ++ right)
+  
+  predicate ge_log_Int (self:int) (other:int) = other <= self
+  
+  (* meta rewrite_def predicate ge_log_Int *)
+  
+  predicate well_founded_relation_Int (self:int) (other:int) =
+    ge_log_Int self 0 /\ gt_log_Int self other
+  
+  (* meta rewrite_def predicate well_founded_relation_Int *)
+  
+  (* meta compute_max_steps 1000000 *)
+  
+  (* meta select_lsinst "all" *)
+  
+  constant prefix : seq t
+  
+  constant suffix : seq t
+  
+  predicate string_bytes_concat (seq t) (seq t)
+  
+  goal vc_string_bytes_concat :
+    if length prefix = 0
+    then (suffix ++ (empty: seq t)) = suffix /\
+         ((empty: seq t) ++ suffix) = suffix ->
+         (let _ = concat_empty_char suffix in
+          byte_sequence_as_ints_concat (to_bytes prefix) (to_bytes suffix) /\
+          byte_sequence_as_ints (to_bytes prefix ++ to_bytes suffix) =
+          (byte_sequence_as_ints (to_bytes prefix)
+           ++ byte_sequence_as_ints (to_bytes suffix)) ->
+          byte_sequence_as_ints_concat (to_bytes prefix) (to_bytes suffix) /\
+          to_bytes (prefix ++ suffix) = (to_bytes prefix ++ to_bytes suffix) /\
+          byte_sequence_as_ints (to_bytes (prefix ++ suffix)) =
+          (byte_sequence_as_ints (to_bytes prefix)
+           ++ byte_sequence_as_ints (to_bytes suffix)))
+    else let joined = prefix ++ suffix in
+         let tail = tail_char prefix in
+         gt_log_Int (length prefix) 0 /\
+         (nonempty_left_concat_tail_char prefix suffix /\
+          tail_char (prefix ++ suffix) = (tail_char prefix ++ suffix) /\
+          tail_char (prefix ++ suffix) == (tail_char prefix ++ suffix) ->
+          (if nonempty_left_concat_tail_char prefix suffix
+           then well_founded_relation_Int (length prefix) (length tail) /\
+                (string_bytes_concat tail suffix /\
+                 to_bytes (tail ++ suffix) =
+                 (to_bytes tail ++ to_bytes suffix) /\
+                 byte_sequence_as_ints (to_bytes (tail ++ suffix)) =
+                 (byte_sequence_as_ints (to_bytes tail)
+                  ++ byte_sequence_as_ints (to_bytes suffix)) ->
+                 (if string_bytes_concat tail suffix
+                  then byte_sequence_as_ints_concat (to_bytes prefix)
+                       (to_bytes suffix) /\
+                       byte_sequence_as_ints
+                       (to_bytes prefix ++ to_bytes suffix) =
+                       (byte_sequence_as_ints (to_bytes prefix)
+                        ++ byte_sequence_as_ints (to_bytes suffix)) ->
+                       (if byte_sequence_as_ints_concat (to_bytes prefix)
+                           (to_bytes suffix)
+                        then to_bytes joined =
+                             (to_bytes prefix ++ to_bytes suffix) /\
+                             to_bytes (prefix ++ suffix) =
+                             (to_bytes prefix ++ to_bytes suffix) /\
+                             byte_sequence_as_ints
+                             (to_bytes (prefix ++ suffix)) =
+                             (byte_sequence_as_ints (to_bytes prefix)
+                              ++ byte_sequence_as_ints (to_bytes suffix))
+                        else false /\
+                             to_bytes (prefix ++ suffix) =
+                             (to_bytes prefix ++ to_bytes suffix) /\
+                             byte_sequence_as_ints
+                             (to_bytes (prefix ++ suffix)) =
+                             (byte_sequence_as_ints (to_bytes prefix)
+                              ++ byte_sequence_as_ints (to_bytes suffix)))
+                  else false /\
+                       to_bytes (prefix ++ suffix) =
+                       (to_bytes prefix ++ to_bytes suffix) /\
+                       byte_sequence_as_ints (to_bytes (prefix ++ suffix)) =
+                       (byte_sequence_as_ints (to_bytes prefix)
+                        ++ byte_sequence_as_ints (to_bytes suffix))))
+           else false /\
+                to_bytes (prefix ++ suffix) =
+                (to_bytes prefix ++ to_bytes suffix) /\
+                byte_sequence_as_ints (to_bytes (prefix ++ suffix)) =
+                (byte_sequence_as_ints (to_bytes prefix)
+                 ++ byte_sequence_as_ints (to_bytes suffix))))
+  
+end
+

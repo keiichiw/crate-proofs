@@ -1,0 +1,343 @@
+theory Coma
+  
+  (* use why3.BuiltIn.BuiltIn *)
+  
+  (* use why3.Bool.Bool *)
+  
+  (* use why3.Unit.Unit *)
+  
+  (* use creusot.slice.Slice64 *)
+  
+  (* use creusot.int.UInt8 *)
+  
+  (* use map.Map *)
+  
+  (* use creusot.prelude.MutBorrow *)
+  
+  (* use creusot.prelude.Any *)
+  
+  type t_Iter_u8
+  
+  type t_PercentDecode =
+    | T_PercentDecode'mk (bytes:t_Iter_u8)
+  
+  (* meta model_record function bytes *)
+  
+  predicate inv_Iter_u8 t_Iter_u8
+  
+  predicate invariant_ref_Iter_u8 (self:t_Iter_u8) = inv_Iter_u8 self
+  
+  (* meta rewrite_def predicate invariant_ref_Iter_u8 *)
+  
+  predicate inv_ref_Iter_u8 (_1:t_Iter_u8) = invariant_ref_Iter_u8 _1
+  
+  (* meta rewrite_def predicate inv_ref_Iter_u8 *)
+  
+  function view_Iter_u8 t_Iter_u8 : slice t
+  
+  goal vc_as_slice_u8 : true
+  
+  type tup2_ref_u8_ref_slice_u8 =
+    | Tup2_ref_u8_ref_slice_u8'mk (f0:t) (f1:slice t)
+  
+  (* meta model_record function f1 *)
+  
+  (* meta model_record function f0 *)
+  
+  type t_Option_tup2_ref_u8_ref_slice_u8 =
+    | None
+    | Some tup2_ref_u8_ref_slice_u8
+  
+  predicate gt_log_Int (self:int) (other:int) = other < self
+  
+  (* meta rewrite_def predicate gt_log_Int *)
+  
+  function tail_u8 (self:seq t) : seq t = self[1..length self]
+  
+  goal vc_split_first_u8 : true
+  
+  goal vc_elim_Some : true
+  
+  function index_Mapping_u8_Int (self:t -> int) (a:t) : int = get self a
+  
+  (* meta rewrite_def function index_Mapping_u8_Int *)
+  
+  function map_u8 (seq t) (t -> int) : seq int
+  
+  axiom map_u8_spec :
+    forall self:seq t, m:t -> int [map_u8 self m].
+     length (map_u8 self m) = length self
+  
+  axiom map_u8_spec'0 :
+    forall self:seq t, m:t -> int [map_u8 self m].
+     forall i:int.
+      0 <= i /\ i < length self ->
+      get1 (map_u8 self m) i = index_Mapping_u8_Int m (get1 self i)
+  
+  function byte_sequence_as_ints (bytes'0:seq t) : seq int =
+    map_u8 bytes'0 (fun (byte:t) -> t'int byte)
+  
+  predicate byte_model_subsequence (seq t) int int
+  
+  axiom byte_model_subsequence_spec :
+    forall bytes'0:seq t, start:int, end':int
+     [byte_model_subsequence bytes'0 start end'].
+     0 <= start /\ start <= end' /\ end' <= length bytes'0 ->
+     byte_model_subsequence bytes'0 start end'
+  
+  axiom byte_model_subsequence_spec'0 :
+    forall bytes'0:seq t, start:int, end':int.
+     0 <= start /\ start <= end' /\ end' <= length bytes'0 ->
+     byte_sequence_as_ints bytes'0[start..end'] =
+     (byte_sequence_as_ints bytes'0)[start..end']
+  
+  goal vc_iter_u8 : true
+  
+  predicate resolve_Iter_u8 t_Iter_u8
+  
+  type t_Option_u8 =
+    | None'0
+    | Some'0 t
+  
+  predicate invariant_refmut_Iter_u8 (self:t1 t_Iter_u8) =
+    inv_Iter_u8 (self.current) /\ inv_Iter_u8 (self.final)
+  
+  (* meta rewrite_def predicate invariant_refmut_Iter_u8 *)
+  
+  predicate inv_refmut_Iter_u8 (_1:t1 t_Iter_u8) =
+    invariant_refmut_Iter_u8 _1
+  
+  (* meta rewrite_def predicate inv_refmut_Iter_u8 *)
+  
+  predicate ge_log_Int (self:int) (other:int) = other <= self
+  
+  (* meta rewrite_def predicate ge_log_Int *)
+  
+  function percent_hex_value_model (byte:int) : int =
+    if 48 <= byte /\ byte <= 57 then byte - 48
+    else if 65 <= byte /\ byte <= 70 then byte - 55
+         else if 97 <= byte /\ byte <= 102 then byte - 87 else (- 1)
+  
+  goal vc_after_percent_sign : true
+  
+  predicate resolve_refmut_Iter_u8 (_1:t1 t_Iter_u8) = _1.final = _1.current
+  
+  (* meta rewrite_def predicate resolve_refmut_Iter_u8 *)
+  
+  predicate inv_PercentDecode t_PercentDecode
+  
+  axiom inv_axiom :
+    forall x:t_PercentDecode [inv_PercentDecode x].
+     inv_PercentDecode x <-> inv_Iter_u8 (x.bytes)
+  
+  predicate invariant_refmut_PercentDecode (self:t1 t_PercentDecode) =
+    inv_PercentDecode (self.current) /\ inv_PercentDecode (self.final)
+  
+  (* meta rewrite_def predicate invariant_refmut_PercentDecode *)
+  
+  predicate inv_refmut_PercentDecode (_1:t1 t_PercentDecode) =
+    invariant_refmut_PercentDecode _1
+  
+  (* meta rewrite_def predicate inv_refmut_PercentDecode *)
+  
+  predicate resolve_refmut_PercentDecode (_1:t1 t_PercentDecode) =
+    _1.final = _1.current
+  
+  (* meta rewrite_def predicate resolve_refmut_PercentDecode *)
+  
+  predicate resolve_u8 (_1:t) = true
+  
+  (* meta rewrite_def predicate resolve_u8 *)
+  
+  goal vc_unwrap_or_u8 : true
+  
+  (* meta compute_max_steps 1000000 *)
+  
+  (* meta select_lsinst "all" *)
+  
+  goal vc_next_byte :
+    forall self:t1 t_PercentDecode.
+     inv_refmut_PercentDecode self ->
+     inv_ref_Iter_u8 ((self.current).bytes) /\
+     (forall result:slice t.
+       view result = view (view_Iter_u8 ((self.current).bytes)) ->
+       (forall result1:t_Option_tup2_ref_u8_ref_slice_u8.
+         match result1 with
+         | Some (Tup2_ref_u8_ref_slice_u8'mk first tail) ->
+             gt_log_Int (length (view result)) 0 /\
+             first = get1 (view result) 0 /\
+             view tail = tail_u8 (view result)
+         | None -> view result = (empty: seq t)
+         end ->
+         (result1 = None ->
+          (resolve_refmut_PercentDecode self ->
+           length (view (view_Iter_u8 ((self.current).bytes))) = 0 /\
+           view (view_Iter_u8 ((self.final).bytes)) = (empty: seq t) /\
+           self.final = self.current) /\
+          inv_refmut_PercentDecode self) /\
+         (forall x0:tup2_ref_u8_ref_slice_u8.
+           result1 = Some x0 ->
+           (forall f0'0:tup2_ref_u8_ref_slice_u8.
+             Some f0'0 = result1 ->
+             (forall f0'01:tup2_ref_u8_ref_slice_u8.
+               Some f0'01 = result1 ->
+               byte_model_subsequence (view result) 1 (length (view result)) &&
+               byte_sequence_as_ints (view (f0'01.f1)) =
+               (byte_sequence_as_ints (view result))[1..length (view result)] &&
+               (forall result2:t_Iter_u8.
+                 inv_Iter_u8 result2 /\ view_Iter_u8 result2 = f0'01.f1 ->
+                 (resolve_Iter_u8 ((self.current).bytes) ->
+                  view (view_Iter_u8 result2) =
+                  (view result)[1..length (view result)] &&
+                  (not f0'0.f0 = (37:t) ->
+                   (resolve_refmut_PercentDecode
+                    (t'mk (T_PercentDecode'mk result2) (self.final) (self.id)) ->
+                    (let value = f0'0.f0 in
+                     let before =
+                       byte_sequence_as_ints
+                       (view (view_Iter_u8 ((self.current).bytes)))
+                     in
+                     let after =
+                       byte_sequence_as_ints
+                       (view (view_Iter_u8 ((self.final).bytes)))
+                     in
+                     gt_log_Int (length before) 0 /\
+                     length after <= length before /\
+                     (if get1 before 0 = 37 /\
+                         ge_log_Int (length before) 3 /\
+                         ge_log_Int (percent_hex_value_model (get1 before 1))
+                         0 /\
+                         ge_log_Int (percent_hex_value_model (get1 before 2))
+                         0
+                      then t'int value =
+                           ((percent_hex_value_model (get1 before 1) * 16)
+                            + percent_hex_value_model (get1 before 2)) /\
+                           after = before[3..length before]
+                      else t'int value = get1 before 0 /\
+                           after = before[1..length before]))) /\
+                   inv_refmut_PercentDecode
+                   (t'mk (T_PercentDecode'mk result2) (self.final) (self.id))) /\
+                  (f0'0.f0 = (37:t) ->
+                   (forall fin:t_Iter_u8.
+                     inv_Iter_u8 fin ->
+                     (forall fin1:t_Iter_u8.
+                       inv_Iter_u8 fin1 ->
+                       inv_refmut_Iter_u8
+                       (t'mk result2 fin1
+                        (get_id
+                         (t'mk result2 fin
+                          (inherit_id
+                           (get_id
+                            (t'mk (T_PercentDecode'mk result2) (self.final)
+                             (self.id)))
+                           0)))) /\
+                       (forall result3:t_Option_u8.
+                         match result3 with
+                         | Some'0 value ->
+                             let before =
+                               byte_sequence_as_ints
+                               (view (view_Iter_u8 result2))
+                             in
+                             ge_log_Int (length before) 2 /\
+                             ge_log_Int
+                             (percent_hex_value_model (get1 before 0)) 0 /\
+                             ge_log_Int
+                             (percent_hex_value_model (get1 before 1)) 0 /\
+                             t'int value =
+                             ((percent_hex_value_model (get1 before 0) * 16)
+                              + percent_hex_value_model (get1 before 1)) /\
+                             byte_sequence_as_ints (view (view_Iter_u8 fin1)) =
+                             before[2..length before]
+                         | None'0 ->
+                             view (view_Iter_u8 fin1) =
+                             view (view_Iter_u8 result2) /\
+                             (length
+                              (byte_sequence_as_ints
+                               (view (view_Iter_u8 result2)))
+                              < 2 \/
+                              ge_log_Int
+                              (length
+                               (byte_sequence_as_ints
+                                (view (view_Iter_u8 result2))))
+                              2 /\
+                              percent_hex_value_model
+                              (get1
+                               (byte_sequence_as_ints
+                                (view (view_Iter_u8 result2)))
+                               0)
+                              < 0 \/
+                              ge_log_Int
+                              (length
+                               (byte_sequence_as_ints
+                                (view (view_Iter_u8 result2))))
+                              2 /\
+                              percent_hex_value_model
+                              (get1
+                               (byte_sequence_as_ints
+                                (view (view_Iter_u8 result2)))
+                               1)
+                              < 0)
+                         end ->
+                         (resolve_refmut_Iter_u8
+                          (t'mk fin1 fin
+                           (inherit_id
+                            (get_id
+                             (t'mk (T_PercentDecode'mk result2) (self.final)
+                              (self.id)))
+                            0)) ->
+                          (resolve_refmut_PercentDecode
+                           (t'mk (T_PercentDecode'mk fin) (self.final)
+                            (self.id)) ->
+                           (forall result4:t.
+                             (result3 = None'0 -> result4 = f0'0.f0) /\
+                             (result3 = None'0 \/
+                              result3 = Some'0 result4 /\
+                              resolve_u8 (f0'0.f0)) ->
+                             (let before =
+                                byte_sequence_as_ints
+                                (view (view_Iter_u8 ((self.current).bytes)))
+                              in
+                              let after =
+                                byte_sequence_as_ints
+                                (view (view_Iter_u8 ((self.final).bytes)))
+                              in
+                              gt_log_Int (length before) 0 /\
+                              length after <= length before /\
+                              (if get1 before 0 = 37 /\
+                                  ge_log_Int (length before) 3 /\
+                                  ge_log_Int
+                                  (percent_hex_value_model (get1 before 1)) 0 /\
+                                  ge_log_Int
+                                  (percent_hex_value_model (get1 before 2)) 0
+                               then t'int result4 =
+                                    ((percent_hex_value_model (get1 before 1)
+                                      * 16)
+                                     + percent_hex_value_model
+                                       (get1 before 2)) /\
+                                    after = before[3..length before]
+                               else t'int result4 = get1 before 0 /\
+                                    after = before[1..length before])))) /\
+                          inv_refmut_PercentDecode
+                          (t'mk (T_PercentDecode'mk fin) (self.final)
+                           (self.id))) /\
+                         inv_refmut_Iter_u8
+                         (t'mk fin1 fin
+                          (inherit_id
+                           (get_id
+                            (t'mk (T_PercentDecode'mk result2) (self.final)
+                             (self.id)))
+                           0)))) /\
+                     inv_Iter_u8 result2) /\
+                   inv_Iter_u8 result2)) /\
+                 inv_Iter_u8 ((self.current).bytes))) /\
+             match result1 with
+             | Some _ -> true
+             | _ -> false
+             end) /\
+           match result1 with
+           | Some _ -> true
+           | _ -> false
+           end)))
+  
+end
+

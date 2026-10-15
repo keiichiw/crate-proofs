@@ -1,0 +1,167 @@
+{
+  "generated_at_utc": "2026-10-07T20:05:33.111023+00:00",
+  "scope": "Independent trait probes; no httpdate APIs or production source were verified.",
+  "toolchain_commit": "318615be3b8bbc60d1f6d52469ba5c0bdebed4f1",
+  "versions": {
+    "cargo_creusot": {
+      "exit": 0,
+      "output": "cargo-creusot 0.13.0\nRust toolchain nightly-2026-06-22\nWhy3 platform, version 1.8.2+git\nwhy3find v1.3.0+dev\nalt-ergo 2.6.2\nz3 4.15.3\ncvc4 1.8\ncvc5 1.3.1"
+    },
+    "rustc": {
+      "exit": 0,
+      "output": "rustc 1.91.0 (f8297e351 2025-10-28)"
+    },
+    "why3": {
+      "exit": 0,
+      "output": "Why3 platform, version 1.8.2+git"
+    },
+    "why3find": {
+      "exit": 0,
+      "output": "why3find v1.3.0+dev"
+    }
+  },
+  "input_sha256": {
+    "/workspace/proof-env/httpdate/1.0.3/verification/trial/trait-probes/Cargo.toml": "ceb047970058ed30ac8740141b68674e0b4a54ac267f7040add16881d4a487e3",
+    "/workspace/proof-env/httpdate/1.0.3/verification/trial/trait-probes/Cargo.lock": "98b26ced1a99a9d8d8033157080d75fa8331e6dcb0b123d8e19c6b8850db6084",
+    "/workspace/proof-env/httpdate/1.0.3/verification/trial/trait-probes/src/lib.rs": "f81d58f03267b9cbcd2826bd8122a72a69c9d192fb172578c3ba934a90833694",
+    "/workspace/proof-env/httpdate/1.0.3/verification/trial/trait-probes/run.sh": "40bc0f459545180ca989d89f2adc5c8c73e1a2f1519a79d0763d129f776dd4fe",
+    "/workspace/proof-env/httpdate/1.0.3/verification/trial/trait-probes/why3find.json": "7ab52d429e4b4b74e3b79507ec72c8c3998b58420c64f6e09b3841701531e174",
+    "/workspace/proof-env/rust-toolchain.toml": "57da15ac9b199a5169602f55715ebac933e4c0d59aa3560e6096f5494ee62f0c",
+    "/workspace/proof-env/scripts/activate.sh": "f8d14eaf2943e76e3c43c042f8afce06370bcde579f4489dbfe8ba9047f8a662"
+  },
+  "input_hash_snapshot": "verification/trial/trait-probe-results/logs/run-69pC19na/inputs-before.json",
+  "input_sha256_after_proof": {
+    "/workspace/proof-env/httpdate/1.0.3/verification/trial/trait-probes/Cargo.toml": "ceb047970058ed30ac8740141b68674e0b4a54ac267f7040add16881d4a487e3",
+    "/workspace/proof-env/httpdate/1.0.3/verification/trial/trait-probes/Cargo.lock": "98b26ced1a99a9d8d8033157080d75fa8331e6dcb0b123d8e19c6b8850db6084",
+    "/workspace/proof-env/httpdate/1.0.3/verification/trial/trait-probes/src/lib.rs": "f81d58f03267b9cbcd2826bd8122a72a69c9d192fb172578c3ba934a90833694",
+    "/workspace/proof-env/httpdate/1.0.3/verification/trial/trait-probes/run.sh": "40bc0f459545180ca989d89f2adc5c8c73e1a2f1519a79d0763d129f776dd4fe",
+    "/workspace/proof-env/httpdate/1.0.3/verification/trial/trait-probes/why3find.json": "7ab52d429e4b4b74e3b79507ec72c8c3998b58420c64f6e09b3841701531e174",
+    "/workspace/proof-env/rust-toolchain.toml": "57da15ac9b199a5169602f55715ebac933e4c0d59aa3560e6096f5494ee62f0c",
+    "/workspace/proof-env/scripts/activate.sh": "f8d14eaf2943e76e3c43c042f8afce06370bcde579f4489dbfe8ba9047f8a662"
+  },
+  "inputs_unchanged_during_run": {
+    "/workspace/proof-env/httpdate/1.0.3/verification/trial/trait-probes/Cargo.toml": true,
+    "/workspace/proof-env/httpdate/1.0.3/verification/trial/trait-probes/Cargo.lock": true,
+    "/workspace/proof-env/httpdate/1.0.3/verification/trial/trait-probes/src/lib.rs": true,
+    "/workspace/proof-env/httpdate/1.0.3/verification/trial/trait-probes/run.sh": true,
+    "/workspace/proof-env/httpdate/1.0.3/verification/trial/trait-probes/why3find.json": true,
+    "/workspace/proof-env/rust-toolchain.toml": true,
+    "/workspace/proof-env/scripts/activate.sh": true
+  },
+  "compile_command": "cargo creusot --only=coma --span-mode off --output-dir <fresh-run>/coma -- --locked --features <feature>",
+  "proof_command": "timeout --signal=TERM --kill-after=5s 60s cargo creusot --only=prove --no-cache --why3find-arg=-d --why3find-arg=1 <exact-target-coma>",
+  "features": [
+    {
+      "feature": "probe-eq",
+      "target": "structural_eq",
+      "clean_exit": 0,
+      "compile_exit": 0,
+      "proof_exit": 1,
+      "proof_status": "unproved_or_nonzero_exit",
+      "session_goals": 2,
+      "target_vc_present": true,
+      "all_goal_trees_proved": false,
+      "coma_path": "verification/trial/trait-probes/verif/trait-run-run-69pC19na/probe-eq/coma/verif/httpdate_trait_probes_rlib/eq_probe/structural_eq.coma",
+      "proof_json_path": "verification/trial/trait-probes/verif/trait-run-run-69pC19na/probe-eq/coma/verif/httpdate_trait_probes_rlib/eq_probe/structural_eq/proof.json",
+      "logs": {
+        "clean": "verification/trial/trait-probe-results/logs/run-69pC19na/probe-eq/clean.log",
+        "compile": "verification/trial/trait-probe-results/logs/run-69pC19na/probe-eq/compile.log",
+        "prove": "verification/trial/trait-probe-results/logs/run-69pC19na/probe-eq/prove.log"
+      },
+      "claim_scope": "derived structural PartialEq against a derived DeepModel",
+      "preserved_artifacts": [
+        {
+          "name": "target",
+          "coma": "verification/trial/trait-probe-results/artifacts/run-69pC19na/probe-eq/target.coma",
+          "proof_json": "verification/trial/trait-probe-results/artifacts/run-69pC19na/probe-eq/proof.json",
+          "coma_sha256": "9bc38e8b29803e1012d2bec35e813b1489afe1de3a6eea73bfef7ae4b6a22d42",
+          "proof_json_sha256": "d18af5d3a3295e2581229a9743c091cdd195be4dd4866acb4b657b503618715f"
+        }
+      ]
+    },
+    {
+      "feature": "probe-ord",
+      "target": "chronological_cmp",
+      "clean_exit": 0,
+      "compile_exit": 0,
+      "proof_exit": 1,
+      "proof_status": "unproved_or_nonzero_exit",
+      "session_goals": 2,
+      "target_vc_present": true,
+      "all_goal_trees_proved": false,
+      "coma_path": "verification/trial/trait-probes/verif/trait-run-run-69pC19na/probe-ord/coma/verif/httpdate_trait_probes_rlib/ord_probe/chronological_cmp.coma",
+      "proof_json_path": "verification/trial/trait-probes/verif/trait-run-run-69pC19na/probe-ord/coma/verif/httpdate_trait_probes_rlib/ord_probe/chronological_cmp/proof.json",
+      "logs": {
+        "clean": "verification/trial/trait-probe-results/logs/run-69pC19na/probe-ord/clean.log",
+        "compile": "verification/trial/trait-probe-results/logs/run-69pC19na/probe-ord/compile.log",
+        "prove": "verification/trial/trait-probe-results/logs/run-69pC19na/probe-ord/prove.log"
+      },
+      "claim_scope": "lexicographic ordering logic and Rust Ord against tuple key",
+      "preserved_artifacts": [
+        {
+          "name": "target",
+          "coma": "verification/trial/trait-probe-results/artifacts/run-69pC19na/probe-ord/target.coma",
+          "proof_json": "verification/trial/trait-probe-results/artifacts/run-69pC19na/probe-ord/proof.json",
+          "coma_sha256": "80cdc4293a9aaf506527742a26c0191ce4de77f0e044fa2a0b67cd955cb24bdd",
+          "proof_json_sha256": "022a42a938ea8ae7ebddd971b6d96632b11c947c590dc4c636eac6c7cbdfc573"
+        }
+      ]
+    },
+    {
+      "feature": "probe-hash",
+      "target": "hash_via_default_hasher",
+      "clean_exit": 0,
+      "compile_exit": 0,
+      "proof_exit": 1,
+      "proof_status": "unproved_or_nonzero_exit",
+      "session_goals": 1,
+      "target_vc_present": true,
+      "all_goal_trees_proved": false,
+      "coma_path": "verification/trial/trait-probes/verif/trait-run-run-69pC19na/probe-hash/coma/verif/httpdate_trait_probes_rlib/hash_probe/hash_via_default_hasher.coma",
+      "proof_json_path": "verification/trial/trait-probes/verif/trait-run-run-69pC19na/probe-hash/coma/verif/httpdate_trait_probes_rlib/hash_probe/hash_via_default_hasher/proof.json",
+      "logs": {
+        "clean": "verification/trial/trait-probe-results/logs/run-69pC19na/probe-hash/clean.log",
+        "compile": "verification/trial/trait-probe-results/logs/run-69pC19na/probe-hash/compile.log",
+        "prove": "verification/trial/trait-probe-results/logs/run-69pC19na/probe-hash/prove.log"
+      },
+      "claim_scope": "Hash call path through DefaultHasher; any proof only covers generated goals, not the hash law",
+      "preserved_artifacts": [
+        {
+          "name": "target",
+          "coma": "verification/trial/trait-probe-results/artifacts/run-69pC19na/probe-hash/target.coma",
+          "proof_json": "verification/trial/trait-probe-results/artifacts/run-69pC19na/probe-hash/proof.json",
+          "coma_sha256": "5e1f85af8917d78b1a087d1b5c4814423a7fa1f049863898345e31429f7aecb5",
+          "proof_json_sha256": "2fc07164825eba46cdccb4946c32f3c6e42f9905a9db8134993687e4266d4c97"
+        }
+      ]
+    },
+    {
+      "feature": "probe-error",
+      "target": "into_io_error",
+      "clean_exit": 0,
+      "compile_exit": 0,
+      "proof_exit": 1,
+      "proof_status": "unproved_or_nonzero_exit",
+      "session_goals": 1,
+      "target_vc_present": true,
+      "all_goal_trees_proved": false,
+      "coma_path": "verification/trial/trait-probes/verif/trait-run-run-69pC19na/probe-error/coma/verif/httpdate_trait_probes_rlib/error_probe/into_io_error.coma",
+      "proof_json_path": "verification/trial/trait-probes/verif/trait-run-run-69pC19na/probe-error/coma/verif/httpdate_trait_probes_rlib/error_probe/into_io_error/proof.json",
+      "logs": {
+        "clean": "verification/trial/trait-probe-results/logs/run-69pC19na/probe-error/clean.log",
+        "compile": "verification/trial/trait-probe-results/logs/run-69pC19na/probe-error/compile.log",
+        "prove": "verification/trial/trait-probe-results/logs/run-69pC19na/probe-error/prove.log"
+      },
+      "claim_scope": "Error Display implementation and conversion into io::Error",
+      "preserved_artifacts": [
+        {
+          "name": "target",
+          "coma": "verification/trial/trait-probe-results/artifacts/run-69pC19na/probe-error/target.coma",
+          "proof_json": "verification/trial/trait-probe-results/artifacts/run-69pC19na/probe-error/proof.json",
+          "coma_sha256": "8fbd504bfcfcec2be4cf255ec2cf7150cddf8d9f4f08bd52eed80bd849e55268",
+          "proof_json_sha256": "dea25b997937cde31e21ad8ed7185221e7d354e30278084f509a0ef0b4c7b5cf"
+        }
+      ]
+    }
+  ]
+}

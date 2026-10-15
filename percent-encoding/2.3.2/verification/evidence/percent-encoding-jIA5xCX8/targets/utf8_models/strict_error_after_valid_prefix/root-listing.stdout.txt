@@ -1,0 +1,146 @@
+theory Coma
+  
+  (* use why3.BuiltIn.BuiltIn *)
+  
+  (* use why3.Bool.Bool *)
+  
+  (* use why3.Unit.Unit *)
+  
+  (* use seq.Seq *)
+  
+  (* use creusot.prelude.Any *)
+  
+  type t_Option_Int =
+    | None
+    | Some int
+  
+  type tup2_Int_Option_Int =
+    | Tup2_Int_Option_Int'mk (f0:int) (f1:t_Option_Int)
+  
+  (* meta model_record function f1 *)
+  
+  (* meta model_record function f0 *)
+  
+  type t_Option_tup2_Int_Option_Int =
+    | None'0
+    | Some'0 tup2_Int_Option_Int
+  
+  type tup3_Int_Int_bool =
+    | Tup3_Int_Int_bool'mk (f0'0:int) (f1'0:int) (f2'0:bool)
+  
+  (* meta model_record function f2'0 *)
+  
+  (* meta model_record function f1'0 *)
+  
+  (* meta model_record function f0'0 *)
+  
+  function utf8_step (bytes:seq int) (pos:int) : tup3_Int_Int_bool =
+    let b0 = get bytes pos in
+    let remaining = length bytes - pos in
+    if 0 <= b0 /\ b0 <= 127 then Tup3_Int_Int_bool'mk b0 1 True
+    else if 194 <= b0 /\ b0 <= 223
+         then if remaining < 2
+              then Tup3_Int_Int_bool'mk 65533 remaining False
+              else let b1 = get bytes (pos + 1) in
+                   if 128 <= b1 /\ b1 <= 191
+                   then Tup3_Int_Int_bool'mk (((b0 - 192) * 64) + (b1 - 128))
+                        2 True
+                   else Tup3_Int_Int_bool'mk 65533 1 False
+         else if 224 <= b0 /\ b0 <= 239
+              then if remaining < 2
+                   then Tup3_Int_Int_bool'mk 65533 remaining False
+                   else let b1 = get bytes (pos + 1) in
+                        let second_ok =
+                          (if if b0 = 224 then 160 <= b1 /\ b1 <= 191
+                              else if b0 = 237 then 128 <= b1 /\ b1 <= 159
+                                   else 128 <= b1 /\ b1 <= 191
+                           then True else False)
+                        in
+                        if not second_ok = True
+                        then Tup3_Int_Int_bool'mk 65533 1 False
+                        else if remaining < 3
+                             then Tup3_Int_Int_bool'mk 65533 remaining False
+                             else let b2 = get bytes (pos + 2) in
+                                  if 128 <= b2 /\ b2 <= 191
+                                  then Tup3_Int_Int_bool'mk
+                                       ((((b0 - 224) * 4096)
+                                         + ((b1 - 128) * 64))
+                                        + (b2 - 128))
+                                       3 True
+                                  else Tup3_Int_Int_bool'mk 65533 2 False
+              else if 240 <= b0 /\ b0 <= 244
+                   then if remaining < 2
+                        then Tup3_Int_Int_bool'mk 65533 remaining False
+                        else let b1 = get bytes (pos + 1) in
+                             let second_ok =
+                               (if if b0 = 240 then 144 <= b1 /\ b1 <= 191
+                                   else if b0 = 244
+                                        then 128 <= b1 /\ b1 <= 143
+                                        else 128 <= b1 /\ b1 <= 191
+                                then True else False)
+                             in
+                             if not second_ok = True
+                             then Tup3_Int_Int_bool'mk 65533 1 False
+                             else if remaining < 3
+                                  then Tup3_Int_Int_bool'mk 65533 remaining
+                                       False
+                                  else let b2 = get bytes (pos + 2) in
+                                       if not (128 <= b2 /\ b2 <= 191)
+                                       then Tup3_Int_Int_bool'mk 65533 2
+                                            False
+                                       else if remaining < 4
+                                            then Tup3_Int_Int_bool'mk 65533
+                                                 remaining False
+                                            else let b3 =
+                                                   get bytes (pos + 3)
+                                                 in
+                                                 if 128 <= b3 /\ b3 <= 191
+                                                 then Tup3_Int_Int_bool'mk
+                                                      (((((b0 - 240) * 262144)
+                                                         + ((b1 - 128) * 4096))
+                                                        + ((b2 - 128) * 64))
+                                                       + (b3 - 128))
+                                                      4 True
+                                                 else Tup3_Int_Int_bool'mk
+                                                      65533 3 False
+                   else Tup3_Int_Int_bool'mk 65533 1 False
+  
+  function strict_error (seq int) : t_Option_tup2_Int_Option_Int
+  
+  axiom strict_error_def :
+    forall bytes:seq int [strict_error bytes].
+     strict_error bytes =
+     (if length bytes = 0 then None'0
+      else match utf8_step bytes 0 with
+      | Tup3_Int_Int_bool'mk _ consumed valid ->
+          if valid = True
+          then match strict_error bytes[consumed..length bytes] with
+          | Some'0 (Tup2_Int_Option_Int'mk offset len) ->
+              Some'0 (Tup2_Int_Option_Int'mk (consumed + offset) len)
+          | None'0 -> None'0
+          end
+          else let lead = get bytes 0 in
+               let remaining = length bytes in
+               let truncated =
+                 (if 194 <= lead /\ lead <= 223 /\ remaining < 2 \/
+                     224 <= lead /\
+                     lead <= 239 /\ remaining < 3 /\ consumed = remaining \/
+                     240 <= lead /\
+                     lead <= 244 /\ remaining < 4 /\ consumed = remaining
+                  then True else False)
+               in
+               Some'0
+               (Tup2_Int_Option_Int'mk 0
+                (if truncated = True then None else Some consumed))
+      end)
+  
+  (* meta compute_max_steps 1000000 *)
+  
+  (* meta select_lsinst "all" *)
+  
+  goal vc_strict_error_after_valid_prefix :
+    strict_error ((singleton 97 ++ singleton 195) ++ singleton 40) =
+    Some'0 (Tup2_Int_Option_Int'mk 1 (Some 1))
+  
+end
+

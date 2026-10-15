@@ -1,0 +1,338 @@
+theory Coma
+  
+  (* use why3.BuiltIn.BuiltIn *)
+  
+  (* use why3.Bool.Bool *)
+  
+  (* use why3.Unit.Unit *)
+  
+  (* use creusot.slice.Slice64 *)
+  
+  (* use creusot.prelude.MutBorrow *)
+  
+  (* use creusot.int.UInt8 *)
+  
+  (* use map.Map *)
+  
+  (* use creusot.prelude.Char *)
+  
+  (* use creusot.int.UInt32 *)
+  
+  (* use creusot.prelude.Any *)
+  
+  type tup2_ref_str_bool =
+    | Tup2_ref_str_bool'mk (f0:string) (f1:bool)
+  
+  (* meta model_record function f1 *)
+  
+  (* meta model_record function f0 *)
+  
+  goal vc_new_tup2_ref_str_bool : true
+  
+  goal vc_len_ref_str : true
+  
+  function index_Mapping_u8_Int (self:t -> int) (a:t) : int = get self a
+  
+  (* meta rewrite_def function index_Mapping_u8_Int *)
+  
+  function map_u8 (seq t) (t -> int) : seq int
+  
+  axiom map_u8_spec :
+    forall self:seq t, m:t -> int [map_u8 self m].
+     length (map_u8 self m) = length self
+  
+  axiom map_u8_spec'0 :
+    forall self:seq t, m:t -> int [map_u8 self m].
+     forall i:int.
+      0 <= i /\ i < length self ->
+      get1 (map_u8 self m) i = index_Mapping_u8_Int m (get1 self i)
+  
+  function tail_char (self:seq t1) : seq t1 = self[1..length self]
+  
+  function flat_map_char (seq t1) (t1 -> seq t) : seq t
+  
+  axiom flat_map_char_def :
+    forall self:seq t1, other:t1 -> seq t [flat_map_char self other].
+     flat_map_char self other =
+     (if length self = 0 then empty: seq t
+      else get other (get1 self 0) ++ flat_map_char (tail_char self) other)
+  
+  function to_utf8_char t1 : seq t
+  
+  axiom to_utf8_char_spec :
+    forall self:t1 [to_utf8_char self].
+     1 <= length (to_utf8_char self) /\ length (to_utf8_char self) <= 4
+  
+  function to_bytes (self:seq t1) : seq t =
+    flat_map_char self (fun (c:t1) -> to_utf8_char c)
+  
+  function view_str string : seq t1
+  
+  function string_chunk_bytes (s:string) : seq int =
+    map_u8 (to_bytes (view_str s)) (fun (b:t) -> t'int b)
+  
+  predicate successful_model_prefix (expected:seq (seq int)) (trace:seq
+    tup2_ref_str_bool) (count:int) =
+    0 <= count /\
+    count <= length expected /\
+    length trace = count /\
+    (forall j:int.
+      0 <= j /\ j < count ->
+      string_chunk_bytes ((get1 trace j).f0) = get1 expected j /\
+      (get1 trace j).f1 = True)
+  
+  predicate gt_log_Int (self:int) (other:int) = other < self
+  
+  (* meta rewrite_def predicate gt_log_Int *)
+  
+  predicate ge_log_Int (self:int) (other:int) = other <= self
+  
+  (* meta rewrite_def predicate ge_log_Int *)
+  
+  predicate should_encode_model (mask:seq t2) (byte:t) =
+    ge_log_Int (t'int byte) 128 \/
+    not bw_and (get1 mask (div (t'int byte) 32))
+        (shl (1:t2) (of_int (t'int (bw_and1 byte (31:t))))) = (0:t2)
+  
+  function uppercase_hex (digit:int) : int =
+    if digit < 10 then 48 + digit else 55 + digit
+  
+  axiom uppercase_hex_spec :
+    forall digit:int [uppercase_hex digit].
+     uppercase_hex digit = (if digit < 10 then 48 + digit else 55 + digit)
+  
+  function uppercase_hex'0 (digit:int) : int = uppercase_hex digit
+  
+  function encoded_byte_model (byte:int) : seq int =
+    (singleton 37 ++ singleton (uppercase_hex'0 (div byte 16)))
+    ++ singleton (uppercase_hex'0 (mod byte 16))
+  
+  function safe_run_end (seq t) int (seq t2) : int
+  
+  axiom safe_run_end_spec :
+    forall input:seq t, start:int, mask:seq t2
+     [safe_run_end input start mask].
+     0 <= start /\ start <= length input ->
+     length mask = 4 ->
+     start <= safe_run_end input start mask /\
+     safe_run_end input start mask <= length input
+  
+  axiom safe_run_end_spec'0 :
+    forall input:seq t, start:int, mask:seq t2
+     [safe_run_end input start mask].
+     0 <= start /\ start <= length input ->
+     length mask = 4 ->
+     (forall i:int.
+       start <= i /\ i < safe_run_end input start mask ->
+       not should_encode_model mask (get1 input i))
+  
+  axiom safe_run_end_spec'1 :
+    forall input:seq t, start:int, mask:seq t2
+     [safe_run_end input start mask].
+     0 <= start /\ start <= length input ->
+     length mask = 4 ->
+     safe_run_end input start mask = length input \/
+     should_encode_model mask (get1 input (safe_run_end input start mask))
+  
+  axiom safe_run_end_spec'2 :
+    forall input:seq t, start:int, mask:seq t2
+     [safe_run_end input start mask].
+     0 <= start /\ start <= length input ->
+     length mask = 4 ->
+     start < length input /\ not should_encode_model mask (get1 input start) ->
+     start < safe_run_end input start mask
+  
+  function byte_sequence_as_ints (bytes:seq t) : seq int =
+    map_u8 bytes (fun (byte:t) -> t'int byte)
+  
+  function encoded_chunks (seq t2) (seq t) : seq (seq int)
+  
+  axiom encoded_chunks_def :
+    forall mask:seq t2, input:seq t [encoded_chunks mask input].
+     length mask = 4 ->
+     encoded_chunks mask input =
+     (if length input = 0 then empty: seq (seq int)
+      else if should_encode_model mask (get1 input 0)
+           then singleton (encoded_byte_model (t'int (get1 input 0)))
+                ++ encoded_chunks mask input[1..length input]
+           else let end' = safe_run_end input 0 mask in
+                singleton (byte_sequence_as_ints input[0..end'])
+                ++ encoded_chunks mask input[end'..length input])
+  
+  axiom encoded_chunks_spec :
+    forall mask:seq t2, input:seq t [encoded_chunks mask input].
+     length mask = 4 ->
+     (if length input = 0 then length (encoded_chunks mask input) = 0
+      else gt_log_Int (length (encoded_chunks mask input)) 0 /\
+           (if should_encode_model mask (get1 input 0)
+            then get1 (encoded_chunks mask input) 0 =
+                 encoded_byte_model (t'int (get1 input 0)) /\
+                 (encoded_chunks mask input)[1..length
+                                                (encoded_chunks mask input)] =
+                 encoded_chunks mask input[1..length input]
+            else let end' = safe_run_end input 0 mask in
+                 get1 (encoded_chunks mask input) 0 =
+                 byte_sequence_as_ints input[0..end'] /\
+                 (encoded_chunks mask input)[1..length
+                                                (encoded_chunks mask input)] =
+                 encoded_chunks mask input[end'..length input]))
+  
+  type t_Formatter
+  
+  predicate inv_Formatter t_Formatter
+  
+  predicate invariant_refmut_Formatter (self:t3 t_Formatter) =
+    inv_Formatter (self.current) /\ inv_Formatter (self.final)
+  
+  (* meta rewrite_def predicate invariant_refmut_Formatter *)
+  
+  predicate inv_refmut_Formatter (_1:t3 t_Formatter) =
+    invariant_refmut_Formatter _1
+  
+  (* meta rewrite_def predicate inv_refmut_Formatter *)
+  
+  goal vc_borrow_mut_Seq_tup2_ref_str_bool : true
+  
+  type t_Result_unit_Error =
+    | Ok unit
+    | Err unit
+  
+  goal vc_request_write : true
+  
+  predicate resolve_refmut_Formatter (_1:t3 t_Formatter) =
+    _1.final = _1.current
+  
+  (* meta rewrite_def predicate resolve_refmut_Formatter *)
+  
+  goal vc_elim_Err : true
+  
+  predicate failed_model_prefix (expected:seq (seq int)) (trace:seq
+    tup2_ref_str_bool) (count:int) =
+    0 <= count /\
+    count < length expected /\
+    length trace = (count + 1) /\
+    (forall j:int.
+      0 <= j /\ j < count ->
+      string_chunk_bytes ((get1 trace j).f0) = get1 expected j /\
+      (get1 trace j).f1 = True) /\
+    string_chunk_bytes ((get1 trace count).f0) = get1 expected count /\
+    not (get1 trace count).f1 = True
+  
+  (* meta compute_max_steps 1000000 *)
+  
+  (* meta select_lsinst "all" *)
+  
+  goal vc_encoded_pair_trace :
+    forall f:t3 t_Formatter, left:string, right:string, mask:slice t2, input:
+     slice t.
+     inv_refmut_Formatter f /\
+     length (view mask) = 4 /\
+     encoded_chunks (view mask) (view input) =
+     (singleton (string_chunk_bytes left)
+      ++ singleton (string_chunk_bytes right)) ->
+     (forall f2:t3 t_Formatter, chunks:slice string, trace:seq
+       tup2_ref_str_bool, i:t4, _29:bool, _31:t4, chunk:string, _35:t4, _36:
+       bool, _37:t_Result_unit_Error, _38:t3 t_Formatter, _40:t3 (seq
+       tup2_ref_str_bool), _41:t3 (seq tup2_ref_str_bool), _old:t_Formatter.
+       (forall f3:t3 t_Formatter, chunks1:slice string, trace1:seq
+         tup2_ref_str_bool, i1:t4, _291:bool, _311:t4, _old1:t_Formatter.
+         (forall __arr_temp:slice string.
+           get1 (__arr_temp.elts) 0 = left /\
+           get1 (__arr_temp.elts) 1 = right /\ length (__arr_temp.elts) = 2 ->
+           (inv_refmut_Formatter f &&
+            t'int1 (0:t4) <= length (view __arr_temp) &&
+            successful_model_prefix (encoded_chunks (view mask) (view input))
+            (empty: seq tup2_ref_str_bool) (t'int1 (0:t4))) /\
+           (forall f4:t3 t_Formatter, trace2:seq tup2_ref_str_bool, i2:t4.
+             inv_refmut_Formatter f4 ->
+             f.final = f4.final ->
+             t'int1 i2 <= length (view __arr_temp) ->
+             successful_model_prefix
+             (encoded_chunks (view mask) (view input)) trace2 (t'int1 i2) ->
+             (forall result:t4.
+               length (view __arr_temp) = t'int1 result ->
+               lt i2 result ->
+               lt i2 (2:t4) &&
+               t'int1 i2 < length (__arr_temp.elts) &&
+               (forall fin:seq tup2_ref_str_bool.
+                 (forall fin1:t_Formatter, id:int.
+                   inv_Formatter fin1 ->
+                   inv_refmut_Formatter (t'mk (f4.current) fin1 id) /\
+                   (forall result1:t_Result_unit_Error.
+                     fin =
+                     snoc trace2
+                     (Tup2_ref_str_bool'mk
+                      (get1 (__arr_temp.elts) (t'int1 i2))
+                      match result1 with
+                      | Ok () -> True
+                      | Err _ -> False
+                      end) ->
+                     result1 = Ok () ->
+                     in_bounds (t'int1 i2 + t'int1 (1:t4)) /\
+                     (forall result2:t4.
+                       t'int1 result2 = (t'int1 i2 + t'int1 (1:t4)) ->
+                       inv_refmut_Formatter (t'mk fin1 (f4.final) (f4.id1)) &&
+                       f.final = f4.final &&
+                       t'int1 result2 <= length (view __arr_temp) &&
+                       successful_model_prefix
+                       (encoded_chunks (view mask) (view input)) fin
+                       (t'int1 result2)))) /\
+                 inv_Formatter (f4.current))))) /\
+         ((get1 (chunks1.elts) 0 = left /\
+           get1 (chunks1.elts) 1 = right /\ length (chunks1.elts) = 2) /\
+          inv_refmut_Formatter f3 /\
+          f.final = f3.final /\
+          t'int1 i1 <= length (view chunks1) /\
+          successful_model_prefix (encoded_chunks (view mask) (view input))
+          trace1 (t'int1 i1) /\
+          length (view chunks1) = t'int1 _311 /\
+          not lt i1 _311 /\
+          (if lt i1 _311 then _291 = True else _291 = False) /\
+          _old1 = f.final ->
+          (resolve_refmut_Formatter f3 ->
+           successful_model_prefix (encoded_chunks (view mask) (view input))
+           trace1 (t'int1 i1)) /\
+          inv_refmut_Formatter f3)) /\
+       ((get1 (chunks.elts) 0 = left /\
+         get1 (chunks.elts) 1 = right /\ length (chunks.elts) = 2) /\
+        (exists f3:t3 t_Formatter, trace1:seq tup2_ref_str_bool.
+          inv_refmut_Formatter f3 /\
+          f.final = f3.final /\
+          t'int1 i <= length (view chunks) /\
+          successful_model_prefix (encoded_chunks (view mask) (view input))
+          trace1 (t'int1 i) /\
+          length (view chunks) = t'int1 _31 /\
+          lt i _31 /\
+          lt i (2:t4) /\
+          t'int1 i < length (chunks.elts) /\
+          (exists id:int.
+            _40 = t'mk trace1 trace id /\
+            (exists fin:t_Formatter, id2:int.
+              inv_Formatter fin /\
+              _40.final =
+              snoc (_40.current)
+              (Tup2_ref_str_bool'mk (get1 (chunks.elts) (t'int1 i))
+               match _37 with
+               | Ok () -> True
+               | Err _ -> False
+               end) /\
+              _37 = Err () /\
+              f2 = t'mk fin (f3.final) (f3.id1) /\
+              (if lt i _31 then _29 = True else _29 = False) /\
+              chunk = get1 (chunks.elts) (t'int1 i) /\
+              _35 = i /\
+              (if lt i (2:t4) then _36 = True else _36 = False) /\
+              _38 = t'mk (f3.current) fin id2 /\
+              _41 = t'mk trace1 trace id /\ _old = f.final))) ->
+        (resolve_refmut_Formatter f2 ->
+         (Err () = _37 ->
+          failed_model_prefix (encoded_chunks (view mask) (view input)) trace
+          (t'int1 i)) /\
+         match _37 with
+         | Err _ -> true
+         | _ -> false
+         end) /\
+        inv_refmut_Formatter f2))
+  
+end
+

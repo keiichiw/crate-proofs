@@ -1,0 +1,39 @@
+thread 'rustc' panicked at creusot/src/backend/term.rs:578:43:
+not yet implemented
+stack backtrace:
+   0:     0x7f6e3500432b - <std[f7934c851df7d6b8]::backtrace::Backtrace>::create
+   1:     0x7f6e35004275 - <std[f7934c851df7d6b8]::backtrace::Backtrace>::force_capture
+   2:     0x7f6e34073f2d - std[f7934c851df7d6b8]::panicking::update_hook::<alloc[748b82433ba3d086]::boxed::Box<rustc_driver_impl[32a0c68870176c75]::install_ice_hook::{closure#1}>>::{closure#0}
+   3:     0x7f6e35017922 - std[f7934c851df7d6b8]::panicking::panic_with_hook
+   4:     0x7f6e34ff9d14 - std[f7934c851df7d6b8]::panicking::panic_handler::{closure#0}
+   5:     0x7f6e34ff09a9 - std[f7934c851df7d6b8]::sys::backtrace::__rust_end_short_backtrace::<std[f7934c851df7d6b8]::panicking::panic_handler::{closure#0}, !>
+   6:     0x7f6e34ffb74d - __rustc[d0241b7fe89c64df]::rust_begin_unwind
+   7:     0x7f6e31f0885c - core[c29be014b545570a]::panicking::panic_fmt
+   8:     0x7f6e327dc712 - core[c29be014b545570a]::panicking::panic
+   9:     0x55adf7488f92 - <creusot[5ee4aefe09e6bdb1]::backend::term::Lower<creusot[5ee4aefe09e6bdb1]::backend::clone_map::Dependencies>>::lower_literal
+  10:     0x55adf74873bc - <creusot[5ee4aefe09e6bdb1]::backend::term::Lower<creusot[5ee4aefe09e6bdb1]::backend::clone_map::Dependencies>>::lower_term
+  11:     0x55adf7485ebd - <creusot[5ee4aefe09e6bdb1]::backend::term::Lower<creusot[5ee4aefe09e6bdb1]::backend::clone_map::Dependencies>>::lower_term
+  12:     0x55adf74da417 - <creusot[5ee4aefe09e6bdb1]::translation::fmir::Operand>::into_why::<creusot[5ee4aefe09e6bdb1]::backend::clone_map::Dependencies>
+  13:     0x55adf74c724e - <creusot[5ee4aefe09e6bdb1]::translation::fmir::RValue>::into_why::<creusot[5ee4aefe09e6bdb1]::backend::clone_map::Dependencies>
+  14:     0x55adf74cfcf2 - <creusot[5ee4aefe09e6bdb1]::translation::fmir::Block>::into_why::<creusot[5ee4aefe09e6bdb1]::backend::clone_map::Dependencies>
+  15:     0x55adf7476052 - creusot[5ee4aefe09e6bdb1]::backend::program::component_to_defn::<creusot[5ee4aefe09e6bdb1]::backend::clone_map::Dependencies>
+  16:     0x55adf74b9a72 - <alloc[748b82433ba3d086]::vec::into_iter::IntoIter<creusot[5ee4aefe09e6bdb1]::backend::wto::Component<rustc_middle[c7d38cd0d03b7377]::mir::BasicBlock>> as core[c29be014b545570a]::iter::traits::iterator::Iterator>::fold::<(), core[c29be014b545570a]::iter::adapters::map::map_fold<creusot[5ee4aefe09e6bdb1]::backend::wto::Component<rustc_middle[c7d38cd0d03b7377]::mir::BasicBlock>, why3[9da4b983f51289e6]::coma::Defn, (), creusot[5ee4aefe09e6bdb1]::backend::program::why_body<creusot[5ee4aefe09e6bdb1]::backend::clone_map::Dependencies>::{closure#3}, core[c29be014b545570a]::iter::traits::iterator::Iterator::for_each::call<why3[9da4b983f51289e6]::coma::Defn, <alloc[748b82433ba3d086]::vec::Vec<why3[9da4b983f51289e6]::coma::Defn>>::extend_trusted<core[c29be014b545570a]::iter::adapters::map::Map<alloc[748b82433ba3d086]::vec::into_iter::IntoIter<creusot[5ee4aefe09e6bdb1]::backend::wto::Component<rustc_middle[c7d38cd0d03b7377]::mir::BasicBlock>>, creusot[5ee4aefe09e6bdb1]::backend::program::why_body<creusot[5ee4aefe09e6bdb1]::backend::clone_map::Dependencies>::{closure#3}>>::{closure#0}>::{closure#0}>::{closure#0}>
+  17:     0x55adf73a9866 - <alloc[748b82433ba3d086]::vec::Vec<why3[9da4b983f51289e6]::coma::Defn> as alloc[748b82433ba3d086]::vec::spec_from_iter::SpecFromIter<why3[9da4b983f51289e6]::coma::Defn, core[c29be014b545570a]::iter::adapters::map::Map<alloc[748b82433ba3d086]::vec::into_iter::IntoIter<creusot[5ee4aefe09e6bdb1]::backend::wto::Component<rustc_middle[c7d38cd0d03b7377]::mir::BasicBlock>>, creusot[5ee4aefe09e6bdb1]::backend::program::why_body<creusot[5ee4aefe09e6bdb1]::backend::clone_map::Dependencies>::{closure#3}>>>::from_iter
+  18:     0x55adf747ca38 - creusot[5ee4aefe09e6bdb1]::backend::program::why_body::<creusot[5ee4aefe09e6bdb1]::backend::clone_map::Dependencies>
+  19:     0x55adf7490618 - <creusot[5ee4aefe09e6bdb1]::backend::Why3Generator>::translate
+  20:     0x55adf736c058 - creusot[5ee4aefe09e6bdb1]::translation::after_analysis
+  21:     0x55adf7348b35 - <creusot[5ee4aefe09e6bdb1]::callbacks::ToWhy as rustc_driver_impl[32a0c68870176c75]::Callbacks>::after_expansion
+  22:     0x7f6e36780dfe - rustc_interface[76d982d70b94989d]::interface::run_compiler::<(), rustc_driver_impl[32a0c68870176c75]::run_compiler::{closure#0}>::{closure#1}
+  23:     0x7f6e367b0efa - std[f7934c851df7d6b8]::sys::backtrace::__rust_begin_short_backtrace::<rustc_interface[76d982d70b94989d]::util::run_in_thread_with_globals<rustc_interface[76d982d70b94989d]::util::run_in_thread_pool_with_globals<rustc_interface[76d982d70b94989d]::interface::run_compiler<(), rustc_driver_impl[32a0c68870176c75]::run_compiler::{closure#0}>::{closure#1}, ()>::{closure#0}, ()>::{closure#0}::{closure#0}, ()>
+  24:     0x7f6e367b0cad - <std[f7934c851df7d6b8]::thread::lifecycle::spawn_unchecked<rustc_interface[76d982d70b94989d]::util::run_in_thread_with_globals<rustc_interface[76d982d70b94989d]::util::run_in_thread_pool_with_globals<rustc_interface[76d982d70b94989d]::interface::run_compiler<(), rustc_driver_impl[32a0c68870176c75]::run_compiler::{closure#0}>::{closure#1}, ()>::{closure#0}, ()>::{closure#0}::{closure#0}, ()>::{closure#1} as core[c29be014b545570a]::ops::function::FnOnce<()>>::call_once::{shim:vtable#0}
+  25:     0x7f6e367a7190 - <std[f7934c851df7d6b8]::sys::thread::unix::Thread>::new::thread_start
+  26:     0x7f6e30471b7b - <unknown>
+  27:     0x7f6e304ef7f8 - <unknown>
+  28:                0x0 - <unknown>
+
+
+rustc version: 1.98.0-nightly (91fe22da8 2026-06-21)
+platform: x86_64-unknown-linux-gnu
+
+query stack during panic:
+end of query stack

@@ -1,0 +1,89 @@
+theory Coma
+  
+  (* use why3.BuiltIn.BuiltIn *)
+  
+  (* use why3.Bool.Bool *)
+  
+  (* use why3.Unit.Unit *)
+  
+  (* use creusot.prelude.Char *)
+  
+  (* use seq.Seq *)
+  
+  (* use creusot.int.UInt8 *)
+  
+  (* use map.Map *)
+  
+  (* use creusot.prelude.Any *)
+  
+  function tail_char (self:seq t) : seq t = self[1..length self]
+  
+  function flat_map_char (seq t) (t -> seq t1) : seq t1
+  
+  axiom flat_map_char_def :
+    forall self:seq t, other:t -> seq t1 [flat_map_char self other].
+     flat_map_char self other =
+     (if length self = 0 then empty: seq t1
+      else get other (get1 self 0) ++ flat_map_char (tail_char self) other)
+  
+  function to_utf8_char t : seq t1
+  
+  axiom to_utf8_char_spec :
+    forall self:t [to_utf8_char self].
+     1 <= length (to_utf8_char self) /\ length (to_utf8_char self) <= 4
+  
+  function to_bytes (self:seq t) : seq t1 =
+    flat_map_char self (fun (c:t) -> to_utf8_char c)
+  
+  function index_Mapping_u8_Int (self:t1 -> int) (a:t1) : int = get self a
+  
+  (* meta rewrite_def function index_Mapping_u8_Int *)
+  
+  function map_u8 (seq t1) (t1 -> int) : seq int
+  
+  axiom map_u8_spec :
+    forall self:seq t1, m:t1 -> int [map_u8 self m].
+     length (map_u8 self m) = length self
+  
+  axiom map_u8_spec'0 :
+    forall self:seq t1, m:t1 -> int [map_u8 self m].
+     forall i:int.
+      0 <= i /\ i < length self ->
+      get1 (map_u8 self m) i = index_Mapping_u8_Int m (get1 self i)
+  
+  function byte_sequence_as_ints (bytes:seq t1) : seq int =
+    map_u8 bytes (fun (byte:t1) -> t'int byte)
+  
+  predicate string_bytes_concat (seq t) (seq t)
+  
+  axiom string_bytes_concat_spec :
+    forall prefix:seq t, suffix:seq t [string_bytes_concat prefix suffix].
+     string_bytes_concat prefix suffix
+  
+  axiom string_bytes_concat_spec'0 :
+    forall prefix:seq t, suffix:seq t.
+     to_bytes (prefix ++ suffix) = (to_bytes prefix ++ to_bytes suffix)
+  
+  axiom string_bytes_concat_spec'1 :
+    forall prefix:seq t, suffix:seq t.
+     byte_sequence_as_ints (to_bytes (prefix ++ suffix)) =
+     (byte_sequence_as_ints (to_bytes prefix)
+      ++ byte_sequence_as_ints (to_bytes suffix))
+  
+  function view_str string : seq t
+  
+  (* meta compute_max_steps 1000000 *)
+  
+  (* meta select_lsinst "all" *)
+  
+  goal vc_probe_string_bytes_concat :
+    forall prefix:string, suffix:string.
+     string_bytes_concat (view_str prefix) (view_str suffix) &&
+     to_bytes (view_str prefix ++ view_str suffix) =
+     (to_bytes (view_str prefix) ++ to_bytes (view_str suffix)) &&
+     byte_sequence_as_ints (to_bytes (view_str prefix ++ view_str suffix)) =
+     (byte_sequence_as_ints (to_bytes (view_str prefix))
+      ++ byte_sequence_as_ints (to_bytes (view_str suffix)))
+  
+end
+

@@ -1,0 +1,123 @@
+theory Coma
+  
+  (* use why3.BuiltIn.BuiltIn *)
+  
+  (* use why3.Bool.Bool *)
+  
+  (* use why3.Unit.Unit *)
+  
+  (* use creusot.prelude.MutBorrow *)
+  
+  (* use seq.Seq *)
+  
+  (* use creusot.prelude.Any *)
+  
+  type t_Formatter
+  
+  predicate inv_Formatter t_Formatter
+  
+  type t_Result_unit_Error =
+    | Ok unit
+    | Err unit
+  
+  predicate invariant_refmut_Formatter (self:t t_Formatter) =
+    inv_Formatter (self.current) /\ inv_Formatter (self.final)
+  
+  (* meta rewrite_def predicate invariant_refmut_Formatter *)
+  
+  predicate inv_refmut_Formatter (_1:t t_Formatter) =
+    invariant_refmut_Formatter _1
+  
+  (* meta rewrite_def predicate inv_refmut_Formatter *)
+  
+  goal vc_write_str : true
+  
+  predicate resolve_refmut_Formatter (_1:t t_Formatter) =
+    _1.final = _1.current
+  
+  (* meta rewrite_def predicate resolve_refmut_Formatter *)
+  
+  type tup2_ref_str_bool =
+    | Tup2_ref_str_bool'mk (f0:string) (f1:bool)
+  
+  (* meta model_record function f1 *)
+  
+  (* meta model_record function f0 *)
+  
+  goal vc_deref_mut_Ghost_refmut_Seq_tup2_ref_str_bool : true
+  
+  goal vc_push_back_ghost_tup2_ref_str_bool : true
+  
+  predicate resolve_refmut_refmut_Seq_tup2_ref_str_bool (_1:t (t (seq
+    tup2_ref_str_bool))) = _1.final = _1.current
+  
+  (* meta rewrite_def
+    predicate resolve_refmut_refmut_Seq_tup2_ref_str_bool *)
+  
+  predicate resolve_refmut_Seq_tup2_ref_str_bool (_1:t (seq
+    tup2_ref_str_bool)) = _1.final = _1.current
+  
+  (* meta rewrite_def predicate resolve_refmut_Seq_tup2_ref_str_bool *)
+  
+  predicate resolve_Ghost_refmut_Seq_tup2_ref_str_bool (self:t (seq
+    tup2_ref_str_bool)) = resolve_refmut_Seq_tup2_ref_str_bool self
+  
+  (* meta rewrite_def predicate resolve_Ghost_refmut_Seq_tup2_ref_str_bool *)
+  
+  predicate resolve_Ghost_refmut_Seq_tup2_ref_str_bool'0 (_1:t (seq
+    tup2_ref_str_bool)) = resolve_Ghost_refmut_Seq_tup2_ref_str_bool _1
+  
+  (* meta rewrite_def
+    predicate resolve_Ghost_refmut_Seq_tup2_ref_str_bool'0 *)
+  
+  goal vc_new_unit : true
+  
+  (* meta compute_max_steps 1000000 *)
+  
+  (* meta select_lsinst "all" *)
+  
+  goal vc_request_write :
+    forall formatter:t t_Formatter, chunk:string, trace:t (seq
+     tup2_ref_str_bool).
+     inv_refmut_Formatter formatter ->
+     (forall fin:t_Formatter.
+       inv_Formatter fin ->
+       inv_refmut_Formatter (t'mk (formatter.current) fin (get_id formatter)) /\
+       (forall result:t_Result_unit_Error.
+         (resolve_refmut_Formatter
+          (t'mk fin (formatter.final) (formatter.id)) ->
+          (result = Ok () ->
+           (forall fin1:t (seq tup2_ref_str_bool), id1:int.
+             resolve_refmut_refmut_Seq_tup2_ref_str_bool
+             (t'mk
+              (t'mk (snoc (trace.current) (Tup2_ref_str_bool'mk chunk True))
+               (trace.final) (trace.id))
+              fin1 id1) ->
+             resolve_Ghost_refmut_Seq_tup2_ref_str_bool'0 fin1 ->
+             trace.final =
+             snoc (trace.current)
+             (Tup2_ref_str_bool'mk chunk
+              match result with
+              | Ok () -> True
+              | Err _ -> False
+              end))) /\
+          (result = Err () ->
+           (forall fin1:t (seq tup2_ref_str_bool), id1:int.
+             resolve_refmut_refmut_Seq_tup2_ref_str_bool
+             (t'mk
+              (t'mk (snoc (trace.current) (Tup2_ref_str_bool'mk chunk False))
+               (trace.final) (trace.id))
+              fin1 id1) ->
+             resolve_Ghost_refmut_Seq_tup2_ref_str_bool'0 fin1 ->
+             trace.final =
+             snoc (trace.current)
+             (Tup2_ref_str_bool'mk chunk
+              match result with
+              | Ok () -> True
+              | Err _ -> False
+              end)))) /\
+         inv_refmut_Formatter (t'mk fin (formatter.final) (formatter.id)))) /\
+     inv_Formatter (formatter.current)
+  
+end
+

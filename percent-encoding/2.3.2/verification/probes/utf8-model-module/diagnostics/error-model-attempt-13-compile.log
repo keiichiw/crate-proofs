@@ -1,0 +1,127 @@
+    Checking percent-encoding v2.3.2 (/workspace/proof-env/percent-encoding/2.3.2/crate)
+warning: unused import: `ToOwned`
+  --> src/lib.rs:50:19
+   |
+50 |     borrow::{Cow, ToOwned},
+   |                   ^^^^^^^
+   |
+   = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused import: `fmt`
+  --> src/lib.rs:55:12
+   |
+55 | use core::{fmt, slice, str};
+   |            ^^^
+
+warning: function `percent_encode_size_hint` is never used
+   --> src/lib.rs:561:4
+    |
+561 | fn percent_encode_size_hint(bytes: &[u8]) -> (usize, Option<usize>) {
+    |    ^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: methods `contains` and `should_percent_encode` are never used
+  --> src/ascii_set.rs:85:25
+   |
+63 | impl AsciiSet {
+   | ------------- methods in this implementation
+...
+85 |     pub(crate) const fn contains(&self, byte: u8) -> bool {
+   |                         ^^^^^^^^
+...
+93 |     pub(crate) fn should_percent_encode(&self, byte: u8) -> bool {
+   |                   ^^^^^^^^^^^^^^^^^^^^^
+
+warning: function `contains_model` is never used
+   --> src/ascii_set.rs:140:4
+    |
+140 | fn contains_model(set: &AsciiSet, byte: u8) -> bool {
+    |    ^^^^^^^^^^^^^^
+
+warning: function `utf8_step_bounds` is never used
+   --> src/utf8_models.rs:120:15
+    |
+120 | pub(crate) fn utf8_step_bounds(bytes: Seq<Int>, pos: Int) {
+    |               ^^^^^^^^^^^^^^^^
+
+warning: function `strict_error_truncated_two` is never used
+   --> src/utf8_models.rs:188:15
+    |
+188 | pub(crate) fn strict_error_truncated_two() {
+    |               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: function `strict_error_invalid_lead` is never used
+   --> src/utf8_models.rs:193:15
+    |
+193 | pub(crate) fn strict_error_invalid_lead() {
+    |               ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: function `strict_error_after_valid_prefix` is never used
+   --> src/utf8_models.rs:198:15
+    |
+198 | pub(crate) fn strict_error_after_valid_prefix() {
+    |               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: function `strict_error_truncated_three` is never used
+   --> src/utf8_models.rs:209:15
+    |
+209 | pub(crate) fn strict_error_truncated_three() {
+    |               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: function `strict_error_bad_third_byte` is never used
+   --> src/utf8_models.rs:214:15
+    |
+214 | pub(crate) fn strict_error_bad_third_byte() {
+    |               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: function `strict_error_truncated_four` is never used
+   --> src/utf8_models.rs:225:15
+    |
+225 | pub(crate) fn strict_error_truncated_four() {
+    |               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: function `strict_error_bad_fourth_byte` is never used
+   --> src/utf8_models.rs:236:15
+    |
+236 | pub(crate) fn strict_error_bad_fourth_byte() {
+    |               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: function `strict_error_surrogate` is never used
+   --> src/utf8_models.rs:248:15
+    |
+248 | pub(crate) fn strict_error_surrogate() {
+    |               ^^^^^^^^^^^^^^^^^^^^^^
+
+warning: function `strict_error_above_unicode_max` is never used
+   --> src/utf8_models.rs:259:15
+    |
+259 | pub(crate) fn strict_error_above_unicode_max() {
+    |               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: function `strict_error_overlong` is never used
+   --> src/utf8_models.rs:271:15
+    |
+271 | pub(crate) fn strict_error_overlong() {
+    |               ^^^^^^^^^^^^^^^^^^^^^
+
+warning: function `strict_error_valid_ascii` is never used
+   --> src/utf8_models.rs:282:15
+    |
+282 | pub(crate) fn strict_error_valid_ascii() {
+    |               ^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: function `strict_error_valid_multibyte` is never used
+   --> src/utf8_models.rs:287:15
+    |
+287 | pub(crate) fn strict_error_valid_multibyte() {
+    |               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: function `percent_encode_eq_model` is never used
+  --> src/equality_models.rs:14:8
+   |
+14 | pub fn percent_encode_eq_model(
+   |        ^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: `percent-encoding` (lib) generated 19 warnings (run `cargo fix --lib -p percent-encoding` to apply 2 suggestions)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.67s

@@ -1,0 +1,33 @@
+theory Coma
+  
+  (* use why3.BuiltIn.BuiltIn *)
+  
+  (* use why3.Bool.Bool *)
+  
+  (* use why3.Unit.Unit *)
+  
+  (* use creusot.slice.Slice64 *)
+  
+  (* use creusot.int.UInt8 *)
+  
+  (* use creusot.prelude.Any *)
+  
+  type t_ByteSerialize =
+    | T_ByteSerialize'mk (bytes:slice t)
+  
+  (* meta model_record function bytes *)
+  
+  function remaining_bytes (self:t_ByteSerialize) : seq t = view (self.bytes)
+  
+  (* meta rewrite_def function remaining_bytes *)
+  
+  (* meta compute_max_steps 1000000 *)
+  
+  (* meta select_lsinst "all" *)
+  
+  goal vc_byte_serialize :
+    forall input:slice t.
+     remaining_bytes (T_ByteSerialize'mk input) = view input
+  
+end
+

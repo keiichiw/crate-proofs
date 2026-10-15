@@ -1,0 +1,11 @@
+# Verification scope
+
+This page defines the selected scope. Run outcomes, native-test counts, evidence links, and current-input freshness are maintained in [results.md](results.md). The archived integrated run completed the selected proof obligations; the earlier provisional diagnostic state is superseded for that frozen snapshot. Changes to fingerprinted inputs require a fresh run.
+
+The selected first-order API comprises `parse`, `Parse` state/clone/ownership conversion/iteration, `byte_serialize`, `ByteSerialize` state/iteration/size hints, and the concrete `Target` implementations for `String` and `&mut String`. `Parse` exposes a decoded scalar trace and a separate Cow borrowed/owned trace; `ParseIntoOwned` exposes a scalar trace and returns owned strings by type; the byte serializer exposes the exact encoded chunk sequence. Their runtime iterator bodies are shared between native and Creusot builds. Creusot-only logic and contracts describe those bodies.
+
+The public serializer API is outside this translated proof scope. Creusot 0.13 rejects the exact `dyn Fn(&str) -> Cow<[u8]>` callback type as a `forbidden dyn type`. No substitute callback type, erased field, or callback behavior is assumed. The derived `ByteSerialize` Debug implementation is explicitly excluded. Standard-library iterator defaults and blanket implementations are covered only through the recorded standard-library boundary and the checked concrete `IteratorSpec`; their individual library bodies are not separate selected goals. No allocation, pointer identity, out-of-memory behavior, or custom `Debug::fmt` guarantee is claimed.
+
+The exact generated-target inventory is [target-inventory.json](target-inventory.json); public-item scope and exclusions are in [public-api-inventory.md](public-api-inventory.md). Standard-library conditions are in [assumptions.md](assumptions.md). Native differential comparisons provide finite correspondence evidence, separately from formal proof.
+
+Use `bash form_urlencoded/1.2.2/scripts/verify-direct.sh --ground-fallback` from the repository root for a fresh integrated direct run. Its passing evidence pointer is `evidence/latest-direct`; `evidence/latest` belongs to the historical byte-core workflow.

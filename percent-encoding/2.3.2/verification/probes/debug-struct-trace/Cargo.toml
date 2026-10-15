@@ -1,0 +1,12 @@
+[package]
+name = "percent-encoding-debug-struct-trace-probe"
+version = "0.0.0"
+edition = "2021"
+
+[workspace]
+
+[dependencies]
+creusot-std = "=0.13.0"
+
+[lints.rust]
+unexpected_cfgs = { level = "warn", check-cfg = ['cfg(creusot)'] }

@@ -1,0 +1,15 @@
+    Checking percent-encoding-formatting-boundary-probe v0.0.0 (/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting)
+warning: calling external function `fmt` with no contract will yield an impossible precondition
+  --> src/lib.rs:25:5
+   |
+25 |     fmt::Display::fmt(&value, f)
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ function called here
+   |
+   = note: `#[warn(creusot::contractless_external_function)]` on by default
+
+warning: `percent-encoding-formatting-boundary-probe` (lib) generated 1 warning
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.25s
+Goal Coma.vc_numeric_format: ✘ (1/2)
+Goal Coma.vc_macro_numeric_format: ✘
+Error: 2 unproved files
+Error: 'why3find prove' failed

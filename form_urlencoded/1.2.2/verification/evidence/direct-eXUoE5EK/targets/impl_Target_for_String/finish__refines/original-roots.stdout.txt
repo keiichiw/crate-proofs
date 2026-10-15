@@ -1,0 +1,25 @@
+theory Coma
+  
+  (* use why3.BuiltIn.BuiltIn *)
+  
+  (* use why3.Bool.Bool *)
+  
+  (* use why3.Unit.Unit *)
+  
+  type t_String
+  
+  predicate inv_String t_String
+  
+  (* meta compute_max_steps 1000000 *)
+  
+  (* meta select_lsinst "all" *)
+  
+  goal refines :
+    forall self:t_String.
+     inv_String self ->
+     inv_String self /\
+     (forall result:t_String.
+       inv_String result /\ result = self -> inv_String result)
+  
+end
+

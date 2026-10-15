@@ -1,0 +1,31 @@
+COMMAND: cargo creusot --only=coma --span-mode off --output-dir /workspace/proof-env/httpdate/1.0.3/verification/trial/trait-probes/verif/trait-run-run-69pC19na/probe-eq/coma -- --locked --features probe-eq
+    Checking httpdate-trait-probes v0.0.0 (/workspace/proof-env/httpdate/1.0.3/verification/trial/trait-probes)
+warning: struct `Date` is never constructed
+  --> src/lib.rs:10:16
+   |
+10 |     pub struct Date { pub year: u16, pub month: u8, pub day: u8 }
+   |                ^^^^
+   |
+   = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: function `structural_eq` is never used
+  --> src/lib.rs:13:12
+   |
+13 |     pub fn structural_eq(a: Date, b: Date) -> bool { a == b }
+   |            ^^^^^^^^^^^^^
+
+warning: `httpdate-trait-probes` (lib) generated 2 warnings
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.15s
+Warning: found dangling files and directories:
+  verif/trait-run-run-Lr01KruH/probe-ord
+  verif/trait-run-run-u8lKg1SH/probe-ord
+  verif/trait-run-run-TM3ZItNc/probe-ord
+  verif/trait-run-run-TM3ZItNc/probe-eq
+  verif/trait-run-run-XzANC4VC/probe-ord
+  verif/trait-run-run-XzANC4VC/probe-eq
+  verif/trait-run-run-L9ZIBNqO/probe-ord
+  verif/trait-run-run-aLEpYlap/probe-ord
+  verif/trait-run-run-pkrgdNMg/probe-ord
+  verif/trait-run-run-pkrgdNMg/probe-error
+  verif/trait-run-run-pkrgdNMg/probe-hash
+Run 'cargo creusot clean' to remove them

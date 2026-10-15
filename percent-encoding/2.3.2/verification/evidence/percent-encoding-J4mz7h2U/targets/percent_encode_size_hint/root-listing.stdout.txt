@@ -1,0 +1,47 @@
+theory Coma
+  
+  (* use why3.BuiltIn.BuiltIn *)
+  
+  (* use why3.Bool.Bool *)
+  
+  (* use why3.Unit.Unit *)
+  
+  (* use creusot.slice.Slice64 *)
+  
+  (* use creusot.int.UInt8 *)
+  
+  (* use creusot.prelude.Any *)
+  
+  goal vc_len_u8 : true
+  
+  type t_Option_usize =
+    | None
+    | Some t
+  
+  type tup2_usize_Option_usize =
+    | Tup2_usize_Option_usize'mk (f0:t) (f1:t_Option_usize)
+  
+  (* meta model_record function f1 *)
+  
+  (* meta model_record function f0 *)
+  
+  (* meta compute_max_steps 1000000 *)
+  
+  (* meta select_lsinst "all" *)
+  
+  goal vc_percent_encode_size_hint :
+    forall bytes:slice t1.
+     forall result:t.
+      length (view bytes) = t'int result ->
+      (not result = (0:t) ->
+       (forall result1:t.
+         length (view bytes) = t'int result1 ->
+         (if length (view bytes) = 0 then t'int (1:t) = 0
+          else t'int (1:t) = 1) /\
+         t'int result1 = length (view bytes))) /\
+      (result = (0:t) ->
+       (if length (view bytes) = 0 then t'int (0:t) = 0 else t'int (0:t) = 1) /\
+       t'int (0:t) = length (view bytes))
+  
+end
+

@@ -1,0 +1,635 @@
+theory Coma
+  
+  (* use why3.BuiltIn.BuiltIn *)
+  
+  (* use why3.Bool.Bool *)
+  
+  (* use why3.Unit.Unit *)
+  
+  (* use creusot.slice.Slice64 *)
+  
+  (* use creusot.int.UInt8 *)
+  
+  (* use creusot.prelude.MutBorrow *)
+  
+  (* use map.Map *)
+  
+  (* use creusot.prelude.Char *)
+  
+  (* use creusot.prelude.Any *)
+  
+  type t_ByteSerialize =
+    | T_ByteSerialize'mk (bytes:slice t)
+  
+  (* meta model_record function bytes *)
+  
+  type tup2_ref_u8_ref_slice_u8 =
+    | Tup2_ref_u8_ref_slice_u8'mk (f0:t) (f1:slice t)
+  
+  (* meta model_record function f1 *)
+  
+  (* meta model_record function f0 *)
+  
+  type t_Option_tup2_ref_u8_ref_slice_u8 =
+    | None
+    | Some tup2_ref_u8_ref_slice_u8
+  
+  predicate gt_log_Int (self:int) (other:int) = other < self
+  
+  (* meta rewrite_def predicate gt_log_Int *)
+  
+  function tail_u8 (self:seq t) : seq t = self[1..length self]
+  
+  goal vc_split_first_u8 : true
+  
+  predicate resolve_refmut_ByteSerialize (_1:t1 t_ByteSerialize) =
+    _1.final = _1.current
+  
+  (* meta rewrite_def predicate resolve_refmut_ByteSerialize *)
+  
+  type t_Option_ref_str =
+    | None'0
+    | Some'0 string
+  
+  goal vc_elim_Some : true
+  
+  goal vc_byte_serialized_unchanged : true
+  
+  goal vc_len_u8 : true
+  
+  predicate unchanged_byte (byte:int) =
+    byte = 42 \/
+    byte = 45 \/
+    byte = 46 \/
+    48 <= byte /\ byte <= 57 \/
+    65 <= byte /\ byte <= 90 \/ byte = 95 \/ 97 <= byte /\ byte <= 122
+  
+  axiom unchanged_byte_spec :
+    forall byte:int [unchanged_byte byte].
+     unchanged_byte byte <->
+     byte = 42 \/
+     byte = 45 \/
+     byte = 46 \/
+     48 <= byte /\ byte <= 57 \/
+     65 <= byte /\ byte <= 90 \/ byte = 95 \/ 97 <= byte /\ byte <= 122
+  
+  function safe_run_end (seq t) int : int
+  
+  axiom safe_run_end_def :
+    forall bytes'0:seq t, start:int [safe_run_end bytes'0 start].
+     0 <= start /\ start <= length bytes'0 ->
+     safe_run_end bytes'0 start =
+     (if start < length bytes'0 /\ unchanged_byte (t'int (get bytes'0 start))
+      then safe_run_end bytes'0 (start + 1) else start)
+  
+  axiom safe_run_end_spec :
+    forall bytes'0:seq t, start:int [safe_run_end bytes'0 start].
+     0 <= start /\ start <= length bytes'0 ->
+     start <= safe_run_end bytes'0 start /\
+     safe_run_end bytes'0 start <= length bytes'0
+  
+  axiom safe_run_end_spec'0 :
+    forall bytes'0:seq t, start:int [safe_run_end bytes'0 start].
+     0 <= start /\ start <= length bytes'0 ->
+     (forall i:int.
+       start <= i /\ i < safe_run_end bytes'0 start ->
+       unchanged_byte (t'int (get bytes'0 i)))
+  
+  axiom safe_run_end_spec'1 :
+    forall bytes'0:seq t, start:int [safe_run_end bytes'0 start].
+     0 <= start /\ start <= length bytes'0 ->
+     safe_run_end bytes'0 start = length bytes'0 \/
+     not unchanged_byte (t'int (get bytes'0 (safe_run_end bytes'0 start)))
+  
+  axiom safe_run_end_spec'2 :
+    forall bytes'0:seq t, start:int [safe_run_end bytes'0 start].
+     0 <= start /\ start <= length bytes'0 ->
+     start < length bytes'0 /\ unchanged_byte (t'int (get bytes'0 start)) ->
+     start < safe_run_end bytes'0 start
+  
+  function index_Mapping_u8_Int (self:t -> int) (a:t) : int = get1 self a
+  
+  (* meta rewrite_def function index_Mapping_u8_Int *)
+  
+  function map_u8 (seq t) (t -> int) : seq int
+  
+  axiom map_u8_spec :
+    forall self:seq t, m:t -> int [map_u8 self m].
+     length (map_u8 self m) = length self
+  
+  axiom map_u8_spec'0 :
+    forall self:seq t, m:t -> int [map_u8 self m].
+     forall i:int.
+      0 <= i /\ i < length self ->
+      get (map_u8 self m) i = index_Mapping_u8_Int m (get self i)
+  
+  function uppercase_hex (digit:int) : int =
+    if digit < 10 then 48 + digit else 55 + digit
+  
+  axiom uppercase_hex_spec :
+    forall digit:int [uppercase_hex digit].
+     uppercase_hex digit = (if digit < 10 then 48 + digit else 55 + digit)
+  
+  function escaped_byte_chunk (byte:int) : seq int =
+    if byte = 32 then singleton 43
+    else (singleton 37 ++ singleton (uppercase_hex (div byte 16)))
+         ++ singleton (uppercase_hex (mod byte 16))
+  
+  function encoded_chunks (seq t) : seq (seq int)
+  
+  axiom encoded_chunks_def :
+    forall bytes'0:seq t [encoded_chunks bytes'0].
+     encoded_chunks bytes'0 =
+     (if length bytes'0 = 0 then empty: seq (seq int)
+      else let byte = t'int (get bytes'0 0) in
+           if unchanged_byte byte
+           then let end' = safe_run_end bytes'0 0 in
+                singleton (map_u8 bytes'0[0..end'] (fun (b:t) -> t'int b))
+                ++ encoded_chunks bytes'0[end'..length bytes'0]
+           else singleton (escaped_byte_chunk byte)
+                ++ encoded_chunks bytes'0[1..length bytes'0])
+  
+  axiom encoded_chunks_spec :
+    forall bytes'0:seq t [encoded_chunks bytes'0].
+     length bytes'0 = 0 <-> length (encoded_chunks bytes'0) = 0
+  
+  axiom encoded_chunks_spec'0 :
+    forall bytes'0:seq t [encoded_chunks bytes'0].
+     gt_log_Int (length bytes'0) 0 ->
+     1 <= length (encoded_chunks bytes'0) /\
+     length (encoded_chunks bytes'0) <= length bytes'0
+  
+  function byte_sequence_as_ints (bytes'0:seq t) : seq int =
+    map_u8 bytes'0 (fun (byte:t) -> t'int byte)
+  
+  predicate encoded_chunks_first_run (seq t) int
+  
+  axiom encoded_chunks_first_run_spec :
+    forall bytes'0:seq t, end':int [encoded_chunks_first_run bytes'0 end'].
+     gt_log_Int (length bytes'0) 0 /\
+     unchanged_byte (t'int (get bytes'0 0)) /\ end' = safe_run_end bytes'0 0 ->
+     encoded_chunks_first_run bytes'0 end'
+  
+  axiom encoded_chunks_first_run_spec'0 :
+    forall bytes'0:seq t, end':int.
+     gt_log_Int (length bytes'0) 0 /\
+     unchanged_byte (t'int (get bytes'0 0)) /\ end' = safe_run_end bytes'0 0 ->
+     encoded_chunks bytes'0 =
+     (singleton (byte_sequence_as_ints bytes'0[0..end'])
+      ++ encoded_chunks bytes'0[end'..length bytes'0])
+  
+  type tup2_ref_slice_u8_ref_slice_u8 =
+    | Tup2_ref_slice_u8_ref_slice_u8'mk (f0'0:slice t) (f1'0:slice t)
+  
+  (* meta model_record function f1'0 *)
+  
+  (* meta model_record function f0'0 *)
+  
+  goal vc_split_at_u8 : true
+  
+  function tail_char (self:seq t2) : seq t2 = self[1..length self]
+  
+  function flat_map_char (seq t2) (t2 -> seq t) : seq t
+  
+  axiom flat_map_char_def :
+    forall self:seq t2, other:t2 -> seq t [flat_map_char self other].
+     flat_map_char self other =
+     (if length self = 0 then empty: seq t
+      else get1 other (get self 0) ++ flat_map_char (tail_char self) other)
+  
+  function to_utf8_char t2 : seq t
+  
+  axiom to_utf8_char_spec :
+    forall self:t2 [to_utf8_char self].
+     1 <= length (to_utf8_char self) /\ length (to_utf8_char self) <= 4
+  
+  function to_bytes (self:seq t2) : seq t =
+    flat_map_char self (fun (c:t2) -> to_utf8_char c)
+  
+  function view_str string : seq t2
+  
+  goal vc_from_utf8_unchecked : true
+  
+  function string_chunk_bytes (s:string) : seq int =
+    map_u8 (to_bytes (view_str s)) (fun (b:t) -> t'int b)
+  
+  function index_Mapping_ref_str_Seq_Int (self:string -> seq int) (a:
+    string) : seq int = get1 self a
+  
+  (* meta rewrite_def function index_Mapping_ref_str_Seq_Int *)
+  
+  function map_ref_str (seq string) (string -> seq int) : seq (seq int)
+  
+  axiom map_ref_str_spec :
+    forall self:seq string, m:string -> seq int [map_ref_str self m].
+     length (map_ref_str self m) = length self
+  
+  axiom map_ref_str_spec'0 :
+    forall self:seq string, m:string -> seq int [map_ref_str self m].
+     forall i:int.
+      0 <= i /\ i < length self ->
+      get (map_ref_str self m) i =
+      index_Mapping_ref_str_Seq_Int m (get self i)
+  
+  predicate string_chunk_singleton string
+  
+  axiom string_chunk_singleton_spec :
+    forall s:string [string_chunk_singleton s]. string_chunk_singleton s
+  
+  axiom string_chunk_singleton_spec'0 :
+    forall s:string.
+     map_ref_str (singleton s) (fun (x:string) -> string_chunk_bytes x) =
+     singleton (string_chunk_bytes s)
+  
+  predicate encoded_chunks_first_escaped (seq t) int
+  
+  axiom encoded_chunks_first_escaped_spec :
+    forall bytes'0:seq t, byte:int
+     [encoded_chunks_first_escaped bytes'0 byte].
+     gt_log_Int (length bytes'0) 0 /\
+     not unchanged_byte (t'int (get bytes'0 0)) /\
+     byte = t'int (get bytes'0 0) ->
+     encoded_chunks_first_escaped bytes'0 byte
+  
+  axiom encoded_chunks_first_escaped_spec'0 :
+    forall bytes'0:seq t, byte:int.
+     gt_log_Int (length bytes'0) 0 /\
+     not unchanged_byte (t'int (get bytes'0 0)) /\
+     byte = t'int (get bytes'0 0) ->
+     encoded_chunks bytes'0 =
+     (singleton (escaped_byte_chunk byte)
+      ++ encoded_chunks bytes'0[1..length bytes'0])
+  
+  predicate inv_Seq_u8 (_1:seq t) = true
+  
+  (* meta rewrite_def predicate inv_Seq_u8 *)
+  
+  predicate invariant_array_u8_3 (self:slice t) =
+    inv_Seq_u8 (view self) /\ length (view self) = t'int1 (3:t3)
+  
+  predicate inv_array_u8_3 (_1:slice t) = invariant_array_u8_3 _1
+  
+  (* meta rewrite_def predicate inv_array_u8_3 *)
+  
+  predicate invariant_ref_array_u8_3 (self:slice t) = inv_array_u8_3 self
+  
+  (* meta rewrite_def predicate invariant_ref_array_u8_3 *)
+  
+  predicate inv_ref_array_u8_3 (_1:slice t) = invariant_ref_array_u8_3 _1
+  
+  (* meta rewrite_def predicate inv_ref_array_u8_3 *)
+  
+  function index_array_u8_3 (self:slice t) (ix:int) : t = get (view self) ix
+  
+  (* meta rewrite_def function index_array_u8_3 *)
+  
+  goal vc_percent_encoded_bytes : true
+  
+  predicate ascii_three (bytes'0:seq t) =
+    forall i:int. 0 <= i /\ i < length bytes'0 -> t'int (get bytes'0 i) < 128
+  
+  axiom ascii_three_spec :
+    forall bytes'0:seq t [ascii_three bytes'0].
+     length bytes'0 = 3 ->
+     t'int (get bytes'0 0) < 128 /\
+     t'int (get bytes'0 1) < 128 /\ t'int (get bytes'0 2) < 128 ->
+     ascii_three bytes'0
+  
+  axiom ascii_three_spec'0 :
+    forall bytes'0:seq t.
+     length bytes'0 = 3 ->
+     t'int (get bytes'0 0) < 128 /\
+     t'int (get bytes'0 1) < 128 /\ t'int (get bytes'0 2) < 128 ->
+     (forall i:int.
+       0 <= i /\ i < length bytes'0 -> t'int (get bytes'0 i) < 128)
+  
+  predicate encoded_array_model (bytes'0:seq t) (byte:int) =
+    byte_sequence_as_ints bytes'0 == escaped_byte_chunk byte
+  
+  axiom encoded_array_model_spec :
+    forall bytes'0:seq t, byte:int [encoded_array_model bytes'0 byte].
+     not byte = 32 /\ length bytes'0 = 3 ->
+     t'int (get bytes'0 0) = 37 ->
+     t'int (get bytes'0 1) = uppercase_hex (div byte 16) ->
+     t'int (get bytes'0 2) = uppercase_hex (mod byte 16) ->
+     encoded_array_model bytes'0 byte
+  
+  axiom encoded_array_model_spec'0 :
+    forall bytes'0:seq t, byte:int.
+     not byte = 32 /\ length bytes'0 = 3 ->
+     t'int (get bytes'0 0) = 37 ->
+     t'int (get bytes'0 1) = uppercase_hex (div byte 16) ->
+     t'int (get bytes'0 2) = uppercase_hex (mod byte 16) ->
+     byte_sequence_as_ints bytes'0 = escaped_byte_chunk byte
+  
+  function remaining_bytes (self:t_ByteSerialize) : seq t = view (self.bytes)
+  
+  (* meta rewrite_def function remaining_bytes *)
+  
+  predicate produces_ByteSerialize (self:t_ByteSerialize) (visited:seq
+    string) (o:t_ByteSerialize) =
+    encoded_chunks (remaining_bytes self) =
+    (map_ref_str visited (fun (s:string) -> string_chunk_bytes s)
+     ++ encoded_chunks (remaining_bytes o))
+  
+  function produces_trans_ByteSerialize (a:t_ByteSerialize) (ab:seq string)
+    (b:t_ByteSerialize) (bc:seq string) (c:t_ByteSerialize) : unit = ()
+  
+  axiom produces_trans_ByteSerialize_spec :
+    forall a:t_ByteSerialize, ab:seq string, b:t_ByteSerialize, bc:seq
+     string, c:t_ByteSerialize.
+     produces_ByteSerialize a ab b ->
+     produces_ByteSerialize b bc c -> produces_ByteSerialize a (ab ++ bc) c
+  
+  function produces_refl_ByteSerialize (self:t_ByteSerialize) : unit = ()
+  
+  axiom produces_refl_ByteSerialize_spec :
+    forall self:t_ByteSerialize.
+     produces_ByteSerialize self (empty: seq string) self
+  
+  predicate completed_ByteSerialize (self:t1 t_ByteSerialize) =
+    length (remaining_bytes (self.current)) = 0 /\
+    resolve_refmut_ByteSerialize self
+  
+  (* meta compute_max_steps 1000000 *)
+  
+  (* meta select_lsinst "all" *)
+  
+  goal vc_next_ByteSerialize :
+    forall self:t1 t_ByteSerialize.
+     forall _4:t_Option_tup2_ref_u8_ref_slice_u8, first:t, tail:slice t, _10:
+      bool, run_len:t3, _60:bool, _62:t3, _64:bool, _65:t, _66:t3, _67:ptr,
+      _68:t3, _69:bool.
+      (forall result:t_Option_tup2_ref_u8_ref_slice_u8.
+        match result with
+        | Some (Tup2_ref_u8_ref_slice_u8'mk first1 tail1) ->
+            gt_log_Int (length (view ((self.current).bytes))) 0 /\
+            first1 = get (view ((self.current).bytes)) 0 /\
+            view tail1 = tail_u8 (view ((self.current).bytes))
+        | None -> view ((self.current).bytes) = (empty: seq t)
+        end ->
+        (result = None ->
+         resolve_refmut_ByteSerialize self -> completed_ByteSerialize self) /\
+        (forall x0:tup2_ref_u8_ref_slice_u8.
+          result = Some x0 ->
+          (forall f0'01:tup2_ref_u8_ref_slice_u8.
+            Some f0'01 = result ->
+            (forall f0'02:tup2_ref_u8_ref_slice_u8.
+              Some f0'02 = result ->
+              (forall result1:bool.
+                (result1 = True <->
+                 t'int (f0'01.f0) = 42 \/
+                 t'int (f0'01.f0) = 45 \/
+                 t'int (f0'01.f0) = 46 \/
+                 48 <= t'int (f0'01.f0) /\ t'int (f0'01.f0) <= 57 \/
+                 65 <= t'int (f0'01.f0) /\ t'int (f0'01.f0) <= 90 \/
+                 t'int (f0'01.f0) = 95 \/
+                 97 <= t'int (f0'01.f0) /\ t'int (f0'01.f0) <= 122) ->
+                (result1 = False ->
+                 encoded_chunks_first_escaped (view ((self.current).bytes))
+                 (t'int (f0'01.f0)) &&
+                 (resolve_refmut_ByteSerialize
+                  (t'mk (T_ByteSerialize'mk (f0'02.f1)) (self.final)
+                   (self.id)) ->
+                  (not f0'01.f0 = (32:t) ->
+                   (forall result2:slice t.
+                     inv_ref_array_u8_3 result2 /\
+                     t'int (index_array_u8_3 result2 0) = 37 /\
+                     (if div (t'int (f0'01.f0)) 16 < 10
+                      then t'int (index_array_u8_3 result2 1) =
+                           (48 + div (t'int (f0'01.f0)) 16)
+                      else t'int (index_array_u8_3 result2 1) =
+                           (55 + div (t'int (f0'01.f0)) 16)) /\
+                     (if mod (t'int (f0'01.f0)) 16 < 10
+                      then t'int (index_array_u8_3 result2 2) =
+                           (48 + mod (t'int (f0'01.f0)) 16)
+                      else t'int (index_array_u8_3 result2 2) =
+                           (55 + mod (t'int (f0'01.f0)) 16)) /\
+                     t'int (index_array_u8_3 result2 0) < 128 /\
+                     t'int (index_array_u8_3 result2 1) < 128 /\
+                     t'int (index_array_u8_3 result2 2) < 128 ->
+                     ascii_three (view result2) &&
+                     encoded_array_model (view result2) (t'int (f0'01.f0)) &&
+                     ((forall i:int.
+                        0 <= i /\ i < length (view result2) ->
+                        t'int (get (view result2) i) < 128) \/
+                      (exists s:seq t2. to_bytes s = view result2)) /\
+                     (forall result3:string.
+                       to_bytes (view_str result3) = view result2 ->
+                       string_chunk_bytes result3 =
+                       escaped_byte_chunk (t'int (f0'01.f0)) &&
+                       string_chunk_singleton result3 &&
+                       produces_ByteSerialize (self.current)
+                       (singleton result3) (self.final)))) /\
+                  (f0'01.f0 = (32:t) ->
+                   (forall __arr_temp:slice t.
+                     get (__arr_temp.elts) 0 = (43:t) /\
+                     length (__arr_temp.elts) = 1 ->
+                     (forall i:int.
+                       0 <= i /\ i < length (view __arr_temp) ->
+                       t'int (get (view __arr_temp) i) < 128) &&
+                     ((forall i:int.
+                        0 <= i /\ i < length (view __arr_temp) ->
+                        t'int (get (view __arr_temp) i) < 128) \/
+                      (exists s:seq t2. to_bytes s = view __arr_temp)) /\
+                     (forall result2:string.
+                       to_bytes (view_str result2) = view __arr_temp ->
+                       escaped_byte_chunk (t'int (f0'01.f0)) = singleton 43 &&
+                       string_chunk_bytes result2 =
+                       escaped_byte_chunk (t'int (f0'01.f0)) &&
+                       string_chunk_singleton result2 &&
+                       produces_ByteSerialize (self.current)
+                       (singleton result2) (self.final)))))) /\
+                (result1 = True ->
+                 (1 <= t'int1 (1:t3) /\
+                  t'int1 (1:t3) <= length (view ((self.current).bytes)) /\
+                  (forall i:int.
+                    0 <= i /\ i < t'int1 (1:t3) ->
+                    unchanged_byte
+                    (t'int (get (view ((self.current).bytes)) i)))) /\
+                 (forall run_len1:t3.
+                   1 <= t'int1 run_len1 /\
+                   t'int1 run_len1 <= length (view ((self.current).bytes)) /\
+                   (forall i:int.
+                     0 <= i /\ i < t'int1 run_len1 ->
+                     unchanged_byte
+                     (t'int (get (view ((self.current).bytes)) i))) ->
+                   (forall result2:t3.
+                     length (view ((self.current).bytes)) = t'int1 result2 ->
+                     lt run_len1 result2 ->
+                     (forall result3:ptr.
+                       slice_ptr_len result3 = length1 ((self.current).bytes) ->
+                       lt run_len1 (slice_ptr_len result3) &&
+                       t'int1 run_len1 < length (((self.current).bytes).elts) &&
+                       ((true <->
+                         t'int
+                         (get (((self.current).bytes).elts) (t'int1 run_len1)) =
+                         42 \/
+                         t'int
+                         (get (((self.current).bytes).elts) (t'int1 run_len1)) =
+                         45 \/
+                         t'int
+                         (get (((self.current).bytes).elts) (t'int1 run_len1)) =
+                         46 \/
+                         48
+                         <= t'int
+                            (get (((self.current).bytes).elts)
+                             (t'int1 run_len1)) /\
+                         t'int
+                         (get (((self.current).bytes).elts) (t'int1 run_len1))
+                         <= 57 \/
+                         65
+                         <= t'int
+                            (get (((self.current).bytes).elts)
+                             (t'int1 run_len1)) /\
+                         t'int
+                         (get (((self.current).bytes).elts) (t'int1 run_len1))
+                         <= 90 \/
+                         t'int
+                         (get (((self.current).bytes).elts) (t'int1 run_len1)) =
+                         95 \/
+                         97
+                         <= t'int
+                            (get (((self.current).bytes).elts)
+                             (t'int1 run_len1)) /\
+                         t'int
+                         (get (((self.current).bytes).elts) (t'int1 run_len1))
+                         <= 122) ->
+                        in_bounds (t'int1 run_len1 + t'int1 (1:t3)) /\
+                        (forall result4:t3.
+                          t'int1 result4 = (t'int1 run_len1 + t'int1 (1:t3)) ->
+                          1 <= t'int1 result4 /\
+                          t'int1 result4
+                          <= length (view ((self.current).bytes)) /\
+                          (forall i:int.
+                            0 <= i /\ i < t'int1 result4 ->
+                            unchanged_byte
+                            (t'int (get (view ((self.current).bytes)) i))))))))))) /\
+            match result with
+            | Some _ -> true
+            | _ -> false
+            end) /\
+          match result with
+          | Some _ -> true
+          | _ -> false
+          end)) /\
+      ((exists result:t_Option_tup2_ref_u8_ref_slice_u8.
+         match result with
+         | Some (Tup2_ref_u8_ref_slice_u8'mk first1 tail1) ->
+             gt_log_Int (length (view ((self.current).bytes))) 0 /\
+             first1 = get (view ((self.current).bytes)) 0 /\
+             view tail1 = tail_u8 (view ((self.current).bytes))
+         | None -> view ((self.current).bytes) = (empty: seq t)
+         end /\
+         (exists x0:tup2_ref_u8_ref_slice_u8.
+           result = Some x0 /\
+           (exists f0'01:tup2_ref_u8_ref_slice_u8.
+             Some f0'01 = result /\
+             (exists f0'02:tup2_ref_u8_ref_slice_u8.
+               Some f0'02 = result /\
+               (true <->
+                t'int (f0'01.f0) = 42 \/
+                t'int (f0'01.f0) = 45 \/
+                t'int (f0'01.f0) = 46 \/
+                48 <= t'int (f0'01.f0) /\ t'int (f0'01.f0) <= 57 \/
+                65 <= t'int (f0'01.f0) /\ t'int (f0'01.f0) <= 90 \/
+                t'int (f0'01.f0) = 95 \/
+                97 <= t'int (f0'01.f0) /\ t'int (f0'01.f0) <= 122) /\
+               (exists run_len1:t3, _641:bool, _651:t, _661:t3, _671:ptr,
+                 _681:t3, _691:bool.
+                 (1 <= t'int1 run_len1 /\
+                  t'int1 run_len1 <= length (view ((self.current).bytes)) /\
+                  (forall i:int.
+                    0 <= i /\ i < t'int1 run_len1 ->
+                    unchanged_byte
+                    (t'int (get (view ((self.current).bytes)) i)))) /\
+                 (exists result1:t3.
+                   length (view ((self.current).bytes)) = t'int1 result1 /\
+                   (not lt run_len1 result1 /\
+                    _4 = result /\
+                    first = f0'01.f0 /\
+                    tail = f0'02.f1 /\
+                    _10 = True /\
+                    run_len = run_len1 /\
+                    (if lt run_len1 result1 then _60 = True else _60 = False) /\
+                    _62 = result1 /\
+                    _64 = _641 /\
+                    _65 = _651 /\
+                    _66 = _661 /\ _67 = _671 /\ _68 = _681 /\ _69 = _691 \/
+                    lt run_len1 result1 /\
+                    slice_ptr_len _67 = length1 ((self.current).bytes) /\
+                    lt run_len1 (slice_ptr_len _67) /\
+                    t'int1 run_len1 < length (((self.current).bytes).elts) /\
+                    (false <->
+                     t'int
+                     (get (((self.current).bytes).elts) (t'int1 run_len1)) =
+                     42 \/
+                     t'int
+                     (get (((self.current).bytes).elts) (t'int1 run_len1)) =
+                     45 \/
+                     t'int
+                     (get (((self.current).bytes).elts) (t'int1 run_len1)) =
+                     46 \/
+                     48
+                     <= t'int
+                        (get (((self.current).bytes).elts) (t'int1 run_len1)) /\
+                     t'int
+                     (get (((self.current).bytes).elts) (t'int1 run_len1))
+                     <= 57 \/
+                     65
+                     <= t'int
+                        (get (((self.current).bytes).elts) (t'int1 run_len1)) /\
+                     t'int
+                     (get (((self.current).bytes).elts) (t'int1 run_len1))
+                     <= 90 \/
+                     t'int
+                     (get (((self.current).bytes).elts) (t'int1 run_len1)) =
+                     95 \/
+                     97
+                     <= t'int
+                        (get (((self.current).bytes).elts) (t'int1 run_len1)) /\
+                     t'int
+                     (get (((self.current).bytes).elts) (t'int1 run_len1))
+                     <= 122) /\
+                    _4 = result /\
+                    first = f0'01.f0 /\
+                    tail = f0'02.f1 /\
+                    _10 = True /\
+                    run_len = run_len1 /\
+                    (if lt run_len1 result1 then _60 = True else _60 = False) /\
+                    _62 = result1 /\
+                    _64 = False /\
+                    _65 = get (((self.current).bytes).elts) (t'int1 run_len1) /\
+                    _66 = run_len1 /\
+                    _68 = slice_ptr_len _67 /\
+                    (if lt run_len1 (slice_ptr_len _67) then _69 = True
+                     else _69 = False)))))))) ->
+       t'int1 run_len = safe_run_end (view ((self.current).bytes)) 0 &&
+       encoded_chunks_first_run (view ((self.current).bytes))
+       (t'int1 run_len) &&
+       t'int1 run_len <= length (view ((self.current).bytes)) /\
+       (forall result:tup2_ref_slice_u8_ref_slice_u8.
+         match result with
+         | Tup2_ref_slice_u8_ref_slice_u8'mk left right ->
+             view left = (view ((self.current).bytes))[0..t'int1 run_len] /\
+             view right =
+             (view ((self.current).bytes))[t'int1 run_len..length
+                                                           (view
+                                                            ((self.current).bytes))]
+         end ->
+         resolve_refmut_ByteSerialize
+         (t'mk (T_ByteSerialize'mk (result.f1'0)) (self.final) (self.id)) ->
+         ((forall i:int.
+            0 <= i /\ i < length (view (result.f0'0)) ->
+            t'int (get (view (result.f0'0)) i) < 128) \/
+          (exists s:seq t2. to_bytes s = view (result.f0'0))) /\
+         (forall result1:string.
+           to_bytes (view_str result1) = view (result.f0'0) ->
+           string_chunk_bytes result1 =
+           byte_sequence_as_ints (view (result.f0'0)) &&
+           string_chunk_singleton result1 &&
+           produces_ByteSerialize (self.current) (singleton result1)
+           (self.final))))
+  
+end
+

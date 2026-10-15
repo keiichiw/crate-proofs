@@ -1,0 +1,388 @@
+theory Coma
+  
+  (* use why3.BuiltIn.BuiltIn *)
+  
+  (* use why3.Bool.Bool *)
+  
+  (* use why3.Unit.Unit *)
+  
+  (* use creusot.slice.Slice64 *)
+  
+  (* use creusot.int.UInt8 *)
+  
+  (* use map.Map *)
+  
+  (* use creusot.prelude.Char *)
+  
+  (* use creusot.prelude.Any *)
+  
+  type t_Iter_u8
+  
+  type t_PercentDecode =
+    | T_PercentDecode'mk (bytes:t_Iter_u8)
+  
+  (* meta model_record function bytes *)
+  
+  type t_Vec_u8_Global
+  
+  type t_Cow_slice_u8 =
+    | Borrowed (slice t)
+    | Owned t_Vec_u8_Global
+  
+  predicate inv_Iter_u8 t_Iter_u8
+  
+  predicate inv_PercentDecode t_PercentDecode
+  
+  axiom inv_axiom :
+    forall x:t_PercentDecode [inv_PercentDecode x].
+     inv_PercentDecode x <-> inv_Iter_u8 (x.bytes)
+  
+  predicate precondition_from (self:unit) (args:t_PercentDecode) =
+    let iter = args in inv_PercentDecode iter
+  
+  (* meta rewrite_def predicate precondition_from *)
+  
+  function view_Iter_u8 t_Iter_u8 : slice t
+  
+  function remaining_input (self:t_PercentDecode) : seq t =
+    view (view_Iter_u8 (self.bytes))
+  
+  (* meta rewrite_def function remaining_input *)
+  
+  function index_Mapping_u8_Int (self:t -> int) (a:t) : int = get self a
+  
+  (* meta rewrite_def function index_Mapping_u8_Int *)
+  
+  function map_u8 (seq t) (t -> int) : seq int
+  
+  axiom map_u8_spec :
+    forall self:seq t, m:t -> int [map_u8 self m].
+     length (map_u8 self m) = length self
+  
+  axiom map_u8_spec'0 :
+    forall self:seq t, m:t -> int [map_u8 self m].
+     forall i:int.
+      0 <= i /\ i < length self ->
+      get1 (map_u8 self m) i = index_Mapping_u8_Int m (get1 self i)
+  
+  function byte_sequence_as_ints (bytes'0:seq t) : seq int =
+    map_u8 bytes'0 (fun (byte:t) -> t'int byte)
+  
+  predicate ge_log_Int (self:int) (other:int) = other <= self
+  
+  (* meta rewrite_def predicate ge_log_Int *)
+  
+  function percent_hex_value_model (byte:int) : int =
+    if 48 <= byte /\ byte <= 57 then byte - 48
+    else if 65 <= byte /\ byte <= 70 then byte - 55
+         else if 97 <= byte /\ byte <= 102 then byte - 87 else (- 1)
+  
+  function decoded_trace (seq int) : seq int
+  
+  axiom decoded_trace_def :
+    forall input:seq int [decoded_trace input].
+     decoded_trace input =
+     (if length input = 0 then empty: seq int
+      else if ge_log_Int (length input) 3 /\
+              get1 input 0 = 37 /\
+              ge_log_Int (percent_hex_value_model (get1 input 1)) 0 /\
+              ge_log_Int (percent_hex_value_model (get1 input 2)) 0
+           then singleton
+                ((percent_hex_value_model (get1 input 1) * 16)
+                 + percent_hex_value_model (get1 input 2))
+                ++ decoded_trace input[3..length input]
+           else singleton (get1 input 0)
+                ++ decoded_trace input[1..length input])
+  
+  constant const_MAX : t1 = (18446744073709551615:t1)
+  
+  function view_Vec_u8_Global t_Vec_u8_Global : seq t
+  
+  axiom view_Vec_u8_Global_spec :
+    forall self:t_Vec_u8_Global [view_Vec_u8_Global self].
+     length (view_Vec_u8_Global self) <= t'int1 const_MAX
+  
+  goal vc_from_Cow_slice_u8 : true
+  
+  predicate postcondition_from (self:unit) (args:t_PercentDecode) (result:
+    t_Cow_slice_u8) =
+    let iter = args in
+    match result with
+    | Borrowed bytes'0 ->
+        view bytes'0 = remaining_input iter /\
+        byte_sequence_as_ints (view bytes'0) =
+        decoded_trace (byte_sequence_as_ints (remaining_input iter))
+    | Owned bytes'0 ->
+        byte_sequence_as_ints (view_Vec_u8_Global bytes'0) =
+        decoded_trace (byte_sequence_as_ints (remaining_input iter)) /\
+        length (view_Vec_u8_Global bytes'0) < length (remaining_input iter)
+    end
+  
+  (* meta rewrite_def predicate postcondition_from *)
+  
+  goal vc_into_PercentDecode : true
+  
+  type t_String
+  
+  type t_Cow_str =
+    | Borrowed'0 string
+    | Owned'0 t_String
+  
+  predicate inv_String t_String
+  
+  predicate inv_Cow_str t_Cow_str
+  
+  axiom inv_axiom'0 :
+    forall x:t_Cow_str [inv_Cow_str x].
+     inv_Cow_str x <->
+     match x with
+     | Borrowed'0 f0 -> true
+     | Owned'0 f0 -> inv_String f0
+     end
+  
+  type tup3_Int_Int_bool =
+    | Tup3_Int_Int_bool'mk (f0:int) (f1:int) (f2:bool)
+  
+  (* meta model_record function f2 *)
+  
+  (* meta model_record function f1 *)
+  
+  (* meta model_record function f0 *)
+  
+  function utf8_step (bytes'0:seq int) (pos:int) : tup3_Int_Int_bool =
+    let b0 = get1 bytes'0 pos in
+    let remaining = length bytes'0 - pos in
+    if 0 <= b0 /\ b0 <= 127 then Tup3_Int_Int_bool'mk b0 1 True
+    else if 194 <= b0 /\ b0 <= 223
+         then if remaining < 2
+              then Tup3_Int_Int_bool'mk 65533 remaining False
+              else let b1 = get1 bytes'0 (pos + 1) in
+                   if 128 <= b1 /\ b1 <= 191
+                   then Tup3_Int_Int_bool'mk (((b0 - 192) * 64) + (b1 - 128))
+                        2 True
+                   else Tup3_Int_Int_bool'mk 65533 1 False
+         else if 224 <= b0 /\ b0 <= 239
+              then if remaining < 2
+                   then Tup3_Int_Int_bool'mk 65533 remaining False
+                   else let b1 = get1 bytes'0 (pos + 1) in
+                        let second_ok =
+                          (if if b0 = 224 then 160 <= b1 /\ b1 <= 191
+                              else if b0 = 237 then 128 <= b1 /\ b1 <= 159
+                                   else 128 <= b1 /\ b1 <= 191
+                           then True else False)
+                        in
+                        if not second_ok = True
+                        then Tup3_Int_Int_bool'mk 65533 1 False
+                        else if remaining < 3
+                             then Tup3_Int_Int_bool'mk 65533 remaining False
+                             else let b2 = get1 bytes'0 (pos + 2) in
+                                  if 128 <= b2 /\ b2 <= 191
+                                  then Tup3_Int_Int_bool'mk
+                                       ((((b0 - 224) * 4096)
+                                         + ((b1 - 128) * 64))
+                                        + (b2 - 128))
+                                       3 True
+                                  else Tup3_Int_Int_bool'mk 65533 2 False
+              else if 240 <= b0 /\ b0 <= 244
+                   then if remaining < 2
+                        then Tup3_Int_Int_bool'mk 65533 remaining False
+                        else let b1 = get1 bytes'0 (pos + 1) in
+                             let second_ok =
+                               (if if b0 = 240 then 144 <= b1 /\ b1 <= 191
+                                   else if b0 = 244
+                                        then 128 <= b1 /\ b1 <= 143
+                                        else 128 <= b1 /\ b1 <= 191
+                                then True else False)
+                             in
+                             if not second_ok = True
+                             then Tup3_Int_Int_bool'mk 65533 1 False
+                             else if remaining < 3
+                                  then Tup3_Int_Int_bool'mk 65533 remaining
+                                       False
+                                  else let b2 = get1 bytes'0 (pos + 2) in
+                                       if not (128 <= b2 /\ b2 <= 191)
+                                       then Tup3_Int_Int_bool'mk 65533 2
+                                            False
+                                       else if remaining < 4
+                                            then Tup3_Int_Int_bool'mk 65533
+                                                 remaining False
+                                            else let b3 =
+                                                   get1 bytes'0 (pos + 3)
+                                                 in
+                                                 if 128 <= b3 /\ b3 <= 191
+                                                 then Tup3_Int_Int_bool'mk
+                                                      (((((b0 - 240) * 262144)
+                                                         + ((b1 - 128) * 4096))
+                                                        + ((b2 - 128) * 64))
+                                                       + (b3 - 128))
+                                                      4 True
+                                                 else Tup3_Int_Int_bool'mk
+                                                      65533 3 False
+                   else Tup3_Int_Int_bool'mk 65533 1 False
+  
+  axiom utf8_step_spec :
+    forall bytes'0:seq int, pos:int [utf8_step bytes'0 pos].
+     0 <= pos /\ pos < length bytes'0 ->
+     1 <= (utf8_step bytes'0 pos).f1 /\
+     (utf8_step bytes'0 pos).f1 <= (length bytes'0 - pos)
+  
+  axiom utf8_step_spec'0 :
+    forall bytes'0:seq int, pos:int [utf8_step bytes'0 pos].
+     0 <= pos /\ pos < length bytes'0 ->
+     (utf8_step bytes'0 pos).f0 = 65533 \/
+     0 <= (utf8_step bytes'0 pos).f0 /\ (utf8_step bytes'0 pos).f0 <= 55295 \/
+     57344 <= (utf8_step bytes'0 pos).f0 /\
+     (utf8_step bytes'0 pos).f0 <= 1114111
+  
+  predicate utf8_is_valid (seq int)
+  
+  axiom utf8_is_valid_def :
+    forall bytes'0:seq int [utf8_is_valid bytes'0].
+     utf8_is_valid bytes'0 <->
+     (if length bytes'0 = 0 then true
+      else match utf8_step bytes'0 0 with
+      | Tup3_Int_Int_bool'mk _ consumed valid ->
+          valid = True /\ utf8_is_valid bytes'0[consumed..length bytes'0]
+      end)
+  
+  function index_Mapping_char_Int (self:t2 -> int) (a:t2) : int = get self a
+  
+  (* meta rewrite_def function index_Mapping_char_Int *)
+  
+  function map_char (seq t2) (t2 -> int) : seq int
+  
+  axiom map_char_spec :
+    forall self:seq t2, m:t2 -> int [map_char self m].
+     length (map_char self m) = length self
+  
+  axiom map_char_spec'0 :
+    forall self:seq t2, m:t2 -> int [map_char self m].
+     forall i:int.
+      0 <= i /\ i < length self ->
+      get1 (map_char self m) i = index_Mapping_char_Int m (get1 self i)
+  
+  function chars_as_scalars (chars:seq t2) : seq int =
+    map_char chars (fun (c:t2) -> to_int c)
+  
+  (* meta rewrite_def function chars_as_scalars *)
+  
+  function view_str string : seq t2
+  
+  function utf8_lossy_model (seq int) : seq int
+  
+  axiom utf8_lossy_model_def :
+    forall bytes'0:seq int [utf8_lossy_model bytes'0].
+     utf8_lossy_model bytes'0 =
+     (if length bytes'0 = 0 then empty: seq int
+      else match utf8_step bytes'0 0 with
+      | Tup3_Int_Int_bool'mk scalar consumed _ ->
+          singleton scalar
+          ++ utf8_lossy_model bytes'0[consumed..length bytes'0]
+      end)
+  
+  function tail_char (self:seq t2) : seq t2 = self[1..length self]
+  
+  function flat_map_char (seq t2) (t2 -> seq t) : seq t
+  
+  axiom flat_map_char_def :
+    forall self:seq t2, other:t2 -> seq t [flat_map_char self other].
+     flat_map_char self other =
+     (if length self = 0 then empty: seq t
+      else get other (get1 self 0) ++ flat_map_char (tail_char self) other)
+  
+  function to_utf8_char t2 : seq t
+  
+  axiom to_utf8_char_spec :
+    forall self:t2 [to_utf8_char self].
+     1 <= length (to_utf8_char self) /\ length (to_utf8_char self) <= 4
+  
+  function to_bytes (self:seq t2) : seq t =
+    flat_map_char self (fun (c:t2) -> to_utf8_char c)
+  
+  function view_String t_String : seq t2
+  
+  predicate postcondition_from_utf8_lossy (self:unit) (args:slice t) (result:
+    t_Cow_str) =
+    let bytes'0 = args in
+    inv_Cow_str result /\
+    match result with
+    | Borrowed'0 s ->
+        utf8_is_valid (map_u8 (view bytes'0) (fun (b:t) -> t'int b)) /\
+        chars_as_scalars (view_str s) =
+        utf8_lossy_model (map_u8 (view bytes'0) (fun (b:t) -> t'int b)) /\
+        to_bytes (view_str s) = view bytes'0
+    | Owned'0 s ->
+        not utf8_is_valid (map_u8 (view bytes'0) (fun (b:t) -> t'int b)) /\
+        chars_as_scalars (view_String s) =
+        utf8_lossy_model (map_u8 (view bytes'0) (fun (b:t) -> t'int b))
+    end
+  
+  (* meta rewrite_def predicate postcondition_from_utf8_lossy *)
+  
+  function string_scalars (s:seq t2) : seq int =
+    map_char s (fun (c:t2) -> to_int c)
+  
+  function cow_str_scalars (value:t_Cow_str) : seq int =
+    match value with
+    | Borrowed'0 s -> string_scalars (view_str s)
+    | Owned'0 s -> string_scalars (view_String s)
+    end
+  
+  predicate lossy_bytes_relation (bytes'0:seq t) (output:seq int) =
+    exists raw:slice t, decoded:t_Cow_str.
+     view raw = bytes'0 /\
+     postcondition_from_utf8_lossy () raw decoded /\
+     cow_str_scalars decoded = output
+  
+  function cow_bytes (value:t_Cow_slice_u8) : seq t =
+    match value with
+    | Borrowed bytes'0 -> view bytes'0
+    | Owned bytes'0 -> view_Vec_u8_Global bytes'0
+    end
+  
+  goal vc_from_utf8_lossy : true
+  
+  goal vc_decode_utf8_lossy : true
+  
+  predicate lossy_int_relation (bytes'0:seq int) (output:seq int) =
+    exists raw:slice t, decoded:t_Cow_str.
+     byte_sequence_as_ints (view raw) = bytes'0 /\
+     postcondition_from_utf8_lossy () raw decoded /\
+     cow_str_scalars decoded = output
+  
+  (* meta compute_max_steps 1000000 *)
+  
+  (* meta select_lsinst "all" *)
+  
+  goal vc_decode_utf8_lossy'0 :
+    forall self:t_Iter_u8.
+     let self1 = T_PercentDecode'mk self in
+     inv_PercentDecode self1 ->
+     (inv_PercentDecode self1 /\ precondition_from () self1) /\
+     (forall result:t_Cow_slice_u8.
+       postcondition_from () self1 result ->
+       (forall result1:t_Cow_str.
+         inv_Cow_str result1 /\
+         lossy_bytes_relation (cow_bytes result) (cow_str_scalars result1) /\
+         match result with
+         | Borrowed bytes'0 ->
+             postcondition_from_utf8_lossy () bytes'0 result1
+         | Owned _ ->
+             match result1 with
+             | Borrowed'0 _ -> false
+             | Owned'0 _ -> true
+             end
+         end ->
+         inv_Cow_str result1 /\
+         (let source = byte_sequence_as_ints (remaining_input self1) in
+          let decoded = decoded_trace source in
+          lossy_int_relation decoded (cow_str_scalars result1) /\
+          (if decoded = source
+           then postcondition_from_utf8_lossy () (view_Iter_u8 self) result1
+           else match result1 with
+           | Owned'0 _ -> true
+           | Borrowed'0 _ -> false
+           end))))
+  
+end
+

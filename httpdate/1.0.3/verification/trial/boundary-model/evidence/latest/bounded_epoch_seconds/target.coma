@@ -1,0 +1,136 @@
+use creusot.int.UInt64
+use int.ComputerDivision
+use creusot.prelude.Any
+use int.Int
+
+type t_SystemTime
+
+predicate inv_SystemTime (_1: t_SystemTime)
+
+function time_ns (_t: t_SystemTime) : int
+
+constant const_UNIX_EPOCH : t_SystemTime
+
+axiom const_UNIX_EPOCH_spec: inv_SystemTime const_UNIX_EPOCH
+
+axiom const_UNIX_EPOCH_spec'0: time_ns const_UNIX_EPOCH = 0
+
+type t_Duration
+
+type t_SystemTimeError
+
+type t_Result_Duration_SystemTimeError = Ok t_Duration | Err t_SystemTimeError
+
+predicate invariant_ref_SystemTime [@inline:trivial] (self: t_SystemTime) = inv_SystemTime self
+
+meta "rewrite_def" predicate invariant_ref_SystemTime
+
+predicate inv_ref_SystemTime [@inline:trivial] (_1: t_SystemTime) = invariant_ref_SystemTime _1
+
+meta "rewrite_def" predicate inv_ref_SystemTime
+
+predicate inv_Duration (_1: t_Duration)
+
+predicate inv_SystemTimeError (_1: t_SystemTimeError)
+
+predicate inv_Result_Duration_SystemTimeError (_1: t_Result_Duration_SystemTimeError)
+
+axiom inv_axiom [@rewrite]:
+  forall x: t_Result_Duration_SystemTimeError [inv_Result_Duration_SystemTimeError x]. inv_Result_Duration_SystemTimeError x
+    = match x with
+      | Ok f0 -> inv_Duration f0
+      | Err f0 -> inv_SystemTimeError f0
+      end
+
+predicate ge_log_Int [@inline:trivial] (self: int) (other: int) = other <= self
+
+meta "rewrite_def" predicate ge_log_Int
+
+function secs_to_nanos (secs: int) : int = secs * 1000000000
+
+constant const_MAX: UInt64.t = (18446744073709551615: UInt64.t)
+
+function view_Duration (self: t_Duration) : int
+
+axiom view_Duration_spec: forall self: t_Duration [view_Duration self]. ge_log_Int (view_Duration self) 0
+    /\ view_Duration self <= secs_to_nanos (UInt64.t'int const_MAX) + 999999999
+
+let duration_since (self_: t_SystemTime) (earlier: t_SystemTime) (return (x: t_Result_Duration_SystemTimeError)) =
+{[@stop_split] [@expl:duration_since requires] ([@stop_split] [@expl:duration_since 'self_' type invariant] inv_ref_SystemTime self_)
+  /\ ([@stop_split] [@expl:duration_since 'earlier' type invariant] inv_SystemTime earlier)
+  /\ ([@stop_split] [@expl:duration_since requires] - 18446744073709551615999999999 <= time_ns self_ - time_ns earlier
+  /\ time_ns self_ - time_ns earlier <= 18446744073709551615999999999)}
+  any
+  [ return (result: t_Result_Duration_SystemTimeError) ->
+  {[@stop_split] [@expl:duration_since ensures] ([@stop_split] [@expl:duration_since result type invariant] inv_Result_Duration_SystemTimeError result)
+    /\ ([@stop_split] [@expl:duration_since ensures] match result with
+      | Ok d -> ge_log_Int (time_ns self_) (time_ns earlier) /\ view_Duration d = time_ns self_ - time_ns earlier
+      | Err _ -> time_ns self_ < time_ns earlier
+      end)}
+    (! return {result}) ]
+
+let expect_Duration (self_: t_Result_Duration_SystemTimeError) (msg: string) (return (x: t_Duration)) =
+{[@stop_split] [@expl:expect_Duration requires] ([@stop_split] [@expl:expect 'self_' type invariant] inv_Result_Duration_SystemTimeError self_)
+  /\ ([@stop_split] [@expl:expect requires] exists t: t_Duration. self_ = Ok t)}
+  any
+  [ return (result: t_Duration) ->
+  {[@stop_split] [@expl:expect_Duration ensures] ([@stop_split] [@expl:expect result type invariant] inv_Duration result)
+    /\ ([@stop_split] [@expl:expect ensures] Ok result = self_)}
+    (! return {result}) ]
+
+predicate invariant_ref_Duration [@inline:trivial] (self: t_Duration) = inv_Duration self
+
+meta "rewrite_def" predicate invariant_ref_Duration
+
+predicate inv_ref_Duration [@inline:trivial] (_1: t_Duration) = invariant_ref_Duration _1
+
+meta "rewrite_def" predicate inv_ref_Duration
+
+function nanos_to_secs (nanos: int) : int = ComputerDivision.div nanos 1000000000
+
+let as_secs (self_: t_Duration) (return (x: UInt64.t)) =
+{[@stop_split] [@expl:as_secs 'self_' type invariant] inv_ref_Duration self_}
+  any
+  [ return (result: UInt64.t) -> {[@stop_split] [@expl:as_secs ensures] UInt64.t'int result
+    = nanos_to_secs (view_Duration self_)}
+    (! return {result}) ]
+
+type t_Arguments
+
+predicate inv_Arguments (_1: t_Arguments)
+
+let from_str (s: string) (return (x: t_Arguments)) = any
+  [ return (result: t_Arguments) -> {[@stop_split] [@expl:from_str result type invariant] inv_Arguments result}
+    (! return {result}) ]
+
+meta "compute_max_steps" 1000000
+
+meta "select_lsinst" "all"
+
+let bounded_epoch_seconds (t: t_SystemTime) (return (x: UInt64.t)) =
+{[@stop_split] [@expl:bounded_epoch_seconds requires] ([@stop_split] [@expl:bounded_epoch_seconds 't' type invariant] inv_SystemTime t)
+  /\ ([@stop_split] [@expl:bounded_epoch_seconds requires] 0 <= time_ns t - time_ns const_UNIX_EPOCH
+  /\ time_ns t - time_ns const_UNIX_EPOCH < 253402300800000000000)}
+  (! bb0
+  [ bb0 = s0
+    [ s0 = duration_since {t} {const_UNIX_EPOCH} (fun (_x: t_Result_Duration_SystemTimeError) -> [ &_7 <- _x ] s1)
+    | s1 = [ &_10 <- "all times should be after the epoch" ] s2
+    | s2 = expect_Duration {_7} {_10} (fun (_x: t_Duration) -> [ &duration <- _x ] s3)
+    | s3 = as_secs {duration} (fun (_x: UInt64.t) -> [ &seconds <- _x ] s4)
+    | s4 = [ &_14 <- UInt64.ge seconds (253402300800: UInt64.t) ] s5
+    | s5 = any [ br0 -> {_14 = false} (! bb6) | br1 -> {_14} (! bb4) ] ]
+  | bb4 = s0
+    [ s0 = from_str {"date must be before year 9999"} (fun (_x: t_Arguments) -> [ &_19 <- _x ] s1) | s1 = {false} any ]
+  | bb6 = s0 [ s0 = [ &_ret <- seconds ] s1 | s1 = return {_ret} ] ]
+  [ & _ret: UInt64.t = Any.any_l ()
+  | & t: t_SystemTime = t
+  | & duration: t_Duration = Any.any_l ()
+  | & _7: t_Result_Duration_SystemTimeError = Any.any_l ()
+  | & _10: string = Any.any_l ()
+  | & seconds: UInt64.t = Any.any_l ()
+  | & _14: bool = Any.any_l ()
+  | & _19: t_Arguments = Any.any_l () ])
+  [ return (result: UInt64.t) -> {[@stop_split] [@expl:bounded_epoch_seconds ensures] UInt64.t'int result
+      = ComputerDivision.div (time_ns t - time_ns const_UNIX_EPOCH) 1000000000
+    /\ UInt64.t'int result < 253402300800}
+    (! return {result}) ]

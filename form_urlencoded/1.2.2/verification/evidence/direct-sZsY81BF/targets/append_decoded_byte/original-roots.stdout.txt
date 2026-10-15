@@ -1,0 +1,206 @@
+theory Coma
+  
+  (* use why3.BuiltIn.BuiltIn *)
+  
+  (* use why3.Bool.Bool *)
+  
+  (* use why3.Unit.Unit *)
+  
+  (* use creusot.slice.Slice64 *)
+  
+  (* use creusot.int.UInt8 *)
+  
+  (* use creusot.prelude.MutBorrow *)
+  
+  (* use map.Map *)
+  
+  (* use creusot.prelude.Any *)
+  
+  type t_Vec_u8_Global
+  
+  type t_Option_Vec_u8_Global =
+    | None
+    | Some t_Vec_u8_Global
+  
+  goal vc_is_none_Vec_u8_Global : true
+  
+  type tup2_ref_slice_u8_ref_slice_u8 =
+    | Tup2_ref_slice_u8_ref_slice_u8'mk (f0:slice t) (f1:slice t)
+  
+  (* meta model_record function f1 *)
+  
+  (* meta model_record function f0 *)
+  
+  goal vc_split_at_u8 : true
+  
+  constant const_MAX : t1 = (18446744073709551615:t1)
+  
+  function view_Vec_u8_Global t_Vec_u8_Global : seq t
+  
+  axiom view_Vec_u8_Global_spec :
+    forall self:t_Vec_u8_Global [view_Vec_u8_Global self].
+     length (view_Vec_u8_Global self) <= t'int const_MAX
+  
+  goal vc_copy_bytes : true
+  
+  predicate resolve_refmut_Option_Vec_u8_Global (_1:t2
+    t_Option_Vec_u8_Global) = _1.final = _1.current
+  
+  (* meta rewrite_def predicate resolve_refmut_Option_Vec_u8_Global *)
+  
+  goal vc_elim_Some : true
+  
+  function index_Mapping_u8_Int (self:t -> int) (a:t) : int = get self a
+  
+  (* meta rewrite_def function index_Mapping_u8_Int *)
+  
+  function map_u8 (seq t) (t -> int) : seq int
+  
+  axiom map_u8_spec :
+    forall self:seq t, m:t -> int [map_u8 self m].
+     length (map_u8 self m) = length self
+  
+  axiom map_u8_spec'0 :
+    forall self:seq t, m:t -> int [map_u8 self m].
+     forall i:int.
+      0 <= i /\ i < length self ->
+      get1 (map_u8 self m) i = index_Mapping_u8_Int m (get1 self i)
+  
+  function byte_sequence_as_ints (bytes:seq t) : seq int =
+    map_u8 bytes (fun (byte:t) -> t'int1 byte)
+  
+  goal vc_push_byte_preserving_map : true
+  
+  predicate resolve_refmut_Vec_u8_Global (_1:t2 t_Vec_u8_Global) =
+    _1.final = _1.current
+  
+  (* meta rewrite_def predicate resolve_refmut_Vec_u8_Global *)
+  
+  (* meta compute_max_steps 1000000 *)
+  
+  (* meta select_lsinst "all" *)
+  
+  goal vc_append_decoded_byte :
+    forall output:t2 t_Option_Vec_u8_Global, input:slice t, index:t1, byte:t.
+     (t'int index + 3) <= length (view input) /\
+     match output.current with
+     | Some before -> length (view_Vec_u8_Global before) < t'int index
+     | None -> true
+     end ->
+     (forall output1:t2 t_Option_Vec_u8_Global, _28:bool, prefix:slice t,
+       _31:tup2_ref_slice_u8_ref_slice_u8, _34:t_Option_Vec_u8_Global, _35:
+       t_Vec_u8_Global.
+       ((true <-> output.current = None) ->
+        t'int index <= length (view input)) /\
+       ((exists result:bool.
+          (result = True <-> output.current = None) /\
+          (result = False /\
+           output1 = output /\
+           _28 = result /\
+           prefix = (any_l (): slice t) /\
+           _31 = (any_l (): tup2_ref_slice_u8_ref_slice_u8) /\
+           _34 = (any_l (): t_Option_Vec_u8_Global) /\
+           _35 = (any_l (): t_Vec_u8_Global) \/
+           result = True /\
+           match _31 with
+           | Tup2_ref_slice_u8_ref_slice_u8'mk left right ->
+               view left = (view input)[0..t'int index] /\
+               view right = (view input)[t'int index..length (view input)]
+           end /\
+           view_Vec_u8_Global _35 == view (_31.f0) /\
+           output1 = t'mk (Some _35) (output.final) (output.id) /\
+           _28 = result /\ prefix = _31.f0 /\ _34 = Some _35)) ->
+        (output1.current = None ->
+         resolve_refmut_Option_Vec_u8_Global output1 ->
+         match output.final with
+         | Some after ->
+             view_Vec_u8_Global after =
+             snoc
+             match output.current with
+             | Some before -> view_Vec_u8_Global before
+             | None -> (view input)[0..t'int index]
+             end byte
+         | None -> false
+         end /\
+         match output.final with
+         | Some after ->
+             byte_sequence_as_ints (view_Vec_u8_Global after) =
+             (match output.current with
+              | Some before ->
+                  byte_sequence_as_ints (view_Vec_u8_Global before)
+              | None -> (byte_sequence_as_ints (view input))[0..t'int index]
+              end ++ singleton (t'int1 byte))
+         | None -> false
+         end /\
+         match output.final with
+         | Some after ->
+             length (view_Vec_u8_Global after) =
+             match output.current with
+             | Some before -> length (view_Vec_u8_Global before) + 1
+             | None -> t'int index + 1
+             end
+         | None -> false
+         end /\
+         match output.final with
+         | Some after ->
+             length (view_Vec_u8_Global after) < (t'int index + 3)
+         | None -> false
+         end) /\
+        (forall x0:t_Vec_u8_Global.
+          output1.current = Some x0 ->
+          (forall f0'0:t_Vec_u8_Global.
+            Some f0'0 = output1.current ->
+            (forall fin:t_Vec_u8_Global.
+              forall fin1:t_Vec_u8_Global.
+               view_Vec_u8_Global fin1 = snoc (view_Vec_u8_Global f0'0) byte /\
+               byte_sequence_as_ints (view_Vec_u8_Global fin1) =
+               (byte_sequence_as_ints (view_Vec_u8_Global f0'0)
+                ++ singleton (t'int1 byte)) /\
+               length (view_Vec_u8_Global fin1) =
+               (length (view_Vec_u8_Global f0'0) + 1) ->
+               resolve_refmut_Vec_u8_Global
+               (t'mk fin1 fin (inherit_id (get_id output1) 0)) ->
+               resolve_refmut_Option_Vec_u8_Global
+               (t'mk (Some fin) (output1.final) (output1.id)) ->
+               match output.final with
+               | Some after ->
+                   view_Vec_u8_Global after =
+                   snoc
+                   match output.current with
+                   | Some before -> view_Vec_u8_Global before
+                   | None -> (view input)[0..t'int index]
+                   end byte
+               | None -> false
+               end /\
+               match output.final with
+               | Some after ->
+                   byte_sequence_as_ints (view_Vec_u8_Global after) =
+                   (match output.current with
+                    | Some before ->
+                        byte_sequence_as_ints (view_Vec_u8_Global before)
+                    | None ->
+                        (byte_sequence_as_ints (view input))[0..t'int index]
+                    end ++ singleton (t'int1 byte))
+               | None -> false
+               end /\
+               match output.final with
+               | Some after ->
+                   length (view_Vec_u8_Global after) =
+                   match output.current with
+                   | Some before -> length (view_Vec_u8_Global before) + 1
+                   | None -> t'int index + 1
+                   end
+               | None -> false
+               end /\
+               match output.final with
+               | Some after ->
+                   length (view_Vec_u8_Global after) < (t'int index + 3)
+               | None -> false
+               end)) /\
+          match output1.current with
+          | Some _ -> true
+          | _ -> false
+          end)))
+  
+end
+

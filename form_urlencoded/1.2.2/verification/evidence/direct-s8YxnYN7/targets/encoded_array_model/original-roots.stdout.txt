@@ -1,0 +1,65 @@
+theory Coma
+  
+  (* use why3.BuiltIn.BuiltIn *)
+  
+  (* use why3.Bool.Bool *)
+  
+  (* use why3.Unit.Unit *)
+  
+  (* use creusot.int.UInt8 *)
+  
+  (* use seq.Seq *)
+  
+  (* use map.Map *)
+  
+  function uppercase_hex (digit:int) : int =
+    if digit < 10 then 48 + digit else 55 + digit
+  
+  axiom uppercase_hex_spec :
+    forall digit:int [uppercase_hex digit].
+     uppercase_hex digit = (if digit < 10 then 48 + digit else 55 + digit)
+  
+  function index_Mapping_u8_Int (self:t -> int) (a:t) : int = get self a
+  
+  (* meta rewrite_def function index_Mapping_u8_Int *)
+  
+  function map_u8 (seq t) (t -> int) : seq int
+  
+  axiom map_u8_spec :
+    forall self:seq t, m:t -> int [map_u8 self m].
+     length (map_u8 self m) = length self
+  
+  axiom map_u8_spec'0 :
+    forall self:seq t, m:t -> int [map_u8 self m].
+     forall i:int.
+      0 <= i /\ i < length self ->
+      get1 (map_u8 self m) i = index_Mapping_u8_Int m (get1 self i)
+  
+  function byte_sequence_as_ints (bytes:seq t) : seq int =
+    map_u8 bytes (fun (byte:t) -> t'int byte)
+  
+  function escaped_byte_chunk (byte:int) : seq int =
+    if byte = 32 then singleton 43
+    else (singleton 37 ++ singleton (uppercase_hex (div byte 16)))
+         ++ singleton (uppercase_hex (mod byte 16))
+  
+  (* meta compute_max_steps 1000000 *)
+  
+  (* meta select_lsinst "all" *)
+  
+  constant bytes : seq t
+  
+  constant byte : int
+  
+  predicate encoded_array_model (seq t) int
+  
+  goal vc_encoded_array_model :
+    not byte = 32 /\ length bytes = 3 ->
+    t'int (get1 bytes 0) = 37 ->
+    t'int (get1 bytes 1) = uppercase_hex (div byte 16) ->
+    t'int (get1 bytes 2) = uppercase_hex (mod byte 16) ->
+    byte_sequence_as_ints bytes == escaped_byte_chunk byte /\
+    byte_sequence_as_ints bytes = escaped_byte_chunk byte
+  
+end
+

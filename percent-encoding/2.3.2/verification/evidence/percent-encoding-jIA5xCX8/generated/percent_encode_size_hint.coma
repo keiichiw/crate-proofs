@@ -1,0 +1,48 @@
+use creusot.slice.Slice64
+use creusot.int.UInt8
+use creusot.int.UInt64
+use seq.Seq
+use creusot.prelude.Any
+
+let len_u8 (self_: Slice64.slice UInt8.t) (return (x: UInt64.t)) = any
+  [ return (result: UInt64.t) -> {[@stop_split] [@expl:len ensures] Seq.length (Slice64.view self_)
+    = UInt64.t'int result}
+    (! return {result}) ]
+
+type t_Option_usize = None | Some UInt64.t
+
+type tup2_usize_Option_usize = { f0: UInt64.t; f1: t_Option_usize }
+
+meta "compute_max_steps" 1000000
+
+meta "select_lsinst" "all"
+
+let percent_encode_size_hint (bytes: Slice64.slice UInt8.t) (return (x: tup2_usize_Option_usize)) = (! bb0
+  [ bb0 = s0
+    [ s0 = len_u8 {bytes} (fun (_x: UInt64.t) -> [ &_7 <- _x ] s1)
+    | s1 = [ &_6 <- _7 = (0: UInt64.t) ] s2
+    | s2 = any [ br0 -> {_6 = false} (! bb3) | br1 -> {_6} (! bb2) ] ]
+  | bb2 = s0
+    [ s0 = [ &_9 <- Some (0: UInt64.t) ] s1
+    | s1 = [ &_ret <- { f0 = (0: UInt64.t); f1 = _9 } ] s2
+    | s2 = return {_ret} ]
+  | bb3 = s0
+    [ s0 = len_u8 {bytes} (fun (_x: UInt64.t) -> [ &_11 <- _x ] s1)
+    | s1 = [ &_10 <- Some _11 ] s2
+    | s2 = [ &_ret <- { f0 = (1: UInt64.t); f1 = _10 } ] s3
+    | s3 = return {_ret} ] ]
+  [ & _ret: tup2_usize_Option_usize = Any.any_l ()
+  | & bytes: Slice64.slice UInt8.t = bytes
+  | & _6: bool = Any.any_l ()
+  | & _7: UInt64.t = Any.any_l ()
+  | & _9: t_Option_usize = Any.any_l ()
+  | & _10: t_Option_usize = Any.any_l ()
+  | & _11: UInt64.t = Any.any_l () ])
+  [ return (result: tup2_usize_Option_usize) ->
+  {[@stop_split] [@expl:percent_encode_size_hint ensures] ([@stop_split] [@expl:percent_encode_size_hint ensures #0] UInt64.t'int result.f0
+      = (if Seq.length (Slice64.view bytes) = 0 then 0 else 1))
+    /\ ([@stop_split] [@expl:percent_encode_size_hint ensures #1] match result.f1 with
+      | Some upper -> UInt64.t'int upper = Seq.length (Slice64.view bytes)
+      | None -> false
+      end)}
+    (! return {result}) ]

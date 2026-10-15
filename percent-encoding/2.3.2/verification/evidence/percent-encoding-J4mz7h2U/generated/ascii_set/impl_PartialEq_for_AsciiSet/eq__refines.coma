@@ -1,0 +1,56 @@
+(* <ascii_set::AsciiSet as core::cmp::PartialEq> *)
+
+use creusot.slice.Slice64
+use creusot.int.UInt32
+use seq.Seq
+use creusot.int.UInt64
+
+type t_AsciiSet = { mask: Slice64.array UInt32.t }
+
+predicate inv_Seq_u32 [@inline:trivial] (_1: Seq.seq UInt32.t) = true
+
+meta "rewrite_def" predicate inv_Seq_u32
+
+predicate invariant_array_u32_4 (self: Slice64.array UInt32.t) =
+  inv_Seq_u32 (Slice64.view self) /\ Seq.length (Slice64.view self) = UInt64.t'int (4: UInt64.t)
+
+predicate inv_array_u32_4 [@inline:trivial] (_1: Slice64.array UInt32.t) = invariant_array_u32_4 _1
+
+meta "rewrite_def" predicate inv_array_u32_4
+
+predicate inv_AsciiSet (_1: t_AsciiSet)
+
+axiom inv_axiom [@rewrite]: forall x: t_AsciiSet [inv_AsciiSet x]. inv_AsciiSet x = inv_array_u32_4 x.mask
+
+predicate invariant_ref_AsciiSet [@inline:trivial] (self: t_AsciiSet) = inv_AsciiSet self
+
+meta "rewrite_def" predicate invariant_ref_AsciiSet
+
+predicate inv_ref_AsciiSet [@inline:trivial] (_1: t_AsciiSet) = invariant_ref_AsciiSet _1
+
+meta "rewrite_def" predicate inv_ref_AsciiSet
+
+function mask_words (self: t_AsciiSet) : Seq.seq UInt32.t =
+  Seq.create 4 (fun (i: int) -> Seq.get (Slice64.view self.mask) i)
+
+axiom mask_words_spec: forall self: t_AsciiSet [mask_words self]. Seq.length (mask_words self) = 4
+
+function deep_model_AsciiSet (self: t_AsciiSet) : Seq.seq UInt32.t = mask_words self
+
+axiom deep_model_AsciiSet_spec: forall self: t_AsciiSet [deep_model_AsciiSet self]. deep_model_AsciiSet self
+    = mask_words self
+
+function deep_model_ref_AsciiSet [@inline:trivial] (self: t_AsciiSet) : Seq.seq UInt32.t = deep_model_AsciiSet self
+
+meta "rewrite_def" function deep_model_ref_AsciiSet
+
+meta "compute_max_steps" 1000000
+
+meta "select_lsinst" "all"
+
+goal refines: forall self_: t_AsciiSet, rhs: t_AsciiSet. inv_ref_AsciiSet self_
+    -> inv_ref_AsciiSet rhs
+    -> inv_ref_AsciiSet self_
+    /\ inv_ref_AsciiSet rhs
+    /\ (forall result: bool. result = (deep_model_ref_AsciiSet self_ = deep_model_ref_AsciiSet rhs)
+      -> result = (deep_model_ref_AsciiSet self_ = deep_model_ref_AsciiSet rhs))

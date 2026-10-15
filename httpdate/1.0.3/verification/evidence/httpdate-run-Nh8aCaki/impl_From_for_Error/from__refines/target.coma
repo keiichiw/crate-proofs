@@ -1,0 +1,64 @@
+(* <std::io::Error as std::convert::From<Error>> *)
+
+type t_Error = { f0: () }
+
+type t_Error'0
+
+predicate inv_Error (_1: t_Error'0)
+
+type t_ErrorKind =
+  | NotFound
+  | PermissionDenied
+  | ConnectionRefused
+  | ConnectionReset
+  | HostUnreachable
+  | NetworkUnreachable
+  | ConnectionAborted
+  | NotConnected
+  | AddrInUse
+  | AddrNotAvailable
+  | NetworkDown
+  | BrokenPipe
+  | AlreadyExists
+  | WouldBlock
+  | NotADirectory
+  | IsADirectory
+  | DirectoryNotEmpty
+  | ReadOnlyFilesystem
+  | FilesystemLoop
+  | StaleNetworkFileHandle
+  | InvalidInput
+  | InvalidData
+  | TimedOut
+  | WriteZero
+  | StorageFull
+  | NotSeekable
+  | QuotaExceeded
+  | FileTooLarge
+  | ResourceBusy
+  | ExecutableFileBusy
+  | Deadlock
+  | CrossesDevices
+  | TooManyLinks
+  | InvalidFilename
+  | ArgumentListTooLong
+  | Interrupted
+  | Unsupported
+  | UnexpectedEof
+  | OutOfMemory
+  | InProgress
+  | Other
+  | Uncategorized
+
+function io_kind (_e: t_Error'0) : t_ErrorKind
+
+type t_Option_Error = None | Some t_Error
+
+function io_payload_Error (_e: t_Error'0) : t_Option_Error
+
+meta "compute_max_steps" 1000000
+
+meta "select_lsinst" "all"
+
+goal refines: forall value: t_Error. forall result: t_Error'0. inv_Error result
+        /\ io_kind result = Other /\ io_payload_Error result = Some value -> inv_Error result

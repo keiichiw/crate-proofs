@@ -1,0 +1,57 @@
+use creusot.int.UInt64
+use creusot.slice.Slice64
+use creusot.int.UInt8
+use seq.Seq
+use creusot.prelude.Any
+use int.Int
+
+let len_u8 (self_: Slice64.slice UInt8.t) (return (x: UInt64.t)) = any
+  [ return (result: UInt64.t) -> {[@stop_split] [@expl:len ensures] Seq.length (Slice64.view self_)
+    = UInt64.t'int result}
+    (! return {result}) ]
+
+type t_Option_usize = None | Some UInt64.t
+
+meta "compute_max_steps" 1000000
+
+meta "select_lsinst" "all"
+
+let find_plus (input: Slice64.slice UInt8.t) (return (x: t_Option_usize)) = (! bb0
+  [ bb0 = s0 [ s0 = [ &i <- (0: UInt64.t) ] s1 | s1 = bb1 ]
+  | bb1 = bb1
+    [ bb1 = {[@expl:loop invariant] 0 <= UInt64.t'int i
+      /\ UInt64.t'int i <= Seq.length (Slice64.view input)
+      /\ (forall j: int. 0 <= j /\ j < UInt64.t'int i -> UInt8.t'int (Seq.get (Slice64.view input) j) <> 43)}
+      (! s0)
+      [ s0 = len_u8 {input} (fun (_x: UInt64.t) -> [ &_13 <- _x ] s1)
+      | s1 = [ &_11 <- UInt64.lt i _13 ] s2
+      | s2 = any [ br0 -> {_11 = false} (! bb8) | br1 -> {_11} (! bb4) ] ]
+      [ bb4 = s0
+        [ s0 = [ &_18 <- i ] s1
+        | s1 = [ &_19 <- Slice64.length input ] s2
+        | s2 = [ &_20 <- UInt64.lt _18 _19 ] s3
+        | s3 = {[@expl:index in bounds] _20} s4
+        | s4 = Slice64.get <UInt8.t> {input} {_18} (fun (r: UInt8.t) -> [ &_17 <- r ] s5)
+        | s5 = [ &_16 <- _17 = (43: UInt8.t) ] s6
+        | s6 = any [ br0 -> {_16 = false} (! bb7) | br1 -> {_16} (! bb6) ] ]
+      | bb7 = s0 [ s0 = UInt64.add {i} {(1: UInt64.t)} (fun (_x: UInt64.t) -> [ &i <- _x ] s1) | s1 = bb1 ] ] ]
+  | bb6 = s0 [ s0 = [ &_ret <- Some i ] s1 | s1 = return {_ret} ]
+  | bb8 = s0 [ s0 = [ &_ret <- None ] s1 | s1 = return {_ret} ] ]
+  [ & _ret: t_Option_usize = Any.any_l ()
+  | & input: Slice64.slice UInt8.t = input
+  | & i: UInt64.t = Any.any_l ()
+  | & _11: bool = Any.any_l ()
+  | & _13: UInt64.t = Any.any_l ()
+  | & _16: bool = Any.any_l ()
+  | & _17: UInt8.t = Any.any_l ()
+  | & _18: UInt64.t = Any.any_l ()
+  | & _19: UInt64.t = Any.any_l ()
+  | & _20: bool = Any.any_l () ])
+  [ return (result: t_Option_usize) -> {[@stop_split] [@expl:find_plus ensures] match result with
+      | Some i -> UInt64.t'int i < Seq.length (Slice64.view input)
+      /\ UInt8.t'int (Seq.get (Slice64.view input) (UInt64.t'int i)) = 43
+      /\ (forall j: int. 0 <= j /\ j < UInt64.t'int i -> UInt8.t'int (Seq.get (Slice64.view input) j) <> 43)
+      | None -> forall j: int. 0 <= j /\ j < Seq.length (Slice64.view input)
+        -> UInt8.t'int (Seq.get (Slice64.view input) j) <> 43
+      end}
+    (! return {result}) ]

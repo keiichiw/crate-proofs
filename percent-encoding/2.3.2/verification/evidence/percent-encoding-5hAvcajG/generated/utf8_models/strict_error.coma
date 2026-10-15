@@ -1,0 +1,303 @@
+use seq.Seq
+use int.Int
+
+type t_Option_Int = None | Some int
+
+type tup2_Int_Option_Int = { f0: int; f1: t_Option_Int }
+
+type t_Option_tup2_Int_Option_Int = None'0 | Some'0 tup2_Int_Option_Int
+
+type tup3_Int_Int_bool = { f0'0: int; f1'0: int; f2'0: bool }
+
+function utf8_step (bytes: Seq.seq int) (pos: int) : tup3_Int_Int_bool =
+  let b0 = Seq.get bytes pos in let remaining = Seq.length bytes - pos in if 0 <= b0 /\ b0 <= 127 then
+    { f0'0 = b0; f1'0 = 1; f2'0 = true }
+  else
+    if 194 <= b0 /\ b0 <= 223 then
+      if remaining < 2 then
+        { f0'0 = 65533; f1'0 = remaining; f2'0 = false }
+      else
+        let b1 = Seq.get bytes (pos + 1) in if 128 <= b1 /\ b1 <= 191 then
+          { f0'0 = (b0 - 192) * 64 + (b1 - 128); f1'0 = 2; f2'0 = true }
+        else
+          { f0'0 = 65533; f1'0 = 1; f2'0 = false }
+      
+    
+    else
+      if 224 <= b0 /\ b0 <= 239 then
+        if remaining < 2 then
+          { f0'0 = 65533; f1'0 = remaining; f2'0 = false }
+        else
+          let b1 = Seq.get bytes (pos + 1) in let second_ok = if b0 = 224 then
+            160 <= b1 /\ b1 <= 191
+          else
+            if b0 = 237 then 128 <= b1 /\ b1 <= 159 else 128 <= b1 /\ b1 <= 191
+           in if not second_ok then
+            { f0'0 = 65533; f1'0 = 1; f2'0 = false }
+          else
+            if remaining < 3 then
+              { f0'0 = 65533; f1'0 = remaining; f2'0 = false }
+            else
+              let b2 = Seq.get bytes (pos + 2) in if 128 <= b2 /\ b2 <= 191 then
+                { f0'0 = (b0 - 224) * 4096 + (b1 - 128) * 64 + (b2 - 128); f1'0 = 3; f2'0 = true }
+              else
+                { f0'0 = 65533; f1'0 = 2; f2'0 = false }
+            
+          
+        
+      
+      else
+        if 240 <= b0 /\ b0 <= 244 then
+          if remaining < 2 then
+            { f0'0 = 65533; f1'0 = remaining; f2'0 = false }
+          else
+            let b1 = Seq.get bytes (pos + 1) in let second_ok = if b0 = 240 then
+              144 <= b1 /\ b1 <= 191
+            else
+              if b0 = 244 then 128 <= b1 /\ b1 <= 143 else 128 <= b1 /\ b1 <= 191
+             in if not second_ok then
+              { f0'0 = 65533; f1'0 = 1; f2'0 = false }
+            else
+              if remaining < 3 then
+                { f0'0 = 65533; f1'0 = remaining; f2'0 = false }
+              else
+                let b2 = Seq.get bytes (pos + 2) in if not (128 <= b2 /\ b2 <= 191) then
+                  { f0'0 = 65533; f1'0 = 2; f2'0 = false }
+                else
+                  if remaining < 4 then
+                    { f0'0 = 65533; f1'0 = remaining; f2'0 = false }
+                  else
+                    let b3 = Seq.get bytes (pos + 3) in if 128 <= b3 /\ b3 <= 191 then
+                      { f0'0 = (b0 - 240) * 262144 + (b1 - 128) * 4096 + (b2 - 128) * 64 + (b3 - 128);
+                        f1'0 = 4;
+                        f2'0 = true }
+                    else
+                      { f0'0 = 65533; f1'0 = 3; f2'0 = false }
+                  
+                
+              
+            
+          
+        
+        else
+          { f0'0 = 65533; f1'0 = 1; f2'0 = false }
+      
+    
+  
+
+
+predicate ge_log_Int [@inline:trivial] (self: int) (other: int) = other <= self
+
+meta "rewrite_def" predicate ge_log_Int
+
+predicate gt_log_Int [@inline:trivial] (self: int) (other: int) = other < self
+
+meta "rewrite_def" predicate gt_log_Int
+
+predicate well_founded_relation_Int [@inline:trivial] (self: int) (other: int) =
+  ge_log_Int self 0 /\ gt_log_Int self other
+
+meta "rewrite_def" predicate well_founded_relation_Int
+
+meta "compute_max_steps" 1000000
+
+meta "select_lsinst" "all"
+
+constant bytes : Seq.seq int
+
+function strict_error (bytes: Seq.seq int) : t_Option_tup2_Int_Option_Int
+
+goal vc_strict_error: if Seq.length bytes = 0 then
+    true
+  else
+    ([@stop_split] [@expl:utf8_step requires] 0 <= 0 /\ 0 < Seq.length bytes)
+    /\ (let {f1'0 = consumed; f2'0 = valid} = utf8_step bytes 0 in if valid then
+      ([@expl:variant decreases] well_founded_relation_Int (Seq.length bytes) (Seq.length (Seq.([..]) bytes consumed (Seq.length bytes))))
+      /\ match strict_error (Seq.([..]) bytes consumed (Seq.length bytes)) with
+        | Some'0 {f0 = offset; f1 = len} -> true
+        | None'0 -> true
+        end
+    else
+      let lead = Seq.get bytes 0 in let remaining = Seq.length bytes in if 194 <= lead then
+        if lead <= 223 then
+          if remaining < 2 then
+            let truncated = true in true
+          else
+            if 224 <= lead then
+              if lead <= 239 then
+                if remaining < 3 then
+                  if consumed = remaining then
+                    let truncated = true in true
+                  else
+                    if 240 <= lead then
+                      if lead <= 244 then
+                        if remaining < 4 then
+                          let truncated = consumed = remaining in true
+                        else
+                          let truncated = false in true
+                      
+                      else
+                        let truncated = false in true
+                    
+                    else
+                      let truncated = false in true
+                  
+                
+                else
+                  if 240 <= lead then
+                    if lead <= 244 then
+                      if remaining < 4 then
+                        let truncated = consumed = remaining in true
+                      else
+                        let truncated = false in true
+                    
+                    else
+                      let truncated = false in true
+                  
+                  else
+                    let truncated = false in true
+                
+              
+              else
+                if 240 <= lead then
+                  if lead <= 244 then
+                    if remaining < 4 then
+                      let truncated = consumed = remaining in true
+                    else
+                      let truncated = false in true
+                  
+                  else
+                    let truncated = false in true
+                
+                else
+                  let truncated = false in true
+              
+            
+            else
+              if 240 <= lead then
+                if lead <= 244 then
+                  if remaining < 4 then let truncated = consumed = remaining in true else let truncated = false in true
+                else
+                  let truncated = false in true
+              
+              else
+                let truncated = false in true
+            
+          
+        
+        else
+          if 224 <= lead then
+            if lead <= 239 then
+              if remaining < 3 then
+                if consumed = remaining then
+                  let truncated = true in true
+                else
+                  if 240 <= lead then
+                    if lead <= 244 then
+                      if remaining < 4 then
+                        let truncated = consumed = remaining in true
+                      else
+                        let truncated = false in true
+                    
+                    else
+                      let truncated = false in true
+                  
+                  else
+                    let truncated = false in true
+                
+              
+              else
+                if 240 <= lead then
+                  if lead <= 244 then
+                    if remaining < 4 then
+                      let truncated = consumed = remaining in true
+                    else
+                      let truncated = false in true
+                  
+                  else
+                    let truncated = false in true
+                
+                else
+                  let truncated = false in true
+              
+            
+            else
+              if 240 <= lead then
+                if lead <= 244 then
+                  if remaining < 4 then let truncated = consumed = remaining in true else let truncated = false in true
+                else
+                  let truncated = false in true
+              
+              else
+                let truncated = false in true
+            
+          
+          else
+            if 240 <= lead then
+              if lead <= 244 then
+                if remaining < 4 then let truncated = consumed = remaining in true else let truncated = false in true
+              else
+                let truncated = false in true
+            
+            else
+              let truncated = false in true
+          
+        
+      
+      else
+        if 224 <= lead then
+          if lead <= 239 then
+            if remaining < 3 then
+              if consumed = remaining then
+                let truncated = true in true
+              else
+                if 240 <= lead then
+                  if lead <= 244 then
+                    if remaining < 4 then
+                      let truncated = consumed = remaining in true
+                    else
+                      let truncated = false in true
+                  
+                  else
+                    let truncated = false in true
+                
+                else
+                  let truncated = false in true
+              
+            
+            else
+              if 240 <= lead then
+                if lead <= 244 then
+                  if remaining < 4 then let truncated = consumed = remaining in true else let truncated = false in true
+                else
+                  let truncated = false in true
+              
+              else
+                let truncated = false in true
+            
+          
+          else
+            if 240 <= lead then
+              if lead <= 244 then
+                if remaining < 4 then let truncated = consumed = remaining in true else let truncated = false in true
+              else
+                let truncated = false in true
+            
+            else
+              let truncated = false in true
+          
+        
+        else
+          if 240 <= lead then
+            if lead <= 244 then
+              if remaining < 4 then let truncated = consumed = remaining in true else let truncated = false in true
+            else
+              let truncated = false in true
+          
+          else
+            let truncated = false in true
+        
+      
+    
+    )
+  

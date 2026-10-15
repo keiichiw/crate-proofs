@@ -1,0 +1,10 @@
+use creusot.prelude.Any
+
+meta "compute_max_steps" 1000000
+
+meta "select_lsinst" "all"
+
+let ascii_trimmed_empty (s: string) (return (x: bool)) = (! bb0
+  [ bb0 = {false} any ]
+  [ & _ret: bool = Any.any_l () | & s: string = s | & _2: bool = Any.any_l () | & _5: string = Any.any_l () ])
+  [ return (result: bool) -> (! return {result}) ]

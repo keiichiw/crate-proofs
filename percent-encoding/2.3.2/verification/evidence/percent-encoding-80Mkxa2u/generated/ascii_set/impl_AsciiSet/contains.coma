@@ -1,0 +1,96 @@
+(* ascii_set::AsciiSet *)
+
+use creusot.int.UInt8
+use creusot.int.UInt64
+use creusot.prelude.Any
+use creusot.int.UInt32
+use creusot.slice.Slice64
+use seq.Seq
+use int.Int
+
+constant size_of_u32: int = 4
+
+meta "rewrite_def" constant size_of_u32
+
+axiom size_of_u32_spec: 0 <= size_of_u32
+
+let size_of_u32'0 (return (x: UInt64.t)) = any
+  [ return (result: UInt64.t) -> {[@stop_split] [@expl:size_of ensures] UInt64.t'int result = size_of_u32}
+    (! return {result}) ]
+
+type tup2_usize_bool = { f0: UInt64.t; f1: bool }
+
+constant const_BITS_PER_CHUNK : UInt64.t
+
+let set_BITS_PER_CHUNK (return) = bb0
+  [ bb0 = s0
+    [ s0 = size_of_u32'0 (fun (_x: UInt64.t) -> [ &_1 <- _x ] s1)
+    | s1 = [ &_2 <- let (_fst, _snd) = UInt64.mul_with_overflow (8: UInt64.t) _1 in { f0 = _fst; f1 = _snd } ] s2
+    | s2 = {[@expl:Mul overflow] not _2.f1} s3
+    | s3 = [ &_ret <- _2.f0 ] s4
+    | s4 = return {_ret} ] ]
+  [ & _ret: UInt64.t = Any.any_l () | & _1: UInt64.t = Any.any_l () | & _2: tup2_usize_bool = Any.any_l () ]
+  [ return (_const: UInt64.t) -> -{const_BITS_PER_CHUNK = _const}- return ]
+
+type t_AsciiSet = { mask: Slice64.array UInt32.t }
+
+predicate inv_Seq_u32 [@inline:trivial] (_1: Seq.seq UInt32.t) = true
+
+meta "rewrite_def" predicate inv_Seq_u32
+
+predicate invariant_array_u32_4 (self: Slice64.array UInt32.t) =
+  inv_Seq_u32 (Slice64.view self) /\ Seq.length (Slice64.view self) = UInt64.t'int (4: UInt64.t)
+
+predicate inv_array_u32_4 [@inline:trivial] (_1: Slice64.array UInt32.t) = invariant_array_u32_4 _1
+
+meta "rewrite_def" predicate inv_array_u32_4
+
+predicate inv_AsciiSet (_1: t_AsciiSet)
+
+axiom inv_axiom [@rewrite]: forall x: t_AsciiSet [inv_AsciiSet x]. inv_AsciiSet x = inv_array_u32_4 x.mask
+
+predicate invariant_ref_AsciiSet [@inline:trivial] (self: t_AsciiSet) = inv_AsciiSet self
+
+meta "rewrite_def" predicate invariant_ref_AsciiSet
+
+predicate inv_ref_AsciiSet [@inline:trivial] (_1: t_AsciiSet) = invariant_ref_AsciiSet _1
+
+meta "rewrite_def" predicate inv_ref_AsciiSet
+
+meta "compute_max_steps" 1000000
+
+meta "select_lsinst" "all"
+
+let contains (self: t_AsciiSet) (byte: UInt8.t) (return (x: bool)) =
+{[@stop_split] [@expl:contains 'self' type invariant] inv_ref_AsciiSet self}
+  (! set_BITS_PER_CHUNK
+    (bb0
+    [ bb0 = s0
+      [ s0 = [ &_5 <- UInt64.of_int (UInt8.t'int byte) ] s1
+      | s1 = [ &_7 <- const_BITS_PER_CHUNK = (0: UInt64.t) ] s2
+      | s2 = {[@expl:division by zero] not _7} s3
+      | s3 = UInt64.div {_5} {const_BITS_PER_CHUNK} (fun (_x: UInt64.t) -> [ &_4 <- _x ] s4)
+      | s4 = [ &_8 <- UInt64.lt _4 (4: UInt64.t) ] s5
+      | s5 = {[@expl:index in bounds] _8} s6
+      | s6 = Slice64.get <UInt32.t> {self.mask} {_4} (fun (r: UInt32.t) -> [ &chunk <- r ] s7)
+      | s7 = [ &_11 <- UInt64.of_int (UInt8.t'int byte) ] s8
+      | s8 = [ &_13 <- const_BITS_PER_CHUNK = (0: UInt64.t) ] s9
+      | s9 = {[@expl:remainder by zero] not _13} s10
+      | s10 = UInt64.rem {_11} {const_BITS_PER_CHUNK} (fun (_x: UInt64.t) -> [ &_10 <- _x ] s11)
+      | s11 = UInt32.shl {(1: UInt32.t)} {UInt64.t'int _10} (fun (_x: UInt32.t) -> [ &mask'0 <- _x ] s12)
+      | s12 = [ &_14 <- UInt32.bw_and chunk mask'0 ] s13
+      | s13 = [ &_ret <- _14 <> (0: UInt32.t) ] s14
+      | s14 = return {_ret} ] ]
+    [ & _ret: bool = Any.any_l ()
+    | & self: t_AsciiSet = self
+    | & byte: UInt8.t = byte
+    | & chunk: UInt32.t = Any.any_l ()
+    | & _4: UInt64.t = Any.any_l ()
+    | & _5: UInt64.t = Any.any_l ()
+    | & _7: bool = Any.any_l ()
+    | & _8: bool = Any.any_l ()
+    | & mask'0: UInt32.t = Any.any_l ()
+    | & _10: UInt64.t = Any.any_l ()
+    | & _11: UInt64.t = Any.any_l ()
+    | & _13: bool = Any.any_l ()
+    | & _14: UInt32.t = Any.any_l () ])) [ return (result: bool) -> (! return {result}) ]

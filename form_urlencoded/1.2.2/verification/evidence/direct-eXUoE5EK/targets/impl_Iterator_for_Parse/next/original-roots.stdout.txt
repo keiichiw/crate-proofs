@@ -1,0 +1,1052 @@
+theory Coma
+  
+  (* use why3.BuiltIn.BuiltIn *)
+  
+  (* use why3.Bool.Bool *)
+  
+  (* use why3.Unit.Unit *)
+  
+  (* use creusot.slice.Slice64 *)
+  
+  (* use creusot.int.UInt8 *)
+  
+  (* use map.Map *)
+  
+  (* use creusot.prelude.MutBorrow *)
+  
+  (* use creusot.prelude.Char *)
+  
+  (* use creusot.prelude.Any *)
+  
+  type t_Parse =
+    | T_Parse'mk (input:slice t)
+  
+  (* meta model_record function input *)
+  
+  type tup4_usize_usize_usize_usize =
+    | Tup4_usize_usize_usize_usize'mk (f0:t1) (f1:t1) (f2:t1) (f3:t1)
+  
+  (* meta model_record function f3 *)
+  
+  (* meta model_record function f2 *)
+  
+  (* meta model_record function f1 *)
+  
+  (* meta model_record function f0 *)
+  
+  type t_Option_tup4_usize_usize_usize_usize =
+    | None
+    | Some tup4_usize_usize_usize_usize
+  
+  function skip_ampersands (seq t) int : int
+  
+  axiom skip_ampersands_def :
+    forall input'0:seq t, start:int [skip_ampersands input'0 start].
+     0 <= start /\ start <= length input'0 ->
+     skip_ampersands input'0 start =
+     (if start < length input'0 /\ t'int (get input'0 start) = 38
+      then skip_ampersands input'0 (start + 1) else start)
+  
+  axiom skip_ampersands_spec :
+    forall input'0:seq t, start:int [skip_ampersands input'0 start].
+     0 <= start /\ start <= length input'0 ->
+     start <= skip_ampersands input'0 start /\
+     skip_ampersands input'0 start <= length input'0
+  
+  axiom skip_ampersands_spec'0 :
+    forall input'0:seq t, start:int [skip_ampersands input'0 start].
+     0 <= start /\ start <= length input'0 ->
+     (forall i:int.
+       start <= i /\ i < skip_ampersands input'0 start ->
+       t'int (get input'0 i) = 38)
+  
+  axiom skip_ampersands_spec'1 :
+    forall input'0:seq t, start:int [skip_ampersands input'0 start].
+     0 <= start /\ start <= length input'0 ->
+     skip_ampersands input'0 start = length input'0 \/
+     not t'int (get input'0 (skip_ampersands input'0 start)) = 38
+  
+  type tup4_Int_Int_Int_Int =
+    | Tup4_Int_Int_Int_Int'mk (f0'0:int) (f1'0:int) (f2'0:int) (f3'0:int)
+  
+  (* meta model_record function f3'0 *)
+  
+  (* meta model_record function f2'0 *)
+  
+  (* meta model_record function f1'0 *)
+  
+  (* meta model_record function f0'0 *)
+  
+  type t_Option_tup4_Int_Int_Int_Int =
+    | None'0
+    | Some'0 tup4_Int_Int_Int_Int
+  
+  function find_byte_before (seq t) int int int : int
+  
+  axiom find_byte_before_def :
+    forall input'0:seq t, start:int, end':int, byte:int
+     [find_byte_before input'0 start end' byte].
+     0 <= start /\ start <= end' /\ end' <= length input'0 ->
+     find_byte_before input'0 start end' byte =
+     (if start < end' /\ not t'int (get input'0 start) = byte
+      then find_byte_before input'0 (start + 1) end' byte else start)
+  
+  axiom find_byte_before_spec :
+    forall input'0:seq t, start:int, end':int, byte:int
+     [find_byte_before input'0 start end' byte].
+     0 <= start /\ start <= end' /\ end' <= length input'0 ->
+     start <= find_byte_before input'0 start end' byte /\
+     find_byte_before input'0 start end' byte <= end'
+  
+  axiom find_byte_before_spec'0 :
+    forall input'0:seq t, start:int, end':int, byte:int
+     [find_byte_before input'0 start end' byte].
+     0 <= start /\ start <= end' /\ end' <= length input'0 ->
+     (forall i:int.
+       start <= i /\ i < find_byte_before input'0 start end' byte ->
+       not t'int (get input'0 i) = byte)
+  
+  axiom find_byte_before_spec'1 :
+    forall input'0:seq t, start:int, end':int, byte:int
+     [find_byte_before input'0 start end' byte].
+     0 <= start /\ start <= end' /\ end' <= length input'0 ->
+     find_byte_before input'0 start end' byte = end' \/
+     t'int (get input'0 (find_byte_before input'0 start end' byte)) = byte
+  
+  function raw_pair_model (input'0:seq t) (start:int) :
+    t_Option_tup4_Int_Int_Int_Int =
+    let end' = find_byte_before input'0 start (length input'0) 38 in
+    let eq = find_byte_before input'0 start end' 61 in
+    let next = (if end' < length input'0 then end' + 1 else end') in
+    Some'0 (Tup4_Int_Int_Int_Int'mk start eq end' next)
+  
+  axiom raw_pair_model_spec :
+    forall input'0:seq t, start:int [raw_pair_model input'0 start].
+     start = skip_ampersands input'0 0 ->
+     start < length input'0 ->
+     match raw_pair_model input'0 start with
+     | Some'0 (Tup4_Int_Int_Int_Int'mk pair_start eq end' next) ->
+         pair_start = start /\
+         pair_start < end' /\
+         end' <= length input'0 /\
+         pair_start <= eq /\
+         eq <= end' /\
+         (eq < end' -> t'int (get input'0 eq) = 61) /\
+         (end' = length input'0 \/ t'int (get input'0 end') = 38) /\
+         next = (if end' < length input'0 then end' + 1 else end')
+     | None'0 -> false
+     end
+  
+  goal vc_raw_pair_bounds : true
+  
+  goal vc_elim_Some : true
+  
+  function parse_suffix_after_next (input'0:seq t) : seq t =
+    let start = skip_ampersands input'0 0 in
+    if start = length input'0 then empty: seq t
+    else match raw_pair_model input'0 start with
+    | Some'0 (Tup4_Int_Int_Int_Int'mk _ _ _ next) ->
+        input'0[next..length input'0]
+    | None'0 -> empty: seq t
+    end
+  
+  type tup2_Seq_Int_Seq_Int =
+    | Tup2_Seq_Int_Seq_Int'mk (f0'1:seq int) (f1'1:seq int)
+  
+  (* meta model_record function f1'1 *)
+  
+  (* meta model_record function f0'1 *)
+  
+  type tup3_Int_Int_bool =
+    | Tup3_Int_Int_bool'mk (f0'2:int) (f1'2:int) (f2'2:bool)
+  
+  (* meta model_record function f2'2 *)
+  
+  (* meta model_record function f1'2 *)
+  
+  (* meta model_record function f0'2 *)
+  
+  function utf8_step (bytes:seq int) (pos:int) : tup3_Int_Int_bool =
+    let b0 = get bytes pos in
+    let remaining = length bytes - pos in
+    if 0 <= b0 /\ b0 <= 127 then Tup3_Int_Int_bool'mk b0 1 True
+    else if 194 <= b0 /\ b0 <= 223
+         then if remaining < 2
+              then Tup3_Int_Int_bool'mk 65533 remaining False
+              else let b1 = get bytes (pos + 1) in
+                   if 128 <= b1 /\ b1 <= 191
+                   then Tup3_Int_Int_bool'mk (((b0 - 192) * 64) + (b1 - 128))
+                        2 True
+                   else Tup3_Int_Int_bool'mk 65533 1 False
+         else if 224 <= b0 /\ b0 <= 239
+              then if remaining < 2
+                   then Tup3_Int_Int_bool'mk 65533 remaining False
+                   else let b1 = get bytes (pos + 1) in
+                        let second_ok =
+                          (if if b0 = 224 then 160 <= b1 /\ b1 <= 191
+                              else if b0 = 237 then 128 <= b1 /\ b1 <= 159
+                                   else 128 <= b1 /\ b1 <= 191
+                           then True else False)
+                        in
+                        if not second_ok = True
+                        then Tup3_Int_Int_bool'mk 65533 1 False
+                        else if remaining < 3
+                             then Tup3_Int_Int_bool'mk 65533 remaining False
+                             else let b2 = get bytes (pos + 2) in
+                                  if 128 <= b2 /\ b2 <= 191
+                                  then Tup3_Int_Int_bool'mk
+                                       ((((b0 - 224) * 4096)
+                                         + ((b1 - 128) * 64))
+                                        + (b2 - 128))
+                                       3 True
+                                  else Tup3_Int_Int_bool'mk 65533 2 False
+              else if 240 <= b0 /\ b0 <= 244
+                   then if remaining < 2
+                        then Tup3_Int_Int_bool'mk 65533 remaining False
+                        else let b1 = get bytes (pos + 1) in
+                             let second_ok =
+                               (if if b0 = 240 then 144 <= b1 /\ b1 <= 191
+                                   else if b0 = 244
+                                        then 128 <= b1 /\ b1 <= 143
+                                        else 128 <= b1 /\ b1 <= 191
+                                then True else False)
+                             in
+                             if not second_ok = True
+                             then Tup3_Int_Int_bool'mk 65533 1 False
+                             else if remaining < 3
+                                  then Tup3_Int_Int_bool'mk 65533 remaining
+                                       False
+                                  else let b2 = get bytes (pos + 2) in
+                                       if not (128 <= b2 /\ b2 <= 191)
+                                       then Tup3_Int_Int_bool'mk 65533 2
+                                            False
+                                       else if remaining < 4
+                                            then Tup3_Int_Int_bool'mk 65533
+                                                 remaining False
+                                            else let b3 =
+                                                   get bytes (pos + 3)
+                                                 in
+                                                 if 128 <= b3 /\ b3 <= 191
+                                                 then Tup3_Int_Int_bool'mk
+                                                      (((((b0 - 240) * 262144)
+                                                         + ((b1 - 128) * 4096))
+                                                        + ((b2 - 128) * 64))
+                                                       + (b3 - 128))
+                                                      4 True
+                                                 else Tup3_Int_Int_bool'mk
+                                                      65533 3 False
+                   else Tup3_Int_Int_bool'mk 65533 1 False
+  
+  axiom utf8_step_spec :
+    forall bytes:seq int, pos:int [utf8_step bytes pos].
+     0 <= pos /\ pos < length bytes ->
+     1 <= (utf8_step bytes pos).f1'2 /\
+     (utf8_step bytes pos).f1'2 <= (length bytes - pos)
+  
+  axiom utf8_step_spec'0 :
+    forall bytes:seq int, pos:int [utf8_step bytes pos].
+     0 <= pos /\ pos < length bytes ->
+     (utf8_step bytes pos).f0'2 = 65533 \/
+     0 <= (utf8_step bytes pos).f0'2 /\ (utf8_step bytes pos).f0'2 <= 55295 \/
+     57344 <= (utf8_step bytes pos).f0'2 /\
+     (utf8_step bytes pos).f0'2 <= 1114111
+  
+  function utf8_lossy_model (seq int) : seq int
+  
+  axiom utf8_lossy_model_def :
+    forall bytes:seq int [utf8_lossy_model bytes].
+     utf8_lossy_model bytes =
+     (if length bytes = 0 then empty: seq int
+      else match utf8_step bytes 0 with
+      | Tup3_Int_Int_bool'mk scalar consumed _ ->
+          singleton scalar ++ utf8_lossy_model bytes[consumed..length bytes]
+      end)
+  
+  function percent_hex_value_model (byte:int) : int =
+    if 48 <= byte /\ byte <= 57 then byte - 48
+    else if 65 <= byte /\ byte <= 70 then byte - 55
+         else if 97 <= byte /\ byte <= 102 then byte - 87 else (- 1)
+  
+  predicate ge_log_Int (self:int) (other:int) = other <= self
+  
+  (* meta rewrite_def predicate ge_log_Int *)
+  
+  function percent_decoded_from (seq int) int : seq int
+  
+  axiom percent_decoded_from_def :
+    forall bytes:seq int, index:int [percent_decoded_from bytes index].
+     0 <= index /\ index <= length bytes ->
+     percent_decoded_from bytes index =
+     (if index = length bytes then empty: seq int
+      else let first = get bytes index in
+           if first = 37 /\ (index + 3) <= length bytes
+           then let high = percent_hex_value_model (get bytes (index + 1)) in
+                let low = percent_hex_value_model (get bytes (index + 2)) in
+                if ge_log_Int high 0 /\ ge_log_Int low 0
+                then singleton ((high * 16) + low)
+                     ++ percent_decoded_from bytes (index + 3)
+                else singleton first
+                     ++ percent_decoded_from bytes (index + 1)
+           else singleton first ++ percent_decoded_from bytes (index + 1))
+  
+  function percent_decoded_model (seq int) : seq int
+  
+  axiom percent_decoded_model_def :
+    forall bytes:seq int [percent_decoded_model bytes].
+     percent_decoded_model bytes = percent_decoded_from bytes 0
+  
+  function index_Mapping_u8_Int (self:t -> int) (a:t) : int = get1 self a
+  
+  (* meta rewrite_def function index_Mapping_u8_Int *)
+  
+  function map_u8 (seq t) (t -> int) : seq int
+  
+  axiom map_u8_spec :
+    forall self:seq t, m:t -> int [map_u8 self m].
+     length (map_u8 self m) = length self
+  
+  axiom map_u8_spec'0 :
+    forall self:seq t, m:t -> int [map_u8 self m].
+     forall i:int.
+      0 <= i /\ i < length self ->
+      get (map_u8 self m) i = index_Mapping_u8_Int m (get self i)
+  
+  function byte_sequence_as_ints (bytes:seq t) : seq int =
+    map_u8 bytes (fun (byte:t) -> t'int byte)
+  
+  function index_Mapping_u8_u8 (self:t -> t) (a:t) : t = get1 self a
+  
+  (* meta rewrite_def function index_Mapping_u8_u8 *)
+  
+  function map_u8'0 (seq t) (t -> t) : seq t
+  
+  axiom map_u8_spec'1 :
+    forall self:seq t, m:t -> t [map_u8'0 self m].
+     length (map_u8'0 self m) = length self
+  
+  axiom map_u8_spec'2 :
+    forall self:seq t, m:t -> t [map_u8'0 self m].
+     forall i:int.
+      0 <= i /\ i < length self ->
+      get (map_u8'0 self m) i = index_Mapping_u8_u8 m (get self i)
+  
+  function replace_plus_model (bytes:seq t) : seq t =
+    map_u8'0 bytes (fun (byte:t) -> if t'int byte = 43 then (32:t) else byte)
+  
+  function decoded_string_model (bytes:seq t) : seq int =
+    utf8_lossy_model
+    (percent_decoded_model (byte_sequence_as_ints (replace_plus_model bytes)))
+  
+  function parsed_trace (seq t) : seq tup2_Seq_Int_Seq_Int
+  
+  axiom parsed_trace_def :
+    forall input'0:seq t [parsed_trace input'0].
+     parsed_trace input'0 =
+     (let start = skip_ampersands input'0 0 in
+      if start = length input'0 then empty: seq tup2_Seq_Int_Seq_Int
+      else match raw_pair_model input'0 start with
+      | Some'0 (Tup4_Int_Int_Int_Int'mk pair_start eq end' next) ->
+          let name = input'0[pair_start..eq] in
+          let value =
+            (if eq < end' then input'0[(eq + 1)..end'] else empty: seq t)
+          in
+          singleton
+          (Tup2_Seq_Int_Seq_Int'mk (decoded_string_model name)
+           (decoded_string_model value))
+          ++ parsed_trace input'0[next..length input'0]
+      | None'0 -> empty: seq tup2_Seq_Int_Seq_Int
+      end)
+  
+  predicate parsed_trace_step (seq t) int int int int
+  
+  axiom parsed_trace_step_spec :
+    forall input'0:seq t, start:int, eq:int, end':int, next:int
+     [parsed_trace_step input'0 start eq end' next].
+     0 <= start /\ start < end' /\ end' <= length input'0 ->
+     start <= eq /\ eq <= end' ->
+     0 <= next /\ next <= length input'0 ->
+     start = skip_ampersands input'0 0 ->
+     raw_pair_model input'0 start =
+     Some'0 (Tup4_Int_Int_Int_Int'mk start eq end' next) ->
+     parsed_trace_step input'0 start eq end' next
+  
+  axiom parsed_trace_step_spec'0 :
+    forall input'0:seq t, start:int, eq:int, end':int, next:int.
+     0 <= start /\ start < end' /\ end' <= length input'0 ->
+     start <= eq /\ eq <= end' ->
+     0 <= next /\ next <= length input'0 ->
+     start = skip_ampersands input'0 0 ->
+     raw_pair_model input'0 start =
+     Some'0 (Tup4_Int_Int_Int_Int'mk start eq end' next) ->
+     parse_suffix_after_next input'0 = input'0[next..length input'0]
+  
+  axiom parsed_trace_step_spec'1 :
+    forall input'0:seq t, start:int, eq:int, end':int, next:int.
+     0 <= start /\ start < end' /\ end' <= length input'0 ->
+     start <= eq /\ eq <= end' ->
+     0 <= next /\ next <= length input'0 ->
+     start = skip_ampersands input'0 0 ->
+     raw_pair_model input'0 start =
+     Some'0 (Tup4_Int_Int_Int_Int'mk start eq end' next) ->
+     parsed_trace input'0 =
+     (singleton
+      (Tup2_Seq_Int_Seq_Int'mk (decoded_string_model input'0[start..eq])
+       (decoded_string_model
+        (if eq < end' then input'0[(eq + 1)..end'] else empty: seq t)))
+      ++ parsed_trace input'0[next..length input'0])
+  
+  type tup2_bool_bool =
+    | Tup2_bool_bool'mk (f0'3:bool) (f1'3:bool)
+  
+  (* meta model_record function f1'3 *)
+  
+  (* meta model_record function f0'3 *)
+  
+  predicate no_plus (bytes:seq t) =
+    forall i:int. 0 <= i /\ i < length bytes -> not t'int (get bytes i) = 43
+  
+  predicate utf8_is_valid (seq int)
+  
+  axiom utf8_is_valid_def :
+    forall bytes:seq int [utf8_is_valid bytes].
+     utf8_is_valid bytes <->
+     (if length bytes = 0 then true
+      else match utf8_step bytes 0 with
+      | Tup3_Int_Int_bool'mk _ consumed valid ->
+          valid = True /\ utf8_is_valid bytes[consumed..length bytes]
+      end)
+  
+  predicate decode_borrows (bytes:seq t) =
+    no_plus bytes /\
+    (let decoded =
+       percent_decoded_model
+       (byte_sequence_as_ints (replace_plus_model bytes))
+     in length decoded = length bytes /\ utf8_is_valid decoded)
+  
+  function parsed_borrow_trace (seq t) : seq tup2_bool_bool
+  
+  axiom parsed_borrow_trace_def :
+    forall input'0:seq t [parsed_borrow_trace input'0].
+     parsed_borrow_trace input'0 =
+     (let start = skip_ampersands input'0 0 in
+      if start = length input'0 then empty: seq tup2_bool_bool
+      else match raw_pair_model input'0 start with
+      | Some'0 (Tup4_Int_Int_Int_Int'mk pair_start eq end' next) ->
+          let name = input'0[pair_start..eq] in
+          let value =
+            (if eq < end' then input'0[(eq + 1)..end'] else empty: seq t)
+          in
+          singleton
+          (Tup2_bool_bool'mk (if decode_borrows name then True else False)
+           (if decode_borrows value then True else False))
+          ++ parsed_borrow_trace input'0[next..length input'0]
+      | None'0 -> empty: seq tup2_bool_bool
+      end)
+  
+  predicate parsed_borrow_trace_step (seq t) int int int int
+  
+  axiom parsed_borrow_trace_step_spec :
+    forall input'0:seq t, start:int, eq:int, end':int, next:int
+     [parsed_borrow_trace_step input'0 start eq end' next].
+     0 <= start /\ start < end' /\ end' <= length input'0 ->
+     start <= eq /\ eq <= end' ->
+     0 <= next /\ next <= length input'0 ->
+     start = skip_ampersands input'0 0 ->
+     raw_pair_model input'0 start =
+     Some'0 (Tup4_Int_Int_Int_Int'mk start eq end' next) ->
+     parsed_borrow_trace_step input'0 start eq end' next
+  
+  axiom parsed_borrow_trace_step_spec'0 :
+    forall input'0:seq t, start:int, eq:int, end':int, next:int.
+     0 <= start /\ start < end' /\ end' <= length input'0 ->
+     start <= eq /\ eq <= end' ->
+     0 <= next /\ next <= length input'0 ->
+     start = skip_ampersands input'0 0 ->
+     raw_pair_model input'0 start =
+     Some'0 (Tup4_Int_Int_Int_Int'mk start eq end' next) ->
+     parsed_borrow_trace input'0 =
+     (singleton
+      (Tup2_bool_bool'mk
+       (if decode_borrows input'0[start..eq] then True else False)
+       (if decode_borrows
+           (if eq < end' then input'0[(eq + 1)..end'] else empty: seq t)
+        then True else False))
+      ++ parsed_borrow_trace input'0[next..length input'0])
+  
+  predicate tail_prefix (bytes:seq t) (start:int) (end':int) =
+    bytes[start..length bytes][0..(end' - start)] = bytes[start..end']
+  
+  axiom tail_prefix_spec :
+    forall bytes:seq t, start:int, end':int [tail_prefix bytes start end'].
+     0 <= start /\ start <= end' /\ end' <= length bytes ->
+     tail_prefix bytes start end'
+  
+  axiom tail_prefix_spec'0 :
+    forall bytes:seq t, start:int, end':int.
+     0 <= start /\ start <= end' /\ end' <= length bytes ->
+     bytes[start..length bytes][0..(end' - start)] = bytes[start..end']
+  
+  goal vc_slice_range : true
+  
+  goal vc_slice_after_equals : true
+  
+  goal vc_empty_slice_at : true
+  
+  type tup2_ref_slice_u8_ref_slice_u8 =
+    | Tup2_ref_slice_u8_ref_slice_u8'mk (f0'4:slice t) (f1'4:slice t)
+  
+  (* meta model_record function f1'4 *)
+  
+  (* meta model_record function f0'4 *)
+  
+  goal vc_split_at_u8 : true
+  
+  predicate resolve_refmut_Parse (_1:t2 t_Parse) = _1.final = _1.current
+  
+  (* meta rewrite_def predicate resolve_refmut_Parse *)
+  
+  type t_String
+  
+  type t_Cow_str =
+    | Borrowed string
+    | Owned t_String
+  
+  predicate inv_String t_String
+  
+  predicate inv_Cow_str t_Cow_str
+  
+  axiom inv_axiom :
+    forall x:t_Cow_str [inv_Cow_str x].
+     inv_Cow_str x <->
+     match x with
+     | Borrowed f0'5 -> true
+     | Owned f0'5 -> inv_String f0'5
+     end
+  
+  function index_Mapping_char_Int (self:t3 -> int) (a:t3) : int = get1 self a
+  
+  (* meta rewrite_def function index_Mapping_char_Int *)
+  
+  function map_char (seq t3) (t3 -> int) : seq int
+  
+  axiom map_char_spec :
+    forall self:seq t3, m:t3 -> int [map_char self m].
+     length (map_char self m) = length self
+  
+  axiom map_char_spec'0 :
+    forall self:seq t3, m:t3 -> int [map_char self m].
+     forall i:int.
+      0 <= i /\ i < length self ->
+      get (map_char self m) i = index_Mapping_char_Int m (get self i)
+  
+  function string_scalars (s:seq t3) : seq int =
+    map_char s (fun (c:t3) -> to_int c)
+  
+  function view_str string : seq t3
+  
+  function view_String t_String : seq t3
+  
+  function cow_str_scalars (value:t_Cow_str) : seq int =
+    match value with
+    | Borrowed s -> string_scalars (view_str s)
+    | Owned s -> string_scalars (view_String s)
+    end
+  
+  predicate cow_str_borrowed (value:t_Cow_str) =
+    match value with
+    | Borrowed _ -> true
+    | Owned _ -> false
+    end
+  
+  goal vc_decode : true
+  
+  type tup2_Cow_str_Cow_str =
+    | Tup2_Cow_str_Cow_str'mk (f0'5:t_Cow_str) (f1'5:t_Cow_str)
+  
+  (* meta model_record function f1'5 *)
+  
+  (* meta model_record function f0'5 *)
+  
+  function remaining_input (self:t_Parse) : seq t = view (self.input)
+  
+  (* meta rewrite_def function remaining_input *)
+  
+  function index_Mapping_tup2_Cow_str_Cow_str_tup2_Seq_Int_Seq_Int (self:
+    tup2_Cow_str_Cow_str -> tup2_Seq_Int_Seq_Int) (a:tup2_Cow_str_Cow_str) :
+    tup2_Seq_Int_Seq_Int = get1 self a
+  
+  (* meta rewrite_def
+    function index_Mapping_tup2_Cow_str_Cow_str_tup2_Seq_Int_Seq_Int *)
+  
+  function map_tup2_Cow_str_Cow_str (seq tup2_Cow_str_Cow_str)
+    (tup2_Cow_str_Cow_str -> tup2_Seq_Int_Seq_Int) : seq tup2_Seq_Int_Seq_Int
+  
+  axiom map_tup2_Cow_str_Cow_str_spec :
+    forall self:seq tup2_Cow_str_Cow_str, m:tup2_Cow_str_Cow_str ->
+     tup2_Seq_Int_Seq_Int [map_tup2_Cow_str_Cow_str self m].
+     length (map_tup2_Cow_str_Cow_str self m) = length self
+  
+  axiom map_tup2_Cow_str_Cow_str_spec'0 :
+    forall self:seq tup2_Cow_str_Cow_str, m:tup2_Cow_str_Cow_str ->
+     tup2_Seq_Int_Seq_Int [map_tup2_Cow_str_Cow_str self m].
+     forall i:int.
+      0 <= i /\ i < length self ->
+      get (map_tup2_Cow_str_Cow_str self m) i =
+      index_Mapping_tup2_Cow_str_Cow_str_tup2_Seq_Int_Seq_Int m (get self i)
+  
+  predicate cow_pair_singleton t_Cow_str t_Cow_str
+  
+  axiom cow_pair_singleton_spec :
+    forall key:t_Cow_str, value:t_Cow_str [cow_pair_singleton key value].
+     cow_pair_singleton key value
+  
+  axiom cow_pair_singleton_spec'0 :
+    forall key:t_Cow_str, value:t_Cow_str.
+     map_tup2_Cow_str_Cow_str (singleton (Tup2_Cow_str_Cow_str'mk key value))
+     (fun (__0:tup2_Cow_str_Cow_str) ->
+       match __0 with
+       | Tup2_Cow_str_Cow_str'mk key'0 value'0 ->
+           Tup2_Seq_Int_Seq_Int'mk (cow_str_scalars key'0)
+           (cow_str_scalars value'0)
+       end) =
+     singleton
+     (Tup2_Seq_Int_Seq_Int'mk (cow_str_scalars key) (cow_str_scalars value))
+  
+  function index_Mapping_tup2_Cow_str_Cow_str_tup2_bool_bool (self:
+    tup2_Cow_str_Cow_str -> tup2_bool_bool) (a:tup2_Cow_str_Cow_str) :
+    tup2_bool_bool = get1 self a
+  
+  (* meta rewrite_def
+    function index_Mapping_tup2_Cow_str_Cow_str_tup2_bool_bool *)
+  
+  function map_tup2_Cow_str_Cow_str'0 (seq tup2_Cow_str_Cow_str)
+    (tup2_Cow_str_Cow_str -> tup2_bool_bool) : seq tup2_bool_bool
+  
+  axiom map_tup2_Cow_str_Cow_str_spec'1 :
+    forall self:seq tup2_Cow_str_Cow_str, m:tup2_Cow_str_Cow_str ->
+     tup2_bool_bool [map_tup2_Cow_str_Cow_str'0 self m].
+     length (map_tup2_Cow_str_Cow_str'0 self m) = length self
+  
+  axiom map_tup2_Cow_str_Cow_str_spec'2 :
+    forall self:seq tup2_Cow_str_Cow_str, m:tup2_Cow_str_Cow_str ->
+     tup2_bool_bool [map_tup2_Cow_str_Cow_str'0 self m].
+     forall i:int.
+      0 <= i /\ i < length self ->
+      get (map_tup2_Cow_str_Cow_str'0 self m) i =
+      index_Mapping_tup2_Cow_str_Cow_str_tup2_bool_bool m (get self i)
+  
+  predicate cow_pair_borrow_singleton t_Cow_str t_Cow_str
+  
+  axiom cow_pair_borrow_singleton_spec :
+    forall key:t_Cow_str, value:t_Cow_str
+     [cow_pair_borrow_singleton key value].
+     cow_pair_borrow_singleton key value
+  
+  axiom cow_pair_borrow_singleton_spec'0 :
+    forall key:t_Cow_str, value:t_Cow_str.
+     map_tup2_Cow_str_Cow_str'0
+     (singleton (Tup2_Cow_str_Cow_str'mk key value))
+     (fun (__0:tup2_Cow_str_Cow_str) ->
+       match __0 with
+       | Tup2_Cow_str_Cow_str'mk key'0 value'0 ->
+           Tup2_bool_bool'mk (if cow_str_borrowed key'0 then True else False)
+           (if cow_str_borrowed value'0 then True else False)
+       end) =
+     singleton
+     (Tup2_bool_bool'mk (if cow_str_borrowed key then True else False)
+      (if cow_str_borrowed value then True else False))
+  
+  type t_Option_tup2_Cow_str_Cow_str =
+    | None'1
+    | Some'1 tup2_Cow_str_Cow_str
+  
+  goal vc_len_u8 : true
+  
+  predicate inv_tup2_Cow_str_Cow_str (_1:tup2_Cow_str_Cow_str) =
+    inv_Cow_str (_1.f0'5) /\ inv_Cow_str (_1.f1'5)
+  
+  (* meta rewrite_def predicate inv_tup2_Cow_str_Cow_str *)
+  
+  predicate inv_Option_tup2_Cow_str_Cow_str t_Option_tup2_Cow_str_Cow_str
+  
+  axiom inv_axiom'0 :
+    forall x:t_Option_tup2_Cow_str_Cow_str
+     [inv_Option_tup2_Cow_str_Cow_str x].
+     inv_Option_tup2_Cow_str_Cow_str x <->
+     match x with
+     | None'1 -> true
+     | Some'1 f0'6 -> inv_tup2_Cow_str_Cow_str f0'6
+     end
+  
+  predicate produces_Parse (self:t_Parse) (visited:seq tup2_Cow_str_Cow_str)
+    (other:t_Parse) =
+    parsed_trace (remaining_input self) =
+    (map_tup2_Cow_str_Cow_str visited
+     (fun (__0:tup2_Cow_str_Cow_str) ->
+       match __0 with
+       | Tup2_Cow_str_Cow_str'mk key value ->
+           Tup2_Seq_Int_Seq_Int'mk (cow_str_scalars key)
+           (cow_str_scalars value)
+       end)
+     ++ parsed_trace (remaining_input other)) /\
+    parsed_borrow_trace (remaining_input self) =
+    (map_tup2_Cow_str_Cow_str'0 visited
+     (fun (__0:tup2_Cow_str_Cow_str) ->
+       match __0 with
+       | Tup2_Cow_str_Cow_str'mk key value ->
+           Tup2_bool_bool'mk (if cow_str_borrowed key then True else False)
+           (if cow_str_borrowed value then True else False)
+       end)
+     ++ parsed_borrow_trace (remaining_input other))
+  
+  function produces_trans_Parse (a:t_Parse) (ab:seq tup2_Cow_str_Cow_str) (b:
+    t_Parse) (bc:seq tup2_Cow_str_Cow_str) (c:t_Parse) : unit = ()
+  
+  axiom produces_trans_Parse_spec :
+    forall a:t_Parse, ab:seq tup2_Cow_str_Cow_str, b:t_Parse, bc:seq
+     tup2_Cow_str_Cow_str, c:t_Parse.
+     produces_Parse a ab b ->
+     produces_Parse b bc c -> produces_Parse a (ab ++ bc) c
+  
+  function produces_refl_Parse (self:t_Parse) : unit = ()
+  
+  axiom produces_refl_Parse_spec :
+    forall self:t_Parse.
+     produces_Parse self (empty: seq tup2_Cow_str_Cow_str) self
+  
+  (* meta compute_max_steps 1000000 *)
+  
+  (* meta select_lsinst "all" *)
+  
+  goal vc_next_Parse :
+    forall self:t2 t_Parse.
+     forall input'0:slice t, _5:t_Option_tup4_usize_usize_usize_usize, start:
+      t1, eq:t1, end':t1, next:t1, name:slice t, value:slice t, _71:bool,
+      _77:slice t.
+      (forall result:t_Option_tup4_usize_usize_usize_usize.
+        match result with
+        | None ->
+            forall i:int.
+             0 <= i /\ i < length (view ((self.current).input)) ->
+             t'int (get (view ((self.current).input)) i) = 38
+        | Some (Tup4_usize_usize_usize_usize'mk start1 eq1 end'1 next1) ->
+            0 <= t'int1 start1 /\
+            t'int1 start1 < t'int1 end'1 /\
+            t'int1 end'1 <= length (view ((self.current).input)) /\
+            t'int1 start1 = skip_ampersands (view ((self.current).input)) 0 /\
+            t'int1 start1 <= t'int1 eq1 /\
+            t'int1 eq1 <= t'int1 end'1 /\
+            (forall i:int.
+              0 <= i /\ i < t'int1 start1 ->
+              t'int (get (view ((self.current).input)) i) = 38) /\
+            (forall i:int.
+              t'int1 start1 <= i /\ i < t'int1 end'1 ->
+              not t'int (get (view ((self.current).input)) i) = 38) /\
+            (forall i:int.
+              t'int1 start1 <= i /\ i < t'int1 eq1 ->
+              not t'int (get (view ((self.current).input)) i) = 61) /\
+            (t'int1 eq1 < t'int1 end'1 ->
+             t'int (get (view ((self.current).input)) (t'int1 eq1)) = 61) /\
+            (t'int1 end'1 < length (view ((self.current).input)) ->
+             t'int (get (view ((self.current).input)) (t'int1 end'1)) = 38) /\
+            raw_pair_model (view ((self.current).input)) (t'int1 start1) =
+            Some'0
+            (Tup4_Int_Int_Int_Int'mk (t'int1 start1) (t'int1 eq1)
+             (t'int1 end'1) (t'int1 next1)) /\
+            t'int1 next1 =
+            (t'int1 end'1
+             + (if t'int1 end'1 < length (view ((self.current).input)) then 1
+                else 0))
+        end ->
+        (result = None ->
+         (forall result1:t1.
+           length (view ((self.current).input)) = t'int1 result1 ->
+           t'int1 result1 <= length (view ((self.current).input)) /\
+           (forall result2:tup2_ref_slice_u8_ref_slice_u8.
+             match result2 with
+             | Tup2_ref_slice_u8_ref_slice_u8'mk left right ->
+                 view left = (view ((self.current).input))[0..t'int1 result1] /\
+                 view right =
+                 (view ((self.current).input))[t'int1 result1..length
+                                                               (view
+                                                                ((self.current).input))]
+             end ->
+             resolve_refmut_Parse
+             (t'mk (T_Parse'mk (result2.f1'4)) (self.final) (self.id)) ->
+             inv_Option_tup2_Cow_str_Cow_str None'1 /\
+             remaining_input (self.final) = (empty: seq t) /\
+             length (remaining_input (self.current)) =
+             skip_ampersands (remaining_input (self.current)) 0))) /\
+        (forall x0:tup4_usize_usize_usize_usize.
+          result = Some x0 ->
+          (forall f0'11:tup4_usize_usize_usize_usize.
+            Some f0'11 = result ->
+            (forall f0'12:tup4_usize_usize_usize_usize.
+              Some f0'12 = result ->
+              (forall f0'13:tup4_usize_usize_usize_usize.
+                Some f0'13 = result ->
+                (forall f0'14:tup4_usize_usize_usize_usize.
+                  Some f0'14 = result ->
+                  raw_pair_model (view ((self.current).input))
+                  (t'int1 (f0'11.f0)) =
+                  Some'0
+                  (Tup4_Int_Int_Int_Int'mk (t'int1 (f0'11.f0))
+                   (t'int1 (f0'12.f1)) (t'int1 (f0'13.f2))
+                   (t'int1 (f0'14.f3))) &&
+                  parsed_trace_step (view ((self.current).input))
+                  (t'int1 (f0'11.f0)) (t'int1 (f0'12.f1)) (t'int1 (f0'13.f2))
+                  (t'int1 (f0'14.f3)) &&
+                  parsed_trace (view ((self.current).input)) =
+                  (singleton
+                   (Tup2_Seq_Int_Seq_Int'mk
+                    (decoded_string_model
+                     (view ((self.current).input))[t'int1 (f0'11.f0)..
+                     t'int1 (f0'12.f1)])
+                    (decoded_string_model
+                     (if lt (f0'12.f1) (f0'13.f2)
+                      then (view ((self.current).input))[(t'int1 (f0'12.f1)
+                                                          + 1)..t'int1
+                                                                (f0'13.f2)]
+                      else empty: seq t)))
+                   ++ parsed_trace
+                      (view ((self.current).input))[t'int1 (f0'14.f3)..
+                      length (view ((self.current).input))]) &&
+                  parsed_borrow_trace_step (view ((self.current).input))
+                  (t'int1 (f0'11.f0)) (t'int1 (f0'12.f1)) (t'int1 (f0'13.f2))
+                  (t'int1 (f0'14.f3)) &&
+                  parsed_borrow_trace (view ((self.current).input)) =
+                  (singleton
+                   (Tup2_bool_bool'mk
+                    (if decode_borrows
+                        (view ((self.current).input))[t'int1 (f0'11.f0)..
+                        t'int1 (f0'12.f1)]
+                     then True else False)
+                    (if decode_borrows
+                        (if lt (f0'12.f1) (f0'13.f2)
+                         then (view ((self.current).input))[(t'int1
+                                                             (f0'12.f1) + 1)..
+                         t'int1 (f0'13.f2)] else empty: seq t)
+                     then True else False))
+                   ++ parsed_borrow_trace
+                      (view ((self.current).input))[t'int1 (f0'14.f3)..
+                      length (view ((self.current).input))]) &&
+                  tail_prefix (view ((self.current).input))
+                  (t'int1 (f0'11.f0)) (t'int1 (f0'12.f1)) &&
+                  tail_prefix (view ((self.current).input))
+                  (if lt (f0'12.f1) (f0'13.f2) then t'int1 (f0'12.f1) + 1
+                   else t'int1 (f0'12.f1))
+                  (t'int1 (f0'13.f2)) &&
+                  (view ((self.current).input))[t'int1 (f0'13.f2)..t'int1
+                                                                   (f0'13.f2)] =
+                  (empty: seq t) &&
+                  (t'int1 (f0'11.f0) <= t'int1 (f0'12.f1) /\
+                   t'int1 (f0'12.f1) <= length (view ((self.current).input))) /\
+                  (forall result1:slice t.
+                    view result1 =
+                    (view ((self.current).input))[t'int1 (f0'11.f0)..
+                    t'int1 (f0'12.f1)] ->
+                    (not lt (f0'12.f1) (f0'13.f2) ->
+                     t'int1 (f0'13.f2)
+                     <= length (view ((self.current).input))) /\
+                    (lt (f0'12.f1) (f0'13.f2) ->
+                     t'int1 (f0'12.f1) < t'int1 (f0'13.f2) /\
+                     t'int1 (f0'13.f2)
+                     <= length (view ((self.current).input))))) /\
+                match result with
+                | Some _ -> true
+                | _ -> false
+                end) /\
+              match result with
+              | Some _ -> true
+              | _ -> false
+              end) /\
+            match result with
+            | Some _ -> true
+            | _ -> false
+            end) /\
+          match result with
+          | Some _ -> true
+          | _ -> false
+          end)) /\
+      ((exists result:t_Option_tup4_usize_usize_usize_usize.
+         match result with
+         | None ->
+             forall i:int.
+              0 <= i /\ i < length (view ((self.current).input)) ->
+              t'int (get (view ((self.current).input)) i) = 38
+         | Some (Tup4_usize_usize_usize_usize'mk start1 eq1 end'1 next1) ->
+             0 <= t'int1 start1 /\
+             t'int1 start1 < t'int1 end'1 /\
+             t'int1 end'1 <= length (view ((self.current).input)) /\
+             t'int1 start1 = skip_ampersands (view ((self.current).input)) 0 /\
+             t'int1 start1 <= t'int1 eq1 /\
+             t'int1 eq1 <= t'int1 end'1 /\
+             (forall i:int.
+               0 <= i /\ i < t'int1 start1 ->
+               t'int (get (view ((self.current).input)) i) = 38) /\
+             (forall i:int.
+               t'int1 start1 <= i /\ i < t'int1 end'1 ->
+               not t'int (get (view ((self.current).input)) i) = 38) /\
+             (forall i:int.
+               t'int1 start1 <= i /\ i < t'int1 eq1 ->
+               not t'int (get (view ((self.current).input)) i) = 61) /\
+             (t'int1 eq1 < t'int1 end'1 ->
+              t'int (get (view ((self.current).input)) (t'int1 eq1)) = 61) /\
+             (t'int1 end'1 < length (view ((self.current).input)) ->
+              t'int (get (view ((self.current).input)) (t'int1 end'1)) = 38) /\
+             raw_pair_model (view ((self.current).input)) (t'int1 start1) =
+             Some'0
+             (Tup4_Int_Int_Int_Int'mk (t'int1 start1) (t'int1 eq1)
+              (t'int1 end'1) (t'int1 next1)) /\
+             t'int1 next1 =
+             (t'int1 end'1
+              + (if t'int1 end'1 < length (view ((self.current).input))
+                 then 1 else 0))
+         end /\
+         (exists x0:tup4_usize_usize_usize_usize.
+           result = Some x0 /\
+           (exists f0'11:tup4_usize_usize_usize_usize.
+             Some f0'11 = result /\
+             (exists f0'12:tup4_usize_usize_usize_usize.
+               Some f0'12 = result /\
+               (exists f0'13:tup4_usize_usize_usize_usize.
+                 Some f0'13 = result /\
+                 (exists f0'14:tup4_usize_usize_usize_usize.
+                   Some f0'14 = result /\
+                   raw_pair_model (view ((self.current).input))
+                   (t'int1 (f0'11.f0)) =
+                   Some'0
+                   (Tup4_Int_Int_Int_Int'mk (t'int1 (f0'11.f0))
+                    (t'int1 (f0'12.f1)) (t'int1 (f0'13.f2))
+                    (t'int1 (f0'14.f3))) /\
+                   parsed_trace_step (view ((self.current).input))
+                   (t'int1 (f0'11.f0)) (t'int1 (f0'12.f1))
+                   (t'int1 (f0'13.f2)) (t'int1 (f0'14.f3)) /\
+                   parsed_trace (view ((self.current).input)) =
+                   (singleton
+                    (Tup2_Seq_Int_Seq_Int'mk
+                     (decoded_string_model
+                      (view ((self.current).input))[t'int1 (f0'11.f0)..
+                      t'int1 (f0'12.f1)])
+                     (decoded_string_model
+                      (if lt (f0'12.f1) (f0'13.f2)
+                       then (view ((self.current).input))[(t'int1 (f0'12.f1)
+                                                           + 1)..t'int1
+                                                                 (f0'13.f2)]
+                       else empty: seq t)))
+                    ++ parsed_trace
+                       (view ((self.current).input))[t'int1 (f0'14.f3)..
+                       length (view ((self.current).input))]) /\
+                   parsed_borrow_trace_step (view ((self.current).input))
+                   (t'int1 (f0'11.f0)) (t'int1 (f0'12.f1))
+                   (t'int1 (f0'13.f2)) (t'int1 (f0'14.f3)) /\
+                   parsed_borrow_trace (view ((self.current).input)) =
+                   (singleton
+                    (Tup2_bool_bool'mk
+                     (if decode_borrows
+                         (view ((self.current).input))[t'int1 (f0'11.f0)..
+                         t'int1 (f0'12.f1)]
+                      then True else False)
+                     (if decode_borrows
+                         (if lt (f0'12.f1) (f0'13.f2)
+                          then (view ((self.current).input))[(t'int1
+                                                              (f0'12.f1) + 1)..
+                          t'int1 (f0'13.f2)] else empty: seq t)
+                      then True else False))
+                    ++ parsed_borrow_trace
+                       (view ((self.current).input))[t'int1 (f0'14.f3)..
+                       length (view ((self.current).input))]) /\
+                   tail_prefix (view ((self.current).input))
+                   (t'int1 (f0'11.f0)) (t'int1 (f0'12.f1)) /\
+                   tail_prefix (view ((self.current).input))
+                   (if lt (f0'12.f1) (f0'13.f2) then t'int1 (f0'12.f1) + 1
+                    else t'int1 (f0'12.f1))
+                   (t'int1 (f0'13.f2)) /\
+                   (view ((self.current).input))[t'int1 (f0'13.f2)..t'int1
+                                                                    (
+                                                                    f0'13.f2)] =
+                   (empty: seq t) /\
+                   (exists result1:slice t.
+                     view result1 =
+                     (view ((self.current).input))[t'int1 (f0'11.f0)..
+                     t'int1 (f0'12.f1)] /\
+                     (not lt (f0'12.f1) (f0'13.f2) /\
+                      view value = (empty: seq t) /\
+                      input'0 = (self.current).input /\
+                      _5 = result /\
+                      start = f0'11.f0 /\
+                      eq = f0'12.f1 /\
+                      end' = f0'13.f2 /\
+                      next = f0'14.f3 /\
+                      name = result1 /\
+                      (if lt (f0'12.f1) (f0'13.f2) then _71 = True
+                       else _71 = False) /\
+                      _77 = value \/
+                      lt (f0'12.f1) (f0'13.f2) /\
+                      view value =
+                      (view ((self.current).input))[(t'int1 (f0'12.f1) + 1)..
+                      t'int1 (f0'13.f2)] /\
+                      input'0 = (self.current).input /\
+                      _5 = result /\
+                      start = f0'11.f0 /\
+                      eq = f0'12.f1 /\
+                      end' = f0'13.f2 /\
+                      next = f0'14.f3 /\
+                      name = result1 /\
+                      (if lt (f0'12.f1) (f0'13.f2) then _71 = True
+                       else _71 = False) /\
+                      _77 = (any_l (): slice t))))))))) ->
+       t'int1 next <= length (view input'0) /\
+       (forall result:tup2_ref_slice_u8_ref_slice_u8.
+         match result with
+         | Tup2_ref_slice_u8_ref_slice_u8'mk left right ->
+             view left = (view input'0)[0..t'int1 next] /\
+             view right = (view input'0)[t'int1 next..length (view input'0)]
+         end ->
+         resolve_refmut_Parse
+         (t'mk (T_Parse'mk (result.f1'4)) (self.final) (self.id)) ->
+         (forall result1:t_Cow_str.
+           inv_Cow_str result1 /\
+           cow_str_scalars result1 = decoded_string_model (view name) /\
+           (cow_str_borrowed result1 <-> decode_borrows (view name)) ->
+           (forall result2:t_Cow_str.
+             inv_Cow_str result2 /\
+             cow_str_scalars result2 = decoded_string_model (view value) /\
+             (cow_str_borrowed result2 <-> decode_borrows (view value)) ->
+             remaining_input (T_Parse'mk (result.f1'4)) =
+             parse_suffix_after_next (view input'0) &&
+             parsed_trace (view input'0) =
+             (singleton
+              (Tup2_Seq_Int_Seq_Int'mk (cow_str_scalars result1)
+               (cow_str_scalars result2))
+              ++ parsed_trace (remaining_input (T_Parse'mk (result.f1'4)))) &&
+             parsed_borrow_trace (view input'0) =
+             (singleton
+              (Tup2_bool_bool'mk
+               (if cow_str_borrowed result1 then True else False)
+               (if cow_str_borrowed result2 then True else False))
+              ++ parsed_borrow_trace
+                 (remaining_input (T_Parse'mk (result.f1'4)))) &&
+             cow_pair_singleton result1 result2 &&
+             cow_pair_borrow_singleton result1 result2 &&
+             inv_Option_tup2_Cow_str_Cow_str
+             (Some'1 (Tup2_Cow_str_Cow_str'mk result1 result2)) /\
+             remaining_input (self.final) =
+             parse_suffix_after_next (remaining_input (self.current)) /\
+             parsed_trace (remaining_input (self.current)) =
+             (singleton
+              (Tup2_Seq_Int_Seq_Int'mk (cow_str_scalars result1)
+               (cow_str_scalars result2))
+              ++ parsed_trace (remaining_input (self.final))) /\
+             parsed_borrow_trace (remaining_input (self.current)) =
+             (singleton
+              (Tup2_bool_bool'mk
+               (if cow_str_borrowed result1 then True else False)
+               (if cow_str_borrowed result2 then True else False))
+              ++ parsed_borrow_trace (remaining_input (self.final))) /\
+             produces_Parse (self.current)
+             (singleton (Tup2_Cow_str_Cow_str'mk result1 result2))
+             (self.final)))))
+  
+end
+

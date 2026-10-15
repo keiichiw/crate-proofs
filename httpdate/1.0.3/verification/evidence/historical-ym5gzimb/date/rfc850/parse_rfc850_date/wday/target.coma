@@ -1,0 +1,141 @@
+use creusot.slice.Slice64
+use creusot.int.UInt8
+use creusot.int.UInt64
+use seq.Seq
+use creusot.prelude.Any
+use int.Int
+
+let len_u8 (self_: Slice64.slice UInt8.t) (return (x: UInt64.t)) = any
+  [ return (result: UInt64.t) -> {[@stop_split] [@expl:len ensures] Seq.length (Slice64.view self_)
+    = UInt64.t'int result}
+    (! return {result}) ]
+
+type t_Range_usize = { start: UInt64.t; end': UInt64.t }
+
+predicate in_bounds_Range_usize (self: t_Range_usize) (seq: Seq.seq UInt8.t) =
+  UInt64.t'int self.start <= UInt64.t'int self.end' /\ UInt64.t'int self.end' <= Seq.length seq
+
+predicate has_value_Range_usize (self: t_Range_usize) (seq: Seq.seq UInt8.t) (out: Slice64.slice UInt8.t) =
+  Seq.([..]) seq (UInt64.t'int self.start) (UInt64.t'int self.end') = Slice64.view out
+
+let index_slice_u8 (self_: Slice64.slice UInt8.t) (ix: t_Range_usize) (return (x: Slice64.slice UInt8.t)) =
+{[@stop_split] [@expl:index requires] in_bounds_Range_usize ix (Slice64.view self_)}
+  any
+  [ return (result: Slice64.slice UInt8.t) ->
+  {[@stop_split] [@expl:index ensures] has_value_Range_usize ix (Slice64.view self_) result}
+    (! return {result}) ]
+
+function deep_model_u8 [@inline:trivial] (self: UInt8.t) : int = UInt8.t'int self
+
+meta "rewrite_def" function deep_model_u8
+
+function index_slice_u8'0 [@inline:trivial] (self: Slice64.slice UInt8.t) (ix: int) : UInt8.t =
+  Seq.get (Slice64.view self) ix
+
+meta "rewrite_def" function index_slice_u8'0
+
+function deep_model_slice_u8 (self: Slice64.slice UInt8.t) : Seq.seq int
+
+axiom deep_model_slice_u8_spec:
+  forall self: Slice64.slice UInt8.t [deep_model_slice_u8 self]. Seq.length (Slice64.view self)
+    = Seq.length (deep_model_slice_u8 self)
+
+axiom deep_model_slice_u8_spec'0: forall self: Slice64.slice UInt8.t [deep_model_slice_u8 self]. forall i: int. 0 <= i
+        /\ i < Seq.length (deep_model_slice_u8 self)
+      -> Seq.get (deep_model_slice_u8 self) i = deep_model_u8 (index_slice_u8'0 self i)
+
+function deep_model_ref_slice_u8 [@inline:trivial] (self: Slice64.slice UInt8.t) : Seq.seq int =
+  deep_model_slice_u8 self
+
+meta "rewrite_def" function deep_model_ref_slice_u8
+
+function deep_model_ref_ref_slice_u8 [@inline:trivial] (self: Slice64.slice UInt8.t) : Seq.seq int =
+  deep_model_ref_slice_u8 self
+
+meta "rewrite_def" function deep_model_ref_ref_slice_u8
+
+let eq_ref_slice_u8 (self_: Slice64.slice UInt8.t) (rhs: Slice64.slice UInt8.t) (return (x: bool)) = any
+  [ return (result: bool) -> {[@stop_split] [@expl:eq ensures] result
+    = (deep_model_ref_ref_slice_u8 self_ = deep_model_ref_ref_slice_u8 rhs)}
+    (! return {result}) ]
+
+type t_RangeFrom_usize = { start'0: UInt64.t }
+
+predicate in_bounds_RangeFrom_usize (self: t_RangeFrom_usize) (seq: Seq.seq UInt8.t) =
+  UInt64.t'int self.start'0 <= Seq.length seq
+
+predicate has_value_RangeFrom_usize (self: t_RangeFrom_usize) (seq: Seq.seq UInt8.t) (out: Slice64.slice UInt8.t) =
+  Seq.([..]) seq (UInt64.t'int self.start'0) (Seq.length seq) = Slice64.view out
+
+let index_slice_u8'1 (self_: Slice64.slice UInt8.t) (ix: t_RangeFrom_usize) (return (x: Slice64.slice UInt8.t)) =
+{[@stop_split] [@expl:index requires] in_bounds_RangeFrom_usize ix (Slice64.view self_)}
+  any
+  [ return (result: Slice64.slice UInt8.t) ->
+  {[@stop_split] [@expl:index ensures] has_value_RangeFrom_usize ix (Slice64.view self_) result}
+    (! return {result}) ]
+
+type tup2_u8_ref_slice_u8 = { f0: UInt8.t; f1: Slice64.slice UInt8.t }
+
+type t_Option_tup2_u8_ref_slice_u8 = None | Some tup2_u8_ref_slice_u8
+
+type t_RangeFrom_Int = { start'1: int }
+
+function index_Seq_u8 [@inline:trivial] (self: Seq.seq UInt8.t) (range: t_RangeFrom_Int) : Seq.seq UInt8.t =
+  Seq.([..]) self range.start'1 (Seq.length self)
+
+meta "rewrite_def" function index_Seq_u8
+
+type t_Range_Int = { start'2: int; end''2: int }
+
+function index_Seq_u8'0 [@inline:trivial] (self: Seq.seq UInt8.t) (range: t_Range_Int) : Seq.seq UInt8.t =
+  Seq.([..]) self range.start'2 range.end''2
+
+meta "rewrite_def" function index_Seq_u8'0
+
+meta "compute_max_steps" 1000000
+
+meta "select_lsinst" "all"
+
+let wday (s: Slice64.slice UInt8.t) (wday: UInt8.t) (name: Slice64.slice UInt8.t)
+  (return (x: t_Option_tup2_u8_ref_slice_u8)) = {[@stop_split] [@expl:wday requires] Seq.length (Slice64.view name)
+    <= Seq.length (Slice64.view s)
+  /\ 1 <= UInt8.t'int wday /\ UInt8.t'int wday <= 7}
+  (! bb0
+  [ bb0 = s0
+    [ s0 = len_u8 {name} (fun (_x: UInt64.t) -> [ &_19 <- _x ] s1)
+    | s1 = [ &_18 <- { start = (0: UInt64.t); end' = _19 } ] s2
+    | s2 = index_slice_u8 {s} {_18} (fun (_x: Slice64.slice UInt8.t) -> [ &_16 <- _x ] s3)
+    | s3 = eq_ref_slice_u8 {_16} {name} (fun (_x: bool) -> [ &_13 <- _x ] s4)
+    | s4 = any [ br0 -> {_13 = false} (! bb7) | br1 -> {_13} (! bb4) ] ]
+  | bb4 = s0
+    [ s0 = len_u8 {name} (fun (_x: UInt64.t) -> [ &_30 <- _x ] s1)
+    | s1 = [ &_29 <- { start'0 = _30 } ] s2
+    | s2 = index_slice_u8'1 {s} {_29} (fun (_x: Slice64.slice UInt8.t) -> [ &_27 <- _x ] s3)
+    | s3 = [ &_26 <- _27 ] s4
+    | s4 = [ &_23 <- { f0 = wday; f1 = _26 } ] s5
+    | s5 = [ &_ret <- Some _23 ] s6
+    | s6 = return {_ret} ]
+  | bb7 = s0 [ s0 = [ &_ret <- None ] s1 | s1 = return {_ret} ] ]
+  [ & _ret: t_Option_tup2_u8_ref_slice_u8 = Any.any_l ()
+  | & s: Slice64.slice UInt8.t = s
+  | & wday: UInt8.t = wday
+  | & name: Slice64.slice UInt8.t = name
+  | & _13: bool = Any.any_l ()
+  | & _16: Slice64.slice UInt8.t = Any.any_l ()
+  | & _18: t_Range_usize = Any.any_l ()
+  | & _19: UInt64.t = Any.any_l ()
+  | & _23: tup2_u8_ref_slice_u8 = Any.any_l ()
+  | & _26: Slice64.slice UInt8.t = Any.any_l ()
+  | & _27: Slice64.slice UInt8.t = Any.any_l ()
+  | & _29: t_RangeFrom_usize = Any.any_l ()
+  | & _30: UInt64.t = Any.any_l () ])
+  [ return (result: t_Option_tup2_u8_ref_slice_u8) -> {[@stop_split] [@expl:wday ensures] match result with
+      | Some {f0 = found_wday; f1 = suffix} -> found_wday = wday
+      /\ Slice64.view suffix = index_Seq_u8 (Slice64.view s) { start'1 = Seq.length (Slice64.view name) }
+      /\ index_Seq_u8'0 (Slice64.view s) { start'2 = 0; end''2 = Seq.length (Slice64.view name) } = Slice64.view name
+      | None -> index_Seq_u8'0 (Slice64.view s) { start'2 = 0; end''2 = Seq.length (Slice64.view name) }
+        <> Slice64.view name
+      /\ not Seq.(==) (index_Seq_u8'0 (Slice64.view s) { start'2 = 0;
+                                                         end''2 = Seq.length (Slice64.view name) }) (Slice64.view name)
+      end}
+    (! return {result}) ]

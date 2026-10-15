@@ -1,0 +1,765 @@
+theory Coma
+  
+  (* use why3.BuiltIn.BuiltIn *)
+  
+  (* use why3.Bool.Bool *)
+  
+  (* use why3.Unit.Unit *)
+  
+  (* use creusot.slice.Slice64 *)
+  
+  (* use creusot.int.UInt8 *)
+  
+  (* use map.Map *)
+  
+  (* use creusot.prelude.MutBorrow *)
+  
+  (* use creusot.prelude.Any *)
+  
+  type t_Iter_u8
+  
+  type t_PercentDecode =
+    | T_PercentDecode'mk (bytes:t_Iter_u8)
+  
+  (* meta model_record function bytes *)
+  
+  predicate inv_Iter_u8 t_Iter_u8
+  
+  predicate invariant_ref_Iter_u8 (self:t_Iter_u8) = inv_Iter_u8 self
+  
+  (* meta rewrite_def predicate invariant_ref_Iter_u8 *)
+  
+  predicate inv_ref_Iter_u8 (_1:t_Iter_u8) = invariant_ref_Iter_u8 _1
+  
+  (* meta rewrite_def predicate inv_ref_Iter_u8 *)
+  
+  function view_Iter_u8 t_Iter_u8 : slice t
+  
+  goal vc_as_slice_u8 : true
+  
+  predicate ge_log_Int (self:int) (other:int) = other <= self
+  
+  (* meta rewrite_def predicate ge_log_Int *)
+  
+  predicate gt_log_Int (self:int) (other:int) = other < self
+  
+  (* meta rewrite_def predicate gt_log_Int *)
+  
+  predicate well_founded_relation_Int (self:int) (other:int) =
+    ge_log_Int self 0 /\ gt_log_Int self other
+  
+  (* meta rewrite_def predicate well_founded_relation_Int *)
+  
+  goal vc_len_u8 : true
+  
+  function percent_hex_value_model (byte:int) : int =
+    if 48 <= byte /\ byte <= 57 then byte - 48
+    else if 65 <= byte /\ byte <= 70 then byte - 55
+         else if 97 <= byte /\ byte <= 102 then byte - 87 else (- 1)
+  
+  function decoded_trace (seq int) : seq int
+  
+  axiom decoded_trace_def :
+    forall input:seq int [decoded_trace input].
+     decoded_trace input =
+     (if length input = 0 then empty: seq int
+      else if ge_log_Int (length input) 3 /\
+              get input 0 = 37 /\
+              ge_log_Int (percent_hex_value_model (get input 1)) 0 /\
+              ge_log_Int (percent_hex_value_model (get input 2)) 0
+           then singleton
+                ((percent_hex_value_model (get input 1) * 16)
+                 + percent_hex_value_model (get input 2))
+                ++ decoded_trace input[3..length input]
+           else singleton (get input 0)
+                ++ decoded_trace input[1..length input])
+  
+  function index_Mapping_u8_Int (self:t -> int) (a:t) : int = get1 self a
+  
+  (* meta rewrite_def function index_Mapping_u8_Int *)
+  
+  function map_u8 (seq t) (t -> int) : seq int
+  
+  axiom map_u8_spec :
+    forall self:seq t, m:t -> int [map_u8 self m].
+     length (map_u8 self m) = length self
+  
+  axiom map_u8_spec'0 :
+    forall self:seq t, m:t -> int [map_u8 self m].
+     forall i:int.
+      0 <= i /\ i < length self ->
+      get (map_u8 self m) i = index_Mapping_u8_Int m (get self i)
+  
+  function byte_sequence_as_ints (bytes'0:seq t) : seq int =
+    map_u8 bytes'0 (fun (byte:t) -> t'int byte)
+  
+  type tup2_ref_u8_ref_slice_u8 =
+    | Tup2_ref_u8_ref_slice_u8'mk (f0:t) (f1:slice t)
+  
+  (* meta model_record function f1 *)
+  
+  (* meta model_record function f0 *)
+  
+  type t_Option_tup2_ref_u8_ref_slice_u8 =
+    | None
+    | Some tup2_ref_u8_ref_slice_u8
+  
+  function tail_u8 (self:seq t) : seq t = self[1..length self]
+  
+  goal vc_split_first_u8 : true
+  
+  goal vc_unwrap_tup2_ref_u8_ref_slice_u8 : true
+  
+  goal vc_iter_u8 : true
+  
+  type t_Option_u8 =
+    | None'0
+    | Some'0 t
+  
+  predicate invariant_refmut_Iter_u8 (self:t1 t_Iter_u8) =
+    inv_Iter_u8 (self.current) /\ inv_Iter_u8 (self.final)
+  
+  (* meta rewrite_def predicate invariant_refmut_Iter_u8 *)
+  
+  predicate inv_refmut_Iter_u8 (_1:t1 t_Iter_u8) =
+    invariant_refmut_Iter_u8 _1
+  
+  (* meta rewrite_def predicate inv_refmut_Iter_u8 *)
+  
+  goal vc_after_percent_sign : true
+  
+  predicate resolve_refmut_Iter_u8 (_1:t1 t_Iter_u8) = _1.final = _1.current
+  
+  (* meta rewrite_def predicate resolve_refmut_Iter_u8 *)
+  
+  predicate resolve_Iter_u8 t_Iter_u8
+  
+  predicate byte_model_subsequence (seq t) int int
+  
+  axiom byte_model_subsequence_spec :
+    forall bytes'0:seq t, start:int, end':int
+     [byte_model_subsequence bytes'0 start end'].
+     0 <= start /\ start <= end' /\ end' <= length bytes'0 ->
+     byte_model_subsequence bytes'0 start end'
+  
+  axiom byte_model_subsequence_spec'0 :
+    forall bytes'0:seq t, start:int, end':int.
+     0 <= start /\ start <= end' /\ end' <= length bytes'0 ->
+     byte_sequence_as_ints bytes'0[start..end'] =
+     (byte_sequence_as_ints bytes'0)[start..end']
+  
+  predicate decoded_trace_plain_step (seq int)
+  
+  axiom decoded_trace_plain_step_spec :
+    forall input:seq int [decoded_trace_plain_step input].
+     gt_log_Int (length input) 0 ->
+     not (ge_log_Int (length input) 3 /\
+          get input 0 = 37 /\
+          ge_log_Int (percent_hex_value_model (get input 1)) 0 /\
+          ge_log_Int (percent_hex_value_model (get input 2)) 0) ->
+     decoded_trace_plain_step input
+  
+  axiom decoded_trace_plain_step_spec'0 :
+    forall input:seq int.
+     gt_log_Int (length input) 0 ->
+     not (ge_log_Int (length input) 3 /\
+          get input 0 = 37 /\
+          ge_log_Int (percent_hex_value_model (get input 1)) 0 /\
+          ge_log_Int (percent_hex_value_model (get input 2)) 0) ->
+     decoded_trace input =
+     (singleton (get input 0) ++ decoded_trace input[1..length input])
+  
+  predicate byte_map_nested_tail (seq t) int
+  
+  axiom byte_map_nested_tail_spec :
+    forall bytes'0:seq t, start:int [byte_map_nested_tail bytes'0 start].
+     0 <= start /\ start < length bytes'0 ->
+     byte_map_nested_tail bytes'0 start
+  
+  axiom byte_map_nested_tail_spec'0 :
+    forall bytes'0:seq t, start:int.
+     0 <= start /\ start < length bytes'0 ->
+     (byte_sequence_as_ints bytes'0[start..length bytes'0])[1..(length
+                                                                bytes'0
+                                                                - start)] =
+     byte_sequence_as_ints bytes'0[(start + 1)..length bytes'0]
+  
+  predicate byte_map_prefix_push (seq t) int
+  
+  axiom byte_map_prefix_push_spec :
+    forall bytes'0:seq t, index:int [byte_map_prefix_push bytes'0 index].
+     0 <= index /\ index < length bytes'0 ->
+     byte_map_prefix_push bytes'0 index
+  
+  axiom byte_map_prefix_push_spec'0 :
+    forall bytes'0:seq t, index:int.
+     0 <= index /\ index < length bytes'0 ->
+     (byte_sequence_as_ints bytes'0)[0..(index + 1)] =
+     ((byte_sequence_as_ints bytes'0)[0..index]
+      ++ singleton (t'int (get bytes'0 index)))
+  
+  predicate byte_int_prefix_push (seq t) int
+  
+  axiom byte_int_prefix_push_spec :
+    forall bytes'0:seq t, index:int [byte_int_prefix_push bytes'0 index].
+     0 <= index /\ index < length bytes'0 ->
+     byte_int_prefix_push bytes'0 index
+  
+  axiom byte_int_prefix_push_spec'0 :
+    forall bytes'0:seq t, index:int.
+     0 <= index /\ index < length bytes'0 ->
+     (byte_sequence_as_ints bytes'0)[0..(index + 1)] =
+     ((byte_sequence_as_ints bytes'0)[0..index]
+      ++ singleton (t'int (get bytes'0 index)))
+  
+  predicate concat_assoc_Int (seq int) (seq int) (seq int)
+  
+  axiom concat_assoc_Int_spec :
+    forall left:seq int, middle:seq int, right:seq int
+     [concat_assoc_Int left middle right]. concat_assoc_Int left middle right
+  
+  axiom concat_assoc_Int_spec'0 :
+    forall left:seq int, middle:seq int, right:seq int.
+     (left ++ (middle ++ right)) = ((left ++ middle) ++ right)
+  
+  type t_RangeFrom_usize =
+    | T_RangeFrom_usize'mk (start:t2)
+  
+  (* meta model_record function start *)
+  
+  predicate in_bounds_RangeFrom_usize (self:t_RangeFrom_usize) (seq:seq t) =
+    t'int1 (self.start) <= length seq
+  
+  predicate has_value_RangeFrom_usize (self:t_RangeFrom_usize) (seq:seq t)
+    (out:slice t) = seq[t'int1 (self.start)..length seq] = view out
+  
+  goal vc_index_slice_u8 : true
+  
+  goal vc_elim_Some : true
+  
+  predicate decoded_trace_length_bounds (seq int)
+  
+  axiom decoded_trace_length_bounds_spec :
+    forall input:seq int [decoded_trace_length_bounds input].
+     decoded_trace_length_bounds input
+  
+  axiom decoded_trace_length_bounds_spec'0 :
+    forall input:seq int. length (decoded_trace input) <= length input
+  
+  axiom decoded_trace_length_bounds_spec'1 :
+    forall input:seq int. length input <= (3 * length (decoded_trace input))
+  
+  predicate decoded_trace_escape_step (seq int)
+  
+  axiom decoded_trace_escape_step_spec :
+    forall input:seq int [decoded_trace_escape_step input].
+     ge_log_Int (length input) 3 ->
+     get input 0 = 37 ->
+     ge_log_Int (percent_hex_value_model (get input 1)) 0 ->
+     ge_log_Int (percent_hex_value_model (get input 2)) 0 ->
+     decoded_trace_escape_step input
+  
+  axiom decoded_trace_escape_step_spec'0 :
+    forall input:seq int.
+     ge_log_Int (length input) 3 ->
+     get input 0 = 37 ->
+     ge_log_Int (percent_hex_value_model (get input 1)) 0 ->
+     ge_log_Int (percent_hex_value_model (get input 2)) 0 ->
+     decoded_trace input =
+     (singleton
+      ((percent_hex_value_model (get input 1) * 16)
+       + percent_hex_value_model (get input 2))
+      ++ decoded_trace input[3..length input])
+  
+  function concat_assoc_Int'0 (seq int) (seq int) (seq int) : unit
+  
+  axiom concat_assoc_Int_spec'1 :
+    forall self:seq int, other1:seq int, other2:seq int.
+     ((self ++ other1) ++ other2) = (self ++ (other1 ++ other2))
+  
+  type t_RangeTo_usize =
+    | T_RangeTo_usize'mk (end':t2)
+  
+  (* meta model_record function end' *)
+  
+  predicate in_bounds_RangeTo_usize (self:t_RangeTo_usize) (seq:seq t) =
+    t'int1 (self.end') <= length seq
+  
+  predicate has_value_RangeTo_usize (self:t_RangeTo_usize) (seq:seq t) (out:
+    slice t) = seq[0..t'int1 (self.end')] = view out
+  
+  goal vc_index_slice_u8'0 : true
+  
+  type t_Vec_u8_Global
+  
+  constant const_MAX : t2 = (18446744073709551615:t2)
+  
+  function view_Vec_u8_Global t_Vec_u8_Global : seq t
+  
+  axiom view_Vec_u8_Global_spec :
+    forall self:t_Vec_u8_Global [view_Vec_u8_Global self].
+     length (view_Vec_u8_Global self) <= t'int1 const_MAX
+  
+  predicate postcondition_clone (self:unit) (args:t) (result:t) =
+    let self_ = args in result = self_
+  
+  (* meta rewrite_def predicate postcondition_clone *)
+  
+  goal vc_clone_u8 : true
+  
+  goal vc_to_vec_u8 : true
+  
+  goal vc_push_u8 : true
+  
+  predicate byte_map_push_back (seq t) t
+  
+  axiom byte_map_push_back_spec :
+    forall bytes'0:seq t, byte:t [byte_map_push_back bytes'0 byte].
+     byte_map_push_back bytes'0 byte
+  
+  axiom byte_map_push_back_spec'0 :
+    forall bytes'0:seq t, byte:t.
+     byte_sequence_as_ints (snoc bytes'0 byte) =
+     (byte_sequence_as_ints bytes'0 ++ singleton (t'int byte))
+  
+  predicate inv_PercentDecode t_PercentDecode
+  
+  axiom inv_axiom :
+    forall x:t_PercentDecode [inv_PercentDecode x].
+     inv_PercentDecode x <-> inv_Iter_u8 (x.bytes)
+  
+  function remaining_input (self:t_PercentDecode) : seq t =
+    view (view_Iter_u8 (self.bytes))
+  
+  (* meta rewrite_def function remaining_input *)
+  
+  goal vc_append_decoded : true
+  
+  predicate resolve_refmut_Vec_u8_Global (_1:t1 t_Vec_u8_Global) =
+    _1.final = _1.current
+  
+  (* meta rewrite_def predicate resolve_refmut_Vec_u8_Global *)
+  
+  type t_Option_Vec_u8_Global =
+    | None'1
+    | Some'1 t_Vec_u8_Global
+  
+  predicate invariant_ref_PercentDecode (self:t_PercentDecode) =
+    inv_PercentDecode self
+  
+  (* meta rewrite_def predicate invariant_ref_PercentDecode *)
+  
+  predicate inv_ref_PercentDecode (_1:t_PercentDecode) =
+    invariant_ref_PercentDecode _1
+  
+  (* meta rewrite_def predicate inv_ref_PercentDecode *)
+  
+  (* meta compute_max_steps 1000000 *)
+  
+  (* meta select_lsinst "all" *)
+  
+  goal vc_if_any :
+    forall self:t_Iter_u8.
+     let self1 = T_PercentDecode'mk self in
+     inv_PercentDecode self1 ->
+     (forall initial_bytes:slice t, input:slice t, unchanged_bytes_len:t2,
+       _24:bool, _25:t2, byte:t, remaining:slice t, _29:
+       tup2_ref_u8_ref_slice_u8, _30:t_Option_tup2_ref_u8_ref_slice_u8, _33:
+       bool, after:t_Iter_u8, _37:t_Option_u8, _38:t1 t_Iter_u8, _39:t1
+       t_Iter_u8, variant_old_bb2:int.
+       (inv_ref_Iter_u8 self /\
+        (forall result:slice t.
+          view result = view (view_Iter_u8 self) ->
+          (t'int1 (0:t2) <= length (view result) &&
+           view result = (view result)[t'int1 (0:t2)..length (view result)] &&
+           decoded_trace (byte_sequence_as_ints (view result)) =
+           ((byte_sequence_as_ints (view result))[0..t'int1 (0:t2)]
+            ++ decoded_trace (byte_sequence_as_ints (view result)))) /\
+          (forall input1:slice t, unchanged_bytes_len1:t2, after1:t_Iter_u8,
+            _371:t_Option_u8, _381:t1 t_Iter_u8, _391:t1 t_Iter_u8.
+            forall _241:bool, _251:t2, byte1:t, remaining1:slice t, _291:
+             tup2_ref_u8_ref_slice_u8, _301:
+             t_Option_tup2_ref_u8_ref_slice_u8, _331:bool, after2:t_Iter_u8,
+             _372:t_Option_u8, _382:t1 t_Iter_u8, _392:t1 t_Iter_u8,
+             variant_old_bb21:int.
+             (t'int1 unchanged_bytes_len1 <= length (view result) ->
+              view input1 =
+              (view result)[t'int1 unchanged_bytes_len1..length (view result)] ->
+              decoded_trace (byte_sequence_as_ints (view result)) =
+              ((byte_sequence_as_ints (view result))[0..t'int1
+                                                        unchanged_bytes_len1]
+               ++ decoded_trace (byte_sequence_as_ints (view input1))) ->
+              (forall result1:t2.
+                length (view input1) = t'int1 result1 ->
+                (not gt result1 (0:t2) ->
+                 t'int1 unchanged_bytes_len1 = length (view result) &&
+                 length (byte_sequence_as_ints (view input1)) = 0 &&
+                 (byte_sequence_as_ints (view result))[0..t'int1
+                                                          unchanged_bytes_len1] =
+                 byte_sequence_as_ints (view result) &&
+                 length (decoded_trace (byte_sequence_as_ints (view input1))) =
+                 0 &&
+                 decoded_trace
+                 (byte_sequence_as_ints (remaining_input self1)) =
+                 byte_sequence_as_ints (remaining_input self1)) /\
+                (gt result1 (0:t2) ->
+                 (forall result2:t_Option_tup2_ref_u8_ref_slice_u8.
+                   match result2 with
+                   | Some (Tup2_ref_u8_ref_slice_u8'mk first tail) ->
+                       gt_log_Int (length (view input1)) 0 /\
+                       first = get (view input1) 0 /\
+                       view tail = tail_u8 (view input1)
+                   | None -> view input1 = (empty: seq t)
+                   end ->
+                   not result2 = None /\
+                   (forall result3:tup2_ref_u8_ref_slice_u8.
+                     Some result3 = result2 ->
+                     result3.f0 = (37:t) ->
+                     (forall result4:t_Iter_u8.
+                       inv_Iter_u8 result4 /\
+                       view_Iter_u8 result4 = result3.f1 ->
+                       (forall fin:t_Iter_u8, id:int.
+                         inv_Iter_u8 fin ->
+                         (forall fin1:t_Iter_u8.
+                           inv_Iter_u8 fin1 ->
+                           inv_refmut_Iter_u8
+                           (t'mk result4 fin1 (get_id (t'mk result4 fin id))) /\
+                           (forall result5:t_Option_u8.
+                             match result5 with
+                             | Some'0 value ->
+                                 let before =
+                                   byte_sequence_as_ints
+                                   (view (view_Iter_u8 result4))
+                                 in
+                                 ge_log_Int (length before) 2 /\
+                                 ge_log_Int
+                                 (percent_hex_value_model (get before 0)) 0 /\
+                                 ge_log_Int
+                                 (percent_hex_value_model (get before 1)) 0 /\
+                                 t'int value =
+                                 ((percent_hex_value_model (get before 0)
+                                   * 16)
+                                  + percent_hex_value_model (get before 1)) /\
+                                 byte_sequence_as_ints
+                                 (view (view_Iter_u8 fin1)) =
+                                 before[2..length before]
+                             | None'0 ->
+                                 view (view_Iter_u8 fin1) =
+                                 view (view_Iter_u8 result4) /\
+                                 (length
+                                  (byte_sequence_as_ints
+                                   (view (view_Iter_u8 result4)))
+                                  < 2 \/
+                                  ge_log_Int
+                                  (length
+                                   (byte_sequence_as_ints
+                                    (view (view_Iter_u8 result4))))
+                                  2 /\
+                                  percent_hex_value_model
+                                  (get
+                                   (byte_sequence_as_ints
+                                    (view (view_Iter_u8 result4)))
+                                   0)
+                                  < 0 \/
+                                  ge_log_Int
+                                  (length
+                                   (byte_sequence_as_ints
+                                    (view (view_Iter_u8 result4))))
+                                  2 /\
+                                  percent_hex_value_model
+                                  (get
+                                   (byte_sequence_as_ints
+                                    (view (view_Iter_u8 result4)))
+                                   1)
+                                  < 0)
+                             end ->
+                             (resolve_refmut_Iter_u8 (t'mk fin1 fin id) ->
+                              result5 = None'0 -> inv_Iter_u8 fin) /\
+                             inv_refmut_Iter_u8 (t'mk fin1 fin id))) /\
+                         inv_Iter_u8 result4) /\
+                       inv_Iter_u8 result4)))))) /\
+             (t'int1 unchanged_bytes_len1 <= length (view result) /\
+              view input1 =
+              (view result)[t'int1 unchanged_bytes_len1..length (view result)] /\
+              decoded_trace (byte_sequence_as_ints (view result)) =
+              ((byte_sequence_as_ints (view result))[0..t'int1
+                                                        unchanged_bytes_len1]
+               ++ decoded_trace (byte_sequence_as_ints (view input1))) /\
+              (exists result1:t2.
+                length (view input1) = t'int1 result1 /\
+                gt result1 (0:t2) /\
+                (exists result2:t_Option_tup2_ref_u8_ref_slice_u8.
+                  match result2 with
+                  | Some (Tup2_ref_u8_ref_slice_u8'mk first tail) ->
+                      gt_log_Int (length (view input1)) 0 /\
+                      first = get (view input1) 0 /\
+                      view tail = tail_u8 (view input1)
+                  | None -> view input1 = (empty: seq t)
+                  end /\
+                  (exists result3:tup2_ref_u8_ref_slice_u8.
+                    Some result3 = result2 /\
+                    (not result3.f0 = (37:t) /\
+                     (if gt result1 (0:t2) then _241 = True else _241 = False) /\
+                     _251 = result1 /\
+                     byte1 = result3.f0 /\
+                     remaining1 = result3.f1 /\
+                     _291 = result3 /\
+                     _301 = result2 /\
+                     (if result3.f0 = (37:t) then _331 = True
+                      else _331 = False) /\
+                     after2 = after1 /\
+                     _372 = _371 /\
+                     _382 = _381 /\
+                     _392 = _391 /\ variant_old_bb21 = length (view input1) \/
+                     result3.f0 = (37:t) /\
+                     (exists result4:t_Iter_u8.
+                       (inv_Iter_u8 result4 /\
+                        view_Iter_u8 result4 = result3.f1) /\
+                       (exists id:int.
+                         inv_Iter_u8 after2 /\
+                         (exists fin:t_Iter_u8.
+                           inv_Iter_u8 fin /\
+                           (view (view_Iter_u8 fin) =
+                            view (view_Iter_u8 result4) /\
+                            (length
+                             (byte_sequence_as_ints
+                              (view (view_Iter_u8 result4)))
+                             < 2 \/
+                             ge_log_Int
+                             (length
+                              (byte_sequence_as_ints
+                               (view (view_Iter_u8 result4))))
+                             2 /\
+                             percent_hex_value_model
+                             (get
+                              (byte_sequence_as_ints
+                               (view (view_Iter_u8 result4)))
+                              0)
+                             < 0 \/
+                             ge_log_Int
+                             (length
+                              (byte_sequence_as_ints
+                               (view (view_Iter_u8 result4))))
+                             2 /\
+                             percent_hex_value_model
+                             (get
+                              (byte_sequence_as_ints
+                               (view (view_Iter_u8 result4)))
+                              1)
+                             < 0)) /\
+                           resolve_refmut_Iter_u8 (t'mk fin after2 id) /\
+                           resolve_Iter_u8 after2 /\
+                           (if gt result1 (0:t2) then _241 = True
+                            else _241 = False) /\
+                           _251 = result1 /\
+                           byte1 = result3.f0 /\
+                           remaining1 = result3.f1 /\
+                           _291 = result3 /\
+                           _301 = result2 /\
+                           (if result3.f0 = (37:t) then _331 = True
+                            else _331 = False) /\
+                           _372 = None'0 /\
+                           _382 =
+                           t'mk result4 fin (get_id (t'mk result4 after2 id)) /\
+                           _392 = t'mk fin after2 id /\
+                           variant_old_bb21 = length (view input1)))))))) ->
+              byte_model_subsequence (view input1) 1 (length (view input1)) &&
+              byte_sequence_as_ints (view remaining1) =
+              (byte_sequence_as_ints (view input1))[1..length
+                                                       (byte_sequence_as_ints
+                                                        (view input1))] &&
+              (if ge_log_Int (length (view input1)) 3 /\
+                  t'int (get (view input1) 0) = 37
+               then percent_hex_value_model (t'int (get (view input1) 1)) < 0 \/
+                    percent_hex_value_model (t'int (get (view input1) 2)) < 0
+               else true) &&
+              decoded_trace_plain_step (byte_sequence_as_ints (view input1)) &&
+              byte_model_subsequence (view result)
+              (t'int1 unchanged_bytes_len1) (length (view result)) &&
+              byte_sequence_as_ints (view remaining1) =
+              (byte_sequence_as_ints (view result))[(t'int1
+                                                     unchanged_bytes_len1 + 1)..
+              length (byte_sequence_as_ints (view result))] &&
+              byte_map_nested_tail (view result)
+              (t'int1 unchanged_bytes_len1) &&
+              decoded_trace (byte_sequence_as_ints (view input1)) =
+              (singleton (t'int byte1)
+               ++ decoded_trace (byte_sequence_as_ints (view remaining1))) &&
+              byte_map_prefix_push (view result)
+              (t'int1 unchanged_bytes_len1) &&
+              byte_int_prefix_push (view result)
+              (t'int1 unchanged_bytes_len1) &&
+              (byte_sequence_as_ints (view result))[0..(t'int1
+                                                        unchanged_bytes_len1
+                                                        + 1)] =
+              ((byte_sequence_as_ints (view result))[0..t'int1
+                                                        unchanged_bytes_len1]
+               ++ singleton (t'int byte1)) &&
+              concat_assoc_Int
+              (byte_sequence_as_ints (view result))[0..t'int1
+                                                       unchanged_bytes_len1]
+              (singleton (t'int byte1))
+              (decoded_trace (byte_sequence_as_ints (view remaining1))) &&
+              in_bounds (t'int1 unchanged_bytes_len1 + t'int1 (1:t2)) /\
+              (forall result1:t2.
+                t'int1 result1 =
+                (t'int1 unchanged_bytes_len1 + t'int1 (1:t2)) ->
+                byte_model_subsequence (view result) (t'int1 result1)
+                (length (view result)) &&
+                in_bounds_RangeFrom_usize (T_RangeFrom_usize'mk result1)
+                (view result) /\
+                (forall result2:slice t.
+                  has_value_RangeFrom_usize (T_RangeFrom_usize'mk result1)
+                  (view result) result2 ->
+                  well_founded_relation_Int variant_old_bb21
+                  (length (view result2)) &&
+                  t'int1 result1 <= length (view result) &&
+                  view result2 =
+                  (view result)[t'int1 result1..length (view result)] &&
+                  decoded_trace (byte_sequence_as_ints (view result)) =
+                  ((byte_sequence_as_ints (view result))[0..t'int1 result1]
+                   ++ decoded_trace (byte_sequence_as_ints (view result2))))))))) /\
+       (view initial_bytes = view (view_Iter_u8 self) /\
+        t'int1 unchanged_bytes_len <= length (view initial_bytes) /\
+        view input =
+        (view initial_bytes)[t'int1 unchanged_bytes_len..length
+                                                         (view initial_bytes)] /\
+        decoded_trace (byte_sequence_as_ints (view initial_bytes)) =
+        ((byte_sequence_as_ints (view initial_bytes))[0..t'int1
+                                                         unchanged_bytes_len]
+         ++ decoded_trace (byte_sequence_as_ints (view input))) /\
+        length (view input) = t'int1 _25 /\
+        gt _25 (0:t2) /\
+        match _30 with
+        | Some (Tup2_ref_u8_ref_slice_u8'mk first tail) ->
+            gt_log_Int (length (view input)) 0 /\
+            first = get (view input) 0 /\ view tail = tail_u8 (view input)
+        | None -> view input = (empty: seq t)
+        end /\
+        Some _29 = _30 /\
+        _29.f0 = (37:t) /\
+        (exists result:t_Iter_u8.
+          (inv_Iter_u8 result /\ view_Iter_u8 result = _29.f1) /\
+          (exists id:int.
+            inv_Iter_u8 after /\
+            (exists fin:t_Iter_u8.
+              inv_Iter_u8 fin /\
+              match _37 with
+              | Some'0 value ->
+                  let before =
+                    byte_sequence_as_ints (view (view_Iter_u8 result))
+                  in
+                  ge_log_Int (length before) 2 /\
+                  ge_log_Int (percent_hex_value_model (get before 0)) 0 /\
+                  ge_log_Int (percent_hex_value_model (get before 1)) 0 /\
+                  t'int value =
+                  ((percent_hex_value_model (get before 0) * 16)
+                   + percent_hex_value_model (get before 1)) /\
+                  byte_sequence_as_ints (view (view_Iter_u8 fin)) =
+                  before[2..length before]
+              | None'0 ->
+                  view (view_Iter_u8 fin) = view (view_Iter_u8 result) /\
+                  (length
+                   (byte_sequence_as_ints (view (view_Iter_u8 result))) < 2 \/
+                   ge_log_Int
+                   (length
+                    (byte_sequence_as_ints (view (view_Iter_u8 result))))
+                   2 /\
+                   percent_hex_value_model
+                   (get (byte_sequence_as_ints (view (view_Iter_u8 result)))
+                    0)
+                   < 0 \/
+                   ge_log_Int
+                   (length
+                    (byte_sequence_as_ints (view (view_Iter_u8 result))))
+                   2 /\
+                   percent_hex_value_model
+                   (get (byte_sequence_as_ints (view (view_Iter_u8 result)))
+                    1)
+                   < 0)
+              end /\
+              resolve_refmut_Iter_u8 (t'mk fin after id) /\
+              (exists x0:t.
+                _37 = Some'0 x0 /\
+                (if gt _25 (0:t2) then _24 = True else _24 = False) /\
+                byte = _29.f0 /\
+                remaining = _29.f1 /\
+                (if _29.f0 = (37:t) then _33 = True else _33 = False) /\
+                _38 = t'mk result fin (get_id (t'mk result after id)) /\
+                _39 = t'mk fin after id /\
+                variant_old_bb2 = length (view input))))) ->
+        (forall f0'0:t.
+          Some'0 f0'0 = _37 ->
+          decoded_trace_length_bounds
+          (byte_sequence_as_ints (view (view_Iter_u8 after))) &&
+          byte_model_subsequence (view initial_bytes)
+          (t'int1 unchanged_bytes_len) (length (view initial_bytes)) &&
+          byte_model_subsequence (view input) 1 (length (view input)) &&
+          byte_model_subsequence (view input) 3 (length (view input)) &&
+          byte_model_subsequence (view remaining) 2 (length (view remaining)) &&
+          byte_sequence_as_ints (view remaining) =
+          (byte_sequence_as_ints (view input))[1..length
+                                                  (byte_sequence_as_ints
+                                                   (view input))] &&
+          byte_sequence_as_ints (view (view_Iter_u8 after)) =
+          (byte_sequence_as_ints (view remaining))[2..length
+                                                      (byte_sequence_as_ints
+                                                       (view remaining))] &&
+          byte_sequence_as_ints (view (view_Iter_u8 after)) =
+          (byte_sequence_as_ints (view input))[3..length
+                                                  (byte_sequence_as_ints
+                                                   (view input))] &&
+          decoded_trace_escape_step (byte_sequence_as_ints (view input)) &&
+          t'int f0'0 =
+          ((percent_hex_value_model
+            (get (byte_sequence_as_ints (view input)) 1) * 16)
+           + percent_hex_value_model
+             (get (byte_sequence_as_ints (view input)) 2)) &&
+          decoded_trace (byte_sequence_as_ints (view input)) =
+          (singleton (t'int f0'0)
+           ++ decoded_trace
+              (byte_sequence_as_ints (view (view_Iter_u8 after)))) &&
+          length (view (view_Iter_u8 after)) = (length (view input) - 3) &&
+          in_bounds_RangeTo_usize (T_RangeTo_usize'mk unchanged_bytes_len)
+          (view initial_bytes) /\
+          (forall result:slice t.
+            has_value_RangeTo_usize (T_RangeTo_usize'mk unchanged_bytes_len)
+            (view initial_bytes) result ->
+            (forall result1:t_Vec_u8_Global.
+              length (view_Vec_u8_Global result1) = length (view result) /\
+              (forall i:int.
+                0 <= i /\ i < length (view result) ->
+                postcondition_clone () (get (view result) i)
+                (get (view_Vec_u8_Global result1) i)) ->
+              byte_sequence_as_ints (view_Vec_u8_Global result1) =
+              (byte_sequence_as_ints (view initial_bytes))[0..t'int1
+                                                              unchanged_bytes_len] &&
+              (forall fin:t_Vec_u8_Global.
+                view_Vec_u8_Global fin =
+                snoc (view_Vec_u8_Global result1) f0'0 ->
+                byte_map_push_back (view_Vec_u8_Global result1) f0'0 &&
+                byte_sequence_as_ints (view_Vec_u8_Global fin) =
+                ((byte_sequence_as_ints (view initial_bytes))[0..t'int1
+                                                                 unchanged_bytes_len]
+                 ++ singleton (t'int f0'0)) &&
+                (forall fin1:t_Vec_u8_Global, id:int.
+                  forall fin2:t_Vec_u8_Global.
+                   inv_PercentDecode (T_PercentDecode'mk after) /\
+                   (byte_sequence_as_ints (view_Vec_u8_Global fin2) =
+                    (byte_sequence_as_ints (view_Vec_u8_Global fin)
+                     ++ decoded_trace
+                        (byte_sequence_as_ints
+                         (remaining_input (T_PercentDecode'mk after)))) ->
+                    resolve_refmut_Vec_u8_Global (t'mk fin2 fin1 id) ->
+                    byte_sequence_as_ints (view_Vec_u8_Global fin1) =
+                    decoded_trace
+                    (byte_sequence_as_ints (remaining_input self1)) /\
+                    length (view_Vec_u8_Global fin1)
+                    < length (remaining_input self1))))))) /\
+        match _37 with
+        | Some'0 _ -> true
+        | _ -> false
+        end))
+  
+end
+

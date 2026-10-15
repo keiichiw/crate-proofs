@@ -1,0 +1,65 @@
+theory Coma
+  
+  (* use why3.BuiltIn.BuiltIn *)
+  
+  (* use why3.Bool.Bool *)
+  
+  (* use why3.Unit.Unit *)
+  
+  (* use creusot.slice.Slice64 *)
+  
+  (* use creusot.int.UInt8 *)
+  
+  (* use creusot.prelude.Any *)
+  
+  type tup2_ref_slice_u8_ref_slice_u8 =
+    | Tup2_ref_slice_u8_ref_slice_u8'mk (f0:slice t) (f1:slice t)
+  
+  (* meta model_record function f1 *)
+  
+  (* meta model_record function f0 *)
+  
+  goal vc_split_at_u8 : true
+  
+  predicate tail_prefix (bytes:seq t) (start:int) (end':int) =
+    bytes[start..length bytes][0..(end' - start)] = bytes[start..end']
+  
+  axiom tail_prefix_spec :
+    forall bytes:seq t, start:int, end':int [tail_prefix bytes start end'].
+     0 <= start /\ start <= end' /\ end' <= length bytes ->
+     tail_prefix bytes start end'
+  
+  axiom tail_prefix_spec'0 :
+    forall bytes:seq t, start:int, end':int.
+     0 <= start /\ start <= end' /\ end' <= length bytes ->
+     bytes[start..length bytes][0..(end' - start)] = bytes[start..end']
+  
+  (* meta compute_max_steps 1000000 *)
+  
+  (* meta select_lsinst "all" *)
+  
+  goal vc_slice_range :
+    forall input:slice t, start:t1, end':t1.
+     t'int start <= t'int end' /\ t'int end' <= length (view input) ->
+     t'int start <= length (view input) /\
+     (forall result:tup2_ref_slice_u8_ref_slice_u8.
+       match result with
+       | Tup2_ref_slice_u8_ref_slice_u8'mk left right ->
+           view left = (view input)[0..t'int start] /\
+           view right = (view input)[t'int start..length (view input)]
+       end ->
+       tail_prefix (view input) (t'int start) (t'int end') &&
+       in_bounds (t'int end' - t'int start) /\
+       (forall result1:t1.
+         t'int result1 = (t'int end' - t'int start) ->
+         t'int result1 <= length (view (result.f1)) /\
+         (forall result2:tup2_ref_slice_u8_ref_slice_u8.
+           match result2 with
+           | Tup2_ref_slice_u8_ref_slice_u8'mk left right ->
+               view left = (view (result.f1))[0..t'int result1] /\
+               view right =
+               (view (result.f1))[t'int result1..length (view (result.f1))]
+           end -> view (result2.f0) = (view input)[t'int start..t'int end'])))
+  
+end
+

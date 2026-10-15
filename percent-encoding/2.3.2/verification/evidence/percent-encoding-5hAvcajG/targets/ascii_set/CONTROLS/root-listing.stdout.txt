@@ -1,0 +1,88 @@
+theory Coma
+  
+  (* use why3.BuiltIn.BuiltIn *)
+  
+  (* use why3.Bool.Bool *)
+  
+  (* use why3.Unit.Unit *)
+  
+  (* use creusot.slice.Slice64BW *)
+  
+  (* use creusot.int.UInt32BW *)
+  
+  (* use creusot.prelude.Any *)
+  
+  type t_AsciiSet =
+    | T_AsciiSet'mk (mask:slice t)
+  
+  (* meta model_record function mask *)
+  
+  predicate inv_Seq_u32 (_1:seq t) = true
+  
+  (* meta rewrite_def predicate inv_Seq_u32 *)
+  
+  predicate invariant_array_u32_4 (self:slice t) =
+    inv_Seq_u32 (view self) /\ length (view self) = t'int (4:t1)
+  
+  predicate inv_array_u32_4 (_1:slice t) = invariant_array_u32_4 _1
+  
+  (* meta rewrite_def predicate inv_array_u32_4 *)
+  
+  predicate inv_AsciiSet t_AsciiSet
+  
+  axiom inv_axiom :
+    forall x:t_AsciiSet [inv_AsciiSet x].
+     inv_AsciiSet x <-> inv_array_u32_4 (x.mask)
+  
+  predicate invariant_ref_AsciiSet (self:t_AsciiSet) = inv_AsciiSet self
+  
+  (* meta rewrite_def predicate invariant_ref_AsciiSet *)
+  
+  predicate inv_ref_AsciiSet (_1:t_AsciiSet) = invariant_ref_AsciiSet _1
+  
+  (* meta rewrite_def predicate inv_ref_AsciiSet *)
+  
+  constant const_CONTROLS : t_AsciiSet
+  
+  axiom const_CONTROLS_spec : inv_ref_AsciiSet const_CONTROLS
+  
+  function mask_words (self:t_AsciiSet) : seq t =
+    create 4 (fun (i:int) -> get (view (self.mask)) i)
+  
+  axiom mask_words_spec :
+    forall self:t_AsciiSet [mask_words self]. length (mask_words self) = 4
+  
+  (* meta compute_max_steps 1000000 *)
+  
+  (* meta select_lsinst "all" *)
+  
+  goal vc_const_CONTROLS_def :
+    not (32:t) = (0:t) &&
+    (not (32:t) = zeros \/ not t'int1 (32:t) = 0) /\
+    (forall result:t.
+      t'int1 result = mod (t'int1 (127:t)) (t'int1 (32:t)) ->
+      result = urem (127:t) (32:t) ->
+      lt result (32:t) &&
+      (not (32:t) = zeros \/ not t'int1 (32:t) = 0) /\
+      (t'int1 (urem (127:t) (32:t)) = mod (t'int1 (127:t)) (t'int1 (32:t)) ->
+       (uge (to_BV256 (urem (127:t) (32:t))) (0:t2) /\
+        ult (to_BV256 (urem (127:t) (32:t))) (of_int size) \/
+        t'int2 (to_BV256 (urem (127:t) (32:t))) >= 0 /\
+        t'int2 (to_BV256 (urem (127:t) (32:t))) < size) /\
+       (forall __arr_temp:slice t.
+         get (__arr_temp.elts) 0 = bw_not (0:t) /\
+         get (__arr_temp.elts) 1 = (0:t) /\
+         get (__arr_temp.elts) 2 = (0:t) /\
+         get (__arr_temp.elts) 3 =
+         shl (1:t) (of_BV256 (to_BV256 (urem (127:t) (32:t)))) /\
+         length (__arr_temp.elts) = 4 ->
+         const_CONTROLS = T_AsciiSet'mk __arr_temp ->
+         inv_AsciiSet (T_AsciiSet'mk __arr_temp) /\
+         length (mask_words const_CONTROLS) = 4 /\
+         get (mask_words const_CONTROLS) 0 = (4294967295:t) /\
+         get (mask_words const_CONTROLS) 1 = (0:t) /\
+         get (mask_words const_CONTROLS) 2 = (0:t) /\
+         get (mask_words const_CONTROLS) 3 = (2147483648:t))))
+  
+end
+

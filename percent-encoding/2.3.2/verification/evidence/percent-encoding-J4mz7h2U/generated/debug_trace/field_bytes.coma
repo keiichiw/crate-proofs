@@ -1,0 +1,182 @@
+use creusot.slice.Slice64
+use creusot.int.UInt8
+use creusot.prelude.MutBorrow
+use seq.Seq
+use creusot.int.UInt32
+use creusot.prelude.Any
+
+type dyn_Debug
+
+function dyn_Debug_of_ref_slice_u8 (x: Slice64.slice UInt8.t) : dyn_Debug
+
+type t_DebugStruct
+
+predicate inv_DebugStruct (_1: t_DebugStruct)
+
+predicate invariant_refmut_DebugStruct [@inline:trivial] (self: MutBorrow.t t_DebugStruct) =
+  inv_DebugStruct self.current /\ inv_DebugStruct self.final
+
+meta "rewrite_def" predicate invariant_refmut_DebugStruct
+
+predicate inv_refmut_DebugStruct [@inline:trivial] (_1: MutBorrow.t t_DebugStruct) = invariant_refmut_DebugStruct _1
+
+meta "rewrite_def" predicate inv_refmut_DebugStruct
+
+let field (self_: MutBorrow.t t_DebugStruct) (name: string) (value: dyn_Debug) (return (x: MutBorrow.t t_DebugStruct)) =
+{[@stop_split] [@expl:field 'self_' type invariant] inv_refmut_DebugStruct self_}
+  any
+  [ return (result: MutBorrow.t t_DebugStruct) ->
+  {[@stop_split] [@expl:field result type invariant] inv_refmut_DebugStruct result}
+    (! return {result}) ]
+
+predicate resolve_refmut_DebugStruct [@inline:trivial] (_1: MutBorrow.t t_DebugStruct) = _1.final = _1.current
+
+meta "rewrite_def" predicate resolve_refmut_DebugStruct
+
+type t_Option_bool = None | Some bool
+
+type t_DebugTrace = {
+  struct_name: string;
+  field_names: Seq.seq string;
+  field_type_tags: Seq.seq UInt8.t;
+  word_values: Seq.seq (Seq.seq UInt32.t);
+  byte_values: Seq.seq (Seq.seq UInt8.t);
+  iter_values: Seq.seq (Seq.seq UInt8.t);
+  ascii_set_values: Seq.seq (Seq.seq UInt32.t);
+  finish_status: t_Option_bool }
+
+let deref_mut_Ghost_refmut_DebugTrace (self: MutBorrow.t (MutBorrow.t t_DebugTrace))
+  (return (x: MutBorrow.t (MutBorrow.t t_DebugTrace))) = any
+  [ return (result: MutBorrow.t (MutBorrow.t t_DebugTrace)) -> {[@stop_split] [@expl:deref_mut ensures] result = self}
+    (! return {result}) ]
+
+let push_back_ghost_ref_str (self: MutBorrow.t (Seq.seq string)) (x: string) (return (x'0: ())) = any
+  [ return (result: ()) -> {[@stop_split] [@expl:push_back_ghost ensures] self.final = Seq.snoc self.current x}
+    (! return {result}) ]
+
+predicate resolve_refmut_refmut_DebugTrace [@inline:trivial] (_1: MutBorrow.t (MutBorrow.t t_DebugTrace)) =
+  _1.final = _1.current
+
+meta "rewrite_def" predicate resolve_refmut_refmut_DebugTrace
+
+let push_back_ghost_u8 (self: MutBorrow.t (Seq.seq UInt8.t)) (x: UInt8.t) (return (x'0: ())) = any
+  [ return (result: ()) -> {[@stop_split] [@expl:push_back_ghost ensures] self.final = Seq.snoc self.current x}
+    (! return {result}) ]
+
+let push_back_ghost_Snapshot_Seq_u8 (self: MutBorrow.t (Seq.seq (Seq.seq UInt8.t))) (x: Seq.seq UInt8.t)
+  (return (x'0: ())) = any
+  [ return (result: ()) -> {[@stop_split] [@expl:push_back_ghost ensures] self.final = Seq.snoc self.current x}
+    (! return {result}) ]
+
+predicate resolve_refmut_DebugTrace [@inline:trivial] (_1: MutBorrow.t t_DebugTrace) = _1.final = _1.current
+
+meta "rewrite_def" predicate resolve_refmut_DebugTrace
+
+predicate resolve_Ghost_refmut_DebugTrace [@inline:trivial] (self: MutBorrow.t t_DebugTrace) =
+  resolve_refmut_DebugTrace self
+
+meta "rewrite_def" predicate resolve_Ghost_refmut_DebugTrace
+
+predicate resolve_Ghost_refmut_DebugTrace'0 [@inline:trivial] (_1: MutBorrow.t t_DebugTrace) =
+  resolve_Ghost_refmut_DebugTrace _1
+
+meta "rewrite_def" predicate resolve_Ghost_refmut_DebugTrace'0
+
+let new_unit (x: ()) (return (x'0: ())) = any
+  [ return (result: ()) -> {[@stop_split] [@expl:new ensures] result = x} (! return {result}) ]
+
+meta "compute_max_steps" 1000000
+
+meta "select_lsinst" "all"
+
+let field_bytes (builder: MutBorrow.t t_DebugStruct) (name: string) (value: Slice64.slice UInt8.t)
+  (trace: MutBorrow.t t_DebugTrace) (return (x: ())) =
+{[@stop_split] [@expl:field_bytes 'builder' type invariant] inv_refmut_DebugStruct builder}
+  (! bb0
+  [ bb0 = s0
+    [ s0 = [ &_20 <- value ] s1
+    | s1 = [ &_18 <- dyn_Debug_of_ref_slice_u8 _20 ] s2
+    | s2 = MutBorrow.borrow_final <t_DebugStruct> {builder.current} {MutBorrow.get_id builder}
+        (fun (_bor: MutBorrow.t t_DebugStruct) ->
+          [ &_16 <- _bor ] -{inv_DebugStruct _bor.final}-
+          [ &builder <- { builder with current = _bor.final } ] s3)
+      [ _ck -> (! {[@expl:type invariant] inv_DebugStruct builder.current} any) ]
+    | s3 = field {_16} {name} {_18} (fun (_x: MutBorrow.t t_DebugStruct) -> [ &_15 <- _x ] s4)
+    | s4 = s5 [ _ck -> (! {[@expl:type invariant] inv_refmut_DebugStruct _15} any) ]
+    | s5 = -{resolve_refmut_DebugStruct _15}- s6
+    | s6 = s7 [ _ck -> (! {[@expl:type invariant] inv_refmut_DebugStruct builder} any) ]
+    | s7 = -{resolve_refmut_DebugStruct builder}- s8
+    | s8 = [ &value_model <- Slice64.view value ] s9
+    | s9 = MutBorrow.borrow_mut <MutBorrow.t t_DebugTrace> {trace}
+        (fun (_bor: MutBorrow.t (MutBorrow.t t_DebugTrace)) -> [ &_29 <- _bor ] [ &trace <- _bor.final ] s10)
+    | s10 = deref_mut_Ghost_refmut_DebugTrace {_29}
+        (fun (_x: MutBorrow.t (MutBorrow.t t_DebugTrace)) -> [ &_28 <- _x ] s11)
+    | s11 = MutBorrow.borrow_mut <Seq.seq string> {_28.current.current.field_names}
+        (fun (_bor: MutBorrow.t (Seq.seq string)) ->
+          [ &_27 <- _bor ]
+          [ &_28 <- { _28 with current = { _28.current with current = { _28.current.current with field_names = _bor.final } } } ]
+          s12)
+    | s12 = push_back_ghost_ref_str {_27} {name} (fun (_x: ()) -> [ &_26 <- _x ] s13)
+    | s13 = -{resolve_refmut_refmut_DebugTrace _28}- s14
+    | s14 = MutBorrow.borrow_mut <MutBorrow.t t_DebugTrace> {trace}
+        (fun (_bor: MutBorrow.t (MutBorrow.t t_DebugTrace)) -> [ &_34 <- _bor ] [ &trace <- _bor.final ] s15)
+    | s15 = deref_mut_Ghost_refmut_DebugTrace {_34}
+        (fun (_x: MutBorrow.t (MutBorrow.t t_DebugTrace)) -> [ &_33 <- _x ] s16)
+    | s16 = MutBorrow.borrow_mut <Seq.seq UInt8.t> {_33.current.current.field_type_tags}
+        (fun (_bor: MutBorrow.t (Seq.seq UInt8.t)) ->
+          [ &_32 <- _bor ]
+          [ &_33 <- { _33 with current = { _33.current with current = { _33.current.current with field_type_tags = _bor.final } } } ]
+          s17)
+    | s17 = push_back_ghost_u8 {_32} {(1: UInt8.t)} (fun (_x: ()) -> [ &_31 <- _x ] s18)
+    | s18 = -{resolve_refmut_refmut_DebugTrace _33}- s19
+    | s19 = MutBorrow.borrow_mut <MutBorrow.t t_DebugTrace> {trace}
+        (fun (_bor: MutBorrow.t (MutBorrow.t t_DebugTrace)) -> [ &_38 <- _bor ] [ &trace <- _bor.final ] s20)
+    | s20 = deref_mut_Ghost_refmut_DebugTrace {_38}
+        (fun (_x: MutBorrow.t (MutBorrow.t t_DebugTrace)) -> [ &_37 <- _x ] s21)
+    | s21 = MutBorrow.borrow_mut <Seq.seq (Seq.seq UInt8.t)> {_37.current.current.byte_values}
+        (fun (_bor: MutBorrow.t (Seq.seq (Seq.seq UInt8.t))) ->
+          [ &_36 <- _bor ]
+          [ &_37 <- { _37 with current = { _37.current with current = { _37.current.current with byte_values = _bor.final } } } ]
+          s22)
+    | s22 = push_back_ghost_Snapshot_Seq_u8 {_36} {value_model} (fun (_x: ()) -> [ &_35 <- _x ] s23)
+    | s23 = -{resolve_refmut_refmut_DebugTrace _37}- s24
+    | s24 = -{resolve_Ghost_refmut_DebugTrace'0 trace}- s25
+    | s25 = new_unit {_25} (fun (_x: ()) -> [ &_24 <- _x ] s26)
+    | s26 = return {_ret} ] ]
+  [ & _ret: () = Any.any_l ()
+  | & builder: MutBorrow.t t_DebugStruct = builder
+  | & name: string = name
+  | & value: Slice64.slice UInt8.t = value
+  | & trace: MutBorrow.t t_DebugTrace = trace
+  | & _15: MutBorrow.t t_DebugStruct = Any.any_l ()
+  | & _16: MutBorrow.t t_DebugStruct = Any.any_l ()
+  | & _18: dyn_Debug = Any.any_l ()
+  | & _20: Slice64.slice UInt8.t = Any.any_l ()
+  | & value_model: Seq.seq UInt8.t = Any.any_l ()
+  | & _24: () = Any.any_l ()
+  | & _25: () = Any.any_l ()
+  | & _26: () = Any.any_l ()
+  | & _27: MutBorrow.t (Seq.seq string) = Any.any_l ()
+  | & _28: MutBorrow.t (MutBorrow.t t_DebugTrace) = Any.any_l ()
+  | & _29: MutBorrow.t (MutBorrow.t t_DebugTrace) = Any.any_l ()
+  | & _31: () = Any.any_l ()
+  | & _32: MutBorrow.t (Seq.seq UInt8.t) = Any.any_l ()
+  | & _33: MutBorrow.t (MutBorrow.t t_DebugTrace) = Any.any_l ()
+  | & _34: MutBorrow.t (MutBorrow.t t_DebugTrace) = Any.any_l ()
+  | & _35: () = Any.any_l ()
+  | & _36: MutBorrow.t (Seq.seq (Seq.seq UInt8.t)) = Any.any_l ()
+  | & _37: MutBorrow.t (MutBorrow.t t_DebugTrace) = Any.any_l ()
+  | & _38: MutBorrow.t (MutBorrow.t t_DebugTrace) = Any.any_l () ])
+  [ return (result: ()) ->
+  {[@stop_split] [@expl:field_bytes ensures] ([@stop_split] [@expl:field_bytes ensures #0] trace.final.field_names
+      = Seq.snoc trace.current.field_names name)
+    /\ ([@stop_split] [@expl:field_bytes ensures #1] trace.final.field_type_tags
+      = Seq.snoc trace.current.field_type_tags (1: UInt8.t))
+    /\ ([@stop_split] [@expl:field_bytes ensures #2] trace.final.byte_values
+      = Seq.snoc trace.current.byte_values (Slice64.view value))
+    /\ ([@stop_split] [@expl:field_bytes ensures #3] trace.final.struct_name = trace.current.struct_name
+    /\ trace.final.word_values = trace.current.word_values
+    /\ trace.final.iter_values = trace.current.iter_values
+    /\ trace.final.ascii_set_values = trace.current.ascii_set_values
+    /\ trace.final.finish_status = trace.current.finish_status)}
+    (! return {result}) ]

@@ -1,0 +1,204 @@
+(* <_::borrow::Cow<'a, str> as core::convert::From<PercentEncode<'a>>> *)
+
+use creusot.slice.Slice64
+use creusot.int.UInt8
+use seq.Seq
+use map.Map
+use creusot.prelude.Char
+use creusot.int.UInt32
+use int.ComputerDivision
+use int.Int
+
+type t_AsciiSet
+
+type t_PercentEncode = { bytes: Slice64.slice UInt8.t; ascii_set: t_AsciiSet }
+
+predicate inv_AsciiSet (_1: t_AsciiSet)
+
+predicate invariant_ref_AsciiSet [@inline:trivial] (self: t_AsciiSet) = inv_AsciiSet self
+
+meta "rewrite_def" predicate invariant_ref_AsciiSet
+
+predicate inv_ref_AsciiSet [@inline:trivial] (_1: t_AsciiSet) = invariant_ref_AsciiSet _1
+
+meta "rewrite_def" predicate inv_ref_AsciiSet
+
+predicate inv_PercentEncode (_1: t_PercentEncode)
+
+axiom inv_axiom [@rewrite]: forall x: t_PercentEncode [inv_PercentEncode x]. inv_PercentEncode x
+    = inv_ref_AsciiSet x.ascii_set
+
+type t_String
+
+type t_Cow_str = Borrowed string | Owned t_String
+
+predicate inv_String (_1: t_String)
+
+predicate inv_Cow_str (_1: t_Cow_str)
+
+axiom inv_axiom'0 [@rewrite]: forall x: t_Cow_str [inv_Cow_str x]. inv_Cow_str x
+    = match x with
+      | Borrowed f0 -> true
+      | Owned f0 -> inv_String f0
+      end
+
+function index_Mapping_u8_Int [@inline:trivial] (self: Map.map UInt8.t int) (a: UInt8.t) : int = Map.get self a
+
+meta "rewrite_def" function index_Mapping_u8_Int
+
+function map_u8 (self: Seq.seq UInt8.t) (m: Map.map UInt8.t int) : Seq.seq int
+
+axiom map_u8_spec: forall self: Seq.seq UInt8.t, m: Map.map UInt8.t int [map_u8 self m]. Seq.length (map_u8 self m)
+    = Seq.length self
+
+axiom map_u8_spec'0: forall self: Seq.seq UInt8.t, m: Map.map UInt8.t int [map_u8 self m]. forall i: int. 0 <= i
+        /\ i < Seq.length self -> Seq.get (map_u8 self m) i = index_Mapping_u8_Int m (Seq.get self i)
+
+function byte_sequence_as_ints (bytes'0: Seq.seq UInt8.t) : Seq.seq int =
+  map_u8 bytes'0 (fun (byte: UInt8.t) -> UInt8.t'int byte)
+
+function tail_char (self: Seq.seq Char.t) : Seq.seq Char.t = Seq.([..]) self 1 (Seq.length self)
+
+function flat_map_char (self: Seq.seq Char.t) (other: Map.map Char.t (Seq.seq UInt8.t)) : Seq.seq UInt8.t
+
+axiom flat_map_char_def:
+  forall self: Seq.seq Char.t, other: Map.map Char.t (Seq.seq UInt8.t) [flat_map_char self other]. flat_map_char self other
+    = (if Seq.length self = 0 then
+      Seq.empty: Seq.seq UInt8.t
+    else
+      Seq.(++) (Map.get other (Seq.get self 0)) (flat_map_char (tail_char self) other)
+    )
+
+function to_utf8_char (self: Char.t) : Seq.seq UInt8.t
+
+axiom to_utf8_char_spec: forall self: Char.t [to_utf8_char self]. 1 <= Seq.length (to_utf8_char self)
+    /\ Seq.length (to_utf8_char self) <= 4
+
+function to_bytes (self: Seq.seq Char.t) : Seq.seq UInt8.t = flat_map_char self (fun (c: Char.t) -> to_utf8_char c)
+
+function view_str (self: string) : Seq.seq Char.t
+
+function view_String (self: t_String) : Seq.seq Char.t
+
+function cow_string_bytes (value: t_Cow_str) : Seq.seq int = match value with
+    | Borrowed s -> byte_sequence_as_ints (to_bytes (view_str s))
+    | Owned s -> byte_sequence_as_ints (to_bytes (view_String s))
+    end
+
+function flatten_chunks (chunks: Seq.seq (Seq.seq int)) : Seq.seq int
+
+axiom flatten_chunks_spec: forall chunks: Seq.seq (Seq.seq int) [flatten_chunks chunks]. if Seq.length chunks = 0 then
+      Seq.length (flatten_chunks chunks) = 0
+    else
+      flatten_chunks chunks = Seq.(++) (Seq.get chunks 0) (flatten_chunks (Seq.([..]) chunks 1 (Seq.length chunks)))
+
+
+predicate gt_log_Int [@inline:trivial] (self: int) (other: int) = other < self
+
+meta "rewrite_def" predicate gt_log_Int
+
+predicate ge_log_Int [@inline:trivial] (self: int) (other: int) = other <= self
+
+meta "rewrite_def" predicate ge_log_Int
+
+predicate should_encode_model (mask: Seq.seq UInt32.t) (byte: UInt8.t) =
+  ge_log_Int (UInt8.t'int byte) 128
+  \/ UInt32.bw_and (Seq.get mask (ComputerDivision.div (UInt8.t'int byte) 32)) (UInt32.shl (1: UInt32.t) (UInt32.of_int (UInt8.t'int (UInt8.bw_and byte (31: UInt8.t)))))
+  <> (0: UInt32.t)
+
+function uppercase_hex (digit: int) : int = if digit < 10 then 48 + digit else 55 + digit
+
+axiom uppercase_hex_spec: forall digit: int [uppercase_hex digit]. uppercase_hex digit
+    = (if digit < 10 then 48 + digit else 55 + digit)
+
+function uppercase_hex'0 (digit: int) : int = uppercase_hex digit
+
+function encoded_byte_model (byte: int) : Seq.seq int =
+  Seq.(++) (Seq.(++) (Seq.singleton 37) (Seq.singleton (uppercase_hex'0 (ComputerDivision.div byte 16)))) (Seq.singleton (uppercase_hex'0 (ComputerDivision.mod byte 16)))
+
+function safe_run_end (input: Seq.seq UInt8.t) (start: int) (mask: Seq.seq UInt32.t) : int
+
+axiom safe_run_end_spec:
+  forall input: Seq.seq UInt8.t, start: int, mask: Seq.seq UInt32.t [safe_run_end input start mask]. 0 <= start
+      /\ start <= Seq.length input
+    -> Seq.length mask = 4
+    -> start <= safe_run_end input start mask /\ safe_run_end input start mask <= Seq.length input
+
+axiom safe_run_end_spec'0:
+  forall input: Seq.seq UInt8.t, start: int, mask: Seq.seq UInt32.t [safe_run_end input start mask]. 0 <= start
+      /\ start <= Seq.length input
+    -> Seq.length mask = 4
+    -> (forall i: int. start <= i /\ i < safe_run_end input start mask
+      -> not should_encode_model mask (Seq.get input i))
+
+axiom safe_run_end_spec'1:
+  forall input: Seq.seq UInt8.t, start: int, mask: Seq.seq UInt32.t [safe_run_end input start mask]. 0 <= start
+      /\ start <= Seq.length input
+    -> Seq.length mask = 4
+    -> safe_run_end input start mask = Seq.length input
+    \/ should_encode_model mask (Seq.get input (safe_run_end input start mask))
+
+axiom safe_run_end_spec'2:
+  forall input: Seq.seq UInt8.t, start: int, mask: Seq.seq UInt32.t [safe_run_end input start mask]. 0 <= start
+      /\ start <= Seq.length input
+    -> Seq.length mask = 4
+    -> start < Seq.length input /\ not should_encode_model mask (Seq.get input start)
+    -> start < safe_run_end input start mask
+
+function encoded_chunks (mask: Seq.seq UInt32.t) (input: Seq.seq UInt8.t) : Seq.seq (Seq.seq int)
+
+axiom encoded_chunks_def:
+  forall mask: Seq.seq UInt32.t, input: Seq.seq UInt8.t [encoded_chunks mask input]. Seq.length mask = 4
+    -> encoded_chunks mask input
+    = (if Seq.length input = 0 then
+      Seq.empty: Seq.seq (Seq.seq int)
+    else
+      if should_encode_model mask (Seq.get input 0) then
+        Seq.(++) (Seq.singleton (encoded_byte_model (UInt8.t'int (Seq.get input 0)))) (encoded_chunks mask (Seq.([..]) input 1 (Seq.length input)))
+      else
+        let end' = safe_run_end input 0 mask in Seq.(++) (Seq.singleton (byte_sequence_as_ints (Seq.([..]) input 0 end'))) (encoded_chunks mask (Seq.([..]) input end' (Seq.length input)))
+    
+    )
+
+axiom encoded_chunks_spec:
+  forall mask: Seq.seq UInt32.t, input: Seq.seq UInt8.t [encoded_chunks mask input]. Seq.length mask = 4
+    -> (if Seq.length input = 0 then
+      Seq.length (encoded_chunks mask input) = 0
+    else
+      gt_log_Int (Seq.length (encoded_chunks mask input)) 0
+      /\ (if should_encode_model mask (Seq.get input 0) then
+        Seq.get (encoded_chunks mask input) 0 = encoded_byte_model (UInt8.t'int (Seq.get input 0))
+        /\ Seq.([..]) (encoded_chunks mask input) 1 (Seq.length (encoded_chunks mask input))
+        = encoded_chunks mask (Seq.([..]) input 1 (Seq.length input))
+      else
+        let end' = safe_run_end input 0 mask in Seq.get (encoded_chunks mask input) 0
+          = byte_sequence_as_ints (Seq.([..]) input 0 end')
+        /\ Seq.([..]) (encoded_chunks mask input) 1 (Seq.length (encoded_chunks mask input))
+        = encoded_chunks mask (Seq.([..]) input end' (Seq.length input))
+      )
+    )
+
+function mask_words (self: t_AsciiSet) : Seq.seq UInt32.t
+
+axiom mask_words_spec: forall self: t_AsciiSet [mask_words self]. Seq.length (mask_words self) = 4
+
+function configured_set [@inline:trivial] (self: t_PercentEncode) : Seq.seq UInt32.t = mask_words self.ascii_set
+
+meta "rewrite_def" function configured_set
+
+function remaining_input [@inline:trivial] (self: t_PercentEncode) : Seq.seq UInt8.t = Slice64.view self.bytes
+
+meta "rewrite_def" function remaining_input
+
+meta "compute_max_steps" 1000000
+
+meta "select_lsinst" "all"
+
+goal refines: forall value: t_PercentEncode. inv_PercentEncode value
+    -> inv_PercentEncode value
+    /\ (forall result: t_Cow_str. inv_Cow_str result
+        /\ cow_string_bytes result = flatten_chunks (encoded_chunks (configured_set value) (remaining_input value))
+        /\ match result with
+          | Borrowed _ -> Seq.length (encoded_chunks (configured_set value) (remaining_input value)) <= 1
+          | Owned _ -> ge_log_Int (Seq.length (encoded_chunks (configured_set value) (remaining_input value))) 2
+          end -> inv_Cow_str result)

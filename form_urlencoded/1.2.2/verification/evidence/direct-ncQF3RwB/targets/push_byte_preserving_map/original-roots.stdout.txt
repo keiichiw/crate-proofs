@@ -1,0 +1,75 @@
+theory Coma
+  
+  (* use why3.BuiltIn.BuiltIn *)
+  
+  (* use why3.Bool.Bool *)
+  
+  (* use why3.Unit.Unit *)
+  
+  (* use creusot.prelude.MutBorrow *)
+  
+  (* use creusot.int.UInt8 *)
+  
+  (* use seq.Seq *)
+  
+  (* use creusot.int.UInt64 *)
+  
+  (* use creusot.prelude.Any *)
+  
+  (* use map.Map *)
+  
+  type t_Vec_u8_Global
+  
+  constant const_MAX : t = (18446744073709551615:t)
+  
+  function view_Vec_u8_Global t_Vec_u8_Global : seq t1
+  
+  axiom view_Vec_u8_Global_spec :
+    forall self:t_Vec_u8_Global [view_Vec_u8_Global self].
+     length (view_Vec_u8_Global self) <= t'int const_MAX
+  
+  goal vc_push_u8 : true
+  
+  predicate resolve_refmut_Vec_u8_Global (_1:t2 t_Vec_u8_Global) =
+    _1.final = _1.current
+  
+  (* meta rewrite_def predicate resolve_refmut_Vec_u8_Global *)
+  
+  function index_Mapping_u8_Int (self:t1 -> int) (a:t1) : int = get self a
+  
+  (* meta rewrite_def function index_Mapping_u8_Int *)
+  
+  function map_u8 (seq t1) (t1 -> int) : seq int
+  
+  axiom map_u8_spec :
+    forall self:seq t1, m:t1 -> int [map_u8 self m].
+     length (map_u8 self m) = length self
+  
+  axiom map_u8_spec'0 :
+    forall self:seq t1, m:t1 -> int [map_u8 self m].
+     forall i:int.
+      0 <= i /\ i < length self ->
+      get1 (map_u8 self m) i = index_Mapping_u8_Int m (get1 self i)
+  
+  function byte_sequence_as_ints (bytes:seq t1) : seq int =
+    map_u8 bytes (fun (byte:t1) -> t'int1 byte)
+  
+  (* meta compute_max_steps 1000000 *)
+  
+  (* meta select_lsinst "all" *)
+  
+  goal vc_push_byte_preserving_map :
+    forall bytes:t2 t_Vec_u8_Global, byte:t1.
+     forall fin:t_Vec_u8_Global.
+      view_Vec_u8_Global fin = snoc (view_Vec_u8_Global (bytes.current)) byte ->
+      resolve_refmut_Vec_u8_Global (t'mk fin (bytes.final) (bytes.id)) ->
+      view_Vec_u8_Global (bytes.final) =
+      snoc (view_Vec_u8_Global (bytes.current)) byte /\
+      byte_sequence_as_ints (view_Vec_u8_Global (bytes.final)) =
+      (byte_sequence_as_ints (view_Vec_u8_Global (bytes.current))
+       ++ singleton (t'int1 byte)) /\
+      length (view_Vec_u8_Global (bytes.final)) =
+      (length (view_Vec_u8_Global (bytes.current)) + 1)
+  
+end
+

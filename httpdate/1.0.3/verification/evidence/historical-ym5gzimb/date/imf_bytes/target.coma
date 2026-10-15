@@ -1,0 +1,675 @@
+use creusot.int.UInt8
+use creusot.int.UInt16
+use creusot.slice.Slice64
+use creusot.int.UInt64
+use creusot.prelude.Any
+use seq.Seq
+use int.ComputerDivision
+use int.Int
+
+type t_RawDate = {
+  sec: UInt8.t;
+  min: UInt8.t;
+  hour: UInt8.t;
+  day: UInt8.t;
+  mon: UInt8.t;
+  year: UInt16.t;
+  wday: UInt8.t }
+
+predicate inv_Seq_u8 [@inline:trivial] (_1: Seq.seq UInt8.t) = true
+
+meta "rewrite_def" predicate inv_Seq_u8
+
+predicate invariant_array_u8_29 (self: Slice64.array UInt8.t) =
+  inv_Seq_u8 (Slice64.view self) /\ Seq.length (Slice64.view self) = UInt64.t'int (29: UInt64.t)
+
+predicate inv_array_u8_29 [@inline:trivial] (_1: Slice64.array UInt8.t) = invariant_array_u8_29 _1
+
+meta "rewrite_def" predicate inv_array_u8_29
+
+function index_array_u8_29 [@inline:trivial] (self: Slice64.array UInt8.t) (ix: int) : UInt8.t =
+  Seq.get (Slice64.view self) ix
+
+meta "rewrite_def" function index_array_u8_29
+
+predicate gt_log_Int [@inline:trivial] (self: int) (other: int) = other < self
+
+meta "rewrite_def" predicate gt_log_Int
+
+function imf_month [@inline:trivial] (s: Seq.seq UInt8.t) : int = if Seq.get s 7 <> (32: UInt8.t)
+  \/ Seq.get s 11 <> (32: UInt8.t) then
+    0
+  else
+    if Seq.get s 8 = (74: UInt8.t) /\ Seq.get s 9 = (97: UInt8.t) /\ Seq.get s 10 = (110: UInt8.t) then
+      1
+    else
+      if Seq.get s 8 = (70: UInt8.t) /\ Seq.get s 9 = (101: UInt8.t) /\ Seq.get s 10 = (98: UInt8.t) then
+        2
+      else
+        if Seq.get s 8 = (77: UInt8.t) /\ Seq.get s 9 = (97: UInt8.t) /\ Seq.get s 10 = (114: UInt8.t) then
+          3
+        else
+          if Seq.get s 8 = (65: UInt8.t) /\ Seq.get s 9 = (112: UInt8.t) /\ Seq.get s 10 = (114: UInt8.t) then
+            4
+          else
+            if Seq.get s 8 = (77: UInt8.t) /\ Seq.get s 9 = (97: UInt8.t) /\ Seq.get s 10 = (121: UInt8.t) then
+              5
+            else
+              if Seq.get s 8 = (74: UInt8.t) /\ Seq.get s 9 = (117: UInt8.t) /\ Seq.get s 10 = (110: UInt8.t) then
+                6
+              else
+                if Seq.get s 8 = (74: UInt8.t) /\ Seq.get s 9 = (117: UInt8.t) /\ Seq.get s 10 = (108: UInt8.t) then
+                  7
+                else
+                  if Seq.get s 8 = (65: UInt8.t) /\ Seq.get s 9 = (117: UInt8.t) /\ Seq.get s 10 = (103: UInt8.t) then
+                    8
+                  else
+                    if Seq.get s 8 = (83: UInt8.t) /\ Seq.get s 9 = (101: UInt8.t) /\ Seq.get s 10 = (112: UInt8.t) then
+                      9
+                    else
+                      if Seq.get s 8 = (79: UInt8.t)
+                      /\ Seq.get s 9 = (99: UInt8.t) /\ Seq.get s 10 = (116: UInt8.t) then
+                        10
+                      else
+                        if Seq.get s 8 = (78: UInt8.t)
+                        /\ Seq.get s 9 = (111: UInt8.t) /\ Seq.get s 10 = (118: UInt8.t) then
+                          11
+                        else
+                          if Seq.get s 8 = (68: UInt8.t)
+                          /\ Seq.get s 9 = (101: UInt8.t) /\ Seq.get s 10 = (99: UInt8.t) then
+                            12
+                          else
+                            0
+                        
+                      
+                    
+                  
+                
+              
+            
+          
+        
+      
+    
+  
+
+
+meta "rewrite_def" function imf_month
+
+function imf_weekday [@inline:trivial] (s: Seq.seq UInt8.t) : int = if Seq.get s 3 <> (44: UInt8.t)
+  \/ Seq.get s 4 <> (32: UInt8.t) then
+    0
+  else
+    if Seq.get s 0 = (77: UInt8.t) /\ Seq.get s 1 = (111: UInt8.t) /\ Seq.get s 2 = (110: UInt8.t) then
+      1
+    else
+      if Seq.get s 0 = (84: UInt8.t) /\ Seq.get s 1 = (117: UInt8.t) /\ Seq.get s 2 = (101: UInt8.t) then
+        2
+      else
+        if Seq.get s 0 = (87: UInt8.t) /\ Seq.get s 1 = (101: UInt8.t) /\ Seq.get s 2 = (100: UInt8.t) then
+          3
+        else
+          if Seq.get s 0 = (84: UInt8.t) /\ Seq.get s 1 = (104: UInt8.t) /\ Seq.get s 2 = (117: UInt8.t) then
+            4
+          else
+            if Seq.get s 0 = (70: UInt8.t) /\ Seq.get s 1 = (114: UInt8.t) /\ Seq.get s 2 = (105: UInt8.t) then
+              5
+            else
+              if Seq.get s 0 = (83: UInt8.t) /\ Seq.get s 1 = (97: UInt8.t) /\ Seq.get s 2 = (116: UInt8.t) then
+                6
+              else
+                if Seq.get s 0 = (83: UInt8.t) /\ Seq.get s 1 = (117: UInt8.t) /\ Seq.get s 2 = (110: UInt8.t) then
+                  7
+                else
+                  0
+              
+            
+          
+        
+      
+    
+  
+
+
+meta "rewrite_def" function imf_weekday
+
+predicate imf_digit [@inline:trivial] (b: UInt8.t) = 48 <= UInt8.t'int b /\ UInt8.t'int b <= 57
+
+meta "rewrite_def" predicate imf_digit
+
+predicate imf_syntax [@inline:trivial] (s: Seq.seq UInt8.t) =
+  Seq.length s = 29
+  /\ gt_log_Int (imf_month s) 0
+  /\ gt_log_Int (imf_weekday s) 0
+  /\ Seq.get s 16 = (32: UInt8.t)
+  /\ Seq.get s 19 = (58: UInt8.t)
+  /\ Seq.get s 22 = (58: UInt8.t)
+  /\ Seq.get s 25 = (32: UInt8.t)
+  /\ Seq.get s 26 = (71: UInt8.t)
+  /\ Seq.get s 27 = (77: UInt8.t)
+  /\ Seq.get s 28 = (84: UInt8.t)
+  /\ imf_digit (Seq.get s 5)
+  /\ imf_digit (Seq.get s 6)
+  /\ imf_digit (Seq.get s 12)
+  /\ imf_digit (Seq.get s 13)
+  /\ imf_digit (Seq.get s 14)
+  /\ imf_digit (Seq.get s 15)
+  /\ imf_digit (Seq.get s 17)
+  /\ imf_digit (Seq.get s 18)
+  /\ imf_digit (Seq.get s 20) /\ imf_digit (Seq.get s 21) /\ imf_digit (Seq.get s 23) /\ imf_digit (Seq.get s 24)
+
+meta "rewrite_def" predicate imf_syntax
+
+predicate imf_encoding [@inline:trivial] (s: Seq.seq UInt8.t) (d: t_RawDate) =
+  imf_syntax s
+  /\ imf_month s = UInt8.t'int d.mon
+  /\ imf_weekday s = UInt8.t'int d.wday
+  /\ (UInt8.t'int (Seq.get s 5) - 48) * 10 + UInt8.t'int (Seq.get s 6) - 48 = UInt8.t'int d.day
+  /\ (UInt8.t'int (Seq.get s 12) - 48) * 1000 + (UInt8.t'int (Seq.get s 13) - 48) * 100
+          + (UInt8.t'int (Seq.get s 14) - 48) * 10
+        + UInt8.t'int (Seq.get s 15)
+      - 48
+    = UInt16.t'int d.year
+  /\ (UInt8.t'int (Seq.get s 17) - 48) * 10 + UInt8.t'int (Seq.get s 18) - 48 = UInt8.t'int d.hour
+  /\ (UInt8.t'int (Seq.get s 20) - 48) * 10 + UInt8.t'int (Seq.get s 21) - 48 = UInt8.t'int d.min
+  /\ (UInt8.t'int (Seq.get s 23) - 48) * 10 + UInt8.t'int (Seq.get s 24) - 48 = UInt8.t'int d.sec
+
+meta "rewrite_def" predicate imf_encoding
+
+meta "compute_max_steps" 1000000
+
+meta "select_lsinst" "all"
+
+let imf_bytes (d: t_RawDate) (return (x: Slice64.array UInt8.t)) =
+{[@stop_split] [@expl:imf_bytes requires] UInt8.t'int d.sec < 60
+  /\ UInt8.t'int d.min < 60
+  /\ UInt8.t'int d.hour < 24
+  /\ 1 <= UInt8.t'int d.day
+  /\ UInt8.t'int d.day <= 31
+  /\ 1 <= UInt8.t'int d.mon
+  /\ UInt8.t'int d.mon <= 12
+  /\ 1970 <= UInt16.t'int d.year /\ UInt16.t'int d.year <= 9999 /\ 1 <= UInt8.t'int d.wday /\ UInt8.t'int d.wday <= 7}
+  (! bb0
+  [ bb0 = any
+    [ br0 -> {d.wday = (1: UInt8.t)} (! bb15)
+    | br1 -> {d.wday = (2: UInt8.t)} (! bb14)
+    | br2 -> {d.wday = (3: UInt8.t)} (! bb13)
+    | br3 -> {d.wday = (4: UInt8.t)} (! bb12)
+    | br4 -> {d.wday = (5: UInt8.t)} (! bb11)
+    | br5 -> {d.wday = (6: UInt8.t)} (! bb10)
+    | br6 -> {d.wday = (7: UInt8.t)} (! bb9)
+    | default -> -{d.wday <> (1: UInt8.t)
+      /\ d.wday <> (2: UInt8.t)
+      /\ d.wday <> (3: UInt8.t)
+      /\ d.wday <> (4: UInt8.t) /\ d.wday <> (5: UInt8.t) /\ d.wday <> (6: UInt8.t) /\ d.wday <> (7: UInt8.t)}-
+      (! bb1) ]
+  | bb1 = {false} any
+  | bb9 = s0
+    [ s0 = any
+      [ any_ (__arr_temp: Slice64.array UInt8.t) -> (! -{Seq.get __arr_temp.Slice64.elts 0 = (83: UInt8.t)
+        /\ Seq.get __arr_temp.Slice64.elts 1 = (117: UInt8.t)
+        /\ Seq.get __arr_temp.Slice64.elts 2 = (110: UInt8.t) /\ Seq.length __arr_temp.Slice64.elts = 3}-
+        [ &wday'0 <- __arr_temp ] s1) ]
+    | s1 = bb16 ]
+  | bb10 = s0
+    [ s0 = any
+      [ any_ (__arr_temp: Slice64.array UInt8.t) -> (! -{Seq.get __arr_temp.Slice64.elts 0 = (83: UInt8.t)
+        /\ Seq.get __arr_temp.Slice64.elts 1 = (97: UInt8.t)
+        /\ Seq.get __arr_temp.Slice64.elts 2 = (116: UInt8.t) /\ Seq.length __arr_temp.Slice64.elts = 3}-
+        [ &wday'0 <- __arr_temp ] s1) ]
+    | s1 = bb16 ]
+  | bb11 = s0
+    [ s0 = any
+      [ any_ (__arr_temp: Slice64.array UInt8.t) -> (! -{Seq.get __arr_temp.Slice64.elts 0 = (70: UInt8.t)
+        /\ Seq.get __arr_temp.Slice64.elts 1 = (114: UInt8.t)
+        /\ Seq.get __arr_temp.Slice64.elts 2 = (105: UInt8.t) /\ Seq.length __arr_temp.Slice64.elts = 3}-
+        [ &wday'0 <- __arr_temp ] s1) ]
+    | s1 = bb16 ]
+  | bb12 = s0
+    [ s0 = any
+      [ any_ (__arr_temp: Slice64.array UInt8.t) -> (! -{Seq.get __arr_temp.Slice64.elts 0 = (84: UInt8.t)
+        /\ Seq.get __arr_temp.Slice64.elts 1 = (104: UInt8.t)
+        /\ Seq.get __arr_temp.Slice64.elts 2 = (117: UInt8.t) /\ Seq.length __arr_temp.Slice64.elts = 3}-
+        [ &wday'0 <- __arr_temp ] s1) ]
+    | s1 = bb16 ]
+  | bb13 = s0
+    [ s0 = any
+      [ any_ (__arr_temp: Slice64.array UInt8.t) -> (! -{Seq.get __arr_temp.Slice64.elts 0 = (87: UInt8.t)
+        /\ Seq.get __arr_temp.Slice64.elts 1 = (101: UInt8.t)
+        /\ Seq.get __arr_temp.Slice64.elts 2 = (100: UInt8.t) /\ Seq.length __arr_temp.Slice64.elts = 3}-
+        [ &wday'0 <- __arr_temp ] s1) ]
+    | s1 = bb16 ]
+  | bb14 = s0
+    [ s0 = any
+      [ any_ (__arr_temp: Slice64.array UInt8.t) -> (! -{Seq.get __arr_temp.Slice64.elts 0 = (84: UInt8.t)
+        /\ Seq.get __arr_temp.Slice64.elts 1 = (117: UInt8.t)
+        /\ Seq.get __arr_temp.Slice64.elts 2 = (101: UInt8.t) /\ Seq.length __arr_temp.Slice64.elts = 3}-
+        [ &wday'0 <- __arr_temp ] s1) ]
+    | s1 = bb16 ]
+  | bb15 = s0
+    [ s0 = any
+      [ any_ (__arr_temp: Slice64.array UInt8.t) -> (! -{Seq.get __arr_temp.Slice64.elts 0 = (77: UInt8.t)
+        /\ Seq.get __arr_temp.Slice64.elts 1 = (111: UInt8.t)
+        /\ Seq.get __arr_temp.Slice64.elts 2 = (110: UInt8.t) /\ Seq.length __arr_temp.Slice64.elts = 3}-
+        [ &wday'0 <- __arr_temp ] s1) ]
+    | s1 = bb16 ]
+  | bb16 = any
+    [ br0 -> {d.mon = (1: UInt8.t)} (! bb41)
+    | br1 -> {d.mon = (2: UInt8.t)} (! bb40)
+    | br2 -> {d.mon = (3: UInt8.t)} (! bb39)
+    | br3 -> {d.mon = (4: UInt8.t)} (! bb38)
+    | br4 -> {d.mon = (5: UInt8.t)} (! bb37)
+    | br5 -> {d.mon = (6: UInt8.t)} (! bb36)
+    | br6 -> {d.mon = (7: UInt8.t)} (! bb35)
+    | br7 -> {d.mon = (8: UInt8.t)} (! bb34)
+    | br8 -> {d.mon = (9: UInt8.t)} (! bb33)
+    | br9 -> {d.mon = (10: UInt8.t)} (! bb32)
+    | br10 -> {d.mon = (11: UInt8.t)} (! bb31)
+    | br11 -> {d.mon = (12: UInt8.t)} (! bb30)
+    | default -> -{d.mon <> (1: UInt8.t)
+      /\ d.mon <> (2: UInt8.t)
+      /\ d.mon <> (3: UInt8.t)
+      /\ d.mon <> (4: UInt8.t)
+      /\ d.mon <> (5: UInt8.t)
+      /\ d.mon <> (6: UInt8.t)
+      /\ d.mon <> (7: UInt8.t)
+      /\ d.mon <> (8: UInt8.t)
+      /\ d.mon <> (9: UInt8.t) /\ d.mon <> (10: UInt8.t) /\ d.mon <> (11: UInt8.t) /\ d.mon <> (12: UInt8.t)}-
+      (! bb17) ]
+  | bb17 = {false} any
+  | bb30 = s0
+    [ s0 = any
+      [ any_ (__arr_temp: Slice64.array UInt8.t) -> (! -{Seq.get __arr_temp.Slice64.elts 0 = (68: UInt8.t)
+        /\ Seq.get __arr_temp.Slice64.elts 1 = (101: UInt8.t)
+        /\ Seq.get __arr_temp.Slice64.elts 2 = (99: UInt8.t) /\ Seq.length __arr_temp.Slice64.elts = 3}-
+        [ &mon'0 <- __arr_temp ] s1) ]
+    | s1 = bb42 ]
+  | bb31 = s0
+    [ s0 = any
+      [ any_ (__arr_temp: Slice64.array UInt8.t) -> (! -{Seq.get __arr_temp.Slice64.elts 0 = (78: UInt8.t)
+        /\ Seq.get __arr_temp.Slice64.elts 1 = (111: UInt8.t)
+        /\ Seq.get __arr_temp.Slice64.elts 2 = (118: UInt8.t) /\ Seq.length __arr_temp.Slice64.elts = 3}-
+        [ &mon'0 <- __arr_temp ] s1) ]
+    | s1 = bb42 ]
+  | bb32 = s0
+    [ s0 = any
+      [ any_ (__arr_temp: Slice64.array UInt8.t) -> (! -{Seq.get __arr_temp.Slice64.elts 0 = (79: UInt8.t)
+        /\ Seq.get __arr_temp.Slice64.elts 1 = (99: UInt8.t)
+        /\ Seq.get __arr_temp.Slice64.elts 2 = (116: UInt8.t) /\ Seq.length __arr_temp.Slice64.elts = 3}-
+        [ &mon'0 <- __arr_temp ] s1) ]
+    | s1 = bb42 ]
+  | bb33 = s0
+    [ s0 = any
+      [ any_ (__arr_temp: Slice64.array UInt8.t) -> (! -{Seq.get __arr_temp.Slice64.elts 0 = (83: UInt8.t)
+        /\ Seq.get __arr_temp.Slice64.elts 1 = (101: UInt8.t)
+        /\ Seq.get __arr_temp.Slice64.elts 2 = (112: UInt8.t) /\ Seq.length __arr_temp.Slice64.elts = 3}-
+        [ &mon'0 <- __arr_temp ] s1) ]
+    | s1 = bb42 ]
+  | bb34 = s0
+    [ s0 = any
+      [ any_ (__arr_temp: Slice64.array UInt8.t) -> (! -{Seq.get __arr_temp.Slice64.elts 0 = (65: UInt8.t)
+        /\ Seq.get __arr_temp.Slice64.elts 1 = (117: UInt8.t)
+        /\ Seq.get __arr_temp.Slice64.elts 2 = (103: UInt8.t) /\ Seq.length __arr_temp.Slice64.elts = 3}-
+        [ &mon'0 <- __arr_temp ] s1) ]
+    | s1 = bb42 ]
+  | bb35 = s0
+    [ s0 = any
+      [ any_ (__arr_temp: Slice64.array UInt8.t) -> (! -{Seq.get __arr_temp.Slice64.elts 0 = (74: UInt8.t)
+        /\ Seq.get __arr_temp.Slice64.elts 1 = (117: UInt8.t)
+        /\ Seq.get __arr_temp.Slice64.elts 2 = (108: UInt8.t) /\ Seq.length __arr_temp.Slice64.elts = 3}-
+        [ &mon'0 <- __arr_temp ] s1) ]
+    | s1 = bb42 ]
+  | bb36 = s0
+    [ s0 = any
+      [ any_ (__arr_temp: Slice64.array UInt8.t) -> (! -{Seq.get __arr_temp.Slice64.elts 0 = (74: UInt8.t)
+        /\ Seq.get __arr_temp.Slice64.elts 1 = (117: UInt8.t)
+        /\ Seq.get __arr_temp.Slice64.elts 2 = (110: UInt8.t) /\ Seq.length __arr_temp.Slice64.elts = 3}-
+        [ &mon'0 <- __arr_temp ] s1) ]
+    | s1 = bb42 ]
+  | bb37 = s0
+    [ s0 = any
+      [ any_ (__arr_temp: Slice64.array UInt8.t) -> (! -{Seq.get __arr_temp.Slice64.elts 0 = (77: UInt8.t)
+        /\ Seq.get __arr_temp.Slice64.elts 1 = (97: UInt8.t)
+        /\ Seq.get __arr_temp.Slice64.elts 2 = (121: UInt8.t) /\ Seq.length __arr_temp.Slice64.elts = 3}-
+        [ &mon'0 <- __arr_temp ] s1) ]
+    | s1 = bb42 ]
+  | bb38 = s0
+    [ s0 = any
+      [ any_ (__arr_temp: Slice64.array UInt8.t) -> (! -{Seq.get __arr_temp.Slice64.elts 0 = (65: UInt8.t)
+        /\ Seq.get __arr_temp.Slice64.elts 1 = (112: UInt8.t)
+        /\ Seq.get __arr_temp.Slice64.elts 2 = (114: UInt8.t) /\ Seq.length __arr_temp.Slice64.elts = 3}-
+        [ &mon'0 <- __arr_temp ] s1) ]
+    | s1 = bb42 ]
+  | bb39 = s0
+    [ s0 = any
+      [ any_ (__arr_temp: Slice64.array UInt8.t) -> (! -{Seq.get __arr_temp.Slice64.elts 0 = (77: UInt8.t)
+        /\ Seq.get __arr_temp.Slice64.elts 1 = (97: UInt8.t)
+        /\ Seq.get __arr_temp.Slice64.elts 2 = (114: UInt8.t) /\ Seq.length __arr_temp.Slice64.elts = 3}-
+        [ &mon'0 <- __arr_temp ] s1) ]
+    | s1 = bb42 ]
+  | bb40 = s0
+    [ s0 = any
+      [ any_ (__arr_temp: Slice64.array UInt8.t) -> (! -{Seq.get __arr_temp.Slice64.elts 0 = (70: UInt8.t)
+        /\ Seq.get __arr_temp.Slice64.elts 1 = (101: UInt8.t)
+        /\ Seq.get __arr_temp.Slice64.elts 2 = (98: UInt8.t) /\ Seq.length __arr_temp.Slice64.elts = 3}-
+        [ &mon'0 <- __arr_temp ] s1) ]
+    | s1 = bb42 ]
+  | bb41 = s0
+    [ s0 = any
+      [ any_ (__arr_temp: Slice64.array UInt8.t) -> (! -{Seq.get __arr_temp.Slice64.elts 0 = (74: UInt8.t)
+        /\ Seq.get __arr_temp.Slice64.elts 1 = (97: UInt8.t)
+        /\ Seq.get __arr_temp.Slice64.elts 2 = (110: UInt8.t) /\ Seq.length __arr_temp.Slice64.elts = 3}-
+        [ &mon'0 <- __arr_temp ] s1) ]
+    | s1 = bb42 ]
+  | bb42 = s0
+    [ s0 = any
+      [ any_ (__arr_temp: Slice64.array UInt8.t) -> (! -{Seq.get __arr_temp.Slice64.elts 0 = (32: UInt8.t)
+        /\ Seq.get __arr_temp.Slice64.elts 1 = (32: UInt8.t)
+        /\ Seq.get __arr_temp.Slice64.elts 2 = (32: UInt8.t)
+        /\ Seq.get __arr_temp.Slice64.elts 3 = (44: UInt8.t)
+        /\ Seq.get __arr_temp.Slice64.elts 4 = (32: UInt8.t)
+        /\ Seq.get __arr_temp.Slice64.elts 5 = (48: UInt8.t)
+        /\ Seq.get __arr_temp.Slice64.elts 6 = (48: UInt8.t)
+        /\ Seq.get __arr_temp.Slice64.elts 7 = (32: UInt8.t)
+        /\ Seq.get __arr_temp.Slice64.elts 8 = (32: UInt8.t)
+        /\ Seq.get __arr_temp.Slice64.elts 9 = (32: UInt8.t)
+        /\ Seq.get __arr_temp.Slice64.elts 10 = (32: UInt8.t)
+        /\ Seq.get __arr_temp.Slice64.elts 11 = (32: UInt8.t)
+        /\ Seq.get __arr_temp.Slice64.elts 12 = (48: UInt8.t)
+        /\ Seq.get __arr_temp.Slice64.elts 13 = (48: UInt8.t)
+        /\ Seq.get __arr_temp.Slice64.elts 14 = (48: UInt8.t)
+        /\ Seq.get __arr_temp.Slice64.elts 15 = (48: UInt8.t)
+        /\ Seq.get __arr_temp.Slice64.elts 16 = (32: UInt8.t)
+        /\ Seq.get __arr_temp.Slice64.elts 17 = (48: UInt8.t)
+        /\ Seq.get __arr_temp.Slice64.elts 18 = (48: UInt8.t)
+        /\ Seq.get __arr_temp.Slice64.elts 19 = (58: UInt8.t)
+        /\ Seq.get __arr_temp.Slice64.elts 20 = (48: UInt8.t)
+        /\ Seq.get __arr_temp.Slice64.elts 21 = (48: UInt8.t)
+        /\ Seq.get __arr_temp.Slice64.elts 22 = (58: UInt8.t)
+        /\ Seq.get __arr_temp.Slice64.elts 23 = (48: UInt8.t)
+        /\ Seq.get __arr_temp.Slice64.elts 24 = (48: UInt8.t)
+        /\ Seq.get __arr_temp.Slice64.elts 25 = (32: UInt8.t)
+        /\ Seq.get __arr_temp.Slice64.elts 26 = (71: UInt8.t)
+        /\ Seq.get __arr_temp.Slice64.elts 27 = (77: UInt8.t)
+        /\ Seq.get __arr_temp.Slice64.elts 28 = (84: UInt8.t) /\ Seq.length __arr_temp.Slice64.elts = 29}-
+        [ &buf <- __arr_temp ] s1) ]
+    | s1 = [ &_15 <- (0: UInt64.t) ] s2
+    | s2 = [ &_16 <- UInt64.lt _15 (3: UInt64.t) ] s3
+    | s3 = {[@expl:index in bounds] _16} s4
+    | s4 = Slice64.get <UInt8.t> {wday'0} {_15} (fun (r: UInt8.t) -> [ &_14 <- r ] s5)
+    | s5 = [ &_17 <- (0: UInt64.t) ] s6
+    | s6 = [ &_18 <- UInt64.lt _17 (29: UInt64.t) ] s7
+    | s7 = {[@expl:index in bounds] _18} s8
+    | s8 = Slice64.set <UInt8.t> {buf} {_17} {_14} (fun (r: Slice64.array UInt8.t) -> [ &buf <- r ] s9)
+    | s9 = [ &_20 <- (1: UInt64.t) ] s10
+    | s10 = [ &_21 <- UInt64.lt _20 (3: UInt64.t) ] s11
+    | s11 = {[@expl:index in bounds] _21} s12
+    | s12 = Slice64.get <UInt8.t> {wday'0} {_20} (fun (r: UInt8.t) -> [ &_19 <- r ] s13)
+    | s13 = [ &_22 <- (1: UInt64.t) ] s14
+    | s14 = [ &_23 <- UInt64.lt _22 (29: UInt64.t) ] s15
+    | s15 = {[@expl:index in bounds] _23} s16
+    | s16 = Slice64.set <UInt8.t> {buf} {_22} {_19} (fun (r: Slice64.array UInt8.t) -> [ &buf <- r ] s17)
+    | s17 = [ &_25 <- (2: UInt64.t) ] s18
+    | s18 = [ &_26 <- UInt64.lt _25 (3: UInt64.t) ] s19
+    | s19 = {[@expl:index in bounds] _26} s20
+    | s20 = Slice64.get <UInt8.t> {wday'0} {_25} (fun (r: UInt8.t) -> [ &_24 <- r ] s21)
+    | s21 = [ &_27 <- (2: UInt64.t) ] s22
+    | s22 = [ &_28 <- UInt64.lt _27 (29: UInt64.t) ] s23
+    | s23 = {[@expl:index in bounds] _28} s24
+    | s24 = Slice64.set <UInt8.t> {buf} {_27} {_24} (fun (r: Slice64.array UInt8.t) -> [ &buf <- r ] s25)
+    | s25 = [ &_31 <- (10: UInt8.t) = (0: UInt8.t) ] s26
+    | s26 = {[@expl:division by zero] not _31} s27
+    | s27 = UInt8.div {d.day} {(10: UInt8.t)} (fun (_x: UInt8.t) -> [ &_29 <- _x ] s28)
+    | s28 = [ &_32 <- (5: UInt64.t) ] s29
+    | s29 = [ &_33 <- UInt64.lt _32 (29: UInt64.t) ] s30
+    | s30 = {[@expl:index in bounds] _33} s31
+    | s31 = UInt8.add {(48: UInt8.t)} {_29}
+        (fun (_x: UInt8.t) ->
+          Slice64.set <UInt8.t> {buf} {_32} {_x} (fun (r: Slice64.array UInt8.t) -> [ &buf <- r ] s32))
+    | s32 = [ &_36 <- (10: UInt8.t) = (0: UInt8.t) ] s33
+    | s33 = {[@expl:remainder by zero] not _36} s34
+    | s34 = UInt8.rem {d.day} {(10: UInt8.t)} (fun (_x: UInt8.t) -> [ &_34 <- _x ] s35)
+    | s35 = [ &_37 <- (6: UInt64.t) ] s36
+    | s36 = [ &_38 <- UInt64.lt _37 (29: UInt64.t) ] s37
+    | s37 = {[@expl:index in bounds] _38} s38
+    | s38 = UInt8.add {(48: UInt8.t)} {_34}
+        (fun (_x: UInt8.t) ->
+          Slice64.set <UInt8.t> {buf} {_37} {_x} (fun (r: Slice64.array UInt8.t) -> [ &buf <- r ] s39))
+    | s39 = [ &_40 <- (0: UInt64.t) ] s40
+    | s40 = [ &_41 <- UInt64.lt _40 (3: UInt64.t) ] s41
+    | s41 = {[@expl:index in bounds] _41} s42
+    | s42 = Slice64.get <UInt8.t> {mon'0} {_40} (fun (r: UInt8.t) -> [ &_39 <- r ] s43)
+    | s43 = [ &_42 <- (8: UInt64.t) ] s44
+    | s44 = [ &_43 <- UInt64.lt _42 (29: UInt64.t) ] s45
+    | s45 = {[@expl:index in bounds] _43} s46
+    | s46 = Slice64.set <UInt8.t> {buf} {_42} {_39} (fun (r: Slice64.array UInt8.t) -> [ &buf <- r ] s47)
+    | s47 = [ &_45 <- (1: UInt64.t) ] s48
+    | s48 = [ &_46 <- UInt64.lt _45 (3: UInt64.t) ] s49
+    | s49 = {[@expl:index in bounds] _46} s50
+    | s50 = Slice64.get <UInt8.t> {mon'0} {_45} (fun (r: UInt8.t) -> [ &_44 <- r ] s51)
+    | s51 = [ &_47 <- (9: UInt64.t) ] s52
+    | s52 = [ &_48 <- UInt64.lt _47 (29: UInt64.t) ] s53
+    | s53 = {[@expl:index in bounds] _48} s54
+    | s54 = Slice64.set <UInt8.t> {buf} {_47} {_44} (fun (r: Slice64.array UInt8.t) -> [ &buf <- r ] s55)
+    | s55 = [ &_50 <- (2: UInt64.t) ] s56
+    | s56 = [ &_51 <- UInt64.lt _50 (3: UInt64.t) ] s57
+    | s57 = {[@expl:index in bounds] _51} s58
+    | s58 = Slice64.get <UInt8.t> {mon'0} {_50} (fun (r: UInt8.t) -> [ &_49 <- r ] s59)
+    | s59 = [ &_52 <- (10: UInt64.t) ] s60
+    | s60 = [ &_53 <- UInt64.lt _52 (29: UInt64.t) ] s61
+    | s61 = {[@expl:index in bounds] _53} s62
+    | s62 = Slice64.set <UInt8.t> {buf} {_52} {_49} (fun (r: Slice64.array UInt8.t) -> [ &buf <- r ] s63)
+    | s63 = [ &_57 <- (1000: UInt16.t) = (0: UInt16.t) ] s64
+    | s64 = {[@expl:division by zero] not _57} s65
+    | s65 = UInt16.div {d.year} {(1000: UInt16.t)} (fun (_x: UInt16.t) -> [ &_55 <- _x ] s66)
+    | s66 = [ &_54 <- UInt8.of_int (UInt16.t'int _55) ] s67
+    | s67 = [ &_58 <- (12: UInt64.t) ] s68
+    | s68 = [ &_59 <- UInt64.lt _58 (29: UInt64.t) ] s69
+    | s69 = {[@expl:index in bounds] _59} s70
+    | s70 = UInt8.add {(48: UInt8.t)} {_54}
+        (fun (_x: UInt8.t) ->
+          Slice64.set <UInt8.t> {buf} {_58} {_x} (fun (r: Slice64.array UInt8.t) -> [ &buf <- r ] s71))
+    | s71 = [ &_64 <- (100: UInt16.t) = (0: UInt16.t) ] s72
+    | s72 = {[@expl:division by zero] not _64} s73
+    | s73 = UInt16.div {d.year} {(100: UInt16.t)} (fun (_x: UInt16.t) -> [ &_62 <- _x ] s74)
+    | s74 = [ &_65 <- (10: UInt16.t) = (0: UInt16.t) ] s75
+    | s75 = {[@expl:remainder by zero] not _65} s76
+    | s76 = UInt16.rem {_62} {(10: UInt16.t)} (fun (_x: UInt16.t) -> [ &_61 <- _x ] s77)
+    | s77 = [ &_60 <- UInt8.of_int (UInt16.t'int _61) ] s78
+    | s78 = [ &_66 <- (13: UInt64.t) ] s79
+    | s79 = [ &_67 <- UInt64.lt _66 (29: UInt64.t) ] s80
+    | s80 = {[@expl:index in bounds] _67} s81
+    | s81 = UInt8.add {(48: UInt8.t)} {_60}
+        (fun (_x: UInt8.t) ->
+          Slice64.set <UInt8.t> {buf} {_66} {_x} (fun (r: Slice64.array UInt8.t) -> [ &buf <- r ] s82))
+    | s82 = [ &_72 <- (10: UInt16.t) = (0: UInt16.t) ] s83
+    | s83 = {[@expl:division by zero] not _72} s84
+    | s84 = UInt16.div {d.year} {(10: UInt16.t)} (fun (_x: UInt16.t) -> [ &_70 <- _x ] s85)
+    | s85 = [ &_73 <- (10: UInt16.t) = (0: UInt16.t) ] s86
+    | s86 = {[@expl:remainder by zero] not _73} s87
+    | s87 = UInt16.rem {_70} {(10: UInt16.t)} (fun (_x: UInt16.t) -> [ &_69 <- _x ] s88)
+    | s88 = [ &_68 <- UInt8.of_int (UInt16.t'int _69) ] s89
+    | s89 = [ &_74 <- (14: UInt64.t) ] s90
+    | s90 = [ &_75 <- UInt64.lt _74 (29: UInt64.t) ] s91
+    | s91 = {[@expl:index in bounds] _75} s92
+    | s92 = UInt8.add {(48: UInt8.t)} {_68}
+        (fun (_x: UInt8.t) ->
+          Slice64.set <UInt8.t> {buf} {_74} {_x} (fun (r: Slice64.array UInt8.t) -> [ &buf <- r ] s93))
+    | s93 = [ &_79 <- (10: UInt16.t) = (0: UInt16.t) ] s94
+    | s94 = {[@expl:remainder by zero] not _79} s95
+    | s95 = UInt16.rem {d.year} {(10: UInt16.t)} (fun (_x: UInt16.t) -> [ &_77 <- _x ] s96)
+    | s96 = [ &_76 <- UInt8.of_int (UInt16.t'int _77) ] s97
+    | s97 = [ &_80 <- (15: UInt64.t) ] s98
+    | s98 = [ &_81 <- UInt64.lt _80 (29: UInt64.t) ] s99
+    | s99 = {[@expl:index in bounds] _81} s100
+    | s100 = UInt8.add {(48: UInt8.t)} {_76}
+        (fun (_x: UInt8.t) ->
+          Slice64.set <UInt8.t> {buf} {_80} {_x} (fun (r: Slice64.array UInt8.t) -> [ &buf <- r ] s101))
+    | s101 = [ &_84 <- (10: UInt8.t) = (0: UInt8.t) ] s102
+    | s102 = {[@expl:division by zero] not _84} s103
+    | s103 = UInt8.div {d.hour} {(10: UInt8.t)} (fun (_x: UInt8.t) -> [ &_82 <- _x ] s104)
+    | s104 = [ &_85 <- (17: UInt64.t) ] s105
+    | s105 = [ &_86 <- UInt64.lt _85 (29: UInt64.t) ] s106
+    | s106 = {[@expl:index in bounds] _86} s107
+    | s107 = UInt8.add {(48: UInt8.t)} {_82}
+        (fun (_x: UInt8.t) ->
+          Slice64.set <UInt8.t> {buf} {_85} {_x} (fun (r: Slice64.array UInt8.t) -> [ &buf <- r ] s108))
+    | s108 = [ &_89 <- (10: UInt8.t) = (0: UInt8.t) ] s109
+    | s109 = {[@expl:remainder by zero] not _89} s110
+    | s110 = UInt8.rem {d.hour} {(10: UInt8.t)} (fun (_x: UInt8.t) -> [ &_87 <- _x ] s111)
+    | s111 = [ &_90 <- (18: UInt64.t) ] s112
+    | s112 = [ &_91 <- UInt64.lt _90 (29: UInt64.t) ] s113
+    | s113 = {[@expl:index in bounds] _91} s114
+    | s114 = UInt8.add {(48: UInt8.t)} {_87}
+        (fun (_x: UInt8.t) ->
+          Slice64.set <UInt8.t> {buf} {_90} {_x} (fun (r: Slice64.array UInt8.t) -> [ &buf <- r ] s115))
+    | s115 = [ &_94 <- (10: UInt8.t) = (0: UInt8.t) ] s116
+    | s116 = {[@expl:division by zero] not _94} s117
+    | s117 = UInt8.div {d.min} {(10: UInt8.t)} (fun (_x: UInt8.t) -> [ &_92 <- _x ] s118)
+    | s118 = [ &_95 <- (20: UInt64.t) ] s119
+    | s119 = [ &_96 <- UInt64.lt _95 (29: UInt64.t) ] s120
+    | s120 = {[@expl:index in bounds] _96} s121
+    | s121 = UInt8.add {(48: UInt8.t)} {_92}
+        (fun (_x: UInt8.t) ->
+          Slice64.set <UInt8.t> {buf} {_95} {_x} (fun (r: Slice64.array UInt8.t) -> [ &buf <- r ] s122))
+    | s122 = [ &_99 <- (10: UInt8.t) = (0: UInt8.t) ] s123
+    | s123 = {[@expl:remainder by zero] not _99} s124
+    | s124 = UInt8.rem {d.min} {(10: UInt8.t)} (fun (_x: UInt8.t) -> [ &_97 <- _x ] s125)
+    | s125 = [ &_100 <- (21: UInt64.t) ] s126
+    | s126 = [ &_101 <- UInt64.lt _100 (29: UInt64.t) ] s127
+    | s127 = {[@expl:index in bounds] _101} s128
+    | s128 = UInt8.add {(48: UInt8.t)} {_97}
+        (fun (_x: UInt8.t) ->
+          Slice64.set <UInt8.t> {buf} {_100} {_x} (fun (r: Slice64.array UInt8.t) -> [ &buf <- r ] s129))
+    | s129 = [ &_104 <- (10: UInt8.t) = (0: UInt8.t) ] s130
+    | s130 = {[@expl:division by zero] not _104} s131
+    | s131 = UInt8.div {d.sec} {(10: UInt8.t)} (fun (_x: UInt8.t) -> [ &_102 <- _x ] s132)
+    | s132 = [ &_105 <- (23: UInt64.t) ] s133
+    | s133 = [ &_106 <- UInt64.lt _105 (29: UInt64.t) ] s134
+    | s134 = {[@expl:index in bounds] _106} s135
+    | s135 = UInt8.add {(48: UInt8.t)} {_102}
+        (fun (_x: UInt8.t) ->
+          Slice64.set <UInt8.t> {buf} {_105} {_x} (fun (r: Slice64.array UInt8.t) -> [ &buf <- r ] s136))
+    | s136 = [ &_109 <- (10: UInt8.t) = (0: UInt8.t) ] s137
+    | s137 = {[@expl:remainder by zero] not _109} s138
+    | s138 = UInt8.rem {d.sec} {(10: UInt8.t)} (fun (_x: UInt8.t) -> [ &_107 <- _x ] s139)
+    | s139 = [ &_110 <- (24: UInt64.t) ] s140
+    | s140 = [ &_111 <- UInt64.lt _110 (29: UInt64.t) ] s141
+    | s141 = {[@expl:index in bounds] _111} s142
+    | s142 = UInt8.add {(48: UInt8.t)} {_107}
+        (fun (_x: UInt8.t) ->
+          Slice64.set <UInt8.t> {buf} {_110} {_x} (fun (r: Slice64.array UInt8.t) -> [ &buf <- r ] s143))
+    | s143 = [ &_ret <- buf ] s144
+    | s144 = return {_ret} ] ]
+  [ & _ret: Slice64.array UInt8.t = Any.any_l ()
+  | & d: t_RawDate = d
+  | & wday'0: Slice64.array UInt8.t = Any.any_l ()
+  | & mon'0: Slice64.array UInt8.t = Any.any_l ()
+  | & buf: Slice64.array UInt8.t = Any.any_l ()
+  | & _14: UInt8.t = Any.any_l ()
+  | & _15: UInt64.t = Any.any_l ()
+  | & _16: bool = Any.any_l ()
+  | & _17: UInt64.t = Any.any_l ()
+  | & _18: bool = Any.any_l ()
+  | & _19: UInt8.t = Any.any_l ()
+  | & _20: UInt64.t = Any.any_l ()
+  | & _21: bool = Any.any_l ()
+  | & _22: UInt64.t = Any.any_l ()
+  | & _23: bool = Any.any_l ()
+  | & _24: UInt8.t = Any.any_l ()
+  | & _25: UInt64.t = Any.any_l ()
+  | & _26: bool = Any.any_l ()
+  | & _27: UInt64.t = Any.any_l ()
+  | & _28: bool = Any.any_l ()
+  | & _29: UInt8.t = Any.any_l ()
+  | & _31: bool = Any.any_l ()
+  | & _32: UInt64.t = Any.any_l ()
+  | & _33: bool = Any.any_l ()
+  | & _34: UInt8.t = Any.any_l ()
+  | & _36: bool = Any.any_l ()
+  | & _37: UInt64.t = Any.any_l ()
+  | & _38: bool = Any.any_l ()
+  | & _39: UInt8.t = Any.any_l ()
+  | & _40: UInt64.t = Any.any_l ()
+  | & _41: bool = Any.any_l ()
+  | & _42: UInt64.t = Any.any_l ()
+  | & _43: bool = Any.any_l ()
+  | & _44: UInt8.t = Any.any_l ()
+  | & _45: UInt64.t = Any.any_l ()
+  | & _46: bool = Any.any_l ()
+  | & _47: UInt64.t = Any.any_l ()
+  | & _48: bool = Any.any_l ()
+  | & _49: UInt8.t = Any.any_l ()
+  | & _50: UInt64.t = Any.any_l ()
+  | & _51: bool = Any.any_l ()
+  | & _52: UInt64.t = Any.any_l ()
+  | & _53: bool = Any.any_l ()
+  | & _54: UInt8.t = Any.any_l ()
+  | & _55: UInt16.t = Any.any_l ()
+  | & _57: bool = Any.any_l ()
+  | & _58: UInt64.t = Any.any_l ()
+  | & _59: bool = Any.any_l ()
+  | & _60: UInt8.t = Any.any_l ()
+  | & _61: UInt16.t = Any.any_l ()
+  | & _62: UInt16.t = Any.any_l ()
+  | & _64: bool = Any.any_l ()
+  | & _65: bool = Any.any_l ()
+  | & _66: UInt64.t = Any.any_l ()
+  | & _67: bool = Any.any_l ()
+  | & _68: UInt8.t = Any.any_l ()
+  | & _69: UInt16.t = Any.any_l ()
+  | & _70: UInt16.t = Any.any_l ()
+  | & _72: bool = Any.any_l ()
+  | & _73: bool = Any.any_l ()
+  | & _74: UInt64.t = Any.any_l ()
+  | & _75: bool = Any.any_l ()
+  | & _76: UInt8.t = Any.any_l ()
+  | & _77: UInt16.t = Any.any_l ()
+  | & _79: bool = Any.any_l ()
+  | & _80: UInt64.t = Any.any_l ()
+  | & _81: bool = Any.any_l ()
+  | & _82: UInt8.t = Any.any_l ()
+  | & _84: bool = Any.any_l ()
+  | & _85: UInt64.t = Any.any_l ()
+  | & _86: bool = Any.any_l ()
+  | & _87: UInt8.t = Any.any_l ()
+  | & _89: bool = Any.any_l ()
+  | & _90: UInt64.t = Any.any_l ()
+  | & _91: bool = Any.any_l ()
+  | & _92: UInt8.t = Any.any_l ()
+  | & _94: bool = Any.any_l ()
+  | & _95: UInt64.t = Any.any_l ()
+  | & _96: bool = Any.any_l ()
+  | & _97: UInt8.t = Any.any_l ()
+  | & _99: bool = Any.any_l ()
+  | & _100: UInt64.t = Any.any_l ()
+  | & _101: bool = Any.any_l ()
+  | & _102: UInt8.t = Any.any_l ()
+  | & _104: bool = Any.any_l ()
+  | & _105: UInt64.t = Any.any_l ()
+  | & _106: bool = Any.any_l ()
+  | & _107: UInt8.t = Any.any_l ()
+  | & _109: bool = Any.any_l ()
+  | & _110: UInt64.t = Any.any_l ()
+  | & _111: bool = Any.any_l () ])
+  [ return (result: Slice64.array UInt8.t) ->
+  {[@stop_split] [@expl:imf_bytes ensures] ([@stop_split] [@expl:imf_bytes result type invariant] inv_array_u8_29 result)
+    /\ ([@stop_split] [@expl:imf_bytes ensures #0] Seq.length (Slice64.view result) = 29
+      /\ (forall i: int. 0 <= i /\ i < 29 -> UInt8.t'int (Seq.get (Slice64.view result) i) < 128))
+    /\ ([@stop_split] [@expl:imf_bytes ensures #1] UInt8.t'int (index_array_u8_29 result 5)
+        = 48 + ComputerDivision.div (UInt8.t'int d.day) 10
+      /\ UInt8.t'int (index_array_u8_29 result 6) = 48 + ComputerDivision.mod (UInt8.t'int d.day) 10
+      /\ UInt8.t'int (index_array_u8_29 result 12) = 48 + ComputerDivision.div (UInt16.t'int d.year) 1000
+      /\ UInt8.t'int (index_array_u8_29 result 13)
+        = 48 + ComputerDivision.mod (ComputerDivision.div (UInt16.t'int d.year) 100) 10
+      /\ UInt8.t'int (index_array_u8_29 result 14)
+        = 48 + ComputerDivision.mod (ComputerDivision.div (UInt16.t'int d.year) 10) 10
+      /\ UInt8.t'int (index_array_u8_29 result 15) = 48 + ComputerDivision.mod (UInt16.t'int d.year) 10
+      /\ UInt8.t'int (index_array_u8_29 result 17) = 48 + ComputerDivision.div (UInt8.t'int d.hour) 10
+      /\ UInt8.t'int (index_array_u8_29 result 18) = 48 + ComputerDivision.mod (UInt8.t'int d.hour) 10
+      /\ UInt8.t'int (index_array_u8_29 result 20) = 48 + ComputerDivision.div (UInt8.t'int d.min) 10
+      /\ UInt8.t'int (index_array_u8_29 result 21) = 48 + ComputerDivision.mod (UInt8.t'int d.min) 10
+      /\ UInt8.t'int (index_array_u8_29 result 23) = 48 + ComputerDivision.div (UInt8.t'int d.sec) 10
+      /\ UInt8.t'int (index_array_u8_29 result 24) = 48 + ComputerDivision.mod (UInt8.t'int d.sec) 10)
+    /\ ([@stop_split] [@expl:imf_bytes ensures #2] imf_encoding (Slice64.view result) d)}
+    (! return {result}) ]

@@ -1,0 +1,1068 @@
+{
+  "schema": "diagnostic-direct-solver-report-v1",
+  "mode": "diagnostic-only; supplied generated Coma; no fresh-source claim",
+  "created_at_utc": "2026-10-14T01:00:19.188395+00:00",
+  "generated_dir": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/verif/percent_encoding_formatting_boundary_probe_rlib",
+  "targets": {
+    "format_trace/request_write": {
+      "coma_path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/verif/percent_encoding_formatting_boundary_probe_rlib/format_trace/request_write.coma",
+      "coma_sha256": "0dc53b00bab6d38f3f67511afe6d0b84fe057185fa8ae4a7dccd23101381c55c",
+      "root_listing": {
+        "command.json": {
+          "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/format_trace/request_write/root-listing.command.json",
+          "sha256": "d808e8dd38b0e9c51b773fc314388b186822dfeb97a643bbc36caaf17272c80b"
+        },
+        "stdout.txt": {
+          "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/format_trace/request_write/root-listing.stdout.txt",
+          "sha256": "2de8c431f9462dce5128e8fab878e09b269eeaa3b8dce66ff03a5f6a3211c9e4"
+        },
+        "stderr.txt": {
+          "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/format_trace/request_write/root-listing.stderr.txt",
+          "sha256": "ac54abcd7b2528b0654e5d1864679a04189f75aed5f0162a8405cbd362f274c8"
+        }
+      },
+      "root_listing_exit_code": 0,
+      "roots": [
+        {
+          "root": "Coma.vc_write_str",
+          "transformed_export": {
+            "command.json": {
+              "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/format_trace/request_write/roots/0000-Coma-vc_write_str/transformed-export.command.json",
+              "sha256": "4391b374652c2ca803a91a73f509925a64d2746761067ba1fd8bcb807fc46f70"
+            },
+            "stdout.txt": {
+              "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/format_trace/request_write/roots/0000-Coma-vc_write_str/transformed-export.stdout.txt",
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stderr.txt": {
+              "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/format_trace/request_write/roots/0000-Coma-vc_write_str/transformed-export.stderr.txt",
+              "sha256": "ac54abcd7b2528b0654e5d1864679a04189f75aed5f0162a8405cbd362f274c8"
+            }
+          },
+          "transformed_exit_code": 0,
+          "export_mode": "untransformed-original-root",
+          "leaves": [
+            {
+              "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/format_trace/request_write/roots/0000-Coma-vc_write_str/untransformed-original-root/request_write-Coma-vc_write_str.smt2",
+              "sha256": "20444443ae02d1902f1db1c6839e33f6b7db9f8364c634e5c111565e3ebe3f89",
+              "solver": {
+                "command.json": {
+                  "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/format_trace/request_write/roots/0000-Coma-vc_write_str/solver/0000-request_write-Coma-vc_write_str/solver.command.json",
+                  "sha256": "3742013d70ac08c141572bacc9583de26548753e34c641cc3c5d42483701dabd"
+                },
+                "stdout.txt": {
+                  "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/format_trace/request_write/roots/0000-Coma-vc_write_str/solver/0000-request_write-Coma-vc_write_str/solver.stdout.txt",
+                  "sha256": "5c17dfcc2a8f1f30d9e96df6a9825a5030ade046d560332c19de74d93d591a18"
+                },
+                "stderr.txt": {
+                  "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/format_trace/request_write/roots/0000-Coma-vc_write_str/solver/0000-request_write-Coma-vc_write_str/solver.stderr.txt",
+                  "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+                }
+              },
+              "status": "unsat",
+              "exit_code": 0,
+              "closed_original_smt": true
+            }
+          ],
+          "status": "closed",
+          "untransformed_export": {
+            "command.json": {
+              "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/format_trace/request_write/roots/0000-Coma-vc_write_str/untransformed-export.command.json",
+              "sha256": "778e21a3e4844da3c45f7f8201858fca2da3eb0de877de7b492cd33f45abe336"
+            },
+            "stdout.txt": {
+              "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/format_trace/request_write/roots/0000-Coma-vc_write_str/untransformed-export.stdout.txt",
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stderr.txt": {
+              "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/format_trace/request_write/roots/0000-Coma-vc_write_str/untransformed-export.stderr.txt",
+              "sha256": "ac54abcd7b2528b0654e5d1864679a04189f75aed5f0162a8405cbd362f274c8"
+            }
+          },
+          "untransformed_exit_code": 0
+        },
+        {
+          "root": "Coma.vc_deref_mut_Ghost_refmut_Seq_tup2_ref_str_bool",
+          "transformed_export": {
+            "command.json": {
+              "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/format_trace/request_write/roots/0001-Coma-vc_deref_mut_Ghost_refmut_Seq_tup2_ref_str_bool/transformed-export.command.json",
+              "sha256": "e3e63b090d1a84221a4560d5f28a17f4173dfcbd3062c8cb23c410ee667d73f5"
+            },
+            "stdout.txt": {
+              "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/format_trace/request_write/roots/0001-Coma-vc_deref_mut_Ghost_refmut_Seq_tup2_ref_str_bool/transformed-export.stdout.txt",
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stderr.txt": {
+              "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/format_trace/request_write/roots/0001-Coma-vc_deref_mut_Ghost_refmut_Seq_tup2_ref_str_bool/transformed-export.stderr.txt",
+              "sha256": "ac54abcd7b2528b0654e5d1864679a04189f75aed5f0162a8405cbd362f274c8"
+            }
+          },
+          "transformed_exit_code": 0,
+          "export_mode": "untransformed-original-root",
+          "leaves": [
+            {
+              "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/format_trace/request_write/roots/0001-Coma-vc_deref_mut_Ghost_refmut_Seq_tup2_ref_str_bool/untransformed-original-root/request_write-Coma-vc_deref_mut_Ghost_refmut_Seq_tup2_ref_str_bool.smt2",
+              "sha256": "10b9f49ca1fd6892ec50c0c203b1847565cd03904b4b119aec216c7ed69eee6b",
+              "solver": {
+                "command.json": {
+                  "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/format_trace/request_write/roots/0001-Coma-vc_deref_mut_Ghost_refmut_Seq_tup2_ref_str_bool/solver/0000-request_write-Coma-vc_deref_mut_Ghost_refmut_Seq_tup2_ref_str_bool/solver.command.json",
+                  "sha256": "d5f2588df0252a5a0910fa5d8f2a981d652f5b668f7cd2c5062394b3979b7b83"
+                },
+                "stdout.txt": {
+                  "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/format_trace/request_write/roots/0001-Coma-vc_deref_mut_Ghost_refmut_Seq_tup2_ref_str_bool/solver/0000-request_write-Coma-vc_deref_mut_Ghost_refmut_Seq_tup2_ref_str_bool/solver.stdout.txt",
+                  "sha256": "5c17dfcc2a8f1f30d9e96df6a9825a5030ade046d560332c19de74d93d591a18"
+                },
+                "stderr.txt": {
+                  "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/format_trace/request_write/roots/0001-Coma-vc_deref_mut_Ghost_refmut_Seq_tup2_ref_str_bool/solver/0000-request_write-Coma-vc_deref_mut_Ghost_refmut_Seq_tup2_ref_str_bool/solver.stderr.txt",
+                  "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+                }
+              },
+              "status": "unsat",
+              "exit_code": 0,
+              "closed_original_smt": true
+            }
+          ],
+          "status": "closed",
+          "untransformed_export": {
+            "command.json": {
+              "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/format_trace/request_write/roots/0001-Coma-vc_deref_mut_Ghost_refmut_Seq_tup2_ref_str_bool/untransformed-export.command.json",
+              "sha256": "5fde673b01a2a6b11056c8b1105f0cff0f5f0056f80414fa83067f64f54bcb18"
+            },
+            "stdout.txt": {
+              "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/format_trace/request_write/roots/0001-Coma-vc_deref_mut_Ghost_refmut_Seq_tup2_ref_str_bool/untransformed-export.stdout.txt",
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stderr.txt": {
+              "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/format_trace/request_write/roots/0001-Coma-vc_deref_mut_Ghost_refmut_Seq_tup2_ref_str_bool/untransformed-export.stderr.txt",
+              "sha256": "ac54abcd7b2528b0654e5d1864679a04189f75aed5f0162a8405cbd362f274c8"
+            }
+          },
+          "untransformed_exit_code": 0
+        },
+        {
+          "root": "Coma.vc_push_back_ghost_tup2_ref_str_bool",
+          "transformed_export": {
+            "command.json": {
+              "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/format_trace/request_write/roots/0002-Coma-vc_push_back_ghost_tup2_ref_str_bool/transformed-export.command.json",
+              "sha256": "d94f800313ea1d3a46ae81fb19959b1bc3dff5143758bd76c3b62f6693b0cd2f"
+            },
+            "stdout.txt": {
+              "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/format_trace/request_write/roots/0002-Coma-vc_push_back_ghost_tup2_ref_str_bool/transformed-export.stdout.txt",
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stderr.txt": {
+              "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/format_trace/request_write/roots/0002-Coma-vc_push_back_ghost_tup2_ref_str_bool/transformed-export.stderr.txt",
+              "sha256": "ac54abcd7b2528b0654e5d1864679a04189f75aed5f0162a8405cbd362f274c8"
+            }
+          },
+          "transformed_exit_code": 0,
+          "export_mode": "untransformed-original-root",
+          "leaves": [
+            {
+              "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/format_trace/request_write/roots/0002-Coma-vc_push_back_ghost_tup2_ref_str_bool/untransformed-original-root/request_write-Coma-vc_push_back_ghost_tup2_ref_str_bool.smt2",
+              "sha256": "f2982782d7a5f37fefe5fbd6596667070b1173af496fe2027753c1ecacad1569",
+              "solver": {
+                "command.json": {
+                  "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/format_trace/request_write/roots/0002-Coma-vc_push_back_ghost_tup2_ref_str_bool/solver/0000-request_write-Coma-vc_push_back_ghost_tup2_ref_str_bool/solver.command.json",
+                  "sha256": "b7b4040c05ee167b28d90dd8cbf4dd6c94742858bd549acb5896df2f0b375db8"
+                },
+                "stdout.txt": {
+                  "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/format_trace/request_write/roots/0002-Coma-vc_push_back_ghost_tup2_ref_str_bool/solver/0000-request_write-Coma-vc_push_back_ghost_tup2_ref_str_bool/solver.stdout.txt",
+                  "sha256": "5c17dfcc2a8f1f30d9e96df6a9825a5030ade046d560332c19de74d93d591a18"
+                },
+                "stderr.txt": {
+                  "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/format_trace/request_write/roots/0002-Coma-vc_push_back_ghost_tup2_ref_str_bool/solver/0000-request_write-Coma-vc_push_back_ghost_tup2_ref_str_bool/solver.stderr.txt",
+                  "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+                }
+              },
+              "status": "unsat",
+              "exit_code": 0,
+              "closed_original_smt": true
+            }
+          ],
+          "status": "closed",
+          "untransformed_export": {
+            "command.json": {
+              "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/format_trace/request_write/roots/0002-Coma-vc_push_back_ghost_tup2_ref_str_bool/untransformed-export.command.json",
+              "sha256": "75da494432dfdb07080a6179c6553a056458aa3bef683c9b4a6663fe25d6428d"
+            },
+            "stdout.txt": {
+              "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/format_trace/request_write/roots/0002-Coma-vc_push_back_ghost_tup2_ref_str_bool/untransformed-export.stdout.txt",
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stderr.txt": {
+              "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/format_trace/request_write/roots/0002-Coma-vc_push_back_ghost_tup2_ref_str_bool/untransformed-export.stderr.txt",
+              "sha256": "ac54abcd7b2528b0654e5d1864679a04189f75aed5f0162a8405cbd362f274c8"
+            }
+          },
+          "untransformed_exit_code": 0
+        },
+        {
+          "root": "Coma.vc_new_unit",
+          "transformed_export": {
+            "command.json": {
+              "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/format_trace/request_write/roots/0003-Coma-vc_new_unit/transformed-export.command.json",
+              "sha256": "8b5065e7e264132ffb970cd5df8d634470779458f382b29baa01bf581a5120e8"
+            },
+            "stdout.txt": {
+              "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/format_trace/request_write/roots/0003-Coma-vc_new_unit/transformed-export.stdout.txt",
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stderr.txt": {
+              "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/format_trace/request_write/roots/0003-Coma-vc_new_unit/transformed-export.stderr.txt",
+              "sha256": "ac54abcd7b2528b0654e5d1864679a04189f75aed5f0162a8405cbd362f274c8"
+            }
+          },
+          "transformed_exit_code": 0,
+          "export_mode": "untransformed-original-root",
+          "leaves": [
+            {
+              "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/format_trace/request_write/roots/0003-Coma-vc_new_unit/untransformed-original-root/request_write-Coma-vc_new_unit.smt2",
+              "sha256": "a40fb6cc91c5b3d89eacf5fd37cef0d1199fec821f55a76a9f13ede7824a0850",
+              "solver": {
+                "command.json": {
+                  "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/format_trace/request_write/roots/0003-Coma-vc_new_unit/solver/0000-request_write-Coma-vc_new_unit/solver.command.json",
+                  "sha256": "a42b54223e58adc5b4a17e6bbe148066e3f441334a93866522ed43d2ae110bdf"
+                },
+                "stdout.txt": {
+                  "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/format_trace/request_write/roots/0003-Coma-vc_new_unit/solver/0000-request_write-Coma-vc_new_unit/solver.stdout.txt",
+                  "sha256": "5c17dfcc2a8f1f30d9e96df6a9825a5030ade046d560332c19de74d93d591a18"
+                },
+                "stderr.txt": {
+                  "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/format_trace/request_write/roots/0003-Coma-vc_new_unit/solver/0000-request_write-Coma-vc_new_unit/solver.stderr.txt",
+                  "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+                }
+              },
+              "status": "unsat",
+              "exit_code": 0,
+              "closed_original_smt": true
+            }
+          ],
+          "status": "closed",
+          "untransformed_export": {
+            "command.json": {
+              "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/format_trace/request_write/roots/0003-Coma-vc_new_unit/untransformed-export.command.json",
+              "sha256": "9dc2ee313bf7dd6ae663866dcac62360c2221f21e4780f527978f50fa0ca4fa4"
+            },
+            "stdout.txt": {
+              "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/format_trace/request_write/roots/0003-Coma-vc_new_unit/untransformed-export.stdout.txt",
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stderr.txt": {
+              "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/format_trace/request_write/roots/0003-Coma-vc_new_unit/untransformed-export.stderr.txt",
+              "sha256": "ac54abcd7b2528b0654e5d1864679a04189f75aed5f0162a8405cbd362f274c8"
+            }
+          },
+          "untransformed_exit_code": 0
+        },
+        {
+          "root": "Coma.vc_request_write",
+          "transformed_export": {
+            "command.json": {
+              "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/format_trace/request_write/roots/0004-Coma-vc_request_write/transformed-export.command.json",
+              "sha256": "2901363eb90e9e26dfa675a2d8608896751eb1cf401153c7a6b5d148f9720575"
+            },
+            "stdout.txt": {
+              "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/format_trace/request_write/roots/0004-Coma-vc_request_write/transformed-export.stdout.txt",
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stderr.txt": {
+              "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/format_trace/request_write/roots/0004-Coma-vc_request_write/transformed-export.stderr.txt",
+              "sha256": "ac54abcd7b2528b0654e5d1864679a04189f75aed5f0162a8405cbd362f274c8"
+            }
+          },
+          "transformed_exit_code": 0,
+          "export_mode": "transformed",
+          "leaves": [
+            {
+              "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/format_trace/request_write/roots/0004-Coma-vc_request_write/transformed/request_write-Coma-vc_request_write.smt2",
+              "sha256": "51242b1ee1d4dfa65d35851332be5ad9598753c5138d5d1cdce0abb5aef3f47a",
+              "solver": {
+                "command.json": {
+                  "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/format_trace/request_write/roots/0004-Coma-vc_request_write/solver/0000-request_write-Coma-vc_request_write/solver.command.json",
+                  "sha256": "53943cd0e4119658af1dbec0a84b83d3b52feca664cd047bc80c922adbc691a4"
+                },
+                "stdout.txt": {
+                  "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/format_trace/request_write/roots/0004-Coma-vc_request_write/solver/0000-request_write-Coma-vc_request_write/solver.stdout.txt",
+                  "sha256": "5c17dfcc2a8f1f30d9e96df6a9825a5030ade046d560332c19de74d93d591a18"
+                },
+                "stderr.txt": {
+                  "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/format_trace/request_write/roots/0004-Coma-vc_request_write/solver/0000-request_write-Coma-vc_request_write/solver.stderr.txt",
+                  "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+                }
+              },
+              "status": "unsat",
+              "exit_code": 0,
+              "closed_original_smt": true
+            },
+            {
+              "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/format_trace/request_write/roots/0004-Coma-vc_request_write/transformed/request_write-Coma-vc_request_write1.smt2",
+              "sha256": "32c752b9ff63e9c1677fb437cbd2d2ade4897f74c7a9fa3e8ea0774c99b71c5d",
+              "solver": {
+                "command.json": {
+                  "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/format_trace/request_write/roots/0004-Coma-vc_request_write/solver/0001-request_write-Coma-vc_request_write1/solver.command.json",
+                  "sha256": "ac3792421f1647cb72f8cc7045b4ed61f9be02f1234f2aed67d87d2d6f9a90f6"
+                },
+                "stdout.txt": {
+                  "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/format_trace/request_write/roots/0004-Coma-vc_request_write/solver/0001-request_write-Coma-vc_request_write1/solver.stdout.txt",
+                  "sha256": "5c17dfcc2a8f1f30d9e96df6a9825a5030ade046d560332c19de74d93d591a18"
+                },
+                "stderr.txt": {
+                  "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/format_trace/request_write/roots/0004-Coma-vc_request_write/solver/0001-request_write-Coma-vc_request_write1/solver.stderr.txt",
+                  "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+                }
+              },
+              "status": "unsat",
+              "exit_code": 0,
+              "closed_original_smt": true
+            },
+            {
+              "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/format_trace/request_write/roots/0004-Coma-vc_request_write/transformed/request_write-Coma-vc_request_write2.smt2",
+              "sha256": "a93304faca1399e35894e33c253bf693e3a10a605ca925258dbf10de85128a0a",
+              "solver": {
+                "command.json": {
+                  "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/format_trace/request_write/roots/0004-Coma-vc_request_write/solver/0002-request_write-Coma-vc_request_write2/solver.command.json",
+                  "sha256": "b1a01d9442239a451f2ebbdef0afbfe0f060ac78222566071b54cb55e60bad7c"
+                },
+                "stdout.txt": {
+                  "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/format_trace/request_write/roots/0004-Coma-vc_request_write/solver/0002-request_write-Coma-vc_request_write2/solver.stdout.txt",
+                  "sha256": "5c17dfcc2a8f1f30d9e96df6a9825a5030ade046d560332c19de74d93d591a18"
+                },
+                "stderr.txt": {
+                  "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/format_trace/request_write/roots/0004-Coma-vc_request_write/solver/0002-request_write-Coma-vc_request_write2/solver.stderr.txt",
+                  "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+                }
+              },
+              "status": "unsat",
+              "exit_code": 0,
+              "closed_original_smt": true
+            },
+            {
+              "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/format_trace/request_write/roots/0004-Coma-vc_request_write/transformed/request_write-Coma-vc_request_write3.smt2",
+              "sha256": "15ff94d431b75bfa07fb223fb7fb2a990c593464d5aac2fa525f7ef753cc1f7a",
+              "solver": {
+                "command.json": {
+                  "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/format_trace/request_write/roots/0004-Coma-vc_request_write/solver/0003-request_write-Coma-vc_request_write3/solver.command.json",
+                  "sha256": "d28ecabac44be61f5e837cd8a04dfb2b86aa9c4a5b135fb80bde5afa8ee6e16f"
+                },
+                "stdout.txt": {
+                  "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/format_trace/request_write/roots/0004-Coma-vc_request_write/solver/0003-request_write-Coma-vc_request_write3/solver.stdout.txt",
+                  "sha256": "5c17dfcc2a8f1f30d9e96df6a9825a5030ade046d560332c19de74d93d591a18"
+                },
+                "stderr.txt": {
+                  "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/format_trace/request_write/roots/0004-Coma-vc_request_write/solver/0003-request_write-Coma-vc_request_write3/solver.stderr.txt",
+                  "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+                }
+              },
+              "status": "unsat",
+              "exit_code": 0,
+              "closed_original_smt": true
+            },
+            {
+              "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/format_trace/request_write/roots/0004-Coma-vc_request_write/transformed/request_write-Coma-vc_request_write4.smt2",
+              "sha256": "6f3dfb1952ee60c89d1e18feeb0072f2f0ed9c7d987ef1547cf36e98a133727c",
+              "solver": {
+                "command.json": {
+                  "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/format_trace/request_write/roots/0004-Coma-vc_request_write/solver/0004-request_write-Coma-vc_request_write4/solver.command.json",
+                  "sha256": "1c04b72deb541d6d82a45f7e3db2c489dcc5cfebea6543ab3726e0b4e9c6a4db"
+                },
+                "stdout.txt": {
+                  "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/format_trace/request_write/roots/0004-Coma-vc_request_write/solver/0004-request_write-Coma-vc_request_write4/solver.stdout.txt",
+                  "sha256": "5c17dfcc2a8f1f30d9e96df6a9825a5030ade046d560332c19de74d93d591a18"
+                },
+                "stderr.txt": {
+                  "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/format_trace/request_write/roots/0004-Coma-vc_request_write/solver/0004-request_write-Coma-vc_request_write4/solver.stderr.txt",
+                  "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+                }
+              },
+              "status": "unsat",
+              "exit_code": 0,
+              "closed_original_smt": true
+            }
+          ],
+          "status": "closed"
+        }
+      ],
+      "positive_root_count": 5
+    },
+    "pair_trace": {
+      "coma_path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/verif/percent_encoding_formatting_boundary_probe_rlib/pair_trace.coma",
+      "coma_sha256": "b0f479efb36ad8c51e8736e61cee1c9c2a922a30f19cacce2560227df424a696",
+      "root_listing": {
+        "command.json": {
+          "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/pair_trace/root-listing.command.json",
+          "sha256": "3d2561a33d1f0054ab0ca96d2aae6f4bc763192649d23317c3906115eed47802"
+        },
+        "stdout.txt": {
+          "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/pair_trace/root-listing.stdout.txt",
+          "sha256": "ee28c32f4fe84ef4972eac374066e53593e53e9729c2e22cb741ef30d16f317f"
+        },
+        "stderr.txt": {
+          "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/pair_trace/root-listing.stderr.txt",
+          "sha256": "ac54abcd7b2528b0654e5d1864679a04189f75aed5f0162a8405cbd362f274c8"
+        }
+      },
+      "root_listing_exit_code": 0,
+      "roots": [
+        {
+          "root": "Coma.vc_new_tup2_ref_str_bool",
+          "transformed_export": {
+            "command.json": {
+              "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/pair_trace/roots/0000-Coma-vc_new_tup2_ref_str_bool/transformed-export.command.json",
+              "sha256": "9c223829e3feb3db4dd98251c3b4b8d29f96d991e35dee7b0d223711b279eb61"
+            },
+            "stdout.txt": {
+              "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/pair_trace/roots/0000-Coma-vc_new_tup2_ref_str_bool/transformed-export.stdout.txt",
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stderr.txt": {
+              "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/pair_trace/roots/0000-Coma-vc_new_tup2_ref_str_bool/transformed-export.stderr.txt",
+              "sha256": "ac54abcd7b2528b0654e5d1864679a04189f75aed5f0162a8405cbd362f274c8"
+            }
+          },
+          "transformed_exit_code": 0,
+          "export_mode": "untransformed-original-root",
+          "leaves": [
+            {
+              "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/pair_trace/roots/0000-Coma-vc_new_tup2_ref_str_bool/untransformed-original-root/pair_trace-Coma-vc_new_tup2_ref_str_bool.smt2",
+              "sha256": "cd93d1f11c788ed187a33a2046b29e2fca3e487a53fbab8d619bd498d1e46265",
+              "solver": {
+                "command.json": {
+                  "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/pair_trace/roots/0000-Coma-vc_new_tup2_ref_str_bool/solver/0000-pair_trace-Coma-vc_new_tup2_ref_str_bool/solver.command.json",
+                  "sha256": "9e64b882c7ec731290f81b7807f84df6b043754bd605f44d9d0cce6be20f82c6"
+                },
+                "stdout.txt": {
+                  "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/pair_trace/roots/0000-Coma-vc_new_tup2_ref_str_bool/solver/0000-pair_trace-Coma-vc_new_tup2_ref_str_bool/solver.stdout.txt",
+                  "sha256": "5c17dfcc2a8f1f30d9e96df6a9825a5030ade046d560332c19de74d93d591a18"
+                },
+                "stderr.txt": {
+                  "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/pair_trace/roots/0000-Coma-vc_new_tup2_ref_str_bool/solver/0000-pair_trace-Coma-vc_new_tup2_ref_str_bool/solver.stderr.txt",
+                  "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+                }
+              },
+              "status": "unsat",
+              "exit_code": 0,
+              "closed_original_smt": true
+            }
+          ],
+          "status": "closed",
+          "untransformed_export": {
+            "command.json": {
+              "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/pair_trace/roots/0000-Coma-vc_new_tup2_ref_str_bool/untransformed-export.command.json",
+              "sha256": "4ccb0d5d5d8d787169efb9c7bad7798c30ed20db6f6048f355f1a85528ccb0cf"
+            },
+            "stdout.txt": {
+              "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/pair_trace/roots/0000-Coma-vc_new_tup2_ref_str_bool/untransformed-export.stdout.txt",
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stderr.txt": {
+              "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/pair_trace/roots/0000-Coma-vc_new_tup2_ref_str_bool/untransformed-export.stderr.txt",
+              "sha256": "ac54abcd7b2528b0654e5d1864679a04189f75aed5f0162a8405cbd362f274c8"
+            }
+          },
+          "untransformed_exit_code": 0
+        },
+        {
+          "root": "Coma.vc_len_ref_str",
+          "transformed_export": {
+            "command.json": {
+              "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/pair_trace/roots/0001-Coma-vc_len_ref_str/transformed-export.command.json",
+              "sha256": "6365895056cec7b9601a29cf87dd0bbb4ab09b59695607a9b8740415459e9454"
+            },
+            "stdout.txt": {
+              "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/pair_trace/roots/0001-Coma-vc_len_ref_str/transformed-export.stdout.txt",
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stderr.txt": {
+              "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/pair_trace/roots/0001-Coma-vc_len_ref_str/transformed-export.stderr.txt",
+              "sha256": "ac54abcd7b2528b0654e5d1864679a04189f75aed5f0162a8405cbd362f274c8"
+            }
+          },
+          "transformed_exit_code": 0,
+          "export_mode": "untransformed-original-root",
+          "leaves": [
+            {
+              "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/pair_trace/roots/0001-Coma-vc_len_ref_str/untransformed-original-root/pair_trace-Coma-vc_len_ref_str.smt2",
+              "sha256": "1f7a22563fa174b22612c08ba0a03d32e6bfb7798f58dbf3351e846068f025c6",
+              "solver": {
+                "command.json": {
+                  "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/pair_trace/roots/0001-Coma-vc_len_ref_str/solver/0000-pair_trace-Coma-vc_len_ref_str/solver.command.json",
+                  "sha256": "7e3456257d2bd6a8fed717d106a95998d98389cc50f13b62e7201ee25212c43e"
+                },
+                "stdout.txt": {
+                  "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/pair_trace/roots/0001-Coma-vc_len_ref_str/solver/0000-pair_trace-Coma-vc_len_ref_str/solver.stdout.txt",
+                  "sha256": "5c17dfcc2a8f1f30d9e96df6a9825a5030ade046d560332c19de74d93d591a18"
+                },
+                "stderr.txt": {
+                  "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/pair_trace/roots/0001-Coma-vc_len_ref_str/solver/0000-pair_trace-Coma-vc_len_ref_str/solver.stderr.txt",
+                  "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+                }
+              },
+              "status": "unsat",
+              "exit_code": 0,
+              "closed_original_smt": true
+            }
+          ],
+          "status": "closed",
+          "untransformed_export": {
+            "command.json": {
+              "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/pair_trace/roots/0001-Coma-vc_len_ref_str/untransformed-export.command.json",
+              "sha256": "821954698b684d5a2617865644b35160a4fcb5aeb36cb5072888146da7f1b502"
+            },
+            "stdout.txt": {
+              "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/pair_trace/roots/0001-Coma-vc_len_ref_str/untransformed-export.stdout.txt",
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stderr.txt": {
+              "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/pair_trace/roots/0001-Coma-vc_len_ref_str/untransformed-export.stderr.txt",
+              "sha256": "ac54abcd7b2528b0654e5d1864679a04189f75aed5f0162a8405cbd362f274c8"
+            }
+          },
+          "untransformed_exit_code": 0
+        },
+        {
+          "root": "Coma.vc_borrow_mut_Seq_tup2_ref_str_bool",
+          "transformed_export": {
+            "command.json": {
+              "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/pair_trace/roots/0002-Coma-vc_borrow_mut_Seq_tup2_ref_str_bool/transformed-export.command.json",
+              "sha256": "a0710f16f5b23af62bca4783b01cc9d4c359e86bc634d28a360e3944ac8e6cf7"
+            },
+            "stdout.txt": {
+              "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/pair_trace/roots/0002-Coma-vc_borrow_mut_Seq_tup2_ref_str_bool/transformed-export.stdout.txt",
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stderr.txt": {
+              "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/pair_trace/roots/0002-Coma-vc_borrow_mut_Seq_tup2_ref_str_bool/transformed-export.stderr.txt",
+              "sha256": "ac54abcd7b2528b0654e5d1864679a04189f75aed5f0162a8405cbd362f274c8"
+            }
+          },
+          "transformed_exit_code": 0,
+          "export_mode": "untransformed-original-root",
+          "leaves": [
+            {
+              "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/pair_trace/roots/0002-Coma-vc_borrow_mut_Seq_tup2_ref_str_bool/untransformed-original-root/pair_trace-Coma-vc_borrow_mut_Seq_tup2_ref_str_bool.smt2",
+              "sha256": "b17569c6d946ea33da1afa6fe5db5895eaa094b50d72e7b9aa2c4f611a97db3f",
+              "solver": {
+                "command.json": {
+                  "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/pair_trace/roots/0002-Coma-vc_borrow_mut_Seq_tup2_ref_str_bool/solver/0000-pair_trace-Coma-vc_borrow_mut_Seq_tup2_ref_str_bool/solver.command.json",
+                  "sha256": "9dd70ab30896a0ec8d12d9795009230597eee5b4badc3595bdd5bb4e1dde9eaa"
+                },
+                "stdout.txt": {
+                  "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/pair_trace/roots/0002-Coma-vc_borrow_mut_Seq_tup2_ref_str_bool/solver/0000-pair_trace-Coma-vc_borrow_mut_Seq_tup2_ref_str_bool/solver.stdout.txt",
+                  "sha256": "5c17dfcc2a8f1f30d9e96df6a9825a5030ade046d560332c19de74d93d591a18"
+                },
+                "stderr.txt": {
+                  "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/pair_trace/roots/0002-Coma-vc_borrow_mut_Seq_tup2_ref_str_bool/solver/0000-pair_trace-Coma-vc_borrow_mut_Seq_tup2_ref_str_bool/solver.stderr.txt",
+                  "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+                }
+              },
+              "status": "unsat",
+              "exit_code": 0,
+              "closed_original_smt": true
+            }
+          ],
+          "status": "closed",
+          "untransformed_export": {
+            "command.json": {
+              "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/pair_trace/roots/0002-Coma-vc_borrow_mut_Seq_tup2_ref_str_bool/untransformed-export.command.json",
+              "sha256": "f15b60ec63a0f1592247c988e598a33a28865dce180d8a7e880401fd9cf83c59"
+            },
+            "stdout.txt": {
+              "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/pair_trace/roots/0002-Coma-vc_borrow_mut_Seq_tup2_ref_str_bool/untransformed-export.stdout.txt",
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stderr.txt": {
+              "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/pair_trace/roots/0002-Coma-vc_borrow_mut_Seq_tup2_ref_str_bool/untransformed-export.stderr.txt",
+              "sha256": "ac54abcd7b2528b0654e5d1864679a04189f75aed5f0162a8405cbd362f274c8"
+            }
+          },
+          "untransformed_exit_code": 0
+        },
+        {
+          "root": "Coma.vc_request_write",
+          "transformed_export": {
+            "command.json": {
+              "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/pair_trace/roots/0003-Coma-vc_request_write/transformed-export.command.json",
+              "sha256": "406ed0f24f3df503d4e003806045deedce85b1a964d5c6a9749dccebe299edcb"
+            },
+            "stdout.txt": {
+              "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/pair_trace/roots/0003-Coma-vc_request_write/transformed-export.stdout.txt",
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stderr.txt": {
+              "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/pair_trace/roots/0003-Coma-vc_request_write/transformed-export.stderr.txt",
+              "sha256": "ac54abcd7b2528b0654e5d1864679a04189f75aed5f0162a8405cbd362f274c8"
+            }
+          },
+          "transformed_exit_code": 0,
+          "export_mode": "untransformed-original-root",
+          "leaves": [
+            {
+              "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/pair_trace/roots/0003-Coma-vc_request_write/untransformed-original-root/pair_trace-Coma-vc_request_write.smt2",
+              "sha256": "6d86f67452547842d2486723bc326cfec7e5efe342085205b4456c7ad2903c46",
+              "solver": {
+                "command.json": {
+                  "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/pair_trace/roots/0003-Coma-vc_request_write/solver/0000-pair_trace-Coma-vc_request_write/solver.command.json",
+                  "sha256": "0a52799d5c94d65a441dcb9c8257141556c01bbd8a768849c3f8d44346482daa"
+                },
+                "stdout.txt": {
+                  "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/pair_trace/roots/0003-Coma-vc_request_write/solver/0000-pair_trace-Coma-vc_request_write/solver.stdout.txt",
+                  "sha256": "5c17dfcc2a8f1f30d9e96df6a9825a5030ade046d560332c19de74d93d591a18"
+                },
+                "stderr.txt": {
+                  "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/pair_trace/roots/0003-Coma-vc_request_write/solver/0000-pair_trace-Coma-vc_request_write/solver.stderr.txt",
+                  "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+                }
+              },
+              "status": "unsat",
+              "exit_code": 0,
+              "closed_original_smt": true
+            }
+          ],
+          "status": "closed",
+          "untransformed_export": {
+            "command.json": {
+              "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/pair_trace/roots/0003-Coma-vc_request_write/untransformed-export.command.json",
+              "sha256": "4cac5b0bd6e1c1ff9f1c10c2652840c0e155a5c28c1a3b22e29b4170742e2228"
+            },
+            "stdout.txt": {
+              "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/pair_trace/roots/0003-Coma-vc_request_write/untransformed-export.stdout.txt",
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stderr.txt": {
+              "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/pair_trace/roots/0003-Coma-vc_request_write/untransformed-export.stderr.txt",
+              "sha256": "ac54abcd7b2528b0654e5d1864679a04189f75aed5f0162a8405cbd362f274c8"
+            }
+          },
+          "untransformed_exit_code": 0
+        },
+        {
+          "root": "Coma.vc_elim_Err",
+          "transformed_export": {
+            "command.json": {
+              "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/pair_trace/roots/0004-Coma-vc_elim_Err/transformed-export.command.json",
+              "sha256": "4977d6257f31dbe32043789563e2cbe1d16a0cf91bfb74348277d666355efcf7"
+            },
+            "stdout.txt": {
+              "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/pair_trace/roots/0004-Coma-vc_elim_Err/transformed-export.stdout.txt",
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stderr.txt": {
+              "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/pair_trace/roots/0004-Coma-vc_elim_Err/transformed-export.stderr.txt",
+              "sha256": "ac54abcd7b2528b0654e5d1864679a04189f75aed5f0162a8405cbd362f274c8"
+            }
+          },
+          "transformed_exit_code": 0,
+          "export_mode": "untransformed-original-root",
+          "leaves": [
+            {
+              "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/pair_trace/roots/0004-Coma-vc_elim_Err/untransformed-original-root/pair_trace-Coma-vc_elim_Err.smt2",
+              "sha256": "250c4350726c40e9d521b64e4b38e060e214a75b7e65fef1faa2f8b332c71c51",
+              "solver": {
+                "command.json": {
+                  "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/pair_trace/roots/0004-Coma-vc_elim_Err/solver/0000-pair_trace-Coma-vc_elim_Err/solver.command.json",
+                  "sha256": "86652045979c7ebdc403493f8b757d1835eea63fc86f5418ec6b3b6cf74999ce"
+                },
+                "stdout.txt": {
+                  "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/pair_trace/roots/0004-Coma-vc_elim_Err/solver/0000-pair_trace-Coma-vc_elim_Err/solver.stdout.txt",
+                  "sha256": "5c17dfcc2a8f1f30d9e96df6a9825a5030ade046d560332c19de74d93d591a18"
+                },
+                "stderr.txt": {
+                  "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/pair_trace/roots/0004-Coma-vc_elim_Err/solver/0000-pair_trace-Coma-vc_elim_Err/solver.stderr.txt",
+                  "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+                }
+              },
+              "status": "unsat",
+              "exit_code": 0,
+              "closed_original_smt": true
+            }
+          ],
+          "status": "closed",
+          "untransformed_export": {
+            "command.json": {
+              "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/pair_trace/roots/0004-Coma-vc_elim_Err/untransformed-export.command.json",
+              "sha256": "149f864189d2b0812e5479883a7ca358e3847b49ea94508003ea0f59fbf6f5ef"
+            },
+            "stdout.txt": {
+              "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/pair_trace/roots/0004-Coma-vc_elim_Err/untransformed-export.stdout.txt",
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stderr.txt": {
+              "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/pair_trace/roots/0004-Coma-vc_elim_Err/untransformed-export.stderr.txt",
+              "sha256": "ac54abcd7b2528b0654e5d1864679a04189f75aed5f0162a8405cbd362f274c8"
+            }
+          },
+          "untransformed_exit_code": 0
+        },
+        {
+          "root": "Coma.vc_pair_trace",
+          "transformed_export": {
+            "command.json": {
+              "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/pair_trace/roots/0005-Coma-vc_pair_trace/transformed-export.command.json",
+              "sha256": "6746daced9739f456d50d78417ba55e0ded59f929b7081b8f5a6743aa3e094c7"
+            },
+            "stdout.txt": {
+              "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/pair_trace/roots/0005-Coma-vc_pair_trace/transformed-export.stdout.txt",
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stderr.txt": {
+              "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/pair_trace/roots/0005-Coma-vc_pair_trace/transformed-export.stderr.txt",
+              "sha256": "ac54abcd7b2528b0654e5d1864679a04189f75aed5f0162a8405cbd362f274c8"
+            }
+          },
+          "transformed_exit_code": 0,
+          "export_mode": "transformed",
+          "leaves": [
+            {
+              "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/pair_trace/roots/0005-Coma-vc_pair_trace/transformed/pair_trace-Coma-vc_pair_trace.smt2",
+              "sha256": "37f10fc85569bcbb82323df7f1f4746971211fde10b2781c0ade9fb8d5cc76e8",
+              "solver": {
+                "command.json": {
+                  "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/pair_trace/roots/0005-Coma-vc_pair_trace/solver/0000-pair_trace-Coma-vc_pair_trace/solver.command.json",
+                  "sha256": "117748dd3c0c3a4ff706706a01dd8149d227e2746ecbbf5e5a6f504ad579fa16"
+                },
+                "stdout.txt": {
+                  "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/pair_trace/roots/0005-Coma-vc_pair_trace/solver/0000-pair_trace-Coma-vc_pair_trace/solver.stdout.txt",
+                  "sha256": "5c17dfcc2a8f1f30d9e96df6a9825a5030ade046d560332c19de74d93d591a18"
+                },
+                "stderr.txt": {
+                  "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/pair_trace/roots/0005-Coma-vc_pair_trace/solver/0000-pair_trace-Coma-vc_pair_trace/solver.stderr.txt",
+                  "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+                }
+              },
+              "status": "unsat",
+              "exit_code": 0,
+              "closed_original_smt": true
+            },
+            {
+              "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/pair_trace/roots/0005-Coma-vc_pair_trace/transformed/pair_trace-Coma-vc_pair_trace1.smt2",
+              "sha256": "4bd7a5d154b46b25ac2b1f17718172548bcdb9dc6cf732bb5a99020aca242e70",
+              "solver": {
+                "command.json": {
+                  "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/pair_trace/roots/0005-Coma-vc_pair_trace/solver/0001-pair_trace-Coma-vc_pair_trace1/solver.command.json",
+                  "sha256": "563610a28b23a5b84965b44dc5cf5054a600438f07d3415e37748a8034d50dac"
+                },
+                "stdout.txt": {
+                  "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/pair_trace/roots/0005-Coma-vc_pair_trace/solver/0001-pair_trace-Coma-vc_pair_trace1/solver.stdout.txt",
+                  "sha256": "5c17dfcc2a8f1f30d9e96df6a9825a5030ade046d560332c19de74d93d591a18"
+                },
+                "stderr.txt": {
+                  "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/pair_trace/roots/0005-Coma-vc_pair_trace/solver/0001-pair_trace-Coma-vc_pair_trace1/solver.stderr.txt",
+                  "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+                }
+              },
+              "status": "unsat",
+              "exit_code": 0,
+              "closed_original_smt": true
+            },
+            {
+              "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/pair_trace/roots/0005-Coma-vc_pair_trace/transformed/pair_trace-Coma-vc_pair_trace10.smt2",
+              "sha256": "6f7d27c5f025e2b9e9bac81bb4c1c82383ca5ac6461b96770c8051491c7d90f7",
+              "solver": {
+                "command.json": {
+                  "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/pair_trace/roots/0005-Coma-vc_pair_trace/solver/0002-pair_trace-Coma-vc_pair_trace10/solver.command.json",
+                  "sha256": "8f7fee3235dd0487cdf7fc691b76fbd369835c3c4757ac2fa3ecc130e479ff50"
+                },
+                "stdout.txt": {
+                  "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/pair_trace/roots/0005-Coma-vc_pair_trace/solver/0002-pair_trace-Coma-vc_pair_trace10/solver.stdout.txt",
+                  "sha256": "5c17dfcc2a8f1f30d9e96df6a9825a5030ade046d560332c19de74d93d591a18"
+                },
+                "stderr.txt": {
+                  "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/pair_trace/roots/0005-Coma-vc_pair_trace/solver/0002-pair_trace-Coma-vc_pair_trace10/solver.stderr.txt",
+                  "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+                }
+              },
+              "status": "unsat",
+              "exit_code": 0,
+              "closed_original_smt": true
+            },
+            {
+              "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/pair_trace/roots/0005-Coma-vc_pair_trace/transformed/pair_trace-Coma-vc_pair_trace11.smt2",
+              "sha256": "9c298f92c0a24ee49e64c0e01e2d5cdb76ae8e283a3ae81c8a512ebd8691af16",
+              "solver": {
+                "command.json": {
+                  "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/pair_trace/roots/0005-Coma-vc_pair_trace/solver/0003-pair_trace-Coma-vc_pair_trace11/solver.command.json",
+                  "sha256": "487f3ba9d612d572413501e96cc864b8c9e0759c9fcdd9e09ae14ab748f7ffb6"
+                },
+                "stdout.txt": {
+                  "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/pair_trace/roots/0005-Coma-vc_pair_trace/solver/0003-pair_trace-Coma-vc_pair_trace11/solver.stdout.txt",
+                  "sha256": "5c17dfcc2a8f1f30d9e96df6a9825a5030ade046d560332c19de74d93d591a18"
+                },
+                "stderr.txt": {
+                  "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/pair_trace/roots/0005-Coma-vc_pair_trace/solver/0003-pair_trace-Coma-vc_pair_trace11/solver.stderr.txt",
+                  "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+                }
+              },
+              "status": "unsat",
+              "exit_code": 0,
+              "closed_original_smt": true
+            },
+            {
+              "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/pair_trace/roots/0005-Coma-vc_pair_trace/transformed/pair_trace-Coma-vc_pair_trace12.smt2",
+              "sha256": "8386930b780221b410da09f8fc611fc8d194c7024e3ac06f5b26fbdb47ce6f58",
+              "solver": {
+                "command.json": {
+                  "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/pair_trace/roots/0005-Coma-vc_pair_trace/solver/0004-pair_trace-Coma-vc_pair_trace12/solver.command.json",
+                  "sha256": "f8bf168f5ccc38cebde529405e03d37c128e056242478e54140dd59d4ac3dbe8"
+                },
+                "stdout.txt": {
+                  "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/pair_trace/roots/0005-Coma-vc_pair_trace/solver/0004-pair_trace-Coma-vc_pair_trace12/solver.stdout.txt",
+                  "sha256": "5c17dfcc2a8f1f30d9e96df6a9825a5030ade046d560332c19de74d93d591a18"
+                },
+                "stderr.txt": {
+                  "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/pair_trace/roots/0005-Coma-vc_pair_trace/solver/0004-pair_trace-Coma-vc_pair_trace12/solver.stderr.txt",
+                  "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+                }
+              },
+              "status": "unsat",
+              "exit_code": 0,
+              "closed_original_smt": true
+            },
+            {
+              "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/pair_trace/roots/0005-Coma-vc_pair_trace/transformed/pair_trace-Coma-vc_pair_trace13.smt2",
+              "sha256": "cb09d59582650d848cae0383c9a6ec5571708aa6363603149cc8d96319547b37",
+              "solver": {
+                "command.json": {
+                  "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/pair_trace/roots/0005-Coma-vc_pair_trace/solver/0005-pair_trace-Coma-vc_pair_trace13/solver.command.json",
+                  "sha256": "23256cf47c3f04a85735f59b5ddb6d1130fa071a8cc881b1c3a74943c11948da"
+                },
+                "stdout.txt": {
+                  "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/pair_trace/roots/0005-Coma-vc_pair_trace/solver/0005-pair_trace-Coma-vc_pair_trace13/solver.stdout.txt",
+                  "sha256": "5c17dfcc2a8f1f30d9e96df6a9825a5030ade046d560332c19de74d93d591a18"
+                },
+                "stderr.txt": {
+                  "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/pair_trace/roots/0005-Coma-vc_pair_trace/solver/0005-pair_trace-Coma-vc_pair_trace13/solver.stderr.txt",
+                  "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+                }
+              },
+              "status": "unsat",
+              "exit_code": 0,
+              "closed_original_smt": true
+            },
+            {
+              "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/pair_trace/roots/0005-Coma-vc_pair_trace/transformed/pair_trace-Coma-vc_pair_trace14.smt2",
+              "sha256": "018bd53f1d6467c99e0544c905bbb7a4690bee1e096533a441c8823b15cd6f86",
+              "solver": {
+                "command.json": {
+                  "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/pair_trace/roots/0005-Coma-vc_pair_trace/solver/0006-pair_trace-Coma-vc_pair_trace14/solver.command.json",
+                  "sha256": "afdef6da93706aa72359ad68ea1bff983470d6b2845f5091aa251ff6bfc21fb2"
+                },
+                "stdout.txt": {
+                  "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/pair_trace/roots/0005-Coma-vc_pair_trace/solver/0006-pair_trace-Coma-vc_pair_trace14/solver.stdout.txt",
+                  "sha256": "5c17dfcc2a8f1f30d9e96df6a9825a5030ade046d560332c19de74d93d591a18"
+                },
+                "stderr.txt": {
+                  "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/pair_trace/roots/0005-Coma-vc_pair_trace/solver/0006-pair_trace-Coma-vc_pair_trace14/solver.stderr.txt",
+                  "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+                }
+              },
+              "status": "unsat",
+              "exit_code": 0,
+              "closed_original_smt": true
+            },
+            {
+              "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/pair_trace/roots/0005-Coma-vc_pair_trace/transformed/pair_trace-Coma-vc_pair_trace15.smt2",
+              "sha256": "67cf867042c8c1d43d3d5307b2328aa6d6f1d63fe1e000e1b3772928b29727bb",
+              "solver": {
+                "command.json": {
+                  "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/pair_trace/roots/0005-Coma-vc_pair_trace/solver/0007-pair_trace-Coma-vc_pair_trace15/solver.command.json",
+                  "sha256": "ba7c04fe7cf828d08a47c225832a20ebde8e0a1cde9faeb3d92c3851cd262932"
+                },
+                "stdout.txt": {
+                  "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/pair_trace/roots/0005-Coma-vc_pair_trace/solver/0007-pair_trace-Coma-vc_pair_trace15/solver.stdout.txt",
+                  "sha256": "5c17dfcc2a8f1f30d9e96df6a9825a5030ade046d560332c19de74d93d591a18"
+                },
+                "stderr.txt": {
+                  "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/pair_trace/roots/0005-Coma-vc_pair_trace/solver/0007-pair_trace-Coma-vc_pair_trace15/solver.stderr.txt",
+                  "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+                }
+              },
+              "status": "unsat",
+              "exit_code": 0,
+              "closed_original_smt": true
+            },
+            {
+              "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/pair_trace/roots/0005-Coma-vc_pair_trace/transformed/pair_trace-Coma-vc_pair_trace2.smt2",
+              "sha256": "bc138e471cdc2f48a0b9293779e7be9be163bf1ba39346d148d1f516bb43f0c4",
+              "solver": {
+                "command.json": {
+                  "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/pair_trace/roots/0005-Coma-vc_pair_trace/solver/0008-pair_trace-Coma-vc_pair_trace2/solver.command.json",
+                  "sha256": "6c9e403318a3c3b30af4c7230e5b2642055dd2ad10ff22569994e81deb99e714"
+                },
+                "stdout.txt": {
+                  "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/pair_trace/roots/0005-Coma-vc_pair_trace/solver/0008-pair_trace-Coma-vc_pair_trace2/solver.stdout.txt",
+                  "sha256": "5c17dfcc2a8f1f30d9e96df6a9825a5030ade046d560332c19de74d93d591a18"
+                },
+                "stderr.txt": {
+                  "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/pair_trace/roots/0005-Coma-vc_pair_trace/solver/0008-pair_trace-Coma-vc_pair_trace2/solver.stderr.txt",
+                  "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+                }
+              },
+              "status": "unsat",
+              "exit_code": 0,
+              "closed_original_smt": true
+            },
+            {
+              "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/pair_trace/roots/0005-Coma-vc_pair_trace/transformed/pair_trace-Coma-vc_pair_trace3.smt2",
+              "sha256": "1887b7607f6a1393872061e5c10ab8389ced15668bb4d6ba1d4ffee847c89a8a",
+              "solver": {
+                "command.json": {
+                  "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/pair_trace/roots/0005-Coma-vc_pair_trace/solver/0009-pair_trace-Coma-vc_pair_trace3/solver.command.json",
+                  "sha256": "422e802db8eeff92a171464a27c1f0f554dda37b07828997d5ea9ec7e4a3b787"
+                },
+                "stdout.txt": {
+                  "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/pair_trace/roots/0005-Coma-vc_pair_trace/solver/0009-pair_trace-Coma-vc_pair_trace3/solver.stdout.txt",
+                  "sha256": "5c17dfcc2a8f1f30d9e96df6a9825a5030ade046d560332c19de74d93d591a18"
+                },
+                "stderr.txt": {
+                  "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/pair_trace/roots/0005-Coma-vc_pair_trace/solver/0009-pair_trace-Coma-vc_pair_trace3/solver.stderr.txt",
+                  "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+                }
+              },
+              "status": "unsat",
+              "exit_code": 0,
+              "closed_original_smt": true
+            },
+            {
+              "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/pair_trace/roots/0005-Coma-vc_pair_trace/transformed/pair_trace-Coma-vc_pair_trace4.smt2",
+              "sha256": "62c45c87a979cf26fdd2fa8819f7ead2e86d33ae99c96fb4b3e0da82e7937977",
+              "solver": {
+                "command.json": {
+                  "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/pair_trace/roots/0005-Coma-vc_pair_trace/solver/0010-pair_trace-Coma-vc_pair_trace4/solver.command.json",
+                  "sha256": "d0d77bc2dfc0358380eb1b5347f2fc0cd0becb072d0fc4a034b773315369fed4"
+                },
+                "stdout.txt": {
+                  "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/pair_trace/roots/0005-Coma-vc_pair_trace/solver/0010-pair_trace-Coma-vc_pair_trace4/solver.stdout.txt",
+                  "sha256": "5c17dfcc2a8f1f30d9e96df6a9825a5030ade046d560332c19de74d93d591a18"
+                },
+                "stderr.txt": {
+                  "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/pair_trace/roots/0005-Coma-vc_pair_trace/solver/0010-pair_trace-Coma-vc_pair_trace4/solver.stderr.txt",
+                  "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+                }
+              },
+              "status": "unsat",
+              "exit_code": 0,
+              "closed_original_smt": true
+            },
+            {
+              "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/pair_trace/roots/0005-Coma-vc_pair_trace/transformed/pair_trace-Coma-vc_pair_trace5.smt2",
+              "sha256": "b75f5bacecf21b6ea77fc22db7d2184762ae3a9142b8331dac53cb05d3528a39",
+              "solver": {
+                "command.json": {
+                  "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/pair_trace/roots/0005-Coma-vc_pair_trace/solver/0011-pair_trace-Coma-vc_pair_trace5/solver.command.json",
+                  "sha256": "5e059aea76a1caa588120e38d2bfddf27d4a9cd4574658d0571211dc2093ee87"
+                },
+                "stdout.txt": {
+                  "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/pair_trace/roots/0005-Coma-vc_pair_trace/solver/0011-pair_trace-Coma-vc_pair_trace5/solver.stdout.txt",
+                  "sha256": "5c17dfcc2a8f1f30d9e96df6a9825a5030ade046d560332c19de74d93d591a18"
+                },
+                "stderr.txt": {
+                  "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/pair_trace/roots/0005-Coma-vc_pair_trace/solver/0011-pair_trace-Coma-vc_pair_trace5/solver.stderr.txt",
+                  "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+                }
+              },
+              "status": "unsat",
+              "exit_code": 0,
+              "closed_original_smt": true
+            },
+            {
+              "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/pair_trace/roots/0005-Coma-vc_pair_trace/transformed/pair_trace-Coma-vc_pair_trace6.smt2",
+              "sha256": "6923962f81595e728a11adcbcaa9c9debadc15e0494347a8ef6e840445427956",
+              "solver": {
+                "command.json": {
+                  "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/pair_trace/roots/0005-Coma-vc_pair_trace/solver/0012-pair_trace-Coma-vc_pair_trace6/solver.command.json",
+                  "sha256": "85646cb9811738664dc58d9c10bd00a933649643ef42ec9998d49f6620232414"
+                },
+                "stdout.txt": {
+                  "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/pair_trace/roots/0005-Coma-vc_pair_trace/solver/0012-pair_trace-Coma-vc_pair_trace6/solver.stdout.txt",
+                  "sha256": "5c17dfcc2a8f1f30d9e96df6a9825a5030ade046d560332c19de74d93d591a18"
+                },
+                "stderr.txt": {
+                  "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/pair_trace/roots/0005-Coma-vc_pair_trace/solver/0012-pair_trace-Coma-vc_pair_trace6/solver.stderr.txt",
+                  "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+                }
+              },
+              "status": "unsat",
+              "exit_code": 0,
+              "closed_original_smt": true
+            },
+            {
+              "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/pair_trace/roots/0005-Coma-vc_pair_trace/transformed/pair_trace-Coma-vc_pair_trace7.smt2",
+              "sha256": "0ab074fb6a5587df8dcec8b5b5208772daf0370765e42fa1a559e3f736639a30",
+              "solver": {
+                "command.json": {
+                  "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/pair_trace/roots/0005-Coma-vc_pair_trace/solver/0013-pair_trace-Coma-vc_pair_trace7/solver.command.json",
+                  "sha256": "ef1fe58ce86432b8329526ff30d6ad528d503bd4f5d34a813837de088635d9b9"
+                },
+                "stdout.txt": {
+                  "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/pair_trace/roots/0005-Coma-vc_pair_trace/solver/0013-pair_trace-Coma-vc_pair_trace7/solver.stdout.txt",
+                  "sha256": "5c17dfcc2a8f1f30d9e96df6a9825a5030ade046d560332c19de74d93d591a18"
+                },
+                "stderr.txt": {
+                  "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/pair_trace/roots/0005-Coma-vc_pair_trace/solver/0013-pair_trace-Coma-vc_pair_trace7/solver.stderr.txt",
+                  "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+                }
+              },
+              "status": "unsat",
+              "exit_code": 0,
+              "closed_original_smt": true
+            },
+            {
+              "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/pair_trace/roots/0005-Coma-vc_pair_trace/transformed/pair_trace-Coma-vc_pair_trace8.smt2",
+              "sha256": "a904b3345c45b734500c9b0994759999ad5265004ead3d6eb54fdd2c3bc70574",
+              "solver": {
+                "command.json": {
+                  "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/pair_trace/roots/0005-Coma-vc_pair_trace/solver/0014-pair_trace-Coma-vc_pair_trace8/solver.command.json",
+                  "sha256": "a9b9bfae5d229820db546abb6077f807499ef6d425797453480ff26118c4e2f9"
+                },
+                "stdout.txt": {
+                  "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/pair_trace/roots/0005-Coma-vc_pair_trace/solver/0014-pair_trace-Coma-vc_pair_trace8/solver.stdout.txt",
+                  "sha256": "5c17dfcc2a8f1f30d9e96df6a9825a5030ade046d560332c19de74d93d591a18"
+                },
+                "stderr.txt": {
+                  "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/pair_trace/roots/0005-Coma-vc_pair_trace/solver/0014-pair_trace-Coma-vc_pair_trace8/solver.stderr.txt",
+                  "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+                }
+              },
+              "status": "unsat",
+              "exit_code": 0,
+              "closed_original_smt": true
+            },
+            {
+              "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/pair_trace/roots/0005-Coma-vc_pair_trace/transformed/pair_trace-Coma-vc_pair_trace9.smt2",
+              "sha256": "1f07adde8ab1f87ffb8141d09134b4761d0fc1b3cd925c3018b08c33f5235e4f",
+              "solver": {
+                "command.json": {
+                  "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/pair_trace/roots/0005-Coma-vc_pair_trace/solver/0015-pair_trace-Coma-vc_pair_trace9/solver.command.json",
+                  "sha256": "afa9fed55e72601e3339739fe4af74768a8db8aaf6bbfcadda68483c805125eb"
+                },
+                "stdout.txt": {
+                  "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/pair_trace/roots/0005-Coma-vc_pair_trace/solver/0015-pair_trace-Coma-vc_pair_trace9/solver.stdout.txt",
+                  "sha256": "5c17dfcc2a8f1f30d9e96df6a9825a5030ade046d560332c19de74d93d591a18"
+                },
+                "stderr.txt": {
+                  "path": "/workspace/proof-env/percent-encoding/2.3.2/verification/probes/formatting/direct-checks-production-final/targets/pair_trace/roots/0005-Coma-vc_pair_trace/solver/0015-pair_trace-Coma-vc_pair_trace9/solver.stderr.txt",
+                  "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+                }
+              },
+              "status": "unsat",
+              "exit_code": 0,
+              "closed_original_smt": true
+            }
+          ],
+          "status": "closed"
+        }
+      ],
+      "positive_root_count": 6
+    }
+  },
+  "requested_targets": [
+    "format_trace/request_write",
+    "pair_trace"
+  ],
+  "positive_root_count": 11,
+  "closed_root_count": 11,
+  "unresolved": [],
+  "status": "diagnostic-complete",
+  "limitation": "No source snapshot, full generated-target classification, native test claim, or final evidence status is represented. Every root and original SMT leaf status must be reviewed separately."
+}

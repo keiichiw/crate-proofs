@@ -1,0 +1,156 @@
+Warning, file "/workspace/.local/share/creusot/share/why3find/packages/creusot/creusot/int.coma", line 158, characters 8-22: axiom extensionality does not contain any local abstract symbol (contains: int, (=), t, to_int)
+Warning, file "/workspace/.local/share/creusot/share/why3find/packages/creusot/creusot/int.coma", line 462, characters 8-22: axiom extensionality does not contain any local abstract symbol (contains: int, (=), t, to_int)
+Warning, file "/workspace/.local/share/creusot/share/why3find/packages/creusot/creusot/int.coma", line 766, characters 8-22: axiom extensionality does not contain any local abstract symbol (contains: int, (=), t, to_int)
+Warning, file "/workspace/.local/share/creusot/share/why3find/packages/creusot/creusot/int.coma", line 1070, characters 8-22: axiom extensionality does not contain any local abstract symbol (contains: int, (=), t, to_int)
+Warning, file "/workspace/.local/share/creusot/share/why3find/packages/creusot/creusot/int.coma", line 1374, characters 8-22: axiom extensionality does not contain any local abstract symbol (contains: int, (=), t, to_int)
+Warning, file "diagnostics/run-03/coma/verif/percent_encoding_utf8_model_module_probe_rlib/strict_decode.coma", line 28, characters 19-21: unused variable f0
+theory Coma
+  
+  (* use why3.BuiltIn.BuiltIn *)
+  
+  (* use why3.Bool.Bool *)
+  
+  (* use why3.Unit.Unit *)
+  
+  (* use creusot.slice.Slice64 *)
+  
+  (* use creusot.int.UInt8 *)
+  
+  (* use creusot.prelude.Char *)
+  
+  (* use map.Map *)
+  
+  (* use creusot.prelude.Any *)
+  
+  type t_Vec_u8_Global
+  
+  type t_Cow_slice_u8 =
+    | Borrowed (slice t)
+    | Owned t_Vec_u8_Global
+  
+  type t_String
+  
+  type t_Cow_str =
+    | Borrowed'0 string
+    | Owned'0 t_String
+  
+  type t_Utf8Error
+  
+  type t_Result_Cow_str_Utf8Error =
+    | Ok t_Cow_str
+    | Err t_Utf8Error
+  
+  predicate inv_String t_String
+  
+  predicate inv_Cow_str t_Cow_str
+  
+  axiom inv_axiom :
+    forall x:t_Cow_str [inv_Cow_str x].
+     inv_Cow_str x <->
+     match x with
+     | Borrowed'0 f0 -> true
+     | Owned'0 f0 -> inv_String f0
+     end
+  
+  predicate inv_Utf8Error t_Utf8Error
+  
+  predicate inv_Result_Cow_str_Utf8Error t_Result_Cow_str_Utf8Error
+  
+  axiom inv_axiom'0 :
+    forall x:t_Result_Cow_str_Utf8Error [inv_Result_Cow_str_Utf8Error x].
+     inv_Result_Cow_str_Utf8Error x <->
+     match x with
+     | Ok f0 -> inv_Cow_str f0
+     | Err f0 -> inv_Utf8Error f0
+     end
+  
+  function tail_char (self:seq t1) : seq t1 = self[1..length self]
+  
+  function flat_map_char (seq t1) (t1 -> seq t) : seq t
+  
+  axiom flat_map_char_def :
+    forall self:seq t1, other:t1 -> seq t [flat_map_char self other].
+     flat_map_char self other =
+     (if length self = 0 then empty: seq t
+      else get other (get1 self 0) ++ flat_map_char (tail_char self) other)
+  
+  function to_utf8_char t1 : seq t
+  
+  axiom to_utf8_char_spec :
+    forall self:t1 [to_utf8_char self].
+     1 <= length (to_utf8_char self) /\ length (to_utf8_char self) <= 4
+  
+  function to_bytes (self:seq t1) : seq t =
+    flat_map_char self (fun (c:t1) -> to_utf8_char c)
+  
+  function view_str string : seq t1
+  
+  constant const_MAX : t2 = (18446744073709551615:t2)
+  
+  function view_Vec_u8_Global t_Vec_u8_Global : seq t
+  
+  axiom view_Vec_u8_Global_spec :
+    forall self:t_Vec_u8_Global [view_Vec_u8_Global self].
+     length (view_Vec_u8_Global self) <= t'int const_MAX
+  
+  function view_String t_String : seq t1
+  
+  predicate utf8_is_valid (bytes:seq t) =
+    exists chars:seq t1. to_bytes chars = bytes
+  
+  function cow_bytes (value:t_Cow_slice_u8) : seq t =
+    match value with
+    | Borrowed bytes -> view bytes
+    | Owned bytes -> view_Vec_u8_Global bytes
+    end
+  
+  goal vc_decode_utf8 : true
+  
+  (* meta compute_max_steps 1000000 *)
+  
+  (* meta select_lsinst "all" *)
+  
+  goal vc_strict_decode :
+    forall input:t_Cow_slice_u8.
+     forall result:t_Result_Cow_str_Utf8Error.
+      inv_Result_Cow_str_Utf8Error result /\
+      match result with
+      | Ok (Borrowed'0 value) ->
+          match input with
+          | Borrowed bytes ->
+              exists chars:seq t1.
+               to_bytes chars = view bytes /\ view_str value = chars
+          | Owned _ -> false
+          end
+      | Ok (Owned'0 value) ->
+          match input with
+          | Borrowed _ -> false
+          | Owned bytes ->
+              exists chars:seq t1.
+               to_bytes chars = view_Vec_u8_Global bytes /\
+               view_String value = chars
+          end
+      | Err _ -> not utf8_is_valid (cow_bytes input)
+      end ->
+      inv_Result_Cow_str_Utf8Error result /\
+      match result with
+      | Ok (Borrowed'0 value) ->
+          match input with
+          | Borrowed bytes ->
+              exists chars:seq t1.
+               to_bytes chars = view bytes /\ view_str value = chars
+          | Owned _ -> false
+          end
+      | Ok (Owned'0 value) ->
+          match input with
+          | Borrowed _ -> false
+          | Owned bytes ->
+              exists chars:seq t1.
+               to_bytes chars = view_Vec_u8_Global bytes /\
+               view_String value = chars
+          end
+      | Err _ -> not utf8_is_valid (cow_bytes input)
+      end
+  
+end
+

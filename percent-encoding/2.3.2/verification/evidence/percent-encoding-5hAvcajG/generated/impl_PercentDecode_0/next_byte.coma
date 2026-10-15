@@ -1,0 +1,249 @@
+(* PercentDecode<'_> *)
+
+use creusot.slice.Slice64
+use creusot.int.UInt8
+use seq.Seq
+use map.Map
+use creusot.prelude.MutBorrow
+use creusot.prelude.Any
+use int.Int
+
+type t_Iter_u8
+
+type t_PercentDecode = { bytes: t_Iter_u8 }
+
+predicate inv_Iter_u8 (_1: t_Iter_u8)
+
+predicate invariant_ref_Iter_u8 [@inline:trivial] (self: t_Iter_u8) = inv_Iter_u8 self
+
+meta "rewrite_def" predicate invariant_ref_Iter_u8
+
+predicate inv_ref_Iter_u8 [@inline:trivial] (_1: t_Iter_u8) = invariant_ref_Iter_u8 _1
+
+meta "rewrite_def" predicate inv_ref_Iter_u8
+
+function view_Iter_u8 (self: t_Iter_u8) : Slice64.slice UInt8.t
+
+let as_slice_u8 (self_: t_Iter_u8) (return (x: Slice64.slice UInt8.t)) =
+{[@stop_split] [@expl:as_slice 'self_' type invariant] inv_ref_Iter_u8 self_}
+  any
+  [ return (result: Slice64.slice UInt8.t) -> {[@stop_split] [@expl:as_slice ensures] Slice64.view result
+    = Slice64.view (view_Iter_u8 self_)}
+    (! return {result}) ]
+
+type tup2_ref_u8_ref_slice_u8 = { f0: UInt8.t; f1: Slice64.slice UInt8.t }
+
+type t_Option_tup2_ref_u8_ref_slice_u8 = None | Some tup2_ref_u8_ref_slice_u8
+
+predicate gt_log_Int [@inline:trivial] (self: int) (other: int) = other < self
+
+meta "rewrite_def" predicate gt_log_Int
+
+function tail_u8 (self: Seq.seq UInt8.t) : Seq.seq UInt8.t = Seq.([..]) self 1 (Seq.length self)
+
+let split_first_u8 (self_: Slice64.slice UInt8.t) (return (x: t_Option_tup2_ref_u8_ref_slice_u8)) = any
+  [ return (result: t_Option_tup2_ref_u8_ref_slice_u8) -> {[@stop_split] [@expl:split_first ensures] match result with
+      | Some {f0 = first; f1 = tail} -> gt_log_Int (Seq.length (Slice64.view self_)) 0
+      /\ first = Seq.get (Slice64.view self_) 0 /\ Slice64.view tail = tail_u8 (Slice64.view self_)
+      | None -> Slice64.view self_ = (Seq.empty: Seq.seq UInt8.t)
+      end}
+    (! return {result}) ]
+
+let elim_Some (_x: t_Option_tup2_ref_u8_ref_slice_u8) (return (f0'0: tup2_ref_u8_ref_slice_u8)) = any
+  [ _k (f0'0: tup2_ref_u8_ref_slice_u8) -> {Some f0'0 = _x} (! return {f0'0})
+  | _chk -> (! {[@expl:elim Some] match _x with
+      | Some _ -> true
+      | _ -> false
+      end}
+    any) ]
+
+function index_Mapping_u8_Int [@inline:trivial] (self: Map.map UInt8.t int) (a: UInt8.t) : int = Map.get self a
+
+meta "rewrite_def" function index_Mapping_u8_Int
+
+function map_u8 (self: Seq.seq UInt8.t) (m: Map.map UInt8.t int) : Seq.seq int
+
+axiom map_u8_spec: forall self: Seq.seq UInt8.t, m: Map.map UInt8.t int [map_u8 self m]. Seq.length (map_u8 self m)
+    = Seq.length self
+
+axiom map_u8_spec'0: forall self: Seq.seq UInt8.t, m: Map.map UInt8.t int [map_u8 self m]. forall i: int. 0 <= i
+        /\ i < Seq.length self -> Seq.get (map_u8 self m) i = index_Mapping_u8_Int m (Seq.get self i)
+
+function byte_sequence_as_ints (bytes'0: Seq.seq UInt8.t) : Seq.seq int =
+  map_u8 bytes'0 (fun (byte: UInt8.t) -> UInt8.t'int byte)
+
+predicate byte_model_subsequence (bytes'0: Seq.seq UInt8.t) (start: int) (end': int)
+
+axiom byte_model_subsequence_spec:
+  forall bytes'0: Seq.seq UInt8.t, start: int, end': int [byte_model_subsequence bytes'0 start end']. 0 <= start
+      /\ start <= end' /\ end' <= Seq.length bytes'0 -> byte_model_subsequence bytes'0 start end'
+
+axiom byte_model_subsequence_spec'0: forall bytes'0: Seq.seq UInt8.t, start: int, end': int. 0 <= start
+      /\ start <= end' /\ end' <= Seq.length bytes'0
+    -> byte_sequence_as_ints (Seq.([..]) bytes'0 start end') = Seq.([..]) (byte_sequence_as_ints bytes'0) start end'
+
+let iter_u8 (self_: Slice64.slice UInt8.t) (return (x: t_Iter_u8)) = any
+  [ return (result: t_Iter_u8) ->
+  {[@stop_split] [@expl:iter_u8 ensures] ([@stop_split] [@expl:iter result type invariant] inv_Iter_u8 result)
+    /\ ([@stop_split] [@expl:iter ensures] view_Iter_u8 result = self_)}
+    (! return {result}) ]
+
+predicate resolve_Iter_u8 (_1: t_Iter_u8)
+
+type t_Option_u8 = None'0 | Some'0 UInt8.t
+
+predicate invariant_refmut_Iter_u8 [@inline:trivial] (self: MutBorrow.t t_Iter_u8) =
+  inv_Iter_u8 self.current /\ inv_Iter_u8 self.final
+
+meta "rewrite_def" predicate invariant_refmut_Iter_u8
+
+predicate inv_refmut_Iter_u8 [@inline:trivial] (_1: MutBorrow.t t_Iter_u8) = invariant_refmut_Iter_u8 _1
+
+meta "rewrite_def" predicate inv_refmut_Iter_u8
+
+predicate ge_log_Int [@inline:trivial] (self: int) (other: int) = other <= self
+
+meta "rewrite_def" predicate ge_log_Int
+
+function percent_hex_value_model (byte: int) : int = if 48 <= byte /\ byte <= 57 then
+    byte - 48
+  else
+    if 65 <= byte /\ byte <= 70 then byte - 55 else if 97 <= byte /\ byte <= 102 then byte - 87 else - 1
+
+
+let after_percent_sign (iter: MutBorrow.t t_Iter_u8) (return (x: t_Option_u8)) =
+{[@stop_split] [@expl:after_percent_sign 'iter' type invariant] inv_refmut_Iter_u8 iter}
+  any
+  [ return (result: t_Option_u8) -> {[@stop_split] [@expl:after_percent_sign ensures] match result with
+      | Some'0 value -> let before = byte_sequence_as_ints (Slice64.view (view_Iter_u8 iter.current)) in let after = byte_sequence_as_ints (Slice64.view (view_Iter_u8 iter.final)) in ge_log_Int (Seq.length before) 2
+      /\ ge_log_Int (percent_hex_value_model (Seq.get before 0)) 0
+      /\ ge_log_Int (percent_hex_value_model (Seq.get before 1)) 0
+      /\ UInt8.t'int value
+        = percent_hex_value_model (Seq.get before 0) * 16 + percent_hex_value_model (Seq.get before 1)
+      /\ after = Seq.([..]) before 2 (Seq.length before)
+      | None'0 -> Slice64.view (view_Iter_u8 iter.final) = Slice64.view (view_Iter_u8 iter.current)
+      /\ (Seq.length (byte_sequence_as_ints (Slice64.view (view_Iter_u8 iter.current))) < 2
+      \/ ge_log_Int (Seq.length (byte_sequence_as_ints (Slice64.view (view_Iter_u8 iter.current)))) 2
+        /\ percent_hex_value_model (Seq.get (byte_sequence_as_ints (Slice64.view (view_Iter_u8 iter.current))) 0) < 0
+      \/ ge_log_Int (Seq.length (byte_sequence_as_ints (Slice64.view (view_Iter_u8 iter.current)))) 2
+      /\ percent_hex_value_model (Seq.get (byte_sequence_as_ints (Slice64.view (view_Iter_u8 iter.current))) 1) < 0)
+      end}
+    (! return {result}) ]
+
+predicate resolve_refmut_Iter_u8 [@inline:trivial] (_1: MutBorrow.t t_Iter_u8) = _1.final = _1.current
+
+meta "rewrite_def" predicate resolve_refmut_Iter_u8
+
+predicate inv_PercentDecode (_1: t_PercentDecode)
+
+axiom inv_axiom [@rewrite]: forall x: t_PercentDecode [inv_PercentDecode x]. inv_PercentDecode x = inv_Iter_u8 x.bytes
+
+predicate invariant_refmut_PercentDecode [@inline:trivial] (self: MutBorrow.t t_PercentDecode) =
+  inv_PercentDecode self.current /\ inv_PercentDecode self.final
+
+meta "rewrite_def" predicate invariant_refmut_PercentDecode
+
+predicate inv_refmut_PercentDecode [@inline:trivial] (_1: MutBorrow.t t_PercentDecode) =
+  invariant_refmut_PercentDecode _1
+
+meta "rewrite_def" predicate inv_refmut_PercentDecode
+
+predicate resolve_refmut_PercentDecode [@inline:trivial] (_1: MutBorrow.t t_PercentDecode) = _1.final = _1.current
+
+meta "rewrite_def" predicate resolve_refmut_PercentDecode
+
+predicate resolve_u8 [@inline:trivial] (_1: UInt8.t) = true
+
+meta "rewrite_def" predicate resolve_u8
+
+let unwrap_or_u8 (self_: t_Option_u8) (default: UInt8.t) (return (x: UInt8.t)) = any
+  [ return (result: UInt8.t) ->
+  {[@stop_split] [@expl:unwrap_or_u8 ensures] ([@stop_split] [@expl:unwrap_or ensures #0] self_ = None'0
+      -> result = default)
+    /\ ([@stop_split] [@expl:unwrap_or ensures #1] self_ = None'0 \/ self_ = Some'0 result /\ resolve_u8 default)}
+    (! return {result}) ]
+
+meta "compute_max_steps" 1000000
+
+meta "select_lsinst" "all"
+
+let next_byte (self: MutBorrow.t t_PercentDecode) (return (x: t_Option_u8)) =
+{[@stop_split] [@expl:next_byte 'self' type invariant] inv_refmut_PercentDecode self}
+  (! bb0
+  [ bb0 = s0
+    [ s0 = as_slice_u8 {self.current.bytes} (fun (_x: Slice64.slice UInt8.t) -> [ &bytes'0 <- _x ] s1)
+    | s1 = split_first_u8 {bytes'0} (fun (_x: t_Option_tup2_ref_u8_ref_slice_u8) -> [ &_6 <- _x ] s2)
+    | s2 = any [ br0 -> {_6 = None} (! bb4) | br1 (x0: tup2_ref_u8_ref_slice_u8) -> {_6 = Some x0} (! bb5) ] ]
+  | bb5 = s0
+    [ s0 = elim_Some {_6} (fun (r0: tup2_ref_u8_ref_slice_u8) -> [ &byte <- r0.f0 ] s1)
+    | s1 = elim_Some {_6} (fun (r0: tup2_ref_u8_ref_slice_u8) -> [ &remaining <- r0.f1 ] s2)
+    | s2 = {[@expl:assertion] byte_model_subsequence (Slice64.view bytes'0) 1 (Seq.length (Slice64.view bytes'0))} s3
+    | s3 = {[@expl:assertion] byte_sequence_as_ints (Slice64.view remaining)
+      = Seq.([..]) (byte_sequence_as_ints (Slice64.view bytes'0)) 1 (Seq.length (Slice64.view bytes'0))}
+      s4
+    | s4 = iter_u8 {remaining} (fun (_x: t_Iter_u8) -> [ &_19 <- _x ] s5)
+    | s5 = s6 [ _ck -> (! {[@expl:type invariant] inv_Iter_u8 self.current.bytes} any) ]
+    | s6 = -{resolve_Iter_u8 self.current.bytes}- s7
+    | s7 = [ &self <- { self with current = { bytes = _19 } } ] s8
+    | s8 = {[@expl:assertion] Slice64.view (view_Iter_u8 self.current.bytes)
+      = Seq.([..]) (Slice64.view bytes'0) 1 (Seq.length (Slice64.view bytes'0))}
+      s9
+    | s9 = [ &_27 <- byte = (37: UInt8.t) ] s10
+    | s10 = any [ br0 -> {_27 = false} (! bb11) | br1 -> {_27} (! bb8) ] ]
+  | bb8 = s0
+    [ s0 = MutBorrow.borrow_final <t_Iter_u8> {self.current.bytes} {MutBorrow.inherit_id (MutBorrow.get_id self) 0}
+        (fun (_bor: MutBorrow.t t_Iter_u8) ->
+          [ &_31 <- _bor ] -{inv_Iter_u8 _bor.final}-
+          [ &self <- { self with current = { bytes = _bor.final } } ] s1)
+      [ _ck -> (! {[@expl:type invariant] inv_Iter_u8 self.current.bytes} any) ]
+    | s1 = MutBorrow.borrow_final <t_Iter_u8> {_31.current} {MutBorrow.get_id _31}
+        (fun (_bor: MutBorrow.t t_Iter_u8) ->
+          [ &_30 <- _bor ] -{inv_Iter_u8 _bor.final}-
+          [ &_31 <- { _31 with current = _bor.final } ] s2)
+      [ _ck -> (! {[@expl:type invariant] inv_Iter_u8 _31.current} any) ]
+    | s2 = after_percent_sign {_30} (fun (_x: t_Option_u8) -> [ &_29 <- _x ] s3)
+    | s3 = s4 [ _ck -> (! {[@expl:type invariant] inv_refmut_Iter_u8 _31} any) ]
+    | s4 = -{resolve_refmut_Iter_u8 _31}- s5
+    | s5 = s6 [ _ck -> (! {[@expl:type invariant] inv_refmut_PercentDecode self} any) ]
+    | s6 = -{resolve_refmut_PercentDecode self}- s7
+    | s7 = unwrap_or_u8 {_29} {byte} (fun (_x: UInt8.t) -> [ &_26 <- _x ] s8)
+    | s8 = bb12 ]
+  | bb11 = s0
+    [ s0 = s1 [ _ck -> (! {[@expl:type invariant] inv_refmut_PercentDecode self} any) ]
+    | s1 = -{resolve_refmut_PercentDecode self}- s2
+    | s2 = [ &_26 <- byte ] s3
+    | s3 = bb12 ]
+  | bb12 = s0 [ s0 = [ &_ret <- Some'0 _26 ] s1 | s1 = return {_ret} ]
+  | bb4 = s0
+    [ s0 = s1 [ _ck -> (! {[@expl:type invariant] inv_refmut_PercentDecode self} any) ]
+    | s1 = -{resolve_refmut_PercentDecode self}- s2
+    | s2 = [ &_ret <- None'0 ] s3
+    | s3 = return {_ret} ] ]
+  [ & _ret: t_Option_u8 = Any.any_l ()
+  | & self: MutBorrow.t t_PercentDecode = self
+  | & bytes'0: Slice64.slice UInt8.t = Any.any_l ()
+  | & _6: t_Option_tup2_ref_u8_ref_slice_u8 = Any.any_l ()
+  | & byte: UInt8.t = Any.any_l ()
+  | & remaining: Slice64.slice UInt8.t = Any.any_l ()
+  | & _19: t_Iter_u8 = Any.any_l ()
+  | & _26: UInt8.t = Any.any_l ()
+  | & _27: bool = Any.any_l ()
+  | & _29: t_Option_u8 = Any.any_l ()
+  | & _30: MutBorrow.t t_Iter_u8 = Any.any_l ()
+  | & _31: MutBorrow.t t_Iter_u8 = Any.any_l () ])
+  [ return (result: t_Option_u8) -> {[@stop_split] [@expl:next_byte ensures] match result with
+      | None'0 -> Seq.length (Slice64.view (view_Iter_u8 self.current.bytes)) = 0
+      /\ Slice64.view (view_Iter_u8 self.final.bytes) = (Seq.empty: Seq.seq UInt8.t) /\ self.final = self.current
+      | Some'0 value -> let before = byte_sequence_as_ints (Slice64.view (view_Iter_u8 self.current.bytes)) in let after = byte_sequence_as_ints (Slice64.view (view_Iter_u8 self.final.bytes)) in gt_log_Int (Seq.length before) 0
+      /\ Seq.length after <= Seq.length before
+      /\ (if Seq.get before 0 = 37
+      /\ ge_log_Int (Seq.length before) 3
+      /\ ge_log_Int (percent_hex_value_model (Seq.get before 1)) 0
+      /\ ge_log_Int (percent_hex_value_model (Seq.get before 2)) 0 then
+        UInt8.t'int value = percent_hex_value_model (Seq.get before 1) * 16 + percent_hex_value_model (Seq.get before 2)
+        /\ after = Seq.([..]) before 3 (Seq.length before)
+      else
+        UInt8.t'int value = Seq.get before 0 /\ after = Seq.([..]) before 1 (Seq.length before)
+      )
+      end}
+    (! return {result}) ]

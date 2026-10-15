@@ -1,0 +1,55 @@
+theory Coma
+  
+  (* use why3.BuiltIn.BuiltIn *)
+  
+  (* use why3.Bool.Bool *)
+  
+  (* use why3.Unit.Unit *)
+  
+  (* use seq.Seq *)
+  
+  predicate ge_log_Int (self:int) (other:int) = other <= self
+  
+  (* meta rewrite_def predicate ge_log_Int *)
+  
+  predicate gt_log_Int (self:int) (other:int) = other < self
+  
+  (* meta rewrite_def predicate gt_log_Int *)
+  
+  predicate well_founded_relation_Int (self:int) (other:int) =
+    ge_log_Int self 0 /\ gt_log_Int self other
+  
+  (* meta rewrite_def predicate well_founded_relation_Int *)
+  
+  (* meta compute_max_steps 1000000 *)
+  
+  (* meta select_lsinst "all" *)
+  
+  constant chunks : seq (seq int)
+  
+  function flatten_chunks (seq (seq int)) : seq int
+  
+  goal vc_flatten_chunks :
+    if length chunks = 0
+    then let result = (empty: seq int) in
+         if length chunks = 0 then length result = 0
+         else result =
+              (get chunks 0 ++ flatten_chunks chunks[1..length chunks])
+    else well_founded_relation_Int (length chunks)
+         (length chunks[1..length chunks]) /\
+         ((if length chunks[1..length chunks] = 0
+           then length (flatten_chunks chunks[1..length chunks]) = 0
+           else flatten_chunks chunks[1..length chunks] =
+                (get chunks[1..length chunks] 0
+                 ++ flatten_chunks
+                    chunks[1..length chunks][1..length
+                                                chunks[1..length chunks]])) ->
+          (let result =
+             get chunks 0 ++ flatten_chunks chunks[1..length chunks]
+           in
+           if length chunks = 0 then length result = 0
+           else result =
+                (get chunks 0 ++ flatten_chunks chunks[1..length chunks])))
+  
+end
+

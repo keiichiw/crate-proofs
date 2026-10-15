@@ -1,0 +1,81 @@
+use creusot.prelude.Char
+use seq.Seq
+use creusot.slice.Slice64
+use creusot.int.UInt8
+use creusot.prelude.Any
+use int.Int
+
+predicate ascii [@inline:trivial] (s: Seq.seq Char.t) =
+  forall i: int. 0 <= i /\ i < Seq.length s -> Char.to_int (Seq.get s i) < 128
+
+meta "rewrite_def" predicate ascii
+
+function view_str (self: string) : Seq.seq Char.t
+
+let is_ascii (self_: string) (return (x: bool)) = any
+  [ return (result: bool) -> {[@stop_split] [@expl:is_ascii ensures] result = ascii (view_str self_)}
+    (! return {result}) ]
+
+predicate ascii_whitespace [@inline:trivial] (c: Char.t) =
+  Char.to_int c = 32 \/ 9 <= Char.to_int c /\ Char.to_int c <= 13
+
+meta "rewrite_def" predicate ascii_whitespace
+
+predicate ascii_trim_relation [@inline:trivial] (input: Seq.seq Char.t) (output: Seq.seq Char.t) =
+  exists lo: int, hi: int. 0 <= lo
+    /\ lo <= hi
+    /\ hi <= Seq.length input
+    /\ output = Seq.([..]) input lo hi
+    /\ (forall i: int. 0 <= i /\ i < lo -> ascii_whitespace (Seq.get input i))
+    /\ (forall i: int. hi <= i /\ i < Seq.length input -> ascii_whitespace (Seq.get input i))
+    /\ (lo = hi \/ not ascii_whitespace (Seq.get input lo) /\ not ascii_whitespace (Seq.get input (hi - 1)))
+
+meta "rewrite_def" predicate ascii_trim_relation
+
+let trim (self_: string) (return (x: string)) = {[@stop_split] [@expl:trim requires] ascii (view_str self_)}
+  any
+  [ return (result: string) -> {[@stop_split] [@expl:trim ensures] ascii (view_str result)
+    /\ ascii_trim_relation (view_str self_) (view_str result)}
+    (! return {result}) ]
+
+predicate ascii_content [@inline:trivial] (chars: Seq.seq Char.t) (bytes: Seq.seq UInt8.t) =
+  Seq.length chars = Seq.length bytes
+  /\ (forall i: int. 0 <= i /\ i < Seq.length chars -> Char.to_int (Seq.get chars i) = UInt8.t'int (Seq.get bytes i))
+
+meta "rewrite_def" predicate ascii_content
+
+let as_bytes (self_: string) (return (x: Slice64.slice UInt8.t)) =
+{[@stop_split] [@expl:as_bytes requires] ascii (view_str self_)}
+  any
+  [ return (result: Slice64.slice UInt8.t) ->
+  {[@stop_split] [@expl:as_bytes ensures] ascii_content (view_str self_) (Slice64.view result)}
+    (! return {result}) ]
+
+type t_Option_ref_slice_u8 = None | Some (Slice64.slice UInt8.t)
+
+meta "compute_max_steps" 1000000
+
+meta "select_lsinst" "all"
+
+let normalized_ascii (s: string) (return (x: t_Option_ref_slice_u8)) = (! bb0
+  [ bb0 = s0
+    [ s0 = is_ascii {s} (fun (_x: bool) -> [ &_5 <- _x ] s1)
+    | s1 = any [ br0 -> {_5 = false} (! bb3) | br1 -> {_5} (! bb2) ] ]
+  | bb2 = s0
+    [ s0 = trim {s} (fun (_x: string) -> [ &_11 <- _x ] s1)
+    | s1 = as_bytes {_11} (fun (_x: Slice64.slice UInt8.t) -> [ &_9 <- _x ] s2)
+    | s2 = [ &_ret <- Some _9 ] s3
+    | s3 = return {_ret} ]
+  | bb3 = s0 [ s0 = [ &_ret <- None ] s1 | s1 = return {_ret} ] ]
+  [ & _ret: t_Option_ref_slice_u8 = Any.any_l ()
+  | & s: string = s
+  | & _5: bool = Any.any_l ()
+  | & _9: Slice64.slice UInt8.t = Any.any_l ()
+  | & _11: string = Any.any_l () ])
+  [ return (result: t_Option_ref_slice_u8) -> {[@stop_split] [@expl:normalized_ascii ensures] match result with
+      | Some bytes -> ascii (view_str s)
+      /\ (exists trimmed: Seq.seq Char.t. ascii trimmed
+        /\ ascii_trim_relation (view_str s) trimmed /\ ascii_content trimmed (Slice64.view bytes))
+      | None -> not ascii (view_str s)
+      end}
+    (! return {result}) ]

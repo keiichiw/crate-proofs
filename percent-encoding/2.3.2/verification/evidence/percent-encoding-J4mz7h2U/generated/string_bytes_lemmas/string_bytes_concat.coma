@@ -1,0 +1,156 @@
+use creusot.prelude.Char
+use seq.Seq
+use creusot.int.UInt8
+use map.Map
+use int.Int
+
+function tail_char (self: Seq.seq Char.t) : Seq.seq Char.t = Seq.([..]) self 1 (Seq.length self)
+
+function flat_map_char (self: Seq.seq Char.t) (other: Map.map Char.t (Seq.seq UInt8.t)) : Seq.seq UInt8.t
+
+axiom flat_map_char_def:
+  forall self: Seq.seq Char.t, other: Map.map Char.t (Seq.seq UInt8.t) [flat_map_char self other]. flat_map_char self other
+    = (if Seq.length self = 0 then
+      Seq.empty: Seq.seq UInt8.t
+    else
+      Seq.(++) (Map.get other (Seq.get self 0)) (flat_map_char (tail_char self) other)
+    )
+
+function to_utf8_char (self: Char.t) : Seq.seq UInt8.t
+
+axiom to_utf8_char_spec: forall self: Char.t [to_utf8_char self]. 1 <= Seq.length (to_utf8_char self)
+    /\ Seq.length (to_utf8_char self) <= 4
+
+function to_bytes (self: Seq.seq Char.t) : Seq.seq UInt8.t = flat_map_char self (fun (c: Char.t) -> to_utf8_char c)
+
+function index_Mapping_u8_Int [@inline:trivial] (self: Map.map UInt8.t int) (a: UInt8.t) : int = Map.get self a
+
+meta "rewrite_def" function index_Mapping_u8_Int
+
+function map_u8 (self: Seq.seq UInt8.t) (m: Map.map UInt8.t int) : Seq.seq int
+
+axiom map_u8_spec: forall self: Seq.seq UInt8.t, m: Map.map UInt8.t int [map_u8 self m]. Seq.length (map_u8 self m)
+    = Seq.length self
+
+axiom map_u8_spec'0: forall self: Seq.seq UInt8.t, m: Map.map UInt8.t int [map_u8 self m]. forall i: int. 0 <= i
+        /\ i < Seq.length self -> Seq.get (map_u8 self m) i = index_Mapping_u8_Int m (Seq.get self i)
+
+function byte_sequence_as_ints (bytes: Seq.seq UInt8.t) : Seq.seq int =
+  map_u8 bytes (fun (byte: UInt8.t) -> UInt8.t'int byte)
+
+predicate empty_string_bytes_concat (prefix: Seq.seq Char.t) (suffix: Seq.seq Char.t)
+
+axiom empty_string_bytes_concat_spec:
+  forall prefix: Seq.seq Char.t, suffix: Seq.seq Char.t [empty_string_bytes_concat prefix suffix]. Seq.length prefix = 0
+    -> empty_string_bytes_concat prefix suffix
+
+axiom empty_string_bytes_concat_spec'0: forall prefix: Seq.seq Char.t, suffix: Seq.seq Char.t. Seq.length prefix = 0
+    -> to_bytes (Seq.(++) prefix suffix) = Seq.(++) (to_bytes prefix) (to_bytes suffix)
+
+predicate byte_sequence_as_ints_concat (left: Seq.seq UInt8.t) (right: Seq.seq UInt8.t)
+
+axiom byte_sequence_as_ints_concat_spec:
+  forall left: Seq.seq UInt8.t, right: Seq.seq UInt8.t [byte_sequence_as_ints_concat left right]. byte_sequence_as_ints_concat left right
+
+axiom byte_sequence_as_ints_concat_spec'0:
+  forall left: Seq.seq UInt8.t, right: Seq.seq UInt8.t. byte_sequence_as_ints (Seq.(++) left right)
+    = Seq.(++) (byte_sequence_as_ints left) (byte_sequence_as_ints right)
+
+predicate gt_log_Int [@inline:trivial] (self: int) (other: int) = other < self
+
+meta "rewrite_def" predicate gt_log_Int
+
+predicate nonempty_left_concat_tail_char (left: Seq.seq Char.t) (right: Seq.seq Char.t)
+
+axiom nonempty_left_concat_tail_char_spec:
+  forall left: Seq.seq Char.t, right: Seq.seq Char.t [nonempty_left_concat_tail_char left right]. gt_log_Int (Seq.length left) 0
+    -> nonempty_left_concat_tail_char left right
+
+axiom nonempty_left_concat_tail_char_spec'0:
+  forall left: Seq.seq Char.t, right: Seq.seq Char.t. gt_log_Int (Seq.length left) 0
+    -> Seq.(==) (tail_char (Seq.(++) left right)) (Seq.(++) (tail_char left) right)
+
+predicate ge_log_Int [@inline:trivial] (self: int) (other: int) = other <= self
+
+meta "rewrite_def" predicate ge_log_Int
+
+predicate well_founded_relation_Int [@inline:trivial] (self: int) (other: int) =
+  ge_log_Int self 0 /\ gt_log_Int self other
+
+meta "rewrite_def" predicate well_founded_relation_Int
+
+meta "compute_max_steps" 1000000
+
+meta "select_lsinst" "all"
+
+constant prefix : Seq.seq Char.t
+
+constant suffix : Seq.seq Char.t
+
+predicate string_bytes_concat (prefix: Seq.seq Char.t) (suffix: Seq.seq Char.t)
+
+goal vc_string_bytes_concat: if Seq.length prefix = 0 then
+    ([@stop_split] [@expl:empty_string_bytes_concat requires] Seq.length prefix = 0)
+    /\ (([@stop_split] [@expl:empty_string_bytes_concat ensures] ([@stop_split] [@expl:empty_string_bytes_concat ensures #0] empty_string_bytes_concat prefix suffix)
+      /\ ([@stop_split] [@expl:empty_string_bytes_concat ensures #1] to_bytes (Seq.(++) prefix suffix)
+      = Seq.(++) (to_bytes prefix) (to_bytes suffix)))
+    -> (if empty_string_bytes_concat prefix suffix then
+      ([@stop_split] [@expl:byte_sequence_as_ints_concat ensures] ([@stop_split] [@expl:byte_sequence_as_ints_concat ensures #0] byte_sequence_as_ints_concat (to_bytes prefix) (to_bytes suffix))
+        /\ ([@stop_split] [@expl:byte_sequence_as_ints_concat ensures #1] byte_sequence_as_ints (Seq.(++) (to_bytes prefix) (to_bytes suffix))
+        = Seq.(++) (byte_sequence_as_ints (to_bytes prefix)) (byte_sequence_as_ints (to_bytes suffix))))
+      -> ([@stop_split] [@expl:string_bytes_concat ensures] ([@stop_split] [@expl:string_bytes_concat ensures #0] byte_sequence_as_ints_concat (to_bytes prefix) (to_bytes suffix))
+      /\ ([@stop_split] [@expl:string_bytes_concat ensures #1] to_bytes (Seq.(++) prefix suffix)
+        = Seq.(++) (to_bytes prefix) (to_bytes suffix))
+      /\ ([@stop_split] [@expl:string_bytes_concat ensures #2] byte_sequence_as_ints (to_bytes (Seq.(++) prefix suffix))
+      = Seq.(++) (byte_sequence_as_ints (to_bytes prefix)) (byte_sequence_as_ints (to_bytes suffix))))
+    else
+      [@stop_split] [@expl:string_bytes_concat ensures] ([@stop_split] [@expl:string_bytes_concat ensures #0] false)
+      /\ ([@stop_split] [@expl:string_bytes_concat ensures #1] to_bytes (Seq.(++) prefix suffix)
+        = Seq.(++) (to_bytes prefix) (to_bytes suffix))
+      /\ ([@stop_split] [@expl:string_bytes_concat ensures #2] byte_sequence_as_ints (to_bytes (Seq.(++) prefix suffix))
+      = Seq.(++) (byte_sequence_as_ints (to_bytes prefix)) (byte_sequence_as_ints (to_bytes suffix)))
+    ))
+  else
+    let joined = Seq.(++) prefix suffix in let tail = tail_char prefix in ([@stop_split] [@expl:nonempty_left_concat_tail requires] gt_log_Int (Seq.length prefix) 0)
+    /\ (([@stop_split] [@expl:nonempty_left_concat_tail ensures] ([@stop_split] [@expl:nonempty_left_concat_tail ensures #0] nonempty_left_concat_tail_char prefix suffix)
+      /\ ([@stop_split] [@expl:nonempty_left_concat_tail ensures #1] Seq.(==) (tail_char (Seq.(++) prefix suffix)) (Seq.(++) (tail_char prefix) suffix)))
+    -> (if nonempty_left_concat_tail_char prefix suffix then
+      ([@expl:variant decreases] well_founded_relation_Int (Seq.length prefix) (Seq.length tail))
+      /\ (([@stop_split] [@expl:string_bytes_concat ensures] ([@stop_split] [@expl:string_bytes_concat ensures #0] string_bytes_concat tail suffix)
+        /\ ([@stop_split] [@expl:string_bytes_concat ensures #1] to_bytes (Seq.(++) tail suffix)
+          = Seq.(++) (to_bytes tail) (to_bytes suffix))
+        /\ ([@stop_split] [@expl:string_bytes_concat ensures #2] byte_sequence_as_ints (to_bytes (Seq.(++) tail suffix))
+        = Seq.(++) (byte_sequence_as_ints (to_bytes tail)) (byte_sequence_as_ints (to_bytes suffix))))
+      -> (if string_bytes_concat tail suffix then
+        ([@stop_split] [@expl:byte_sequence_as_ints_concat ensures] ([@stop_split] [@expl:byte_sequence_as_ints_concat ensures #0] byte_sequence_as_ints_concat (to_bytes prefix) (to_bytes suffix))
+          /\ ([@stop_split] [@expl:byte_sequence_as_ints_concat ensures #1] byte_sequence_as_ints (Seq.(++) (to_bytes prefix) (to_bytes suffix))
+          = Seq.(++) (byte_sequence_as_ints (to_bytes prefix)) (byte_sequence_as_ints (to_bytes suffix))))
+        -> (if byte_sequence_as_ints_concat (to_bytes prefix) (to_bytes suffix) then
+          [@stop_split] [@expl:string_bytes_concat ensures] ([@stop_split] [@expl:string_bytes_concat ensures #0] to_bytes joined
+            = Seq.(++) (to_bytes prefix) (to_bytes suffix))
+          /\ ([@stop_split] [@expl:string_bytes_concat ensures #1] to_bytes (Seq.(++) prefix suffix)
+            = Seq.(++) (to_bytes prefix) (to_bytes suffix))
+          /\ ([@stop_split] [@expl:string_bytes_concat ensures #2] byte_sequence_as_ints (to_bytes (Seq.(++) prefix suffix))
+          = Seq.(++) (byte_sequence_as_ints (to_bytes prefix)) (byte_sequence_as_ints (to_bytes suffix)))
+        else
+          [@stop_split] [@expl:string_bytes_concat ensures] ([@stop_split] [@expl:string_bytes_concat ensures #0] false)
+          /\ ([@stop_split] [@expl:string_bytes_concat ensures #1] to_bytes (Seq.(++) prefix suffix)
+            = Seq.(++) (to_bytes prefix) (to_bytes suffix))
+          /\ ([@stop_split] [@expl:string_bytes_concat ensures #2] byte_sequence_as_ints (to_bytes (Seq.(++) prefix suffix))
+          = Seq.(++) (byte_sequence_as_ints (to_bytes prefix)) (byte_sequence_as_ints (to_bytes suffix)))
+        )
+      else
+        [@stop_split] [@expl:string_bytes_concat ensures] ([@stop_split] [@expl:string_bytes_concat ensures #0] false)
+        /\ ([@stop_split] [@expl:string_bytes_concat ensures #1] to_bytes (Seq.(++) prefix suffix)
+          = Seq.(++) (to_bytes prefix) (to_bytes suffix))
+        /\ ([@stop_split] [@expl:string_bytes_concat ensures #2] byte_sequence_as_ints (to_bytes (Seq.(++) prefix suffix))
+        = Seq.(++) (byte_sequence_as_ints (to_bytes prefix)) (byte_sequence_as_ints (to_bytes suffix)))
+      ))
+    else
+      [@stop_split] [@expl:string_bytes_concat ensures] ([@stop_split] [@expl:string_bytes_concat ensures #0] false)
+      /\ ([@stop_split] [@expl:string_bytes_concat ensures #1] to_bytes (Seq.(++) prefix suffix)
+        = Seq.(++) (to_bytes prefix) (to_bytes suffix))
+      /\ ([@stop_split] [@expl:string_bytes_concat ensures #2] byte_sequence_as_ints (to_bytes (Seq.(++) prefix suffix))
+      = Seq.(++) (byte_sequence_as_ints (to_bytes prefix)) (byte_sequence_as_ints (to_bytes suffix)))
+    ))
+  

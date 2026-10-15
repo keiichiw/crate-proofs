@@ -1,0 +1,23 @@
+(* <ascii_set::AsciiSet as creusot_std::model::DeepModel> *)
+
+use creusot.slice.Slice64
+use creusot.int.UInt32
+use seq.Seq
+
+type t_AsciiSet = { mask: Slice64.array UInt32.t }
+
+function mask_words (self: t_AsciiSet) : Seq.seq UInt32.t =
+  Seq.create 4 (fun (i: int) -> Seq.get (Slice64.view self.mask) i)
+
+axiom mask_words_spec: forall self: t_AsciiSet [mask_words self]. Seq.length (mask_words self) = 4
+
+meta "compute_max_steps" 1000000
+
+meta "select_lsinst" "all"
+
+constant self : t_AsciiSet
+
+function deep_model_AsciiSet (self: t_AsciiSet) : Seq.seq UInt32.t
+
+goal vc_deep_model_AsciiSet: ([@stop_split] [@expl:mask_words ensures] Seq.length (mask_words self) = 4)
+  -> ([@stop_split] [@expl:deep_model ensures] mask_words self = mask_words self)

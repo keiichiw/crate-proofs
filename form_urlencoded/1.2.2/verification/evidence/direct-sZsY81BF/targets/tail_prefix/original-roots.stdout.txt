@@ -1,0 +1,31 @@
+theory Coma
+  
+  (* use why3.BuiltIn.BuiltIn *)
+  
+  (* use why3.Bool.Bool *)
+  
+  (* use why3.Unit.Unit *)
+  
+  (* use creusot.int.UInt8 *)
+  
+  (* use seq.Seq *)
+  
+  (* meta compute_max_steps 1000000 *)
+  
+  (* meta select_lsinst "all" *)
+  
+  constant bytes : seq t
+  
+  constant start : int
+  
+  constant end' : int
+  
+  predicate tail_prefix (seq t) int int
+  
+  goal vc_tail_prefix :
+    0 <= start /\ start <= end' /\ end' <= length bytes ->
+    bytes[start..length bytes][0..(end' - start)] = bytes[start..end'] /\
+    bytes[start..length bytes][0..(end' - start)] = bytes[start..end']
+  
+end
+

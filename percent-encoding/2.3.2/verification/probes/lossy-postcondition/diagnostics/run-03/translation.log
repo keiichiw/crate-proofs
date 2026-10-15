@@ -1,0 +1,11 @@
+    Checking percent-encoding-lossy-postcondition-probe v0.0.0 (/workspace/proof-env/percent-encoding/2.3.2/verification/probes/lossy-postcondition)
+error: expected one of `!`, `,`, `.`, `::`, `?`, `{`, `}`, or an operator, found `@`
+  --> src/lib.rs:34:38
+   |
+34 |         Cow::Borrowed(bytes) => bytes@,
+   |                              --      ^ expected one of 8 possible tokens
+   |                              |
+   |                              while parsing the `match` arm starting here
+
+error: could not compile `percent-encoding-lossy-postcondition-probe` (lib) due to 1 previous error
+Error: Compilation failed

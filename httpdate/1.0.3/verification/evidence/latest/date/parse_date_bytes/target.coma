@@ -1,0 +1,463 @@
+use creusot.int.UInt8
+use seq.Seq
+use creusot.int.UInt16
+use creusot.slice.Slice64
+use int.ComputerDivision
+use creusot.prelude.Any
+use int.Int
+
+type t_RawDate = {
+  sec: UInt8.t;
+  min: UInt8.t;
+  hour: UInt8.t;
+  day: UInt8.t;
+  mon: UInt8.t;
+  year: UInt16.t;
+  wday: UInt8.t }
+
+predicate asctime_encoding (s: Seq.seq UInt8.t) (d: t_RawDate)
+
+function encoding_laws (s: Seq.seq UInt8.t) : ()
+
+axiom encoding_laws_spec: forall s: Seq.seq UInt8.t. forall d: t_RawDate. asctime_encoding s d -> Seq.length s = 24
+
+axiom encoding_laws_spec'0: forall s: Seq.seq UInt8.t. forall a: t_RawDate, b: t_RawDate. asctime_encoding s a
+        /\ asctime_encoding s b -> a = b
+
+predicate rfc850_encoding (s: Seq.seq UInt8.t) (d: t_RawDate)
+
+function encoding_laws'0 (s: Seq.seq UInt8.t) : ()
+
+axiom encoding_laws_spec'1: forall s: Seq.seq UInt8.t. forall d: t_RawDate. rfc850_encoding s d
+      -> 30 <= Seq.length s /\ Seq.length s <= 33
+
+axiom encoding_laws_spec'2: forall s: Seq.seq UInt8.t. forall a: t_RawDate, b: t_RawDate. rfc850_encoding s a
+        /\ rfc850_encoding s b -> a = b
+
+type t_Error = { f0: () }
+
+type t_Result_RawDate_Error = Ok t_RawDate | Err t_Error
+
+predicate gt_log_Int [@inline:trivial] (self: int) (other: int) = other < self
+
+meta "rewrite_def" predicate gt_log_Int
+
+function imf_month [@inline:trivial] (s: Seq.seq UInt8.t) : int = if Seq.get s 7 <> (32: UInt8.t)
+  \/ Seq.get s 11 <> (32: UInt8.t) then
+    0
+  else
+    if Seq.get s 8 = (74: UInt8.t) /\ Seq.get s 9 = (97: UInt8.t) /\ Seq.get s 10 = (110: UInt8.t) then
+      1
+    else
+      if Seq.get s 8 = (70: UInt8.t) /\ Seq.get s 9 = (101: UInt8.t) /\ Seq.get s 10 = (98: UInt8.t) then
+        2
+      else
+        if Seq.get s 8 = (77: UInt8.t) /\ Seq.get s 9 = (97: UInt8.t) /\ Seq.get s 10 = (114: UInt8.t) then
+          3
+        else
+          if Seq.get s 8 = (65: UInt8.t) /\ Seq.get s 9 = (112: UInt8.t) /\ Seq.get s 10 = (114: UInt8.t) then
+            4
+          else
+            if Seq.get s 8 = (77: UInt8.t) /\ Seq.get s 9 = (97: UInt8.t) /\ Seq.get s 10 = (121: UInt8.t) then
+              5
+            else
+              if Seq.get s 8 = (74: UInt8.t) /\ Seq.get s 9 = (117: UInt8.t) /\ Seq.get s 10 = (110: UInt8.t) then
+                6
+              else
+                if Seq.get s 8 = (74: UInt8.t) /\ Seq.get s 9 = (117: UInt8.t) /\ Seq.get s 10 = (108: UInt8.t) then
+                  7
+                else
+                  if Seq.get s 8 = (65: UInt8.t) /\ Seq.get s 9 = (117: UInt8.t) /\ Seq.get s 10 = (103: UInt8.t) then
+                    8
+                  else
+                    if Seq.get s 8 = (83: UInt8.t) /\ Seq.get s 9 = (101: UInt8.t) /\ Seq.get s 10 = (112: UInt8.t) then
+                      9
+                    else
+                      if Seq.get s 8 = (79: UInt8.t)
+                      /\ Seq.get s 9 = (99: UInt8.t) /\ Seq.get s 10 = (116: UInt8.t) then
+                        10
+                      else
+                        if Seq.get s 8 = (78: UInt8.t)
+                        /\ Seq.get s 9 = (111: UInt8.t) /\ Seq.get s 10 = (118: UInt8.t) then
+                          11
+                        else
+                          if Seq.get s 8 = (68: UInt8.t)
+                          /\ Seq.get s 9 = (101: UInt8.t) /\ Seq.get s 10 = (99: UInt8.t) then
+                            12
+                          else
+                            0
+                        
+                      
+                    
+                  
+                
+              
+            
+          
+        
+      
+    
+  
+
+
+meta "rewrite_def" function imf_month
+
+function imf_weekday [@inline:trivial] (s: Seq.seq UInt8.t) : int = if Seq.get s 3 <> (44: UInt8.t)
+  \/ Seq.get s 4 <> (32: UInt8.t) then
+    0
+  else
+    if Seq.get s 0 = (77: UInt8.t) /\ Seq.get s 1 = (111: UInt8.t) /\ Seq.get s 2 = (110: UInt8.t) then
+      1
+    else
+      if Seq.get s 0 = (84: UInt8.t) /\ Seq.get s 1 = (117: UInt8.t) /\ Seq.get s 2 = (101: UInt8.t) then
+        2
+      else
+        if Seq.get s 0 = (87: UInt8.t) /\ Seq.get s 1 = (101: UInt8.t) /\ Seq.get s 2 = (100: UInt8.t) then
+          3
+        else
+          if Seq.get s 0 = (84: UInt8.t) /\ Seq.get s 1 = (104: UInt8.t) /\ Seq.get s 2 = (117: UInt8.t) then
+            4
+          else
+            if Seq.get s 0 = (70: UInt8.t) /\ Seq.get s 1 = (114: UInt8.t) /\ Seq.get s 2 = (105: UInt8.t) then
+              5
+            else
+              if Seq.get s 0 = (83: UInt8.t) /\ Seq.get s 1 = (97: UInt8.t) /\ Seq.get s 2 = (116: UInt8.t) then
+                6
+              else
+                if Seq.get s 0 = (83: UInt8.t) /\ Seq.get s 1 = (117: UInt8.t) /\ Seq.get s 2 = (110: UInt8.t) then
+                  7
+                else
+                  0
+              
+            
+          
+        
+      
+    
+  
+
+
+meta "rewrite_def" function imf_weekday
+
+predicate imf_digit [@inline:trivial] (b: UInt8.t) = 48 <= UInt8.t'int b /\ UInt8.t'int b <= 57
+
+meta "rewrite_def" predicate imf_digit
+
+predicate imf_syntax [@inline:trivial] (s: Seq.seq UInt8.t) =
+  Seq.length s = 29
+  /\ gt_log_Int (imf_month s) 0
+  /\ gt_log_Int (imf_weekday s) 0
+  /\ Seq.get s 16 = (32: UInt8.t)
+  /\ Seq.get s 19 = (58: UInt8.t)
+  /\ Seq.get s 22 = (58: UInt8.t)
+  /\ Seq.get s 25 = (32: UInt8.t)
+  /\ Seq.get s 26 = (71: UInt8.t)
+  /\ Seq.get s 27 = (77: UInt8.t)
+  /\ Seq.get s 28 = (84: UInt8.t)
+  /\ imf_digit (Seq.get s 5)
+  /\ imf_digit (Seq.get s 6)
+  /\ imf_digit (Seq.get s 12)
+  /\ imf_digit (Seq.get s 13)
+  /\ imf_digit (Seq.get s 14)
+  /\ imf_digit (Seq.get s 15)
+  /\ imf_digit (Seq.get s 17)
+  /\ imf_digit (Seq.get s 18)
+  /\ imf_digit (Seq.get s 20) /\ imf_digit (Seq.get s 21) /\ imf_digit (Seq.get s 23) /\ imf_digit (Seq.get s 24)
+
+meta "rewrite_def" predicate imf_syntax
+
+predicate imf_encoding [@inline:trivial] (s: Seq.seq UInt8.t) (d: t_RawDate) =
+  imf_syntax s
+  /\ imf_month s = UInt8.t'int d.mon
+  /\ imf_weekday s = UInt8.t'int d.wday
+  /\ (UInt8.t'int (Seq.get s 5) - 48) * 10 + UInt8.t'int (Seq.get s 6) - 48 = UInt8.t'int d.day
+  /\ (UInt8.t'int (Seq.get s 12) - 48) * 1000 + (UInt8.t'int (Seq.get s 13) - 48) * 100
+          + (UInt8.t'int (Seq.get s 14) - 48) * 10
+        + UInt8.t'int (Seq.get s 15)
+      - 48
+    = UInt16.t'int d.year
+  /\ (UInt8.t'int (Seq.get s 17) - 48) * 10 + UInt8.t'int (Seq.get s 18) - 48 = UInt8.t'int d.hour
+  /\ (UInt8.t'int (Seq.get s 20) - 48) * 10 + UInt8.t'int (Seq.get s 21) - 48 = UInt8.t'int d.min
+  /\ (UInt8.t'int (Seq.get s 23) - 48) * 10 + UInt8.t'int (Seq.get s 24) - 48 = UInt8.t'int d.sec
+
+meta "rewrite_def" predicate imf_encoding
+
+let parse_imf_fixdate (s: Slice64.slice UInt8.t) (return (x: t_Result_RawDate_Error)) = any
+  [ return (result: t_Result_RawDate_Error) -> {[@stop_split] [@expl:parse_imf_fixdate ensures] match result with
+      | Ok d -> imf_encoding (Slice64.view s) d
+      /\ UInt8.t'int d.sec < 100
+      /\ UInt8.t'int d.min < 100
+      /\ UInt8.t'int d.hour < 100
+      /\ UInt8.t'int d.day < 100
+      /\ 1 <= UInt8.t'int d.mon
+      /\ UInt8.t'int d.mon <= 12 /\ UInt16.t'int d.year < 10000 /\ 1 <= UInt8.t'int d.wday /\ UInt8.t'int d.wday <= 7
+      | Err _ -> not imf_syntax (Slice64.view s)
+      end}
+    (! return {result}) ]
+
+predicate rfc850_syntax (s: Seq.seq UInt8.t)
+
+let parse_rfc850_date (s: Slice64.slice UInt8.t) (return (x: t_Result_RawDate_Error)) = any
+  [ return (result: t_Result_RawDate_Error) -> {[@stop_split] [@expl:parse_rfc850_date ensures] match result with
+      | Ok d -> rfc850_encoding (Slice64.view s) d
+      /\ UInt8.t'int d.sec < 100
+      /\ UInt8.t'int d.min < 100
+      /\ UInt8.t'int d.hour < 100
+      /\ UInt8.t'int d.day < 100
+      /\ 1970 <= UInt16.t'int d.year
+      /\ UInt16.t'int d.year <= 2069
+      /\ 1 <= UInt8.t'int d.mon /\ UInt8.t'int d.mon <= 12 /\ 1 <= UInt8.t'int d.wday /\ UInt8.t'int d.wday <= 7
+      | Err _ -> not rfc850_syntax (Slice64.view s) /\ (forall d: t_RawDate. not rfc850_encoding (Slice64.view s) d)
+      end}
+    (! return {result}) ]
+
+predicate asctime_syntax (s: Seq.seq UInt8.t)
+
+let parse_asctime (s: Slice64.slice UInt8.t) (return (x: t_Result_RawDate_Error)) = any
+  [ return (result: t_Result_RawDate_Error) -> {[@stop_split] [@expl:parse_asctime ensures] match result with
+      | Ok d -> asctime_encoding (Slice64.view s) d
+      /\ UInt8.t'int d.sec < 100
+      /\ UInt8.t'int d.min < 100
+      /\ UInt8.t'int d.hour < 100
+      /\ UInt8.t'int d.day < 100
+      /\ 1 <= UInt8.t'int d.mon
+      /\ UInt8.t'int d.mon <= 12 /\ UInt16.t'int d.year < 10000 /\ 1 <= UInt8.t'int d.wday /\ UInt8.t'int d.wday <= 7
+      | Err _ -> not asctime_syntax (Slice64.view s) /\ (forall d: t_RawDate. not asctime_encoding (Slice64.view s) d)
+      end}
+    (! return {result}) ]
+
+type t_Result_Infallible_Error = Ok'0 () | Err'0 t_Error
+
+type t_ControlFlow_Result_Infallible_Error_RawDate = Continue t_RawDate | Break t_Result_Infallible_Error
+
+predicate inv_Infallible [@inline:trivial] (_1: ()) = false
+
+meta "rewrite_def" predicate inv_Infallible
+
+predicate inv_Result_Infallible_Error (_1: t_Result_Infallible_Error)
+
+axiom inv_axiom [@rewrite]:
+  forall x: t_Result_Infallible_Error [inv_Result_Infallible_Error x]. inv_Result_Infallible_Error x
+    = match x with
+      | Ok'0 f0'0 -> inv_Infallible f0'0
+      | Err'0 f0'0 -> true
+      end
+
+predicate inv_ControlFlow_Result_Infallible_Error_RawDate (_1: t_ControlFlow_Result_Infallible_Error_RawDate)
+
+axiom inv_axiom'0 [@rewrite]:
+  forall x: t_ControlFlow_Result_Infallible_Error_RawDate [inv_ControlFlow_Result_Infallible_Error_RawDate x]. inv_ControlFlow_Result_Infallible_Error_RawDate x
+    = match x with
+      | Continue f0'0 -> true
+      | Break f0'0 -> inv_Result_Infallible_Error f0'0
+      end
+
+let branch_Result_RawDate_Error (self_: t_Result_RawDate_Error)
+  (return (x: t_ControlFlow_Result_Infallible_Error_RawDate)) = any
+  [ return (result: t_ControlFlow_Result_Infallible_Error_RawDate) ->
+  {[@stop_split] [@expl:branch_Result_RawDate_Error ensures] ([@stop_split] [@expl:branch result type invariant] inv_ControlFlow_Result_Infallible_Error_RawDate result)
+    /\ ([@stop_split] [@expl:branch ensures] match self_ with
+      | Ok v -> result = Continue v
+      | Err e -> result = Break (Err'0 e)
+      end)}
+    (! return {result}) ]
+
+let elim_Break (_x: t_ControlFlow_Result_Infallible_Error_RawDate) (return (f0'0: t_Result_Infallible_Error)) = any
+  [ _k (f0'0: t_Result_Infallible_Error) -> {Break f0'0 = _x} (! return {f0'0})
+  | _chk -> (! {[@expl:elim Break] match _x with
+      | Break _ -> true
+      | _ -> false
+      end}
+    any) ]
+
+type tup2_Result_RawDate_Error_Result_Infallible_Error = {
+  f0'0: t_Result_RawDate_Error;
+  f1'0: t_Result_Infallible_Error }
+
+predicate postcondition_from (self: ()) (args: t_Error) (result: t_Error) = let self_ = args in result = self_
+
+meta "rewrite_def" predicate postcondition_from
+
+let from_Error (self_: t_Error) (return (x: t_Error)) = any
+  [ return (result: t_Error) -> {[@stop_split] [@expl:from ensures] result = self_} (! return {result}) ]
+
+let from_residual_Result_RawDate_Error (residual: t_Result_Infallible_Error) (return (x: t_Result_RawDate_Error)) =
+{[@stop_split] [@expl:from_residual 'residual' type invariant] inv_Result_Infallible_Error residual}
+  any
+  [ return (result: t_Result_RawDate_Error) -> {[@stop_split] [@expl:from_residual ensures] match { f0'0 = result;
+                                                                                                    f1'0 = residual } with
+      | {f0'0 = Err result'0; f1'0 = Err'0 residual'0} -> postcondition_from () residual'0 result'0
+      | _ -> false
+      end}
+    (! return {result}) ]
+
+let elim_Continue (_x: t_ControlFlow_Result_Infallible_Error_RawDate) (return (f0'1: t_RawDate)) = any
+  [ _k (f0'1: t_RawDate) -> {Continue f0'1 = _x} (! return {f0'1})
+  | _chk -> (! {[@expl:elim Continue] match _x with
+      | Continue _ -> true
+      | _ -> false
+      end}
+    any) ]
+
+let elim_Ok (_x: t_Result_RawDate_Error) (return (f0'1: t_RawDate)) = any
+  [ _k (f0'1: t_RawDate) -> {Ok f0'1 = _x} (! return {f0'1})
+  | _chk -> (! {[@expl:elim Ok] match _x with
+      | Ok _ -> true
+      | _ -> false
+      end}
+    any) ]
+
+function leap_adjustment [@inline:trivial] (year'0: int) : int = if ComputerDivision.mod year'0 4 = 0
+  /\ (ComputerDivision.mod year'0 100 <> 0 \/ ComputerDivision.mod year'0 400 = 0) then
+    1
+  else
+    0
+
+
+meta "rewrite_def" function leap_adjustment
+
+function month_length [@inline:trivial] (year'0: int) (month: int) : int = if month = 2 then
+    28 + leap_adjustment year'0
+  else
+    if month = 4 \/ month = 6 \/ month = 9 \/ month = 11 then 30 else 31
+
+
+meta "rewrite_def" function month_length
+
+function january_start [@inline:trivial] (year'0: int) : int = (year'0 - 1970) * 365
+      + ComputerDivision.div (year'0 - 1969) 4
+    - ComputerDivision.div (year'0 - 1901) 100
+  + ComputerDivision.div (year'0 - 1601) 400
+
+meta "rewrite_def" function january_start
+
+function january_offset [@inline:trivial] (month: int) : int = if month = 1 then
+    0
+  else
+    if month = 2 then
+      31
+    else
+      if month = 3 then
+        59
+      else
+        if month = 4 then
+          90
+        else
+          if month = 5 then
+            120
+          else
+            if month = 6 then
+              151
+            else
+              if month = 7 then
+                181
+              else
+                if month = 8 then
+                  212
+                else
+                  if month = 9 then 243 else if month = 10 then 273 else if month = 11 then 304 else 334
+              
+            
+          
+        
+      
+    
+  
+
+
+meta "rewrite_def" function january_offset
+
+function gregorian_day [@inline:trivial] (d: t_RawDate) : int = january_start (UInt16.t'int d.year)
+        + january_offset (UInt8.t'int d.mon)
+      + UInt8.t'int d.day
+    - 1
+  + (if gt_log_Int (UInt8.t'int d.mon) 2 then leap_adjustment (UInt16.t'int d.year) else 0)
+
+meta "rewrite_def" function gregorian_day
+
+predicate valid_calendar [@inline:trivial] (d: t_RawDate) =
+  UInt8.t'int d.sec < 60
+  /\ UInt8.t'int d.min < 60
+  /\ UInt8.t'int d.hour < 24
+  /\ 1970 <= UInt16.t'int d.year
+  /\ UInt16.t'int d.year <= 9999
+  /\ 1 <= UInt8.t'int d.mon
+  /\ UInt8.t'int d.mon <= 12
+  /\ 1 <= UInt8.t'int d.day
+  /\ UInt8.t'int d.day <= month_length (UInt16.t'int d.year) (UInt8.t'int d.mon)
+  /\ UInt8.t'int d.wday = ComputerDivision.mod (gregorian_day d + 3) 7 + 1
+
+meta "rewrite_def" predicate valid_calendar
+
+let is_valid_date (d: t_RawDate) (return (x: bool)) = any
+  [ return (result: bool) -> {[@stop_split] [@expl:is_valid_date ensures] result = valid_calendar d}
+    (! return {result}) ]
+
+meta "compute_max_steps" 1000000
+
+meta "select_lsinst" "all"
+
+let parse_date_bytes (s: Slice64.slice UInt8.t) (return (x: t_Result_RawDate_Error)) = (! bb0
+  [ bb0 = s0
+    [ s0 =
+      {[@expl:assertion] let _ = encoding_laws (Slice64.view s) in let _ = encoding_laws'0 (Slice64.view s) in true}
+      s1
+    | s1 = parse_imf_fixdate {s} (fun (_x: t_Result_RawDate_Error) -> [ &_11 <- _x ] s2)
+    | s2 = any [ br0 (x0: t_RawDate) -> {_11 = Ok x0} (! bb5) | br1 (x0: t_Error) -> {_11 = Err x0} (! bb4) ] ]
+  | bb4 = s0
+    [ s0 = parse_rfc850_date {s} (fun (_x: t_Result_RawDate_Error) -> [ &_15 <- _x ] s1)
+    | s1 = any [ br0 (x0: t_RawDate) -> {_15 = Ok x0} (! bb10) | br1 (x0: t_Error) -> {_15 = Err x0} (! bb9) ] ]
+  | bb9 = s0
+    [ s0 = parse_asctime {s} (fun (_x: t_Result_RawDate_Error) -> [ &_20 <- _x ] s1)
+    | s1 = branch_Result_RawDate_Error {_20}
+        (fun (_x: t_ControlFlow_Result_Infallible_Error_RawDate) -> [ &_19 <- _x ] s2)
+    | s2 = any
+      [ br0 (x0: t_RawDate) -> {_19 = Continue x0} (! bb15)
+      | br1 (x0: t_Result_Infallible_Error) -> {_19 = Break x0} (! bb16) ] ]
+  | bb16 = s0
+    [ s0 = elim_Break {_19} (fun (r0: t_Result_Infallible_Error) -> [ &residual <- r0 ] s1)
+    | s1 = from_residual_Result_RawDate_Error {residual} (fun (_x: t_Result_RawDate_Error) -> [ &_ret <- _x ] s2)
+    | s2 = return {_ret} ]
+  | bb15 = s0
+    [ s0 = elim_Continue {_19} (fun (r0: t_RawDate) -> [ &val' <- r0 ] s1) | s1 = [ &date <- val' ] s2 | s2 = bb19 ]
+  | bb10 = s0
+    [ s0 = elim_Ok {_15} (fun (r0: t_RawDate) -> [ &date'1 <- r0 ] s1) | s1 = [ &date <- date'1 ] s2 | s2 = bb19 ]
+  | bb5 = s0
+    [ s0 = elim_Ok {_11} (fun (r0: t_RawDate) -> [ &date'0 <- r0 ] s1) | s1 = [ &date <- date'0 ] s2 | s2 = bb19 ]
+  | bb19 = s0
+    [ s0 = [ &_30 <- date ] s1
+    | s1 = is_valid_date {_30} (fun (_x: bool) -> [ &_28 <- _x ] s2)
+    | s2 = any [ br0 -> {_28 = false} (! bb22) | br1 -> {_28} (! bb21) ] ]
+  | bb21 = s0 [ s0 = [ &_ret <- Ok date ] s1 | s1 = return {_ret} ]
+  | bb22 = s0 [ s0 = [ &_32 <- { f0 = _33 } ] s1 | s1 = [ &_ret <- Err _32 ] s2 | s2 = return {_ret} ] ]
+  [ & _ret: t_Result_RawDate_Error = Any.any_l ()
+  | & s: Slice64.slice UInt8.t = s
+  | & date: t_RawDate = Any.any_l ()
+  | & _11: t_Result_RawDate_Error = Any.any_l ()
+  | & date'0: t_RawDate = Any.any_l ()
+  | & _15: t_Result_RawDate_Error = Any.any_l ()
+  | & date'1: t_RawDate = Any.any_l ()
+  | & _19: t_ControlFlow_Result_Infallible_Error_RawDate = Any.any_l ()
+  | & _20: t_Result_RawDate_Error = Any.any_l ()
+  | & residual: t_Result_Infallible_Error = Any.any_l ()
+  | & val': t_RawDate = Any.any_l ()
+  | & _28: bool = Any.any_l ()
+  | & _30: t_RawDate = Any.any_l ()
+  | & _32: t_Error = Any.any_l ()
+  | & _33: () = Any.any_l () ])
+  [ return (result: t_Result_RawDate_Error) ->
+  {[@stop_split] [@expl:parse_date_bytes ensures] ([@stop_split] [@expl:parse_date_bytes ensures #0] match result with
+        | Ok d -> valid_calendar d
+        | Err _ -> true
+        end)
+    /\ ([@stop_split] [@expl:parse_date_bytes ensures #1] match result with
+        | Ok d -> imf_encoding (Slice64.view s) d
+        \/ rfc850_encoding (Slice64.view s) d \/ asctime_encoding (Slice64.view s) d
+        | Err _ -> true
+        end)
+    /\ ([@stop_split] [@expl:parse_date_bytes ensures #2] match result with
+      | Ok d -> imf_syntax (Slice64.view s) -> imf_encoding (Slice64.view s) d
+      | Err _ -> forall d: t_RawDate. imf_encoding (Slice64.view s) d
+          \/ rfc850_encoding (Slice64.view s) d \/ asctime_encoding (Slice64.view s) d -> not valid_calendar d
+      end)}
+    (! return {result}) ]

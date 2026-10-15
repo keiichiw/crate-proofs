@@ -1,0 +1,127 @@
+theory Coma
+  
+  (* use why3.BuiltIn.BuiltIn *)
+  
+  (* use why3.Bool.Bool *)
+  
+  (* use why3.Unit.Unit *)
+  
+  (* use creusot.int.UInt8 *)
+  
+  (* use creusot.prelude.Any *)
+  
+  (* meta compute_max_steps 1000000 *)
+  
+  (* meta select_lsinst "all" *)
+  
+  goal vc_byte_serialized_unchanged :
+    forall byte:t.
+     forall _6:bool, _7:bool, _8:bool, _9:bool.
+      (forall _81:bool, _91:bool.
+        ((byte = (42:t) ->
+          true <->
+          t'int byte = 42 \/
+          t'int byte = 45 \/
+          t'int byte = 46 \/
+          48 <= t'int byte /\ t'int byte <= 57 \/
+          65 <= t'int byte /\ t'int byte <= 90 \/
+          t'int byte = 95 \/ 97 <= t'int byte /\ t'int byte <= 122) /\
+         (byte = (45:t) ->
+          true <->
+          t'int byte = 42 \/
+          t'int byte = 45 \/
+          t'int byte = 46 \/
+          48 <= t'int byte /\ t'int byte <= 57 \/
+          65 <= t'int byte /\ t'int byte <= 90 \/
+          t'int byte = 95 \/ 97 <= t'int byte /\ t'int byte <= 122) /\
+         (byte = (46:t) ->
+          true <->
+          t'int byte = 42 \/
+          t'int byte = 45 \/
+          t'int byte = 46 \/
+          48 <= t'int byte /\ t'int byte <= 57 \/
+          65 <= t'int byte /\ t'int byte <= 90 \/
+          t'int byte = 95 \/ 97 <= t'int byte /\ t'int byte <= 122) /\
+         (byte = (95:t) ->
+          true <->
+          t'int byte = 42 \/
+          t'int byte = 45 \/
+          t'int byte = 46 \/
+          48 <= t'int byte /\ t'int byte <= 57 \/
+          65 <= t'int byte /\ t'int byte <= 90 \/
+          t'int byte = 95 \/ 97 <= t'int byte /\ t'int byte <= 122) /\
+         (not byte = (42:t) /\
+          not byte = (45:t) /\ not byte = (46:t) /\ not byte = (95:t) ->
+          le (48:t) byte ->
+          le byte (57:t) ->
+          true <->
+          t'int byte = 42 \/
+          t'int byte = 45 \/
+          t'int byte = 46 \/
+          48 <= t'int byte /\ t'int byte <= 57 \/
+          65 <= t'int byte /\ t'int byte <= 90 \/
+          t'int byte = 95 \/ 97 <= t'int byte /\ t'int byte <= 122)) /\
+        ((not byte = (42:t) /\
+          not byte = (45:t) /\ not byte = (46:t) /\ not byte = (95:t)) /\
+         (not le (48:t) byte /\
+          (if le (48:t) byte then _81 = True else _81 = False) /\
+          _91 = (any_l (): bool) \/
+          le (48:t) byte /\
+          not le byte (57:t) /\
+          (if le (48:t) byte then _81 = True else _81 = False) /\
+          (if le byte (57:t) then _91 = True else _91 = False)) ->
+         le (65:t) byte ->
+         le byte (90:t) ->
+         true <->
+         t'int byte = 42 \/
+         t'int byte = 45 \/
+         t'int byte = 46 \/
+         48 <= t'int byte /\ t'int byte <= 57 \/
+         65 <= t'int byte /\ t'int byte <= 90 \/
+         t'int byte = 95 \/ 97 <= t'int byte /\ t'int byte <= 122)) /\
+      ((exists _81:bool, _91:bool.
+         ((not byte = (42:t) /\
+           not byte = (45:t) /\ not byte = (46:t) /\ not byte = (95:t)) /\
+          (not le (48:t) byte /\
+           (if le (48:t) byte then _81 = True else _81 = False) /\
+           _91 = (any_l (): bool) \/
+           le (48:t) byte /\
+           not le byte (57:t) /\
+           (if le (48:t) byte then _81 = True else _81 = False) /\
+           (if le byte (57:t) then _91 = True else _91 = False))) /\
+         (not le (65:t) byte /\
+          (if le (65:t) byte then _6 = True else _6 = False) /\
+          _7 = (any_l (): bool) /\ _8 = _81 /\ _9 = _91 \/
+          le (65:t) byte /\
+          not le byte (90:t) /\
+          (if le (65:t) byte then _6 = True else _6 = False) /\
+          (if le byte (90:t) then _7 = True else _7 = False) /\
+          _8 = _81 /\ _9 = _91)) ->
+       (not le (97:t) byte ->
+        false <->
+        t'int byte = 42 \/
+        t'int byte = 45 \/
+        t'int byte = 46 \/
+        48 <= t'int byte /\ t'int byte <= 57 \/
+        65 <= t'int byte /\ t'int byte <= 90 \/
+        t'int byte = 95 \/ 97 <= t'int byte /\ t'int byte <= 122) /\
+       (le (97:t) byte ->
+        (not le byte (122:t) ->
+         false <->
+         t'int byte = 42 \/
+         t'int byte = 45 \/
+         t'int byte = 46 \/
+         48 <= t'int byte /\ t'int byte <= 57 \/
+         65 <= t'int byte /\ t'int byte <= 90 \/
+         t'int byte = 95 \/ 97 <= t'int byte /\ t'int byte <= 122) /\
+        (le byte (122:t) ->
+         true <->
+         t'int byte = 42 \/
+         t'int byte = 45 \/
+         t'int byte = 46 \/
+         48 <= t'int byte /\ t'int byte <= 57 \/
+         65 <= t'int byte /\ t'int byte <= 90 \/
+         t'int byte = 95 \/ 97 <= t'int byte /\ t'int byte <= 122)))
+  
+end
+

@@ -1,0 +1,115 @@
+(* ascii_set::AsciiSet *)
+
+use creusot.slice.Slice64BW
+use creusot.int.UInt32BW
+use creusot.int.UInt8BW
+use creusot.int.UInt64BW
+use creusot.prelude.Any
+use seq.Seq
+use int.ComputerDivision
+use int.Int
+
+type t_AsciiSet = { mask: Slice64BW.array UInt32BW.t }
+
+constant size_of_u32: int = 4
+
+meta "rewrite_def" constant size_of_u32
+
+axiom size_of_u32_spec: 0 <= size_of_u32
+
+let size_of_u32'0 (return (x: UInt64BW.t)) = any
+  [ return (result: UInt64BW.t) -> {[@stop_split] [@expl:size_of ensures] UInt64BW.t'int result = size_of_u32}
+    (! return {result}) ]
+
+type tup2_usize_bool = { f0: UInt64BW.t; f1: bool }
+
+constant const_BITS_PER_CHUNK : UInt64BW.t
+
+let set_BITS_PER_CHUNK (return) = bb0
+  [ bb0 = s0
+    [ s0 = size_of_u32'0 (fun (_x: UInt64BW.t) -> [ &_1 <- _x ] s1)
+    | s1 = [ &_2 <- let (_fst, _snd) = UInt64BW.mul_with_overflow (8: UInt64BW.t) _1 in { f0 = _fst; f1 = _snd } ] s2
+    | s2 = {[@expl:Mul overflow] not _2.f1} s3
+    | s3 = [ &_ret <- _2.f0 ] s4
+    | s4 = return {_ret} ] ]
+  [ & _ret: UInt64BW.t = Any.any_l () | & _1: UInt64BW.t = Any.any_l () | & _2: tup2_usize_bool = Any.any_l () ]
+  [ return (_const: UInt64BW.t) -> -{const_BITS_PER_CHUNK = _const}- return ]
+
+predicate inv_Seq_u32 [@inline:trivial] (_1: Seq.seq UInt32BW.t) = true
+
+meta "rewrite_def" predicate inv_Seq_u32
+
+predicate invariant_array_u32_4 (self: Slice64BW.array UInt32BW.t) =
+  inv_Seq_u32 (Slice64BW.view self) /\ Seq.length (Slice64BW.view self) = UInt64BW.t'int (4: UInt64BW.t)
+
+predicate inv_array_u32_4 [@inline:trivial] (_1: Slice64BW.array UInt32BW.t) = invariant_array_u32_4 _1
+
+meta "rewrite_def" predicate inv_array_u32_4
+
+predicate inv_AsciiSet (_1: t_AsciiSet)
+
+axiom inv_axiom [@rewrite]: forall x: t_AsciiSet [inv_AsciiSet x]. inv_AsciiSet x = inv_array_u32_4 x.mask
+
+predicate invariant_ref_AsciiSet [@inline:trivial] (self: t_AsciiSet) = inv_AsciiSet self
+
+meta "rewrite_def" predicate invariant_ref_AsciiSet
+
+predicate inv_ref_AsciiSet [@inline:trivial] (_1: t_AsciiSet) = invariant_ref_AsciiSet _1
+
+meta "rewrite_def" predicate inv_ref_AsciiSet
+
+function mask_words (self: t_AsciiSet) : Seq.seq UInt32BW.t =
+  Seq.create 4 (fun (i: int) -> Seq.get (Slice64BW.view self.mask) i)
+
+axiom mask_words_spec: forall self: t_AsciiSet [mask_words self]. Seq.length (mask_words self) = 4
+
+meta "compute_max_steps" 1000000
+
+meta "select_lsinst" "all"
+
+let add (self: t_AsciiSet) (byte: UInt8BW.t) (return (x: t_AsciiSet)) =
+{[@stop_split] [@expl:add requires] ([@stop_split] [@expl:add 'self' type invariant] inv_ref_AsciiSet self)
+  /\ ([@stop_split] [@expl:add requires] UInt8BW.t'int byte < 128)}
+  (! set_BITS_PER_CHUNK
+    (bb0
+    [ bb0 = s0
+      [ s0 = [ &mask'0 <- self.mask ] s1
+      | s1 = [ &_11 <- UInt64BW.of_BV256 (UInt8BW.to_BV256 byte) ] s2
+      | s2 = [ &_13 <- const_BITS_PER_CHUNK = (0: UInt64BW.t) ] s3
+      | s3 = {[@expl:remainder by zero] not _13} s4
+      | s4 = UInt64BW.rem {_11} {const_BITS_PER_CHUNK} (fun (_x: UInt64BW.t) -> [ &_10 <- _x ] s5)
+      | s5 = UInt32BW.shl {(1: UInt32BW.t)} {UInt64BW.to_BV256 _10} (fun (_x: UInt32BW.t) -> [ &_9 <- _x ] s6)
+      | s6 = [ &_15 <- UInt64BW.of_BV256 (UInt8BW.to_BV256 byte) ] s7
+      | s7 = [ &_17 <- const_BITS_PER_CHUNK = (0: UInt64BW.t) ] s8
+      | s8 = {[@expl:division by zero] not _17} s9
+      | s9 = UInt64BW.div {_15} {const_BITS_PER_CHUNK} (fun (_x: UInt64BW.t) -> [ &_14 <- _x ] s10)
+      | s10 = [ &_18 <- UInt64BW.lt _14 (4: UInt64BW.t) ] s11
+      | s11 = {[@expl:index in bounds] _18} s12
+      | s12 = Slice64BW.get <UInt32BW.t> {mask'0} {_14}
+          (fun (r: UInt32BW.t) ->
+            Slice64BW.set <UInt32BW.t> {mask'0} {_14} {UInt32BW.bw_or r _9}
+              (fun (r'0: Slice64BW.array UInt32BW.t) -> [ &mask'0 <- r'0 ] s13))
+      | s13 = [ &_ret <- { mask = mask'0 } ] s14
+      | s14 = return {_ret} ] ]
+    [ & _ret: t_AsciiSet = Any.any_l ()
+    | & self: t_AsciiSet = self
+    | & byte: UInt8BW.t = byte
+    | & mask'0: Slice64BW.array UInt32BW.t = Any.any_l ()
+    | & _9: UInt32BW.t = Any.any_l ()
+    | & _10: UInt64BW.t = Any.any_l ()
+    | & _11: UInt64BW.t = Any.any_l ()
+    | & _13: bool = Any.any_l ()
+    | & _14: UInt64BW.t = Any.any_l ()
+    | & _15: UInt64BW.t = Any.any_l ()
+    | & _17: bool = Any.any_l ()
+    | & _18: bool = Any.any_l () ]))
+  [ return (result: t_AsciiSet) ->
+  {[@stop_split] [@expl:add ensures] ([@stop_split] [@expl:add result type invariant] inv_AsciiSet result)
+    /\ ([@stop_split] [@expl:add ensures] forall i: int. 0 <= i /\ i < 4
+      -> Seq.get (mask_words result) i
+      = (if i = ComputerDivision.div (UInt8BW.t'int byte) 32 then
+        UInt32BW.bw_or (Seq.get (mask_words self) i) (UInt32BW.shl (1: UInt32BW.t) (UInt32BW.of_BV256 (UInt8BW.to_BV256 (UInt8BW.bw_and byte (31: UInt8BW.t)))))
+      else
+        Seq.get (mask_words self) i
+      ))}
+    (! return {result}) ]

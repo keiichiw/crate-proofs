@@ -1,0 +1,99 @@
+{
+  "status": "passed",
+  "root_count": 4,
+  "direct_smt_goals": 8,
+  "results": [
+    {
+      "goal": "Coma.vc_finish",
+      "status": "closed",
+      "export_mode": "untransformed",
+      "smt_results": [
+        {
+          "file": "000-vc_finish/untransformed/finish-Coma-vc_finish.smt2",
+          "exit_code": 0,
+          "statuses": [
+            "unsat"
+          ],
+          "passed": true
+        }
+      ]
+    },
+    {
+      "goal": "Coma.vc_deref_mut_Ghost_refmut_DebugTrace",
+      "status": "closed",
+      "export_mode": "untransformed",
+      "smt_results": [
+        {
+          "file": "001-vc_deref_mut_Ghost_refmut_DebugTrace/untransformed/finish-Coma-vc_deref_mut_Ghost_refmut_DebugTrace.smt2",
+          "exit_code": 0,
+          "statuses": [
+            "unsat"
+          ],
+          "passed": true
+        }
+      ]
+    },
+    {
+      "goal": "Coma.vc_new_unit",
+      "status": "closed",
+      "export_mode": "untransformed",
+      "smt_results": [
+        {
+          "file": "002-vc_new_unit/untransformed/finish-Coma-vc_new_unit.smt2",
+          "exit_code": 0,
+          "statuses": [
+            "unsat"
+          ],
+          "passed": true
+        }
+      ]
+    },
+    {
+      "goal": "Coma.vc_finish'0",
+      "status": "closed",
+      "export_mode": "transformed",
+      "smt_results": [
+        {
+          "file": "003-vc_finish'0/transformed/finish-Coma-vc_finishqt0.smt2",
+          "exit_code": 0,
+          "statuses": [
+            "unsat"
+          ],
+          "passed": true
+        },
+        {
+          "file": "003-vc_finish'0/transformed/finish-Coma-vc_finishqt01.smt2",
+          "exit_code": 0,
+          "statuses": [
+            "unsat"
+          ],
+          "passed": true
+        },
+        {
+          "file": "003-vc_finish'0/transformed/finish-Coma-vc_finishqt02.smt2",
+          "exit_code": 0,
+          "statuses": [
+            "unsat"
+          ],
+          "passed": true
+        },
+        {
+          "file": "003-vc_finish'0/transformed/finish-Coma-vc_finishqt03.smt2",
+          "exit_code": 0,
+          "statuses": [
+            "unsat"
+          ],
+          "passed": true
+        },
+        {
+          "file": "003-vc_finish'0/transformed/finish-Coma-vc_finishqt04.smt2",
+          "exit_code": 0,
+          "statuses": [
+            "unsat"
+          ],
+          "passed": true
+        }
+      ]
+    }
+  ]
+}

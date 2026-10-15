@@ -1,0 +1,15 @@
+    Checking percent-encoding-strict-utf8-boundary-probe v0.0.0 (/workspace/proof-env/percent-encoding/2.3.2/verification/probes/strict-utf8-boundary)
+error: expected one of `!`, `.`, `::`, `;`, `?`, `else`, `{`, or an operator, found `@`
+  --> src/lib.rs:82:35
+   |
+82 |             let byte_trace = bytes@;
+   |                                   ^ expected one of 8 possible tokens
+
+error: expected `;`
+  --> src/lib.rs:82:35
+   |
+82 |             let byte_trace = bytes@;
+   |                                   ^
+
+error: could not compile `percent-encoding-strict-utf8-boundary-probe` (lib) due to 2 previous errors
+Error: Compilation failed

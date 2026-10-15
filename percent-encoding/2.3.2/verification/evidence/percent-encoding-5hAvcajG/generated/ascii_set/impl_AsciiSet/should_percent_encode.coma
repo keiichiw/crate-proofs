@@ -1,0 +1,80 @@
+(* ascii_set::AsciiSet *)
+
+use creusot.int.UInt8BW
+use creusot.slice.Slice64BW
+use creusot.int.UInt32BW
+use seq.Seq
+use creusot.int.UInt64BW
+use int.ComputerDivision
+use creusot.prelude.Any
+use int.Int
+
+type t_AsciiSet = { mask: Slice64BW.array UInt32BW.t }
+
+predicate inv_Seq_u32 [@inline:trivial] (_1: Seq.seq UInt32BW.t) = true
+
+meta "rewrite_def" predicate inv_Seq_u32
+
+predicate invariant_array_u32_4 (self: Slice64BW.array UInt32BW.t) =
+  inv_Seq_u32 (Slice64BW.view self) /\ Seq.length (Slice64BW.view self) = UInt64BW.t'int (4: UInt64BW.t)
+
+predicate inv_array_u32_4 [@inline:trivial] (_1: Slice64BW.array UInt32BW.t) = invariant_array_u32_4 _1
+
+meta "rewrite_def" predicate inv_array_u32_4
+
+predicate inv_AsciiSet (_1: t_AsciiSet)
+
+axiom inv_axiom [@rewrite]: forall x: t_AsciiSet [inv_AsciiSet x]. inv_AsciiSet x = inv_array_u32_4 x.mask
+
+predicate invariant_ref_AsciiSet [@inline:trivial] (self: t_AsciiSet) = inv_AsciiSet self
+
+meta "rewrite_def" predicate invariant_ref_AsciiSet
+
+predicate inv_ref_AsciiSet [@inline:trivial] (_1: t_AsciiSet) = invariant_ref_AsciiSet _1
+
+meta "rewrite_def" predicate inv_ref_AsciiSet
+
+function mask_words (self: t_AsciiSet) : Seq.seq UInt32BW.t =
+  Seq.create 4 (fun (i: int) -> Seq.get (Slice64BW.view self.mask) i)
+
+axiom mask_words_spec: forall self: t_AsciiSet [mask_words self]. Seq.length (mask_words self) = 4
+
+predicate contains_model (set: t_AsciiSet) (byte: UInt8BW.t) =
+  UInt8BW.t'int byte < 128
+  /\ UInt32BW.bw_and (Seq.get (mask_words set) (ComputerDivision.div (UInt8BW.t'int byte) 32)) (UInt32BW.shl (1: UInt32BW.t) (UInt32BW.of_BV256 (UInt8BW.to_BV256 (UInt8BW.bw_and byte (31: UInt8BW.t)))))
+  <> (0: UInt32BW.t)
+
+let contains (self: t_AsciiSet) (byte: UInt8BW.t) (return (x: bool)) =
+{[@stop_split] [@expl:contains requires] ([@stop_split] [@expl:contains 'self' type invariant] inv_ref_AsciiSet self)
+  /\ ([@stop_split] [@expl:contains requires] UInt8BW.t'int byte < 128)}
+  any
+  [ return (result: bool) -> {[@stop_split] [@expl:contains ensures] result = contains_model self byte}
+    (! return {result}) ]
+
+predicate ge_log_Int [@inline:trivial] (self: int) (other: int) = other <= self
+
+meta "rewrite_def" predicate ge_log_Int
+
+predicate should_encode_model (mask'0: Seq.seq UInt32BW.t) (byte: UInt8BW.t) =
+  ge_log_Int (UInt8BW.t'int byte) 128
+  \/ UInt32BW.bw_and (Seq.get mask'0 (ComputerDivision.div (UInt8BW.t'int byte) 32)) (UInt32BW.shl (1: UInt32BW.t) (UInt32BW.of_BV256 (UInt8BW.to_BV256 (UInt8BW.bw_and byte (31: UInt8BW.t)))))
+  <> (0: UInt32BW.t)
+
+meta "compute_max_steps" 1000000
+
+meta "select_lsinst" "all"
+
+let should_percent_encode (self: t_AsciiSet) (byte: UInt8BW.t) (return (x: bool)) =
+{[@stop_split] [@expl:should_percent_encode 'self' type invariant] inv_ref_AsciiSet self}
+  (! bb0
+  [ bb0 = s0
+    [ s0 = [ &_9 <- UInt8BW.ge byte (128: UInt8BW.t) ] s1
+    | s1 = any [ br0 -> {_9 = false} (! bb2) | br1 -> {_9} (! bb1) ] ]
+  | bb1 = s0 [ s0 = [ &_ret <- true ] s1 | s1 = return {_ret} ]
+  | bb2 = s0 [ s0 = contains {self} {byte} (fun (_x: bool) -> [ &_ret <- _x ] s1) | s1 = return {_ret} ] ]
+  [ & _ret: bool = Any.any_l () | & self: t_AsciiSet = self | & byte: UInt8BW.t = byte | & _9: bool = Any.any_l () ])
+  [ return (result: bool) ->
+  {[@stop_split] [@expl:should_percent_encode ensures] ([@stop_split] [@expl:should_percent_encode ensures #0] result
+      = (ge_log_Int (UInt8BW.t'int byte) 128 \/ contains_model self byte))
+    /\ ([@stop_split] [@expl:should_percent_encode ensures #1] result = should_encode_model (mask_words self) byte)}
+    (! return {result}) ]

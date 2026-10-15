@@ -1,0 +1,14 @@
+[package]
+name = "httpdate-release-correspondence"
+version = "0.1.0"
+edition = "2021"
+publish = false
+
+# Independent from the proof workspace: these are native comparisons only.
+[workspace]
+members = ["reference"]
+resolver = "2"
+
+[dependencies]
+released = { package = "httpdate-release-reference", path = "reference" }
+verified = { package = "httpdate", path = "../../crate" }

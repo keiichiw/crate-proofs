@@ -1,0 +1,103 @@
+theory Coma
+  
+  (* use why3.BuiltIn.BuiltIn *)
+  
+  (* use why3.Bool.Bool *)
+  
+  (* use why3.Unit.Unit *)
+  
+  (* use seq.Seq *)
+  
+  type t_T
+  
+  predicate gt_log_Int (self:int) (other:int) = other < self
+  
+  (* meta rewrite_def predicate gt_log_Int *)
+  
+  function tail_T (self:seq t_T) : seq t_T = self[1..length self]
+  
+  (* meta compute_max_steps 1000000 *)
+  
+  (* meta select_lsinst "all" *)
+  
+  constant left : seq t_T
+  
+  constant right : seq t_T
+  
+  constant i : int
+  
+  predicate nonempty_tail_at_index_T (seq t_T) (seq t_T) int
+  
+  goal vc_nonempty_tail_at_index_T :
+    gt_log_Int (length left) 0 ->
+    0 <= i /\ i < length (tail_T left ++ right) ->
+    (let joined = left ++ right in
+     let joined_tail = tail_T joined in
+     let tail_left = tail_T left in
+     let tail_joined = tail_left ++ right in
+     let boundary = length left - 1 in
+     length joined_tail = length tail_joined &&
+     length tail_left = boundary &&
+     (if i < boundary
+      then i < length joined_tail &&
+           (i + 1) < length left &&
+           (i + 1) < length joined &&
+           get joined_tail i = get joined (i + 1) &&
+           get joined (i + 1) = get left (i + 1) &&
+           get tail_joined i = get tail_left i &&
+           get tail_left i = get left (i + 1) &&
+           get joined_tail i = get tail_joined i &&
+           true /\
+           get (tail_T (left ++ right)) i = get (tail_T left ++ right) i
+      else if 0 <= (i - boundary)
+           then (i - boundary) < length right &&
+                (if 0 <= ((i + 1) - length left)
+                 then ((i + 1) - length left) < length right &&
+                      (i + 1) < length joined &&
+                      get joined_tail i = get joined (i + 1) &&
+                      get joined (i + 1) = get right ((i + 1) - length left) &&
+                      get tail_joined i = get right (i - length tail_left) &&
+                      get right ((i + 1) - length left) =
+                      get right (i - length tail_left) &&
+                      get joined_tail i = get tail_joined i &&
+                      true /\
+                      get (tail_T (left ++ right)) i =
+                      get (tail_T left ++ right) i
+                 else false &&
+                      (i + 1) < length joined &&
+                      get joined_tail i = get joined (i + 1) &&
+                      get joined (i + 1) = get right ((i + 1) - length left) &&
+                      get tail_joined i = get right (i - length tail_left) &&
+                      get right ((i + 1) - length left) =
+                      get right (i - length tail_left) &&
+                      get joined_tail i = get tail_joined i &&
+                      true /\
+                      get (tail_T (left ++ right)) i =
+                      get (tail_T left ++ right) i)
+           else false &&
+                (if 0 <= ((i + 1) - length left)
+                 then ((i + 1) - length left) < length right &&
+                      (i + 1) < length joined &&
+                      get joined_tail i = get joined (i + 1) &&
+                      get joined (i + 1) = get right ((i + 1) - length left) &&
+                      get tail_joined i = get right (i - length tail_left) &&
+                      get right ((i + 1) - length left) =
+                      get right (i - length tail_left) &&
+                      get joined_tail i = get tail_joined i &&
+                      true /\
+                      get (tail_T (left ++ right)) i =
+                      get (tail_T left ++ right) i
+                 else false &&
+                      (i + 1) < length joined &&
+                      get joined_tail i = get joined (i + 1) &&
+                      get joined (i + 1) = get right ((i + 1) - length left) &&
+                      get tail_joined i = get right (i - length tail_left) &&
+                      get right ((i + 1) - length left) =
+                      get right (i - length tail_left) &&
+                      get joined_tail i = get tail_joined i &&
+                      true /\
+                      get (tail_T (left ++ right)) i =
+                      get (tail_T left ++ right) i)))
+  
+end
+

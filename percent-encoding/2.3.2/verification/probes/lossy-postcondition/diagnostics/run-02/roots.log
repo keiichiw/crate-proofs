@@ -1,0 +1,276 @@
+Warning, file "/workspace/.local/share/creusot/share/why3find/packages/creusot/creusot/int.coma", line 158, characters 8-22: axiom extensionality does not contain any local abstract symbol (contains: int, (=), t, to_int)
+Warning, file "/workspace/.local/share/creusot/share/why3find/packages/creusot/creusot/int.coma", line 462, characters 8-22: axiom extensionality does not contain any local abstract symbol (contains: int, (=), t, to_int)
+Warning, file "/workspace/.local/share/creusot/share/why3find/packages/creusot/creusot/int.coma", line 766, characters 8-22: axiom extensionality does not contain any local abstract symbol (contains: int, (=), t, to_int)
+Warning, file "/workspace/.local/share/creusot/share/why3find/packages/creusot/creusot/int.coma", line 1070, characters 8-22: axiom extensionality does not contain any local abstract symbol (contains: int, (=), t, to_int)
+Warning, file "/workspace/.local/share/creusot/share/why3find/packages/creusot/creusot/int.coma", line 1374, characters 8-22: axiom extensionality does not contain any local abstract symbol (contains: int, (=), t, to_int)
+Warning, file "diagnostics/run-02/coma/verif/percent_encoding_lossy_postcondition_probe_rlib/std_lossy_probe.coma", line 19, characters 17-19: unused variable f0
+Warning, file "diagnostics/run-02/coma/verif/percent_encoding_lossy_postcondition_probe_rlib/std_lossy_probe.coma", line 100, characters 6-20: axiom utf8_step_spec does not contain any local abstract symbol (contains: int, (<), (-), (<=), seq, length, tup3_Int_Int_bool, f1, utf8_step)
+Warning, file "diagnostics/run-02/coma/verif/percent_encoding_lossy_postcondition_probe_rlib/std_lossy_probe.coma", line 103, characters 6-22: axiom utf8_step_spec'0 does not contain any local abstract symbol (contains: int, (=), (<), (<=), seq, length, tup3_Int_Int_bool, f0, utf8_step)
+Warning, file "diagnostics/run-02/coma/verif/percent_encoding_lossy_postcondition_probe_rlib/std_lossy_probe.coma", line 193, characters 41-45: unused variable self
+theory Coma
+  
+  (* use why3.BuiltIn.BuiltIn *)
+  
+  (* use why3.Bool.Bool *)
+  
+  (* use why3.Unit.Unit *)
+  
+  (* use creusot.slice.Slice64 *)
+  
+  (* use creusot.int.UInt8 *)
+  
+  (* use map.Map *)
+  
+  (* use creusot.prelude.Char *)
+  
+  (* use creusot.prelude.Any *)
+  
+  type t_String
+  
+  type t_Cow_str =
+    | Borrowed string
+    | Owned t_String
+  
+  predicate inv_String t_String
+  
+  predicate inv_Cow_str t_Cow_str
+  
+  axiom inv_axiom :
+    forall x:t_Cow_str [inv_Cow_str x].
+     inv_Cow_str x <->
+     match x with
+     | Borrowed f0 -> true
+     | Owned f0 -> inv_String f0
+     end
+  
+  type tup3_Int_Int_bool =
+    | Tup3_Int_Int_bool'mk (f0:int) (f1:int) (f2:bool)
+  
+  (* meta model_record function f2 *)
+  
+  (* meta model_record function f1 *)
+  
+  (* meta model_record function f0 *)
+  
+  function utf8_step (bytes:seq int) (pos:int) : tup3_Int_Int_bool =
+    let b0 = get bytes pos in
+    let remaining = length bytes - pos in
+    if 0 <= b0 /\ b0 <= 127 then Tup3_Int_Int_bool'mk b0 1 True
+    else if 194 <= b0 /\ b0 <= 223
+         then if remaining < 2
+              then Tup3_Int_Int_bool'mk 65533 remaining False
+              else let b1 = get bytes (pos + 1) in
+                   if 128 <= b1 /\ b1 <= 191
+                   then Tup3_Int_Int_bool'mk (((b0 - 192) * 64) + (b1 - 128))
+                        2 True
+                   else Tup3_Int_Int_bool'mk 65533 1 False
+         else if 224 <= b0 /\ b0 <= 239
+              then if remaining < 2
+                   then Tup3_Int_Int_bool'mk 65533 remaining False
+                   else let b1 = get bytes (pos + 1) in
+                        let second_ok =
+                          (if if b0 = 224 then 160 <= b1 /\ b1 <= 191
+                              else if b0 = 237 then 128 <= b1 /\ b1 <= 159
+                                   else 128 <= b1 /\ b1 <= 191
+                           then True else False)
+                        in
+                        if not second_ok = True
+                        then Tup3_Int_Int_bool'mk 65533 1 False
+                        else if remaining < 3
+                             then Tup3_Int_Int_bool'mk 65533 remaining False
+                             else let b2 = get bytes (pos + 2) in
+                                  if 128 <= b2 /\ b2 <= 191
+                                  then Tup3_Int_Int_bool'mk
+                                       ((((b0 - 224) * 4096)
+                                         + ((b1 - 128) * 64))
+                                        + (b2 - 128))
+                                       3 True
+                                  else Tup3_Int_Int_bool'mk 65533 2 False
+              else if 240 <= b0 /\ b0 <= 244
+                   then if remaining < 2
+                        then Tup3_Int_Int_bool'mk 65533 remaining False
+                        else let b1 = get bytes (pos + 1) in
+                             let second_ok =
+                               (if if b0 = 240 then 144 <= b1 /\ b1 <= 191
+                                   else if b0 = 244
+                                        then 128 <= b1 /\ b1 <= 143
+                                        else 128 <= b1 /\ b1 <= 191
+                                then True else False)
+                             in
+                             if not second_ok = True
+                             then Tup3_Int_Int_bool'mk 65533 1 False
+                             else if remaining < 3
+                                  then Tup3_Int_Int_bool'mk 65533 remaining
+                                       False
+                                  else let b2 = get bytes (pos + 2) in
+                                       if not (128 <= b2 /\ b2 <= 191)
+                                       then Tup3_Int_Int_bool'mk 65533 2
+                                            False
+                                       else if remaining < 4
+                                            then Tup3_Int_Int_bool'mk 65533
+                                                 remaining False
+                                            else let b3 =
+                                                   get bytes (pos + 3)
+                                                 in
+                                                 if 128 <= b3 /\ b3 <= 191
+                                                 then Tup3_Int_Int_bool'mk
+                                                      (((((b0 - 240) * 262144)
+                                                         + ((b1 - 128) * 4096))
+                                                        + ((b2 - 128) * 64))
+                                                       + (b3 - 128))
+                                                      4 True
+                                                 else Tup3_Int_Int_bool'mk
+                                                      65533 3 False
+                   else Tup3_Int_Int_bool'mk 65533 1 False
+  
+  axiom utf8_step_spec :
+    forall bytes:seq int, pos:int [utf8_step bytes pos].
+     0 <= pos /\ pos < length bytes ->
+     1 <= (utf8_step bytes pos).f1 /\
+     (utf8_step bytes pos).f1 <= (length bytes - pos)
+  
+  axiom utf8_step_spec'0 :
+    forall bytes:seq int, pos:int [utf8_step bytes pos].
+     0 <= pos /\ pos < length bytes ->
+     (utf8_step bytes pos).f0 = 65533 \/
+     0 <= (utf8_step bytes pos).f0 /\ (utf8_step bytes pos).f0 <= 55295 \/
+     57344 <= (utf8_step bytes pos).f0 /\ (utf8_step bytes pos).f0 <= 1114111
+  
+  predicate utf8_is_valid (seq int)
+  
+  axiom utf8_is_valid_def :
+    forall bytes:seq int [utf8_is_valid bytes].
+     utf8_is_valid bytes <->
+     (if length bytes = 0 then true
+      else match utf8_step bytes 0 with
+      | Tup3_Int_Int_bool'mk _ consumed valid ->
+          valid = True /\ utf8_is_valid bytes[consumed..length bytes]
+      end)
+  
+  function index_Mapping_u8_Int (self:t -> int) (a:t) : int = get1 self a
+  
+  (* meta rewrite_def function index_Mapping_u8_Int *)
+  
+  function map_u8 (seq t) (t -> int) : seq int
+  
+  axiom map_u8_spec :
+    forall self:seq t, m:t -> int [map_u8 self m].
+     length (map_u8 self m) = length self
+  
+  axiom map_u8_spec'0 :
+    forall self:seq t, m:t -> int [map_u8 self m].
+     forall i:int.
+      0 <= i /\ i < length self ->
+      get (map_u8 self m) i = index_Mapping_u8_Int m (get self i)
+  
+  function index_Mapping_char_Int (self:t1 -> int) (a:t1) : int = get1 self a
+  
+  (* meta rewrite_def function index_Mapping_char_Int *)
+  
+  function map_char (seq t1) (t1 -> int) : seq int
+  
+  axiom map_char_spec :
+    forall self:seq t1, m:t1 -> int [map_char self m].
+     length (map_char self m) = length self
+  
+  axiom map_char_spec'0 :
+    forall self:seq t1, m:t1 -> int [map_char self m].
+     forall i:int.
+      0 <= i /\ i < length self ->
+      get (map_char self m) i = index_Mapping_char_Int m (get self i)
+  
+  function chars_as_scalars (chars:seq t1) : seq int =
+    map_char chars (fun (c:t1) -> to_int c)
+  
+  (* meta rewrite_def function chars_as_scalars *)
+  
+  function view_str string : seq t1
+  
+  function utf8_lossy_model (seq int) : seq int
+  
+  axiom utf8_lossy_model_def :
+    forall bytes:seq int [utf8_lossy_model bytes].
+     utf8_lossy_model bytes =
+     (if length bytes = 0 then empty: seq int
+      else match utf8_step bytes 0 with
+      | Tup3_Int_Int_bool'mk scalar consumed _ ->
+          singleton scalar ++ utf8_lossy_model bytes[consumed..length bytes]
+      end)
+  
+  function tail_char (self:seq t1) : seq t1 = self[1..length self]
+  
+  function flat_map_char (seq t1) (t1 -> seq t) : seq t
+  
+  axiom flat_map_char_def :
+    forall self:seq t1, other:t1 -> seq t [flat_map_char self other].
+     flat_map_char self other =
+     (if length self = 0 then empty: seq t
+      else get1 other (get self 0) ++ flat_map_char (tail_char self) other)
+  
+  function to_utf8_char t1 : seq t
+  
+  axiom to_utf8_char_spec :
+    forall self:t1 [to_utf8_char self].
+     1 <= length (to_utf8_char self) /\ length (to_utf8_char self) <= 4
+  
+  function to_bytes (self:seq t1) : seq t =
+    flat_map_char self (fun (c:t1) -> to_utf8_char c)
+  
+  function view_String t_String : seq t1
+  
+  goal vc_from_utf8_lossy : true
+  
+  predicate postcondition_from_utf8_lossy (self:unit) (args:slice t) (result:
+    t_Cow_str) =
+    let bytes = args in
+    inv_Cow_str result /\
+    match result with
+    | Borrowed s ->
+        utf8_is_valid (map_u8 (view bytes) (fun (b:t) -> t'int b)) /\
+        chars_as_scalars (view_str s) =
+        utf8_lossy_model (map_u8 (view bytes) (fun (b:t) -> t'int b)) /\
+        to_bytes (view_str s) = view bytes
+    | Owned s ->
+        not utf8_is_valid (map_u8 (view bytes) (fun (b:t) -> t'int b)) /\
+        chars_as_scalars (view_String s) =
+        utf8_lossy_model (map_u8 (view bytes) (fun (b:t) -> t'int b))
+    end
+  
+  (* meta rewrite_def predicate postcondition_from_utf8_lossy *)
+  
+  function string_scalars (s:seq t1) : seq int =
+    map_char s (fun (c:t1) -> to_int c)
+  
+  function cow_str_scalars (value:t_Cow_str) : seq int =
+    match value with
+    | Borrowed s -> string_scalars (view_str s)
+    | Owned s -> string_scalars (view_String s)
+    end
+  
+  predicate lossy_relation (input:slice t) (output:seq int) =
+    exists c:t_Cow_str.
+     postcondition_from_utf8_lossy () input c /\ cow_str_scalars c = output
+  
+  (* meta compute_max_steps 1000000 *)
+  
+  (* meta select_lsinst "all" *)
+  
+  goal vc_std_lossy_probe :
+    forall input:slice t.
+     forall result:t_Cow_str.
+      inv_Cow_str result /\
+      match result with
+      | Borrowed s ->
+          utf8_is_valid (map_u8 (view input) (fun (b:t) -> t'int b)) /\
+          chars_as_scalars (view_str s) =
+          utf8_lossy_model (map_u8 (view input) (fun (b:t) -> t'int b)) /\
+          to_bytes (view_str s) = view input
+      | Owned s ->
+          not utf8_is_valid (map_u8 (view input) (fun (b:t) -> t'int b)) /\
+          chars_as_scalars (view_String s) =
+          utf8_lossy_model (map_u8 (view input) (fun (b:t) -> t'int b))
+      end ->
+      inv_Cow_str result /\ lossy_relation input (cow_str_scalars result)
+  
+end
+

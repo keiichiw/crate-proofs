@@ -1,0 +1,2265 @@
+theory Coma
+  
+  (* use why3.BuiltIn.BuiltIn *)
+  
+  (* use why3.Bool.Bool *)
+  
+  (* use why3.Unit.Unit *)
+  
+  (* use seq.Seq *)
+  
+  type tup3_Int_Int_bool =
+    | Tup3_Int_Int_bool'mk (f0:int) (f1:int) (f2:bool)
+  
+  (* meta model_record function f2 *)
+  
+  (* meta model_record function f1 *)
+  
+  (* meta model_record function f0 *)
+  
+  (* meta compute_max_steps 1000000 *)
+  
+  (* meta select_lsinst "all" *)
+  
+  constant bytes : seq int
+  
+  constant pos : int
+  
+  function utf8_step (seq int) int : tup3_Int_Int_bool
+  
+  goal vc_utf8_step :
+    0 <= pos /\ pos < length bytes ->
+    (let b0 = get bytes pos in
+     let remaining = length bytes - pos in
+     if 0 <= b0
+     then if b0 <= 127 then true
+          else if 194 <= b0
+               then if b0 <= 223
+                    then if remaining < 2 then true
+                         else let b1 = get bytes (pos + 1) in true
+                    else if 224 <= b0
+                         then if b0 <= 239
+                              then if remaining < 2 then true
+                                   else let b1 = get bytes (pos + 1) in
+                                        if b0 = 224
+                                        then if 160 <= b1
+                                             then let second_ok =
+                                                    (if b1 <= 191 then True
+                                                     else False)
+                                                  in
+                                                  if not second_ok = True
+                                                  then true
+                                                  else if remaining < 3
+                                                       then true
+                                                       else let b2 =
+                                                              get bytes
+                                                              (pos + 2)
+                                                            in true
+                                             else let second_ok = False in
+                                                  if not second_ok = True
+                                                  then true
+                                                  else if remaining < 3
+                                                       then true
+                                                       else let b2 =
+                                                              get bytes
+                                                              (pos + 2)
+                                                            in true
+                                        else if b0 = 237
+                                             then if 128 <= b1
+                                                  then let second_ok =
+                                                         (if b1 <= 159
+                                                          then True
+                                                          else False)
+                                                       in
+                                                       if not second_ok =
+                                                              True
+                                                       then true
+                                                       else if remaining < 3
+                                                            then true
+                                                            else let b2 =
+                                                                   get bytes
+                                                                   (pos + 2)
+                                                                 in true
+                                                  else let second_ok =
+                                                         False
+                                                       in
+                                                       if not second_ok =
+                                                              True
+                                                       then true
+                                                       else if remaining < 3
+                                                            then true
+                                                            else let b2 =
+                                                                   get bytes
+                                                                   (pos + 2)
+                                                                 in true
+                                             else if 128 <= b1
+                                                  then let second_ok =
+                                                         (if b1 <= 191
+                                                          then True
+                                                          else False)
+                                                       in
+                                                       if not second_ok =
+                                                              True
+                                                       then true
+                                                       else if remaining < 3
+                                                            then true
+                                                            else let b2 =
+                                                                   get bytes
+                                                                   (pos + 2)
+                                                                 in true
+                                                  else let second_ok =
+                                                         False
+                                                       in
+                                                       if not second_ok =
+                                                              True
+                                                       then true
+                                                       else if remaining < 3
+                                                            then true
+                                                            else let b2 =
+                                                                   get bytes
+                                                                   (pos + 2)
+                                                                 in true
+                              else if 240 <= b0
+                                   then if b0 <= 244
+                                        then if remaining < 2 then true
+                                             else let b1 =
+                                                    get bytes (pos + 1)
+                                                  in
+                                                  if b0 = 240
+                                                  then if 144 <= b1
+                                                       then let second_ok =
+                                                              (if b1 <= 191
+                                                               then True
+                                                               else False)
+                                                            in
+                                                            if not second_ok =
+                                                                   True
+                                                            then true
+                                                            else if remaining
+                                                                    < 3
+                                                                 then true
+                                                                 else 
+                                                                 let b2 =
+                                                                   get bytes
+                                                                   (pos + 2)
+                                                                 in
+                                                                 if 128 <= b2
+                                                                 then 
+                                                                 if not 
+                                                                 b2 <= 191
+                                                                 then true
+                                                                 else 
+                                                                 if remaining
+                                                                    < 4
+                                                                 then true
+                                                                 else 
+                                                                 let b3 =
+                                                                   get bytes
+                                                                   (pos + 3)
+                                                                 in true
+                                                                 else 
+                                                                 if not false
+                                                                 then true
+                                                                 else 
+                                                                 if remaining
+                                                                    < 4
+                                                                 then true
+                                                                 else 
+                                                                 let b3 =
+                                                                   get bytes
+                                                                   (pos + 3)
+                                                                 in true
+                                                       else let second_ok =
+                                                              False
+                                                            in
+                                                            if not second_ok =
+                                                                   True
+                                                            then true
+                                                            else if remaining
+                                                                    < 3
+                                                                 then true
+                                                                 else 
+                                                                 let b2 =
+                                                                   get bytes
+                                                                   (pos + 2)
+                                                                 in
+                                                                 if 128 <= b2
+                                                                 then 
+                                                                 if not 
+                                                                 b2 <= 191
+                                                                 then true
+                                                                 else 
+                                                                 if remaining
+                                                                    < 4
+                                                                 then true
+                                                                 else 
+                                                                 let b3 =
+                                                                   get bytes
+                                                                   (pos + 3)
+                                                                 in true
+                                                                 else 
+                                                                 if not false
+                                                                 then true
+                                                                 else 
+                                                                 if remaining
+                                                                    < 4
+                                                                 then true
+                                                                 else 
+                                                                 let b3 =
+                                                                   get bytes
+                                                                   (pos + 3)
+                                                                 in true
+                                                  else if b0 = 244
+                                                       then if 128 <= b1
+                                                            then let second_ok =
+                                                                   (if 
+                                                                    b1 <= 143
+                                                                    then True
+                                                                    else False)
+                                                                 in
+                                                                 if not 
+                                                                 second_ok =
+                                                                 True
+                                                                 then true
+                                                                 else 
+                                                                 if remaining
+                                                                    < 3
+                                                                 then true
+                                                                 else 
+                                                                 let b2 =
+                                                                   get bytes
+                                                                   (pos + 2)
+                                                                 in
+                                                                 if 128 <= b2
+                                                                 then 
+                                                                 if not 
+                                                                 b2 <= 191
+                                                                 then true
+                                                                 else 
+                                                                 if remaining
+                                                                    < 4
+                                                                 then true
+                                                                 else 
+                                                                 let b3 =
+                                                                   get bytes
+                                                                   (pos + 3)
+                                                                 in true
+                                                                 else 
+                                                                 if not false
+                                                                 then true
+                                                                 else 
+                                                                 if remaining
+                                                                    < 4
+                                                                 then true
+                                                                 else 
+                                                                 let b3 =
+                                                                   get bytes
+                                                                   (pos + 3)
+                                                                 in true
+                                                            else let second_ok =
+                                                                   False
+                                                                 in
+                                                                 if not 
+                                                                 second_ok =
+                                                                 True
+                                                                 then true
+                                                                 else 
+                                                                 if remaining
+                                                                    < 3
+                                                                 then true
+                                                                 else 
+                                                                 let b2 =
+                                                                   get bytes
+                                                                   (pos + 2)
+                                                                 in
+                                                                 if 128 <= b2
+                                                                 then 
+                                                                 if not 
+                                                                 b2 <= 191
+                                                                 then true
+                                                                 else 
+                                                                 if remaining
+                                                                    < 4
+                                                                 then true
+                                                                 else 
+                                                                 let b3 =
+                                                                   get bytes
+                                                                   (pos + 3)
+                                                                 in true
+                                                                 else 
+                                                                 if not false
+                                                                 then true
+                                                                 else 
+                                                                 if remaining
+                                                                    < 4
+                                                                 then true
+                                                                 else 
+                                                                 let b3 =
+                                                                   get bytes
+                                                                   (pos + 3)
+                                                                 in true
+                                                       else if 128 <= b1
+                                                            then let second_ok =
+                                                                   (if 
+                                                                    b1 <= 191
+                                                                    then True
+                                                                    else False)
+                                                                 in
+                                                                 if not 
+                                                                 second_ok =
+                                                                 True
+                                                                 then true
+                                                                 else 
+                                                                 if remaining
+                                                                    < 3
+                                                                 then true
+                                                                 else 
+                                                                 let b2 =
+                                                                   get bytes
+                                                                   (pos + 2)
+                                                                 in
+                                                                 if 128 <= b2
+                                                                 then 
+                                                                 if not 
+                                                                 b2 <= 191
+                                                                 then true
+                                                                 else 
+                                                                 if remaining
+                                                                    < 4
+                                                                 then true
+                                                                 else 
+                                                                 let b3 =
+                                                                   get bytes
+                                                                   (pos + 3)
+                                                                 in true
+                                                                 else 
+                                                                 if not false
+                                                                 then true
+                                                                 else 
+                                                                 if remaining
+                                                                    < 4
+                                                                 then true
+                                                                 else 
+                                                                 let b3 =
+                                                                   get bytes
+                                                                   (pos + 3)
+                                                                 in true
+                                                            else let second_ok =
+                                                                   False
+                                                                 in
+                                                                 if not 
+                                                                 second_ok =
+                                                                 True
+                                                                 then true
+                                                                 else 
+                                                                 if remaining
+                                                                    < 3
+                                                                 then true
+                                                                 else 
+                                                                 let b2 =
+                                                                   get bytes
+                                                                   (pos + 2)
+                                                                 in
+                                                                 if 128 <= b2
+                                                                 then 
+                                                                 if not 
+                                                                 b2 <= 191
+                                                                 then true
+                                                                 else 
+                                                                 if remaining
+                                                                    < 4
+                                                                 then true
+                                                                 else 
+                                                                 let b3 =
+                                                                   get bytes
+                                                                   (pos + 3)
+                                                                 in true
+                                                                 else 
+                                                                 if not false
+                                                                 then true
+                                                                 else 
+                                                                 if remaining
+                                                                    < 4
+                                                                 then true
+                                                                 else 
+                                                                 let b3 =
+                                                                   get bytes
+                                                                   (pos + 3)
+                                                                 in true
+                                        else true
+                                   else true
+                         else if 240 <= b0
+                              then if b0 <= 244
+                                   then if remaining < 2 then true
+                                        else let b1 = get bytes (pos + 1) in
+                                             if b0 = 240
+                                             then if 144 <= b1
+                                                  then let second_ok =
+                                                         (if b1 <= 191
+                                                          then True
+                                                          else False)
+                                                       in
+                                                       if not second_ok =
+                                                              True
+                                                       then true
+                                                       else if remaining < 3
+                                                            then true
+                                                            else let b2 =
+                                                                   get bytes
+                                                                   (pos + 2)
+                                                                 in
+                                                                 if 128 <= b2
+                                                                 then 
+                                                                 if not 
+                                                                 b2 <= 191
+                                                                 then true
+                                                                 else 
+                                                                 if remaining
+                                                                    < 4
+                                                                 then true
+                                                                 else 
+                                                                 let b3 =
+                                                                   get bytes
+                                                                   (pos + 3)
+                                                                 in true
+                                                                 else 
+                                                                 if not false
+                                                                 then true
+                                                                 else 
+                                                                 if remaining
+                                                                    < 4
+                                                                 then true
+                                                                 else 
+                                                                 let b3 =
+                                                                   get bytes
+                                                                   (pos + 3)
+                                                                 in true
+                                                  else let second_ok =
+                                                         False
+                                                       in
+                                                       if not second_ok =
+                                                              True
+                                                       then true
+                                                       else if remaining < 3
+                                                            then true
+                                                            else let b2 =
+                                                                   get bytes
+                                                                   (pos + 2)
+                                                                 in
+                                                                 if 128 <= b2
+                                                                 then 
+                                                                 if not 
+                                                                 b2 <= 191
+                                                                 then true
+                                                                 else 
+                                                                 if remaining
+                                                                    < 4
+                                                                 then true
+                                                                 else 
+                                                                 let b3 =
+                                                                   get bytes
+                                                                   (pos + 3)
+                                                                 in true
+                                                                 else 
+                                                                 if not false
+                                                                 then true
+                                                                 else 
+                                                                 if remaining
+                                                                    < 4
+                                                                 then true
+                                                                 else 
+                                                                 let b3 =
+                                                                   get bytes
+                                                                   (pos + 3)
+                                                                 in true
+                                             else if b0 = 244
+                                                  then if 128 <= b1
+                                                       then let second_ok =
+                                                              (if b1 <= 143
+                                                               then True
+                                                               else False)
+                                                            in
+                                                            if not second_ok =
+                                                                   True
+                                                            then true
+                                                            else if remaining
+                                                                    < 3
+                                                                 then true
+                                                                 else 
+                                                                 let b2 =
+                                                                   get bytes
+                                                                   (pos + 2)
+                                                                 in
+                                                                 if 128 <= b2
+                                                                 then 
+                                                                 if not 
+                                                                 b2 <= 191
+                                                                 then true
+                                                                 else 
+                                                                 if remaining
+                                                                    < 4
+                                                                 then true
+                                                                 else 
+                                                                 let b3 =
+                                                                   get bytes
+                                                                   (pos + 3)
+                                                                 in true
+                                                                 else 
+                                                                 if not false
+                                                                 then true
+                                                                 else 
+                                                                 if remaining
+                                                                    < 4
+                                                                 then true
+                                                                 else 
+                                                                 let b3 =
+                                                                   get bytes
+                                                                   (pos + 3)
+                                                                 in true
+                                                       else let second_ok =
+                                                              False
+                                                            in
+                                                            if not second_ok =
+                                                                   True
+                                                            then true
+                                                            else if remaining
+                                                                    < 3
+                                                                 then true
+                                                                 else 
+                                                                 let b2 =
+                                                                   get bytes
+                                                                   (pos + 2)
+                                                                 in
+                                                                 if 128 <= b2
+                                                                 then 
+                                                                 if not 
+                                                                 b2 <= 191
+                                                                 then true
+                                                                 else 
+                                                                 if remaining
+                                                                    < 4
+                                                                 then true
+                                                                 else 
+                                                                 let b3 =
+                                                                   get bytes
+                                                                   (pos + 3)
+                                                                 in true
+                                                                 else 
+                                                                 if not false
+                                                                 then true
+                                                                 else 
+                                                                 if remaining
+                                                                    < 4
+                                                                 then true
+                                                                 else 
+                                                                 let b3 =
+                                                                   get bytes
+                                                                   (pos + 3)
+                                                                 in true
+                                                  else if 128 <= b1
+                                                       then let second_ok =
+                                                              (if b1 <= 191
+                                                               then True
+                                                               else False)
+                                                            in
+                                                            if not second_ok =
+                                                                   True
+                                                            then true
+                                                            else if remaining
+                                                                    < 3
+                                                                 then true
+                                                                 else 
+                                                                 let b2 =
+                                                                   get bytes
+                                                                   (pos + 2)
+                                                                 in
+                                                                 if 128 <= b2
+                                                                 then 
+                                                                 if not 
+                                                                 b2 <= 191
+                                                                 then true
+                                                                 else 
+                                                                 if remaining
+                                                                    < 4
+                                                                 then true
+                                                                 else 
+                                                                 let b3 =
+                                                                   get bytes
+                                                                   (pos + 3)
+                                                                 in true
+                                                                 else 
+                                                                 if not false
+                                                                 then true
+                                                                 else 
+                                                                 if remaining
+                                                                    < 4
+                                                                 then true
+                                                                 else 
+                                                                 let b3 =
+                                                                   get bytes
+                                                                   (pos + 3)
+                                                                 in true
+                                                       else let second_ok =
+                                                              False
+                                                            in
+                                                            if not second_ok =
+                                                                   True
+                                                            then true
+                                                            else if remaining
+                                                                    < 3
+                                                                 then true
+                                                                 else 
+                                                                 let b2 =
+                                                                   get bytes
+                                                                   (pos + 2)
+                                                                 in
+                                                                 if 128 <= b2
+                                                                 then 
+                                                                 if not 
+                                                                 b2 <= 191
+                                                                 then true
+                                                                 else 
+                                                                 if remaining
+                                                                    < 4
+                                                                 then true
+                                                                 else 
+                                                                 let b3 =
+                                                                   get bytes
+                                                                   (pos + 3)
+                                                                 in true
+                                                                 else 
+                                                                 if not false
+                                                                 then true
+                                                                 else 
+                                                                 if remaining
+                                                                    < 4
+                                                                 then true
+                                                                 else 
+                                                                 let b3 =
+                                                                   get bytes
+                                                                   (pos + 3)
+                                                                 in true
+                                   else true
+                              else true
+               else if 224 <= b0
+                    then if b0 <= 239
+                         then if remaining < 2 then true
+                              else let b1 = get bytes (pos + 1) in
+                                   if b0 = 224
+                                   then if 160 <= b1
+                                        then let second_ok =
+                                               (if b1 <= 191 then True
+                                                else False)
+                                             in
+                                             if not second_ok = True
+                                             then true
+                                             else if remaining < 3 then true
+                                                  else let b2 =
+                                                         get bytes (pos + 2)
+                                                       in true
+                                        else let second_ok = False in
+                                             if not second_ok = True
+                                             then true
+                                             else if remaining < 3 then true
+                                                  else let b2 =
+                                                         get bytes (pos + 2)
+                                                       in true
+                                   else if b0 = 237
+                                        then if 128 <= b1
+                                             then let second_ok =
+                                                    (if b1 <= 159 then True
+                                                     else False)
+                                                  in
+                                                  if not second_ok = True
+                                                  then true
+                                                  else if remaining < 3
+                                                       then true
+                                                       else let b2 =
+                                                              get bytes
+                                                              (pos + 2)
+                                                            in true
+                                             else let second_ok = False in
+                                                  if not second_ok = True
+                                                  then true
+                                                  else if remaining < 3
+                                                       then true
+                                                       else let b2 =
+                                                              get bytes
+                                                              (pos + 2)
+                                                            in true
+                                        else if 128 <= b1
+                                             then let second_ok =
+                                                    (if b1 <= 191 then True
+                                                     else False)
+                                                  in
+                                                  if not second_ok = True
+                                                  then true
+                                                  else if remaining < 3
+                                                       then true
+                                                       else let b2 =
+                                                              get bytes
+                                                              (pos + 2)
+                                                            in true
+                                             else let second_ok = False in
+                                                  if not second_ok = True
+                                                  then true
+                                                  else if remaining < 3
+                                                       then true
+                                                       else let b2 =
+                                                              get bytes
+                                                              (pos + 2)
+                                                            in true
+                         else if 240 <= b0
+                              then if b0 <= 244
+                                   then if remaining < 2 then true
+                                        else let b1 = get bytes (pos + 1) in
+                                             if b0 = 240
+                                             then if 144 <= b1
+                                                  then let second_ok =
+                                                         (if b1 <= 191
+                                                          then True
+                                                          else False)
+                                                       in
+                                                       if not second_ok =
+                                                              True
+                                                       then true
+                                                       else if remaining < 3
+                                                            then true
+                                                            else let b2 =
+                                                                   get bytes
+                                                                   (pos + 2)
+                                                                 in
+                                                                 if 128 <= b2
+                                                                 then 
+                                                                 if not 
+                                                                 b2 <= 191
+                                                                 then true
+                                                                 else 
+                                                                 if remaining
+                                                                    < 4
+                                                                 then true
+                                                                 else 
+                                                                 let b3 =
+                                                                   get bytes
+                                                                   (pos + 3)
+                                                                 in true
+                                                                 else 
+                                                                 if not false
+                                                                 then true
+                                                                 else 
+                                                                 if remaining
+                                                                    < 4
+                                                                 then true
+                                                                 else 
+                                                                 let b3 =
+                                                                   get bytes
+                                                                   (pos + 3)
+                                                                 in true
+                                                  else let second_ok =
+                                                         False
+                                                       in
+                                                       if not second_ok =
+                                                              True
+                                                       then true
+                                                       else if remaining < 3
+                                                            then true
+                                                            else let b2 =
+                                                                   get bytes
+                                                                   (pos + 2)
+                                                                 in
+                                                                 if 128 <= b2
+                                                                 then 
+                                                                 if not 
+                                                                 b2 <= 191
+                                                                 then true
+                                                                 else 
+                                                                 if remaining
+                                                                    < 4
+                                                                 then true
+                                                                 else 
+                                                                 let b3 =
+                                                                   get bytes
+                                                                   (pos + 3)
+                                                                 in true
+                                                                 else 
+                                                                 if not false
+                                                                 then true
+                                                                 else 
+                                                                 if remaining
+                                                                    < 4
+                                                                 then true
+                                                                 else 
+                                                                 let b3 =
+                                                                   get bytes
+                                                                   (pos + 3)
+                                                                 in true
+                                             else if b0 = 244
+                                                  then if 128 <= b1
+                                                       then let second_ok =
+                                                              (if b1 <= 143
+                                                               then True
+                                                               else False)
+                                                            in
+                                                            if not second_ok =
+                                                                   True
+                                                            then true
+                                                            else if remaining
+                                                                    < 3
+                                                                 then true
+                                                                 else 
+                                                                 let b2 =
+                                                                   get bytes
+                                                                   (pos + 2)
+                                                                 in
+                                                                 if 128 <= b2
+                                                                 then 
+                                                                 if not 
+                                                                 b2 <= 191
+                                                                 then true
+                                                                 else 
+                                                                 if remaining
+                                                                    < 4
+                                                                 then true
+                                                                 else 
+                                                                 let b3 =
+                                                                   get bytes
+                                                                   (pos + 3)
+                                                                 in true
+                                                                 else 
+                                                                 if not false
+                                                                 then true
+                                                                 else 
+                                                                 if remaining
+                                                                    < 4
+                                                                 then true
+                                                                 else 
+                                                                 let b3 =
+                                                                   get bytes
+                                                                   (pos + 3)
+                                                                 in true
+                                                       else let second_ok =
+                                                              False
+                                                            in
+                                                            if not second_ok =
+                                                                   True
+                                                            then true
+                                                            else if remaining
+                                                                    < 3
+                                                                 then true
+                                                                 else 
+                                                                 let b2 =
+                                                                   get bytes
+                                                                   (pos + 2)
+                                                                 in
+                                                                 if 128 <= b2
+                                                                 then 
+                                                                 if not 
+                                                                 b2 <= 191
+                                                                 then true
+                                                                 else 
+                                                                 if remaining
+                                                                    < 4
+                                                                 then true
+                                                                 else 
+                                                                 let b3 =
+                                                                   get bytes
+                                                                   (pos + 3)
+                                                                 in true
+                                                                 else 
+                                                                 if not false
+                                                                 then true
+                                                                 else 
+                                                                 if remaining
+                                                                    < 4
+                                                                 then true
+                                                                 else 
+                                                                 let b3 =
+                                                                   get bytes
+                                                                   (pos + 3)
+                                                                 in true
+                                                  else if 128 <= b1
+                                                       then let second_ok =
+                                                              (if b1 <= 191
+                                                               then True
+                                                               else False)
+                                                            in
+                                                            if not second_ok =
+                                                                   True
+                                                            then true
+                                                            else if remaining
+                                                                    < 3
+                                                                 then true
+                                                                 else 
+                                                                 let b2 =
+                                                                   get bytes
+                                                                   (pos + 2)
+                                                                 in
+                                                                 if 128 <= b2
+                                                                 then 
+                                                                 if not 
+                                                                 b2 <= 191
+                                                                 then true
+                                                                 else 
+                                                                 if remaining
+                                                                    < 4
+                                                                 then true
+                                                                 else 
+                                                                 let b3 =
+                                                                   get bytes
+                                                                   (pos + 3)
+                                                                 in true
+                                                                 else 
+                                                                 if not false
+                                                                 then true
+                                                                 else 
+                                                                 if remaining
+                                                                    < 4
+                                                                 then true
+                                                                 else 
+                                                                 let b3 =
+                                                                   get bytes
+                                                                   (pos + 3)
+                                                                 in true
+                                                       else let second_ok =
+                                                              False
+                                                            in
+                                                            if not second_ok =
+                                                                   True
+                                                            then true
+                                                            else if remaining
+                                                                    < 3
+                                                                 then true
+                                                                 else 
+                                                                 let b2 =
+                                                                   get bytes
+                                                                   (pos + 2)
+                                                                 in
+                                                                 if 128 <= b2
+                                                                 then 
+                                                                 if not 
+                                                                 b2 <= 191
+                                                                 then true
+                                                                 else 
+                                                                 if remaining
+                                                                    < 4
+                                                                 then true
+                                                                 else 
+                                                                 let b3 =
+                                                                   get bytes
+                                                                   (pos + 3)
+                                                                 in true
+                                                                 else 
+                                                                 if not false
+                                                                 then true
+                                                                 else 
+                                                                 if remaining
+                                                                    < 4
+                                                                 then true
+                                                                 else 
+                                                                 let b3 =
+                                                                   get bytes
+                                                                   (pos + 3)
+                                                                 in true
+                                   else true
+                              else true
+                    else if 240 <= b0
+                         then if b0 <= 244
+                              then if remaining < 2 then true
+                                   else let b1 = get bytes (pos + 1) in
+                                        if b0 = 240
+                                        then if 144 <= b1
+                                             then let second_ok =
+                                                    (if b1 <= 191 then True
+                                                     else False)
+                                                  in
+                                                  if not second_ok = True
+                                                  then true
+                                                  else if remaining < 3
+                                                       then true
+                                                       else let b2 =
+                                                              get bytes
+                                                              (pos + 2)
+                                                            in
+                                                            if 128 <= b2
+                                                            then if not 
+                                                                 b2 <= 191
+                                                                 then true
+                                                                 else 
+                                                                 if remaining
+                                                                    < 4
+                                                                 then true
+                                                                 else 
+                                                                 let b3 =
+                                                                   get bytes
+                                                                   (pos + 3)
+                                                                 in true
+                                                            else if not false
+                                                                 then true
+                                                                 else 
+                                                                 if remaining
+                                                                    < 4
+                                                                 then true
+                                                                 else 
+                                                                 let b3 =
+                                                                   get bytes
+                                                                   (pos + 3)
+                                                                 in true
+                                             else let second_ok = False in
+                                                  if not second_ok = True
+                                                  then true
+                                                  else if remaining < 3
+                                                       then true
+                                                       else let b2 =
+                                                              get bytes
+                                                              (pos + 2)
+                                                            in
+                                                            if 128 <= b2
+                                                            then if not 
+                                                                 b2 <= 191
+                                                                 then true
+                                                                 else 
+                                                                 if remaining
+                                                                    < 4
+                                                                 then true
+                                                                 else 
+                                                                 let b3 =
+                                                                   get bytes
+                                                                   (pos + 3)
+                                                                 in true
+                                                            else if not false
+                                                                 then true
+                                                                 else 
+                                                                 if remaining
+                                                                    < 4
+                                                                 then true
+                                                                 else 
+                                                                 let b3 =
+                                                                   get bytes
+                                                                   (pos + 3)
+                                                                 in true
+                                        else if b0 = 244
+                                             then if 128 <= b1
+                                                  then let second_ok =
+                                                         (if b1 <= 143
+                                                          then True
+                                                          else False)
+                                                       in
+                                                       if not second_ok =
+                                                              True
+                                                       then true
+                                                       else if remaining < 3
+                                                            then true
+                                                            else let b2 =
+                                                                   get bytes
+                                                                   (pos + 2)
+                                                                 in
+                                                                 if 128 <= b2
+                                                                 then 
+                                                                 if not 
+                                                                 b2 <= 191
+                                                                 then true
+                                                                 else 
+                                                                 if remaining
+                                                                    < 4
+                                                                 then true
+                                                                 else 
+                                                                 let b3 =
+                                                                   get bytes
+                                                                   (pos + 3)
+                                                                 in true
+                                                                 else 
+                                                                 if not false
+                                                                 then true
+                                                                 else 
+                                                                 if remaining
+                                                                    < 4
+                                                                 then true
+                                                                 else 
+                                                                 let b3 =
+                                                                   get bytes
+                                                                   (pos + 3)
+                                                                 in true
+                                                  else let second_ok =
+                                                         False
+                                                       in
+                                                       if not second_ok =
+                                                              True
+                                                       then true
+                                                       else if remaining < 3
+                                                            then true
+                                                            else let b2 =
+                                                                   get bytes
+                                                                   (pos + 2)
+                                                                 in
+                                                                 if 128 <= b2
+                                                                 then 
+                                                                 if not 
+                                                                 b2 <= 191
+                                                                 then true
+                                                                 else 
+                                                                 if remaining
+                                                                    < 4
+                                                                 then true
+                                                                 else 
+                                                                 let b3 =
+                                                                   get bytes
+                                                                   (pos + 3)
+                                                                 in true
+                                                                 else 
+                                                                 if not false
+                                                                 then true
+                                                                 else 
+                                                                 if remaining
+                                                                    < 4
+                                                                 then true
+                                                                 else 
+                                                                 let b3 =
+                                                                   get bytes
+                                                                   (pos + 3)
+                                                                 in true
+                                             else if 128 <= b1
+                                                  then let second_ok =
+                                                         (if b1 <= 191
+                                                          then True
+                                                          else False)
+                                                       in
+                                                       if not second_ok =
+                                                              True
+                                                       then true
+                                                       else if remaining < 3
+                                                            then true
+                                                            else let b2 =
+                                                                   get bytes
+                                                                   (pos + 2)
+                                                                 in
+                                                                 if 128 <= b2
+                                                                 then 
+                                                                 if not 
+                                                                 b2 <= 191
+                                                                 then true
+                                                                 else 
+                                                                 if remaining
+                                                                    < 4
+                                                                 then true
+                                                                 else 
+                                                                 let b3 =
+                                                                   get bytes
+                                                                   (pos + 3)
+                                                                 in true
+                                                                 else 
+                                                                 if not false
+                                                                 then true
+                                                                 else 
+                                                                 if remaining
+                                                                    < 4
+                                                                 then true
+                                                                 else 
+                                                                 let b3 =
+                                                                   get bytes
+                                                                   (pos + 3)
+                                                                 in true
+                                                  else let second_ok =
+                                                         False
+                                                       in
+                                                       if not second_ok =
+                                                              True
+                                                       then true
+                                                       else if remaining < 3
+                                                            then true
+                                                            else let b2 =
+                                                                   get bytes
+                                                                   (pos + 2)
+                                                                 in
+                                                                 if 128 <= b2
+                                                                 then 
+                                                                 if not 
+                                                                 b2 <= 191
+                                                                 then true
+                                                                 else 
+                                                                 if remaining
+                                                                    < 4
+                                                                 then true
+                                                                 else 
+                                                                 let b3 =
+                                                                   get bytes
+                                                                   (pos + 3)
+                                                                 in true
+                                                                 else 
+                                                                 if not false
+                                                                 then true
+                                                                 else 
+                                                                 if remaining
+                                                                    < 4
+                                                                 then true
+                                                                 else 
+                                                                 let b3 =
+                                                                   get bytes
+                                                                   (pos + 3)
+                                                                 in true
+                              else true
+                         else true
+     else if 194 <= b0
+          then if b0 <= 223
+               then if remaining < 2 then true
+                    else let b1 = get bytes (pos + 1) in true
+               else if 224 <= b0
+                    then if b0 <= 239
+                         then if remaining < 2 then true
+                              else let b1 = get bytes (pos + 1) in
+                                   if b0 = 224
+                                   then if 160 <= b1
+                                        then let second_ok =
+                                               (if b1 <= 191 then True
+                                                else False)
+                                             in
+                                             if not second_ok = True
+                                             then true
+                                             else if remaining < 3 then true
+                                                  else let b2 =
+                                                         get bytes (pos + 2)
+                                                       in true
+                                        else let second_ok = False in
+                                             if not second_ok = True
+                                             then true
+                                             else if remaining < 3 then true
+                                                  else let b2 =
+                                                         get bytes (pos + 2)
+                                                       in true
+                                   else if b0 = 237
+                                        then if 128 <= b1
+                                             then let second_ok =
+                                                    (if b1 <= 159 then True
+                                                     else False)
+                                                  in
+                                                  if not second_ok = True
+                                                  then true
+                                                  else if remaining < 3
+                                                       then true
+                                                       else let b2 =
+                                                              get bytes
+                                                              (pos + 2)
+                                                            in true
+                                             else let second_ok = False in
+                                                  if not second_ok = True
+                                                  then true
+                                                  else if remaining < 3
+                                                       then true
+                                                       else let b2 =
+                                                              get bytes
+                                                              (pos + 2)
+                                                            in true
+                                        else if 128 <= b1
+                                             then let second_ok =
+                                                    (if b1 <= 191 then True
+                                                     else False)
+                                                  in
+                                                  if not second_ok = True
+                                                  then true
+                                                  else if remaining < 3
+                                                       then true
+                                                       else let b2 =
+                                                              get bytes
+                                                              (pos + 2)
+                                                            in true
+                                             else let second_ok = False in
+                                                  if not second_ok = True
+                                                  then true
+                                                  else if remaining < 3
+                                                       then true
+                                                       else let b2 =
+                                                              get bytes
+                                                              (pos + 2)
+                                                            in true
+                         else if 240 <= b0
+                              then if b0 <= 244
+                                   then if remaining < 2 then true
+                                        else let b1 = get bytes (pos + 1) in
+                                             if b0 = 240
+                                             then if 144 <= b1
+                                                  then let second_ok =
+                                                         (if b1 <= 191
+                                                          then True
+                                                          else False)
+                                                       in
+                                                       if not second_ok =
+                                                              True
+                                                       then true
+                                                       else if remaining < 3
+                                                            then true
+                                                            else let b2 =
+                                                                   get bytes
+                                                                   (pos + 2)
+                                                                 in
+                                                                 if 128 <= b2
+                                                                 then 
+                                                                 if not 
+                                                                 b2 <= 191
+                                                                 then true
+                                                                 else 
+                                                                 if remaining
+                                                                    < 4
+                                                                 then true
+                                                                 else 
+                                                                 let b3 =
+                                                                   get bytes
+                                                                   (pos + 3)
+                                                                 in true
+                                                                 else 
+                                                                 if not false
+                                                                 then true
+                                                                 else 
+                                                                 if remaining
+                                                                    < 4
+                                                                 then true
+                                                                 else 
+                                                                 let b3 =
+                                                                   get bytes
+                                                                   (pos + 3)
+                                                                 in true
+                                                  else let second_ok =
+                                                         False
+                                                       in
+                                                       if not second_ok =
+                                                              True
+                                                       then true
+                                                       else if remaining < 3
+                                                            then true
+                                                            else let b2 =
+                                                                   get bytes
+                                                                   (pos + 2)
+                                                                 in
+                                                                 if 128 <= b2
+                                                                 then 
+                                                                 if not 
+                                                                 b2 <= 191
+                                                                 then true
+                                                                 else 
+                                                                 if remaining
+                                                                    < 4
+                                                                 then true
+                                                                 else 
+                                                                 let b3 =
+                                                                   get bytes
+                                                                   (pos + 3)
+                                                                 in true
+                                                                 else 
+                                                                 if not false
+                                                                 then true
+                                                                 else 
+                                                                 if remaining
+                                                                    < 4
+                                                                 then true
+                                                                 else 
+                                                                 let b3 =
+                                                                   get bytes
+                                                                   (pos + 3)
+                                                                 in true
+                                             else if b0 = 244
+                                                  then if 128 <= b1
+                                                       then let second_ok =
+                                                              (if b1 <= 143
+                                                               then True
+                                                               else False)
+                                                            in
+                                                            if not second_ok =
+                                                                   True
+                                                            then true
+                                                            else if remaining
+                                                                    < 3
+                                                                 then true
+                                                                 else 
+                                                                 let b2 =
+                                                                   get bytes
+                                                                   (pos + 2)
+                                                                 in
+                                                                 if 128 <= b2
+                                                                 then 
+                                                                 if not 
+                                                                 b2 <= 191
+                                                                 then true
+                                                                 else 
+                                                                 if remaining
+                                                                    < 4
+                                                                 then true
+                                                                 else 
+                                                                 let b3 =
+                                                                   get bytes
+                                                                   (pos + 3)
+                                                                 in true
+                                                                 else 
+                                                                 if not false
+                                                                 then true
+                                                                 else 
+                                                                 if remaining
+                                                                    < 4
+                                                                 then true
+                                                                 else 
+                                                                 let b3 =
+                                                                   get bytes
+                                                                   (pos + 3)
+                                                                 in true
+                                                       else let second_ok =
+                                                              False
+                                                            in
+                                                            if not second_ok =
+                                                                   True
+                                                            then true
+                                                            else if remaining
+                                                                    < 3
+                                                                 then true
+                                                                 else 
+                                                                 let b2 =
+                                                                   get bytes
+                                                                   (pos + 2)
+                                                                 in
+                                                                 if 128 <= b2
+                                                                 then 
+                                                                 if not 
+                                                                 b2 <= 191
+                                                                 then true
+                                                                 else 
+                                                                 if remaining
+                                                                    < 4
+                                                                 then true
+                                                                 else 
+                                                                 let b3 =
+                                                                   get bytes
+                                                                   (pos + 3)
+                                                                 in true
+                                                                 else 
+                                                                 if not false
+                                                                 then true
+                                                                 else 
+                                                                 if remaining
+                                                                    < 4
+                                                                 then true
+                                                                 else 
+                                                                 let b3 =
+                                                                   get bytes
+                                                                   (pos + 3)
+                                                                 in true
+                                                  else if 128 <= b1
+                                                       then let second_ok =
+                                                              (if b1 <= 191
+                                                               then True
+                                                               else False)
+                                                            in
+                                                            if not second_ok =
+                                                                   True
+                                                            then true
+                                                            else if remaining
+                                                                    < 3
+                                                                 then true
+                                                                 else 
+                                                                 let b2 =
+                                                                   get bytes
+                                                                   (pos + 2)
+                                                                 in
+                                                                 if 128 <= b2
+                                                                 then 
+                                                                 if not 
+                                                                 b2 <= 191
+                                                                 then true
+                                                                 else 
+                                                                 if remaining
+                                                                    < 4
+                                                                 then true
+                                                                 else 
+                                                                 let b3 =
+                                                                   get bytes
+                                                                   (pos + 3)
+                                                                 in true
+                                                                 else 
+                                                                 if not false
+                                                                 then true
+                                                                 else 
+                                                                 if remaining
+                                                                    < 4
+                                                                 then true
+                                                                 else 
+                                                                 let b3 =
+                                                                   get bytes
+                                                                   (pos + 3)
+                                                                 in true
+                                                       else let second_ok =
+                                                              False
+                                                            in
+                                                            if not second_ok =
+                                                                   True
+                                                            then true
+                                                            else if remaining
+                                                                    < 3
+                                                                 then true
+                                                                 else 
+                                                                 let b2 =
+                                                                   get bytes
+                                                                   (pos + 2)
+                                                                 in
+                                                                 if 128 <= b2
+                                                                 then 
+                                                                 if not 
+                                                                 b2 <= 191
+                                                                 then true
+                                                                 else 
+                                                                 if remaining
+                                                                    < 4
+                                                                 then true
+                                                                 else 
+                                                                 let b3 =
+                                                                   get bytes
+                                                                   (pos + 3)
+                                                                 in true
+                                                                 else 
+                                                                 if not false
+                                                                 then true
+                                                                 else 
+                                                                 if remaining
+                                                                    < 4
+                                                                 then true
+                                                                 else 
+                                                                 let b3 =
+                                                                   get bytes
+                                                                   (pos + 3)
+                                                                 in true
+                                   else true
+                              else true
+                    else if 240 <= b0
+                         then if b0 <= 244
+                              then if remaining < 2 then true
+                                   else let b1 = get bytes (pos + 1) in
+                                        if b0 = 240
+                                        then if 144 <= b1
+                                             then let second_ok =
+                                                    (if b1 <= 191 then True
+                                                     else False)
+                                                  in
+                                                  if not second_ok = True
+                                                  then true
+                                                  else if remaining < 3
+                                                       then true
+                                                       else let b2 =
+                                                              get bytes
+                                                              (pos + 2)
+                                                            in
+                                                            if 128 <= b2
+                                                            then if not 
+                                                                 b2 <= 191
+                                                                 then true
+                                                                 else 
+                                                                 if remaining
+                                                                    < 4
+                                                                 then true
+                                                                 else 
+                                                                 let b3 =
+                                                                   get bytes
+                                                                   (pos + 3)
+                                                                 in true
+                                                            else if not false
+                                                                 then true
+                                                                 else 
+                                                                 if remaining
+                                                                    < 4
+                                                                 then true
+                                                                 else 
+                                                                 let b3 =
+                                                                   get bytes
+                                                                   (pos + 3)
+                                                                 in true
+                                             else let second_ok = False in
+                                                  if not second_ok = True
+                                                  then true
+                                                  else if remaining < 3
+                                                       then true
+                                                       else let b2 =
+                                                              get bytes
+                                                              (pos + 2)
+                                                            in
+                                                            if 128 <= b2
+                                                            then if not 
+                                                                 b2 <= 191
+                                                                 then true
+                                                                 else 
+                                                                 if remaining
+                                                                    < 4
+                                                                 then true
+                                                                 else 
+                                                                 let b3 =
+                                                                   get bytes
+                                                                   (pos + 3)
+                                                                 in true
+                                                            else if not false
+                                                                 then true
+                                                                 else 
+                                                                 if remaining
+                                                                    < 4
+                                                                 then true
+                                                                 else 
+                                                                 let b3 =
+                                                                   get bytes
+                                                                   (pos + 3)
+                                                                 in true
+                                        else if b0 = 244
+                                             then if 128 <= b1
+                                                  then let second_ok =
+                                                         (if b1 <= 143
+                                                          then True
+                                                          else False)
+                                                       in
+                                                       if not second_ok =
+                                                              True
+                                                       then true
+                                                       else if remaining < 3
+                                                            then true
+                                                            else let b2 =
+                                                                   get bytes
+                                                                   (pos + 2)
+                                                                 in
+                                                                 if 128 <= b2
+                                                                 then 
+                                                                 if not 
+                                                                 b2 <= 191
+                                                                 then true
+                                                                 else 
+                                                                 if remaining
+                                                                    < 4
+                                                                 then true
+                                                                 else 
+                                                                 let b3 =
+                                                                   get bytes
+                                                                   (pos + 3)
+                                                                 in true
+                                                                 else 
+                                                                 if not false
+                                                                 then true
+                                                                 else 
+                                                                 if remaining
+                                                                    < 4
+                                                                 then true
+                                                                 else 
+                                                                 let b3 =
+                                                                   get bytes
+                                                                   (pos + 3)
+                                                                 in true
+                                                  else let second_ok =
+                                                         False
+                                                       in
+                                                       if not second_ok =
+                                                              True
+                                                       then true
+                                                       else if remaining < 3
+                                                            then true
+                                                            else let b2 =
+                                                                   get bytes
+                                                                   (pos + 2)
+                                                                 in
+                                                                 if 128 <= b2
+                                                                 then 
+                                                                 if not 
+                                                                 b2 <= 191
+                                                                 then true
+                                                                 else 
+                                                                 if remaining
+                                                                    < 4
+                                                                 then true
+                                                                 else 
+                                                                 let b3 =
+                                                                   get bytes
+                                                                   (pos + 3)
+                                                                 in true
+                                                                 else 
+                                                                 if not false
+                                                                 then true
+                                                                 else 
+                                                                 if remaining
+                                                                    < 4
+                                                                 then true
+                                                                 else 
+                                                                 let b3 =
+                                                                   get bytes
+                                                                   (pos + 3)
+                                                                 in true
+                                             else if 128 <= b1
+                                                  then let second_ok =
+                                                         (if b1 <= 191
+                                                          then True
+                                                          else False)
+                                                       in
+                                                       if not second_ok =
+                                                              True
+                                                       then true
+                                                       else if remaining < 3
+                                                            then true
+                                                            else let b2 =
+                                                                   get bytes
+                                                                   (pos + 2)
+                                                                 in
+                                                                 if 128 <= b2
+                                                                 then 
+                                                                 if not 
+                                                                 b2 <= 191
+                                                                 then true
+                                                                 else 
+                                                                 if remaining
+                                                                    < 4
+                                                                 then true
+                                                                 else 
+                                                                 let b3 =
+                                                                   get bytes
+                                                                   (pos + 3)
+                                                                 in true
+                                                                 else 
+                                                                 if not false
+                                                                 then true
+                                                                 else 
+                                                                 if remaining
+                                                                    < 4
+                                                                 then true
+                                                                 else 
+                                                                 let b3 =
+                                                                   get bytes
+                                                                   (pos + 3)
+                                                                 in true
+                                                  else let second_ok =
+                                                         False
+                                                       in
+                                                       if not second_ok =
+                                                              True
+                                                       then true
+                                                       else if remaining < 3
+                                                            then true
+                                                            else let b2 =
+                                                                   get bytes
+                                                                   (pos + 2)
+                                                                 in
+                                                                 if 128 <= b2
+                                                                 then 
+                                                                 if not 
+                                                                 b2 <= 191
+                                                                 then true
+                                                                 else 
+                                                                 if remaining
+                                                                    < 4
+                                                                 then true
+                                                                 else 
+                                                                 let b3 =
+                                                                   get bytes
+                                                                   (pos + 3)
+                                                                 in true
+                                                                 else 
+                                                                 if not false
+                                                                 then true
+                                                                 else 
+                                                                 if remaining
+                                                                    < 4
+                                                                 then true
+                                                                 else 
+                                                                 let b3 =
+                                                                   get bytes
+                                                                   (pos + 3)
+                                                                 in true
+                              else true
+                         else true
+          else if 224 <= b0
+               then if b0 <= 239
+                    then if remaining < 2 then true
+                         else let b1 = get bytes (pos + 1) in
+                              if b0 = 224
+                              then if 160 <= b1
+                                   then let second_ok =
+                                          (if b1 <= 191 then True else False)
+                                        in
+                                        if not second_ok = True then true
+                                        else if remaining < 3 then true
+                                             else let b2 =
+                                                    get bytes (pos + 2)
+                                                  in true
+                                   else let second_ok = False in
+                                        if not second_ok = True then true
+                                        else if remaining < 3 then true
+                                             else let b2 =
+                                                    get bytes (pos + 2)
+                                                  in true
+                              else if b0 = 237
+                                   then if 128 <= b1
+                                        then let second_ok =
+                                               (if b1 <= 159 then True
+                                                else False)
+                                             in
+                                             if not second_ok = True
+                                             then true
+                                             else if remaining < 3 then true
+                                                  else let b2 =
+                                                         get bytes (pos + 2)
+                                                       in true
+                                        else let second_ok = False in
+                                             if not second_ok = True
+                                             then true
+                                             else if remaining < 3 then true
+                                                  else let b2 =
+                                                         get bytes (pos + 2)
+                                                       in true
+                                   else if 128 <= b1
+                                        then let second_ok =
+                                               (if b1 <= 191 then True
+                                                else False)
+                                             in
+                                             if not second_ok = True
+                                             then true
+                                             else if remaining < 3 then true
+                                                  else let b2 =
+                                                         get bytes (pos + 2)
+                                                       in true
+                                        else let second_ok = False in
+                                             if not second_ok = True
+                                             then true
+                                             else if remaining < 3 then true
+                                                  else let b2 =
+                                                         get bytes (pos + 2)
+                                                       in true
+                    else if 240 <= b0
+                         then if b0 <= 244
+                              then if remaining < 2 then true
+                                   else let b1 = get bytes (pos + 1) in
+                                        if b0 = 240
+                                        then if 144 <= b1
+                                             then let second_ok =
+                                                    (if b1 <= 191 then True
+                                                     else False)
+                                                  in
+                                                  if not second_ok = True
+                                                  then true
+                                                  else if remaining < 3
+                                                       then true
+                                                       else let b2 =
+                                                              get bytes
+                                                              (pos + 2)
+                                                            in
+                                                            if 128 <= b2
+                                                            then if not 
+                                                                 b2 <= 191
+                                                                 then true
+                                                                 else 
+                                                                 if remaining
+                                                                    < 4
+                                                                 then true
+                                                                 else 
+                                                                 let b3 =
+                                                                   get bytes
+                                                                   (pos + 3)
+                                                                 in true
+                                                            else if not false
+                                                                 then true
+                                                                 else 
+                                                                 if remaining
+                                                                    < 4
+                                                                 then true
+                                                                 else 
+                                                                 let b3 =
+                                                                   get bytes
+                                                                   (pos + 3)
+                                                                 in true
+                                             else let second_ok = False in
+                                                  if not second_ok = True
+                                                  then true
+                                                  else if remaining < 3
+                                                       then true
+                                                       else let b2 =
+                                                              get bytes
+                                                              (pos + 2)
+                                                            in
+                                                            if 128 <= b2
+                                                            then if not 
+                                                                 b2 <= 191
+                                                                 then true
+                                                                 else 
+                                                                 if remaining
+                                                                    < 4
+                                                                 then true
+                                                                 else 
+                                                                 let b3 =
+                                                                   get bytes
+                                                                   (pos + 3)
+                                                                 in true
+                                                            else if not false
+                                                                 then true
+                                                                 else 
+                                                                 if remaining
+                                                                    < 4
+                                                                 then true
+                                                                 else 
+                                                                 let b3 =
+                                                                   get bytes
+                                                                   (pos + 3)
+                                                                 in true
+                                        else if b0 = 244
+                                             then if 128 <= b1
+                                                  then let second_ok =
+                                                         (if b1 <= 143
+                                                          then True
+                                                          else False)
+                                                       in
+                                                       if not second_ok =
+                                                              True
+                                                       then true
+                                                       else if remaining < 3
+                                                            then true
+                                                            else let b2 =
+                                                                   get bytes
+                                                                   (pos + 2)
+                                                                 in
+                                                                 if 128 <= b2
+                                                                 then 
+                                                                 if not 
+                                                                 b2 <= 191
+                                                                 then true
+                                                                 else 
+                                                                 if remaining
+                                                                    < 4
+                                                                 then true
+                                                                 else 
+                                                                 let b3 =
+                                                                   get bytes
+                                                                   (pos + 3)
+                                                                 in true
+                                                                 else 
+                                                                 if not false
+                                                                 then true
+                                                                 else 
+                                                                 if remaining
+                                                                    < 4
+                                                                 then true
+                                                                 else 
+                                                                 let b3 =
+                                                                   get bytes
+                                                                   (pos + 3)
+                                                                 in true
+                                                  else let second_ok =
+                                                         False
+                                                       in
+                                                       if not second_ok =
+                                                              True
+                                                       then true
+                                                       else if remaining < 3
+                                                            then true
+                                                            else let b2 =
+                                                                   get bytes
+                                                                   (pos + 2)
+                                                                 in
+                                                                 if 128 <= b2
+                                                                 then 
+                                                                 if not 
+                                                                 b2 <= 191
+                                                                 then true
+                                                                 else 
+                                                                 if remaining
+                                                                    < 4
+                                                                 then true
+                                                                 else 
+                                                                 let b3 =
+                                                                   get bytes
+                                                                   (pos + 3)
+                                                                 in true
+                                                                 else 
+                                                                 if not false
+                                                                 then true
+                                                                 else 
+                                                                 if remaining
+                                                                    < 4
+                                                                 then true
+                                                                 else 
+                                                                 let b3 =
+                                                                   get bytes
+                                                                   (pos + 3)
+                                                                 in true
+                                             else if 128 <= b1
+                                                  then let second_ok =
+                                                         (if b1 <= 191
+                                                          then True
+                                                          else False)
+                                                       in
+                                                       if not second_ok =
+                                                              True
+                                                       then true
+                                                       else if remaining < 3
+                                                            then true
+                                                            else let b2 =
+                                                                   get bytes
+                                                                   (pos + 2)
+                                                                 in
+                                                                 if 128 <= b2
+                                                                 then 
+                                                                 if not 
+                                                                 b2 <= 191
+                                                                 then true
+                                                                 else 
+                                                                 if remaining
+                                                                    < 4
+                                                                 then true
+                                                                 else 
+                                                                 let b3 =
+                                                                   get bytes
+                                                                   (pos + 3)
+                                                                 in true
+                                                                 else 
+                                                                 if not false
+                                                                 then true
+                                                                 else 
+                                                                 if remaining
+                                                                    < 4
+                                                                 then true
+                                                                 else 
+                                                                 let b3 =
+                                                                   get bytes
+                                                                   (pos + 3)
+                                                                 in true
+                                                  else let second_ok =
+                                                         False
+                                                       in
+                                                       if not second_ok =
+                                                              True
+                                                       then true
+                                                       else if remaining < 3
+                                                            then true
+                                                            else let b2 =
+                                                                   get bytes
+                                                                   (pos + 2)
+                                                                 in
+                                                                 if 128 <= b2
+                                                                 then 
+                                                                 if not 
+                                                                 b2 <= 191
+                                                                 then true
+                                                                 else 
+                                                                 if remaining
+                                                                    < 4
+                                                                 then true
+                                                                 else 
+                                                                 let b3 =
+                                                                   get bytes
+                                                                   (pos + 3)
+                                                                 in true
+                                                                 else 
+                                                                 if not false
+                                                                 then true
+                                                                 else 
+                                                                 if remaining
+                                                                    < 4
+                                                                 then true
+                                                                 else 
+                                                                 let b3 =
+                                                                   get bytes
+                                                                   (pos + 3)
+                                                                 in true
+                              else true
+                         else true
+               else if 240 <= b0
+                    then if b0 <= 244
+                         then if remaining < 2 then true
+                              else let b1 = get bytes (pos + 1) in
+                                   if b0 = 240
+                                   then if 144 <= b1
+                                        then let second_ok =
+                                               (if b1 <= 191 then True
+                                                else False)
+                                             in
+                                             if not second_ok = True
+                                             then true
+                                             else if remaining < 3 then true
+                                                  else let b2 =
+                                                         get bytes (pos + 2)
+                                                       in
+                                                       if 128 <= b2
+                                                       then if not b2 <= 191
+                                                            then true
+                                                            else if remaining
+                                                                    < 4
+                                                                 then true
+                                                                 else 
+                                                                 let b3 =
+                                                                   get bytes
+                                                                   (pos + 3)
+                                                                 in true
+                                                       else if not false
+                                                            then true
+                                                            else if remaining
+                                                                    < 4
+                                                                 then true
+                                                                 else 
+                                                                 let b3 =
+                                                                   get bytes
+                                                                   (pos + 3)
+                                                                 in true
+                                        else let second_ok = False in
+                                             if not second_ok = True
+                                             then true
+                                             else if remaining < 3 then true
+                                                  else let b2 =
+                                                         get bytes (pos + 2)
+                                                       in
+                                                       if 128 <= b2
+                                                       then if not b2 <= 191
+                                                            then true
+                                                            else if remaining
+                                                                    < 4
+                                                                 then true
+                                                                 else 
+                                                                 let b3 =
+                                                                   get bytes
+                                                                   (pos + 3)
+                                                                 in true
+                                                       else if not false
+                                                            then true
+                                                            else if remaining
+                                                                    < 4
+                                                                 then true
+                                                                 else 
+                                                                 let b3 =
+                                                                   get bytes
+                                                                   (pos + 3)
+                                                                 in true
+                                   else if b0 = 244
+                                        then if 128 <= b1
+                                             then let second_ok =
+                                                    (if b1 <= 143 then True
+                                                     else False)
+                                                  in
+                                                  if not second_ok = True
+                                                  then true
+                                                  else if remaining < 3
+                                                       then true
+                                                       else let b2 =
+                                                              get bytes
+                                                              (pos + 2)
+                                                            in
+                                                            if 128 <= b2
+                                                            then if not 
+                                                                 b2 <= 191
+                                                                 then true
+                                                                 else 
+                                                                 if remaining
+                                                                    < 4
+                                                                 then true
+                                                                 else 
+                                                                 let b3 =
+                                                                   get bytes
+                                                                   (pos + 3)
+                                                                 in true
+                                                            else if not false
+                                                                 then true
+                                                                 else 
+                                                                 if remaining
+                                                                    < 4
+                                                                 then true
+                                                                 else 
+                                                                 let b3 =
+                                                                   get bytes
+                                                                   (pos + 3)
+                                                                 in true
+                                             else let second_ok = False in
+                                                  if not second_ok = True
+                                                  then true
+                                                  else if remaining < 3
+                                                       then true
+                                                       else let b2 =
+                                                              get bytes
+                                                              (pos + 2)
+                                                            in
+                                                            if 128 <= b2
+                                                            then if not 
+                                                                 b2 <= 191
+                                                                 then true
+                                                                 else 
+                                                                 if remaining
+                                                                    < 4
+                                                                 then true
+                                                                 else 
+                                                                 let b3 =
+                                                                   get bytes
+                                                                   (pos + 3)
+                                                                 in true
+                                                            else if not false
+                                                                 then true
+                                                                 else 
+                                                                 if remaining
+                                                                    < 4
+                                                                 then true
+                                                                 else 
+                                                                 let b3 =
+                                                                   get bytes
+                                                                   (pos + 3)
+                                                                 in true
+                                        else if 128 <= b1
+                                             then let second_ok =
+                                                    (if b1 <= 191 then True
+                                                     else False)
+                                                  in
+                                                  if not second_ok = True
+                                                  then true
+                                                  else if remaining < 3
+                                                       then true
+                                                       else let b2 =
+                                                              get bytes
+                                                              (pos + 2)
+                                                            in
+                                                            if 128 <= b2
+                                                            then if not 
+                                                                 b2 <= 191
+                                                                 then true
+                                                                 else 
+                                                                 if remaining
+                                                                    < 4
+                                                                 then true
+                                                                 else 
+                                                                 let b3 =
+                                                                   get bytes
+                                                                   (pos + 3)
+                                                                 in true
+                                                            else if not false
+                                                                 then true
+                                                                 else 
+                                                                 if remaining
+                                                                    < 4
+                                                                 then true
+                                                                 else 
+                                                                 let b3 =
+                                                                   get bytes
+                                                                   (pos + 3)
+                                                                 in true
+                                             else let second_ok = False in
+                                                  if not second_ok = True
+                                                  then true
+                                                  else if remaining < 3
+                                                       then true
+                                                       else let b2 =
+                                                              get bytes
+                                                              (pos + 2)
+                                                            in
+                                                            if 128 <= b2
+                                                            then if not 
+                                                                 b2 <= 191
+                                                                 then true
+                                                                 else 
+                                                                 if remaining
+                                                                    < 4
+                                                                 then true
+                                                                 else 
+                                                                 let b3 =
+                                                                   get bytes
+                                                                   (pos + 3)
+                                                                 in true
+                                                            else if not false
+                                                                 then true
+                                                                 else 
+                                                                 if remaining
+                                                                    < 4
+                                                                 then true
+                                                                 else 
+                                                                 let b3 =
+                                                                   get bytes
+                                                                   (pos + 3)
+                                                                 in true
+                         else true
+                    else true)
+  
+end
+

@@ -1,0 +1,99 @@
+theory Coma
+  
+  (* use why3.BuiltIn.BuiltIn *)
+  
+  (* use why3.Bool.Bool *)
+  
+  (* use why3.Unit.Unit *)
+  
+  (* use seq.Seq *)
+  
+  (* use map.Map *)
+  
+  type t_String
+  
+  type t_Cow_str =
+    | Borrowed string
+    | Owned t_String
+  
+  type tup2_Cow_str_Cow_str =
+    | Tup2_Cow_str_Cow_str'mk (f0:t_Cow_str) (f1:t_Cow_str)
+  
+  (* meta model_record function f1 *)
+  
+  (* meta model_record function f0 *)
+  
+  type tup2_bool_bool =
+    | Tup2_bool_bool'mk (f0'0:bool) (f1'0:bool)
+  
+  (* meta model_record function f1'0 *)
+  
+  (* meta model_record function f0'0 *)
+  
+  function index_Mapping_tup2_Cow_str_Cow_str_tup2_bool_bool (self:
+    tup2_Cow_str_Cow_str -> tup2_bool_bool) (a:tup2_Cow_str_Cow_str) :
+    tup2_bool_bool = get self a
+  
+  (* meta rewrite_def
+    function index_Mapping_tup2_Cow_str_Cow_str_tup2_bool_bool *)
+  
+  function map_tup2_Cow_str_Cow_str (seq tup2_Cow_str_Cow_str)
+    (tup2_Cow_str_Cow_str -> tup2_bool_bool) : seq tup2_bool_bool
+  
+  axiom map_tup2_Cow_str_Cow_str_spec :
+    forall self:seq tup2_Cow_str_Cow_str, m:tup2_Cow_str_Cow_str ->
+     tup2_bool_bool [map_tup2_Cow_str_Cow_str self m].
+     length (map_tup2_Cow_str_Cow_str self m) = length self
+  
+  axiom map_tup2_Cow_str_Cow_str_spec'0 :
+    forall self:seq tup2_Cow_str_Cow_str, m:tup2_Cow_str_Cow_str ->
+     tup2_bool_bool [map_tup2_Cow_str_Cow_str self m].
+     forall i:int.
+      0 <= i /\ i < length self ->
+      get1 (map_tup2_Cow_str_Cow_str self m) i =
+      index_Mapping_tup2_Cow_str_Cow_str_tup2_bool_bool m (get1 self i)
+  
+  predicate cow_str_borrowed (value:t_Cow_str) =
+    match value with
+    | Borrowed _ -> true
+    | Owned _ -> false
+    end
+  
+  (* meta compute_max_steps 1000000 *)
+  
+  (* meta select_lsinst "all" *)
+  
+  constant ab : seq tup2_Cow_str_Cow_str
+  
+  constant bc : seq tup2_Cow_str_Cow_str
+  
+  predicate cow_pair_borrow_map_concat (seq tup2_Cow_str_Cow_str) (seq
+    tup2_Cow_str_Cow_str)
+  
+  goal vc_cow_pair_borrow_map_concat :
+    true /\
+    map_tup2_Cow_str_Cow_str (ab ++ bc)
+    (fun (__0:tup2_Cow_str_Cow_str) ->
+      match __0 with
+      | Tup2_Cow_str_Cow_str'mk key value ->
+          Tup2_bool_bool'mk (if cow_str_borrowed key then True else False)
+          (if cow_str_borrowed value then True else False)
+      end) =
+    (map_tup2_Cow_str_Cow_str ab
+     (fun (__0:tup2_Cow_str_Cow_str) ->
+       match __0 with
+       | Tup2_Cow_str_Cow_str'mk key value ->
+           Tup2_bool_bool'mk (if cow_str_borrowed key then True else False)
+           (if cow_str_borrowed value then True else False)
+       end)
+     ++ map_tup2_Cow_str_Cow_str bc
+        (fun (__0:tup2_Cow_str_Cow_str) ->
+          match __0 with
+          | Tup2_Cow_str_Cow_str'mk key value ->
+              Tup2_bool_bool'mk
+              (if cow_str_borrowed key then True else False)
+              (if cow_str_borrowed value then True else False)
+          end))
+  
+end
+

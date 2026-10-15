@@ -1,0 +1,141 @@
+use creusot.int.UInt64
+use creusot.slice.Slice64
+use creusot.int.UInt8
+use seq.Seq
+use creusot.prelude.Any
+use int.Int
+
+let len_u8 (self_: Slice64.slice UInt8.t) (return (x: UInt64.t)) = any
+  [ return (result: UInt64.t) -> {[@stop_split] [@expl:len ensures] Seq.length (Slice64.view self_)
+    = UInt64.t'int result}
+    (! return {result}) ]
+
+type tup4_usize_usize_usize_usize = { f0: UInt64.t; f1: UInt64.t; f2: UInt64.t; f3: UInt64.t }
+
+type t_Option_tup4_usize_usize_usize_usize = None | Some tup4_usize_usize_usize_usize
+
+meta "compute_max_steps" 1000000
+
+meta "select_lsinst" "all"
+
+let raw_pair_bounds (input: Slice64.slice UInt8.t) (return (x: t_Option_tup4_usize_usize_usize_usize)) = (! bb0
+  [ bb0 = s0 [ s0 = [ &start <- (0: UInt64.t) ] s1 | s1 = bb1 ]
+  | bb1 = bb1
+    [ bb1 = {[@expl:loop invariant] 0 <= UInt64.t'int start
+      /\ UInt64.t'int start <= Seq.length (Slice64.view input)
+      /\ (forall i: int. 0 <= i /\ i < UInt64.t'int start -> UInt8.t'int (Seq.get (Slice64.view input) i) = 38)}
+      (! s0)
+      [ s0 = len_u8 {input} (fun (_x: UInt64.t) -> [ &_13 <- _x ] s1)
+      | s1 = [ &_11 <- UInt64.lt start _13 ] s2
+      | s2 = any [ br0 -> {_11 = false} (! bb9) | br1 -> {_11} (! bb4) ] ]
+      [ bb4 = s0
+        [ s0 = [ &_17 <- start ] s1
+        | s1 = [ &_18 <- Slice64.length input ] s2
+        | s2 = [ &_19 <- UInt64.lt _17 _18 ] s3
+        | s3 = {[@expl:index in bounds] _19} s4
+        | s4 = Slice64.get <UInt8.t> {input} {_17} (fun (r: UInt8.t) -> [ &_16 <- r ] s5)
+        | s5 = [ &_15 <- _16 = (38: UInt8.t) ] s6
+        | s6 = any [ br0 -> {_15 = false} (! bb9) | br1 -> {_15} (! bb6) ] ]
+      | bb6 = s0 [ s0 = UInt64.add {start} {(1: UInt64.t)} (fun (_x: UInt64.t) -> [ &start <- _x ] s1) | s1 = bb1 ] ] ]
+  | bb9 = s0
+    [ s0 = len_u8 {input} (fun (_x: UInt64.t) -> [ &_24 <- _x ] s1)
+    | s1 = [ &_22 <- start = _24 ] s2
+    | s2 = any [ br0 -> {_22 = false} (! bb12) | br1 -> {_22} (! bb11) ] ]
+  | bb11 = s0 [ s0 = [ &_ret <- None ] s1 | s1 = return {_ret} ]
+  | bb12 = s0 [ s0 = [ &end' <- start ] s1 | s1 = bb13 ]
+  | bb13 = bb13
+    [ bb13 = {[@expl:loop invariant] UInt64.t'int start <= UInt64.t'int end'
+      /\ UInt64.t'int end' <= Seq.length (Slice64.view input)
+      /\ (forall i: int. UInt64.t'int start <= i /\ i < UInt64.t'int end'
+        -> UInt8.t'int (Seq.get (Slice64.view input) i) <> 38)}
+      (! s0)
+      [ s0 = len_u8 {input} (fun (_x: UInt64.t) -> [ &_36 <- _x ] s1)
+      | s1 = [ &_34 <- UInt64.lt end' _36 ] s2
+      | s2 = any [ br0 -> {_34 = false} (! bb21) | br1 -> {_34} (! bb16) ] ]
+      [ bb16 = s0
+        [ s0 = [ &_40 <- end' ] s1
+        | s1 = [ &_41 <- Slice64.length input ] s2
+        | s2 = [ &_42 <- UInt64.lt _40 _41 ] s3
+        | s3 = {[@expl:index in bounds] _42} s4
+        | s4 = Slice64.get <UInt8.t> {input} {_40} (fun (r: UInt8.t) -> [ &_39 <- r ] s5)
+        | s5 = [ &_38 <- _39 <> (38: UInt8.t) ] s6
+        | s6 = any [ br0 -> {_38 = false} (! bb21) | br1 -> {_38} (! bb18) ] ]
+      | bb18 = s0 [ s0 = UInt64.add {end'} {(1: UInt64.t)} (fun (_x: UInt64.t) -> [ &end' <- _x ] s1) | s1 = bb13 ] ] ]
+  | bb21 = s0 [ s0 = [ &eq <- start ] s1 | s1 = bb22 ]
+  | bb22 = bb22
+    [ bb22 = {[@expl:loop invariant] UInt64.t'int start <= UInt64.t'int eq
+      /\ UInt64.t'int eq <= UInt64.t'int end'
+      /\ (forall i: int. UInt64.t'int start <= i /\ i < UInt64.t'int eq
+        -> UInt8.t'int (Seq.get (Slice64.view input) i) <> 61)}
+      (! s0)
+      [ s0 = [ &_52 <- UInt64.lt eq end' ] s1 | s1 = any [ br0 -> {_52 = false} (! bb29) | br1 -> {_52} (! bb24) ] ]
+      [ bb24 = s0
+        [ s0 = [ &_57 <- eq ] s1
+        | s1 = [ &_58 <- Slice64.length input ] s2
+        | s2 = [ &_59 <- UInt64.lt _57 _58 ] s3
+        | s3 = {[@expl:index in bounds] _59} s4
+        | s4 = Slice64.get <UInt8.t> {input} {_57} (fun (r: UInt8.t) -> [ &_56 <- r ] s5)
+        | s5 = [ &_55 <- _56 <> (61: UInt8.t) ] s6
+        | s6 = any [ br0 -> {_55 = false} (! bb29) | br1 -> {_55} (! bb26) ] ]
+      | bb26 = s0 [ s0 = UInt64.add {eq} {(1: UInt64.t)} (fun (_x: UInt64.t) -> [ &eq <- _x ] s1) | s1 = bb22 ] ] ]
+  | bb29 = s0
+    [ s0 = len_u8 {input} (fun (_x: UInt64.t) -> [ &_64 <- _x ] s1)
+    | s1 = [ &_62 <- UInt64.lt end' _64 ] s2
+    | s2 = any [ br0 -> {_62 = false} (! bb32) | br1 -> {_62} (! bb31) ] ]
+  | bb31 = s0 [ s0 = UInt64.add {end'} {(1: UInt64.t)} (fun (_x: UInt64.t) -> [ &next <- _x ] s1) | s1 = bb33 ]
+  | bb32 = s0 [ s0 = [ &next <- end' ] s1 | s1 = bb33 ]
+  | bb33 = s0
+    [ s0 = [ &_67 <- { f0 = start; f1 = eq; f2 = end'; f3 = next } ] s1
+    | s1 = [ &_ret <- Some _67 ] s2
+    | s2 = return {_ret} ] ]
+  [ & _ret: t_Option_tup4_usize_usize_usize_usize = Any.any_l ()
+  | & input: Slice64.slice UInt8.t = input
+  | & start: UInt64.t = Any.any_l ()
+  | & _11: bool = Any.any_l ()
+  | & _13: UInt64.t = Any.any_l ()
+  | & _15: bool = Any.any_l ()
+  | & _16: UInt8.t = Any.any_l ()
+  | & _17: UInt64.t = Any.any_l ()
+  | & _18: UInt64.t = Any.any_l ()
+  | & _19: bool = Any.any_l ()
+  | & _22: bool = Any.any_l ()
+  | & _24: UInt64.t = Any.any_l ()
+  | & end': UInt64.t = Any.any_l ()
+  | & _34: bool = Any.any_l ()
+  | & _36: UInt64.t = Any.any_l ()
+  | & _38: bool = Any.any_l ()
+  | & _39: UInt8.t = Any.any_l ()
+  | & _40: UInt64.t = Any.any_l ()
+  | & _41: UInt64.t = Any.any_l ()
+  | & _42: bool = Any.any_l ()
+  | & eq: UInt64.t = Any.any_l ()
+  | & _52: bool = Any.any_l ()
+  | & _55: bool = Any.any_l ()
+  | & _56: UInt8.t = Any.any_l ()
+  | & _57: UInt64.t = Any.any_l ()
+  | & _58: UInt64.t = Any.any_l ()
+  | & _59: bool = Any.any_l ()
+  | & next: UInt64.t = Any.any_l ()
+  | & _62: bool = Any.any_l ()
+  | & _64: UInt64.t = Any.any_l ()
+  | & _67: tup4_usize_usize_usize_usize = Any.any_l () ])
+  [ return (result: t_Option_tup4_usize_usize_usize_usize) ->
+  {[@stop_split] [@expl:raw_pair_bounds ensures] match result with
+      | None -> forall i: int. 0 <= i /\ i < Seq.length (Slice64.view input)
+        -> UInt8.t'int (Seq.get (Slice64.view input) i) = 38
+      | Some {f0 = start; f1 = eq; f2 = end'; f3 = next} -> 0 <= UInt64.t'int start
+      /\ UInt64.t'int start < UInt64.t'int end'
+      /\ UInt64.t'int end' <= Seq.length (Slice64.view input)
+      /\ UInt64.t'int start <= UInt64.t'int eq
+      /\ UInt64.t'int eq <= UInt64.t'int end'
+      /\ (forall i: int. 0 <= i /\ i < UInt64.t'int start -> UInt8.t'int (Seq.get (Slice64.view input) i) = 38)
+      /\ (forall i: int. UInt64.t'int start <= i /\ i < UInt64.t'int end'
+          -> UInt8.t'int (Seq.get (Slice64.view input) i) <> 38)
+      /\ (forall i: int. UInt64.t'int start <= i /\ i < UInt64.t'int eq
+          -> UInt8.t'int (Seq.get (Slice64.view input) i) <> 61)
+      /\ (UInt64.t'int eq < UInt64.t'int end' -> UInt8.t'int (Seq.get (Slice64.view input) (UInt64.t'int eq)) = 61)
+      /\ (UInt64.t'int end' < Seq.length (Slice64.view input)
+        -> UInt8.t'int (Seq.get (Slice64.view input) (UInt64.t'int end')) = 38)
+      /\ UInt64.t'int next = UInt64.t'int end' + (if UInt64.t'int end' < Seq.length (Slice64.view input) then 1 else 0)
+      end}
+    (! return {result}) ]

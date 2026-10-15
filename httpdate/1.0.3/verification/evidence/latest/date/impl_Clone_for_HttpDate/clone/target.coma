@@ -1,0 +1,149 @@
+(* <date::HttpDate as std::clone::Clone> *)
+
+use creusot.int.UInt8
+use creusot.int.UInt16
+use creusot.prelude.Any
+use int.ComputerDivision
+use int.Int
+
+type t_HttpDate = {
+  sec: UInt8.t;
+  min: UInt8.t;
+  hour: UInt8.t;
+  day: UInt8.t;
+  mon: UInt8.t;
+  year: UInt16.t;
+  wday: UInt8.t }
+
+type t_RawDate = {
+  sec'0: UInt8.t;
+  min'0: UInt8.t;
+  hour'0: UInt8.t;
+  day'0: UInt8.t;
+  mon'0: UInt8.t;
+  year'0: UInt16.t;
+  wday'0: UInt8.t }
+
+function leap_adjustment [@inline:trivial] (year'1: int) : int = if ComputerDivision.mod year'1 4 = 0
+  /\ (ComputerDivision.mod year'1 100 <> 0 \/ ComputerDivision.mod year'1 400 = 0) then
+    1
+  else
+    0
+
+
+meta "rewrite_def" function leap_adjustment
+
+function month_length [@inline:trivial] (year'1: int) (month: int) : int = if month = 2 then
+    28 + leap_adjustment year'1
+  else
+    if month = 4 \/ month = 6 \/ month = 9 \/ month = 11 then 30 else 31
+
+
+meta "rewrite_def" function month_length
+
+function january_start [@inline:trivial] (year'1: int) : int = (year'1 - 1970) * 365
+      + ComputerDivision.div (year'1 - 1969) 4
+    - ComputerDivision.div (year'1 - 1901) 100
+  + ComputerDivision.div (year'1 - 1601) 400
+
+meta "rewrite_def" function january_start
+
+function january_offset [@inline:trivial] (month: int) : int = if month = 1 then
+    0
+  else
+    if month = 2 then
+      31
+    else
+      if month = 3 then
+        59
+      else
+        if month = 4 then
+          90
+        else
+          if month = 5 then
+            120
+          else
+            if month = 6 then
+              151
+            else
+              if month = 7 then
+                181
+              else
+                if month = 8 then
+                  212
+                else
+                  if month = 9 then 243 else if month = 10 then 273 else if month = 11 then 304 else 334
+              
+            
+          
+        
+      
+    
+  
+
+
+meta "rewrite_def" function january_offset
+
+predicate gt_log_Int [@inline:trivial] (self: int) (other: int) = other < self
+
+meta "rewrite_def" predicate gt_log_Int
+
+function gregorian_day [@inline:trivial] (d: t_RawDate) : int = january_start (UInt16.t'int d.year'0)
+        + january_offset (UInt8.t'int d.mon'0)
+      + UInt8.t'int d.day'0
+    - 1
+  + (if gt_log_Int (UInt8.t'int d.mon'0) 2 then leap_adjustment (UInt16.t'int d.year'0) else 0)
+
+meta "rewrite_def" function gregorian_day
+
+predicate valid_calendar [@inline:trivial] (d: t_RawDate) =
+  UInt8.t'int d.sec'0 < 60
+  /\ UInt8.t'int d.min'0 < 60
+  /\ UInt8.t'int d.hour'0 < 24
+  /\ 1970 <= UInt16.t'int d.year'0
+  /\ UInt16.t'int d.year'0 <= 9999
+  /\ 1 <= UInt8.t'int d.mon'0
+  /\ UInt8.t'int d.mon'0 <= 12
+  /\ 1 <= UInt8.t'int d.day'0
+  /\ UInt8.t'int d.day'0 <= month_length (UInt16.t'int d.year'0) (UInt8.t'int d.mon'0)
+  /\ UInt8.t'int d.wday'0 = ComputerDivision.mod (gregorian_day d + 3) 7 + 1
+
+meta "rewrite_def" predicate valid_calendar
+
+function raw_model [@inline:trivial] (self: t_HttpDate) : t_RawDate = { sec'0 = self.sec;
+                                                                        min'0 = self.min;
+                                                                        hour'0 = self.hour;
+                                                                        day'0 = self.day;
+                                                                        mon'0 = self.mon;
+                                                                        year'0 = self.year;
+                                                                        wday'0 = self.wday }
+
+meta "rewrite_def" function raw_model
+
+predicate invariant_HttpDate (self: t_HttpDate) = valid_calendar (raw_model self)
+
+predicate inv_HttpDate (_1: t_HttpDate)
+
+axiom inv_axiom [@rewrite]: forall x: t_HttpDate [inv_HttpDate x]. inv_HttpDate x = invariant_HttpDate x
+
+predicate invariant_ref_HttpDate [@inline:trivial] (self: t_HttpDate) = inv_HttpDate self
+
+meta "rewrite_def" predicate invariant_ref_HttpDate
+
+predicate inv_ref_HttpDate [@inline:trivial] (_1: t_HttpDate) = invariant_ref_HttpDate _1
+
+meta "rewrite_def" predicate inv_ref_HttpDate
+
+meta "compute_max_steps" 1000000
+
+meta "select_lsinst" "all"
+
+let clone_HttpDate (self: t_HttpDate) (return (x: t_HttpDate)) =
+{[@stop_split] [@expl:clone 'self' type invariant] inv_ref_HttpDate self}
+  (! bb0
+  [ bb0 = s0 [ s0 = [ &_ret <- self ] s1 | s1 = return {_ret} ] ]
+  [ & _ret: t_HttpDate = Any.any_l () | & self: t_HttpDate = self ])
+  [ return (result: t_HttpDate) ->
+  {[@stop_split] [@expl:clone_HttpDate ensures] ([@stop_split] [@expl:clone result type invariant] inv_HttpDate result)
+    /\ ([@stop_split] [@expl:clone ensures] result = self)}
+    (! return {result}) ]

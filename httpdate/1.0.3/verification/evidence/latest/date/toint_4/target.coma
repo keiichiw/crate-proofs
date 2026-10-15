@@ -1,0 +1,148 @@
+use creusot.int.UInt64
+use creusot.slice.Slice64
+use creusot.int.UInt8
+use creusot.int.UInt16
+use creusot.prelude.Any
+use seq.Seq
+use int.Int
+
+let wrapping_sub (self_: UInt8.t) (rhs: UInt8.t) (return (x: UInt8.t)) = any
+  [ return (result: UInt8.t) -> {[@stop_split] [@expl:wrapping_sub ensures] result = UInt8.sub self_ rhs}
+    (! return {result}) ]
+
+let from_u16 (small: UInt8.t) (return (x: UInt16.t)) = any
+  [ return (result: UInt16.t) -> {[@stop_split] [@expl:from ensures] result = UInt16.of_int (UInt8.t'int small)}
+    (! return {result}) ]
+
+type t_Error = { f0: () }
+
+type t_Result_u16_Error = Ok UInt16.t | Err t_Error
+
+predicate ge_log_Int [@inline:trivial] (self: int) (other: int) = other <= self
+
+meta "rewrite_def" predicate ge_log_Int
+
+function index_slice_u8 [@inline:trivial] (self: Slice64.slice UInt8.t) (ix: int) : UInt8.t =
+  Seq.get (Slice64.view self) ix
+
+meta "rewrite_def" function index_slice_u8
+
+meta "compute_max_steps" 1000000
+
+meta "select_lsinst" "all"
+
+let toint_4 (s: Slice64.slice UInt8.t) (return (x: t_Result_u16_Error)) =
+{[@stop_split] [@expl:toint_4 requires] ge_log_Int (Seq.length (Slice64.view s)) 4}
+  (! bb0
+  [ bb0 = s0
+    [ s0 = [ &_9 <- (0: UInt64.t) ] s1
+    | s1 = [ &_10 <- Slice64.length s ] s2
+    | s2 = [ &_11 <- UInt64.lt _9 _10 ] s3
+    | s3 = {[@expl:index in bounds] _11} s4
+    | s4 = Slice64.get <UInt8.t> {s} {_9} (fun (r: UInt8.t) -> [ &_8 <- r ] s5)
+    | s5 = wrapping_sub {_8} {(48: UInt8.t)} (fun (_x: UInt8.t) -> [ &_7 <- _x ] s6)
+    | s6 = from_u16 {_7} (fun (_x: UInt16.t) -> [ &a <- _x ] s7)
+    | s7 = [ &_15 <- (1: UInt64.t) ] s8
+    | s8 = [ &_16 <- Slice64.length s ] s9
+    | s9 = [ &_17 <- UInt64.lt _15 _16 ] s10
+    | s10 = {[@expl:index in bounds] _17} s11
+    | s11 = Slice64.get <UInt8.t> {s} {_15} (fun (r: UInt8.t) -> [ &_14 <- r ] s12)
+    | s12 = wrapping_sub {_14} {(48: UInt8.t)} (fun (_x: UInt8.t) -> [ &_13 <- _x ] s13)
+    | s13 = from_u16 {_13} (fun (_x: UInt16.t) -> [ &b <- _x ] s14)
+    | s14 = [ &_21 <- (2: UInt64.t) ] s15
+    | s15 = [ &_22 <- Slice64.length s ] s16
+    | s16 = [ &_23 <- UInt64.lt _21 _22 ] s17
+    | s17 = {[@expl:index in bounds] _23} s18
+    | s18 = Slice64.get <UInt8.t> {s} {_21} (fun (r: UInt8.t) -> [ &_20 <- r ] s19)
+    | s19 = wrapping_sub {_20} {(48: UInt8.t)} (fun (_x: UInt8.t) -> [ &_19 <- _x ] s20)
+    | s20 = from_u16 {_19} (fun (_x: UInt16.t) -> [ &c <- _x ] s21)
+    | s21 = [ &_27 <- (3: UInt64.t) ] s22
+    | s22 = [ &_28 <- Slice64.length s ] s23
+    | s23 = [ &_29 <- UInt64.lt _27 _28 ] s24
+    | s24 = {[@expl:index in bounds] _29} s25
+    | s25 = Slice64.get <UInt8.t> {s} {_27} (fun (r: UInt8.t) -> [ &_26 <- r ] s26)
+    | s26 = wrapping_sub {_26} {(48: UInt8.t)} (fun (_x: UInt8.t) -> [ &_25 <- _x ] s27)
+    | s27 = from_u16 {_25} (fun (_x: UInt16.t) -> [ &d <- _x ] s28)
+    | s28 = [ &_30 <- UInt16.lt a (10: UInt16.t) ] s29
+    | s29 = any [ br0 -> {_30 = false} (! bb21) | br1 -> {_30} (! bb13) ] ]
+  | bb13 = s0
+    [ s0 = [ &_32 <- UInt16.lt b (10: UInt16.t) ] s1
+    | s1 = any [ br0 -> {_32 = false} (! bb21) | br1 -> {_32} (! bb14) ] ]
+  | bb14 = s0
+    [ s0 = [ &_34 <- UInt16.lt c (10: UInt16.t) ] s1
+    | s1 = any [ br0 -> {_34 = false} (! bb21) | br1 -> {_34} (! bb15) ] ]
+  | bb15 = s0
+    [ s0 = [ &_36 <- UInt16.lt d (10: UInt16.t) ] s1
+    | s1 = any [ br0 -> {_36 = false} (! bb21) | br1 -> {_36} (! bb16) ] ]
+  | bb16 = s0
+    [ s0 = UInt16.mul {a} {(1000: UInt16.t)} (fun (_x: UInt16.t) -> [ &_41 <- _x ] s1)
+    | s1 = UInt16.mul {b} {(100: UInt16.t)} (fun (_x: UInt16.t) -> [ &_43 <- _x ] s2)
+    | s2 = UInt16.add {_41} {_43} (fun (_x: UInt16.t) -> [ &_40 <- _x ] s3)
+    | s3 = UInt16.mul {c} {(10: UInt16.t)} (fun (_x: UInt16.t) -> [ &_45 <- _x ] s4)
+    | s4 = UInt16.add {_40} {_45} (fun (_x: UInt16.t) -> [ &_39 <- _x ] s5)
+    | s5 = UInt16.add {_39} {d} (fun (_x: UInt16.t) -> [ &_38 <- _x ] s6)
+    | s6 = [ &_ret <- Ok _38 ] s7
+    | s7 = return {_ret} ]
+  | bb21 = s0 [ s0 = [ &_48 <- { f0 = _49 } ] s1 | s1 = [ &_ret <- Err _48 ] s2 | s2 = return {_ret} ] ]
+  [ & _ret: t_Result_u16_Error = Any.any_l ()
+  | & s: Slice64.slice UInt8.t = s
+  | & a: UInt16.t = Any.any_l ()
+  | & _7: UInt8.t = Any.any_l ()
+  | & _8: UInt8.t = Any.any_l ()
+  | & _9: UInt64.t = Any.any_l ()
+  | & _10: UInt64.t = Any.any_l ()
+  | & _11: bool = Any.any_l ()
+  | & b: UInt16.t = Any.any_l ()
+  | & _13: UInt8.t = Any.any_l ()
+  | & _14: UInt8.t = Any.any_l ()
+  | & _15: UInt64.t = Any.any_l ()
+  | & _16: UInt64.t = Any.any_l ()
+  | & _17: bool = Any.any_l ()
+  | & c: UInt16.t = Any.any_l ()
+  | & _19: UInt8.t = Any.any_l ()
+  | & _20: UInt8.t = Any.any_l ()
+  | & _21: UInt64.t = Any.any_l ()
+  | & _22: UInt64.t = Any.any_l ()
+  | & _23: bool = Any.any_l ()
+  | & d: UInt16.t = Any.any_l ()
+  | & _25: UInt8.t = Any.any_l ()
+  | & _26: UInt8.t = Any.any_l ()
+  | & _27: UInt64.t = Any.any_l ()
+  | & _28: UInt64.t = Any.any_l ()
+  | & _29: bool = Any.any_l ()
+  | & _30: bool = Any.any_l ()
+  | & _32: bool = Any.any_l ()
+  | & _34: bool = Any.any_l ()
+  | & _36: bool = Any.any_l ()
+  | & _38: UInt16.t = Any.any_l ()
+  | & _39: UInt16.t = Any.any_l ()
+  | & _40: UInt16.t = Any.any_l ()
+  | & _41: UInt16.t = Any.any_l ()
+  | & _43: UInt16.t = Any.any_l ()
+  | & _45: UInt16.t = Any.any_l ()
+  | & _48: t_Error = Any.any_l ()
+  | & _49: () = Any.any_l () ])
+  [ return (result: t_Result_u16_Error) -> {[@stop_split] [@expl:toint_4 ensures] match result with
+      | Ok v -> 48 <= UInt8.t'int (index_slice_u8 s 0)
+      /\ UInt8.t'int (index_slice_u8 s 0) <= 57
+      /\ 48 <= UInt8.t'int (index_slice_u8 s 1)
+      /\ UInt8.t'int (index_slice_u8 s 1) <= 57
+      /\ 48 <= UInt8.t'int (index_slice_u8 s 2)
+      /\ UInt8.t'int (index_slice_u8 s 2) <= 57
+      /\ 48 <= UInt8.t'int (index_slice_u8 s 3)
+      /\ UInt8.t'int (index_slice_u8 s 3) <= 57
+      /\ UInt16.t'int v
+        = (UInt8.t'int (index_slice_u8 s 0) - 48) * 1000 + (UInt8.t'int (index_slice_u8 s 1) - 48) * 100
+            + (UInt8.t'int (index_slice_u8 s 2) - 48) * 10
+          + UInt8.t'int (index_slice_u8 s 3)
+        - 48
+      /\ UInt16.t'int v < 10000
+      | Err _ -> UInt8.t'int (index_slice_u8 s 0) < 48
+      \/ 57 < UInt8.t'int (index_slice_u8 s 0)
+      \/ UInt8.t'int (index_slice_u8 s 1) < 48
+      \/ 57 < UInt8.t'int (index_slice_u8 s 1)
+      \/ UInt8.t'int (index_slice_u8 s 2) < 48
+      \/ 57 < UInt8.t'int (index_slice_u8 s 2)
+      \/ UInt8.t'int (index_slice_u8 s 3) < 48 \/ 57 < UInt8.t'int (index_slice_u8 s 3)
+      end}
+    (! return {result}) ]

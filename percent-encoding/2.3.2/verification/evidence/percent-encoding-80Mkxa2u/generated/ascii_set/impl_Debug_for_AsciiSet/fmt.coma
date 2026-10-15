@@ -1,0 +1,92 @@
+(* <ascii_set::AsciiSet as core::fmt::Debug> *)
+
+use creusot.slice.Slice64
+use creusot.int.UInt32
+use creusot.prelude.MutBorrow
+use creusot.prelude.Any
+use seq.Seq
+use creusot.int.UInt64
+
+type t_AsciiSet = { mask: Slice64.array UInt32.t }
+
+type dyn_Debug
+
+function dyn_Debug_of_ref_array_u32_4 (x: Slice64.array UInt32.t) : dyn_Debug
+
+type t_Formatter
+
+predicate inv_Formatter (_1: t_Formatter)
+
+type t_Result_unit_Error = Ok () | Err ()
+
+predicate invariant_refmut_Formatter [@inline:trivial] (self: MutBorrow.t t_Formatter) =
+  inv_Formatter self.current /\ inv_Formatter self.final
+
+meta "rewrite_def" predicate invariant_refmut_Formatter
+
+predicate inv_refmut_Formatter [@inline:trivial] (_1: MutBorrow.t t_Formatter) = invariant_refmut_Formatter _1
+
+meta "rewrite_def" predicate inv_refmut_Formatter
+
+let debug_struct_field1_finish (self_: MutBorrow.t t_Formatter) (name: string) (name1: string) (value1: dyn_Debug)
+  (return (x: t_Result_unit_Error)) =
+{[@stop_split] [@expl:debug_struct_field1_finish 'self_' type invariant] inv_refmut_Formatter self_}
+  any [ return (result: t_Result_unit_Error) -> (! return {result}) ]
+
+predicate resolve_refmut_Formatter [@inline:trivial] (_1: MutBorrow.t t_Formatter) = _1.final = _1.current
+
+meta "rewrite_def" predicate resolve_refmut_Formatter
+
+predicate inv_Seq_u32 [@inline:trivial] (_1: Seq.seq UInt32.t) = true
+
+meta "rewrite_def" predicate inv_Seq_u32
+
+predicate invariant_array_u32_4 (self: Slice64.array UInt32.t) =
+  inv_Seq_u32 (Slice64.view self) /\ Seq.length (Slice64.view self) = UInt64.t'int (4: UInt64.t)
+
+predicate inv_array_u32_4 [@inline:trivial] (_1: Slice64.array UInt32.t) = invariant_array_u32_4 _1
+
+meta "rewrite_def" predicate inv_array_u32_4
+
+predicate inv_AsciiSet (_1: t_AsciiSet)
+
+axiom inv_axiom [@rewrite]: forall x: t_AsciiSet [inv_AsciiSet x]. inv_AsciiSet x = inv_array_u32_4 x.mask
+
+predicate invariant_ref_AsciiSet [@inline:trivial] (self: t_AsciiSet) = inv_AsciiSet self
+
+meta "rewrite_def" predicate invariant_ref_AsciiSet
+
+predicate inv_ref_AsciiSet [@inline:trivial] (_1: t_AsciiSet) = invariant_ref_AsciiSet _1
+
+meta "rewrite_def" predicate inv_ref_AsciiSet
+
+meta "compute_max_steps" 1000000
+
+meta "select_lsinst" "all"
+
+let fmt_AsciiSet (self: t_AsciiSet) (f: MutBorrow.t t_Formatter) (return (x: t_Result_unit_Error)) =
+{[@stop_split] [@expl:fmt_AsciiSet requires] ([@stop_split] [@expl:fmt 'self' type invariant] inv_ref_AsciiSet self)
+  /\ ([@stop_split] [@expl:fmt 'f' type invariant] inv_refmut_Formatter f)}
+  (! bb0
+  [ bb0 = s0
+    [ s0 = [ &_5 <- "AsciiSet" ] s1
+    | s1 = [ &_7 <- "mask" ] s2
+    | s2 = [ &_10 <- self.mask ] s3
+    | s3 = [ &_8 <- dyn_Debug_of_ref_array_u32_4 _10 ] s4
+    | s4 = MutBorrow.borrow_final <t_Formatter> {f.current} {MutBorrow.get_id f}
+        (fun (_bor: MutBorrow.t t_Formatter) ->
+          [ &_3 <- _bor ] -{inv_Formatter _bor.final}-
+          [ &f <- { f with current = _bor.final } ] s5)
+      [ _ck -> (! {[@expl:type invariant] inv_Formatter f.current} any) ]
+    | s5 = debug_struct_field1_finish {_3} {_5} {_7} {_8} (fun (_x: t_Result_unit_Error) -> [ &_ret <- _x ] s6)
+    | s6 = s7 [ _ck -> (! {[@expl:type invariant] inv_refmut_Formatter f} any) ]
+    | s7 = -{resolve_refmut_Formatter f}- s8
+    | s8 = return {_ret} ] ]
+  [ & _ret: t_Result_unit_Error = Any.any_l ()
+  | & self: t_AsciiSet = self
+  | & f: MutBorrow.t t_Formatter = f
+  | & _3: MutBorrow.t t_Formatter = Any.any_l ()
+  | & _5: string = Any.any_l ()
+  | & _7: string = Any.any_l ()
+  | & _8: dyn_Debug = Any.any_l ()
+  | & _10: Slice64.array UInt32.t = Any.any_l () ]) [ return (result: t_Result_unit_Error) -> (! return {result}) ]

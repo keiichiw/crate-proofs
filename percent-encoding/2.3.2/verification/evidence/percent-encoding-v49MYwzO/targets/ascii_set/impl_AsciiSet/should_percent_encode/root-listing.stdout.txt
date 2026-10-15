@@ -1,0 +1,82 @@
+theory Coma
+  
+  (* use why3.BuiltIn.BuiltIn *)
+  
+  (* use why3.Bool.Bool *)
+  
+  (* use why3.Unit.Unit *)
+  
+  (* use creusot.int.UInt8BW *)
+  
+  (* use creusot.slice.Slice64BW *)
+  
+  (* use creusot.int.UInt32BW *)
+  
+  (* use creusot.prelude.Any *)
+  
+  type t_AsciiSet =
+    | T_AsciiSet'mk (mask:slice t)
+  
+  (* meta model_record function mask *)
+  
+  predicate inv_Seq_u32 (_1:seq t) = true
+  
+  (* meta rewrite_def predicate inv_Seq_u32 *)
+  
+  predicate invariant_array_u32_4 (self:slice t) =
+    inv_Seq_u32 (view self) /\ length (view self) = t'int (4:t1)
+  
+  predicate inv_array_u32_4 (_1:slice t) = invariant_array_u32_4 _1
+  
+  (* meta rewrite_def predicate inv_array_u32_4 *)
+  
+  predicate inv_AsciiSet t_AsciiSet
+  
+  axiom inv_axiom :
+    forall x:t_AsciiSet [inv_AsciiSet x].
+     inv_AsciiSet x <-> inv_array_u32_4 (x.mask)
+  
+  predicate invariant_ref_AsciiSet (self:t_AsciiSet) = inv_AsciiSet self
+  
+  (* meta rewrite_def predicate invariant_ref_AsciiSet *)
+  
+  predicate inv_ref_AsciiSet (_1:t_AsciiSet) = invariant_ref_AsciiSet _1
+  
+  (* meta rewrite_def predicate inv_ref_AsciiSet *)
+  
+  function mask_words (self:t_AsciiSet) : seq t =
+    create 4 (fun (i:int) -> get (view (self.mask)) i)
+  
+  axiom mask_words_spec :
+    forall self:t_AsciiSet [mask_words self]. length (mask_words self) = 4
+  
+  predicate contains_model (set:t_AsciiSet) (byte:t2) =
+    t'int1 byte < 128 /\
+    not bw_and (get (mask_words set) (div (t'int1 byte) 32))
+        (shl (1:t) (of_BV256 (to_BV256 (bw_and1 byte (31:t2))))) = (0:t)
+  
+  goal vc_contains : true
+  
+  predicate ge_log_Int (self:int) (other:int) = other <= self
+  
+  (* meta rewrite_def predicate ge_log_Int *)
+  
+  (* meta compute_max_steps 1000000 *)
+  
+  (* meta select_lsinst "all" *)
+  
+  goal vc_should_percent_encode :
+    forall self:slice t, byte:t2.
+     let self1 = T_AsciiSet'mk self in
+     inv_AsciiSet self1 ->
+     (not ge byte (128:t2) ->
+      (inv_AsciiSet self1 /\ t'int1 byte < 128) /\
+      (forall result:bool.
+        (result = True <-> contains_model self1 byte) ->
+        result = True <->
+        ge_log_Int (t'int1 byte) 128 \/ contains_model self1 byte)) /\
+     (ge byte (128:t2) ->
+      true <-> ge_log_Int (t'int1 byte) 128 \/ contains_model self1 byte)
+  
+end
+

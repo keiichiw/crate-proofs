@@ -1,0 +1,63 @@
+theory Coma
+  
+  (* use why3.BuiltIn.BuiltIn *)
+  
+  (* use why3.Bool.Bool *)
+  
+  (* use why3.Unit.Unit *)
+  
+  (* use creusot.int.UInt64 *)
+  
+  (* use creusot.slice.Slice64 *)
+  
+  (* use creusot.int.UInt8 *)
+  
+  (* use creusot.prelude.Any *)
+  
+  goal vc_len_u8 : true
+  
+  type t_Option_usize =
+    | None
+    | Some t
+  
+  (* meta compute_max_steps 1000000 *)
+  
+  (* meta select_lsinst "all" *)
+  
+  goal vc_find_plus :
+    forall input:slice t1.
+     (0 <= t'int (0:t) /\
+      t'int (0:t) <= length (view input) /\
+      (forall j:int.
+        0 <= j /\ j < t'int (0:t) -> not t'int1 (get (view input) j) = 43)) /\
+     (forall i:t.
+       0 <= t'int i /\
+       t'int i <= length (view input) /\
+       (forall j:int.
+         0 <= j /\ j < t'int i -> not t'int1 (get (view input) j) = 43) ->
+       (forall result:t.
+         length (view input) = t'int result ->
+         (not lt i result ->
+          (forall j:int.
+            0 <= j /\ j < length (view input) ->
+            not t'int1 (get (view input) j) = 43)) /\
+         (lt i result ->
+          lt i (length1 input) &&
+          t'int i < length (input.elts) &&
+          (not get (input.elts) (t'int i) = (43:t1) ->
+           in_bounds (t'int i + t'int (1:t)) /\
+           (forall result1:t.
+             t'int result1 = (t'int i + t'int (1:t)) ->
+             0 <= t'int result1 /\
+             t'int result1 <= length (view input) /\
+             (forall j:int.
+               0 <= j /\ j < t'int result1 ->
+               not t'int1 (get (view input) j) = 43))) /\
+          (get (input.elts) (t'int i) = (43:t1) ->
+           t'int i < length (view input) /\
+           t'int1 (get (view input) (t'int i)) = 43 /\
+           (forall j:int.
+             0 <= j /\ j < t'int i -> not t'int1 (get (view input) j) = 43)))))
+  
+end
+

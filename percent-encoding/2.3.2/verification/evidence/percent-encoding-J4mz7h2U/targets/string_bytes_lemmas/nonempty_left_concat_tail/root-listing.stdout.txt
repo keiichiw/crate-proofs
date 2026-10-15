@@ -1,0 +1,63 @@
+theory Coma
+  
+  (* use why3.BuiltIn.BuiltIn *)
+  
+  (* use why3.Bool.Bool *)
+  
+  (* use why3.Unit.Unit *)
+  
+  (* use seq.Seq *)
+  
+  type t_T
+  
+  predicate gt_log_Int (self:int) (other:int) = other < self
+  
+  (* meta rewrite_def predicate gt_log_Int *)
+  
+  function tail_T (self:seq t_T) : seq t_T = self[1..length self]
+  
+  predicate nonempty_tail_at_index_T (seq t_T) (seq t_T) int
+  
+  axiom nonempty_tail_at_index_T_spec :
+    forall left:seq t_T, right:seq t_T, i:int
+     [nonempty_tail_at_index_T left right i].
+     gt_log_Int (length left) 0 ->
+     0 <= i /\ i < length (tail_T left ++ right) ->
+     nonempty_tail_at_index_T left right i
+  
+  axiom nonempty_tail_at_index_T_spec'0 :
+    forall left:seq t_T, right:seq t_T, i:int.
+     gt_log_Int (length left) 0 ->
+     0 <= i /\ i < length (tail_T left ++ right) ->
+     get (tail_T (left ++ right)) i = get (tail_T left ++ right) i
+  
+  (* meta compute_max_steps 1000000 *)
+  
+  (* meta select_lsinst "all" *)
+  
+  constant left : seq t_T
+  
+  constant right : seq t_T
+  
+  predicate nonempty_left_concat_tail_T (seq t_T) (seq t_T)
+  
+  goal vc_nonempty_left_concat_tail_T :
+    gt_log_Int (length left) 0 ->
+    (let joined_tail = tail_T (left ++ right) in
+     let tail_joined = tail_T left ++ right in
+     length joined_tail = length tail_joined &&
+     (forall i:int.
+       if 0 <= i
+       then if i < length joined_tail
+            then gt_log_Int (length left) 0 /\
+                 0 <= i /\ i < length (tail_T left ++ right)
+            else true
+       else true) /\
+     (forall i:int.
+       0 <= i /\ i < length joined_tail ->
+       nonempty_tail_at_index_T left right i) &&
+     joined_tail == tail_joined &&
+     true /\ tail_T (left ++ right) == (tail_T left ++ right))
+  
+end
+

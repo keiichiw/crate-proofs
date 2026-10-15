@@ -1,0 +1,81 @@
+(* <std::io::Error as std::convert::From<Error>> *)
+
+use creusot.prelude.Any
+
+type t_ErrorKind =
+  | NotFound
+  | PermissionDenied
+  | ConnectionRefused
+  | ConnectionReset
+  | HostUnreachable
+  | NetworkUnreachable
+  | ConnectionAborted
+  | NotConnected
+  | AddrInUse
+  | AddrNotAvailable
+  | NetworkDown
+  | BrokenPipe
+  | AlreadyExists
+  | WouldBlock
+  | NotADirectory
+  | IsADirectory
+  | DirectoryNotEmpty
+  | ReadOnlyFilesystem
+  | FilesystemLoop
+  | StaleNetworkFileHandle
+  | InvalidInput
+  | InvalidData
+  | TimedOut
+  | WriteZero
+  | StorageFull
+  | NotSeekable
+  | QuotaExceeded
+  | FileTooLarge
+  | ResourceBusy
+  | ExecutableFileBusy
+  | Deadlock
+  | CrossesDevices
+  | TooManyLinks
+  | InvalidFilename
+  | ArgumentListTooLong
+  | Interrupted
+  | Unsupported
+  | UnexpectedEof
+  | OutOfMemory
+  | InProgress
+  | Other
+  | Uncategorized
+
+type t_Error = { f0: () }
+
+type t_Error'0
+
+predicate inv_Error (_1: t_Error'0)
+
+function io_kind (_e: t_Error'0) : t_ErrorKind
+
+type t_Option_Error = None | Some t_Error
+
+function io_payload_Error (_e: t_Error'0) : t_Option_Error
+
+let new_Error (kind: t_ErrorKind) (error: t_Error) (return (x: t_Error'0)) = any
+  [ return (result: t_Error'0) ->
+  {[@stop_split] [@expl:new_Error ensures] ([@stop_split] [@expl:new result type invariant] inv_Error result)
+    /\ ([@stop_split] [@expl:new ensures #0] io_kind result = kind)
+    /\ ([@stop_split] [@expl:new ensures #1] io_payload_Error result = Some error)}
+    (! return {result}) ]
+
+meta "compute_max_steps" 1000000
+
+meta "select_lsinst" "all"
+
+let from_Error (e: t_Error) (return (x: t_Error'0)) = (! bb0
+  [ bb0 = s0
+    [ s0 = [ &_5 <- Other ] s1
+    | s1 = new_Error {_5} {e} (fun (_x: t_Error'0) -> [ &_ret <- _x ] s2)
+    | s2 = return {_ret} ] ] [ & _ret: t_Error'0 = Any.any_l () | & e: t_Error = e | & _5: t_ErrorKind = Any.any_l () ])
+  [ return (result: t_Error'0) ->
+  {[@stop_split] [@expl:from_Error ensures] ([@stop_split] [@expl:from result type invariant] inv_Error result)
+    /\ ([@stop_split] [@expl:from ensures #0] io_kind result = Other)
+    /\ ([@stop_split] [@expl:from ensures #1] io_payload_Error result = Some e)}
+    (! return {result}) ]

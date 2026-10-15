@@ -1,0 +1,35 @@
+theory Coma
+  
+  (* use why3.BuiltIn.BuiltIn *)
+  
+  (* use why3.Bool.Bool *)
+  
+  (* use why3.Unit.Unit *)
+  
+  (* use creusot.int.UInt64 *)
+  
+  (* use creusot.slice.Slice64 *)
+  
+  (* use creusot.int.UInt8 *)
+  
+  (* use creusot.prelude.Any *)
+  
+  goal vc_slice_range : true
+  
+  (* meta compute_max_steps 1000000 *)
+  
+  (* meta select_lsinst "all" *)
+  
+  goal vc_slice_after_equals :
+    forall input:slice t, eq:t1, end':t1.
+     t'int eq < t'int end' /\ t'int end' <= length (view input) ->
+     in_bounds (t'int eq + t'int (1:t1)) /\
+     (forall result:t1.
+       t'int result = (t'int eq + t'int (1:t1)) ->
+       (t'int result <= t'int end' /\ t'int end' <= length (view input)) /\
+       (forall result1:slice t.
+         view result1 = (view input)[t'int result..t'int end'] ->
+         view result1 = (view input)[(t'int eq + 1)..t'int end']))
+  
+end
+

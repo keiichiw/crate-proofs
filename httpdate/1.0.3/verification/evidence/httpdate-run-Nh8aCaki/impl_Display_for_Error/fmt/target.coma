@@ -1,0 +1,221 @@
+(* <Error as std::fmt::Display> *)
+
+use creusot.slice.Slice64
+use creusot.int.UInt8
+use seq.Seq
+use creusot.prelude.Char
+use creusot.prelude.MutBorrow
+use creusot.int.UInt32
+use creusot.int.UInt64
+use creusot.prelude.Any
+use int.Int
+
+type t_Utf8Error
+
+type t_Result_ref_str_Utf8Error = Ok string | Err t_Utf8Error
+
+predicate inv_Utf8Error (_1: t_Utf8Error)
+
+predicate inv_Result_ref_str_Utf8Error (_1: t_Result_ref_str_Utf8Error)
+
+axiom inv_axiom [@rewrite]:
+  forall x: t_Result_ref_str_Utf8Error [inv_Result_ref_str_Utf8Error x]. inv_Result_ref_str_Utf8Error x
+    = match x with
+      | Ok f0 -> true
+      | Err f0 -> inv_Utf8Error f0
+      end
+
+function view_str (self: string) : Seq.seq Char.t
+
+let from_utf8 (v: Slice64.slice UInt8.t) (return (x: t_Result_ref_str_Utf8Error)) =
+{[@stop_split] [@expl:from_utf8 requires] forall i: int. 0 <= i /\ i < Seq.length (Slice64.view v)
+    -> UInt8.t'int (Seq.get (Slice64.view v) i) < 128}
+  any
+  [ return (result: t_Result_ref_str_Utf8Error) ->
+  {[@stop_split] [@expl:from_utf8 ensures] ([@stop_split] [@expl:from_utf8 result type invariant] inv_Result_ref_str_Utf8Error result)
+    /\ ([@stop_split] [@expl:from_utf8 ensures] match result with
+      | Ok s -> Seq.length (view_str s) = Seq.length (Slice64.view v)
+      /\ (forall i: int. 0 <= i /\ i < Seq.length (Slice64.view v)
+        -> Char.to_int (Seq.get (view_str s) i) = UInt8.t'int (Seq.get (Slice64.view v) i))
+      | Err _ -> false
+      end)}
+    (! return {result}) ]
+
+let unwrap_ref_str (self_: t_Result_ref_str_Utf8Error) (return (x: string)) =
+{[@stop_split] [@expl:unwrap_ref_str requires] ([@stop_split] [@expl:unwrap 'self_' type invariant] inv_Result_ref_str_Utf8Error self_)
+  /\ ([@stop_split] [@expl:unwrap requires] exists t: string. self_ = Ok t)}
+  any [ return (result: string) -> {[@stop_split] [@expl:unwrap ensures] Ok result = self_} (! return {result}) ]
+
+type t_Formatter
+
+predicate inv_Formatter (_1: t_Formatter)
+
+type t_Result_unit_Error = Ok'0 () | Err'0 ()
+
+predicate invariant_refmut_Formatter [@inline:trivial] (self: MutBorrow.t t_Formatter) =
+  inv_Formatter self.current /\ inv_Formatter self.final
+
+meta "rewrite_def" predicate invariant_refmut_Formatter
+
+predicate inv_refmut_Formatter [@inline:trivial] (_1: MutBorrow.t t_Formatter) = invariant_refmut_Formatter _1
+
+meta "rewrite_def" predicate inv_refmut_Formatter
+
+type t_Option_usize = None | Some UInt64.t
+
+type t_Alignment = Left | Right | Center
+
+type t_Option_Alignment = None'0 | Some'0 t_Alignment
+
+type t_DebugOptions = {
+  flags: UInt32.t;
+  width: t_Option_usize;
+  precision: t_Option_usize;
+  fill: Char.t;
+  align: t_Option_Alignment }
+
+function debug_options (_f: t_Formatter) : t_DebugOptions
+
+predicate append_sink (_f: t_Formatter)
+
+function formatter_output (_f: t_Formatter) : Seq.seq Char.t
+
+let write_str_Formatter (self_: MutBorrow.t t_Formatter) (data: string) (return (x: t_Result_unit_Error)) =
+{[@stop_split] [@expl:write_str 'self_' type invariant] inv_refmut_Formatter self_}
+  any
+  [ return (result: t_Result_unit_Error) ->
+  {[@stop_split] [@expl:write_str_Formatter ensures] ([@stop_split] [@expl:write_str ensures #0] debug_options self_.final
+      = debug_options self_.current)
+    /\ ([@stop_split] [@expl:write_str ensures #1] append_sink self_.current -> append_sink self_.final)
+    /\ ([@stop_split] [@expl:write_str ensures #2] match result with
+      | Ok'0 () -> append_sink self_.current
+      -> formatter_output self_.final = Seq.(++) (formatter_output self_.current) (view_str data)
+      | Err'0 _ -> true
+      end)}
+    (! return {result}) ]
+
+predicate resolve_refmut_Formatter [@inline:trivial] (_1: MutBorrow.t t_Formatter) = _1.final = _1.current
+
+meta "rewrite_def" predicate resolve_refmut_Formatter
+
+type t_Error = { f0: () }
+
+predicate error_message_bytes [@inline:trivial] (s: Seq.seq UInt8.t) =
+  Seq.length s = 37
+  /\ Seq.get s 0 = (115: UInt8.t)
+  /\ Seq.get s 1 = (116: UInt8.t)
+  /\ Seq.get s 2 = (114: UInt8.t)
+  /\ Seq.get s 3 = (105: UInt8.t)
+  /\ Seq.get s 4 = (110: UInt8.t)
+  /\ Seq.get s 5 = (103: UInt8.t)
+  /\ Seq.get s 6 = (32: UInt8.t)
+  /\ Seq.get s 7 = (99: UInt8.t)
+  /\ Seq.get s 8 = (111: UInt8.t)
+  /\ Seq.get s 9 = (110: UInt8.t)
+  /\ Seq.get s 10 = (116: UInt8.t)
+  /\ Seq.get s 11 = (97: UInt8.t)
+  /\ Seq.get s 12 = (105: UInt8.t)
+  /\ Seq.get s 13 = (110: UInt8.t)
+  /\ Seq.get s 14 = (115: UInt8.t)
+  /\ Seq.get s 15 = (32: UInt8.t)
+  /\ Seq.get s 16 = (110: UInt8.t)
+  /\ Seq.get s 17 = (111: UInt8.t)
+  /\ Seq.get s 18 = (32: UInt8.t)
+  /\ Seq.get s 19 = (111: UInt8.t)
+  /\ Seq.get s 20 = (114: UInt8.t)
+  /\ Seq.get s 21 = (32: UInt8.t)
+  /\ Seq.get s 22 = (97: UInt8.t)
+  /\ Seq.get s 23 = (110: UInt8.t)
+  /\ Seq.get s 24 = (32: UInt8.t)
+  /\ Seq.get s 25 = (105: UInt8.t)
+  /\ Seq.get s 26 = (110: UInt8.t)
+  /\ Seq.get s 27 = (118: UInt8.t)
+  /\ Seq.get s 28 = (97: UInt8.t)
+  /\ Seq.get s 29 = (108: UInt8.t)
+  /\ Seq.get s 30 = (105: UInt8.t)
+  /\ Seq.get s 31 = (100: UInt8.t)
+  /\ Seq.get s 32 = (32: UInt8.t)
+  /\ Seq.get s 33 = (100: UInt8.t)
+  /\ Seq.get s 34 = (97: UInt8.t) /\ Seq.get s 35 = (116: UInt8.t) /\ Seq.get s 36 = (101: UInt8.t)
+
+meta "rewrite_def" predicate error_message_bytes
+
+predicate ascii_content [@inline:trivial] (chars: Seq.seq Char.t) (bytes: Seq.seq UInt8.t) =
+  Seq.length chars = Seq.length bytes
+  /\ (forall i: int. 0 <= i /\ i < Seq.length chars -> Char.to_int (Seq.get chars i) = UInt8.t'int (Seq.get bytes i))
+
+meta "rewrite_def" predicate ascii_content
+
+meta "compute_max_steps" 1000000
+
+meta "select_lsinst" "all"
+
+let fmt_Error (self: t_Error) (f: MutBorrow.t t_Formatter) (return (x: t_Result_unit_Error)) =
+{[@stop_split] [@expl:fmt 'f' type invariant] inv_refmut_Formatter f}
+  (! bb0
+  [ bb0 = s0
+    [ s0 = any
+      [ any_ (__arr_temp: Slice64.array UInt8.t) -> (! -{Seq.get __arr_temp.Slice64.elts 0 = (115: UInt8.t)
+        /\ Seq.get __arr_temp.Slice64.elts 1 = (116: UInt8.t)
+        /\ Seq.get __arr_temp.Slice64.elts 2 = (114: UInt8.t)
+        /\ Seq.get __arr_temp.Slice64.elts 3 = (105: UInt8.t)
+        /\ Seq.get __arr_temp.Slice64.elts 4 = (110: UInt8.t)
+        /\ Seq.get __arr_temp.Slice64.elts 5 = (103: UInt8.t)
+        /\ Seq.get __arr_temp.Slice64.elts 6 = (32: UInt8.t)
+        /\ Seq.get __arr_temp.Slice64.elts 7 = (99: UInt8.t)
+        /\ Seq.get __arr_temp.Slice64.elts 8 = (111: UInt8.t)
+        /\ Seq.get __arr_temp.Slice64.elts 9 = (110: UInt8.t)
+        /\ Seq.get __arr_temp.Slice64.elts 10 = (116: UInt8.t)
+        /\ Seq.get __arr_temp.Slice64.elts 11 = (97: UInt8.t)
+        /\ Seq.get __arr_temp.Slice64.elts 12 = (105: UInt8.t)
+        /\ Seq.get __arr_temp.Slice64.elts 13 = (110: UInt8.t)
+        /\ Seq.get __arr_temp.Slice64.elts 14 = (115: UInt8.t)
+        /\ Seq.get __arr_temp.Slice64.elts 15 = (32: UInt8.t)
+        /\ Seq.get __arr_temp.Slice64.elts 16 = (110: UInt8.t)
+        /\ Seq.get __arr_temp.Slice64.elts 17 = (111: UInt8.t)
+        /\ Seq.get __arr_temp.Slice64.elts 18 = (32: UInt8.t)
+        /\ Seq.get __arr_temp.Slice64.elts 19 = (111: UInt8.t)
+        /\ Seq.get __arr_temp.Slice64.elts 20 = (114: UInt8.t)
+        /\ Seq.get __arr_temp.Slice64.elts 21 = (32: UInt8.t)
+        /\ Seq.get __arr_temp.Slice64.elts 22 = (97: UInt8.t)
+        /\ Seq.get __arr_temp.Slice64.elts 23 = (110: UInt8.t)
+        /\ Seq.get __arr_temp.Slice64.elts 24 = (32: UInt8.t)
+        /\ Seq.get __arr_temp.Slice64.elts 25 = (105: UInt8.t)
+        /\ Seq.get __arr_temp.Slice64.elts 26 = (110: UInt8.t)
+        /\ Seq.get __arr_temp.Slice64.elts 27 = (118: UInt8.t)
+        /\ Seq.get __arr_temp.Slice64.elts 28 = (97: UInt8.t)
+        /\ Seq.get __arr_temp.Slice64.elts 29 = (108: UInt8.t)
+        /\ Seq.get __arr_temp.Slice64.elts 30 = (105: UInt8.t)
+        /\ Seq.get __arr_temp.Slice64.elts 31 = (100: UInt8.t)
+        /\ Seq.get __arr_temp.Slice64.elts 32 = (32: UInt8.t)
+        /\ Seq.get __arr_temp.Slice64.elts 33 = (100: UInt8.t)
+        /\ Seq.get __arr_temp.Slice64.elts 34 = (97: UInt8.t)
+        /\ Seq.get __arr_temp.Slice64.elts 35 = (116: UInt8.t)
+        /\ Seq.get __arr_temp.Slice64.elts 36 = (101: UInt8.t) /\ Seq.length __arr_temp.Slice64.elts = 37}-
+        [ &message <- __arr_temp ] s1) ]
+    | s1 = [ &_12 <- message ] s2
+    | s2 = from_utf8 {_12} (fun (_x: t_Result_ref_str_Utf8Error) -> [ &_9 <- _x ] s3)
+    | s3 = unwrap_ref_str {_9} (fun (_x: string) -> [ &_8 <- _x ] s4)
+    | s4 = MutBorrow.borrow_final <t_Formatter> {f.current} {MutBorrow.get_id f}
+        (fun (_bor: MutBorrow.t t_Formatter) ->
+          [ &_6 <- _bor ] -{inv_Formatter _bor.final}-
+          [ &f <- { f with current = _bor.final } ] s5)
+      [ _ck -> (! {[@expl:type invariant] inv_Formatter f.current} any) ]
+    | s5 = write_str_Formatter {_6} {_8} (fun (_x: t_Result_unit_Error) -> [ &_ret <- _x ] s6)
+    | s6 = s7 [ _ck -> (! {[@expl:type invariant] inv_refmut_Formatter f} any) ]
+    | s7 = -{resolve_refmut_Formatter f}- s8
+    | s8 = return {_ret} ] ]
+  [ & _ret: t_Result_unit_Error = Any.any_l ()
+  | & f: MutBorrow.t t_Formatter = f
+  | & message: Slice64.array UInt8.t = Any.any_l ()
+  | & _6: MutBorrow.t t_Formatter = Any.any_l ()
+  | & _8: string = Any.any_l ()
+  | & _9: t_Result_ref_str_Utf8Error = Any.any_l ()
+  | & _12: Slice64.array UInt8.t = Any.any_l () ])
+  [ return (result: t_Result_unit_Error) -> {[@stop_split] [@expl:fmt ensures] match result with
+      | Ok'0 () -> append_sink f.current
+      -> (exists chars: Seq.seq Char.t, bytes: Seq.seq UInt8.t. error_message_bytes bytes
+        /\ ascii_content chars bytes /\ formatter_output f.final = Seq.(++) (formatter_output f.current) chars)
+      | Err'0 _ -> true
+      end}
+    (! return {result}) ]

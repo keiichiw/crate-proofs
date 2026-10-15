@@ -1,0 +1,241 @@
+use creusot.int.UInt32
+use seq.Seq
+use creusot.int.UInt8
+use int.ComputerDivision
+use map.Map
+use int.Int
+
+predicate gt_log_Int [@inline:trivial] (self: int) (other: int) = other < self
+
+meta "rewrite_def" predicate gt_log_Int
+
+predicate ge_log_Int [@inline:trivial] (self: int) (other: int) = other <= self
+
+meta "rewrite_def" predicate ge_log_Int
+
+predicate should_encode_model (mask: Seq.seq UInt32.t) (byte: UInt8.t) =
+  ge_log_Int (UInt8.t'int byte) 128
+  \/ UInt32.bw_and (Seq.get mask (ComputerDivision.div (UInt8.t'int byte) 32)) (UInt32.shl (1: UInt32.t) (UInt32.of_int (UInt8.t'int (UInt8.bw_and byte (31: UInt8.t)))))
+  <> (0: UInt32.t)
+
+function uppercase_hex (digit: int) : int = if digit < 10 then 48 + digit else 55 + digit
+
+axiom uppercase_hex_spec: forall digit: int [uppercase_hex digit]. uppercase_hex digit
+    = (if digit < 10 then 48 + digit else 55 + digit)
+
+function uppercase_hex'0 (digit: int) : int = uppercase_hex digit
+
+function encoded_byte_model (byte: int) : Seq.seq int =
+  Seq.(++) (Seq.(++) (Seq.singleton 37) (Seq.singleton (uppercase_hex'0 (ComputerDivision.div byte 16)))) (Seq.singleton (uppercase_hex'0 (ComputerDivision.mod byte 16)))
+
+function safe_run_end (input: Seq.seq UInt8.t) (start: int) (mask: Seq.seq UInt32.t) : int
+
+axiom safe_run_end_spec:
+  forall input: Seq.seq UInt8.t, start: int, mask: Seq.seq UInt32.t [safe_run_end input start mask]. 0 <= start
+      /\ start <= Seq.length input
+    -> Seq.length mask = 4
+    -> start <= safe_run_end input start mask /\ safe_run_end input start mask <= Seq.length input
+
+axiom safe_run_end_spec'0:
+  forall input: Seq.seq UInt8.t, start: int, mask: Seq.seq UInt32.t [safe_run_end input start mask]. 0 <= start
+      /\ start <= Seq.length input
+    -> Seq.length mask = 4
+    -> (forall i: int. start <= i /\ i < safe_run_end input start mask
+      -> not should_encode_model mask (Seq.get input i))
+
+axiom safe_run_end_spec'1:
+  forall input: Seq.seq UInt8.t, start: int, mask: Seq.seq UInt32.t [safe_run_end input start mask]. 0 <= start
+      /\ start <= Seq.length input
+    -> Seq.length mask = 4
+    -> safe_run_end input start mask = Seq.length input
+    \/ should_encode_model mask (Seq.get input (safe_run_end input start mask))
+
+axiom safe_run_end_spec'2:
+  forall input: Seq.seq UInt8.t, start: int, mask: Seq.seq UInt32.t [safe_run_end input start mask]. 0 <= start
+      /\ start <= Seq.length input
+    -> Seq.length mask = 4
+    -> start < Seq.length input /\ not should_encode_model mask (Seq.get input start)
+    -> start < safe_run_end input start mask
+
+function index_Mapping_u8_Int [@inline:trivial] (self: Map.map UInt8.t int) (a: UInt8.t) : int = Map.get self a
+
+meta "rewrite_def" function index_Mapping_u8_Int
+
+function map_u8 (self: Seq.seq UInt8.t) (m: Map.map UInt8.t int) : Seq.seq int
+
+axiom map_u8_spec: forall self: Seq.seq UInt8.t, m: Map.map UInt8.t int [map_u8 self m]. Seq.length (map_u8 self m)
+    = Seq.length self
+
+axiom map_u8_spec'0: forall self: Seq.seq UInt8.t, m: Map.map UInt8.t int [map_u8 self m]. forall i: int. 0 <= i
+        /\ i < Seq.length self -> Seq.get (map_u8 self m) i = index_Mapping_u8_Int m (Seq.get self i)
+
+function byte_sequence_as_ints (bytes: Seq.seq UInt8.t) : Seq.seq int =
+  map_u8 bytes (fun (byte: UInt8.t) -> UInt8.t'int byte)
+
+function encoded_chunks (mask: Seq.seq UInt32.t) (input: Seq.seq UInt8.t) : Seq.seq (Seq.seq int)
+
+axiom encoded_chunks_def:
+  forall mask: Seq.seq UInt32.t, input: Seq.seq UInt8.t [encoded_chunks mask input]. Seq.length mask = 4
+    -> encoded_chunks mask input
+    = (if Seq.length input = 0 then
+      Seq.empty: Seq.seq (Seq.seq int)
+    else
+      if should_encode_model mask (Seq.get input 0) then
+        Seq.(++) (Seq.singleton (encoded_byte_model (UInt8.t'int (Seq.get input 0)))) (encoded_chunks mask (Seq.([..]) input 1 (Seq.length input)))
+      else
+        let end' = safe_run_end input 0 mask in Seq.(++) (Seq.singleton (byte_sequence_as_ints (Seq.([..]) input 0 end'))) (encoded_chunks mask (Seq.([..]) input end' (Seq.length input)))
+    
+    )
+
+axiom encoded_chunks_spec:
+  forall mask: Seq.seq UInt32.t, input: Seq.seq UInt8.t [encoded_chunks mask input]. Seq.length mask = 4
+    -> (if Seq.length input = 0 then
+      Seq.length (encoded_chunks mask input) = 0
+    else
+      gt_log_Int (Seq.length (encoded_chunks mask input)) 0
+      /\ (if should_encode_model mask (Seq.get input 0) then
+        Seq.get (encoded_chunks mask input) 0 = encoded_byte_model (UInt8.t'int (Seq.get input 0))
+        /\ Seq.([..]) (encoded_chunks mask input) 1 (Seq.length (encoded_chunks mask input))
+        = encoded_chunks mask (Seq.([..]) input 1 (Seq.length input))
+      else
+        let end' = safe_run_end input 0 mask in Seq.get (encoded_chunks mask input) 0
+          = byte_sequence_as_ints (Seq.([..]) input 0 end')
+        /\ Seq.([..]) (encoded_chunks mask input) 1 (Seq.length (encoded_chunks mask input))
+        = encoded_chunks mask (Seq.([..]) input end' (Seq.length input))
+      )
+    )
+
+predicate encoded_chunks_first_escaped (mask: Seq.seq UInt32.t) (input: Seq.seq UInt8.t)
+
+axiom encoded_chunks_first_escaped_spec:
+  forall mask: Seq.seq UInt32.t, input: Seq.seq UInt8.t [encoded_chunks_first_escaped mask input]. gt_log_Int (Seq.length input) 0
+      /\ Seq.length mask = 4 -> should_encode_model mask (Seq.get input 0) -> encoded_chunks_first_escaped mask input
+
+axiom encoded_chunks_first_escaped_spec'0:
+  forall mask: Seq.seq UInt32.t, input: Seq.seq UInt8.t. gt_log_Int (Seq.length input) 0 /\ Seq.length mask = 4
+    -> should_encode_model mask (Seq.get input 0)
+    -> encoded_chunks mask input
+    = Seq.(++) (Seq.singleton (encoded_byte_model (UInt8.t'int (Seq.get input 0)))) (encoded_chunks mask (Seq.([..]) input 1 (Seq.length input)))
+
+predicate well_founded_relation_Int [@inline:trivial] (self: int) (other: int) =
+  ge_log_Int self 0 /\ gt_log_Int self other
+
+meta "rewrite_def" predicate well_founded_relation_Int
+
+predicate encoded_chunks_first_run (mask: Seq.seq UInt32.t) (input: Seq.seq UInt8.t) (end': int)
+
+axiom encoded_chunks_first_run_spec:
+  forall mask: Seq.seq UInt32.t, input: Seq.seq UInt8.t, end': int [encoded_chunks_first_run mask input end']. gt_log_Int (Seq.length input) 0
+      /\ Seq.length mask = 4
+    -> not should_encode_model mask (Seq.get input 0)
+    -> end' = safe_run_end input 0 mask -> encoded_chunks_first_run mask input end'
+
+axiom encoded_chunks_first_run_spec'0:
+  forall mask: Seq.seq UInt32.t, input: Seq.seq UInt8.t, end': int. gt_log_Int (Seq.length input) 0
+      /\ Seq.length mask = 4
+    -> not should_encode_model mask (Seq.get input 0)
+    -> end' = safe_run_end input 0 mask
+    -> encoded_chunks mask input
+    = Seq.(++) (Seq.singleton (byte_sequence_as_ints (Seq.([..]) input 0 end'))) (encoded_chunks mask (Seq.([..]) input end' (Seq.length input)))
+
+meta "compute_max_steps" 1000000
+
+meta "select_lsinst" "all"
+
+constant mask : Seq.seq UInt32.t
+
+constant input : Seq.seq UInt8.t
+
+predicate encoded_chunk_count_bounds (mask: Seq.seq UInt32.t) (input: Seq.seq UInt8.t)
+
+goal vc_encoded_chunk_count_bounds: Seq.length mask = 4
+  -> (if Seq.length input = 0 then
+    [@stop_split] [@expl:encoded_chunk_count_bounds ensures] ([@stop_split] [@expl:encoded_chunk_count_bounds ensures #0] true)
+    /\ ([@stop_split] [@expl:encoded_chunk_count_bounds ensures #1] Seq.length (encoded_chunks mask input)
+      <= Seq.length input)
+    /\ ([@stop_split] [@expl:encoded_chunk_count_bounds ensures #2] (Seq.length input = 0)
+      = (Seq.length (encoded_chunks mask input) = 0))
+    /\ ([@stop_split] [@expl:encoded_chunk_count_bounds ensures #3] gt_log_Int (Seq.length input) 0
+    -> ge_log_Int (Seq.length (encoded_chunks mask input)) 1)
+  else
+    if should_encode_model mask (Seq.get input 0) then
+      let tail = Seq.([..]) input 1 (Seq.length input) in ([@stop_split] [@expl:encoded_chunks_first_escaped requires] ([@stop_split] [@expl:encoded_chunks_first_escaped requires #0] gt_log_Int (Seq.length input) 0
+          /\ Seq.length mask = 4)
+        /\ ([@stop_split] [@expl:encoded_chunks_first_escaped requires #1] should_encode_model mask (Seq.get input 0)))
+      /\ (([@stop_split] [@expl:encoded_chunks_first_escaped ensures] ([@stop_split] [@expl:encoded_chunks_first_escaped ensures #0] encoded_chunks_first_escaped mask input)
+        /\ ([@stop_split] [@expl:encoded_chunks_first_escaped ensures #1] encoded_chunks mask input
+        = Seq.(++) (Seq.singleton (encoded_byte_model (UInt8.t'int (Seq.get input 0)))) (encoded_chunks mask (Seq.([..]) input 1 (Seq.length input)))))
+      -> (if encoded_chunks_first_escaped mask input then
+        (([@stop_split] [@expl:encoded_chunk_count_bounds requires] Seq.length mask = 4)
+          /\ ([@expl:variant decreases] well_founded_relation_Int (Seq.length input) (Seq.length tail)))
+        /\ (([@stop_split] [@expl:encoded_chunk_count_bounds ensures] ([@stop_split] [@expl:encoded_chunk_count_bounds ensures #0] encoded_chunk_count_bounds mask tail)
+          /\ ([@stop_split] [@expl:encoded_chunk_count_bounds ensures #1] Seq.length (encoded_chunks mask tail)
+            <= Seq.length tail)
+          /\ ([@stop_split] [@expl:encoded_chunk_count_bounds ensures #2] (Seq.length tail = 0)
+            = (Seq.length (encoded_chunks mask tail) = 0))
+          /\ ([@stop_split] [@expl:encoded_chunk_count_bounds ensures #3] gt_log_Int (Seq.length tail) 0
+          -> ge_log_Int (Seq.length (encoded_chunks mask tail)) 1))
+        -> ([@stop_split] [@expl:encoded_chunk_count_bounds ensures] ([@stop_split] [@expl:encoded_chunk_count_bounds ensures #0] encoded_chunk_count_bounds mask tail)
+        /\ ([@stop_split] [@expl:encoded_chunk_count_bounds ensures #1] Seq.length (encoded_chunks mask input)
+          <= Seq.length input)
+        /\ ([@stop_split] [@expl:encoded_chunk_count_bounds ensures #2] (Seq.length input = 0)
+          = (Seq.length (encoded_chunks mask input) = 0))
+        /\ ([@stop_split] [@expl:encoded_chunk_count_bounds ensures #3] gt_log_Int (Seq.length input) 0
+        -> ge_log_Int (Seq.length (encoded_chunks mask input)) 1)))
+      else
+        [@stop_split] [@expl:encoded_chunk_count_bounds ensures] ([@stop_split] [@expl:encoded_chunk_count_bounds ensures #0] false)
+        /\ ([@stop_split] [@expl:encoded_chunk_count_bounds ensures #1] Seq.length (encoded_chunks mask input)
+          <= Seq.length input)
+        /\ ([@stop_split] [@expl:encoded_chunk_count_bounds ensures #2] (Seq.length input = 0)
+          = (Seq.length (encoded_chunks mask input) = 0))
+        /\ ([@stop_split] [@expl:encoded_chunk_count_bounds ensures #3] gt_log_Int (Seq.length input) 0
+        -> ge_log_Int (Seq.length (encoded_chunks mask input)) 1)
+      ))
+    else
+      ([@stop_split] [@expl:safe_run_end requires] ([@stop_split] [@expl:safe_run_end requires #0] 0 <= 0
+          /\ 0 <= Seq.length input)
+        /\ ([@stop_split] [@expl:safe_run_end requires #1] Seq.length mask = 4))
+      /\ (([@stop_split] [@expl:safe_run_end ensures] ([@stop_split] [@expl:safe_run_end ensures #0] 0
+            <= safe_run_end input 0 mask
+          /\ safe_run_end input 0 mask <= Seq.length input)
+        /\ ([@stop_split] [@expl:safe_run_end ensures #1] forall i: int. 0 <= i /\ i < safe_run_end input 0 mask
+            -> not should_encode_model mask (Seq.get input i))
+        /\ ([@stop_split] [@expl:safe_run_end ensures #2] safe_run_end input 0 mask = Seq.length input
+          \/ should_encode_model mask (Seq.get input (safe_run_end input 0 mask)))
+        /\ ([@stop_split] [@expl:safe_run_end ensures #3] 0 < Seq.length input
+          /\ not should_encode_model mask (Seq.get input 0) -> 0 < safe_run_end input 0 mask))
+      -> (let end' = safe_run_end input 0 mask in let tail = Seq.([..]) input end' (Seq.length input) in ([@stop_split] [@expl:encoded_chunks_first_run requires] ([@stop_split] [@expl:encoded_chunks_first_run requires #0] gt_log_Int (Seq.length input) 0
+          /\ Seq.length mask = 4)
+        /\ ([@stop_split] [@expl:encoded_chunks_first_run requires #1] not should_encode_model mask (Seq.get input 0))
+        /\ ([@stop_split] [@expl:encoded_chunks_first_run requires #2] end' = safe_run_end input 0 mask))
+      /\ (([@stop_split] [@expl:encoded_chunks_first_run ensures] ([@stop_split] [@expl:encoded_chunks_first_run ensures #0] encoded_chunks_first_run mask input end')
+        /\ ([@stop_split] [@expl:encoded_chunks_first_run ensures #1] encoded_chunks mask input
+        = Seq.(++) (Seq.singleton (byte_sequence_as_ints (Seq.([..]) input 0 end'))) (encoded_chunks mask (Seq.([..]) input end' (Seq.length input)))))
+      -> (if encoded_chunks_first_run mask input end' then
+        (([@stop_split] [@expl:encoded_chunk_count_bounds requires] Seq.length mask = 4)
+          /\ ([@expl:variant decreases] well_founded_relation_Int (Seq.length input) (Seq.length tail)))
+        /\ (([@stop_split] [@expl:encoded_chunk_count_bounds ensures] ([@stop_split] [@expl:encoded_chunk_count_bounds ensures #0] encoded_chunk_count_bounds mask tail)
+          /\ ([@stop_split] [@expl:encoded_chunk_count_bounds ensures #1] Seq.length (encoded_chunks mask tail)
+            <= Seq.length tail)
+          /\ ([@stop_split] [@expl:encoded_chunk_count_bounds ensures #2] (Seq.length tail = 0)
+            = (Seq.length (encoded_chunks mask tail) = 0))
+          /\ ([@stop_split] [@expl:encoded_chunk_count_bounds ensures #3] gt_log_Int (Seq.length tail) 0
+          -> ge_log_Int (Seq.length (encoded_chunks mask tail)) 1))
+        -> ([@stop_split] [@expl:encoded_chunk_count_bounds ensures] ([@stop_split] [@expl:encoded_chunk_count_bounds ensures #0] encoded_chunk_count_bounds mask tail)
+        /\ ([@stop_split] [@expl:encoded_chunk_count_bounds ensures #1] Seq.length (encoded_chunks mask input)
+          <= Seq.length input)
+        /\ ([@stop_split] [@expl:encoded_chunk_count_bounds ensures #2] (Seq.length input = 0)
+          = (Seq.length (encoded_chunks mask input) = 0))
+        /\ ([@stop_split] [@expl:encoded_chunk_count_bounds ensures #3] gt_log_Int (Seq.length input) 0
+        -> ge_log_Int (Seq.length (encoded_chunks mask input)) 1)))
+      else
+        [@stop_split] [@expl:encoded_chunk_count_bounds ensures] ([@stop_split] [@expl:encoded_chunk_count_bounds ensures #0] false)
+        /\ ([@stop_split] [@expl:encoded_chunk_count_bounds ensures #1] Seq.length (encoded_chunks mask input)
+          <= Seq.length input)
+        /\ ([@stop_split] [@expl:encoded_chunk_count_bounds ensures #2] (Seq.length input = 0)
+          = (Seq.length (encoded_chunks mask input) = 0))
+        /\ ([@stop_split] [@expl:encoded_chunk_count_bounds ensures #3] gt_log_Int (Seq.length input) 0
+        -> ge_log_Int (Seq.length (encoded_chunks mask input)) 1)
+      ))))
+  
+  )

@@ -1,0 +1,888 @@
+{
+  "purpose": "Pinned Rust source references for Formatter and Hash boundary reviews; source review is not a proof of standard-library behavior.",
+  "sources": [
+    {
+      "name": "native_rust_1_91_0",
+      "rustc_version": "rustc 1.91.0 (f8297e351 2025-10-28)",
+      "commit": "f8297e351a40c1439a467bbbb6879088047f50b3",
+      "url": "https://github.com/rust-lang/rust/blob/f8297e351a40c1439a467bbbb6879088047f50b3/library/core/src/fmt/mod.rs",
+      "download_url": "https://raw.githubusercontent.com/rust-lang/rust/f8297e351a40c1439a467bbbb6879088047f50b3/library/core/src/fmt/mod.rs",
+      "sha256": "1d79e2439c33fc23567c656401f739d64745de6cdf92c0a175966a78ac73f393",
+      "local_copy": "../verif/stdlib-source/core-fmt-mod.rs",
+      "methods": [
+        {
+          "name": "Formatter::write_str",
+          "kind": "inherent",
+          "line": 1885,
+          "delegation": "self.buf.write_str(data)"
+        },
+        {
+          "name": "fmt::Write for Formatter::write_str",
+          "kind": "trait implementation",
+          "line": 2626,
+          "delegation": "self.buf.write_str(s)"
+        }
+      ]
+    },
+    {
+      "name": "creusot_pinned_nightly",
+      "commit": "91fe22da8084a1c9e993d78d4a56f22ab8396236",
+      "url": "https://github.com/rust-lang/rust/blob/91fe22da8084a1c9e993d78d4a56f22ab8396236/library/core/src/fmt/mod.rs",
+      "download_url": "https://raw.githubusercontent.com/rust-lang/rust/91fe22da8084a1c9e993d78d4a56f22ab8396236/library/core/src/fmt/mod.rs",
+      "sha256": "4af670d942b73896453df8919eae0e627e6665ab728ec632ccf559d30088035c",
+      "local_copy": "../verif/stdlib-source/creusot-core-fmt-mod.rs",
+      "methods": [
+        {
+          "name": "Formatter::write_str",
+          "kind": "inherent",
+          "line": 2101,
+          "delegation": "self.buf.write_str(data)"
+        },
+        {
+          "name": "fmt::Write for Formatter::write_str",
+          "kind": "trait implementation",
+          "line": 2842,
+          "delegation": "self.buf.write_str(s)"
+        }
+      ]
+    },
+    {
+      "name": "native_core_hash_rust_1_91_0",
+      "rustc_version": "rustc 1.91.0 (f8297e351 2025-10-28)",
+      "commit": "f8297e351a40c1439a467bbbb6879088047f50b3",
+      "url": "https://github.com/rust-lang/rust/blob/f8297e351a40c1439a467bbbb6879088047f50b3/library/core/src/hash/mod.rs",
+      "download_url": "https://raw.githubusercontent.com/rust-lang/rust/f8297e351a40c1439a467bbbb6879088047f50b3/library/core/src/hash/mod.rs",
+      "sha256": "ceb47683e78deb11200b7f704391bd9b98d8ea92d0436382a2609cbfec7be35d",
+      "local_copy": "../verif/stdlib-source/core-hash-mod.rs",
+      "methods": [
+        {
+          "name": "Hash::hash_slice default and API caveat",
+          "lines": [
+            201,
+            203,
+            205,
+            235,
+            239,
+            240
+          ],
+          "behavior": "The trait documents hash_slice semantics as unspecified generally. This pinned default visits each element and calls piece.hash(state); HttpDate does not override it."
+        },
+        {
+          "name": "Hasher::write_u8 default",
+          "line": 363,
+          "behavior": "Forwards the single byte to write(&[i])."
+        },
+        {
+          "name": "Hasher::write_u16 default",
+          "line": 369,
+          "behavior": "Forwards the native-endian bytes to write(&i.to_ne_bytes())."
+        },
+        {
+          "name": "Hash for primitive u8/u16",
+          "lines": [
+            812,
+            816,
+            823,
+            830,
+            831
+          ],
+          "behavior": "The primitive Hash impl calls the matching typed method. Primitive hash_slice overrides instead write raw slice bytes; HttpDate does not use that primitive override."
+        }
+      ]
+    },
+    {
+      "name": "creusot_core_hash_nightly",
+      "commit": "91fe22da8084a1c9e993d78d4a56f22ab8396236",
+      "url": "https://github.com/rust-lang/rust/blob/91fe22da8084a1c9e993d78d4a56f22ab8396236/library/core/src/hash/mod.rs",
+      "download_url": "https://raw.githubusercontent.com/rust-lang/rust/91fe22da8084a1c9e993d78d4a56f22ab8396236/library/core/src/hash/mod.rs",
+      "sha256": "3670a47bcf646bbcc69e1f70131df6c0093f12b0602be614ac828266f19e2a1f",
+      "local_copy": "../verif/stdlib-source/creusot-core-hash-mod.rs",
+      "methods": [
+        {
+          "name": "Hash::hash_slice default and API caveat",
+          "lines": [
+            200,
+            202,
+            204,
+            234,
+            238,
+            239
+          ],
+          "behavior": "The trait documents hash_slice semantics as unspecified generally. This pinned default visits each element and calls piece.hash(state); HttpDate does not override it."
+        },
+        {
+          "name": "Hasher::write_u8 default",
+          "line": 362,
+          "behavior": "Forwards the single byte to write(&[i])."
+        },
+        {
+          "name": "Hasher::write_u16 default",
+          "line": 368,
+          "behavior": "Forwards the native-endian bytes to write(&i.to_ne_bytes())."
+        },
+        {
+          "name": "Hash for primitive u8/u16",
+          "lines": [
+            813,
+            817,
+            824,
+            831,
+            832
+          ],
+          "behavior": "The primitive Hash impl calls the matching typed method. Primitive hash_slice overrides instead write raw slice bytes; HttpDate does not use that primitive override."
+        }
+      ]
+    },
+    {
+      "name": "native_default_hasher_rust_1_91_0",
+      "rustc_version": "rustc 1.91.0 (f8297e351 2025-10-28)",
+      "commit": "f8297e351a40c1439a467bbbb6879088047f50b3",
+      "url": "https://github.com/rust-lang/rust/blob/f8297e351a40c1439a467bbbb6879088047f50b3/library/std/src/hash/random.rs",
+      "download_url": "https://raw.githubusercontent.com/rust-lang/rust/f8297e351a40c1439a467bbbb6879088047f50b3/library/std/src/hash/random.rs",
+      "sha256": "24ee32d75f1af133564a18991915dc216344fb0d4120c60eae6085c3b089833f",
+      "local_copy": "../verif/stdlib-source/std-hash-random.rs",
+      "methods": [
+        {
+          "name": "DefaultHasher::new",
+          "lines": [
+            99,
+            109,
+            110
+          ],
+          "initial_state": "SipHasher13::new_with_keys(0, 0)"
+        },
+        {
+          "name": "DefaultHasher::write",
+          "lines": [
+            127,
+            132,
+            133
+          ],
+          "delegation": "self.0.write(msg)"
+        },
+        {
+          "name": "DefaultHasher::finish",
+          "lines": [
+            127,
+            142,
+            143
+          ],
+          "delegation": "self.0.finish()"
+        }
+      ]
+    },
+    {
+      "name": "creusot_default_hasher_nightly",
+      "commit": "91fe22da8084a1c9e993d78d4a56f22ab8396236",
+      "url": "https://github.com/rust-lang/rust/blob/91fe22da8084a1c9e993d78d4a56f22ab8396236/library/std/src/hash/random.rs",
+      "download_url": "https://raw.githubusercontent.com/rust-lang/rust/91fe22da8084a1c9e993d78d4a56f22ab8396236/library/std/src/hash/random.rs",
+      "sha256": "7e4715f54722ae0a1c79d18acfed402ca1aef88e0e911614a1093bf1d33eff23",
+      "local_copy": "../verif/stdlib-source/creusot-std-hash-random.rs",
+      "methods": [
+        {
+          "name": "DefaultHasher::new",
+          "lines": [
+            96,
+            106,
+            107
+          ],
+          "initial_state": "SipHasher13::new_with_keys(0, 0)"
+        },
+        {
+          "name": "DefaultHasher::write",
+          "lines": [
+            125,
+            130,
+            131
+          ],
+          "delegation": "self.0.write(msg)"
+        },
+        {
+          "name": "DefaultHasher::finish",
+          "lines": [
+            125,
+            140,
+            141
+          ],
+          "delegation": "self.0.finish()"
+        }
+      ]
+    },
+    {
+      "name": "native_sip_hasher_state_rust_1_91_0",
+      "commit": "f8297e351a40c1439a467bbbb6879088047f50b3",
+      "url": "https://github.com/rust-lang/rust/blob/f8297e351a40c1439a467bbbb6879088047f50b3/library/core/src/hash/sip.rs",
+      "download_url": "https://raw.githubusercontent.com/rust-lang/rust/f8297e351a40c1439a467bbbb6879088047f50b3/library/core/src/hash/sip.rs",
+      "sha256": "aca712b0e77a08723436178ac33f5dabe83f9f4407dc9b5d95cee4f19526776a",
+      "local_copy": "../verif/stdlib-source/core-hash-sip.rs",
+      "methods": [
+        {
+          "name": "SipHasher13::new_with_keys / initial state",
+          "lines": [
+            178,
+            179,
+            185,
+            195,
+            200,
+            207
+          ],
+          "behavior": "Builds and resets local SipHasher state from the supplied key words."
+        },
+        {
+          "name": "SipHasher13::write / finish",
+          "lines": [
+            229,
+            231,
+            232,
+            241,
+            242
+          ],
+          "behavior": "Forwards to the local SipHasher state."
+        },
+        {
+          "name": "SipHasher state update / finish",
+          "lines": [
+            246,
+            255,
+            257,
+            310,
+            323
+          ],
+          "behavior": "Updates buffered state from input bytes and computes finish from a local state copy."
+        }
+      ]
+    },
+    {
+      "name": "creusot_sip_hasher_state_nightly",
+      "commit": "91fe22da8084a1c9e993d78d4a56f22ab8396236",
+      "url": "https://github.com/rust-lang/rust/blob/91fe22da8084a1c9e993d78d4a56f22ab8396236/library/core/src/hash/sip.rs",
+      "download_url": "https://raw.githubusercontent.com/rust-lang/rust/91fe22da8084a1c9e993d78d4a56f22ab8396236/library/core/src/hash/sip.rs",
+      "sha256": "a1377fda813201a196cab7a056292781201042421bc460e8004cc3d23a8916b3",
+      "local_copy": "../verif/stdlib-source/creusot-core-hash-sip.rs",
+      "methods": [
+        {
+          "name": "SipHasher13::new_with_keys / initial state",
+          "lines": [
+            179,
+            180,
+            186,
+            196,
+            208
+          ],
+          "behavior": "Builds and resets local SipHasher state from the supplied key words."
+        },
+        {
+          "name": "SipHasher13::write / finish",
+          "lines": [
+            230,
+            232,
+            233,
+            242,
+            243
+          ],
+          "behavior": "Forwards to the local SipHasher state."
+        },
+        {
+          "name": "SipHasher state update / finish",
+          "lines": [
+            247,
+            256,
+            258,
+            311,
+            324
+          ],
+          "behavior": "Updates buffered state from input bytes and computes finish from a local state copy."
+        }
+      ]
+    },
+    {
+      "name": "native_core_error_rust_1_91_0",
+      "commit": "f8297e351a40c1439a467bbbb6879088047f50b3",
+      "url": "https://github.com/rust-lang/rust/blob/f8297e351a40c1439a467bbbb6879088047f50b3/library/core/src/error.rs",
+      "sha256": "fafa1bd50a8b60a77f39fae1cafff423df1a11405597e2c9908515a88f131eea",
+      "local_copy": "../verif/stdlib-source/core-error.rs",
+      "methods": [
+        {
+          "name": "Error::source default",
+          "lines": [
+            104,
+            105,
+            106
+          ],
+          "behavior": "Returns None."
+        },
+        {
+          "name": "Error::description default",
+          "lines": [
+            129,
+            131,
+            132
+          ],
+          "behavior": "Returns the fixed deprecated description string."
+        },
+        {
+          "name": "Error::cause default",
+          "lines": [
+            135,
+            141,
+            142
+          ],
+          "behavior": "Delegates to source()."
+        }
+      ]
+    },
+    {
+      "name": "creusot_core_error_nightly",
+      "commit": "91fe22da8084a1c9e993d78d4a56f22ab8396236",
+      "url": "https://github.com/rust-lang/rust/blob/91fe22da8084a1c9e993d78d4a56f22ab8396236/library/core/src/error.rs",
+      "sha256": "ebb76aa552e3450d716580d39882147536828e7182d5c852a49575eb225b07cd",
+      "local_copy": "../verif/stdlib-source/creusot-core-error.rs",
+      "methods": [
+        {
+          "name": "Error::source default",
+          "lines": [
+            110,
+            111,
+            112
+          ],
+          "behavior": "Returns None."
+        },
+        {
+          "name": "Error::description default",
+          "lines": [
+            135,
+            137,
+            138
+          ],
+          "behavior": "Returns the fixed deprecated description string."
+        },
+        {
+          "name": "Error::cause default",
+          "lines": [
+            141,
+            147,
+            148
+          ],
+          "behavior": "Delegates to source()."
+        }
+      ]
+    },
+    {
+      "name": "native_std_io_error_rust_1_91_0",
+      "commit": "f8297e351a40c1439a467bbbb6879088047f50b3",
+      "url": "https://github.com/rust-lang/rust/blob/f8297e351a40c1439a467bbbb6879088047f50b3/library/std/src/io/error.rs",
+      "sha256": "26a8ab49b8a6966e03f89c21b1adba3239f5df2df70e4ff5a83e67c264a74cab",
+      "local_copy": "../verif/stdlib-source/std-io-error.rs",
+      "methods": [
+        {
+          "name": "io::Error::new / custom payload construction",
+          "lines": [
+            571,
+            575,
+            603,
+            604
+          ],
+          "behavior": "Boxes the payload as dyn Error + Send + Sync and stores it in the custom error variant."
+        },
+        {
+          "name": "io::Error::get_ref",
+          "lines": [
+            755,
+            756,
+            760
+          ],
+          "behavior": "Returns a reference to the custom payload."
+        },
+        {
+          "name": "io::Error::into_inner",
+          "lines": [
+            870,
+            871,
+            875
+          ],
+          "behavior": "Extracts the custom payload box."
+        },
+        {
+          "name": "Error for io::Error cause/source",
+          "lines": [
+            1054,
+            1056,
+            1061,
+            1065,
+            1070
+          ],
+          "behavior": "Delegates cause/source to a custom inner error; other variants return None."
+        },
+        {
+          "name": "io::Error::kind",
+          "lines": [
+            998,
+            999
+          ],
+          "behavior": "Reads the error kind from the stored representation."
+        }
+      ]
+    },
+    {
+      "name": "creusot_std_io_error_nightly",
+      "commit": "91fe22da8084a1c9e993d78d4a56f22ab8396236",
+      "url": "https://github.com/rust-lang/rust/blob/91fe22da8084a1c9e993d78d4a56f22ab8396236/library/std/src/io/error.rs",
+      "sha256": "6b6127919e98b35a41610e750edc601de89f8f8475a399d37d49b50365e3b730",
+      "local_copy": "../verif/stdlib-source/creusot-std-io-error.rs",
+      "methods": [
+        {
+          "name": "io::Error::new / custom payload construction",
+          "lines": [
+            255,
+            259,
+            287,
+            288
+          ],
+          "behavior": "Boxes the payload as dyn Error + Send + Sync and stores it in the custom error variant."
+        },
+        {
+          "name": "io::Error::get_ref",
+          "lines": [
+            439,
+            440,
+            444
+          ],
+          "behavior": "Returns a reference to the custom payload."
+        },
+        {
+          "name": "io::Error::into_inner",
+          "lines": [
+            554,
+            555,
+            559
+          ],
+          "behavior": "Extracts the custom payload box."
+        },
+        {
+          "name": "Error for io::Error cause/source",
+          "lines": [
+            738,
+            740,
+            745,
+            749,
+            754
+          ],
+          "behavior": "Delegates cause/source to a custom inner error; other variants return None."
+        },
+        {
+          "name": "io::Error::kind",
+          "lines": [
+            682,
+            683
+          ],
+          "behavior": "Reads the error kind from the stored representation."
+        }
+      ]
+    },
+    {
+      "name": "native_alloc_boxed_convert_rust_1_91_0",
+      "commit": "f8297e351a40c1439a467bbbb6879088047f50b3",
+      "url": "https://github.com/rust-lang/rust/blob/f8297e351a40c1439a467bbbb6879088047f50b3/library/alloc/src/boxed/convert.rs",
+      "sha256": "27fa4981c04ae3053d7aafd2f7d9c673ec28c82ae2c26f382dc70d20d363f2e5",
+      "local_copy": "../verif/stdlib-source/alloc-boxed-convert.rs",
+      "methods": [
+        {
+          "name": "From<E> for Box<dyn Error + Send + Sync>",
+          "lines": [
+            556,
+            587,
+            588
+          ],
+          "behavior": "Converts an Error + Send + Sync payload by boxing the original value."
+        }
+      ]
+    },
+    {
+      "name": "creusot_alloc_boxed_convert_nightly",
+      "commit": "91fe22da8084a1c9e993d78d4a56f22ab8396236",
+      "url": "https://github.com/rust-lang/rust/blob/91fe22da8084a1c9e993d78d4a56f22ab8396236/library/alloc/src/boxed/convert.rs",
+      "sha256": "1534b6cd36659f2753a6633dd4bd25d7f9bbccb0ff1d83e3adc5fb52569fb45e",
+      "local_copy": "../verif/stdlib-source/creusot-alloc-boxed-convert.rs",
+      "methods": [
+        {
+          "name": "From<E> for Box<dyn Error + Send + Sync>",
+          "lines": [
+            525,
+            556,
+            557
+          ],
+          "behavior": "Converts an Error + Send + Sync payload by boxing the original value."
+        }
+      ]
+    },
+    {
+      "name": "native_rust_1_91_0_core_fmt_mod",
+      "rustc_version": "rustc 1.91.0 (f8297e351 2025-10-28)",
+      "commit": "f8297e351a40c1439a467bbbb6879088047f50b3",
+      "url": "https://github.com/rust-lang/rust/blob/f8297e351a40c1439a467bbbb6879088047f50b3/library/core/src/fmt/mod.rs",
+      "download_url": "https://raw.githubusercontent.com/rust-lang/rust/f8297e351a40c1439a467bbbb6879088047f50b3/library/core/src/fmt/mod.rs",
+      "sha256": "1d79e2439c33fc23567c656401f739d64745de6cdf92c0a175966a78ac73f393",
+      "local_copy": "../verif/stdlib-source/f8297e3-fmt-mod.rs",
+      "methods": [
+        {
+          "name": "Formatter::write_str inherent",
+          "lines": [
+            1885,
+            1886
+          ],
+          "observation": "Calls self.buf.write_str(data)."
+        },
+        {
+          "name": "fmt::Write for Formatter::write_str",
+          "lines": [
+            2624,
+            2628
+          ],
+          "observation": "Calls self.buf.write_str(s)."
+        },
+        {
+          "name": "Formatter::flags",
+          "lines": [
+            1930,
+            1934
+          ],
+          "observation": "Returns the legacy debug/format flag subset from options.flags."
+        },
+        {
+          "name": "Formatter::fill and align",
+          "lines": [
+            1965,
+            1966,
+            2000,
+            2001
+          ],
+          "observation": "Read fill and alignment from FormattingOptions."
+        },
+        {
+          "name": "Formatter::width and precision",
+          "lines": [
+            2030,
+            2035,
+            2065,
+            2070
+          ],
+          "observation": "Return Some(option) only when the corresponding flag is set; otherwise None."
+        },
+        {
+          "name": "Debug lower/upper hex flag checks",
+          "lines": [
+            2190,
+            2195
+          ],
+          "observation": "Test the dedicated lower/upper Debug-hex flags."
+        },
+        {
+          "name": "Debug for unit",
+          "lines": [
+            2914,
+            2918
+          ],
+          "observation": "Calls Formatter::pad with the literal ()."
+        }
+      ]
+    },
+    {
+      "name": "native_rust_1_91_0_core_fmt_builders",
+      "rustc_version": "rustc 1.91.0 (f8297e351 2025-10-28)",
+      "commit": "f8297e351a40c1439a467bbbb6879088047f50b3",
+      "url": "https://github.com/rust-lang/rust/blob/f8297e351a40c1439a467bbbb6879088047f50b3/library/core/src/fmt/builders.rs",
+      "download_url": "https://raw.githubusercontent.com/rust-lang/rust/f8297e351a40c1439a467bbbb6879088047f50b3/library/core/src/fmt/builders.rs",
+      "sha256": "bb4400f6db5dbcd15f2b8bbb9bda98f99b3aeb13f4bec62bf46635696b1fb967",
+      "local_copy": "../verif/stdlib-source/f8297e3-fmt-builders.rs",
+      "methods": [
+        {
+          "name": "DebugStruct constructor",
+          "lines": [
+            88,
+            100
+          ],
+          "observation": "Stores Formatter and writes the struct name."
+        },
+        {
+          "name": "DebugStruct::field",
+          "lines": [
+            132,
+            134
+          ],
+          "observation": "Delegates formatting the field value through Debug::fmt."
+        },
+        {
+          "name": "DebugStruct field rendering branches",
+          "lines": [
+            145,
+            164
+          ],
+          "observation": "Alternate mode uses pretty layout; ordinary mode writes field separators/name and formats the value."
+        },
+        {
+          "name": "DebugStruct::finish",
+          "lines": [
+            244,
+            250
+          ],
+          "observation": "Writes the closing brace when fields are present, with a mode-dependent separator."
+        },
+        {
+          "name": "DebugTuple constructor",
+          "lines": [
+            296,
+            302
+          ],
+          "observation": "Stores Formatter, writes tuple name, and tracks field count/empty name."
+        },
+        {
+          "name": "DebugTuple::field and rendering branches",
+          "lines": [
+            329,
+            357
+          ],
+          "observation": "Delegates values through Debug::fmt; alternate and ordinary modes use different separators/layout."
+        },
+        {
+          "name": "DebugTuple::finish",
+          "lines": [
+            431,
+            441
+          ],
+          "observation": "Writes the closing parenthesis when fields are present, including the single empty-name special case."
+        }
+      ]
+    },
+    {
+      "name": "native_rust_1_91_0_core_fmt_num",
+      "rustc_version": "rustc 1.91.0 (f8297e351 2025-10-28)",
+      "commit": "f8297e351a40c1439a467bbbb6879088047f50b3",
+      "url": "https://github.com/rust-lang/rust/blob/f8297e351a40c1439a467bbbb6879088047f50b3/library/core/src/fmt/num.rs",
+      "download_url": "https://raw.githubusercontent.com/rust-lang/rust/f8297e351a40c1439a467bbbb6879088047f50b3/library/core/src/fmt/num.rs",
+      "sha256": "0beb56ce116b6dcee9c25677aca707ec28aa5ff0ec5fd7d5255f212c392022cb",
+      "local_copy": "../verif/stdlib-source/f8297e3-fmt-num.rs",
+      "methods": [
+        {
+          "name": "Debug for integer macro",
+          "lines": [
+            79,
+            97
+          ],
+          "observation": "Chooses LowerHex/UpperHex under their Debug flags and otherwise calls Display::fmt."
+        },
+        {
+          "name": "Debug impl expansion for u8/u16",
+          "lines": [
+            589,
+            592
+          ],
+          "observation": "Instantiates the Debug macro for u8 and u16."
+        },
+        {
+          "name": "Unsigned decimal Display implementation",
+          "lines": [
+            121,
+            152
+          ],
+          "observation": "Unsigned Display uses decimal digits and Formatter::pad_integral; this is the fallback selected for u8/u16 Debug when no hex flag is set."
+        },
+        {
+          "name": "u8/u16 Display macro invocation",
+          "lines": [
+            596,
+            600
+          ],
+          "observation": "On 64-bit targets, includes u8 and u16 in the unsigned decimal Display implementation."
+        }
+      ]
+    },
+    {
+      "name": "creusot_pinned_nightly_core_fmt_mod",
+      "commit": "91fe22da8084a1c9e993d78d4a56f22ab8396236",
+      "url": "https://github.com/rust-lang/rust/blob/91fe22da8084a1c9e993d78d4a56f22ab8396236/library/core/src/fmt/mod.rs",
+      "download_url": "https://raw.githubusercontent.com/rust-lang/rust/91fe22da8084a1c9e993d78d4a56f22ab8396236/library/core/src/fmt/mod.rs",
+      "sha256": "4af670d942b73896453df8919eae0e627e6665ab728ec632ccf559d30088035c",
+      "local_copy": "../verif/stdlib-source/91fe22d-fmt-mod.rs",
+      "methods": [
+        {
+          "name": "Formatter::write_str inherent",
+          "lines": [
+            2101,
+            2102
+          ],
+          "observation": "Calls self.buf.write_str(data)."
+        },
+        {
+          "name": "fmt::Write for Formatter::write_str",
+          "lines": [
+            2841,
+            2844
+          ],
+          "observation": "Calls self.buf.write_str(s)."
+        },
+        {
+          "name": "Formatter::flags",
+          "lines": [
+            2146,
+            2150
+          ],
+          "observation": "Returns the legacy debug/format flag subset from options.flags."
+        },
+        {
+          "name": "Formatter::fill and align",
+          "lines": [
+            2181,
+            2182,
+            2216,
+            2217
+          ],
+          "observation": "Read fill and alignment from FormattingOptions."
+        },
+        {
+          "name": "Formatter::width and precision",
+          "lines": [
+            2246,
+            2251,
+            2281,
+            2286
+          ],
+          "observation": "Return Some(option) only when the corresponding flag is set; otherwise None."
+        },
+        {
+          "name": "Debug lower/upper hex flag checks",
+          "lines": [
+            2406,
+            2411
+          ],
+          "observation": "Test the dedicated lower/upper Debug-hex flags."
+        },
+        {
+          "name": "Debug for unit",
+          "lines": [
+            3137,
+            3141
+          ],
+          "observation": "Calls Formatter::pad with the literal ()."
+        }
+      ]
+    },
+    {
+      "name": "creusot_pinned_nightly_core_fmt_builders",
+      "commit": "91fe22da8084a1c9e993d78d4a56f22ab8396236",
+      "url": "https://github.com/rust-lang/rust/blob/91fe22da8084a1c9e993d78d4a56f22ab8396236/library/core/src/fmt/builders.rs",
+      "download_url": "https://raw.githubusercontent.com/rust-lang/rust/91fe22da8084a1c9e993d78d4a56f22ab8396236/library/core/src/fmt/builders.rs",
+      "sha256": "5f2017e6e210e66bceea73e0d7a141ae2be9f15e56a2b5c6ba77ab361b909930",
+      "local_copy": "../verif/stdlib-source/91fe22d-fmt-builders.rs",
+      "methods": [
+        {
+          "name": "DebugStruct constructor",
+          "lines": [
+            88,
+            100
+          ],
+          "observation": "Stores Formatter and writes the struct name."
+        },
+        {
+          "name": "DebugStruct::field",
+          "lines": [
+            132,
+            134
+          ],
+          "observation": "Delegates formatting the field value through Debug::fmt."
+        },
+        {
+          "name": "DebugStruct field rendering branches",
+          "lines": [
+            145,
+            164
+          ],
+          "observation": "Alternate mode uses pretty layout; ordinary mode writes field separators/name and formats the value."
+        },
+        {
+          "name": "DebugStruct::finish",
+          "lines": [
+            244,
+            250
+          ],
+          "observation": "Writes the closing brace when fields are present, with a mode-dependent separator."
+        },
+        {
+          "name": "DebugTuple constructor",
+          "lines": [
+            296,
+            302
+          ],
+          "observation": "Stores Formatter, writes tuple name, and tracks field count/empty name."
+        },
+        {
+          "name": "DebugTuple::field and rendering branches",
+          "lines": [
+            329,
+            357
+          ],
+          "observation": "Delegates values through Debug::fmt; alternate and ordinary modes use different separators/layout."
+        },
+        {
+          "name": "DebugTuple::finish",
+          "lines": [
+            431,
+            441
+          ],
+          "observation": "Writes the closing parenthesis when fields are present, including the single empty-name special case."
+        }
+      ]
+    },
+    {
+      "name": "creusot_pinned_nightly_core_fmt_num",
+      "commit": "91fe22da8084a1c9e993d78d4a56f22ab8396236",
+      "url": "https://github.com/rust-lang/rust/blob/91fe22da8084a1c9e993d78d4a56f22ab8396236/library/core/src/fmt/num.rs",
+      "download_url": "https://raw.githubusercontent.com/rust-lang/rust/91fe22da8084a1c9e993d78d4a56f22ab8396236/library/core/src/fmt/num.rs",
+      "sha256": "28d9fdab34caeb033d5111b1b51b70b5093c23d590a356d459ee2142fc19a652",
+      "local_copy": "../verif/stdlib-source/91fe22d-fmt-num.rs",
+      "methods": [
+        {
+          "name": "Debug for integer macro",
+          "lines": [
+            79,
+            97
+          ],
+          "observation": "Chooses LowerHex/UpperHex under their Debug flags and otherwise calls Display::fmt."
+        },
+        {
+          "name": "Debug impl expansion for u8/u16",
+          "lines": [
+            589,
+            592
+          ],
+          "observation": "Instantiates the Debug macro for u8 and u16."
+        },
+        {
+          "name": "Unsigned decimal Display implementation",
+          "lines": [
+            121,
+            152
+          ],
+          "observation": "Unsigned Display uses decimal digits and Formatter::pad_integral; this is the fallback selected for u8/u16 Debug when no hex flag is set."
+        },
+        {
+          "name": "u8/u16 Display macro invocation",
+          "lines": [
+            596,
+            600
+          ],
+          "observation": "On 64-bit targets, includes u8 and u16 in the unsigned decimal Display implementation."
+        }
+      ]
+    }
+  ],
+  "finding": "In both pinned sources, inherent Formatter::write_str and the fmt::Write trait implementation independently forward to the formatter buffer's write_str. The trait implementation does not call the inherent method.",
+  "hash_review": "Both core revisions define Hash::hash_slice's default as a loop calling Hash::hash per element, while documenting the method's general semantics as unspecified. Primitive u8/u16 Hash methods call write_u8/write_u16, while primitive slice overrides write raw bytes. HttpDate now has a manual Hash implementation with the same seven typed fields and does not override hash_slice, so the default per-item behavior applies to HttpDate slices in these source revisions.",
+  "default_hasher_review": "In both pinned std sources, DefaultHasher::new constructs SipHasher13 with fixed keys (0, 0); its write and finish methods delegate to that local state. The pinned core SipHasher implementation initializes, updates, and finishes that state without consulting an RNG or process-global state. DefaultHasher hashes are not promised stable across Rust releases; the test only compares fresh hashers under the same pinned runtime and does not assume an injective or universally faithful trace.",
+  "scope_note": "These line references and source hashes document implementation review only. They do not prove the Rust standard library or establish behavior beyond the pinned source revisions.",
+  "error_review": "The application explicit source/cause/description preserve reviewed standard defaults. Direct concrete Error+Send+Sync payload conversion boxes and retains the supplied value and kind; arbitrary Into converters and dynamic payload observers remain outside the formal model.",
+  "debug_review": "Pinned source references for reviewing Rust Debug formatting behavior used by the model. Source inspection and native differential tests do not prove equivalence to std implementations.",
+  "macos_platform_review": {
+    "record": "platform-review/review.json",
+    "note": "Reviewed pinned native and translation Rust time sources; conditional model applicability only."
+  }
+}

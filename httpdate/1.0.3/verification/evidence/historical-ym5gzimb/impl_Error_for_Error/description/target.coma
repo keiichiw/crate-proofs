@@ -1,0 +1,154 @@
+(* <Error as std::error::Error> *)
+
+use creusot.slice.Slice64
+use creusot.int.UInt8
+use creusot.prelude.Any
+use seq.Seq
+use creusot.prelude.Char
+use int.Int
+
+type t_Utf8Error
+
+type t_Result_ref_str_Utf8Error = Ok string | Err t_Utf8Error
+
+predicate inv_Utf8Error (_1: t_Utf8Error)
+
+predicate inv_Result_ref_str_Utf8Error (_1: t_Result_ref_str_Utf8Error)
+
+axiom inv_axiom [@rewrite]:
+  forall x: t_Result_ref_str_Utf8Error [inv_Result_ref_str_Utf8Error x]. inv_Result_ref_str_Utf8Error x
+    = match x with
+      | Ok f0 -> true
+      | Err f0 -> inv_Utf8Error f0
+      end
+
+function view_str (self: string) : Seq.seq Char.t
+
+let from_utf8 (v: Slice64.slice UInt8.t) (return (x: t_Result_ref_str_Utf8Error)) =
+{[@stop_split] [@expl:from_utf8 requires] forall i: int. 0 <= i /\ i < Seq.length (Slice64.view v)
+    -> UInt8.t'int (Seq.get (Slice64.view v) i) < 128}
+  any
+  [ return (result: t_Result_ref_str_Utf8Error) ->
+  {[@stop_split] [@expl:from_utf8 ensures] ([@stop_split] [@expl:from_utf8 result type invariant] inv_Result_ref_str_Utf8Error result)
+    /\ ([@stop_split] [@expl:from_utf8 ensures] match result with
+      | Ok s -> Seq.length (view_str s) = Seq.length (Slice64.view v)
+      /\ (forall i: int. 0 <= i /\ i < Seq.length (Slice64.view v)
+        -> Char.to_int (Seq.get (view_str s) i) = UInt8.t'int (Seq.get (Slice64.view v) i))
+      | Err _ -> false
+      end)}
+    (! return {result}) ]
+
+let unwrap_ref_str (self_: t_Result_ref_str_Utf8Error) (return (x: string)) =
+{[@stop_split] [@expl:unwrap_ref_str requires] ([@stop_split] [@expl:unwrap 'self_' type invariant] inv_Result_ref_str_Utf8Error self_)
+  /\ ([@stop_split] [@expl:unwrap requires] exists t: string. self_ = Ok t)}
+  any [ return (result: string) -> {[@stop_split] [@expl:unwrap ensures] Ok result = self_} (! return {result}) ]
+
+type t_Error = { f0: () }
+
+meta "compute_max_steps" 1000000
+
+meta "select_lsinst" "all"
+
+let description_Error (self: t_Error) (return (x: string)) = (! bb0
+  [ bb0 = s0
+    [ s0 = bb0'0
+      [ bb0'0 = s0'0
+        [ s0'0 = any
+          [ any_ (__arr_temp: Slice64.array UInt8.t) -> (! -{Seq.get __arr_temp.Slice64.elts 0 = (100: UInt8.t)
+            /\ Seq.get __arr_temp.Slice64.elts 1 = (101: UInt8.t)
+            /\ Seq.get __arr_temp.Slice64.elts 2 = (115: UInt8.t)
+            /\ Seq.get __arr_temp.Slice64.elts 3 = (99: UInt8.t)
+            /\ Seq.get __arr_temp.Slice64.elts 4 = (114: UInt8.t)
+            /\ Seq.get __arr_temp.Slice64.elts 5 = (105: UInt8.t)
+            /\ Seq.get __arr_temp.Slice64.elts 6 = (112: UInt8.t)
+            /\ Seq.get __arr_temp.Slice64.elts 7 = (116: UInt8.t)
+            /\ Seq.get __arr_temp.Slice64.elts 8 = (105: UInt8.t)
+            /\ Seq.get __arr_temp.Slice64.elts 9 = (111: UInt8.t)
+            /\ Seq.get __arr_temp.Slice64.elts 10 = (110: UInt8.t)
+            /\ Seq.get __arr_temp.Slice64.elts 11 = (40: UInt8.t)
+            /\ Seq.get __arr_temp.Slice64.elts 12 = (41: UInt8.t)
+            /\ Seq.get __arr_temp.Slice64.elts 13 = (32: UInt8.t)
+            /\ Seq.get __arr_temp.Slice64.elts 14 = (105: UInt8.t)
+            /\ Seq.get __arr_temp.Slice64.elts 15 = (115: UInt8.t)
+            /\ Seq.get __arr_temp.Slice64.elts 16 = (32: UInt8.t)
+            /\ Seq.get __arr_temp.Slice64.elts 17 = (100: UInt8.t)
+            /\ Seq.get __arr_temp.Slice64.elts 18 = (101: UInt8.t)
+            /\ Seq.get __arr_temp.Slice64.elts 19 = (112: UInt8.t)
+            /\ Seq.get __arr_temp.Slice64.elts 20 = (114: UInt8.t)
+            /\ Seq.get __arr_temp.Slice64.elts 21 = (101: UInt8.t)
+            /\ Seq.get __arr_temp.Slice64.elts 22 = (99: UInt8.t)
+            /\ Seq.get __arr_temp.Slice64.elts 23 = (97: UInt8.t)
+            /\ Seq.get __arr_temp.Slice64.elts 24 = (116: UInt8.t)
+            /\ Seq.get __arr_temp.Slice64.elts 25 = (101: UInt8.t)
+            /\ Seq.get __arr_temp.Slice64.elts 26 = (100: UInt8.t)
+            /\ Seq.get __arr_temp.Slice64.elts 27 = (59: UInt8.t)
+            /\ Seq.get __arr_temp.Slice64.elts 28 = (32: UInt8.t)
+            /\ Seq.get __arr_temp.Slice64.elts 29 = (117: UInt8.t)
+            /\ Seq.get __arr_temp.Slice64.elts 30 = (115: UInt8.t)
+            /\ Seq.get __arr_temp.Slice64.elts 31 = (101: UInt8.t)
+            /\ Seq.get __arr_temp.Slice64.elts 32 = (32: UInt8.t)
+            /\ Seq.get __arr_temp.Slice64.elts 33 = (68: UInt8.t)
+            /\ Seq.get __arr_temp.Slice64.elts 34 = (105: UInt8.t)
+            /\ Seq.get __arr_temp.Slice64.elts 35 = (115: UInt8.t)
+            /\ Seq.get __arr_temp.Slice64.elts 36 = (112: UInt8.t)
+            /\ Seq.get __arr_temp.Slice64.elts 37 = (108: UInt8.t)
+            /\ Seq.get __arr_temp.Slice64.elts 38 = (97: UInt8.t)
+            /\ Seq.get __arr_temp.Slice64.elts 39 = (121: UInt8.t) /\ Seq.length __arr_temp.Slice64.elts = 40}-
+            [ &_1 <- __arr_temp ] s1'0) ]
+        | s1'0 = [ &_ret'0 <- _1 ] s2'0
+        | s2'0 = _const_ret {_ret'0} ] ]
+      [ & _ret'0: Slice64.array UInt8.t = Any.any_l () | & _1: Slice64.array UInt8.t = Any.any_l () ]
+      [ _const_ret (_const: Slice64.array UInt8.t) -> [ &_10 <- _const ] s1 ]
+    | s1 = [ &_8 <- _10 ] s2
+    | s2 = from_utf8 {_8} (fun (_x: t_Result_ref_str_Utf8Error) -> [ &_5 <- _x ] s3)
+    | s3 = unwrap_ref_str {_5} (fun (_x: string) -> [ &_4 <- _x ] s4)
+    | s4 = [ &_ret <- _4 ] s5
+    | s5 = return {_ret} ] ]
+  [ & _ret: string = Any.any_l ()
+  | & _4: string = Any.any_l ()
+  | & _5: t_Result_ref_str_Utf8Error = Any.any_l ()
+  | & _8: Slice64.array UInt8.t = Any.any_l ()
+  | & _10: Slice64.array UInt8.t = Any.any_l () ])
+  [ return (result: string) ->
+  {[@stop_split] [@expl:description_Error ensures] ([@stop_split] [@expl:description ensures #0] Seq.length (view_str result)
+      = 40)
+    /\ ([@stop_split] [@expl:description ensures #1] Seq.get (view_str result) 0 = Char.of_int 100
+    /\ Seq.get (view_str result) 1 = Char.of_int 101
+    /\ Seq.get (view_str result) 2 = Char.of_int 115
+    /\ Seq.get (view_str result) 3 = Char.of_int 99
+    /\ Seq.get (view_str result) 4 = Char.of_int 114
+    /\ Seq.get (view_str result) 5 = Char.of_int 105
+    /\ Seq.get (view_str result) 6 = Char.of_int 112
+    /\ Seq.get (view_str result) 7 = Char.of_int 116
+    /\ Seq.get (view_str result) 8 = Char.of_int 105
+    /\ Seq.get (view_str result) 9 = Char.of_int 111
+    /\ Seq.get (view_str result) 10 = Char.of_int 110
+    /\ Seq.get (view_str result) 11 = Char.of_int 40
+    /\ Seq.get (view_str result) 12 = Char.of_int 41
+    /\ Seq.get (view_str result) 13 = Char.of_int 32
+    /\ Seq.get (view_str result) 14 = Char.of_int 105
+    /\ Seq.get (view_str result) 15 = Char.of_int 115
+    /\ Seq.get (view_str result) 16 = Char.of_int 32
+    /\ Seq.get (view_str result) 17 = Char.of_int 100
+    /\ Seq.get (view_str result) 18 = Char.of_int 101
+    /\ Seq.get (view_str result) 19 = Char.of_int 112
+    /\ Seq.get (view_str result) 20 = Char.of_int 114
+    /\ Seq.get (view_str result) 21 = Char.of_int 101
+    /\ Seq.get (view_str result) 22 = Char.of_int 99
+    /\ Seq.get (view_str result) 23 = Char.of_int 97
+    /\ Seq.get (view_str result) 24 = Char.of_int 116
+    /\ Seq.get (view_str result) 25 = Char.of_int 101
+    /\ Seq.get (view_str result) 26 = Char.of_int 100
+    /\ Seq.get (view_str result) 27 = Char.of_int 59
+    /\ Seq.get (view_str result) 28 = Char.of_int 32
+    /\ Seq.get (view_str result) 29 = Char.of_int 117
+    /\ Seq.get (view_str result) 30 = Char.of_int 115
+    /\ Seq.get (view_str result) 31 = Char.of_int 101
+    /\ Seq.get (view_str result) 32 = Char.of_int 32
+    /\ Seq.get (view_str result) 33 = Char.of_int 68
+    /\ Seq.get (view_str result) 34 = Char.of_int 105
+    /\ Seq.get (view_str result) 35 = Char.of_int 115
+    /\ Seq.get (view_str result) 36 = Char.of_int 112
+    /\ Seq.get (view_str result) 37 = Char.of_int 108
+    /\ Seq.get (view_str result) 38 = Char.of_int 97 /\ Seq.get (view_str result) 39 = Char.of_int 121)}
+    (! return {result}) ]

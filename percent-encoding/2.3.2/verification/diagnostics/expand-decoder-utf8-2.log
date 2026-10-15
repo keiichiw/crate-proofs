@@ -1,0 +1,57 @@
+    Checking percent-encoding v2.3.2 (/workspace/proof-env/percent-encoding/2.3.2/crate)
+warning: unused import: `string::String`
+  --> src/lib.rs:51:5
+   |
+51 |     string::String,
+   |     ^^^^^^^^^^^^^^
+   |
+   = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused import: `fmt`
+  --> src/lib.rs:54:12
+   |
+54 | use core::{fmt, slice, str};
+   |            ^^^
+
+warning: unused import: `cmp::PartialEq`
+  --> src/lib.rs:56:12
+   |
+56 | use core::{cmp::PartialEq, clone::Clone};
+   |            ^^^^^^^^^^^^^^
+
+warning: function `percent_encode_size_hint` is never used
+   --> src/lib.rs:536:4
+    |
+536 | fn percent_encode_size_hint(bytes: &[u8]) -> (usize, Option<usize>) {
+    |    ^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: methods `contains` and `should_percent_encode` are never used
+  --> src/ascii_set.rs:85:25
+   |
+63 | impl AsciiSet {
+   | ------------- methods in this implementation
+...
+85 |     pub(crate) const fn contains(&self, byte: u8) -> bool {
+   |                         ^^^^^^^^
+...
+93 |     pub(crate) fn should_percent_encode(&self, byte: u8) -> bool {
+   |                   ^^^^^^^^^^^^^^^^^^^^^
+
+warning: function `contains_model` is never used
+   --> src/ascii_set.rs:140:4
+    |
+140 | fn contains_model(set: &AsciiSet, byte: u8) -> bool {
+    |    ^^^^^^^^^^^^^^
+
+warning: calling external function `to_owned` with no contract will yield an impossible precondition
+   --> src/lib.rs:851:39
+    |
+851 |                     let mut decoded = initial_bytes[..unchanged_bytes_len].to_owned();
+    |                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ function called here
+    |
+    = note: `#[warn(creusot::contractless_external_function)]` on by default
+
+warning: `percent-encoding` (lib) generated 7 warnings (run `cargo fix --lib -p percent-encoding` to apply 3 suggestions)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.54s

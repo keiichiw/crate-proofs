@@ -1,0 +1,42 @@
+use creusot.slice.Slice64
+use creusot.int.UInt8
+use creusot.prelude.Any
+use seq.Seq
+
+type t_Iter_u8
+
+predicate inv_Iter_u8 (_1: t_Iter_u8)
+
+function view_Iter_u8 (self: t_Iter_u8) : Slice64.slice UInt8.t
+
+let iter_u8 (self_: Slice64.slice UInt8.t) (return (x: t_Iter_u8)) = any
+  [ return (result: t_Iter_u8) ->
+  {[@stop_split] [@expl:iter_u8 ensures] ([@stop_split] [@expl:iter result type invariant] inv_Iter_u8 result)
+    /\ ([@stop_split] [@expl:iter ensures] view_Iter_u8 result = self_)}
+    (! return {result}) ]
+
+type t_PercentDecode = { bytes: t_Iter_u8 }
+
+predicate inv_PercentDecode (_1: t_PercentDecode)
+
+axiom inv_axiom [@rewrite]: forall x: t_PercentDecode [inv_PercentDecode x]. inv_PercentDecode x = inv_Iter_u8 x.bytes
+
+function remaining_input [@inline:trivial] (self: t_PercentDecode) : Seq.seq UInt8.t =
+  Slice64.view (view_Iter_u8 self.bytes)
+
+meta "rewrite_def" function remaining_input
+
+meta "compute_max_steps" 1000000
+
+meta "select_lsinst" "all"
+
+let percent_decode (input: Slice64.slice UInt8.t) (return (x: t_PercentDecode)) = (! bb0
+  [ bb0 = s0
+    [ s0 = iter_u8 {input} (fun (_x: t_Iter_u8) -> [ &_4 <- _x ] s1)
+    | s1 = [ &_ret <- { bytes = _4 } ] s2
+    | s2 = return {_ret} ] ]
+  [ & _ret: t_PercentDecode = Any.any_l () | & input: Slice64.slice UInt8.t = input | & _4: t_Iter_u8 = Any.any_l () ])
+  [ return (result: t_PercentDecode) ->
+  {[@stop_split] [@expl:percent_decode ensures] ([@stop_split] [@expl:percent_decode result type invariant] inv_PercentDecode result)
+    /\ ([@stop_split] [@expl:percent_decode ensures] remaining_input result = Slice64.view input)}
+    (! return {result}) ]

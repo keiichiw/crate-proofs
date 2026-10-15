@@ -1,0 +1,63 @@
+theory Coma
+  
+  (* use why3.BuiltIn.BuiltIn *)
+  
+  (* use why3.Bool.Bool *)
+  
+  (* use why3.Unit.Unit *)
+  
+  (* use creusot.slice.Slice64BW *)
+  
+  (* use creusot.int.UInt32BW *)
+  
+  (* use creusot.prelude.Any *)
+  
+  type t_AsciiSet =
+    | T_AsciiSet'mk (mask:slice t)
+  
+  (* meta model_record function mask *)
+  
+  predicate inv_Seq_u32 (_1:seq t) = true
+  
+  (* meta rewrite_def predicate inv_Seq_u32 *)
+  
+  predicate invariant_array_u32_4 (self:slice t) =
+    inv_Seq_u32 (view self) /\ length (view self) = t'int (4:t1)
+  
+  predicate inv_array_u32_4 (_1:slice t) = invariant_array_u32_4 _1
+  
+  (* meta rewrite_def predicate inv_array_u32_4 *)
+  
+  predicate inv_AsciiSet t_AsciiSet
+  
+  axiom inv_axiom :
+    forall x:t_AsciiSet [inv_AsciiSet x].
+     inv_AsciiSet x <-> inv_array_u32_4 (x.mask)
+  
+  constant const_EMPTY : t_AsciiSet
+  
+  axiom const_EMPTY_spec : inv_AsciiSet const_EMPTY
+  
+  function mask_words (self:t_AsciiSet) : seq t =
+    create 4 (fun (i:int) -> get (view (self.mask)) i)
+  
+  axiom mask_words_spec :
+    forall self:t_AsciiSet [mask_words self]. length (mask_words self) = 4
+  
+  (* meta compute_max_steps 1000000 *)
+  
+  (* meta select_lsinst "all" *)
+  
+  goal vc_const_EMPTY_def :
+    forall result:slice t.
+     length (result.elts) = t'int (4:t1) ->
+     (forall i:int.
+       0 <= i /\ i < t'int (4:t1) ->
+       (result.elts)[i] = ((fun (_:int) -> (0:t)) @ i)) ->
+     const_EMPTY = T_AsciiSet'mk result ->
+     inv_AsciiSet (T_AsciiSet'mk result) /\
+     length (mask_words const_EMPTY) = 4 /\
+     (forall i:int. 0 <= i /\ i < 4 -> get (mask_words const_EMPTY) i = (0:t))
+  
+end
+

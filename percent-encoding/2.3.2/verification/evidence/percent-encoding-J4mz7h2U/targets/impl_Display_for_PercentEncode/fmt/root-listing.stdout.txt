@@ -1,0 +1,93 @@
+theory Coma
+  
+  (* use why3.BuiltIn.BuiltIn *)
+  
+  (* use why3.Bool.Bool *)
+  
+  (* use why3.Unit.Unit *)
+  
+  (* use creusot.prelude.MutBorrow *)
+  
+  (* use creusot.slice.Slice64 *)
+  
+  (* use creusot.int.UInt8 *)
+  
+  (* use creusot.prelude.Any *)
+  
+  type t_Formatter
+  
+  predicate inv_Formatter t_Formatter
+  
+  type t_AsciiSet
+  
+  type t_PercentEncode =
+    | T_PercentEncode'mk (bytes:slice t) (ascii_set:t_AsciiSet)
+  
+  (* meta model_record function ascii_set *)
+  
+  (* meta model_record function bytes *)
+  
+  type t_Result_unit_Error =
+    | Ok unit
+    | Err unit
+  
+  predicate inv_AsciiSet t_AsciiSet
+  
+  predicate invariant_ref_AsciiSet (self:t_AsciiSet) = inv_AsciiSet self
+  
+  (* meta rewrite_def predicate invariant_ref_AsciiSet *)
+  
+  predicate inv_ref_AsciiSet (_1:t_AsciiSet) = invariant_ref_AsciiSet _1
+  
+  (* meta rewrite_def predicate inv_ref_AsciiSet *)
+  
+  predicate inv_PercentEncode t_PercentEncode
+  
+  axiom inv_axiom :
+    forall x:t_PercentEncode [inv_PercentEncode x].
+     inv_PercentEncode x <-> inv_ref_AsciiSet (x.ascii_set)
+  
+  predicate invariant_ref_PercentEncode (self:t_PercentEncode) =
+    inv_PercentEncode self
+  
+  (* meta rewrite_def predicate invariant_ref_PercentEncode *)
+  
+  predicate inv_ref_PercentEncode (_1:t_PercentEncode) =
+    invariant_ref_PercentEncode _1
+  
+  (* meta rewrite_def predicate inv_ref_PercentEncode *)
+  
+  predicate invariant_refmut_Formatter (self:t1 t_Formatter) =
+    inv_Formatter (self.current) /\ inv_Formatter (self.final)
+  
+  (* meta rewrite_def predicate invariant_refmut_Formatter *)
+  
+  predicate inv_refmut_Formatter (_1:t1 t_Formatter) =
+    invariant_refmut_Formatter _1
+  
+  (* meta rewrite_def predicate inv_refmut_Formatter *)
+  
+  goal vc_format_encoder : true
+  
+  predicate resolve_refmut_Formatter (_1:t1 t_Formatter) =
+    _1.final = _1.current
+  
+  (* meta rewrite_def predicate resolve_refmut_Formatter *)
+  
+  (* meta compute_max_steps 1000000 *)
+  
+  (* meta select_lsinst "all" *)
+  
+  goal vc_fmt_PercentEncode :
+    forall self:t_PercentEncode, formatter:t1 t_Formatter.
+     inv_ref_PercentEncode self /\ inv_refmut_Formatter formatter ->
+     (forall fin:t_Formatter.
+       inv_Formatter fin ->
+       (inv_ref_PercentEncode self /\
+        inv_refmut_Formatter
+        (t'mk (formatter.current) fin (get_id formatter))) /\
+       inv_refmut_Formatter (t'mk fin (formatter.final) (formatter.id))) /\
+     inv_Formatter (formatter.current)
+  
+end
+

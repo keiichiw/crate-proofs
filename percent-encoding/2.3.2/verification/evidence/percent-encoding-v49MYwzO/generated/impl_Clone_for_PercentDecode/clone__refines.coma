@@ -1,0 +1,27 @@
+(* <PercentDecode<'a> as core::clone::Clone> *)
+
+type t_Iter_u8
+
+type t_PercentDecode = { bytes: t_Iter_u8 }
+
+predicate inv_Iter_u8 (_1: t_Iter_u8)
+
+predicate inv_PercentDecode (_1: t_PercentDecode)
+
+axiom inv_axiom [@rewrite]: forall x: t_PercentDecode [inv_PercentDecode x]. inv_PercentDecode x = inv_Iter_u8 x.bytes
+
+predicate invariant_ref_PercentDecode [@inline:trivial] (self: t_PercentDecode) = inv_PercentDecode self
+
+meta "rewrite_def" predicate invariant_ref_PercentDecode
+
+predicate inv_ref_PercentDecode [@inline:trivial] (_1: t_PercentDecode) = invariant_ref_PercentDecode _1
+
+meta "rewrite_def" predicate inv_ref_PercentDecode
+
+meta "compute_max_steps" 1000000
+
+meta "select_lsinst" "all"
+
+goal refines: forall self_: t_PercentDecode. inv_ref_PercentDecode self_
+    -> inv_ref_PercentDecode self_
+    /\ (forall result: t_PercentDecode. inv_PercentDecode result -> inv_PercentDecode result)

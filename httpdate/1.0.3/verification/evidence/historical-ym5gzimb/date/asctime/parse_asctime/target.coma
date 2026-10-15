@@ -1,0 +1,775 @@
+use creusot.slice.Slice64
+use creusot.int.UInt8
+use creusot.int.UInt64
+use seq.Seq
+use creusot.int.UInt16
+use creusot.prelude.Any
+use int.Int
+
+let len_u8 (self_: Slice64.slice UInt8.t) (return (x: UInt64.t)) = any
+  [ return (result: UInt64.t) -> {[@stop_split] [@expl:len ensures] Seq.length (Slice64.view self_)
+    = UInt64.t'int result}
+    (! return {result}) ]
+
+type t_Error = { f0: () }
+
+type t_RawDate = {
+  sec: UInt8.t;
+  min: UInt8.t;
+  hour: UInt8.t;
+  day: UInt8.t;
+  mon: UInt8.t;
+  year: UInt16.t;
+  wday: UInt8.t }
+
+type t_Result_RawDate_Error = Ok t_RawDate | Err t_Error
+
+type t_Range_usize = { start: UInt64.t; end': UInt64.t }
+
+predicate in_bounds_Range_usize (self: t_Range_usize) (seq: Seq.seq UInt8.t) =
+  UInt64.t'int self.start <= UInt64.t'int self.end' /\ UInt64.t'int self.end' <= Seq.length seq
+
+predicate has_value_Range_usize (self: t_Range_usize) (seq: Seq.seq UInt8.t) (out: Slice64.slice UInt8.t) =
+  Seq.([..]) seq (UInt64.t'int self.start) (UInt64.t'int self.end') = Slice64.view out
+
+let index_slice_u8 (self_: Slice64.slice UInt8.t) (ix: t_Range_usize) (return (x: Slice64.slice UInt8.t)) =
+{[@stop_split] [@expl:index requires] in_bounds_Range_usize ix (Slice64.view self_)}
+  any
+  [ return (result: Slice64.slice UInt8.t) ->
+  {[@stop_split] [@expl:index ensures] has_value_Range_usize ix (Slice64.view self_) result}
+    (! return {result}) ]
+
+type t_Result_u8_Error = Ok'0 UInt8.t | Err'0 t_Error
+
+predicate ge_log_Int [@inline:trivial] (self: int) (other: int) = other <= self
+
+meta "rewrite_def" predicate ge_log_Int
+
+function index_slice_u8'0 [@inline:trivial] (self: Slice64.slice UInt8.t) (ix: int) : UInt8.t =
+  Seq.get (Slice64.view self) ix
+
+meta "rewrite_def" function index_slice_u8'0
+
+let toint_2 (s: Slice64.slice UInt8.t) (return (x: t_Result_u8_Error)) =
+{[@stop_split] [@expl:toint_2 requires] ge_log_Int (Seq.length (Slice64.view s)) 2}
+  any
+  [ return (result: t_Result_u8_Error) -> {[@stop_split] [@expl:toint_2 ensures] match result with
+      | Ok'0 v -> 48 <= UInt8.t'int (index_slice_u8'0 s 0)
+      /\ UInt8.t'int (index_slice_u8'0 s 0) <= 57
+      /\ 48 <= UInt8.t'int (index_slice_u8'0 s 1)
+      /\ UInt8.t'int (index_slice_u8'0 s 1) <= 57
+      /\ UInt8.t'int v = (UInt8.t'int (index_slice_u8'0 s 0) - 48) * 10 + UInt8.t'int (index_slice_u8'0 s 1) - 48
+      /\ UInt8.t'int v < 100
+      | Err'0 _ -> UInt8.t'int (index_slice_u8'0 s 0) < 48
+      \/ 57 < UInt8.t'int (index_slice_u8'0 s 0)
+      \/ UInt8.t'int (index_slice_u8'0 s 1) < 48 \/ 57 < UInt8.t'int (index_slice_u8'0 s 1)
+      end}
+    (! return {result}) ]
+
+type t_Result_Infallible_Error = Ok'1 () | Err'1 t_Error
+
+type t_ControlFlow_Result_Infallible_Error_u8 = Continue UInt8.t | Break t_Result_Infallible_Error
+
+predicate inv_Infallible [@inline:trivial] (_1: ()) = false
+
+meta "rewrite_def" predicate inv_Infallible
+
+predicate inv_Result_Infallible_Error (_1: t_Result_Infallible_Error)
+
+axiom inv_axiom [@rewrite]:
+  forall x: t_Result_Infallible_Error [inv_Result_Infallible_Error x]. inv_Result_Infallible_Error x
+    = match x with
+      | Ok'1 f0'0 -> inv_Infallible f0'0
+      | Err'1 f0'0 -> true
+      end
+
+predicate inv_ControlFlow_Result_Infallible_Error_u8 (_1: t_ControlFlow_Result_Infallible_Error_u8)
+
+axiom inv_axiom'0 [@rewrite]:
+  forall x: t_ControlFlow_Result_Infallible_Error_u8 [inv_ControlFlow_Result_Infallible_Error_u8 x]. inv_ControlFlow_Result_Infallible_Error_u8 x
+    = match x with
+      | Continue f0'0 -> true
+      | Break f0'0 -> inv_Result_Infallible_Error f0'0
+      end
+
+let branch_Result_u8_Error (self_: t_Result_u8_Error) (return (x: t_ControlFlow_Result_Infallible_Error_u8)) = any
+  [ return (result: t_ControlFlow_Result_Infallible_Error_u8) ->
+  {[@stop_split] [@expl:branch_Result_u8_Error ensures] ([@stop_split] [@expl:branch result type invariant] inv_ControlFlow_Result_Infallible_Error_u8 result)
+    /\ ([@stop_split] [@expl:branch ensures] match self_ with
+      | Ok'0 v -> result = Continue v
+      | Err'0 e -> result = Break (Err'1 e)
+      end)}
+    (! return {result}) ]
+
+let elim_Break (_x: t_ControlFlow_Result_Infallible_Error_u8) (return (f0'0: t_Result_Infallible_Error)) = any
+  [ _k (f0'0: t_Result_Infallible_Error) -> {Break f0'0 = _x} (! return {f0'0})
+  | _chk -> (! {[@expl:elim Break] match _x with
+      | Break _ -> true
+      | _ -> false
+      end}
+    any) ]
+
+type tup2_Result_RawDate_Error_Result_Infallible_Error = {
+  f0'0: t_Result_RawDate_Error;
+  f1'0: t_Result_Infallible_Error }
+
+predicate postcondition_from (self: ()) (args: t_Error) (result: t_Error) = let self_ = args in result = self_
+
+meta "rewrite_def" predicate postcondition_from
+
+let from_Error (self_: t_Error) (return (x: t_Error)) = any
+  [ return (result: t_Error) -> {[@stop_split] [@expl:from ensures] result = self_} (! return {result}) ]
+
+let from_residual_Result_RawDate_Error (residual: t_Result_Infallible_Error) (return (x: t_Result_RawDate_Error)) =
+{[@stop_split] [@expl:from_residual 'residual' type invariant] inv_Result_Infallible_Error residual}
+  any
+  [ return (result: t_Result_RawDate_Error) -> {[@stop_split] [@expl:from_residual ensures] match { f0'0 = result;
+                                                                                                    f1'0 = residual } with
+      | {f0'0 = Err result'0; f1'0 = Err'1 residual'0} -> postcondition_from () residual'0 result'0
+      | _ -> false
+      end}
+    (! return {result}) ]
+
+let elim_Continue (_x: t_ControlFlow_Result_Infallible_Error_u8) (return (f0'1: UInt8.t)) = any
+  [ _k (f0'1: UInt8.t) -> {Continue f0'1 = _x} (! return {f0'1})
+  | _chk -> (! {[@expl:elim Continue] match _x with
+      | Continue _ -> true
+      | _ -> false
+      end}
+    any) ]
+
+let toint_1 (x: UInt8.t) (return (x'0: t_Result_u8_Error)) = any
+  [ return (result: t_Result_u8_Error) -> {[@stop_split] [@expl:toint_1 ensures] match result with
+      | Ok'0 v -> 48 <= UInt8.t'int x /\ UInt8.t'int x <= 57 /\ UInt8.t'int v = UInt8.t'int x - 48 /\ UInt8.t'int v < 10
+      | Err'0 _ -> UInt8.t'int x < 48 \/ 57 < UInt8.t'int x
+      end}
+    (! return {result}) ]
+
+type tup4_u8_u8_u8_u8 = { f0'1: UInt8.t; f1'1: UInt8.t; f2'1: UInt8.t; f3'1: UInt8.t }
+
+type t_Result_u16_Error = Ok'2 UInt16.t | Err'2 t_Error
+
+let toint_4 (s: Slice64.slice UInt8.t) (return (x: t_Result_u16_Error)) =
+{[@stop_split] [@expl:toint_4 requires] ge_log_Int (Seq.length (Slice64.view s)) 4}
+  any
+  [ return (result: t_Result_u16_Error) -> {[@stop_split] [@expl:toint_4 ensures] match result with
+      | Ok'2 v -> 48 <= UInt8.t'int (index_slice_u8'0 s 0)
+      /\ UInt8.t'int (index_slice_u8'0 s 0) <= 57
+      /\ 48 <= UInt8.t'int (index_slice_u8'0 s 1)
+      /\ UInt8.t'int (index_slice_u8'0 s 1) <= 57
+      /\ 48 <= UInt8.t'int (index_slice_u8'0 s 2)
+      /\ UInt8.t'int (index_slice_u8'0 s 2) <= 57
+      /\ 48 <= UInt8.t'int (index_slice_u8'0 s 3)
+      /\ UInt8.t'int (index_slice_u8'0 s 3) <= 57
+      /\ UInt16.t'int v
+        = (UInt8.t'int (index_slice_u8'0 s 0) - 48) * 1000 + (UInt8.t'int (index_slice_u8'0 s 1) - 48) * 100
+            + (UInt8.t'int (index_slice_u8'0 s 2) - 48) * 10
+          + UInt8.t'int (index_slice_u8'0 s 3)
+        - 48
+      /\ UInt16.t'int v < 10000
+      | Err'2 _ -> UInt8.t'int (index_slice_u8'0 s 0) < 48
+      \/ 57 < UInt8.t'int (index_slice_u8'0 s 0)
+      \/ UInt8.t'int (index_slice_u8'0 s 1) < 48
+      \/ 57 < UInt8.t'int (index_slice_u8'0 s 1)
+      \/ UInt8.t'int (index_slice_u8'0 s 2) < 48
+      \/ 57 < UInt8.t'int (index_slice_u8'0 s 2)
+      \/ UInt8.t'int (index_slice_u8'0 s 3) < 48 \/ 57 < UInt8.t'int (index_slice_u8'0 s 3)
+      end}
+    (! return {result}) ]
+
+type t_ControlFlow_Result_Infallible_Error_u16 = Continue'0 UInt16.t | Break'0 t_Result_Infallible_Error
+
+predicate inv_ControlFlow_Result_Infallible_Error_u16 (_1: t_ControlFlow_Result_Infallible_Error_u16)
+
+axiom inv_axiom'1 [@rewrite]:
+  forall x: t_ControlFlow_Result_Infallible_Error_u16 [inv_ControlFlow_Result_Infallible_Error_u16 x]. inv_ControlFlow_Result_Infallible_Error_u16 x
+    = match x with
+      | Continue'0 f0'2 -> true
+      | Break'0 f0'2 -> inv_Result_Infallible_Error f0'2
+      end
+
+let branch_Result_u16_Error (self_: t_Result_u16_Error) (return (x: t_ControlFlow_Result_Infallible_Error_u16)) = any
+  [ return (result: t_ControlFlow_Result_Infallible_Error_u16) ->
+  {[@stop_split] [@expl:branch_Result_u16_Error ensures] ([@stop_split] [@expl:branch result type invariant] inv_ControlFlow_Result_Infallible_Error_u16 result)
+    /\ ([@stop_split] [@expl:branch ensures] match self_ with
+      | Ok'2 v -> result = Continue'0 v
+      | Err'2 e -> result = Break'0 (Err'1 e)
+      end)}
+    (! return {result}) ]
+
+let elim_Break'0 (_x: t_ControlFlow_Result_Infallible_Error_u16) (return (f0'2: t_Result_Infallible_Error)) = any
+  [ _k (f0'2: t_Result_Infallible_Error) -> {Break'0 f0'2 = _x} (! return {f0'2})
+  | _chk -> (! {[@expl:elim Break] match _x with
+      | Break'0 _ -> true
+      | _ -> false
+      end}
+    any) ]
+
+let elim_Continue'0 (_x: t_ControlFlow_Result_Infallible_Error_u16) (return (f0'2: UInt16.t)) = any
+  [ _k (f0'2: UInt16.t) -> {Continue'0 f0'2 = _x} (! return {f0'2})
+  | _chk -> (! {[@expl:elim Continue] match _x with
+      | Continue'0 _ -> true
+      | _ -> false
+      end}
+    any) ]
+
+predicate gt_log_Int [@inline:trivial] (self: int) (other: int) = other < self
+
+meta "rewrite_def" predicate gt_log_Int
+
+function asctime_weekday [@inline:trivial] (s: Seq.seq UInt8.t) : int = if Seq.get s 3 <> (32: UInt8.t) then
+    0
+  else
+    if Seq.get s 0 = (77: UInt8.t) /\ Seq.get s 1 = (111: UInt8.t) /\ Seq.get s 2 = (110: UInt8.t) then
+      1
+    else
+      if Seq.get s 0 = (84: UInt8.t) /\ Seq.get s 1 = (117: UInt8.t) /\ Seq.get s 2 = (101: UInt8.t) then
+        2
+      else
+        if Seq.get s 0 = (87: UInt8.t) /\ Seq.get s 1 = (101: UInt8.t) /\ Seq.get s 2 = (100: UInt8.t) then
+          3
+        else
+          if Seq.get s 0 = (84: UInt8.t) /\ Seq.get s 1 = (104: UInt8.t) /\ Seq.get s 2 = (117: UInt8.t) then
+            4
+          else
+            if Seq.get s 0 = (70: UInt8.t) /\ Seq.get s 1 = (114: UInt8.t) /\ Seq.get s 2 = (105: UInt8.t) then
+              5
+            else
+              if Seq.get s 0 = (83: UInt8.t) /\ Seq.get s 1 = (97: UInt8.t) /\ Seq.get s 2 = (116: UInt8.t) then
+                6
+              else
+                if Seq.get s 0 = (83: UInt8.t) /\ Seq.get s 1 = (117: UInt8.t) /\ Seq.get s 2 = (110: UInt8.t) then
+                  7
+                else
+                  0
+              
+            
+          
+        
+      
+    
+  
+
+
+meta "rewrite_def" function asctime_weekday
+
+function asctime_month [@inline:trivial] (s: Seq.seq UInt8.t) : int = if Seq.get s 7 <> (32: UInt8.t) then
+    0
+  else
+    if Seq.get s 4 = (74: UInt8.t) /\ Seq.get s 5 = (97: UInt8.t) /\ Seq.get s 6 = (110: UInt8.t) then
+      1
+    else
+      if Seq.get s 4 = (70: UInt8.t) /\ Seq.get s 5 = (101: UInt8.t) /\ Seq.get s 6 = (98: UInt8.t) then
+        2
+      else
+        if Seq.get s 4 = (77: UInt8.t) /\ Seq.get s 5 = (97: UInt8.t) /\ Seq.get s 6 = (114: UInt8.t) then
+          3
+        else
+          if Seq.get s 4 = (65: UInt8.t) /\ Seq.get s 5 = (112: UInt8.t) /\ Seq.get s 6 = (114: UInt8.t) then
+            4
+          else
+            if Seq.get s 4 = (77: UInt8.t) /\ Seq.get s 5 = (97: UInt8.t) /\ Seq.get s 6 = (121: UInt8.t) then
+              5
+            else
+              if Seq.get s 4 = (74: UInt8.t) /\ Seq.get s 5 = (117: UInt8.t) /\ Seq.get s 6 = (110: UInt8.t) then
+                6
+              else
+                if Seq.get s 4 = (74: UInt8.t) /\ Seq.get s 5 = (117: UInt8.t) /\ Seq.get s 6 = (108: UInt8.t) then
+                  7
+                else
+                  if Seq.get s 4 = (65: UInt8.t) /\ Seq.get s 5 = (117: UInt8.t) /\ Seq.get s 6 = (103: UInt8.t) then
+                    8
+                  else
+                    if Seq.get s 4 = (83: UInt8.t) /\ Seq.get s 5 = (101: UInt8.t) /\ Seq.get s 6 = (112: UInt8.t) then
+                      9
+                    else
+                      if Seq.get s 4 = (79: UInt8.t) /\ Seq.get s 5 = (99: UInt8.t) /\ Seq.get s 6 = (116: UInt8.t) then
+                        10
+                      else
+                        if Seq.get s 4 = (78: UInt8.t)
+                        /\ Seq.get s 5 = (111: UInt8.t) /\ Seq.get s 6 = (118: UInt8.t) then
+                          11
+                        else
+                          if Seq.get s 4 = (68: UInt8.t)
+                          /\ Seq.get s 5 = (101: UInt8.t) /\ Seq.get s 6 = (99: UInt8.t) then
+                            12
+                          else
+                            0
+                        
+                      
+                    
+                  
+                
+              
+            
+          
+        
+      
+    
+  
+
+
+meta "rewrite_def" function asctime_month
+
+predicate asctime_digit [@inline:trivial] (b: UInt8.t) = 48 <= UInt8.t'int b /\ UInt8.t'int b <= 57
+
+meta "rewrite_def" predicate asctime_digit
+
+predicate asctime_syntax [@inline:trivial] (s: Seq.seq UInt8.t) =
+  Seq.length s = 24
+  /\ gt_log_Int (asctime_weekday s) 0
+  /\ gt_log_Int (asctime_month s) 0
+  /\ Seq.get s 10 = (32: UInt8.t)
+  /\ Seq.get s 13 = (58: UInt8.t)
+  /\ Seq.get s 16 = (58: UInt8.t)
+  /\ Seq.get s 19 = (32: UInt8.t)
+  /\ (if Seq.get s 8 = (32: UInt8.t) then
+      asctime_digit (Seq.get s 9)
+    else
+      asctime_digit (Seq.get s 8) /\ asctime_digit (Seq.get s 9)
+    )
+  /\ asctime_digit (Seq.get s 11)
+  /\ asctime_digit (Seq.get s 12)
+  /\ asctime_digit (Seq.get s 14)
+  /\ asctime_digit (Seq.get s 15)
+  /\ asctime_digit (Seq.get s 17)
+  /\ asctime_digit (Seq.get s 18)
+  /\ asctime_digit (Seq.get s 20)
+  /\ asctime_digit (Seq.get s 21) /\ asctime_digit (Seq.get s 22) /\ asctime_digit (Seq.get s 23)
+
+meta "rewrite_def" predicate asctime_syntax
+
+predicate asctime_encoding [@inline:trivial] (s: Seq.seq UInt8.t) (d: t_RawDate) =
+  asctime_syntax s
+  /\ asctime_weekday s = UInt8.t'int d.wday
+  /\ asctime_month s = UInt8.t'int d.mon
+  /\ (if UInt8.t'int (Seq.get s 8) = 32 then
+        UInt8.t'int (Seq.get s 9) - 48
+      else
+        (UInt8.t'int (Seq.get s 8) - 48) * 10 + UInt8.t'int (Seq.get s 9) - 48
+      )
+    = UInt8.t'int d.day
+  /\ (UInt8.t'int (Seq.get s 11) - 48) * 10 + UInt8.t'int (Seq.get s 12) - 48 = UInt8.t'int d.hour
+  /\ (UInt8.t'int (Seq.get s 14) - 48) * 10 + UInt8.t'int (Seq.get s 15) - 48 = UInt8.t'int d.min
+  /\ (UInt8.t'int (Seq.get s 17) - 48) * 10 + UInt8.t'int (Seq.get s 18) - 48 = UInt8.t'int d.sec
+  /\ (UInt8.t'int (Seq.get s 20) - 48) * 1000 + (UInt8.t'int (Seq.get s 21) - 48) * 100
+        + (UInt8.t'int (Seq.get s 22) - 48) * 10
+      + UInt8.t'int (Seq.get s 23)
+    - 48
+  = UInt16.t'int d.year
+
+meta "rewrite_def" predicate asctime_encoding
+
+meta "compute_max_steps" 1000000
+
+meta "select_lsinst" "all"
+
+let parse_asctime (s: Slice64.slice UInt8.t) (return (x: t_Result_RawDate_Error)) = (! bb0
+  [ bb0 = s0
+    [ s0 = len_u8 {s} (fun (_x: UInt64.t) -> [ &_6 <- _x ] s1)
+    | s1 = [ &_5 <- _6 <> (24: UInt64.t) ] s2
+    | s2 = any [ br0 -> {_5 = false} (! bb3) | br1 -> {_5} (! bb15) ] ]
+  | bb3 = s0
+    [ s0 = [ &_10 <- (10: UInt64.t) ] s1
+    | s1 = [ &_11 <- Slice64.length s ] s2
+    | s2 = [ &_12 <- UInt64.lt _10 _11 ] s3
+    | s3 = {[@expl:index in bounds] _12} s4
+    | s4 = Slice64.get <UInt8.t> {s} {_10} (fun (r: UInt8.t) -> [ &_9 <- r ] s5)
+    | s5 = [ &_8 <- _9 <> (32: UInt8.t) ] s6
+    | s6 = any [ br0 -> {_8 = false} (! bb6) | br1 -> {_8} (! bb15) ] ]
+  | bb6 = s0
+    [ s0 = [ &_15 <- (13: UInt64.t) ] s1
+    | s1 = [ &_16 <- Slice64.length s ] s2
+    | s2 = [ &_17 <- UInt64.lt _15 _16 ] s3
+    | s3 = {[@expl:index in bounds] _17} s4
+    | s4 = Slice64.get <UInt8.t> {s} {_15} (fun (r: UInt8.t) -> [ &_14 <- r ] s5)
+    | s5 = [ &_13 <- _14 <> (58: UInt8.t) ] s6
+    | s6 = any [ br0 -> {_13 = false} (! bb9) | br1 -> {_13} (! bb15) ] ]
+  | bb9 = s0
+    [ s0 = [ &_20 <- (16: UInt64.t) ] s1
+    | s1 = [ &_21 <- Slice64.length s ] s2
+    | s2 = [ &_22 <- UInt64.lt _20 _21 ] s3
+    | s3 = {[@expl:index in bounds] _22} s4
+    | s4 = Slice64.get <UInt8.t> {s} {_20} (fun (r: UInt8.t) -> [ &_19 <- r ] s5)
+    | s5 = [ &_18 <- _19 <> (58: UInt8.t) ] s6
+    | s6 = any [ br0 -> {_18 = false} (! bb12) | br1 -> {_18} (! bb15) ] ]
+  | bb12 = s0
+    [ s0 = [ &_25 <- (19: UInt64.t) ] s1
+    | s1 = [ &_26 <- Slice64.length s ] s2
+    | s2 = [ &_27 <- UInt64.lt _25 _26 ] s3
+    | s3 = {[@expl:index in bounds] _27} s4
+    | s4 = Slice64.get <UInt8.t> {s} {_25} (fun (r: UInt8.t) -> [ &_24 <- r ] s5)
+    | s5 = [ &_23 <- _24 <> (32: UInt8.t) ] s6
+    | s6 = any [ br0 -> {_23 = false} (! bb16) | br1 -> {_23} (! bb15) ] ]
+  | bb15 = s0 [ s0 = [ &_29 <- { f0 = _30 } ] s1 | s1 = [ &_ret <- Err _29 ] s2 | s2 = return {_ret} ]
+  | bb16 = s0
+    [ s0 = [ &_39 <- { start = (17: UInt64.t); end' = (19: UInt64.t) } ] s1
+    | s1 = index_slice_u8 {s} {_39} (fun (_x: Slice64.slice UInt8.t) -> [ &_37 <- _x ] s2)
+    | s2 = [ &_36 <- _37 ] s3
+    | s3 = toint_2 {_36} (fun (_x: t_Result_u8_Error) -> [ &_34 <- _x ] s4)
+    | s4 = branch_Result_u8_Error {_34} (fun (_x: t_ControlFlow_Result_Infallible_Error_u8) -> [ &_33 <- _x ] s5)
+    | s5 = any
+      [ br0 (x0: UInt8.t) -> {_33 = Continue x0} (! bb22)
+      | br1 (x0: t_Result_Infallible_Error) -> {_33 = Break x0} (! bb23) ] ]
+  | bb23 = s0
+    [ s0 = elim_Break {_33} (fun (r0: t_Result_Infallible_Error) -> [ &residual <- r0 ] s1)
+    | s1 = from_residual_Result_RawDate_Error {residual} (fun (_x: t_Result_RawDate_Error) -> [ &_ret <- _x ] s2)
+    | s2 = return {_ret} ]
+  | bb22 = s0
+    [ s0 = elim_Continue {_33} (fun (r0: UInt8.t) -> [ &val' <- r0 ] s1)
+    | s1 = [ &_52 <- { start = (14: UInt64.t); end' = (16: UInt64.t) } ] s2
+    | s2 = index_slice_u8 {s} {_52} (fun (_x: Slice64.slice UInt8.t) -> [ &_50 <- _x ] s3)
+    | s3 = [ &_49 <- _50 ] s4
+    | s4 = toint_2 {_49} (fun (_x: t_Result_u8_Error) -> [ &_47 <- _x ] s5)
+    | s5 = branch_Result_u8_Error {_47} (fun (_x: t_ControlFlow_Result_Infallible_Error_u8) -> [ &_46 <- _x ] s6)
+    | s6 = any
+      [ br0 (x0: UInt8.t) -> {_46 = Continue x0} (! bb30)
+      | br1 (x0: t_Result_Infallible_Error) -> {_46 = Break x0} (! bb31) ] ]
+  | bb31 = s0
+    [ s0 = elim_Break {_46} (fun (r0: t_Result_Infallible_Error) -> [ &residual'0 <- r0 ] s1)
+    | s1 = from_residual_Result_RawDate_Error {residual'0} (fun (_x: t_Result_RawDate_Error) -> [ &_ret <- _x ] s2)
+    | s2 = return {_ret} ]
+  | bb30 = s0
+    [ s0 = elim_Continue {_46} (fun (r0: UInt8.t) -> [ &val''0 <- r0 ] s1)
+    | s1 = [ &_65 <- { start = (11: UInt64.t); end' = (13: UInt64.t) } ] s2
+    | s2 = index_slice_u8 {s} {_65} (fun (_x: Slice64.slice UInt8.t) -> [ &_63 <- _x ] s3)
+    | s3 = [ &_62 <- _63 ] s4
+    | s4 = toint_2 {_62} (fun (_x: t_Result_u8_Error) -> [ &_60 <- _x ] s5)
+    | s5 = branch_Result_u8_Error {_60} (fun (_x: t_ControlFlow_Result_Infallible_Error_u8) -> [ &_59 <- _x ] s6)
+    | s6 = any
+      [ br0 (x0: UInt8.t) -> {_59 = Continue x0} (! bb38)
+      | br1 (x0: t_Result_Infallible_Error) -> {_59 = Break x0} (! bb39) ] ]
+  | bb39 = s0
+    [ s0 = elim_Break {_59} (fun (r0: t_Result_Infallible_Error) -> [ &residual'1 <- r0 ] s1)
+    | s1 = from_residual_Result_RawDate_Error {residual'1} (fun (_x: t_Result_RawDate_Error) -> [ &_ret <- _x ] s2)
+    | s2 = return {_ret} ]
+  | bb38 = s0
+    [ s0 = elim_Continue {_59} (fun (r0: UInt8.t) -> [ &val''1 <- r0 ] s1)
+    | s1 = [ &_75 <- { start = (8: UInt64.t); end' = (10: UInt64.t) } ] s2
+    | s2 = index_slice_u8 {s} {_75} (fun (_x: Slice64.slice UInt8.t) -> [ &_73 <- _x ] s3)
+    | s3 = [ &x <- _73 ] s4
+    | s4 = [ &_80 <- (0: UInt64.t) ] s5
+    | s5 = [ &_81 <- Slice64.length x ] s6
+    | s6 = [ &_82 <- UInt64.lt _80 _81 ] s7
+    | s7 = {[@expl:index in bounds] _82} s8
+    | s8 = Slice64.get <UInt8.t> {x} {_80} (fun (r: UInt8.t) -> [ &_79 <- r ] s9)
+    | s9 = [ &_78 <- _79 = (32: UInt8.t) ] s10
+    | s10 = any [ br0 -> {_78 = false} (! bb46) | br1 -> {_78} (! bb43) ] ]
+  | bb43 = s0
+    [ s0 = [ &_84 <- (1: UInt64.t) ] s1
+    | s1 = [ &_85 <- Slice64.length x ] s2
+    | s2 = [ &_86 <- UInt64.lt _84 _85 ] s3
+    | s3 = {[@expl:index in bounds] _86} s4
+    | s4 = Slice64.get <UInt8.t> {x} {_84} (fun (r: UInt8.t) -> [ &_83 <- r ] s5)
+    | s5 = toint_1 {_83} (fun (_x: t_Result_u8_Error) -> [ &_77 <- _x ] s6)
+    | s6 = bb48 ]
+  | bb46 = s0 [ s0 = toint_2 {x} (fun (_x: t_Result_u8_Error) -> [ &_77 <- _x ] s1) | s1 = bb48 ]
+  | bb48 = s0
+    [ s0 = branch_Result_u8_Error {_77} (fun (_x: t_ControlFlow_Result_Infallible_Error_u8) -> [ &_76 <- _x ] s1)
+    | s1 = any
+      [ br0 (x0: UInt8.t) -> {_76 = Continue x0} (! bb52)
+      | br1 (x0: t_Result_Infallible_Error) -> {_76 = Break x0} (! bb53) ] ]
+  | bb53 = s0
+    [ s0 = elim_Break {_76} (fun (r0: t_Result_Infallible_Error) -> [ &residual'2 <- r0 ] s1)
+    | s1 = from_residual_Result_RawDate_Error {residual'2} (fun (_x: t_Result_RawDate_Error) -> [ &_ret <- _x ] s2)
+    | s2 = return {_ret} ]
+  | bb52 = s0
+    [ s0 = elim_Continue {_76} (fun (r0: UInt8.t) -> [ &val''2 <- r0 ] s1)
+    | s1 = [ &_96 <- (4: UInt64.t) ] s2
+    | s2 = [ &_97 <- Slice64.length s ] s3
+    | s3 = [ &_98 <- UInt64.lt _96 _97 ] s4
+    | s4 = {[@expl:index in bounds] _98} s5
+    | s5 = Slice64.get <UInt8.t> {s} {_96} (fun (r: UInt8.t) -> [ &_95 <- r ] s6)
+    | s6 = [ &_100 <- (5: UInt64.t) ] s7
+    | s7 = [ &_101 <- Slice64.length s ] s8
+    | s8 = [ &_102 <- UInt64.lt _100 _101 ] s9
+    | s9 = {[@expl:index in bounds] _102} s10
+    | s10 = Slice64.get <UInt8.t> {s} {_100} (fun (r: UInt8.t) -> [ &_99 <- r ] s11)
+    | s11 = [ &_104 <- (6: UInt64.t) ] s12
+    | s12 = [ &_105 <- Slice64.length s ] s13
+    | s13 = [ &_106 <- UInt64.lt _104 _105 ] s14
+    | s14 = {[@expl:index in bounds] _106} s15
+    | s15 = Slice64.get <UInt8.t> {s} {_104} (fun (r: UInt8.t) -> [ &_103 <- r ] s16)
+    | s16 = [ &_108 <- (7: UInt64.t) ] s17
+    | s17 = [ &_109 <- Slice64.length s ] s18
+    | s18 = [ &_110 <- UInt64.lt _108 _109 ] s19
+    | s19 = {[@expl:index in bounds] _110} s20
+    | s20 = Slice64.get <UInt8.t> {s} {_108} (fun (r: UInt8.t) -> [ &_107 <- r ] s21)
+    | s21 = [ &_94 <- { f0'1 = _95; f1'1 = _99; f2'1 = _103; f3'1 = _107 } ] s22
+    | s22 = any
+      [ br0 -> {_94.f0'1 = (74: UInt8.t)} (! bb60)
+      | br1 -> {_94.f0'1 = (70: UInt8.t)} (! bb69)
+      | br2 -> {_94.f0'1 = (77: UInt8.t)} (! bb73)
+      | br3 -> {_94.f0'1 = (65: UInt8.t)} (! bb79)
+      | br4 -> {_94.f0'1 = (83: UInt8.t)} (! bb86)
+      | br5 -> {_94.f0'1 = (79: UInt8.t)} (! bb90)
+      | br6 -> {_94.f0'1 = (78: UInt8.t)} (! bb94)
+      | br7 -> {_94.f0'1 = (68: UInt8.t)} (! bb98)
+      | default -> -{_94.f0'1 <> (74: UInt8.t)
+        /\ _94.f0'1 <> (70: UInt8.t)
+        /\ _94.f0'1 <> (77: UInt8.t)
+        /\ _94.f0'1 <> (65: UInt8.t)
+        /\ _94.f0'1 <> (83: UInt8.t)
+        /\ _94.f0'1 <> (79: UInt8.t) /\ _94.f0'1 <> (78: UInt8.t) /\ _94.f0'1 <> (68: UInt8.t)}-
+        (! bb59) ] ]
+  | bb98 = any [ br0 -> {_94.f1'1 = (101: UInt8.t)} (! bb99) | default -> -{_94.f1'1 <> (101: UInt8.t)}- (! bb59) ]
+  | bb99 = any [ br0 -> {_94.f2'1 = (99: UInt8.t)} (! bb100) | default -> -{_94.f2'1 <> (99: UInt8.t)}- (! bb59) ]
+  | bb100 = any [ br0 -> {_94.f3'1 = (32: UInt8.t)} (! bb102) | default -> -{_94.f3'1 <> (32: UInt8.t)}- (! bb59) ]
+  | bb102 = s0 [ s0 = [ &_93 <- (12: UInt8.t) ] s1 | s1 = bb114 ]
+  | bb94 = any [ br0 -> {_94.f1'1 = (111: UInt8.t)} (! bb95) | default -> -{_94.f1'1 <> (111: UInt8.t)}- (! bb59) ]
+  | bb95 = any [ br0 -> {_94.f2'1 = (118: UInt8.t)} (! bb96) | default -> -{_94.f2'1 <> (118: UInt8.t)}- (! bb59) ]
+  | bb96 = any [ br0 -> {_94.f3'1 = (32: UInt8.t)} (! bb103) | default -> -{_94.f3'1 <> (32: UInt8.t)}- (! bb59) ]
+  | bb103 = s0 [ s0 = [ &_93 <- (11: UInt8.t) ] s1 | s1 = bb114 ]
+  | bb90 = any [ br0 -> {_94.f1'1 = (99: UInt8.t)} (! bb91) | default -> -{_94.f1'1 <> (99: UInt8.t)}- (! bb59) ]
+  | bb91 = any [ br0 -> {_94.f2'1 = (116: UInt8.t)} (! bb92) | default -> -{_94.f2'1 <> (116: UInt8.t)}- (! bb59) ]
+  | bb92 = any [ br0 -> {_94.f3'1 = (32: UInt8.t)} (! bb104) | default -> -{_94.f3'1 <> (32: UInt8.t)}- (! bb59) ]
+  | bb104 = s0 [ s0 = [ &_93 <- (10: UInt8.t) ] s1 | s1 = bb114 ]
+  | bb86 = any [ br0 -> {_94.f1'1 = (101: UInt8.t)} (! bb87) | default -> -{_94.f1'1 <> (101: UInt8.t)}- (! bb59) ]
+  | bb87 = any [ br0 -> {_94.f2'1 = (112: UInt8.t)} (! bb88) | default -> -{_94.f2'1 <> (112: UInt8.t)}- (! bb59) ]
+  | bb88 = any [ br0 -> {_94.f3'1 = (32: UInt8.t)} (! bb105) | default -> -{_94.f3'1 <> (32: UInt8.t)}- (! bb59) ]
+  | bb105 = s0 [ s0 = [ &_93 <- (9: UInt8.t) ] s1 | s1 = bb114 ]
+  | bb79 = any
+    [ br0 -> {_94.f1'1 = (112: UInt8.t)} (! bb80)
+    | br1 -> {_94.f1'1 = (117: UInt8.t)} (! bb83)
+    | default -> -{_94.f1'1 <> (112: UInt8.t) /\ _94.f1'1 <> (117: UInt8.t)}- (! bb59) ]
+  | bb83 = any [ br0 -> {_94.f2'1 = (103: UInt8.t)} (! bb84) | default -> -{_94.f2'1 <> (103: UInt8.t)}- (! bb59) ]
+  | bb84 = any [ br0 -> {_94.f3'1 = (32: UInt8.t)} (! bb106) | default -> -{_94.f3'1 <> (32: UInt8.t)}- (! bb59) ]
+  | bb106 = s0 [ s0 = [ &_93 <- (8: UInt8.t) ] s1 | s1 = bb114 ]
+  | bb80 = any [ br0 -> {_94.f2'1 = (114: UInt8.t)} (! bb81) | default -> -{_94.f2'1 <> (114: UInt8.t)}- (! bb59) ]
+  | bb81 = any [ br0 -> {_94.f3'1 = (32: UInt8.t)} (! bb110) | default -> -{_94.f3'1 <> (32: UInt8.t)}- (! bb59) ]
+  | bb110 = s0 [ s0 = [ &_93 <- (4: UInt8.t) ] s1 | s1 = bb114 ]
+  | bb73 = any [ br0 -> {_94.f1'1 = (97: UInt8.t)} (! bb74) | default -> -{_94.f1'1 <> (97: UInt8.t)}- (! bb59) ]
+  | bb74 = any
+    [ br0 -> {_94.f2'1 = (114: UInt8.t)} (! bb75)
+    | br1 -> {_94.f2'1 = (121: UInt8.t)} (! bb77)
+    | default -> -{_94.f2'1 <> (114: UInt8.t) /\ _94.f2'1 <> (121: UInt8.t)}- (! bb59) ]
+  | bb77 = any [ br0 -> {_94.f3'1 = (32: UInt8.t)} (! bb109) | default -> -{_94.f3'1 <> (32: UInt8.t)}- (! bb59) ]
+  | bb109 = s0 [ s0 = [ &_93 <- (5: UInt8.t) ] s1 | s1 = bb114 ]
+  | bb75 = any [ br0 -> {_94.f3'1 = (32: UInt8.t)} (! bb111) | default -> -{_94.f3'1 <> (32: UInt8.t)}- (! bb59) ]
+  | bb111 = s0 [ s0 = [ &_93 <- (3: UInt8.t) ] s1 | s1 = bb114 ]
+  | bb69 = any [ br0 -> {_94.f1'1 = (101: UInt8.t)} (! bb70) | default -> -{_94.f1'1 <> (101: UInt8.t)}- (! bb59) ]
+  | bb70 = any [ br0 -> {_94.f2'1 = (98: UInt8.t)} (! bb71) | default -> -{_94.f2'1 <> (98: UInt8.t)}- (! bb59) ]
+  | bb71 = any [ br0 -> {_94.f3'1 = (32: UInt8.t)} (! bb112) | default -> -{_94.f3'1 <> (32: UInt8.t)}- (! bb59) ]
+  | bb112 = s0 [ s0 = [ &_93 <- (2: UInt8.t) ] s1 | s1 = bb114 ]
+  | bb60 = any
+    [ br0 -> {_94.f1'1 = (97: UInt8.t)} (! bb61)
+    | br1 -> {_94.f1'1 = (117: UInt8.t)} (! bb64)
+    | default -> -{_94.f1'1 <> (97: UInt8.t) /\ _94.f1'1 <> (117: UInt8.t)}- (! bb59) ]
+  | bb64 = any
+    [ br0 -> {_94.f2'1 = (110: UInt8.t)} (! bb65)
+    | br1 -> {_94.f2'1 = (108: UInt8.t)} (! bb67)
+    | default -> -{_94.f2'1 <> (110: UInt8.t) /\ _94.f2'1 <> (108: UInt8.t)}- (! bb59) ]
+  | bb67 = any [ br0 -> {_94.f3'1 = (32: UInt8.t)} (! bb107) | default -> -{_94.f3'1 <> (32: UInt8.t)}- (! bb59) ]
+  | bb107 = s0 [ s0 = [ &_93 <- (7: UInt8.t) ] s1 | s1 = bb114 ]
+  | bb65 = any [ br0 -> {_94.f3'1 = (32: UInt8.t)} (! bb108) | default -> -{_94.f3'1 <> (32: UInt8.t)}- (! bb59) ]
+  | bb108 = s0 [ s0 = [ &_93 <- (6: UInt8.t) ] s1 | s1 = bb114 ]
+  | bb61 = any [ br0 -> {_94.f2'1 = (110: UInt8.t)} (! bb62) | default -> -{_94.f2'1 <> (110: UInt8.t)}- (! bb59) ]
+  | bb62 = any [ br0 -> {_94.f3'1 = (32: UInt8.t)} (! bb113) | default -> -{_94.f3'1 <> (32: UInt8.t)}- (! bb59) ]
+  | bb59 = s0 [ s0 = [ &_112 <- { f0 = _113 } ] s1 | s1 = [ &_ret <- Err _112 ] s2 | s2 = return {_ret} ]
+  | bb113 = s0 [ s0 = [ &_93 <- (1: UInt8.t) ] s1 | s1 = bb114 ]
+  | bb114 = s0
+    [ s0 = [ &_121 <- { start = (20: UInt64.t); end' = (24: UInt64.t) } ] s1
+    | s1 = index_slice_u8 {s} {_121} (fun (_x: Slice64.slice UInt8.t) -> [ &_119 <- _x ] s2)
+    | s2 = [ &_118 <- _119 ] s3
+    | s3 = toint_4 {_118} (fun (_x: t_Result_u16_Error) -> [ &_116 <- _x ] s4)
+    | s4 = branch_Result_u16_Error {_116} (fun (_x: t_ControlFlow_Result_Infallible_Error_u16) -> [ &_115 <- _x ] s5)
+    | s5 = any
+      [ br0 (x0: UInt16.t) -> {_115 = Continue'0 x0} (! bb120)
+      | br1 (x0: t_Result_Infallible_Error) -> {_115 = Break'0 x0} (! bb121) ] ]
+  | bb121 = s0
+    [ s0 = elim_Break'0 {_115} (fun (r0: t_Result_Infallible_Error) -> [ &residual'3 <- r0 ] s1)
+    | s1 = from_residual_Result_RawDate_Error {residual'3} (fun (_x: t_Result_RawDate_Error) -> [ &_ret <- _x ] s2)
+    | s2 = return {_ret} ]
+  | bb120 = s0
+    [ s0 = elim_Continue'0 {_115} (fun (r0: UInt16.t) -> [ &val''3 <- r0 ] s1)
+    | s1 = [ &_130 <- (0: UInt64.t) ] s2
+    | s2 = [ &_131 <- Slice64.length s ] s3
+    | s3 = [ &_132 <- UInt64.lt _130 _131 ] s4
+    | s4 = {[@expl:index in bounds] _132} s5
+    | s5 = Slice64.get <UInt8.t> {s} {_130} (fun (r: UInt8.t) -> [ &_129 <- r ] s6)
+    | s6 = [ &_134 <- (1: UInt64.t) ] s7
+    | s7 = [ &_135 <- Slice64.length s ] s8
+    | s8 = [ &_136 <- UInt64.lt _134 _135 ] s9
+    | s9 = {[@expl:index in bounds] _136} s10
+    | s10 = Slice64.get <UInt8.t> {s} {_134} (fun (r: UInt8.t) -> [ &_133 <- r ] s11)
+    | s11 = [ &_138 <- (2: UInt64.t) ] s12
+    | s12 = [ &_139 <- Slice64.length s ] s13
+    | s13 = [ &_140 <- UInt64.lt _138 _139 ] s14
+    | s14 = {[@expl:index in bounds] _140} s15
+    | s15 = Slice64.get <UInt8.t> {s} {_138} (fun (r: UInt8.t) -> [ &_137 <- r ] s16)
+    | s16 = [ &_142 <- (3: UInt64.t) ] s17
+    | s17 = [ &_143 <- Slice64.length s ] s18
+    | s18 = [ &_144 <- UInt64.lt _142 _143 ] s19
+    | s19 = {[@expl:index in bounds] _144} s20
+    | s20 = Slice64.get <UInt8.t> {s} {_142} (fun (r: UInt8.t) -> [ &_141 <- r ] s21)
+    | s21 = [ &_128 <- { f0'1 = _129; f1'1 = _133; f2'1 = _137; f3'1 = _141 } ] s22
+    | s22 = any
+      [ br0 -> {_128.f0'1 = (77: UInt8.t)} (! bb128)
+      | br1 -> {_128.f0'1 = (84: UInt8.t)} (! bb132)
+      | br2 -> {_128.f0'1 = (87: UInt8.t)} (! bb139)
+      | br3 -> {_128.f0'1 = (70: UInt8.t)} (! bb143)
+      | br4 -> {_128.f0'1 = (83: UInt8.t)} (! bb147)
+      | default -> -{_128.f0'1 <> (77: UInt8.t)
+        /\ _128.f0'1 <> (84: UInt8.t)
+        /\ _128.f0'1 <> (87: UInt8.t) /\ _128.f0'1 <> (70: UInt8.t) /\ _128.f0'1 <> (83: UInt8.t)}-
+        (! bb127) ] ]
+  | bb147 = any
+    [ br0 -> {_128.f1'1 = (97: UInt8.t)} (! bb148)
+    | br1 -> {_128.f1'1 = (117: UInt8.t)} (! bb151)
+    | default -> -{_128.f1'1 <> (97: UInt8.t) /\ _128.f1'1 <> (117: UInt8.t)}- (! bb127) ]
+  | bb151 = any [ br0 -> {_128.f2'1 = (110: UInt8.t)} (! bb152) | default -> -{_128.f2'1 <> (110: UInt8.t)}- (! bb127) ]
+  | bb152 = any [ br0 -> {_128.f3'1 = (32: UInt8.t)} (! bb154) | default -> -{_128.f3'1 <> (32: UInt8.t)}- (! bb127) ]
+  | bb154 = s0 [ s0 = [ &_127 <- (7: UInt8.t) ] s1 | s1 = bb161 ]
+  | bb148 = any [ br0 -> {_128.f2'1 = (116: UInt8.t)} (! bb149) | default -> -{_128.f2'1 <> (116: UInt8.t)}- (! bb127) ]
+  | bb149 = any [ br0 -> {_128.f3'1 = (32: UInt8.t)} (! bb155) | default -> -{_128.f3'1 <> (32: UInt8.t)}- (! bb127) ]
+  | bb155 = s0 [ s0 = [ &_127 <- (6: UInt8.t) ] s1 | s1 = bb161 ]
+  | bb143 = any [ br0 -> {_128.f1'1 = (114: UInt8.t)} (! bb144) | default -> -{_128.f1'1 <> (114: UInt8.t)}- (! bb127) ]
+  | bb144 = any [ br0 -> {_128.f2'1 = (105: UInt8.t)} (! bb145) | default -> -{_128.f2'1 <> (105: UInt8.t)}- (! bb127) ]
+  | bb145 = any [ br0 -> {_128.f3'1 = (32: UInt8.t)} (! bb156) | default -> -{_128.f3'1 <> (32: UInt8.t)}- (! bb127) ]
+  | bb156 = s0 [ s0 = [ &_127 <- (5: UInt8.t) ] s1 | s1 = bb161 ]
+  | bb139 = any [ br0 -> {_128.f1'1 = (101: UInt8.t)} (! bb140) | default -> -{_128.f1'1 <> (101: UInt8.t)}- (! bb127) ]
+  | bb140 = any [ br0 -> {_128.f2'1 = (100: UInt8.t)} (! bb141) | default -> -{_128.f2'1 <> (100: UInt8.t)}- (! bb127) ]
+  | bb141 = any [ br0 -> {_128.f3'1 = (32: UInt8.t)} (! bb158) | default -> -{_128.f3'1 <> (32: UInt8.t)}- (! bb127) ]
+  | bb158 = s0 [ s0 = [ &_127 <- (3: UInt8.t) ] s1 | s1 = bb161 ]
+  | bb132 = any
+    [ br0 -> {_128.f1'1 = (117: UInt8.t)} (! bb133)
+    | br1 -> {_128.f1'1 = (104: UInt8.t)} (! bb136)
+    | default -> -{_128.f1'1 <> (117: UInt8.t) /\ _128.f1'1 <> (104: UInt8.t)}- (! bb127) ]
+  | bb136 = any [ br0 -> {_128.f2'1 = (117: UInt8.t)} (! bb137) | default -> -{_128.f2'1 <> (117: UInt8.t)}- (! bb127) ]
+  | bb137 = any [ br0 -> {_128.f3'1 = (32: UInt8.t)} (! bb157) | default -> -{_128.f3'1 <> (32: UInt8.t)}- (! bb127) ]
+  | bb157 = s0 [ s0 = [ &_127 <- (4: UInt8.t) ] s1 | s1 = bb161 ]
+  | bb133 = any [ br0 -> {_128.f2'1 = (101: UInt8.t)} (! bb134) | default -> -{_128.f2'1 <> (101: UInt8.t)}- (! bb127) ]
+  | bb134 = any [ br0 -> {_128.f3'1 = (32: UInt8.t)} (! bb159) | default -> -{_128.f3'1 <> (32: UInt8.t)}- (! bb127) ]
+  | bb159 = s0 [ s0 = [ &_127 <- (2: UInt8.t) ] s1 | s1 = bb161 ]
+  | bb128 = any [ br0 -> {_128.f1'1 = (111: UInt8.t)} (! bb129) | default -> -{_128.f1'1 <> (111: UInt8.t)}- (! bb127) ]
+  | bb129 = any [ br0 -> {_128.f2'1 = (110: UInt8.t)} (! bb130) | default -> -{_128.f2'1 <> (110: UInt8.t)}- (! bb127) ]
+  | bb130 = any [ br0 -> {_128.f3'1 = (32: UInt8.t)} (! bb160) | default -> -{_128.f3'1 <> (32: UInt8.t)}- (! bb127) ]
+  | bb127 = s0 [ s0 = [ &_146 <- { f0 = _147 } ] s1 | s1 = [ &_ret <- Err _146 ] s2 | s2 = return {_ret} ]
+  | bb160 = s0 [ s0 = [ &_127 <- (1: UInt8.t) ] s1 | s1 = bb161 ]
+  | bb161 = s0
+    [ s0 = [ &_31 <- { sec = val'; min = val''0; hour = val''1; day = val''2; mon = _93; year = val''3; wday = _127 } ]
+      s1
+    | s1 = [ &_ret <- Ok _31 ] s2
+    | s2 = return {_ret} ] ]
+  [ & _ret: t_Result_RawDate_Error = Any.any_l ()
+  | & s: Slice64.slice UInt8.t = s
+  | & _5: bool = Any.any_l ()
+  | & _6: UInt64.t = Any.any_l ()
+  | & _8: bool = Any.any_l ()
+  | & _9: UInt8.t = Any.any_l ()
+  | & _10: UInt64.t = Any.any_l ()
+  | & _11: UInt64.t = Any.any_l ()
+  | & _12: bool = Any.any_l ()
+  | & _13: bool = Any.any_l ()
+  | & _14: UInt8.t = Any.any_l ()
+  | & _15: UInt64.t = Any.any_l ()
+  | & _16: UInt64.t = Any.any_l ()
+  | & _17: bool = Any.any_l ()
+  | & _18: bool = Any.any_l ()
+  | & _19: UInt8.t = Any.any_l ()
+  | & _20: UInt64.t = Any.any_l ()
+  | & _21: UInt64.t = Any.any_l ()
+  | & _22: bool = Any.any_l ()
+  | & _23: bool = Any.any_l ()
+  | & _24: UInt8.t = Any.any_l ()
+  | & _25: UInt64.t = Any.any_l ()
+  | & _26: UInt64.t = Any.any_l ()
+  | & _27: bool = Any.any_l ()
+  | & _29: t_Error = Any.any_l ()
+  | & _30: () = Any.any_l ()
+  | & _31: t_RawDate = Any.any_l ()
+  | & _33: t_ControlFlow_Result_Infallible_Error_u8 = Any.any_l ()
+  | & _34: t_Result_u8_Error = Any.any_l ()
+  | & _36: Slice64.slice UInt8.t = Any.any_l ()
+  | & _37: Slice64.slice UInt8.t = Any.any_l ()
+  | & _39: t_Range_usize = Any.any_l ()
+  | & residual: t_Result_Infallible_Error = Any.any_l ()
+  | & val': UInt8.t = Any.any_l ()
+  | & _46: t_ControlFlow_Result_Infallible_Error_u8 = Any.any_l ()
+  | & _47: t_Result_u8_Error = Any.any_l ()
+  | & _49: Slice64.slice UInt8.t = Any.any_l ()
+  | & _50: Slice64.slice UInt8.t = Any.any_l ()
+  | & _52: t_Range_usize = Any.any_l ()
+  | & residual'0: t_Result_Infallible_Error = Any.any_l ()
+  | & val''0: UInt8.t = Any.any_l ()
+  | & _59: t_ControlFlow_Result_Infallible_Error_u8 = Any.any_l ()
+  | & _60: t_Result_u8_Error = Any.any_l ()
+  | & _62: Slice64.slice UInt8.t = Any.any_l ()
+  | & _63: Slice64.slice UInt8.t = Any.any_l ()
+  | & _65: t_Range_usize = Any.any_l ()
+  | & residual'1: t_Result_Infallible_Error = Any.any_l ()
+  | & val''1: UInt8.t = Any.any_l ()
+  | & x: Slice64.slice UInt8.t = Any.any_l ()
+  | & _73: Slice64.slice UInt8.t = Any.any_l ()
+  | & _75: t_Range_usize = Any.any_l ()
+  | & _76: t_ControlFlow_Result_Infallible_Error_u8 = Any.any_l ()
+  | & _77: t_Result_u8_Error = Any.any_l ()
+  | & _78: bool = Any.any_l ()
+  | & _79: UInt8.t = Any.any_l ()
+  | & _80: UInt64.t = Any.any_l ()
+  | & _81: UInt64.t = Any.any_l ()
+  | & _82: bool = Any.any_l ()
+  | & _83: UInt8.t = Any.any_l ()
+  | & _84: UInt64.t = Any.any_l ()
+  | & _85: UInt64.t = Any.any_l ()
+  | & _86: bool = Any.any_l ()
+  | & residual'2: t_Result_Infallible_Error = Any.any_l ()
+  | & val''2: UInt8.t = Any.any_l ()
+  | & _93: UInt8.t = Any.any_l ()
+  | & _94: tup4_u8_u8_u8_u8 = Any.any_l ()
+  | & _95: UInt8.t = Any.any_l ()
+  | & _96: UInt64.t = Any.any_l ()
+  | & _97: UInt64.t = Any.any_l ()
+  | & _98: bool = Any.any_l ()
+  | & _99: UInt8.t = Any.any_l ()
+  | & _100: UInt64.t = Any.any_l ()
+  | & _101: UInt64.t = Any.any_l ()
+  | & _102: bool = Any.any_l ()
+  | & _103: UInt8.t = Any.any_l ()
+  | & _104: UInt64.t = Any.any_l ()
+  | & _105: UInt64.t = Any.any_l ()
+  | & _106: bool = Any.any_l ()
+  | & _107: UInt8.t = Any.any_l ()
+  | & _108: UInt64.t = Any.any_l ()
+  | & _109: UInt64.t = Any.any_l ()
+  | & _110: bool = Any.any_l ()
+  | & _112: t_Error = Any.any_l ()
+  | & _113: () = Any.any_l ()
+  | & _115: t_ControlFlow_Result_Infallible_Error_u16 = Any.any_l ()
+  | & _116: t_Result_u16_Error = Any.any_l ()
+  | & _118: Slice64.slice UInt8.t = Any.any_l ()
+  | & _119: Slice64.slice UInt8.t = Any.any_l ()
+  | & _121: t_Range_usize = Any.any_l ()
+  | & residual'3: t_Result_Infallible_Error = Any.any_l ()
+  | & val''3: UInt16.t = Any.any_l ()
+  | & _127: UInt8.t = Any.any_l ()
+  | & _128: tup4_u8_u8_u8_u8 = Any.any_l ()
+  | & _129: UInt8.t = Any.any_l ()
+  | & _130: UInt64.t = Any.any_l ()
+  | & _131: UInt64.t = Any.any_l ()
+  | & _132: bool = Any.any_l ()
+  | & _133: UInt8.t = Any.any_l ()
+  | & _134: UInt64.t = Any.any_l ()
+  | & _135: UInt64.t = Any.any_l ()
+  | & _136: bool = Any.any_l ()
+  | & _137: UInt8.t = Any.any_l ()
+  | & _138: UInt64.t = Any.any_l ()
+  | & _139: UInt64.t = Any.any_l ()
+  | & _140: bool = Any.any_l ()
+  | & _141: UInt8.t = Any.any_l ()
+  | & _142: UInt64.t = Any.any_l ()
+  | & _143: UInt64.t = Any.any_l ()
+  | & _144: bool = Any.any_l ()
+  | & _146: t_Error = Any.any_l ()
+  | & _147: () = Any.any_l () ])
+  [ return (result: t_Result_RawDate_Error) -> {[@stop_split] [@expl:parse_asctime ensures] match result with
+      | Ok d -> asctime_encoding (Slice64.view s) d
+      /\ UInt8.t'int d.sec < 100
+      /\ UInt8.t'int d.min < 100
+      /\ UInt8.t'int d.hour < 100
+      /\ UInt8.t'int d.day < 100
+      /\ 1 <= UInt8.t'int d.mon
+      /\ UInt8.t'int d.mon <= 12 /\ UInt16.t'int d.year < 10000 /\ 1 <= UInt8.t'int d.wday /\ UInt8.t'int d.wday <= 7
+      | Err _ -> not asctime_syntax (Slice64.view s) /\ (forall d: t_RawDate. not asctime_encoding (Slice64.view s) d)
+      end}
+    (! return {result}) ]

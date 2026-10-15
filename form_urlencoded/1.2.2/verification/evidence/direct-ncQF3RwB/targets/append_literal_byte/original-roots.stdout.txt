@@ -1,0 +1,221 @@
+theory Coma
+  
+  (* use why3.BuiltIn.BuiltIn *)
+  
+  (* use why3.Bool.Bool *)
+  
+  (* use why3.Unit.Unit *)
+  
+  (* use creusot.int.UInt8 *)
+  
+  (* use seq.Seq *)
+  
+  (* use map.Map *)
+  
+  (* use creusot.slice.Slice64 *)
+  
+  (* use creusot.prelude.MutBorrow *)
+  
+  (* use creusot.prelude.Any *)
+  
+  function index_Mapping_u8_Int (self:t -> int) (a:t) : int = get self a
+  
+  (* meta rewrite_def function index_Mapping_u8_Int *)
+  
+  function map_u8 (seq t) (t -> int) : seq int
+  
+  axiom map_u8_spec :
+    forall self:seq t, m:t -> int [map_u8 self m].
+     length (map_u8 self m) = length self
+  
+  axiom map_u8_spec'0 :
+    forall self:seq t, m:t -> int [map_u8 self m].
+     forall i:int.
+      0 <= i /\ i < length self ->
+      get1 (map_u8 self m) i = index_Mapping_u8_Int m (get1 self i)
+  
+  function byte_sequence_as_ints (bytes:seq t) : seq int =
+    map_u8 bytes (fun (byte:t) -> t'int byte)
+  
+  predicate int_prefix_push (seq int) int
+  
+  axiom int_prefix_push_spec :
+    forall bytes:seq int, index:int [int_prefix_push bytes index].
+     0 <= index /\ index < length bytes -> int_prefix_push bytes index
+  
+  axiom int_prefix_push_spec'0 :
+    forall bytes:seq int, index:int.
+     0 <= index /\ index < length bytes ->
+     bytes[0..(index + 1)] =
+     (bytes[0..index] ++ singleton (get1 bytes index))
+  
+  predicate byte_int_prefix_push (bytes:seq t) (index:int) =
+    int_prefix_push (byte_sequence_as_ints bytes) index /\
+    get1 (byte_sequence_as_ints bytes) index = t'int (get1 bytes index)
+  
+  axiom byte_int_prefix_push_spec :
+    forall bytes:seq t, index:int [byte_int_prefix_push bytes index].
+     0 <= index /\ index < length bytes -> byte_int_prefix_push bytes index
+  
+  axiom byte_int_prefix_push_spec'0 :
+    forall bytes:seq t, index:int.
+     0 <= index /\ index < length bytes ->
+     (byte_sequence_as_ints bytes)[0..(index + 1)] =
+     ((byte_sequence_as_ints bytes)[0..index]
+      ++ singleton (t'int (get1 bytes index)))
+  
+  type t_Vec_u8_Global
+  
+  type t_Option_Vec_u8_Global =
+    | None
+    | Some t_Vec_u8_Global
+  
+  predicate resolve_refmut_Option_Vec_u8_Global (_1:t1
+    t_Option_Vec_u8_Global) = _1.final = _1.current
+  
+  (* meta rewrite_def predicate resolve_refmut_Option_Vec_u8_Global *)
+  
+  goal vc_elim_Some : true
+  
+  constant const_MAX : t2 = (18446744073709551615:t2)
+  
+  function view_Vec_u8_Global t_Vec_u8_Global : seq t
+  
+  axiom view_Vec_u8_Global_spec :
+    forall self:t_Vec_u8_Global [view_Vec_u8_Global self].
+     length (view_Vec_u8_Global self) <= t'int1 const_MAX
+  
+  goal vc_push_byte_preserving_map : true
+  
+  predicate resolve_refmut_Vec_u8_Global (_1:t1 t_Vec_u8_Global) =
+    _1.final = _1.current
+  
+  (* meta rewrite_def predicate resolve_refmut_Vec_u8_Global *)
+  
+  type tup2_Option_Vec_u8_Global_Option_Vec_u8_Global =
+    | Tup2_Option_Vec_u8_Global_Option_Vec_u8_Global'mk (f0:
+        t_Option_Vec_u8_Global) (f1:t_Option_Vec_u8_Global)
+  
+  (* meta model_record function f1 *)
+  
+  (* meta model_record function f0 *)
+  
+  function index_slice_u8 (self:slice t) (ix:t2) : t =
+    get1 (view self) (t'int1 ix)
+  
+  (* meta rewrite_def function index_slice_u8 *)
+  
+  (* meta compute_max_steps 1000000 *)
+  
+  (* meta select_lsinst "all" *)
+  
+  goal vc_append_literal_byte :
+    forall output:t1 t_Option_Vec_u8_Global, input:slice t, index:t2.
+     t'int1 index < length (view input) /\
+     match output.current with
+     | Some before -> length (view_Vec_u8_Global before) < t'int1 index
+     | None -> true
+     end ->
+     byte_int_prefix_push (view input) (t'int1 index) &&
+     (output.current = None ->
+      resolve_refmut_Option_Vec_u8_Global output ->
+      match output.final with
+      | None -> match output.current with
+          | None -> true
+          | _ -> false
+          end
+      | Some x ->
+          match output.current with
+          | Some x1 ->
+              view_Vec_u8_Global x =
+              snoc (view_Vec_u8_Global x1) (index_slice_u8 input index) /\
+              byte_sequence_as_ints (view_Vec_u8_Global x) =
+              (byte_sequence_as_ints (view_Vec_u8_Global x1)
+               ++ singleton (t'int (index_slice_u8 input index)))
+          | _ -> false
+          end
+      end /\
+      match output.final with
+      | None ->
+          (byte_sequence_as_ints (view input))[0..(t'int1 index + 1)] =
+          ((byte_sequence_as_ints (view input))[0..t'int1 index]
+           ++ singleton (t'int (index_slice_u8 input index)))
+      | Some after -> length (view_Vec_u8_Global after) < (t'int1 index + 1)
+      end /\
+      match output.final with
+      | None -> match output.current with
+          | None -> true
+          | _ -> false
+          end
+      | Some x ->
+          match output.current with
+          | Some x1 ->
+              length (view_Vec_u8_Global x) =
+              (length (view_Vec_u8_Global x1) + 1)
+          | _ -> false
+          end
+      end) /\
+     (forall x0:t_Vec_u8_Global.
+       output.current = Some x0 ->
+       (forall f01:t_Vec_u8_Global.
+         Some f01 = output.current ->
+         (forall fin:t_Vec_u8_Global.
+           lt index (length1 input) &&
+           t'int1 index < length (input.elts) &&
+           (forall fin1:t_Vec_u8_Global.
+             view_Vec_u8_Global fin1 =
+             snoc (view_Vec_u8_Global f01) (get1 (input.elts) (t'int1 index)) /\
+             byte_sequence_as_ints (view_Vec_u8_Global fin1) =
+             (byte_sequence_as_ints (view_Vec_u8_Global f01)
+              ++ singleton (t'int (get1 (input.elts) (t'int1 index)))) /\
+             length (view_Vec_u8_Global fin1) =
+             (length (view_Vec_u8_Global f01) + 1) ->
+             resolve_refmut_Vec_u8_Global
+             (t'mk fin1 fin (inherit_id (get_id output) 0)) ->
+             resolve_refmut_Option_Vec_u8_Global
+             (t'mk (Some fin) (output.final) (output.id)) ->
+             match output.final with
+             | None -> match output.current with
+                 | None -> true
+                 | _ -> false
+                 end
+             | Some x ->
+                 match output.current with
+                 | Some x1 ->
+                     view_Vec_u8_Global x =
+                     snoc (view_Vec_u8_Global x1)
+                     (index_slice_u8 input index) /\
+                     byte_sequence_as_ints (view_Vec_u8_Global x) =
+                     (byte_sequence_as_ints (view_Vec_u8_Global x1)
+                      ++ singleton (t'int (index_slice_u8 input index)))
+                 | _ -> false
+                 end
+             end /\
+             match output.final with
+             | None ->
+                 (byte_sequence_as_ints (view input))[0..(t'int1 index + 1)] =
+                 ((byte_sequence_as_ints (view input))[0..t'int1 index]
+                  ++ singleton (t'int (index_slice_u8 input index)))
+             | Some after ->
+                 length (view_Vec_u8_Global after) < (t'int1 index + 1)
+             end /\
+             match output.final with
+             | None -> match output.current with
+                 | None -> true
+                 | _ -> false
+                 end
+             | Some x ->
+                 match output.current with
+                 | Some x1 ->
+                     length (view_Vec_u8_Global x) =
+                     (length (view_Vec_u8_Global x1) + 1)
+                 | _ -> false
+                 end
+             end))) /\
+       match output.current with
+       | Some _ -> true
+       | _ -> false
+       end)
+  
+end
+

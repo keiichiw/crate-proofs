@@ -1,0 +1,104 @@
+theory Coma
+  
+  (* use why3.BuiltIn.BuiltIn *)
+  
+  (* use why3.Bool.Bool *)
+  
+  (* use why3.Unit.Unit *)
+  
+  (* use creusot.int.UInt8 *)
+  
+  (* use seq.Seq *)
+  
+  (* use creusot.int.UInt32 *)
+  
+  (* use creusot.slice.Slice64 *)
+  
+  (* use creusot.prelude.Any *)
+  
+  predicate gt_log_Int (self:int) (other:int) = other < self
+  
+  (* meta rewrite_def predicate gt_log_Int *)
+  
+  predicate ge_log_Int (self:int) (other:int) = other <= self
+  
+  (* meta rewrite_def predicate ge_log_Int *)
+  
+  predicate should_encode_model (mask:seq t) (byte:t1) =
+    ge_log_Int (t'int byte) 128 \/
+    not bw_and (get mask (div (t'int byte) 32))
+        (shl (1:t) (of_int (t'int (bw_and1 byte (31:t1))))) = (0:t)
+  
+  function safe_run_end (seq t1) int (seq t) : int
+  
+  axiom safe_run_end_spec :
+    forall input:seq t1, start:int, mask:seq t
+     [safe_run_end input start mask].
+     0 <= start /\ start <= length input ->
+     length mask = 4 ->
+     start <= safe_run_end input start mask /\
+     safe_run_end input start mask <= length input
+  
+  axiom safe_run_end_spec'0 :
+    forall input:seq t1, start:int, mask:seq t
+     [safe_run_end input start mask].
+     0 <= start /\ start <= length input ->
+     length mask = 4 ->
+     (forall i:int.
+       start <= i /\ i < safe_run_end input start mask ->
+       not should_encode_model mask (get input i))
+  
+  axiom safe_run_end_spec'1 :
+    forall input:seq t1, start:int, mask:seq t
+     [safe_run_end input start mask].
+     0 <= start /\ start <= length input ->
+     length mask = 4 ->
+     safe_run_end input start mask = length input \/
+     should_encode_model mask (get input (safe_run_end input start mask))
+  
+  axiom safe_run_end_spec'2 :
+    forall input:seq t1, start:int, mask:seq t
+     [safe_run_end input start mask].
+     0 <= start /\ start <= length input ->
+     length mask = 4 ->
+     start < length input /\ not should_encode_model mask (get input start) ->
+     start < safe_run_end input start mask
+  
+  predicate safe_run_end_unique (seq t1) int (seq t)
+  
+  axiom safe_run_end_unique_spec :
+    forall input:seq t1, end':int, mask:seq t
+     [safe_run_end_unique input end' mask].
+     gt_log_Int (length input) 0 /\ length mask = 4 ->
+     0 <= end' /\ end' <= length input ->
+     (forall i:int.
+       0 <= i /\ i < end' -> not should_encode_model mask (get input i)) ->
+     end' = length input \/ should_encode_model mask (get input end') ->
+     safe_run_end_unique input end' mask
+  
+  axiom safe_run_end_unique_spec'0 :
+    forall input:seq t1, end':int, mask:seq t.
+     gt_log_Int (length input) 0 /\ length mask = 4 ->
+     0 <= end' /\ end' <= length input ->
+     (forall i:int.
+       0 <= i /\ i < end' -> not should_encode_model mask (get input i)) ->
+     end' = length input \/ should_encode_model mask (get input end') ->
+     end' = safe_run_end input 0 mask
+  
+  (* meta compute_max_steps 1000000 *)
+  
+  (* meta select_lsinst "all" *)
+  
+  goal vc_probe_run_unique :
+    forall input:slice t1, mask:slice t, end':t2.
+     (gt_log_Int (length (view input)) 0 /\ length (view mask) = 4) /\
+     (ge_log_Int (t'int1 end') 0 /\ t'int1 end' <= length (view input)) /\
+     (forall i:int.
+       0 <= i /\ i < t'int1 end' ->
+       not should_encode_model (view mask) (get (view input) i)) /\
+     (t'int1 end' = length (view input) \/
+      should_encode_model (view mask) (get (view input) (t'int1 end'))) ->
+     safe_run_end_unique (view input) (t'int1 end') (view mask)
+  
+end
+

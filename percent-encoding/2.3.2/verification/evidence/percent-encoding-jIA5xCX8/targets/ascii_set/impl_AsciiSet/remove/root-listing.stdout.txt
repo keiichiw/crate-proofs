@@ -1,0 +1,146 @@
+theory Coma
+  
+  (* use why3.BuiltIn.BuiltIn *)
+  
+  (* use why3.Bool.Bool *)
+  
+  (* use why3.Unit.Unit *)
+  
+  (* use creusot.slice.Slice64BW *)
+  
+  (* use creusot.int.UInt32BW *)
+  
+  (* use creusot.int.UInt8BW *)
+  
+  (* use creusot.prelude.Any *)
+  
+  type t_AsciiSet =
+    | T_AsciiSet'mk (mask:slice t)
+  
+  (* meta model_record function mask *)
+  
+  constant size_of_u32 : int = 4
+  
+  (* meta rewrite_def constant size_of_u32 *)
+  
+  axiom size_of_u32_spec : 0 <= size_of_u32
+  
+  goal vc_size_of_u32'0 : true
+  
+  type tup2_usize_bool =
+    | Tup2_usize_bool'mk (f0:t1) (f1:bool)
+  
+  (* meta model_record function f1 *)
+  
+  (* meta model_record function f0 *)
+  
+  constant const_BITS_PER_CHUNK : t1
+  
+  goal vc_set_BITS_PER_CHUNK : true
+  
+  predicate inv_Seq_u32 (_1:seq t) = true
+  
+  (* meta rewrite_def predicate inv_Seq_u32 *)
+  
+  predicate invariant_array_u32_4 (self:slice t) =
+    inv_Seq_u32 (view self) /\ length (view self) = t'int (4:t1)
+  
+  predicate inv_array_u32_4 (_1:slice t) = invariant_array_u32_4 _1
+  
+  (* meta rewrite_def predicate inv_array_u32_4 *)
+  
+  predicate inv_AsciiSet t_AsciiSet
+  
+  axiom inv_axiom :
+    forall x:t_AsciiSet [inv_AsciiSet x].
+     inv_AsciiSet x <-> inv_array_u32_4 (x.mask)
+  
+  predicate invariant_ref_AsciiSet (self:t_AsciiSet) = inv_AsciiSet self
+  
+  (* meta rewrite_def predicate invariant_ref_AsciiSet *)
+  
+  predicate inv_ref_AsciiSet (_1:t_AsciiSet) = invariant_ref_AsciiSet _1
+  
+  (* meta rewrite_def predicate inv_ref_AsciiSet *)
+  
+  function mask_words (self:t_AsciiSet) : seq t =
+    create 4 (fun (i:int) -> get (view (self.mask)) i)
+  
+  axiom mask_words_spec :
+    forall self:t_AsciiSet [mask_words self]. length (mask_words self) = 4
+  
+  (* meta compute_max_steps 1000000 *)
+  
+  (* meta select_lsinst "all" *)
+  
+  goal vc_remove :
+    forall self:slice t, byte:t2.
+     let self1 = T_AsciiSet'mk self in
+     inv_AsciiSet self1 /\ t'int1 byte < 128 ->
+     (forall result:t1.
+       t'int result = size_of_u32 ->
+       not match mul_with_overflow (8:t1) result with
+           | _fst, _snd -> _snd
+           end = True &&
+       (const_BITS_PER_CHUNK =
+        match mul_with_overflow (8:t1) result with
+        | _fst, _snd -> _fst
+        end ->
+        not const_BITS_PER_CHUNK = (0:t1) &&
+        (not const_BITS_PER_CHUNK = zeros \/
+         not t'int const_BITS_PER_CHUNK = 0) /\
+        (t'int (urem (of_BV256 (to_BV256 byte)) const_BITS_PER_CHUNK) =
+         mod (t'int (of_BV256 (to_BV256 byte))) (t'int const_BITS_PER_CHUNK) ->
+         (uge
+          (to_BV2561 (urem (of_BV256 (to_BV256 byte)) const_BITS_PER_CHUNK))
+          (0:t3) /\
+          ult
+          (to_BV2561 (urem (of_BV256 (to_BV256 byte)) const_BITS_PER_CHUNK))
+          (of_int size) \/
+          t'int2
+          (to_BV2561 (urem (of_BV256 (to_BV256 byte)) const_BITS_PER_CHUNK))
+          >= 0 /\
+          t'int2
+          (to_BV2561 (urem (of_BV256 (to_BV256 byte)) const_BITS_PER_CHUNK))
+          < size) /\
+         not const_BITS_PER_CHUNK = (0:t1) &&
+         (not const_BITS_PER_CHUNK = zeros \/
+          not t'int const_BITS_PER_CHUNK = 0) /\
+         (t'int (udiv (of_BV256 (to_BV256 byte)) const_BITS_PER_CHUNK) =
+          div (t'int (of_BV256 (to_BV256 byte))) (t'int const_BITS_PER_CHUNK) ->
+          lt (udiv (of_BV256 (to_BV256 byte)) const_BITS_PER_CHUNK) (4:t1) &&
+          t'int (udiv (of_BV256 (to_BV256 byte)) const_BITS_PER_CHUNK)
+          < length (self.elts) &&
+          t'int (udiv (of_BV256 (to_BV256 byte)) const_BITS_PER_CHUNK)
+          < length (self.elts) /\
+          (forall result1:slice t.
+            length (result1.elts) = length (self.elts) ->
+            (result1.elts)
+            [t'int (udiv (of_BV256 (to_BV256 byte)) const_BITS_PER_CHUNK)] =
+            bw_and
+            (get (self.elts)
+             (t'int (udiv (of_BV256 (to_BV256 byte)) const_BITS_PER_CHUNK)))
+            (bw_not
+             (shl (1:t)
+              (of_BV2561
+               (to_BV2561
+                (urem (of_BV256 (to_BV256 byte)) const_BITS_PER_CHUNK))))) ->
+            (forall j:int.
+              (0 <= j /\ j < length (self.elts)) /\
+              not j =
+                  t'int
+                  (udiv (of_BV256 (to_BV256 byte)) const_BITS_PER_CHUNK) ->
+              (result1.elts)[j] = (self.elts)[j]) ->
+            inv_AsciiSet (T_AsciiSet'mk result1) /\
+            (forall i:int.
+              0 <= i /\ i < 4 ->
+              (if i = div (t'int1 byte) 32
+               then get (mask_words (T_AsciiSet'mk result1)) i =
+                    bw_and (get (mask_words self1) i)
+                    (bw_not
+                     (shl (1:t) (of_BV2561 (to_BV256 (bw_and1 byte (31:t2))))))
+               else get (mask_words (T_AsciiSet'mk result1)) i =
+                    get (mask_words self1) i)))))))
+  
+end
+

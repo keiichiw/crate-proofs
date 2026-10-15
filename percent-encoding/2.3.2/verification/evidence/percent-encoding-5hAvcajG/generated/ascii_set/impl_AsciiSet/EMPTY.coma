@@ -1,0 +1,51 @@
+(* ascii_set::AsciiSet *)
+
+use creusot.slice.Slice64BW
+use creusot.int.UInt32BW
+use seq.Seq
+use creusot.int.UInt64BW
+use creusot.prelude.Any
+use int.Int
+
+type t_AsciiSet = { mask: Slice64BW.array UInt32BW.t }
+
+predicate inv_Seq_u32 [@inline:trivial] (_1: Seq.seq UInt32BW.t) = true
+
+meta "rewrite_def" predicate inv_Seq_u32
+
+predicate invariant_array_u32_4 (self: Slice64BW.array UInt32BW.t) =
+  inv_Seq_u32 (Slice64BW.view self) /\ Seq.length (Slice64BW.view self) = UInt64BW.t'int (4: UInt64BW.t)
+
+predicate inv_array_u32_4 [@inline:trivial] (_1: Slice64BW.array UInt32BW.t) = invariant_array_u32_4 _1
+
+meta "rewrite_def" predicate inv_array_u32_4
+
+predicate inv_AsciiSet (_1: t_AsciiSet)
+
+axiom inv_axiom [@rewrite]: forall x: t_AsciiSet [inv_AsciiSet x]. inv_AsciiSet x = inv_array_u32_4 x.mask
+
+constant const_EMPTY : t_AsciiSet
+
+axiom const_EMPTY_spec: inv_AsciiSet const_EMPTY
+
+function mask_words (self: t_AsciiSet) : Seq.seq UInt32BW.t =
+  Seq.create 4 (fun (i: int) -> Seq.get (Slice64BW.view self.mask) i)
+
+axiom mask_words_spec: forall self: t_AsciiSet [mask_words self]. Seq.length (mask_words self) = 4
+
+meta "compute_max_steps" 1000000
+
+meta "select_lsinst" "all"
+
+let const_EMPTY_def (return (x: t_AsciiSet)) = (! bb0
+  [ bb0 = s0
+    [ s0 = Slice64BW.create <UInt32BW.t> {(4: UInt64BW.t)} {fun (_: int) -> (0: UInt32BW.t)}
+        (fun (_res: Slice64BW.array UInt32BW.t) -> [ &_3 <- _res ] s1)
+    | s1 = [ &_ret <- { mask = _3 } ] s2
+    | s2 = return {_ret} ] ] [ & _ret: t_AsciiSet = Any.any_l () | & _3: Slice64BW.array UInt32BW.t = Any.any_l () ])
+  [ return (result: t_AsciiSet) -> -{const_EMPTY = result}-
+    {[@stop_split] [@expl:const_EMPTY_def ensures] ([@stop_split] [@expl:EMPTY result type invariant] inv_AsciiSet result)
+    /\ ([@stop_split] [@expl:EMPTY ensures #0] Seq.length (mask_words const_EMPTY) = 4)
+    /\ ([@stop_split] [@expl:EMPTY ensures #1] forall i: int. 0 <= i /\ i < 4
+      -> Seq.get (mask_words const_EMPTY) i = (0: UInt32BW.t))}
+    (! return {result}) ]

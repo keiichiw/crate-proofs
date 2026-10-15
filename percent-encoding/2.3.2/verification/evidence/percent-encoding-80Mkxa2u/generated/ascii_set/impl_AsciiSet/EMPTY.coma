@@ -1,0 +1,42 @@
+(* ascii_set::AsciiSet *)
+
+use creusot.slice.Slice64
+use creusot.int.UInt32
+use seq.Seq
+use creusot.int.UInt64
+use creusot.prelude.Any
+
+type t_AsciiSet = { mask: Slice64.array UInt32.t }
+
+predicate inv_Seq_u32 [@inline:trivial] (_1: Seq.seq UInt32.t) = true
+
+meta "rewrite_def" predicate inv_Seq_u32
+
+predicate invariant_array_u32_4 (self: Slice64.array UInt32.t) =
+  inv_Seq_u32 (Slice64.view self) /\ Seq.length (Slice64.view self) = UInt64.t'int (4: UInt64.t)
+
+predicate inv_array_u32_4 [@inline:trivial] (_1: Slice64.array UInt32.t) = invariant_array_u32_4 _1
+
+meta "rewrite_def" predicate inv_array_u32_4
+
+predicate inv_AsciiSet (_1: t_AsciiSet)
+
+axiom inv_axiom [@rewrite]: forall x: t_AsciiSet [inv_AsciiSet x]. inv_AsciiSet x = inv_array_u32_4 x.mask
+
+constant const_EMPTY : t_AsciiSet
+
+axiom const_EMPTY_spec: inv_AsciiSet const_EMPTY
+
+meta "compute_max_steps" 1000000
+
+meta "select_lsinst" "all"
+
+let const_EMPTY_def (return (x: t_AsciiSet)) = (! bb0
+  [ bb0 = s0
+    [ s0 = Slice64.create <UInt32.t> {(4: UInt64.t)} {fun (_: int) -> (0: UInt32.t)}
+        (fun (_res: Slice64.array UInt32.t) -> [ &_2 <- _res ] s1)
+    | s1 = [ &_ret <- { mask = _2 } ] s2
+    | s2 = return {_ret} ] ] [ & _ret: t_AsciiSet = Any.any_l () | & _2: Slice64.array UInt32.t = Any.any_l () ])
+  [ return (result: t_AsciiSet) -> -{const_EMPTY = result}-
+    {[@stop_split] [@expl:EMPTY result type invariant] inv_AsciiSet result}
+    (! return {result}) ]

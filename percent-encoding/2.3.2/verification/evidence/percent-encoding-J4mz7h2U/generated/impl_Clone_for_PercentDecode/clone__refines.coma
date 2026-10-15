@@ -1,0 +1,39 @@
+(* <PercentDecode<'_> as core::clone::Clone> *)
+
+use creusot.int.UInt8
+use seq.Seq
+use creusot.slice.Slice64
+
+type t_Iter_u8
+
+type t_PercentDecode = { bytes: t_Iter_u8 }
+
+predicate inv_Iter_u8 (_1: t_Iter_u8)
+
+predicate inv_PercentDecode (_1: t_PercentDecode)
+
+axiom inv_axiom [@rewrite]: forall x: t_PercentDecode [inv_PercentDecode x]. inv_PercentDecode x = inv_Iter_u8 x.bytes
+
+predicate invariant_ref_PercentDecode [@inline:trivial] (self: t_PercentDecode) = inv_PercentDecode self
+
+meta "rewrite_def" predicate invariant_ref_PercentDecode
+
+predicate inv_ref_PercentDecode [@inline:trivial] (_1: t_PercentDecode) = invariant_ref_PercentDecode _1
+
+meta "rewrite_def" predicate inv_ref_PercentDecode
+
+function view_Iter_u8 (self: t_Iter_u8) : Slice64.slice UInt8.t
+
+function remaining_input [@inline:trivial] (self: t_PercentDecode) : Seq.seq UInt8.t =
+  Slice64.view (view_Iter_u8 self.bytes)
+
+meta "rewrite_def" function remaining_input
+
+meta "compute_max_steps" 1000000
+
+meta "select_lsinst" "all"
+
+goal refines: forall self_: t_PercentDecode. inv_ref_PercentDecode self_
+    -> inv_ref_PercentDecode self_
+    /\ (forall result: t_PercentDecode. inv_PercentDecode result /\ remaining_input result = remaining_input self_
+      -> inv_PercentDecode result)

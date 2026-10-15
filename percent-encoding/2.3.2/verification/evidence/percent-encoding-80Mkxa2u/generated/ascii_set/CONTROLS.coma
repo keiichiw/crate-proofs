@@ -1,0 +1,78 @@
+use creusot.slice.Slice64
+use creusot.int.UInt32
+use seq.Seq
+use creusot.int.UInt64
+use creusot.prelude.Any
+
+type t_AsciiSet = { mask: Slice64.array UInt32.t }
+
+predicate inv_Seq_u32 [@inline:trivial] (_1: Seq.seq UInt32.t) = true
+
+meta "rewrite_def" predicate inv_Seq_u32
+
+predicate invariant_array_u32_4 (self: Slice64.array UInt32.t) =
+  inv_Seq_u32 (Slice64.view self) /\ Seq.length (Slice64.view self) = UInt64.t'int (4: UInt64.t)
+
+predicate inv_array_u32_4 [@inline:trivial] (_1: Slice64.array UInt32.t) = invariant_array_u32_4 _1
+
+meta "rewrite_def" predicate inv_array_u32_4
+
+predicate inv_AsciiSet (_1: t_AsciiSet)
+
+axiom inv_axiom [@rewrite]: forall x: t_AsciiSet [inv_AsciiSet x]. inv_AsciiSet x = inv_array_u32_4 x.mask
+
+predicate invariant_ref_AsciiSet [@inline:trivial] (self: t_AsciiSet) = inv_AsciiSet self
+
+meta "rewrite_def" predicate invariant_ref_AsciiSet
+
+predicate inv_ref_AsciiSet [@inline:trivial] (_1: t_AsciiSet) = invariant_ref_AsciiSet _1
+
+meta "rewrite_def" predicate inv_ref_AsciiSet
+
+constant const_CONTROLS : t_AsciiSet
+
+axiom const_CONTROLS_spec: inv_ref_AsciiSet const_CONTROLS
+
+meta "compute_max_steps" 1000000
+
+meta "select_lsinst" "all"
+
+let const_CONTROLS_def (return (x: t_AsciiSet)) = (! bb0
+  [ bb0 = s0
+    [ s0 = [ &_8 <- (32: UInt32.t) = (0: UInt32.t) ] s1
+    | s1 = {[@expl:remainder by zero] not _8} s2
+    | s2 = UInt32.rem {(127: UInt32.t)} {(32: UInt32.t)} (fun (_x: UInt32.t) -> [ &_7 <- _x ] s3)
+    | s3 = [ &_9 <- UInt32.lt _7 (32: UInt32.t) ] s4
+    | s4 = {[@expl:Shl overflow] _9} s5
+    | s5 = bb0'0
+      [ bb0'0 = s0'0
+        [ s0'0 = [ &_3 <- UInt32.bw_not (0: UInt32.t) ] s1'0
+        | s1'0 = UInt32.rem {(127: UInt32.t)} {(32: UInt32.t)} (fun (_x: UInt32.t) -> [ &_5 <- _x ] s2'0)
+        | s2'0 = UInt32.shl {(1: UInt32.t)} {UInt32.t'int _5} (fun (_x: UInt32.t) -> [ &_4 <- _x ] s3'0)
+        | s3'0 = any
+          [ any_ (__arr_temp: Slice64.array UInt32.t) -> (! -{Seq.get __arr_temp.Slice64.elts 0 = _3
+            /\ Seq.get __arr_temp.Slice64.elts 1 = (0: UInt32.t)
+            /\ Seq.get __arr_temp.Slice64.elts 2 = (0: UInt32.t)
+            /\ Seq.get __arr_temp.Slice64.elts 3 = _4 /\ Seq.length __arr_temp.Slice64.elts = 4}-
+            [ &_2'0 <- __arr_temp ] s4'0) ]
+        | s4'0 = [ &_1 <- { mask = _2'0 } ] s5'0
+        | s5'0 = [ &_ret'0 <- _1 ] s6'0
+        | s6'0 = _const_ret {_ret'0} ] ]
+      [ & _ret'0: t_AsciiSet = Any.any_l ()
+      | & _1: t_AsciiSet = Any.any_l ()
+      | & _2'0: Slice64.array UInt32.t = Any.any_l ()
+      | & _3: UInt32.t = Any.any_l ()
+      | & _4: UInt32.t = Any.any_l ()
+      | & _5: UInt32.t = Any.any_l () ] [ _const_ret (_const: t_AsciiSet) -> [ &_10 <- _const ] s6 ]
+    | s6 = [ &_2 <- _10 ] s7
+    | s7 = [ &_ret <- _2 ] s8
+    | s8 = return {_ret} ] ]
+  [ & _ret: t_AsciiSet = Any.any_l ()
+  | & _2: t_AsciiSet = Any.any_l ()
+  | & _7: UInt32.t = Any.any_l ()
+  | & _8: bool = Any.any_l ()
+  | & _9: bool = Any.any_l ()
+  | & _10: t_AsciiSet = Any.any_l () ])
+  [ return (result: t_AsciiSet) -> -{const_CONTROLS = result}-
+    {[@stop_split] [@expl:CONTROLS result type invariant] inv_ref_AsciiSet result}
+    (! return {result}) ]

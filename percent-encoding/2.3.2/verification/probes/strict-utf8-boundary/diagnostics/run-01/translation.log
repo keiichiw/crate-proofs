@@ -1,0 +1,97 @@
+   Compiling proc-macro2 v1.0.107
+   Compiling libc v0.2.190
+   Compiling unicode-ident v1.0.26
+   Compiling quote v1.0.47
+   Compiling getrandom v0.4.3
+   Compiling cfg-if v1.0.5
+    Checking percent-encoding v2.3.2
+   Compiling syn v2.0.119
+   Compiling uuid v1.27.0
+   Compiling pearlite-syn v0.13.0
+   Compiling creusot-std-proc v0.13.0
+    Checking creusot-std v0.13.0
+    Checking form_urlencoded v1.2.2 (/workspace/proof-env/form_urlencoded/1.2.2/crate)
+    Checking percent-encoding-strict-utf8-boundary-probe v0.0.0 (/workspace/proof-env/percent-encoding/2.3.2/verification/probes/strict-utf8-boundary)
+error[E0308]: mismatched types
+   --> src/lib.rs:16:64
+    |
+ 16 |         exists<chars: Seq<char>> chars.to_bytes() == bytes.map(|byte: u8| byte@)
+    |                                                            --- ^^^^^^^^^^^^^^^^ expected `Mapping<u8, u8>`, found `Mapping<u8, Int>`
+    |                                                            |
+    |                                                            arguments to this method are incorrect
+    |
+    = note: expected struct `creusot_std::logic::Mapping<_, u8>`
+               found struct `creusot_std::logic::Mapping<_, creusot_std::logic::Int>`
+note: method defined here
+   --> /workspace/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/logic/seq.rs:302:12
+    |
+302 |     pub fn map<U>(self, m: Mapping<T, U>) -> Seq<U> {
+    |            ^^^
+
+error[E0308]: mismatched types
+   --> src/lib.rs:38:56
+    |
+ 38 |                         chars.to_bytes() == bytes@.map(|byte: u8| byte@)
+    |                                                    --- ^^^^^^^^^^^^^^^^ expected `Mapping<u8, u8>`, found `Mapping<u8, Int>`
+    |                                                    |
+    |                                                    arguments to this method are incorrect
+    |
+    = note: expected struct `creusot_std::logic::Mapping<_, u8>`
+               found struct `creusot_std::logic::Mapping<_, creusot_std::logic::Int>`
+note: method defined here
+   --> /workspace/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/logic/seq.rs:302:12
+    |
+302 |     pub fn map<U>(self, m: Mapping<T, U>) -> Seq<U> {
+    |            ^^^
+
+error[E0308]: mismatched types
+   --> src/lib.rs:50:52
+    |
+ 50 |                     chars.to_bytes() == bytes@.map(|byte: u8| byte@)
+    |                                                --- ^^^^^^^^^^^^^^^^ expected `Mapping<u8, u8>`, found `Mapping<u8, Int>`
+    |                                                |
+    |                                                arguments to this method are incorrect
+    |
+    = note: expected struct `creusot_std::logic::Mapping<_, u8>`
+               found struct `creusot_std::logic::Mapping<_, creusot_std::logic::Int>`
+note: method defined here
+   --> /workspace/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/logic/seq.rs:302:12
+    |
+302 |     pub fn map<U>(self, m: Mapping<T, U>) -> Seq<U> {
+    |            ^^^
+
+error[E0308]: mismatched types
+   --> src/lib.rs:66:50
+    |
+ 66 |         chars.to_bytes() == cow_bytes(input).map(|byte: u8| byte@)
+    |                                              --- ^^^^^^^^^^^^^^^^ expected `Mapping<u8, u8>`, found `Mapping<u8, Int>`
+    |                                              |
+    |                                              arguments to this method are incorrect
+    |
+    = note: expected struct `creusot_std::logic::Mapping<_, u8>`
+               found struct `creusot_std::logic::Mapping<_, creusot_std::logic::Int>`
+note: method defined here
+   --> /workspace/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/logic/seq.rs:302:12
+    |
+302 |     pub fn map<U>(self, m: Mapping<T, U>) -> Seq<U> {
+    |            ^^^
+
+error[E0308]: mismatched types
+   --> src/lib.rs:70:50
+    |
+ 70 |         chars.to_bytes() == cow_bytes(input).map(|byte: u8| byte@)
+    |                                              --- ^^^^^^^^^^^^^^^^ expected `Mapping<u8, u8>`, found `Mapping<u8, Int>`
+    |                                              |
+    |                                              arguments to this method are incorrect
+    |
+    = note: expected struct `creusot_std::logic::Mapping<_, u8>`
+               found struct `creusot_std::logic::Mapping<_, creusot_std::logic::Int>`
+note: method defined here
+   --> /workspace/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/logic/seq.rs:302:12
+    |
+302 |     pub fn map<U>(self, m: Mapping<T, U>) -> Seq<U> {
+    |            ^^^
+
+For more information about this error, try `rustc --explain E0308`.
+error: could not compile `percent-encoding-strict-utf8-boundary-probe` (lib) due to 5 previous errors
+Error: Compilation failed

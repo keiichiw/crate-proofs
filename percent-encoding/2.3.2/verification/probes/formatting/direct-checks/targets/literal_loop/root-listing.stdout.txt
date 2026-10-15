@@ -1,0 +1,157 @@
+theory Coma
+  
+  (* use why3.BuiltIn.BuiltIn *)
+  
+  (* use why3.Bool.Bool *)
+  
+  (* use why3.Unit.Unit *)
+  
+  (* use creusot.int.UInt8 *)
+  
+  (* use creusot.prelude.MutBorrow *)
+  
+  (* use creusot.prelude.Any *)
+  
+  type t_Formatter
+  
+  predicate inv_Formatter t_Formatter
+  
+  predicate invariant_refmut_Formatter (self:t t_Formatter) =
+    inv_Formatter (self.current) /\ inv_Formatter (self.final)
+  
+  (* meta rewrite_def predicate invariant_refmut_Formatter *)
+  
+  predicate inv_refmut_Formatter (_1:t t_Formatter) =
+    invariant_refmut_Formatter _1
+  
+  (* meta rewrite_def predicate inv_refmut_Formatter *)
+  
+  type t_Result_unit_Error =
+    | Ok unit
+    | Err unit
+  
+  goal vc_write_str : true
+  
+  type t_Result_Infallible_Error =
+    | Ok'0 unit
+    | Err'0 unit
+  
+  type t_ControlFlow_Result_Infallible_Error_unit =
+    | Continue unit
+    | Break t_Result_Infallible_Error
+  
+  predicate inv_Infallible (_1:unit) = false
+  
+  (* meta rewrite_def predicate inv_Infallible *)
+  
+  predicate inv_Result_Infallible_Error t_Result_Infallible_Error
+  
+  axiom inv_axiom :
+    forall x:t_Result_Infallible_Error [inv_Result_Infallible_Error x].
+     inv_Result_Infallible_Error x <->
+     match x with
+     | Ok'0 f0 -> inv_Infallible f0
+     | Err'0 f0 -> true
+     end
+  
+  predicate inv_ControlFlow_Result_Infallible_Error_unit
+    t_ControlFlow_Result_Infallible_Error_unit
+  
+  axiom inv_axiom'0 :
+    forall x:t_ControlFlow_Result_Infallible_Error_unit
+     [inv_ControlFlow_Result_Infallible_Error_unit x].
+     inv_ControlFlow_Result_Infallible_Error_unit x <->
+     match x with
+     | Continue f0 -> true
+     | Break f0 -> inv_Result_Infallible_Error f0
+     end
+  
+  goal vc_branch_Result_unit_Error : true
+  
+  predicate resolve_refmut_Formatter (_1:t t_Formatter) =
+    _1.final = _1.current
+  
+  (* meta rewrite_def predicate resolve_refmut_Formatter *)
+  
+  goal vc_elim_Break : true
+  
+  type tup2_Result_unit_Error_Result_Infallible_Error =
+    | Tup2_Result_unit_Error_Result_Infallible_Error'mk (f0:
+        t_Result_unit_Error) (f1:t_Result_Infallible_Error)
+  
+  (* meta model_record function f1 *)
+  
+  (* meta model_record function f0 *)
+  
+  predicate postcondition_from (self:unit) (args:unit) (result:unit) =
+    let self_ = args in result = self_
+  
+  (* meta rewrite_def predicate postcondition_from *)
+  
+  goal vc_from_Error : true
+  
+  goal vc_from_residual_Result_unit_Error : true
+  
+  (* meta compute_max_steps 1000000 *)
+  
+  (* meta select_lsinst "all" *)
+  
+  goal vc_literal_loop :
+    forall f:t t_Formatter, count:t1.
+     inv_refmut_Formatter f ->
+     (forall f2:t t_Formatter, i:t1, _10:bool, _14:
+       t_ControlFlow_Result_Infallible_Error_unit, _15:t_Result_unit_Error,
+       _16:t t_Formatter, _18:string, _old:t_Formatter.
+       ((inv_refmut_Formatter f && le (0:t1) count) /\
+        (forall f3:t t_Formatter, i1:t1.
+          inv_refmut_Formatter f3 ->
+          f.final = f3.final ->
+          le i1 count ->
+          (not lt i1 count -> inv_refmut_Formatter f3) /\
+          (lt i1 count ->
+           (forall fin:t_Formatter, id:int.
+             inv_Formatter fin ->
+             inv_refmut_Formatter (t'mk (f3.current) fin id) /\
+             (forall result:t_Result_unit_Error.
+               forall result1:t_ControlFlow_Result_Infallible_Error_unit.
+                inv_ControlFlow_Result_Infallible_Error_unit result1 /\
+                match result with
+                | Ok v -> result1 = Continue v
+                | Err e -> result1 = Break (Err'0 e)
+                end ->
+                result1 = Continue () ->
+                in_bounds (t'int i1 + t'int (1:t1)) /\
+                (forall result2:t1.
+                  t'int result2 = (t'int i1 + t'int (1:t1)) ->
+                  inv_refmut_Formatter (t'mk fin (f3.final) (f3.id1)) &&
+                  f.final = f3.final && le result2 count))) /\
+           inv_Formatter (f3.current)))) /\
+       ((exists f3:t t_Formatter.
+          inv_refmut_Formatter f3 /\
+          f.final = f3.final /\
+          le i count /\
+          lt i count /\
+          (exists fin:t_Formatter, id:int.
+            inv_Formatter fin /\
+            (inv_ControlFlow_Result_Infallible_Error_unit _14 /\
+             match _15 with
+             | Ok v -> _14 = Continue v
+             | Err e -> _14 = Break (Err'0 e)
+             end) /\
+            (exists x0:t_Result_Infallible_Error.
+              _14 = Break x0 /\
+              f2 = t'mk fin (f3.final) (f3.id1) /\
+              (if lt i count then _10 = True else _10 = False) /\
+              _16 = t'mk (f3.current) fin id /\
+              _18 = ("x":string) /\ _old = f.final))) ->
+        (resolve_refmut_Formatter f2 ->
+         (forall f01:t_Result_Infallible_Error.
+           Break f01 = _14 -> inv_Result_Infallible_Error f01) /\
+         match _14 with
+         | Break _ -> true
+         | _ -> false
+         end) /\
+        inv_refmut_Formatter f2))
+  
+end
+

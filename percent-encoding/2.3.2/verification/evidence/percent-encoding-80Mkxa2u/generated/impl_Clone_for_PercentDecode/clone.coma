@@ -1,0 +1,54 @@
+(* <PercentDecode<'a> as core::clone::Clone> *)
+
+use creusot.prelude.Any
+
+type t_Iter_u8
+
+type t_PercentDecode = { bytes: t_Iter_u8 }
+
+predicate inv_Iter_u8 (_1: t_Iter_u8)
+
+predicate invariant_ref_Iter_u8 [@inline:trivial] (self: t_Iter_u8) = inv_Iter_u8 self
+
+meta "rewrite_def" predicate invariant_ref_Iter_u8
+
+predicate inv_ref_Iter_u8 [@inline:trivial] (_1: t_Iter_u8) = invariant_ref_Iter_u8 _1
+
+meta "rewrite_def" predicate inv_ref_Iter_u8
+
+let clone_Iter_u8 (self_: t_Iter_u8) (return (x: t_Iter_u8)) =
+{[@stop_split] [@expl:clone 'self_' type invariant] inv_ref_Iter_u8 self_}
+  any
+  [ return (result: t_Iter_u8) -> {[@stop_split] [@expl:clone result type invariant] inv_Iter_u8 result}
+    (! return {result}) ]
+
+predicate inv_PercentDecode (_1: t_PercentDecode)
+
+axiom inv_axiom [@rewrite]: forall x: t_PercentDecode [inv_PercentDecode x]. inv_PercentDecode x = inv_Iter_u8 x.bytes
+
+predicate invariant_ref_PercentDecode [@inline:trivial] (self: t_PercentDecode) = inv_PercentDecode self
+
+meta "rewrite_def" predicate invariant_ref_PercentDecode
+
+predicate inv_ref_PercentDecode [@inline:trivial] (_1: t_PercentDecode) = invariant_ref_PercentDecode _1
+
+meta "rewrite_def" predicate inv_ref_PercentDecode
+
+meta "compute_max_steps" 1000000
+
+meta "select_lsinst" "all"
+
+let clone_PercentDecode (self: t_PercentDecode) (return (x: t_PercentDecode)) =
+{[@stop_split] [@expl:clone 'self' type invariant] inv_ref_PercentDecode self}
+  (! bb0
+  [ bb0 = s0
+    [ s0 = [ &_4 <- self.bytes ] s1
+    | s1 = clone_Iter_u8 {_4} (fun (_x: t_Iter_u8) -> [ &_2 <- _x ] s2)
+    | s2 = [ &_ret <- { bytes = _2 } ] s3
+    | s3 = return {_ret} ] ]
+  [ & _ret: t_PercentDecode = Any.any_l ()
+  | & self: t_PercentDecode = self
+  | & _2: t_Iter_u8 = Any.any_l ()
+  | & _4: t_Iter_u8 = Any.any_l () ])
+  [ return (result: t_PercentDecode) -> {[@stop_split] [@expl:clone result type invariant] inv_PercentDecode result}
+    (! return {result}) ]

@@ -1,0 +1,93 @@
+use seq.Seq
+use int.Int
+
+type t_T
+
+predicate gt_log_Int [@inline:trivial] (self: int) (other: int) = other < self
+
+meta "rewrite_def" predicate gt_log_Int
+
+function tail_T (self: Seq.seq t_T) : Seq.seq t_T = Seq.([..]) self 1 (Seq.length self)
+
+meta "compute_max_steps" 1000000
+
+meta "select_lsinst" "all"
+
+constant left : Seq.seq t_T
+
+constant right : Seq.seq t_T
+
+constant i : int
+
+predicate nonempty_tail_at_index_T (left: Seq.seq t_T) (right: Seq.seq t_T) (i: int)
+
+goal vc_nonempty_tail_at_index_T: gt_log_Int (Seq.length left) 0
+  -> 0 <= i /\ i < Seq.length (Seq.(++) (tail_T left) right)
+  -> (let joined = Seq.(++) left right in let joined_tail = tail_T joined in let tail_left = tail_T left in let tail_joined = Seq.(++) tail_left right in let boundary = Seq.length left
+  - 1 in Seq.length joined_tail = Seq.length tail_joined
+  && Seq.length tail_left = boundary
+  && (if i < boundary then
+    i < Seq.length joined_tail
+    && i + 1 < Seq.length left
+    && i + 1 < Seq.length joined
+    && Seq.get joined_tail i = Seq.get joined (i + 1)
+    && Seq.get joined (i + 1) = Seq.get left (i + 1)
+    && Seq.get tail_joined i = Seq.get tail_left i
+    && Seq.get tail_left i = Seq.get left (i + 1)
+    && Seq.get joined_tail i = Seq.get tail_joined i
+    && ([@stop_split] [@expl:nonempty_tail_at_index_T ensures] ([@stop_split] [@expl:nonempty_tail_at_index ensures #0] true)
+    /\ ([@stop_split] [@expl:nonempty_tail_at_index ensures #1] Seq.get (tail_T (Seq.(++) left right)) i
+    = Seq.get (Seq.(++) (tail_T left) right) i))
+  else
+    if 0 <= i - boundary then
+      i - boundary < Seq.length right
+      && (if 0 <= i + 1 - Seq.length left then
+        i + 1 - Seq.length left < Seq.length right
+        && i + 1 < Seq.length joined
+        && Seq.get joined_tail i = Seq.get joined (i + 1)
+        && Seq.get joined (i + 1) = Seq.get right (i + 1 - Seq.length left)
+        && Seq.get tail_joined i = Seq.get right (i - Seq.length tail_left)
+        && Seq.get right (i + 1 - Seq.length left) = Seq.get right (i - Seq.length tail_left)
+        && Seq.get joined_tail i = Seq.get tail_joined i
+        && ([@stop_split] [@expl:nonempty_tail_at_index_T ensures] ([@stop_split] [@expl:nonempty_tail_at_index ensures #0] true)
+        /\ ([@stop_split] [@expl:nonempty_tail_at_index ensures #1] Seq.get (tail_T (Seq.(++) left right)) i
+        = Seq.get (Seq.(++) (tail_T left) right) i))
+      else
+        false
+        && i + 1 < Seq.length joined
+        && Seq.get joined_tail i = Seq.get joined (i + 1)
+        && Seq.get joined (i + 1) = Seq.get right (i + 1 - Seq.length left)
+        && Seq.get tail_joined i = Seq.get right (i - Seq.length tail_left)
+        && Seq.get right (i + 1 - Seq.length left) = Seq.get right (i - Seq.length tail_left)
+        && Seq.get joined_tail i = Seq.get tail_joined i
+        && ([@stop_split] [@expl:nonempty_tail_at_index_T ensures] ([@stop_split] [@expl:nonempty_tail_at_index ensures #0] true)
+        /\ ([@stop_split] [@expl:nonempty_tail_at_index ensures #1] Seq.get (tail_T (Seq.(++) left right)) i
+        = Seq.get (Seq.(++) (tail_T left) right) i))
+      )
+    else
+      false
+      && (if 0 <= i + 1 - Seq.length left then
+        i + 1 - Seq.length left < Seq.length right
+        && i + 1 < Seq.length joined
+        && Seq.get joined_tail i = Seq.get joined (i + 1)
+        && Seq.get joined (i + 1) = Seq.get right (i + 1 - Seq.length left)
+        && Seq.get tail_joined i = Seq.get right (i - Seq.length tail_left)
+        && Seq.get right (i + 1 - Seq.length left) = Seq.get right (i - Seq.length tail_left)
+        && Seq.get joined_tail i = Seq.get tail_joined i
+        && ([@stop_split] [@expl:nonempty_tail_at_index_T ensures] ([@stop_split] [@expl:nonempty_tail_at_index ensures #0] true)
+        /\ ([@stop_split] [@expl:nonempty_tail_at_index ensures #1] Seq.get (tail_T (Seq.(++) left right)) i
+        = Seq.get (Seq.(++) (tail_T left) right) i))
+      else
+        false
+        && i + 1 < Seq.length joined
+        && Seq.get joined_tail i = Seq.get joined (i + 1)
+        && Seq.get joined (i + 1) = Seq.get right (i + 1 - Seq.length left)
+        && Seq.get tail_joined i = Seq.get right (i - Seq.length tail_left)
+        && Seq.get right (i + 1 - Seq.length left) = Seq.get right (i - Seq.length tail_left)
+        && Seq.get joined_tail i = Seq.get tail_joined i
+        && ([@stop_split] [@expl:nonempty_tail_at_index_T ensures] ([@stop_split] [@expl:nonempty_tail_at_index ensures #0] true)
+        /\ ([@stop_split] [@expl:nonempty_tail_at_index ensures #1] Seq.get (tail_T (Seq.(++) left right)) i
+        = Seq.get (Seq.(++) (tail_T left) right) i))
+      )
+  
+  ))

@@ -1,0 +1,29 @@
+theory Coma
+  
+  (* use why3.BuiltIn.BuiltIn *)
+  
+  (* use why3.Bool.Bool *)
+  
+  (* use why3.Unit.Unit *)
+  
+  (* use creusot.int.UInt8 *)
+  
+  (* use seq.Seq *)
+  
+  (* meta compute_max_steps 1000000 *)
+  
+  (* meta select_lsinst "all" *)
+  
+  constant bytes : seq t
+  
+  predicate ascii_three (seq t)
+  
+  goal vc_ascii_three :
+    length bytes = 3 ->
+    t'int (get bytes 0) < 128 /\
+    t'int (get bytes 1) < 128 /\ t'int (get bytes 2) < 128 ->
+    (forall i:int. 0 <= i /\ i < length bytes -> t'int (get bytes i) < 128) /\
+    (forall i:int. 0 <= i /\ i < length bytes -> t'int (get bytes i) < 128)
+  
+end
+

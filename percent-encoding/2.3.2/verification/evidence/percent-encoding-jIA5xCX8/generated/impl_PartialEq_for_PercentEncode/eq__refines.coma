@@ -1,0 +1,70 @@
+(* <PercentEncode<'_> as core::cmp::PartialEq> *)
+
+use creusot.slice.Slice64
+use creusot.int.UInt8
+use seq.Seq
+use creusot.int.UInt32
+
+type t_AsciiSet
+
+type t_PercentEncode = { bytes: Slice64.slice UInt8.t; ascii_set: t_AsciiSet }
+
+predicate inv_AsciiSet (_1: t_AsciiSet)
+
+predicate invariant_ref_AsciiSet [@inline:trivial] (self: t_AsciiSet) = inv_AsciiSet self
+
+meta "rewrite_def" predicate invariant_ref_AsciiSet
+
+predicate inv_ref_AsciiSet [@inline:trivial] (_1: t_AsciiSet) = invariant_ref_AsciiSet _1
+
+meta "rewrite_def" predicate inv_ref_AsciiSet
+
+predicate inv_PercentEncode (_1: t_PercentEncode)
+
+axiom inv_axiom [@rewrite]: forall x: t_PercentEncode [inv_PercentEncode x]. inv_PercentEncode x
+    = inv_ref_AsciiSet x.ascii_set
+
+predicate invariant_ref_PercentEncode [@inline:trivial] (self: t_PercentEncode) = inv_PercentEncode self
+
+meta "rewrite_def" predicate invariant_ref_PercentEncode
+
+predicate inv_ref_PercentEncode [@inline:trivial] (_1: t_PercentEncode) = invariant_ref_PercentEncode _1
+
+meta "rewrite_def" predicate inv_ref_PercentEncode
+
+predicate percent_encode_eq_model (left_input: Seq.seq UInt8.t) (left_set: Seq.seq UInt32.t) (right_input: Seq.seq UInt8.t) (right_set: Seq.seq UInt32.t) =
+  left_input = right_input /\ left_set = right_set
+
+function remaining_input [@inline:trivial] (self: t_PercentEncode) : Seq.seq UInt8.t = Slice64.view self.bytes
+
+meta "rewrite_def" function remaining_input
+
+function mask_words (self: t_AsciiSet) : Seq.seq UInt32.t
+
+axiom mask_words_spec: forall self: t_AsciiSet [mask_words self]. Seq.length (mask_words self) = 4
+
+function configured_set [@inline:trivial] (self: t_PercentEncode) : Seq.seq UInt32.t = mask_words self.ascii_set
+
+meta "rewrite_def" function configured_set
+
+type tup2_Seq_u8_Seq_u32 = { f0: Seq.seq UInt8.t; f1: Seq.seq UInt32.t }
+
+function deep_model_PercentEncode (self: t_PercentEncode) : tup2_Seq_u8_Seq_u32 = { f0 = remaining_input self;
+                                                                                    f1 = configured_set self }
+
+function deep_model_ref_PercentEncode [@inline:trivial] (self: t_PercentEncode) : tup2_Seq_u8_Seq_u32 =
+  deep_model_PercentEncode self
+
+meta "rewrite_def" function deep_model_ref_PercentEncode
+
+meta "compute_max_steps" 1000000
+
+meta "select_lsinst" "all"
+
+goal refines: forall self_: t_PercentEncode, rhs: t_PercentEncode. inv_ref_PercentEncode self_
+    -> inv_ref_PercentEncode rhs
+    -> inv_ref_PercentEncode self_
+    /\ inv_ref_PercentEncode rhs
+    /\ (forall result: bool. result
+        = percent_encode_eq_model (remaining_input self_) (configured_set self_) (remaining_input rhs) (configured_set rhs)
+      -> result = (deep_model_ref_PercentEncode self_ = deep_model_ref_PercentEncode rhs))

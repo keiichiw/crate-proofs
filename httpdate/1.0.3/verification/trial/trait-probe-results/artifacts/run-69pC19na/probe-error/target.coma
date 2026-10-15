@@ -1,0 +1,14 @@
+use creusot.prelude.Any
+
+type t_Error
+
+predicate inv_Error (_1: t_Error)
+
+meta "compute_max_steps" 1000000
+
+meta "select_lsinst" "all"
+
+let into_io_error (error: ()) (return (x: t_Error)) = (! bb0
+  [ bb0 = {false} any ] [ & _ret: t_Error = Any.any_l () | & error: () = error ])
+  [ return (result: t_Error) -> {[@stop_split] [@expl:into_io_error result type invariant] inv_Error result}
+    (! return {result}) ]

@@ -1,0 +1,20 @@
+[package]
+name = "httpdate-api-probes"
+version = "0.0.0"
+edition = "2021"
+publish = false
+
+[workspace]
+
+[dependencies]
+creusot-std = "=0.13.0"
+
+[features]
+probe-duration = []
+probe-system-time = []
+probe-utf8 = []
+probe-string = []
+probe-formatter = []
+
+[lints.rust]
+unexpected_cfgs = { level = "warn", check-cfg = ['cfg(creusot)'] }

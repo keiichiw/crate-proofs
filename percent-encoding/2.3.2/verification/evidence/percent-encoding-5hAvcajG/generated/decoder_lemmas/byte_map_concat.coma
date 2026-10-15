@@ -1,0 +1,34 @@
+use creusot.int.UInt8
+use seq.Seq
+use map.Map
+use int.Int
+
+function index_Mapping_u8_Int [@inline:trivial] (self: Map.map UInt8.t int) (a: UInt8.t) : int = Map.get self a
+
+meta "rewrite_def" function index_Mapping_u8_Int
+
+function map_u8 (self: Seq.seq UInt8.t) (m: Map.map UInt8.t int) : Seq.seq int
+
+axiom map_u8_spec: forall self: Seq.seq UInt8.t, m: Map.map UInt8.t int [map_u8 self m]. Seq.length (map_u8 self m)
+    = Seq.length self
+
+axiom map_u8_spec'0: forall self: Seq.seq UInt8.t, m: Map.map UInt8.t int [map_u8 self m]. forall i: int. 0 <= i
+        /\ i < Seq.length self -> Seq.get (map_u8 self m) i = index_Mapping_u8_Int m (Seq.get self i)
+
+function byte_sequence_as_ints (bytes: Seq.seq UInt8.t) : Seq.seq int =
+  map_u8 bytes (fun (byte: UInt8.t) -> UInt8.t'int byte)
+
+meta "compute_max_steps" 1000000
+
+meta "select_lsinst" "all"
+
+constant left : Seq.seq UInt8.t
+
+constant right : Seq.seq UInt8.t
+
+predicate byte_map_concat (left: Seq.seq UInt8.t) (right: Seq.seq UInt8.t)
+
+goal vc_byte_map_concat:
+  [@stop_split] [@expl:byte_map_concat ensures] ([@stop_split] [@expl:byte_map_concat ensures #0] true)
+  /\ ([@stop_split] [@expl:byte_map_concat ensures #1] byte_sequence_as_ints (Seq.(++) left right)
+  = Seq.(++) (byte_sequence_as_ints left) (byte_sequence_as_ints right))

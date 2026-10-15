@@ -1,0 +1,97 @@
+theory Coma
+  
+  (* use why3.BuiltIn.BuiltIn *)
+  
+  (* use why3.Bool.Bool *)
+  
+  (* use why3.Unit.Unit *)
+  
+  (* use creusot.int.UInt8 *)
+  
+  (* use seq.Seq *)
+  
+  (* use map.Map *)
+  
+  function index_Mapping_u8_Int (self:t -> int) (a:t) : int = get self a
+  
+  (* meta rewrite_def function index_Mapping_u8_Int *)
+  
+  function map_u8 (seq t) (t -> int) : seq int
+  
+  axiom map_u8_spec :
+    forall self:seq t, m:t -> int [map_u8 self m].
+     length (map_u8 self m) = length self
+  
+  axiom map_u8_spec'0 :
+    forall self:seq t, m:t -> int [map_u8 self m].
+     forall i:int.
+      0 <= i /\ i < length self ->
+      get1 (map_u8 self m) i = index_Mapping_u8_Int m (get1 self i)
+  
+  function byte_sequence_as_ints (bytes:seq t) : seq int =
+    map_u8 bytes (fun (byte:t) -> t'int byte)
+  
+  predicate byte_model_subsequence (seq t) int int
+  
+  axiom byte_model_subsequence_spec :
+    forall bytes:seq t, start:int, end':int
+     [byte_model_subsequence bytes start end'].
+     0 <= start /\ start <= end' /\ end' <= length bytes ->
+     byte_model_subsequence bytes start end'
+  
+  axiom byte_model_subsequence_spec'0 :
+    forall bytes:seq t, start:int, end':int.
+     0 <= start /\ start <= end' /\ end' <= length bytes ->
+     byte_sequence_as_ints bytes[start..end'] =
+     (byte_sequence_as_ints bytes)[start..end']
+  
+  (* meta compute_max_steps 1000000 *)
+  
+  (* meta select_lsinst "all" *)
+  
+  constant bytes : seq t
+  
+  constant start : int
+  
+  predicate byte_map_nested_tail (seq t) int
+  
+  goal vc_byte_map_nested_tail :
+    0 <= start /\ start < length bytes ->
+    (0 <= start /\ start <= length bytes /\ length bytes <= length bytes) /\
+    (byte_model_subsequence bytes start (length bytes) /\
+     byte_sequence_as_ints bytes[start..length bytes] =
+     (byte_sequence_as_ints bytes)[start..length bytes] ->
+     (let _ =
+        (if byte_model_subsequence bytes start (length bytes) then True
+         else False)
+      in
+      (0 <= (start + 1) /\
+       (start + 1) <= length bytes /\ length bytes <= length bytes) /\
+      (byte_model_subsequence bytes (start + 1) (length bytes) /\
+       byte_sequence_as_ints bytes[(start + 1)..length bytes] =
+       (byte_sequence_as_ints bytes)[(start + 1)..length bytes] ->
+       (let _1 =
+          (if byte_model_subsequence bytes (start + 1) (length bytes)
+           then True else False)
+        in
+        (0 <= 1 /\
+         1 <= (length bytes - start) /\
+         (length bytes - start) <= length bytes[start..length bytes]) /\
+        (byte_model_subsequence bytes[start..length bytes] 1
+         (length bytes - start) /\
+         byte_sequence_as_ints
+         bytes[start..length bytes][1..(length bytes - start)] =
+         (byte_sequence_as_ints bytes[start..length bytes])[1..(length bytes
+                                                                - start)] ->
+         (let _2 =
+            (if byte_model_subsequence bytes[start..length bytes] 1
+                (length bytes - start)
+             then True else False)
+          in
+          true /\
+          (byte_sequence_as_ints bytes[start..length bytes])[1..(length bytes
+                                                                 - start)] =
+          byte_sequence_as_ints bytes[(start + 1)..length bytes]))))))
+  
+end
+

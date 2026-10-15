@@ -1,0 +1,67 @@
+theory Coma
+  
+  (* use why3.BuiltIn.BuiltIn *)
+  
+  (* use why3.Bool.Bool *)
+  
+  (* use why3.Unit.Unit *)
+  
+  (* use creusot.int.UInt8 *)
+  
+  (* use seq.Seq *)
+  
+  predicate ge_log_Int (self:int) (other:int) = other <= self
+  
+  (* meta rewrite_def predicate ge_log_Int *)
+  
+  predicate gt_log_Int (self:int) (other:int) = other < self
+  
+  (* meta rewrite_def predicate gt_log_Int *)
+  
+  predicate well_founded_relation_Int (self:int) (other:int) =
+    ge_log_Int self 0 /\ gt_log_Int self other
+  
+  (* meta rewrite_def predicate well_founded_relation_Int *)
+  
+  (* meta compute_max_steps 1000000 *)
+  
+  (* meta select_lsinst "all" *)
+  
+  constant input : seq t
+  
+  constant start : int
+  
+  function skip_ampersands (seq t) int : int
+  
+  goal vc_skip_ampersands :
+    0 <= start /\ start <= length input ->
+    (if start < length input
+     then if t'int (get input start) = 38
+          then ((0 <= (start + 1) /\ (start + 1) <= length input) /\
+                well_founded_relation_Int (length input - start)
+                (length input - (start + 1))) /\
+               (((start + 1) <= skip_ampersands input (start + 1) /\
+                 skip_ampersands input (start + 1) <= length input) /\
+                (forall i:int.
+                  (start + 1) <= i /\ i < skip_ampersands input (start + 1) ->
+                  t'int (get input i) = 38) /\
+                (skip_ampersands input (start + 1) = length input \/
+                 not t'int (get input (skip_ampersands input (start + 1))) =
+                     38) ->
+                (let result = skip_ampersands input (start + 1) in
+                 (start <= result /\ result <= length input) /\
+                 (forall i:int.
+                   start <= i /\ i < result -> t'int (get input i) = 38) /\
+                 (result = length input \/ not t'int (get input result) = 38)))
+          else let result = start in
+               (start <= result /\ result <= length input) /\
+               (forall i:int.
+                 start <= i /\ i < result -> t'int (get input i) = 38) /\
+               (result = length input \/ not t'int (get input result) = 38)
+     else let result = start in
+          (start <= result /\ result <= length input) /\
+          (forall i:int. start <= i /\ i < result -> t'int (get input i) = 38) /\
+          (result = length input \/ not t'int (get input result) = 38))
+  
+end
+

@@ -1,0 +1,111 @@
+theory Coma
+  
+  (* use why3.BuiltIn.BuiltIn *)
+  
+  (* use why3.Bool.Bool *)
+  
+  (* use why3.Unit.Unit *)
+  
+  (* use seq.Seq *)
+  
+  (* use map.Map *)
+  
+  (* use creusot.prelude.Char *)
+  
+  type t_String
+  
+  type tup2_String_String =
+    | Tup2_String_String'mk (f0:t_String) (f1:t_String)
+  
+  (* meta model_record function f1 *)
+  
+  (* meta model_record function f0 *)
+  
+  type tup2_Seq_Int_Seq_Int =
+    | Tup2_Seq_Int_Seq_Int'mk (f0'0:seq int) (f1'0:seq int)
+  
+  (* meta model_record function f1'0 *)
+  
+  (* meta model_record function f0'0 *)
+  
+  function index_Mapping_tup2_String_String_tup2_Seq_Int_Seq_Int (self:
+    tup2_String_String -> tup2_Seq_Int_Seq_Int) (a:tup2_String_String) :
+    tup2_Seq_Int_Seq_Int = get self a
+  
+  (* meta rewrite_def
+    function index_Mapping_tup2_String_String_tup2_Seq_Int_Seq_Int *)
+  
+  function map_tup2_String_String (seq tup2_String_String)
+    (tup2_String_String -> tup2_Seq_Int_Seq_Int) : seq tup2_Seq_Int_Seq_Int
+  
+  axiom map_tup2_String_String_spec :
+    forall self:seq tup2_String_String, m:tup2_String_String ->
+     tup2_Seq_Int_Seq_Int [map_tup2_String_String self m].
+     length (map_tup2_String_String self m) = length self
+  
+  axiom map_tup2_String_String_spec'0 :
+    forall self:seq tup2_String_String, m:tup2_String_String ->
+     tup2_Seq_Int_Seq_Int [map_tup2_String_String self m].
+     forall i:int.
+      0 <= i /\ i < length self ->
+      get1 (map_tup2_String_String self m) i =
+      index_Mapping_tup2_String_String_tup2_Seq_Int_Seq_Int m (get1 self i)
+  
+  function index_Mapping_char_Int (self:t -> int) (a:t) : int = get self a
+  
+  (* meta rewrite_def function index_Mapping_char_Int *)
+  
+  function map_char (seq t) (t -> int) : seq int
+  
+  axiom map_char_spec :
+    forall self:seq t, m:t -> int [map_char self m].
+     length (map_char self m) = length self
+  
+  axiom map_char_spec'0 :
+    forall self:seq t, m:t -> int [map_char self m].
+     forall i:int.
+      0 <= i /\ i < length self ->
+      get1 (map_char self m) i = index_Mapping_char_Int m (get1 self i)
+  
+  function string_scalars (s:seq t) : seq int =
+    map_char s (fun (c:t) -> to_int c)
+  
+  function view_String t_String : seq t
+  
+  (* meta compute_max_steps 1000000 *)
+  
+  (* meta select_lsinst "all" *)
+  
+  constant ab : seq tup2_String_String
+  
+  constant bc : seq tup2_String_String
+  
+  predicate owned_pair_map_concat (seq tup2_String_String) (seq
+    tup2_String_String)
+  
+  goal vc_owned_pair_map_concat :
+    true /\
+    map_tup2_String_String (ab ++ bc)
+    (fun (__0:tup2_String_String) ->
+      match __0 with
+      | Tup2_String_String'mk key value ->
+          Tup2_Seq_Int_Seq_Int'mk (string_scalars (view_String key))
+          (string_scalars (view_String value))
+      end) =
+    (map_tup2_String_String ab
+     (fun (__0:tup2_String_String) ->
+       match __0 with
+       | Tup2_String_String'mk key value ->
+           Tup2_Seq_Int_Seq_Int'mk (string_scalars (view_String key))
+           (string_scalars (view_String value))
+       end)
+     ++ map_tup2_String_String bc
+        (fun (__0:tup2_String_String) ->
+          match __0 with
+          | Tup2_String_String'mk key value ->
+              Tup2_Seq_Int_Seq_Int'mk (string_scalars (view_String key))
+              (string_scalars (view_String value))
+          end))
+  
+end
+

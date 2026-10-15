@@ -1,0 +1,220 @@
+theory Coma
+  
+  (* use why3.BuiltIn.BuiltIn *)
+  
+  (* use why3.Bool.Bool *)
+  
+  (* use why3.Unit.Unit *)
+  
+  (* use seq.Seq *)
+  
+  (* use map.Map *)
+  
+  (* use creusot.int.UInt8 *)
+  
+  (* use creusot.prelude.Char *)
+  
+  function tail_ref_str (self:seq string) : seq string = self[1..length self]
+  
+  function flat_map_ref_str (seq string) (string -> seq int) : seq int
+  
+  axiom flat_map_ref_str_def :
+    forall self:seq string, other:string -> seq int
+     [flat_map_ref_str self other].
+     flat_map_ref_str self other =
+     (if length self = 0 then empty: seq int
+      else get other (get1 self 0)
+           ++ flat_map_ref_str (tail_ref_str self) other)
+  
+  function index_Mapping_u8_Int (self:t -> int) (a:t) : int = get self a
+  
+  (* meta rewrite_def function index_Mapping_u8_Int *)
+  
+  function map_u8 (seq t) (t -> int) : seq int
+  
+  axiom map_u8_spec :
+    forall self:seq t, m:t -> int [map_u8 self m].
+     length (map_u8 self m) = length self
+  
+  axiom map_u8_spec'0 :
+    forall self:seq t, m:t -> int [map_u8 self m].
+     forall i:int.
+      0 <= i /\ i < length self ->
+      get1 (map_u8 self m) i = index_Mapping_u8_Int m (get1 self i)
+  
+  function tail_char (self:seq t1) : seq t1 = self[1..length self]
+  
+  function flat_map_char (seq t1) (t1 -> seq t) : seq t
+  
+  axiom flat_map_char_def :
+    forall self:seq t1, other:t1 -> seq t [flat_map_char self other].
+     flat_map_char self other =
+     (if length self = 0 then empty: seq t
+      else get other (get1 self 0) ++ flat_map_char (tail_char self) other)
+  
+  function to_utf8_char t1 : seq t
+  
+  axiom to_utf8_char_spec :
+    forall self:t1 [to_utf8_char self].
+     1 <= length (to_utf8_char self) /\ length (to_utf8_char self) <= 4
+  
+  function to_bytes (self:seq t1) : seq t =
+    flat_map_char self (fun (c:t1) -> to_utf8_char c)
+  
+  function view_str string : seq t1
+  
+  function string_chunk_bytes (s:string) : seq int =
+    map_u8 (to_bytes (view_str s)) (fun (b:t) -> t'int b)
+  
+  function encoder_chunks_bytes (chunks:seq string) : seq int =
+    flat_map_ref_str chunks (fun (chunk:string) -> string_chunk_bytes chunk)
+  
+  function flatten_chunks (seq (seq int)) : seq int
+  
+  axiom flatten_chunks_spec :
+    forall chunks:seq (seq int) [flatten_chunks chunks].
+     if length chunks = 0 then length (flatten_chunks chunks) = 0
+     else flatten_chunks chunks =
+          (get1 chunks 0 ++ flatten_chunks chunks[1..length chunks])
+  
+  function index_Mapping_ref_str_Seq_Int (self:string -> seq int) (a:
+    string) : seq int = get self a
+  
+  (* meta rewrite_def function index_Mapping_ref_str_Seq_Int *)
+  
+  function map_ref_str (seq string) (string -> seq int) : seq (seq int)
+  
+  axiom map_ref_str_spec :
+    forall self:seq string, m:string -> seq int [map_ref_str self m].
+     length (map_ref_str self m) = length self
+  
+  axiom map_ref_str_spec'0 :
+    forall self:seq string, m:string -> seq int [map_ref_str self m].
+     forall i:int.
+      0 <= i /\ i < length self ->
+      get1 (map_ref_str self m) i =
+      index_Mapping_ref_str_Seq_Int m (get1 self i)
+  
+  predicate ge_log_Int (self:int) (other:int) = other <= self
+  
+  (* meta rewrite_def predicate ge_log_Int *)
+  
+  predicate gt_log_Int (self:int) (other:int) = other < self
+  
+  (* meta rewrite_def predicate gt_log_Int *)
+  
+  predicate well_founded_relation_Int (self:int) (other:int) =
+    ge_log_Int self 0 /\ gt_log_Int self other
+  
+  (* meta rewrite_def predicate well_founded_relation_Int *)
+  
+  (* meta compute_max_steps 1000000 *)
+  
+  (* meta select_lsinst "all" *)
+  
+  constant chunks : seq string
+  
+  predicate encoder_chunks_flatten (seq string)
+  
+  goal vc_encoder_chunks_flatten :
+    if length chunks = 0
+    then length
+         (map_ref_str chunks (fun (chunk:string) -> string_chunk_bytes chunk)) =
+         length chunks /\
+         (forall i:int.
+           0 <= i /\ i < length chunks ->
+           get1
+           (map_ref_str chunks
+            (fun (chunk:string) -> string_chunk_bytes chunk))
+           i =
+           index_Mapping_ref_str_Seq_Int
+           (fun (chunk:string) -> string_chunk_bytes chunk) (get1 chunks i)) ->
+         (if length
+             (map_ref_str chunks
+              (fun (chunk:string) -> string_chunk_bytes chunk)) =
+             0
+          then length
+               (flatten_chunks
+                (map_ref_str chunks
+                 (fun (chunk:string) -> string_chunk_bytes chunk))) =
+               0
+          else flatten_chunks
+               (map_ref_str chunks
+                (fun (chunk:string) -> string_chunk_bytes chunk)) =
+               (get1
+                (map_ref_str chunks
+                 (fun (chunk:string) -> string_chunk_bytes chunk))
+                0
+                ++ flatten_chunks
+                   (map_ref_str chunks
+                    (fun (chunk:string) -> string_chunk_bytes chunk))[1..
+                   length
+                   (map_ref_str chunks
+                    (fun (chunk:string) -> string_chunk_bytes chunk))])) ->
+         encoder_chunks_bytes chunks =
+         flatten_chunks
+         (map_ref_str chunks (fun (chunk:string) -> string_chunk_bytes chunk)) /\
+         encoder_chunks_bytes chunks =
+         flatten_chunks
+         (map_ref_str chunks (fun (chunk:string) -> string_chunk_bytes chunk))
+    else let tail = tail_ref_str chunks in
+         length
+         (map_ref_str chunks (fun (chunk:string) -> string_chunk_bytes chunk)) =
+         length chunks /\
+         (forall i:int.
+           0 <= i /\ i < length chunks ->
+           get1
+           (map_ref_str chunks
+            (fun (chunk:string) -> string_chunk_bytes chunk))
+           i =
+           index_Mapping_ref_str_Seq_Int
+           (fun (chunk:string) -> string_chunk_bytes chunk) (get1 chunks i)) ->
+         (let mapped =
+            map_ref_str chunks
+            (fun (chunk:string) -> string_chunk_bytes chunk)
+          in
+          well_founded_relation_Int (length chunks) (length tail) /\
+          (encoder_chunks_flatten tail /\
+           encoder_chunks_bytes tail =
+           flatten_chunks
+           (map_ref_str tail (fun (chunk:string) -> string_chunk_bytes chunk)) ->
+           (if encoder_chunks_flatten tail
+            then length
+                 (map_ref_str tail
+                  (fun (chunk:string) -> string_chunk_bytes chunk)) =
+                 length tail /\
+                 (forall i:int.
+                   0 <= i /\ i < length tail ->
+                   get1
+                   (map_ref_str tail
+                    (fun (chunk:string) -> string_chunk_bytes chunk))
+                   i =
+                   index_Mapping_ref_str_Seq_Int
+                   (fun (chunk:string) -> string_chunk_bytes chunk)
+                   (get1 tail i)) ->
+                 (if mapped[1..length mapped]
+                     == map_ref_str tail
+                        (fun (chunk:string) -> string_chunk_bytes chunk)
+                  then (if length mapped = 0
+                        then length (flatten_chunks mapped) = 0
+                        else flatten_chunks mapped =
+                             (get1 mapped 0
+                              ++ flatten_chunks mapped[1..length mapped])) ->
+                       encoder_chunks_bytes chunks = flatten_chunks mapped /\
+                       encoder_chunks_bytes chunks =
+                       flatten_chunks
+                       (map_ref_str chunks
+                        (fun (chunk:string) -> string_chunk_bytes chunk))
+                  else false /\
+                       encoder_chunks_bytes chunks =
+                       flatten_chunks
+                       (map_ref_str chunks
+                        (fun (chunk:string) -> string_chunk_bytes chunk)))
+            else false /\
+                 encoder_chunks_bytes chunks =
+                 flatten_chunks
+                 (map_ref_str chunks
+                  (fun (chunk:string) -> string_chunk_bytes chunk)))))
+  
+end
+

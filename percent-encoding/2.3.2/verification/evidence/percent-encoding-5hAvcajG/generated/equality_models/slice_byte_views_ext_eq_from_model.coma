@@ -1,0 +1,49 @@
+use creusot.slice.Slice64
+use creusot.int.UInt8
+use seq.Seq
+use int.Int
+
+function deep_model_u8 [@inline:trivial] (self: UInt8.t) : int = UInt8.t'int self
+
+meta "rewrite_def" function deep_model_u8
+
+function index_slice_u8 [@inline:trivial] (self: Slice64.slice UInt8.t) (ix: int) : UInt8.t =
+  Seq.get (Slice64.view self) ix
+
+meta "rewrite_def" function index_slice_u8
+
+function deep_model_slice_u8 (self: Slice64.slice UInt8.t) : Seq.seq int
+
+axiom deep_model_slice_u8_spec:
+  forall self: Slice64.slice UInt8.t [deep_model_slice_u8 self]. Seq.length (Slice64.view self)
+    = Seq.length (deep_model_slice_u8 self)
+
+axiom deep_model_slice_u8_spec'0: forall self: Slice64.slice UInt8.t [deep_model_slice_u8 self]. forall i: int. 0 <= i
+        /\ i < Seq.length (deep_model_slice_u8 self)
+      -> Seq.get (deep_model_slice_u8 self) i = deep_model_u8 (index_slice_u8 self i)
+
+function deep_model_ref_slice_u8 [@inline:trivial] (self: Slice64.slice UInt8.t) : Seq.seq int =
+  deep_model_slice_u8 self
+
+meta "rewrite_def" function deep_model_ref_slice_u8
+
+meta "compute_max_steps" 1000000
+
+meta "select_lsinst" "all"
+
+constant left : Slice64.slice UInt8.t
+
+constant right : Slice64.slice UInt8.t
+
+predicate slice_byte_views_ext_eq_from_model (left: Slice64.slice UInt8.t) (right: Slice64.slice UInt8.t)
+
+goal vc_slice_byte_views_ext_eq_from_model: deep_model_ref_slice_u8 left = deep_model_ref_slice_u8 right
+  -> (let left_model = deep_model_ref_slice_u8 left in let right_model = deep_model_ref_slice_u8 right in Seq.length (Slice64.view left)
+    = Seq.length left_model
+  && Seq.length (Slice64.view right) = Seq.length right_model
+  && Seq.length (Slice64.view left) = Seq.length (Slice64.view right)
+  && (forall i: int. 0 <= i /\ i < Seq.length (Slice64.view left)
+      -> UInt8.t'int (Seq.get (Slice64.view left) i) = UInt8.t'int (Seq.get (Slice64.view right) i))
+  && Seq.(==) (Slice64.view left) (Slice64.view right)
+  && ([@stop_split] [@expl:slice_byte_views_ext_eq_from_model ensures] ([@stop_split] [@expl:slice_byte_views_ext_eq_from_model ensures #0] true)
+  /\ ([@stop_split] [@expl:slice_byte_views_ext_eq_from_model ensures #1] Seq.(==) (Slice64.view left) (Slice64.view right))))

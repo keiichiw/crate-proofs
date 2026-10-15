@@ -1,0 +1,421 @@
+theory Coma
+  
+  (* use why3.BuiltIn.BuiltIn *)
+  
+  (* use why3.Bool.Bool *)
+  
+  (* use why3.Unit.Unit *)
+  
+  (* use creusot.slice.Slice64 *)
+  
+  (* use creusot.int.UInt8 *)
+  
+  (* use creusot.prelude.Char *)
+  
+  (* use map.Map *)
+  
+  (* use creusot.prelude.Any *)
+  
+  type t_Vec_u8_Global
+  
+  type t_Cow_slice_u8 =
+    | Borrowed (slice t)
+    | Owned t_Vec_u8_Global
+  
+  goal vc_elim_Owned : true
+  
+  constant const_MAX : t1 = (18446744073709551615:t1)
+  
+  function view_Vec_u8_Global t_Vec_u8_Global : seq t
+  
+  axiom view_Vec_u8_Global_spec :
+    forall self:t_Vec_u8_Global [view_Vec_u8_Global self].
+     length (view_Vec_u8_Global self) <= t'int const_MAX
+  
+  goal vc_deref_Vec_u8_Global : true
+  
+  type t_Utf8Error
+  
+  type t_Result_ref_str_Utf8Error =
+    | Ok string
+    | Err t_Utf8Error
+  
+  predicate inv_Utf8Error t_Utf8Error
+  
+  predicate inv_Result_ref_str_Utf8Error t_Result_ref_str_Utf8Error
+  
+  axiom inv_axiom :
+    forall x:t_Result_ref_str_Utf8Error [inv_Result_ref_str_Utf8Error x].
+     inv_Result_ref_str_Utf8Error x <->
+     match x with
+     | Ok f0 -> true
+     | Err f0 -> inv_Utf8Error f0
+     end
+  
+  function tail_char (self:seq t2) : seq t2 = self[1..length self]
+  
+  function flat_map_char (seq t2) (t2 -> seq t) : seq t
+  
+  axiom flat_map_char_def :
+    forall self:seq t2, other:t2 -> seq t [flat_map_char self other].
+     flat_map_char self other =
+     (if length self = 0 then empty: seq t
+      else get other (get1 self 0) ++ flat_map_char (tail_char self) other)
+  
+  function to_utf8_char t2 : seq t
+  
+  axiom to_utf8_char_spec :
+    forall self:t2 [to_utf8_char self].
+     1 <= length (to_utf8_char self) /\ length (to_utf8_char self) <= 4
+  
+  function to_bytes (self:seq t2) : seq t =
+    flat_map_char self (fun (c:t2) -> to_utf8_char c)
+  
+  predicate utf8_is_valid (bytes:seq t) =
+    exists chars:seq t2. to_bytes chars = bytes
+  
+  function index_Mapping_u8_Int (self:t -> int) (a:t) : int = get self a
+  
+  (* meta rewrite_def function index_Mapping_u8_Int *)
+  
+  function map_u8 (seq t) (t -> int) : seq int
+  
+  axiom map_u8_spec :
+    forall self:seq t, m:t -> int [map_u8 self m].
+     length (map_u8 self m) = length self
+  
+  axiom map_u8_spec'0 :
+    forall self:seq t, m:t -> int [map_u8 self m].
+     forall i:int.
+      0 <= i /\ i < length self ->
+      get1 (map_u8 self m) i = index_Mapping_u8_Int m (get1 self i)
+  
+  predicate utf8_int_valid (bytes:seq int) =
+    exists raw:seq t, chars:seq t2.
+     map_u8 raw (fun (byte:t) -> t'int1 byte) = bytes /\ to_bytes chars = raw
+  
+  function byte_sequence_as_ints (bytes:seq t) : seq int =
+    map_u8 bytes (fun (byte:t) -> t'int1 byte)
+  
+  function view_str string : seq t2
+  
+  function std_error_offset t_Utf8Error : int
+  
+  type t_Option_Int =
+    | None
+    | Some int
+  
+  type tup2_Int_Option_Int =
+    | Tup2_Int_Option_Int'mk (f0:int) (f1:t_Option_Int)
+  
+  (* meta model_record function f1 *)
+  
+  (* meta model_record function f0 *)
+  
+  type t_Option_tup2_Int_Option_Int =
+    | None'0
+    | Some'0 tup2_Int_Option_Int
+  
+  type tup3_Int_Int_bool =
+    | Tup3_Int_Int_bool'mk (f0'0:int) (f1'0:int) (f2'0:bool)
+  
+  (* meta model_record function f2'0 *)
+  
+  (* meta model_record function f1'0 *)
+  
+  (* meta model_record function f0'0 *)
+  
+  function utf8_step (bytes:seq int) (pos:int) : tup3_Int_Int_bool =
+    let b0 = get1 bytes pos in
+    let remaining = length bytes - pos in
+    if 0 <= b0 /\ b0 <= 127 then Tup3_Int_Int_bool'mk b0 1 True
+    else if 194 <= b0 /\ b0 <= 223
+         then if remaining < 2
+              then Tup3_Int_Int_bool'mk 65533 remaining False
+              else let b1 = get1 bytes (pos + 1) in
+                   if 128 <= b1 /\ b1 <= 191
+                   then Tup3_Int_Int_bool'mk (((b0 - 192) * 64) + (b1 - 128))
+                        2 True
+                   else Tup3_Int_Int_bool'mk 65533 1 False
+         else if 224 <= b0 /\ b0 <= 239
+              then if remaining < 2
+                   then Tup3_Int_Int_bool'mk 65533 remaining False
+                   else let b1 = get1 bytes (pos + 1) in
+                        let second_ok =
+                          (if if b0 = 224 then 160 <= b1 /\ b1 <= 191
+                              else if b0 = 237 then 128 <= b1 /\ b1 <= 159
+                                   else 128 <= b1 /\ b1 <= 191
+                           then True else False)
+                        in
+                        if not second_ok = True
+                        then Tup3_Int_Int_bool'mk 65533 1 False
+                        else if remaining < 3
+                             then Tup3_Int_Int_bool'mk 65533 remaining False
+                             else let b2 = get1 bytes (pos + 2) in
+                                  if 128 <= b2 /\ b2 <= 191
+                                  then Tup3_Int_Int_bool'mk
+                                       ((((b0 - 224) * 4096)
+                                         + ((b1 - 128) * 64))
+                                        + (b2 - 128))
+                                       3 True
+                                  else Tup3_Int_Int_bool'mk 65533 2 False
+              else if 240 <= b0 /\ b0 <= 244
+                   then if remaining < 2
+                        then Tup3_Int_Int_bool'mk 65533 remaining False
+                        else let b1 = get1 bytes (pos + 1) in
+                             let second_ok =
+                               (if if b0 = 240 then 144 <= b1 /\ b1 <= 191
+                                   else if b0 = 244
+                                        then 128 <= b1 /\ b1 <= 143
+                                        else 128 <= b1 /\ b1 <= 191
+                                then True else False)
+                             in
+                             if not second_ok = True
+                             then Tup3_Int_Int_bool'mk 65533 1 False
+                             else if remaining < 3
+                                  then Tup3_Int_Int_bool'mk 65533 remaining
+                                       False
+                                  else let b2 = get1 bytes (pos + 2) in
+                                       if not (128 <= b2 /\ b2 <= 191)
+                                       then Tup3_Int_Int_bool'mk 65533 2
+                                            False
+                                       else if remaining < 4
+                                            then Tup3_Int_Int_bool'mk 65533
+                                                 remaining False
+                                            else let b3 =
+                                                   get1 bytes (pos + 3)
+                                                 in
+                                                 if 128 <= b3 /\ b3 <= 191
+                                                 then Tup3_Int_Int_bool'mk
+                                                      (((((b0 - 240) * 262144)
+                                                         + ((b1 - 128) * 4096))
+                                                        + ((b2 - 128) * 64))
+                                                       + (b3 - 128))
+                                                      4 True
+                                                 else Tup3_Int_Int_bool'mk
+                                                      65533 3 False
+                   else Tup3_Int_Int_bool'mk 65533 1 False
+  
+  function strict_error (seq int) : t_Option_tup2_Int_Option_Int
+  
+  axiom strict_error_def :
+    forall bytes:seq int [strict_error bytes].
+     strict_error bytes =
+     (if length bytes = 0 then None'0
+      else match utf8_step bytes 0 with
+      | Tup3_Int_Int_bool'mk _ consumed valid ->
+          if valid = True
+          then match strict_error bytes[consumed..length bytes] with
+          | Some'0 (Tup2_Int_Option_Int'mk offset len) ->
+              Some'0 (Tup2_Int_Option_Int'mk (consumed + offset) len)
+          | None'0 -> None'0
+          end
+          else let lead = get1 bytes 0 in
+               let remaining = length bytes in
+               let truncated =
+                 (if 194 <= lead /\ lead <= 223 /\ remaining < 2 \/
+                     224 <= lead /\
+                     lead <= 239 /\ remaining < 3 /\ consumed = remaining \/
+                     240 <= lead /\
+                     lead <= 244 /\ remaining < 4 /\ consumed = remaining
+                  then True else False)
+               in
+               Some'0
+               (Tup2_Int_Option_Int'mk 0
+                (if truncated = True then None else Some consumed))
+      end)
+  
+  function strict_error_offset (bytes:seq int) : int =
+    match strict_error bytes with
+    | Some'0 (Tup2_Int_Option_Int'mk offset _) -> offset
+    | None'0 -> 0
+    end
+  
+  function std_error_length t_Utf8Error : t_Option_Int
+  
+  function strict_error_length (bytes:seq int) : t_Option_Int =
+    match strict_error bytes with
+    | Some'0 (Tup2_Int_Option_Int'mk _ length1) -> length1
+    | None'0 -> None
+    end
+  
+  goal vc_from_utf8 : true
+  
+  goal vc_elim_Err : true
+  
+  type t_String
+  
+  type t_Cow_str =
+    | Borrowed'0 string
+    | Owned'0 t_String
+  
+  type t_Result_Cow_str_Utf8Error =
+    | Ok'0 t_Cow_str
+    | Err'0 t_Utf8Error
+  
+  goal vc_elim_Ok : true
+  
+  predicate inv_String t_String
+  
+  function view_String t_String : seq t2
+  
+  goal vc_from_utf8_unchecked : true
+  
+  goal vc_elim_Borrowed : true
+  
+  predicate inv_Cow_str t_Cow_str
+  
+  axiom inv_axiom'0 :
+    forall x:t_Cow_str [inv_Cow_str x].
+     inv_Cow_str x <->
+     match x with
+     | Borrowed'0 f0'1 -> true
+     | Owned'0 f0'1 -> inv_String f0'1
+     end
+  
+  predicate inv_Result_Cow_str_Utf8Error t_Result_Cow_str_Utf8Error
+  
+  axiom inv_axiom'1 :
+    forall x:t_Result_Cow_str_Utf8Error [inv_Result_Cow_str_Utf8Error x].
+     inv_Result_Cow_str_Utf8Error x <->
+     match x with
+     | Ok'0 f0'1 -> inv_Cow_str f0'1
+     | Err'0 f0'1 -> inv_Utf8Error f0'1
+     end
+  
+  function cow_bytes (value:t_Cow_slice_u8) : seq t =
+    match value with
+    | Borrowed bytes -> view bytes
+    | Owned bytes -> view_Vec_u8_Global bytes
+    end
+  
+  (* meta compute_max_steps 1000000 *)
+  
+  (* meta select_lsinst "all" *)
+  
+  goal vc_decode_utf8 :
+    forall input:t_Cow_slice_u8.
+     (forall x0:slice t.
+       input = Borrowed x0 ->
+       (forall f0'1:slice t.
+         Borrowed f0'1 = input ->
+         (forall result:t_Result_ref_str_Utf8Error.
+           inv_Result_ref_str_Utf8Error result /\
+           match result with
+           | Ok value ->
+               utf8_is_valid (view f0'1) /\
+               utf8_int_valid (byte_sequence_as_ints (view f0'1)) /\
+               (exists chars:seq t2.
+                 to_bytes chars = view f0'1 /\ view_str value = chars)
+           | Err error ->
+               not utf8_is_valid (view f0'1) /\
+               not utf8_int_valid (byte_sequence_as_ints (view f0'1)) /\
+               std_error_offset error =
+               strict_error_offset (byte_sequence_as_ints (view f0'1)) /\
+               std_error_length error =
+               strict_error_length (byte_sequence_as_ints (view f0'1))
+           end ->
+           (forall x01:string.
+             result = Ok x01 ->
+             (forall f0'11:string.
+               Ok f0'11 = result ->
+               inv_Result_Cow_str_Utf8Error (Ok'0 (Borrowed'0 f0'11)) /\
+               match input with
+               | Borrowed bytes ->
+                   utf8_int_valid (byte_sequence_as_ints (view bytes)) /\
+                   (exists chars:seq t2.
+                     to_bytes chars = view bytes /\ view_str f0'11 = chars)
+               | Owned _ -> false
+               end) /\
+             match result with
+             | Ok _ -> true
+             | _ -> false
+             end) /\
+           (forall x01:t_Utf8Error.
+             result = Err x01 ->
+             (forall f0'11:t_Utf8Error.
+               Err f0'11 = result ->
+               inv_Result_Cow_str_Utf8Error (Err'0 f0'11) /\
+               not utf8_is_valid (cow_bytes input) /\
+               not utf8_int_valid (byte_sequence_as_ints (cow_bytes input)) /\
+               std_error_offset f0'11 =
+               strict_error_offset (byte_sequence_as_ints (cow_bytes input)) /\
+               std_error_length f0'11 =
+               strict_error_length (byte_sequence_as_ints (cow_bytes input))) /\
+             match result with
+             | Err _ -> true
+             | _ -> false
+             end))) /\
+       match input with
+       | Borrowed _ -> true
+       | _ -> false
+       end) /\
+     (forall x0:t_Vec_u8_Global.
+       input = Owned x0 ->
+       (forall f01:t_Vec_u8_Global.
+         Owned f01 = input ->
+         (forall result:slice t.
+           view result = view_Vec_u8_Global f01 ->
+           (forall result1:t_Result_ref_str_Utf8Error.
+             inv_Result_ref_str_Utf8Error result1 /\
+             match result1 with
+             | Ok value ->
+                 utf8_is_valid (view result) /\
+                 utf8_int_valid (byte_sequence_as_ints (view result)) /\
+                 (exists chars:seq t2.
+                   to_bytes chars = view result /\ view_str value = chars)
+             | Err error ->
+                 not utf8_is_valid (view result) /\
+                 not utf8_int_valid (byte_sequence_as_ints (view result)) /\
+                 std_error_offset error =
+                 strict_error_offset (byte_sequence_as_ints (view result)) /\
+                 std_error_length error =
+                 strict_error_length (byte_sequence_as_ints (view result))
+             end ->
+             (forall x01:string.
+               result1 = Ok x01 ->
+               (forall f0'1:string.
+                 Ok f0'1 = result1 ->
+                 utf8_is_valid (view_Vec_u8_Global f01) &&
+                 (exists s:seq t2. to_bytes s = view_Vec_u8_Global f01) /\
+                 (forall result2:t_String.
+                   inv_String result2 /\
+                   to_bytes (view_String result2) = view_Vec_u8_Global f01 ->
+                   inv_Result_Cow_str_Utf8Error (Ok'0 (Owned'0 result2)) /\
+                   match input with
+                   | Borrowed _ -> false
+                   | Owned bytes ->
+                       utf8_int_valid
+                       (byte_sequence_as_ints (view_Vec_u8_Global bytes)) /\
+                       (exists chars:seq t2.
+                         to_bytes chars = view_Vec_u8_Global bytes /\
+                         view_String result2 = chars)
+                   end)) /\
+               match result1 with
+               | Ok _ -> true
+               | _ -> false
+               end) /\
+             (forall x01:t_Utf8Error.
+               result1 = Err x01 ->
+               (forall f0'1:t_Utf8Error.
+                 Err f0'1 = result1 ->
+                 inv_Result_Cow_str_Utf8Error (Err'0 f0'1) /\
+                 not utf8_is_valid (cow_bytes input) /\
+                 not utf8_int_valid (byte_sequence_as_ints (cow_bytes input)) /\
+                 std_error_offset f0'1 =
+                 strict_error_offset
+                 (byte_sequence_as_ints (cow_bytes input)) /\
+                 std_error_length f0'1 =
+                 strict_error_length
+                 (byte_sequence_as_ints (cow_bytes input))) /\
+               match result1 with
+               | Err _ -> true
+               | _ -> false
+               end)))) /\
+       match input with
+       | Owned _ -> true
+       | _ -> false
+       end)
+  
+end
+

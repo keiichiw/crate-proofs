@@ -1,0 +1,83 @@
+theory Coma
+  
+  (* use why3.BuiltIn.BuiltIn *)
+  
+  (* use why3.Bool.Bool *)
+  
+  (* use why3.Unit.Unit *)
+  
+  (* use creusot.int.UInt8 *)
+  
+  (* use seq.Seq *)
+  
+  function skip_ampersands (seq t) int : int
+  
+  axiom skip_ampersands_def :
+    forall input:seq t, start:int [skip_ampersands input start].
+     0 <= start /\ start <= length input ->
+     skip_ampersands input start =
+     (if start < length input /\ t'int (get input start) = 38
+      then skip_ampersands input (start + 1) else start)
+  
+  axiom skip_ampersands_spec :
+    forall input:seq t, start:int [skip_ampersands input start].
+     0 <= start /\ start <= length input ->
+     start <= skip_ampersands input start /\
+     skip_ampersands input start <= length input
+  
+  axiom skip_ampersands_spec'0 :
+    forall input:seq t, start:int [skip_ampersands input start].
+     0 <= start /\ start <= length input ->
+     (forall i:int.
+       start <= i /\ i < skip_ampersands input start ->
+       t'int (get input i) = 38)
+  
+  axiom skip_ampersands_spec'1 :
+    forall input:seq t, start:int [skip_ampersands input start].
+     0 <= start /\ start <= length input ->
+     skip_ampersands input start = length input \/
+     not t'int (get input (skip_ampersands input start)) = 38
+  
+  predicate ge_log_Int (self:int) (other:int) = other <= self
+  
+  (* meta rewrite_def predicate ge_log_Int *)
+  
+  predicate gt_log_Int (self:int) (other:int) = other < self
+  
+  (* meta rewrite_def predicate gt_log_Int *)
+  
+  predicate well_founded_relation_Int (self:int) (other:int) =
+    ge_log_Int self 0 /\ gt_log_Int self other
+  
+  (* meta rewrite_def predicate well_founded_relation_Int *)
+  
+  (* meta compute_max_steps 1000000 *)
+  
+  (* meta select_lsinst "all" *)
+  
+  constant input : seq t
+  
+  constant start : int
+  
+  constant end' : int
+  
+  predicate skip_ampersands_endpoint (seq t) int int
+  
+  goal vc_skip_ampersands_endpoint :
+    0 <= start /\ start <= end' /\ end' <= length input ->
+    (forall i:int. start <= i /\ i < end' -> t'int (get input i) = 38) ->
+    end' = length input \/ not t'int (get input end') = 38 ->
+    (if start < end'
+     then (((0 <= (start + 1) /\ (start + 1) <= end' /\ end' <= length input) /\
+            (forall i:int.
+              (start + 1) <= i /\ i < end' -> t'int (get input i) = 38) /\
+            (end' = length input \/ not t'int (get input end') = 38)) /\
+           well_founded_relation_Int (end' - start) (end' - (start + 1))) /\
+          (skip_ampersands_endpoint input (start + 1) end' /\
+           skip_ampersands input (start + 1) = end' ->
+           skip_ampersands_endpoint input (start + 1) end' /\
+           skip_ampersands input start = end')
+     else true /\ skip_ampersands input start = end')
+  
+end
+

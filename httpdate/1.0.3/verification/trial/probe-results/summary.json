@@ -1,0 +1,278 @@
+{
+  "generated_at_utc": "2026-10-07T20:25:35.158727+00:00",
+  "scope": "Five independent Creusot std API probes; no httpdate implementation changes or whole-API claims.",
+  "toolchain_commit": "318615be3b8bbc60d1f6d52469ba5c0bdebed4f1",
+  "versions": {
+    "cargo_creusot": {
+      "exit": 0,
+      "output": "cargo-creusot 0.13.0\nRust toolchain nightly-2026-06-22\nWhy3 platform, version 1.8.2+git\nwhy3find v1.3.0+dev\nalt-ergo 2.6.2\nz3 4.15.3\ncvc4 1.8\ncvc5 1.3.1"
+    },
+    "cargo_proofs": {
+      "exit": 0,
+      "output": "cargo proofs 0.3.4"
+    },
+    "rustc": {
+      "exit": 0,
+      "output": "rustc 1.91.0 (f8297e351 2025-10-28)"
+    },
+    "why3": {
+      "exit": 0,
+      "output": "Why3 platform, version 1.8.2+git"
+    },
+    "why3find": {
+      "exit": 0,
+      "output": "why3find v1.3.0+dev"
+    },
+    "alt_ergo": {
+      "exit": 0,
+      "output": "v2.6.2"
+    },
+    "z3": {
+      "exit": 0,
+      "output": "Z3 version 4.15.3 - 64 bit"
+    },
+    "cvc5": {
+      "exit": 0,
+      "output": "This is cvc5 version 1.3.1 [git ea1b484 on branch HEAD]\ncompiled with GCC version 11.4.0\non Sep 24 2025 18:57:07\n\nCopyright (c) 2009-2025 by the authors and their institutional\naffiliations listed at https://cvc5.github.io/people.html\n\nThis build of cvc5 uses GPLed libraries, and is thus covered by\nthe GNU General Public License (GPL) version 3.  Versions of cvc5\nare available that are covered by the (modified) BSD license. If\nyou want to license cvc5 under this license, please configure cvc5\nwith the \"--no-gpl\" option before building from sources.\n\nTHIS SOFTWARE IS PROVIDED AS-IS, WITHOUT ANY WARRANTIES.\nUSE AT YOUR OWN RISK.\n\nThis version of cvc5 is linked against the following non-(L)GPL'ed\nthird party libraries.\n\n  CaDiCaL - Simplified Satisfiability Solver\n  See https://github.com/arminbiere/cadical for copyright information.\n\n  Editline Library\n  See https://thrysoee.dk/editline\n  for copyright information.\n\n  SymFPU - The Symbolic Floating Point Unit\n  See https://github.com/martin-cs/symfpu/tree/CVC4 for copyright information.\n\nThis version of cvc5 is linked against the following third party\nlibraries covered by the LGPLv3 license.\nSee licenses/lgpl-3.0.txt for more information.\n\n  LibPoly polynomial library\n  See https://github.com/SRI-CSL/libpoly for copyright and\n  licensing information.\n\ncvc5 is statically linked against these libraries. To recompile\nthis version of cvc5 with different versions of these libraries\nfollow the instructions on https://github.com/cvc5/cvc5/blob/main/INSTALL.md\n\nThis version of cvc5 is linked against the following third party\nlibraries covered by the GPLv3 license.\nSee licenses/gpl-3.0.txt for more information.\n\n  CLN - Class Library for Numbers\n  See http://www.ginac.de/CLN for copyright information.\n\n  glpk-cut-log - a modified version of GPLK, the GNU Linear Programming Kit\n  See http://github.com/timothy-king/glpk-cut-log for copyright information\n\n  CoCoALib - a computer algebra library\n  See https://cocoa.dima.unige.it/cocoa/cocoalib/index.shtml for copyright information\n\nSee the file COPYING (distributed with the source code, and with\nall binaries) for the full cvc5 copyright, licensing, and (lack of)\nwarranty information."
+    },
+    "cvc4": {
+      "exit": 0,
+      "output": "This is CVC4 version 1.8 [git HEAD 52479010]\ncompiled with GCC version 5.4.0 20160609\non Aug 25 2020 00:35:00\n\nCopyright (c) 2009-2020 by the authors and their institutional\naffiliations listed at http://cvc4.cs.stanford.edu/authors\n\nThis build of CVC4 uses GPLed libraries, and is thus covered by\nthe GNU General Public License (GPL) version 3.  Versions of CVC4\nare available that are covered by the (modified) BSD license. If\nyou want to license CVC4 under this license, please configure CVC4\nwith the \"--no-gpl\" option before building from sources.\n\nTHIS SOFTWARE IS PROVIDED AS-IS, WITHOUT ANY WARRANTIES.\nUSE AT YOUR OWN RISK.\n\nCVC4 incorporates code from ANTLR3 (http://www.antlr.org).\nSee licenses/antlr3-LICENSE for copyright and licensing information.\n\nThis version of CVC4 is linked against the following non-(L)GPL'ed\nthird party libraries.\n\n  CaDiCaL - Simplified Satisfiability Solver\n  See https://github.com/arminbiere/cadical for copyright information.\n\n  CryptoMiniSat - An Advanced SAT Solver\n  See https://github.com/msoos/cryptominisat for copyright information.\n\n  SymFPU - The Symbolic Floating Point Unit\n  See https://github.com/martin-cs/symfpu/tree/CVC4 for copyright information.\n\nThis version of CVC4 is linked against the following third party\nlibraries covered by the GPLv3 license.\nSee licenses/gpl-3.0.txt for more information.\n\n  CLN - Class Library for Numbers\n  See http://www.ginac.de/CLN for copyright information.\n\n  GNU Readline\n  See http://cnswww.cns.cwru.edu/php/chet/readline/rltop.html\n  for copyright information.\n\nSee the file COPYING (distributed with the source code, and with\nall binaries) for the full CVC4 copyright, licensing, and (lack of)\nwarranty information."
+    }
+  },
+  "tool_binary_sha256": {
+    "cargo": {
+      "path": "/workspace/.cargo/bin/cargo",
+      "sha256": "dda7234360b7f578ca8b0ddcb80145646fa61a67c1720a5abc7051b35c9fcb71"
+    },
+    "cargo_creusot": {
+      "path": "/workspace/.cargo/bin/cargo-creusot",
+      "sha256": "c9b3d2a8ea0a6fb2284a43225fbbb4507a4d2b0d6600f0f02d68e51d19d23f27"
+    },
+    "cargo_proofs": {
+      "path": "/workspace/.cargo/bin/cargo-proofs",
+      "sha256": "cbf576ce298e7c6a457c6b0daffa763d647c43d18101087d829418b9ca8ea97e"
+    },
+    "rustc": {
+      "path": "/workspace/.cargo/bin/rustc",
+      "sha256": "dda7234360b7f578ca8b0ddcb80145646fa61a67c1720a5abc7051b35c9fcb71"
+    },
+    "why3": {
+      "path": "/workspace/.local/share/creusot/bin/why3",
+      "sha256": "214edb9b77b9544fedcc5aec422be1d797875611aebf5ba8606c35ee49738950"
+    },
+    "why3find": {
+      "path": "/workspace/.local/share/creusot/bin/why3find",
+      "sha256": "f9b17cc9b7973e7234e05c48fe5a5c8bd9af6bc93a4a2fff920cf770d3f9a3cc"
+    },
+    "alt_ergo": {
+      "path": "/workspace/.local/share/creusot/bin/alt-ergo",
+      "sha256": "bdc4e487f2bdfd421011c82f545df3f50530aee6d6e406b1e847d433650ca3c1"
+    },
+    "z3": {
+      "path": "/workspace/.local/share/creusot/bin/z3",
+      "sha256": "80ee070b8ffc2fa964b0b879250b2110c47f84c1256a1f9ab76fc7cf95e46292"
+    },
+    "cvc5": {
+      "path": "/workspace/.local/share/creusot/bin/cvc5",
+      "sha256": "88e0445c1e30739e356aacb34bf664956efaf31c96f4a428e12b78b22a65da6e"
+    },
+    "cvc4": {
+      "path": "/workspace/.local/share/creusot/bin/cvc4",
+      "sha256": "d38a79cf984592785eda41ec888d94ca107ac1f13058740238041e28c8472e51"
+    }
+  },
+  "input_sha256": {
+    "/workspace/proof-env/httpdate/1.0.3/verification/trial/probes/Cargo.toml": "2e344de7505580bfae6c85f683f5a21f8b25a68ef122df282c938c151a30a74b",
+    "/workspace/proof-env/httpdate/1.0.3/verification/trial/probes/Cargo.lock": "514a7602a6fea5158f1ae9d3792beb76a7d62fa20d68bae52a551b018086089b",
+    "/workspace/proof-env/httpdate/1.0.3/verification/trial/probes/src/lib.rs": "b49e50711e180fe58bb23efc2b8a054c822a85c1f163ab2e9d7a1e25bf4e3733",
+    "/workspace/proof-env/httpdate/1.0.3/verification/trial/probes/run.sh": "ed77fa3e9d0f84f9c1b64b6c98e6a4a28632097bbd2514f5fb4d29c3c2a8b9e9",
+    "/workspace/proof-env/httpdate/1.0.3/verification/trial/probes/why3find.json": "7ab52d429e4b4b74e3b79507ec72c8c3998b58420c64f6e09b3841701531e174",
+    "/workspace/proof-env/httpdate/1.0.3/crate/src/date.rs": "2d714488db2a79371b4683a1c6f76edd07598da79ac73272063c376fa1a9b50a",
+    "/workspace/proof-env/rust-toolchain.toml": "57da15ac9b199a5169602f55715ebac933e4c0d59aa3560e6096f5494ee62f0c",
+    "/workspace/proof-env/scripts/activate.sh": "f8d14eaf2943e76e3c43c042f8afce06370bcde579f4489dbfe8ba9047f8a662",
+    "/workspace/proof-env/why3find.json": "7ab52d429e4b4b74e3b79507ec72c8c3998b58420c64f6e09b3841701531e174",
+    "/workspace/creusot/creusot-std/src/std/time.rs": "94db7527a499642e882e8aec49bea084ce840d6fe664d62b8ad2aaad7e42f0d8",
+    "/workspace/creusot/creusot-std/src/std/fmt.rs": "ab6201656bec8b94b9f9fd9ed5b2c20d8393016f0abfe7df5baabdb20ae37c88",
+    "/workspace/creusot/creusot-std/src/std/string.rs": "3380344474fde787cbccb1b1c4b1d5ebe08689b13d107022d5d5de36fe2ea836",
+    "/workspace/creusot/creusot-std/src/std/cmp.rs": "64ec9fc697163aea4da3c83acfa17ab1f624a971dffbc9930dd1a334738add8e",
+    "/workspace/creusot/creusot-std/src/std/io.rs": "38c685fc25147e133a458650ea41884c70d5f736bc1af8cd5a51b6fec3b54d9e"
+  },
+  "input_hash_snapshot": "verification/trial/probe-results/logs/run-G9ThNPTT/inputs-before.json",
+  "input_sha256_after_proof": {
+    "/workspace/proof-env/httpdate/1.0.3/verification/trial/probes/Cargo.toml": "2e344de7505580bfae6c85f683f5a21f8b25a68ef122df282c938c151a30a74b",
+    "/workspace/proof-env/httpdate/1.0.3/verification/trial/probes/Cargo.lock": "514a7602a6fea5158f1ae9d3792beb76a7d62fa20d68bae52a551b018086089b",
+    "/workspace/proof-env/httpdate/1.0.3/verification/trial/probes/src/lib.rs": "b49e50711e180fe58bb23efc2b8a054c822a85c1f163ab2e9d7a1e25bf4e3733",
+    "/workspace/proof-env/httpdate/1.0.3/verification/trial/probes/run.sh": "ed77fa3e9d0f84f9c1b64b6c98e6a4a28632097bbd2514f5fb4d29c3c2a8b9e9",
+    "/workspace/proof-env/httpdate/1.0.3/verification/trial/probes/why3find.json": "7ab52d429e4b4b74e3b79507ec72c8c3998b58420c64f6e09b3841701531e174",
+    "/workspace/proof-env/httpdate/1.0.3/crate/src/date.rs": "2d714488db2a79371b4683a1c6f76edd07598da79ac73272063c376fa1a9b50a",
+    "/workspace/proof-env/rust-toolchain.toml": "57da15ac9b199a5169602f55715ebac933e4c0d59aa3560e6096f5494ee62f0c",
+    "/workspace/proof-env/scripts/activate.sh": "f8d14eaf2943e76e3c43c042f8afce06370bcde579f4489dbfe8ba9047f8a662",
+    "/workspace/proof-env/why3find.json": "7ab52d429e4b4b74e3b79507ec72c8c3998b58420c64f6e09b3841701531e174",
+    "/workspace/creusot/creusot-std/src/std/time.rs": "94db7527a499642e882e8aec49bea084ce840d6fe664d62b8ad2aaad7e42f0d8",
+    "/workspace/creusot/creusot-std/src/std/fmt.rs": "ab6201656bec8b94b9f9fd9ed5b2c20d8393016f0abfe7df5baabdb20ae37c88",
+    "/workspace/creusot/creusot-std/src/std/string.rs": "3380344474fde787cbccb1b1c4b1d5ebe08689b13d107022d5d5de36fe2ea836",
+    "/workspace/creusot/creusot-std/src/std/cmp.rs": "64ec9fc697163aea4da3c83acfa17ab1f624a971dffbc9930dd1a334738add8e",
+    "/workspace/creusot/creusot-std/src/std/io.rs": "38c685fc25147e133a458650ea41884c70d5f736bc1af8cd5a51b6fec3b54d9e"
+  },
+  "inputs_unchanged_during_run": {
+    "/workspace/proof-env/httpdate/1.0.3/verification/trial/probes/Cargo.toml": true,
+    "/workspace/proof-env/httpdate/1.0.3/verification/trial/probes/Cargo.lock": true,
+    "/workspace/proof-env/httpdate/1.0.3/verification/trial/probes/src/lib.rs": true,
+    "/workspace/proof-env/httpdate/1.0.3/verification/trial/probes/run.sh": true,
+    "/workspace/proof-env/httpdate/1.0.3/verification/trial/probes/why3find.json": true,
+    "/workspace/proof-env/httpdate/1.0.3/crate/src/date.rs": true,
+    "/workspace/proof-env/rust-toolchain.toml": true,
+    "/workspace/proof-env/scripts/activate.sh": true,
+    "/workspace/proof-env/why3find.json": true,
+    "/workspace/creusot/creusot-std/src/std/time.rs": true,
+    "/workspace/creusot/creusot-std/src/std/fmt.rs": true,
+    "/workspace/creusot/creusot-std/src/std/string.rs": true,
+    "/workspace/creusot/creusot-std/src/std/cmp.rs": true,
+    "/workspace/creusot/creusot-std/src/std/io.rs": true
+  },
+  "probe_command": "cargo creusot --only=coma --span-mode off --output-dir <fresh-run>/coma -- --locked --features <feature>",
+  "proof_command": "timeout --signal=TERM --kill-after=5s 60s cargo creusot --only=prove --no-cache --why3find-arg=-d --why3find-arg=1 <exact-target-coma>",
+  "features": [
+    {
+      "feature": "probe-duration",
+      "target": "duration_parts",
+      "clean_exit": 0,
+      "compile_exit": 0,
+      "proof_exit": 0,
+      "proof_status": "all_goals_proved",
+      "coma_path": "verification/trial/probes/verif/feature-run-run-G9ThNPTT/probe-duration/coma/verif/httpdate_api_probes_rlib/duration_parts.coma",
+      "proof_json_path": "verification/trial/probes/verif/feature-run-run-G9ThNPTT/probe-duration/coma/verif/httpdate_api_probes_rlib/duration_parts/proof.json",
+      "session_goals": 3,
+      "target_vc_present": true,
+      "all_goal_trees_proved": true,
+      "claim_scope": "seconds and subsecond nanoseconds reconstruct Duration's modeled nanosecond value",
+      "logs": {
+        "clean": "verification/trial/probe-results/logs/run-G9ThNPTT/probe-duration/clean.log",
+        "compile": "verification/trial/probe-results/logs/run-G9ThNPTT/probe-duration/compile.log",
+        "prove": "verification/trial/probe-results/logs/run-G9ThNPTT/probe-duration/prove.log"
+      },
+      "preserved_artifacts": [
+        {
+          "name": "target",
+          "coma": "verification/trial/probe-results/artifacts/run-G9ThNPTT/probe-duration/target.coma",
+          "proof_json": "verification/trial/probe-results/artifacts/run-G9ThNPTT/probe-duration/proof.json",
+          "coma_sha256": "37465a130574fc6c2625cd5d8c5d74f7ccac0fb95040a9219a4baa246f842dd7",
+          "proof_json_sha256": "f7a8b4a762a5e2cfbe7cab1271ac854516e9e0403b575fdc6b1c2d8280fd462c"
+        }
+      ]
+    },
+    {
+      "feature": "probe-system-time",
+      "target": "epoch_seconds",
+      "clean_exit": 0,
+      "compile_exit": 0,
+      "proof_exit": 1,
+      "proof_status": "unproved_or_nonzero_exit",
+      "coma_path": "verification/trial/probes/verif/feature-run-run-G9ThNPTT/probe-system-time/coma/verif/httpdate_api_probes_rlib/epoch_seconds.coma",
+      "proof_json_path": "verification/trial/probes/verif/feature-run-run-G9ThNPTT/probe-system-time/coma/verif/httpdate_api_probes_rlib/epoch_seconds/proof.json",
+      "session_goals": 1,
+      "target_vc_present": true,
+      "all_goal_trees_proved": false,
+      "claim_scope": "translation/panic behavior only; no semantic contract was added",
+      "logs": {
+        "clean": "verification/trial/probe-results/logs/run-G9ThNPTT/probe-system-time/clean.log",
+        "compile": "verification/trial/probe-results/logs/run-G9ThNPTT/probe-system-time/compile.log",
+        "prove": "verification/trial/probe-results/logs/run-G9ThNPTT/probe-system-time/prove.log"
+      },
+      "preserved_artifacts": [
+        {
+          "name": "target",
+          "coma": "verification/trial/probe-results/artifacts/run-G9ThNPTT/probe-system-time/target.coma",
+          "proof_json": "verification/trial/probe-results/artifacts/run-G9ThNPTT/probe-system-time/proof.json",
+          "coma_sha256": "4552b4f4d4727040b2eebc2c5fb375baab8b57622dc2a3c92977758672d0f8a0",
+          "proof_json_sha256": "ebef31a9d41ff75d327d72e5026a0411afa983a4e12eac27c3873c1a2e12fb6e"
+        }
+      ]
+    },
+    {
+      "feature": "probe-utf8",
+      "target": "ascii_is_utf8",
+      "clean_exit": 0,
+      "compile_exit": 0,
+      "proof_exit": 1,
+      "proof_status": "unproved_or_nonzero_exit",
+      "coma_path": "verification/trial/probes/verif/feature-run-run-G9ThNPTT/probe-utf8/coma/verif/httpdate_api_probes_rlib/ascii_is_utf8.coma",
+      "proof_json_path": "verification/trial/probes/verif/feature-run-run-G9ThNPTT/probe-utf8/coma/verif/httpdate_api_probes_rlib/ascii_is_utf8/proof.json",
+      "session_goals": 1,
+      "target_vc_present": true,
+      "all_goal_trees_proved": false,
+      "claim_scope": "requires each byte < 128 and ensures UTF-8 validation succeeds",
+      "logs": {
+        "clean": "verification/trial/probe-results/logs/run-G9ThNPTT/probe-utf8/clean.log",
+        "compile": "verification/trial/probe-results/logs/run-G9ThNPTT/probe-utf8/compile.log",
+        "prove": "verification/trial/probe-results/logs/run-G9ThNPTT/probe-utf8/prove.log"
+      },
+      "preserved_artifacts": [
+        {
+          "name": "target",
+          "coma": "verification/trial/probe-results/artifacts/run-G9ThNPTT/probe-utf8/target.coma",
+          "proof_json": "verification/trial/probe-results/artifacts/run-G9ThNPTT/probe-utf8/proof.json",
+          "coma_sha256": "9f456391f4fa0949e22c5bd76cc4b5676db33cf53e216d54fc574dc60f401571",
+          "proof_json_sha256": "a9ed60b7c65e32a7255ceaa951679b1d4ab19f68e1203ff5af1cede132e2e460"
+        }
+      ]
+    },
+    {
+      "feature": "probe-string",
+      "target": "ascii_trimmed_empty",
+      "clean_exit": 0,
+      "compile_exit": 0,
+      "proof_exit": 1,
+      "proof_status": "unproved_or_nonzero_exit",
+      "coma_path": "verification/trial/probes/verif/feature-run-run-G9ThNPTT/probe-string/coma/verif/httpdate_api_probes_rlib/ascii_trimmed_empty.coma",
+      "proof_json_path": "verification/trial/probes/verif/feature-run-run-G9ThNPTT/probe-string/coma/verif/httpdate_api_probes_rlib/ascii_trimmed_empty/proof.json",
+      "session_goals": 1,
+      "target_vc_present": true,
+      "all_goal_trees_proved": false,
+      "claim_scope": "translation/panic behavior only; no semantic contract was added",
+      "logs": {
+        "clean": "verification/trial/probe-results/logs/run-G9ThNPTT/probe-string/clean.log",
+        "compile": "verification/trial/probe-results/logs/run-G9ThNPTT/probe-string/compile.log",
+        "prove": "verification/trial/probe-results/logs/run-G9ThNPTT/probe-string/prove.log"
+      },
+      "preserved_artifacts": [
+        {
+          "name": "target",
+          "coma": "verification/trial/probe-results/artifacts/run-G9ThNPTT/probe-string/target.coma",
+          "proof_json": "verification/trial/probe-results/artifacts/run-G9ThNPTT/probe-string/proof.json",
+          "coma_sha256": "4ff4b9eb7fb2e7c11f0bde08bccf6e581ce0bbf01b047dfbfb4626cddd8d46ea",
+          "proof_json_sha256": "9b74c554fc8d2ca53585a9579f7c0b60b6ff2b6af7ee6f6556d5a741e16b62e0"
+        }
+      ]
+    },
+    {
+      "feature": "probe-formatter",
+      "target": "formatter_write",
+      "clean_exit": 0,
+      "compile_exit": 0,
+      "proof_exit": 0,
+      "proof_status": "all_goals_proved",
+      "coma_path": "verification/trial/probes/verif/feature-run-run-G9ThNPTT/probe-formatter/coma/verif/httpdate_api_probes_rlib/formatter_write.coma",
+      "proof_json_path": "verification/trial/probes/verif/feature-run-run-G9ThNPTT/probe-formatter/coma/verif/httpdate_api_probes_rlib/formatter_write/proof.json",
+      "session_goals": 2,
+      "target_vc_present": true,
+      "all_goal_trees_proved": true,
+      "claim_scope": "translation/panic behavior only; Formatter output content is not specified",
+      "logs": {
+        "clean": "verification/trial/probe-results/logs/run-G9ThNPTT/probe-formatter/clean.log",
+        "compile": "verification/trial/probe-results/logs/run-G9ThNPTT/probe-formatter/compile.log",
+        "prove": "verification/trial/probe-results/logs/run-G9ThNPTT/probe-formatter/prove.log"
+      },
+      "preserved_artifacts": [
+        {
+          "name": "target",
+          "coma": "verification/trial/probe-results/artifacts/run-G9ThNPTT/probe-formatter/target.coma",
+          "proof_json": "verification/trial/probe-results/artifacts/run-G9ThNPTT/probe-formatter/proof.json",
+          "coma_sha256": "6257cce7fe0701e35c8e181df65a40a8ce522e4ff29232c43c88d37f834d714d",
+          "proof_json_sha256": "4548b5a40e55faa15d8e7ffb9d1ab476d2d363398b8c0b9b8ea340279c6f4240"
+        }
+      ]
+    }
+  ]
+}

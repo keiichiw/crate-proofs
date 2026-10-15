@@ -1,0 +1,244 @@
+(* <ascii_set::AsciiSet as core::fmt::Debug> *)
+
+use seq.Seq
+use creusot.int.UInt8
+use creusot.int.UInt32
+use creusot.prelude.MutBorrow
+use creusot.slice.Slice64
+use creusot.int.UInt64
+use creusot.prelude.Any
+
+type t_Option_bool = None | Some bool
+
+type t_DebugTrace = {
+  struct_name: string;
+  field_names: Seq.seq string;
+  field_type_tags: Seq.seq UInt8.t;
+  word_values: Seq.seq (Seq.seq UInt32.t);
+  byte_values: Seq.seq (Seq.seq UInt8.t);
+  iter_values: Seq.seq (Seq.seq UInt8.t);
+  ascii_set_values: Seq.seq (Seq.seq UInt32.t);
+  finish_status: t_Option_bool }
+
+let empty (name: string) (return (x: t_DebugTrace)) = any [ return (result: t_DebugTrace) -> (! return {result}) ]
+
+let borrow_mut_DebugTrace (self: MutBorrow.t t_DebugTrace) (return (x: MutBorrow.t t_DebugTrace)) = any
+  [ return (result: MutBorrow.t t_DebugTrace) -> {[@stop_split] [@expl:borrow_mut ensures] result = self}
+    (! return {result}) ]
+
+type t_Formatter
+
+predicate inv_Formatter (_1: t_Formatter)
+
+type t_DebugStruct
+
+predicate invariant_refmut_Formatter [@inline:trivial] (self: MutBorrow.t t_Formatter) =
+  inv_Formatter self.current /\ inv_Formatter self.final
+
+meta "rewrite_def" predicate invariant_refmut_Formatter
+
+predicate inv_refmut_Formatter [@inline:trivial] (_1: MutBorrow.t t_Formatter) = invariant_refmut_Formatter _1
+
+meta "rewrite_def" predicate inv_refmut_Formatter
+
+predicate inv_DebugStruct (_1: t_DebugStruct)
+
+let start (formatter: MutBorrow.t t_Formatter) (name: string) (trace: MutBorrow.t t_DebugTrace)
+  (return (x: t_DebugStruct)) = {[@stop_split] [@expl:start 'formatter' type invariant] inv_refmut_Formatter formatter}
+  any
+  [ return (result: t_DebugStruct) ->
+  {[@stop_split] [@expl:start ensures] ([@stop_split] [@expl:start result type invariant] inv_DebugStruct result)
+    /\ ([@stop_split] [@expl:start ensures] trace.final.struct_name = name
+    /\ Seq.length trace.final.field_names = 0
+    /\ Seq.length trace.final.field_type_tags = 0
+    /\ Seq.length trace.final.word_values = 0
+    /\ Seq.length trace.final.byte_values = 0
+    /\ Seq.length trace.final.iter_values = 0
+    /\ Seq.length trace.final.ascii_set_values = 0 /\ trace.final.finish_status = None)}
+    (! return {result}) ]
+
+type t_AsciiSet = { mask: Slice64.array UInt32.t }
+
+predicate invariant_refmut_DebugStruct [@inline:trivial] (self: MutBorrow.t t_DebugStruct) =
+  inv_DebugStruct self.current /\ inv_DebugStruct self.final
+
+meta "rewrite_def" predicate invariant_refmut_DebugStruct
+
+predicate inv_refmut_DebugStruct [@inline:trivial] (_1: MutBorrow.t t_DebugStruct) = invariant_refmut_DebugStruct _1
+
+meta "rewrite_def" predicate inv_refmut_DebugStruct
+
+predicate inv_Seq_u32 [@inline:trivial] (_1: Seq.seq UInt32.t) = true
+
+meta "rewrite_def" predicate inv_Seq_u32
+
+predicate invariant_array_u32_4 (self: Slice64.array UInt32.t) =
+  inv_Seq_u32 (Slice64.view self) /\ Seq.length (Slice64.view self) = UInt64.t'int (4: UInt64.t)
+
+predicate inv_array_u32_4 [@inline:trivial] (_1: Slice64.array UInt32.t) = invariant_array_u32_4 _1
+
+meta "rewrite_def" predicate inv_array_u32_4
+
+predicate invariant_ref_array_u32_4 [@inline:trivial] (self: Slice64.array UInt32.t) = inv_array_u32_4 self
+
+meta "rewrite_def" predicate invariant_ref_array_u32_4
+
+predicate inv_ref_array_u32_4 [@inline:trivial] (_1: Slice64.array UInt32.t) = invariant_ref_array_u32_4 _1
+
+meta "rewrite_def" predicate inv_ref_array_u32_4
+
+let field_words (builder: MutBorrow.t t_DebugStruct) (name: string) (value: Slice64.array UInt32.t)
+  (trace: MutBorrow.t t_DebugTrace) (return (x: ())) =
+{[@stop_split] [@expl:field_words requires] ([@stop_split] [@expl:field_words 'builder' type invariant] inv_refmut_DebugStruct builder)
+  /\ ([@stop_split] [@expl:field_words 'value' type invariant] inv_ref_array_u32_4 value)}
+  any
+  [ return (result: ()) ->
+  {[@stop_split] [@expl:field_words ensures] ([@stop_split] [@expl:field_words ensures #0] trace.final.field_names
+      = Seq.snoc trace.current.field_names name)
+    /\ ([@stop_split] [@expl:field_words ensures #1] trace.final.field_type_tags
+      = Seq.snoc trace.current.field_type_tags (0: UInt8.t))
+    /\ ([@stop_split] [@expl:field_words ensures #2] trace.final.word_values
+      = Seq.snoc trace.current.word_values (Slice64.view value))
+    /\ ([@stop_split] [@expl:field_words ensures #3] trace.final.struct_name = trace.current.struct_name
+    /\ trace.final.byte_values = trace.current.byte_values
+    /\ trace.final.iter_values = trace.current.iter_values
+    /\ trace.final.ascii_set_values = trace.current.ascii_set_values
+    /\ trace.final.finish_status = trace.current.finish_status)}
+    (! return {result}) ]
+
+predicate resolve_refmut_DebugStruct [@inline:trivial] (_1: MutBorrow.t t_DebugStruct) = _1.final = _1.current
+
+meta "rewrite_def" predicate resolve_refmut_DebugStruct
+
+type t_Result_unit_Error = Ok () | Err ()
+
+let finish (builder: MutBorrow.t t_DebugStruct) (trace: MutBorrow.t t_DebugTrace) (return (x: t_Result_unit_Error)) =
+{[@stop_split] [@expl:finish 'builder' type invariant] inv_refmut_DebugStruct builder}
+  any
+  [ return (result: t_Result_unit_Error) -> {[@stop_split] [@expl:finish ensures] trace.final.finish_status
+      = Some (match result with
+        | Ok () -> true
+        | Err _ -> false
+        end)
+    /\ trace.final.struct_name = trace.current.struct_name
+    /\ trace.final.field_names = trace.current.field_names
+    /\ trace.final.field_type_tags = trace.current.field_type_tags
+    /\ trace.final.word_values = trace.current.word_values
+    /\ trace.final.byte_values = trace.current.byte_values
+    /\ trace.final.iter_values = trace.current.iter_values
+    /\ trace.final.ascii_set_values = trace.current.ascii_set_values}
+    (! return {result}) ]
+
+predicate resolve_DebugStruct (_1: t_DebugStruct)
+
+predicate resolve_refmut_Formatter [@inline:trivial] (_1: MutBorrow.t t_Formatter) = _1.final = _1.current
+
+meta "rewrite_def" predicate resolve_refmut_Formatter
+
+predicate inv_AsciiSet (_1: t_AsciiSet)
+
+axiom inv_axiom [@rewrite]: forall x: t_AsciiSet [inv_AsciiSet x]. inv_AsciiSet x = inv_array_u32_4 x.mask
+
+predicate invariant_ref_AsciiSet [@inline:trivial] (self: t_AsciiSet) = inv_AsciiSet self
+
+meta "rewrite_def" predicate invariant_ref_AsciiSet
+
+predicate inv_ref_AsciiSet [@inline:trivial] (_1: t_AsciiSet) = invariant_ref_AsciiSet _1
+
+meta "rewrite_def" predicate inv_ref_AsciiSet
+
+meta "compute_max_steps" 1000000
+
+meta "select_lsinst" "all"
+
+let fmt_AsciiSet (self: t_AsciiSet) (formatter: MutBorrow.t t_Formatter) (return (x: t_Result_unit_Error)) =
+{[@stop_split] [@expl:fmt_AsciiSet requires] ([@stop_split] [@expl:fmt 'self' type invariant] inv_ref_AsciiSet self)
+  /\ ([@stop_split] [@expl:fmt 'formatter' type invariant] inv_refmut_Formatter formatter)}
+  (! bb0
+  [ bb0 = s0
+    [ s0 = [ &struct_name'0 <- "AsciiSet" ] s1
+    | s1 = [ &field_name <- "mask" ] s2
+    | s2 = empty {struct_name'0} (fun (_x: t_DebugTrace) -> [ &trace <- _x ] s3)
+    | s3 = MutBorrow.borrow_mut <t_DebugTrace> {trace}
+        (fun (_bor: MutBorrow.t t_DebugTrace) -> [ &_11 <- _bor ] [ &trace <- _bor.final ] s4)
+    | s4 = borrow_mut_DebugTrace {_11} (fun (_x: MutBorrow.t t_DebugTrace) -> [ &_10 <- _x ] s5)
+    | s5 = MutBorrow.borrow_final <t_Formatter> {formatter.current} {MutBorrow.get_id formatter}
+        (fun (_bor: MutBorrow.t t_Formatter) ->
+          [ &_8 <- _bor ] -{inv_Formatter _bor.final}-
+          [ &formatter <- { formatter with current = _bor.final } ] s6)
+      [ _ck -> (! {[@expl:type invariant] inv_Formatter formatter.current} any) ]
+    | s6 = start {_8} {struct_name'0} {_10} (fun (_x: t_DebugStruct) -> [ &builder <- _x ] s7)
+    | s7 = MutBorrow.borrow_mut <t_DebugStruct> {builder}
+        (fun (_bor: MutBorrow.t t_DebugStruct) ->
+          [ &_14 <- _bor ] -{inv_DebugStruct _bor.final}-
+          [ &builder <- _bor.final ] s8) [ _ck -> (! {[@expl:type invariant] inv_DebugStruct builder} any) ]
+    | s8 = [ &_17 <- self.mask ] s9
+    | s9 = MutBorrow.borrow_mut <t_DebugTrace> {trace}
+        (fun (_bor: MutBorrow.t t_DebugTrace) -> [ &_19 <- _bor ] [ &trace <- _bor.final ] s10)
+    | s10 = borrow_mut_DebugTrace {_19} (fun (_x: MutBorrow.t t_DebugTrace) -> [ &_18 <- _x ] s11)
+    | s11 = MutBorrow.borrow_final <t_DebugStruct> {_14.current} {MutBorrow.get_id _14}
+        (fun (_bor: MutBorrow.t t_DebugStruct) ->
+          [ &_13 <- _bor ] -{inv_DebugStruct _bor.final}-
+          [ &_14 <- { _14 with current = _bor.final } ] s12)
+      [ _ck -> (! {[@expl:type invariant] inv_DebugStruct _14.current} any) ]
+    | s12 = field_words {_13} {field_name} {_17} {_18} (fun (_x: ()) -> [ &_12 <- _x ] s13)
+    | s13 = s14 [ _ck -> (! {[@expl:type invariant] inv_refmut_DebugStruct _14} any) ]
+    | s14 = -{resolve_refmut_DebugStruct _14}- s15
+    | s15 = MutBorrow.borrow_mut <t_DebugStruct> {builder}
+        (fun (_bor: MutBorrow.t t_DebugStruct) ->
+          [ &_22 <- _bor ] -{inv_DebugStruct _bor.final}-
+          [ &builder <- _bor.final ] s16) [ _ck -> (! {[@expl:type invariant] inv_DebugStruct builder} any) ]
+    | s16 = MutBorrow.borrow_mut <t_DebugTrace> {trace}
+        (fun (_bor: MutBorrow.t t_DebugTrace) -> [ &_24 <- _bor ] [ &trace <- _bor.final ] s17)
+    | s17 = borrow_mut_DebugTrace {_24} (fun (_x: MutBorrow.t t_DebugTrace) -> [ &_23 <- _x ] s18)
+    | s18 = MutBorrow.borrow_final <t_DebugStruct> {_22.current} {MutBorrow.get_id _22}
+        (fun (_bor: MutBorrow.t t_DebugStruct) ->
+          [ &_21 <- _bor ] -{inv_DebugStruct _bor.final}-
+          [ &_22 <- { _22 with current = _bor.final } ] s19)
+      [ _ck -> (! {[@expl:type invariant] inv_DebugStruct _22.current} any) ]
+    | s19 = finish {_21} {_23} (fun (_x: t_Result_unit_Error) -> [ &result <- _x ] s20)
+    | s20 = s21 [ _ck -> (! {[@expl:type invariant] inv_refmut_DebugStruct _22} any) ]
+    | s21 = -{resolve_refmut_DebugStruct _22}- s22
+    | s22 = s23 [ _ck -> (! {[@expl:type invariant] inv_DebugStruct builder} any) ]
+    | s23 = -{resolve_DebugStruct builder}- s24
+    | s24 = s25 [ _ck -> (! {[@expl:type invariant] inv_refmut_Formatter formatter} any) ]
+    | s25 = -{resolve_refmut_Formatter formatter}- s26
+    | s26 = {[@expl:assertion] trace.struct_name = struct_name'0} s27
+    | s27 = {[@expl:assertion] Seq.length trace.field_names = 1} s28
+    | s28 = {[@expl:assertion] Seq.get trace.field_names 0 = field_name} s29
+    | s29 = {[@expl:assertion] Seq.length trace.field_type_tags = 1} s30
+    | s30 = {[@expl:assertion] Seq.get trace.field_type_tags 0 = (0: UInt8.t)} s31
+    | s31 = {[@expl:assertion] Seq.length trace.word_values = 1} s32
+    | s32 = {[@expl:assertion] Seq.get trace.word_values 0 = Slice64.view self.mask} s33
+    | s33 = {[@expl:assertion] Seq.length trace.byte_values = 0} s34
+    | s34 = {[@expl:assertion] Seq.length trace.iter_values = 0} s35
+    | s35 = {[@expl:assertion] Seq.length trace.ascii_set_values = 0} s36
+    | s36 = {[@expl:assertion] trace.finish_status
+      = Some (match result with
+        | Ok () -> true
+        | Err _ -> false
+        end)}
+      s37
+    | s37 = [ &_ret <- result ] s38
+    | s38 = return {_ret} ] ]
+  [ & _ret: t_Result_unit_Error = Any.any_l ()
+  | & self: t_AsciiSet = self
+  | & formatter: MutBorrow.t t_Formatter = formatter
+  | & struct_name'0: string = Any.any_l ()
+  | & field_name: string = Any.any_l ()
+  | & trace: t_DebugTrace = Any.any_l ()
+  | & builder: t_DebugStruct = Any.any_l ()
+  | & _8: MutBorrow.t t_Formatter = Any.any_l ()
+  | & _10: MutBorrow.t t_DebugTrace = Any.any_l ()
+  | & _11: MutBorrow.t t_DebugTrace = Any.any_l ()
+  | & _12: () = Any.any_l ()
+  | & _13: MutBorrow.t t_DebugStruct = Any.any_l ()
+  | & _14: MutBorrow.t t_DebugStruct = Any.any_l ()
+  | & _17: Slice64.array UInt32.t = Any.any_l ()
+  | & _18: MutBorrow.t t_DebugTrace = Any.any_l ()
+  | & _19: MutBorrow.t t_DebugTrace = Any.any_l ()
+  | & result: t_Result_unit_Error = Any.any_l ()
+  | & _21: MutBorrow.t t_DebugStruct = Any.any_l ()
+  | & _22: MutBorrow.t t_DebugStruct = Any.any_l ()
+  | & _23: MutBorrow.t t_DebugTrace = Any.any_l ()
+  | & _24: MutBorrow.t t_DebugTrace = Any.any_l () ]) [ return (result: t_Result_unit_Error) -> (! return {result}) ]

@@ -1,0 +1,55 @@
+theory Coma
+  
+  (* use why3.BuiltIn.BuiltIn *)
+  
+  (* use why3.Bool.Bool *)
+  
+  (* use why3.Unit.Unit *)
+  
+  (* use creusot.slice.Slice64 *)
+  
+  (* use creusot.int.UInt8 *)
+  
+  (* use creusot.prelude.Any *)
+  
+  type t_AsciiSet
+  
+  type t_PercentEncode =
+    | T_PercentEncode'mk (bytes:slice t) (ascii_set:t_AsciiSet)
+  
+  (* meta model_record function ascii_set *)
+  
+  (* meta model_record function bytes *)
+  
+  predicate inv_AsciiSet t_AsciiSet
+  
+  predicate invariant_ref_AsciiSet (self:t_AsciiSet) = inv_AsciiSet self
+  
+  (* meta rewrite_def predicate invariant_ref_AsciiSet *)
+  
+  predicate inv_ref_AsciiSet (_1:t_AsciiSet) = invariant_ref_AsciiSet _1
+  
+  (* meta rewrite_def predicate inv_ref_AsciiSet *)
+  
+  predicate inv_PercentEncode t_PercentEncode
+  
+  axiom inv_axiom :
+    forall x:t_PercentEncode [inv_PercentEncode x].
+     inv_PercentEncode x <-> inv_ref_AsciiSet (x.ascii_set)
+  
+  function remaining_input (self:t_PercentEncode) : seq t = view (self.bytes)
+  
+  (* meta rewrite_def function remaining_input *)
+  
+  (* meta compute_max_steps 1000000 *)
+  
+  (* meta select_lsinst "all" *)
+  
+  goal vc_percent_encode :
+    forall input:slice t, ascii_set'0:t_AsciiSet.
+     inv_ref_AsciiSet ascii_set'0 ->
+     inv_PercentEncode (T_PercentEncode'mk input ascii_set'0) /\
+     remaining_input (T_PercentEncode'mk input ascii_set'0) = view input
+  
+end
+

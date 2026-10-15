@@ -1,0 +1,10 @@
+[package]
+name = "percent-encoding-differential"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+fork = { package = "percent-encoding", path = "../../crate" }
+upstream = { package = "percent-encoding-upstream", path = "upstream-copy" }
+
+[workspace]

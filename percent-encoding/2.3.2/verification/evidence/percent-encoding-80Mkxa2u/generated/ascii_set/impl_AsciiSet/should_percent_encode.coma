@@ -1,0 +1,48 @@
+(* ascii_set::AsciiSet *)
+
+use creusot.prelude.Any
+use creusot.slice.Slice64
+use creusot.int.UInt32
+use creusot.int.UInt8
+use seq.Seq
+use creusot.int.UInt64
+
+type t_AsciiSet = { mask: Slice64.array UInt32.t }
+
+predicate inv_Seq_u32 [@inline:trivial] (_1: Seq.seq UInt32.t) = true
+
+meta "rewrite_def" predicate inv_Seq_u32
+
+predicate invariant_array_u32_4 (self: Slice64.array UInt32.t) =
+  inv_Seq_u32 (Slice64.view self) /\ Seq.length (Slice64.view self) = UInt64.t'int (4: UInt64.t)
+
+predicate inv_array_u32_4 [@inline:trivial] (_1: Slice64.array UInt32.t) = invariant_array_u32_4 _1
+
+meta "rewrite_def" predicate inv_array_u32_4
+
+predicate inv_AsciiSet (_1: t_AsciiSet)
+
+axiom inv_axiom [@rewrite]: forall x: t_AsciiSet [inv_AsciiSet x]. inv_AsciiSet x = inv_array_u32_4 x.mask
+
+predicate invariant_ref_AsciiSet [@inline:trivial] (self: t_AsciiSet) = inv_AsciiSet self
+
+meta "rewrite_def" predicate invariant_ref_AsciiSet
+
+predicate inv_ref_AsciiSet [@inline:trivial] (_1: t_AsciiSet) = invariant_ref_AsciiSet _1
+
+meta "rewrite_def" predicate inv_ref_AsciiSet
+
+meta "compute_max_steps" 1000000
+
+meta "select_lsinst" "all"
+
+let should_percent_encode (self: t_AsciiSet) (byte: UInt8.t) (return (x: bool)) =
+{[@stop_split] [@expl:should_percent_encode 'self' type invariant] inv_ref_AsciiSet self}
+  (! bb0
+  [ bb0 = {false} any ]
+  [ & _ret: bool = Any.any_l ()
+  | & self: t_AsciiSet = self
+  | & byte: UInt8.t = byte
+  | & _3: bool = Any.any_l ()
+  | & _5: t_AsciiSet = Any.any_l ()
+  | & _6: UInt8.t = Any.any_l () ]) [ return (result: bool) -> (! return {result}) ]

@@ -1,0 +1,142 @@
+use creusot.int.UInt64
+use creusot.int.UInt8
+use creusot.int.UInt16
+use int.ComputerDivision
+use creusot.prelude.Any
+use int.Int
+
+type t_RawDate = {
+  sec: UInt8.t;
+  min: UInt8.t;
+  hour: UInt8.t;
+  day: UInt8.t;
+  mon: UInt8.t;
+  year: UInt16.t;
+  wday: UInt8.t }
+
+function january_start [@inline:trivial] (year'0: int) : int = (year'0 - 1970) * 365
+      + ComputerDivision.div (year'0 - 1969) 4
+    - ComputerDivision.div (year'0 - 1901) 100
+  + ComputerDivision.div (year'0 - 1601) 400
+
+meta "rewrite_def" function january_start
+
+function january_offset [@inline:trivial] (month: int) : int = if month = 1 then
+    0
+  else
+    if month = 2 then
+      31
+    else
+      if month = 3 then
+        59
+      else
+        if month = 4 then
+          90
+        else
+          if month = 5 then
+            120
+          else
+            if month = 6 then
+              151
+            else
+              if month = 7 then
+                181
+              else
+                if month = 8 then
+                  212
+                else
+                  if month = 9 then 243 else if month = 10 then 273 else if month = 11 then 304 else 334
+              
+            
+          
+        
+      
+    
+  
+
+
+meta "rewrite_def" function january_offset
+
+predicate gt_log_Int [@inline:trivial] (self: int) (other: int) = other < self
+
+meta "rewrite_def" predicate gt_log_Int
+
+function leap_adjustment [@inline:trivial] (year'0: int) : int = if ComputerDivision.mod year'0 4 = 0
+  /\ (ComputerDivision.mod year'0 100 <> 0 \/ ComputerDivision.mod year'0 400 = 0) then
+    1
+  else
+    0
+
+
+meta "rewrite_def" function leap_adjustment
+
+function gregorian_day [@inline:trivial] (d: t_RawDate) : int = january_start (UInt16.t'int d.year)
+        + january_offset (UInt8.t'int d.mon)
+      + UInt8.t'int d.day
+    - 1
+  + (if gt_log_Int (UInt8.t'int d.mon) 2 then leap_adjustment (UInt16.t'int d.year) else 0)
+
+meta "rewrite_def" function gregorian_day
+
+function month_length [@inline:trivial] (year'0: int) (month: int) : int = if month = 2 then
+    28 + leap_adjustment year'0
+  else
+    if month = 4 \/ month = 6 \/ month = 9 \/ month = 11 then 30 else 31
+
+
+meta "rewrite_def" function month_length
+
+let from_unix_seconds (secs_since_epoch: UInt64.t) (return (x: t_RawDate)) =
+{[@stop_split] [@expl:from_unix_seconds requires] UInt64.t'int secs_since_epoch < 253402300800}
+  any
+  [ return (result: t_RawDate) ->
+  {[@stop_split] [@expl:from_unix_seconds ensures] ([@stop_split] [@expl:from_unix_seconds ensures #0] UInt8.t'int result.sec
+        < 60
+      /\ UInt8.t'int result.min < 60
+      /\ UInt8.t'int result.hour < 24
+      /\ 1 <= UInt8.t'int result.day
+      /\ UInt8.t'int result.day <= 31
+      /\ 1 <= UInt8.t'int result.mon
+      /\ UInt8.t'int result.mon <= 12
+      /\ 1970 <= UInt16.t'int result.year
+      /\ UInt16.t'int result.year <= 9999 /\ 1 <= UInt8.t'int result.wday /\ UInt8.t'int result.wday <= 7)
+    /\ ([@stop_split] [@expl:from_unix_seconds ensures #1] gregorian_day result
+      = ComputerDivision.div (UInt64.t'int secs_since_epoch) 86400)
+    /\ ([@stop_split] [@expl:from_unix_seconds ensures #2] UInt8.t'int result.sec + UInt8.t'int result.min * 60
+        + UInt8.t'int result.hour * 3600
+      = ComputerDivision.mod (UInt64.t'int secs_since_epoch) 86400)
+    /\ ([@stop_split] [@expl:from_unix_seconds ensures #3] UInt8.t'int result.day
+      <= month_length (UInt16.t'int result.year) (UInt8.t'int result.mon))
+    /\ ([@stop_split] [@expl:from_unix_seconds ensures #4] UInt8.t'int result.wday
+    = ComputerDivision.mod (ComputerDivision.div (UInt64.t'int secs_since_epoch) 86400 + 3) 7 + 1)}
+    (! return {result}) ]
+
+let to_unix_seconds (v: t_RawDate) (return (x: UInt64.t)) =
+{[@stop_split] [@expl:to_unix_seconds requires] UInt8.t'int v.sec < 60
+  /\ UInt8.t'int v.min < 60
+  /\ UInt8.t'int v.hour < 24
+  /\ 1 <= UInt8.t'int v.day
+  /\ UInt8.t'int v.day <= 31
+  /\ 1 <= UInt8.t'int v.mon /\ UInt8.t'int v.mon <= 12 /\ 1970 <= UInt16.t'int v.year /\ UInt16.t'int v.year <= 9999}
+  any
+  [ return (result: UInt64.t) ->
+  {[@stop_split] [@expl:to_unix_seconds ensures] ([@stop_split] [@expl:to_unix_seconds ensures #0] UInt64.t'int result
+      < 253402300800)
+    /\ ([@stop_split] [@expl:to_unix_seconds ensures #1] UInt64.t'int result
+    = gregorian_day v * 86400 + UInt8.t'int v.hour * 3600 + UInt8.t'int v.min * 60 + UInt8.t'int v.sec)}
+    (! return {result}) ]
+
+meta "compute_max_steps" 1000000
+
+meta "select_lsinst" "all"
+
+let seconds_roundtrip (seconds: UInt64.t) (return (x: UInt64.t)) =
+{[@stop_split] [@expl:seconds_roundtrip requires] UInt64.t'int seconds < 253402300800}
+  (! bb0
+  [ bb0 = s0
+    [ s0 = from_unix_seconds {seconds} (fun (_x: t_RawDate) -> [ &_6 <- _x ] s1)
+    | s1 = to_unix_seconds {_6} (fun (_x: UInt64.t) -> [ &_ret <- _x ] s2)
+    | s2 = return {_ret} ] ]
+  [ & _ret: UInt64.t = Any.any_l () | & seconds: UInt64.t = seconds | & _6: t_RawDate = Any.any_l () ])
+  [ return (result: UInt64.t) -> {[@stop_split] [@expl:seconds_roundtrip ensures] result = seconds}
+    (! return {result}) ]

@@ -1,0 +1,17 @@
+COMMAND: timeout --signal=TERM --kill-after=5s 60s cargo creusot --only=prove --no-cache --why3find-arg=-d --why3find-arg=1 /workspace/proof-env/httpdate/1.0.3/verification/trial/trait-probes/verif/trait-run-run-69pC19na/probe-eq/coma/verif/httpdate_trait_probes_rlib/eq_probe/structural_eq.coma
+Warning: found dangling files and directories:
+  verif/trait-run-run-Lr01KruH/probe-ord
+  verif/trait-run-run-u8lKg1SH/probe-ord
+  verif/trait-run-run-TM3ZItNc/probe-ord
+  verif/trait-run-run-TM3ZItNc/probe-eq
+  verif/trait-run-run-XzANC4VC/probe-ord
+  verif/trait-run-run-XzANC4VC/probe-eq
+  verif/trait-run-run-L9ZIBNqO/probe-ord
+  verif/trait-run-run-aLEpYlap/probe-ord
+  verif/trait-run-run-pkrgdNMg/probe-ord
+  verif/trait-run-run-pkrgdNMg/probe-error
+  verif/trait-run-run-pkrgdNMg/probe-hash
+Run 'cargo creusot clean' to remove them
+Goal Coma.vc_structural_eq: ✘
+Error: 1 unproved file
+Error: 'why3find prove' failed

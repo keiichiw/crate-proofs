@@ -1,0 +1,174 @@
+use creusot.int.UInt8
+use seq.Seq
+use creusot.int.UInt16
+use int.Int
+
+type t_RawDate = {
+  sec: UInt8.t;
+  min: UInt8.t;
+  hour: UInt8.t;
+  day: UInt8.t;
+  mon: UInt8.t;
+  year: UInt16.t;
+  wday: UInt8.t }
+
+predicate gt_log_Int [@inline:trivial] (self: int) (other: int) = other < self
+
+meta "rewrite_def" predicate gt_log_Int
+
+function asctime_weekday [@inline:trivial] (s: Seq.seq UInt8.t) : int = if Seq.get s 3 <> (32: UInt8.t) then
+    0
+  else
+    if Seq.get s 0 = (77: UInt8.t) /\ Seq.get s 1 = (111: UInt8.t) /\ Seq.get s 2 = (110: UInt8.t) then
+      1
+    else
+      if Seq.get s 0 = (84: UInt8.t) /\ Seq.get s 1 = (117: UInt8.t) /\ Seq.get s 2 = (101: UInt8.t) then
+        2
+      else
+        if Seq.get s 0 = (87: UInt8.t) /\ Seq.get s 1 = (101: UInt8.t) /\ Seq.get s 2 = (100: UInt8.t) then
+          3
+        else
+          if Seq.get s 0 = (84: UInt8.t) /\ Seq.get s 1 = (104: UInt8.t) /\ Seq.get s 2 = (117: UInt8.t) then
+            4
+          else
+            if Seq.get s 0 = (70: UInt8.t) /\ Seq.get s 1 = (114: UInt8.t) /\ Seq.get s 2 = (105: UInt8.t) then
+              5
+            else
+              if Seq.get s 0 = (83: UInt8.t) /\ Seq.get s 1 = (97: UInt8.t) /\ Seq.get s 2 = (116: UInt8.t) then
+                6
+              else
+                if Seq.get s 0 = (83: UInt8.t) /\ Seq.get s 1 = (117: UInt8.t) /\ Seq.get s 2 = (110: UInt8.t) then
+                  7
+                else
+                  0
+              
+            
+          
+        
+      
+    
+  
+
+
+meta "rewrite_def" function asctime_weekday
+
+function asctime_month [@inline:trivial] (s: Seq.seq UInt8.t) : int = if Seq.get s 7 <> (32: UInt8.t) then
+    0
+  else
+    if Seq.get s 4 = (74: UInt8.t) /\ Seq.get s 5 = (97: UInt8.t) /\ Seq.get s 6 = (110: UInt8.t) then
+      1
+    else
+      if Seq.get s 4 = (70: UInt8.t) /\ Seq.get s 5 = (101: UInt8.t) /\ Seq.get s 6 = (98: UInt8.t) then
+        2
+      else
+        if Seq.get s 4 = (77: UInt8.t) /\ Seq.get s 5 = (97: UInt8.t) /\ Seq.get s 6 = (114: UInt8.t) then
+          3
+        else
+          if Seq.get s 4 = (65: UInt8.t) /\ Seq.get s 5 = (112: UInt8.t) /\ Seq.get s 6 = (114: UInt8.t) then
+            4
+          else
+            if Seq.get s 4 = (77: UInt8.t) /\ Seq.get s 5 = (97: UInt8.t) /\ Seq.get s 6 = (121: UInt8.t) then
+              5
+            else
+              if Seq.get s 4 = (74: UInt8.t) /\ Seq.get s 5 = (117: UInt8.t) /\ Seq.get s 6 = (110: UInt8.t) then
+                6
+              else
+                if Seq.get s 4 = (74: UInt8.t) /\ Seq.get s 5 = (117: UInt8.t) /\ Seq.get s 6 = (108: UInt8.t) then
+                  7
+                else
+                  if Seq.get s 4 = (65: UInt8.t) /\ Seq.get s 5 = (117: UInt8.t) /\ Seq.get s 6 = (103: UInt8.t) then
+                    8
+                  else
+                    if Seq.get s 4 = (83: UInt8.t) /\ Seq.get s 5 = (101: UInt8.t) /\ Seq.get s 6 = (112: UInt8.t) then
+                      9
+                    else
+                      if Seq.get s 4 = (79: UInt8.t) /\ Seq.get s 5 = (99: UInt8.t) /\ Seq.get s 6 = (116: UInt8.t) then
+                        10
+                      else
+                        if Seq.get s 4 = (78: UInt8.t)
+                        /\ Seq.get s 5 = (111: UInt8.t) /\ Seq.get s 6 = (118: UInt8.t) then
+                          11
+                        else
+                          if Seq.get s 4 = (68: UInt8.t)
+                          /\ Seq.get s 5 = (101: UInt8.t) /\ Seq.get s 6 = (99: UInt8.t) then
+                            12
+                          else
+                            0
+                        
+                      
+                    
+                  
+                
+              
+            
+          
+        
+      
+    
+  
+
+
+meta "rewrite_def" function asctime_month
+
+predicate asctime_digit [@inline:trivial] (b: UInt8.t) = 48 <= UInt8.t'int b /\ UInt8.t'int b <= 57
+
+meta "rewrite_def" predicate asctime_digit
+
+predicate asctime_syntax [@inline:trivial] (s: Seq.seq UInt8.t) =
+  Seq.length s = 24
+  /\ gt_log_Int (asctime_weekday s) 0
+  /\ gt_log_Int (asctime_month s) 0
+  /\ Seq.get s 10 = (32: UInt8.t)
+  /\ Seq.get s 13 = (58: UInt8.t)
+  /\ Seq.get s 16 = (58: UInt8.t)
+  /\ Seq.get s 19 = (32: UInt8.t)
+  /\ (if Seq.get s 8 = (32: UInt8.t) then
+      asctime_digit (Seq.get s 9)
+    else
+      asctime_digit (Seq.get s 8) /\ asctime_digit (Seq.get s 9)
+    )
+  /\ asctime_digit (Seq.get s 11)
+  /\ asctime_digit (Seq.get s 12)
+  /\ asctime_digit (Seq.get s 14)
+  /\ asctime_digit (Seq.get s 15)
+  /\ asctime_digit (Seq.get s 17)
+  /\ asctime_digit (Seq.get s 18)
+  /\ asctime_digit (Seq.get s 20)
+  /\ asctime_digit (Seq.get s 21) /\ asctime_digit (Seq.get s 22) /\ asctime_digit (Seq.get s 23)
+
+meta "rewrite_def" predicate asctime_syntax
+
+predicate asctime_encoding [@inline:trivial] (s: Seq.seq UInt8.t) (d: t_RawDate) =
+  asctime_syntax s
+  /\ asctime_weekday s = UInt8.t'int d.wday
+  /\ asctime_month s = UInt8.t'int d.mon
+  /\ (if UInt8.t'int (Seq.get s 8) = 32 then
+        UInt8.t'int (Seq.get s 9) - 48
+      else
+        (UInt8.t'int (Seq.get s 8) - 48) * 10 + UInt8.t'int (Seq.get s 9) - 48
+      )
+    = UInt8.t'int d.day
+  /\ (UInt8.t'int (Seq.get s 11) - 48) * 10 + UInt8.t'int (Seq.get s 12) - 48 = UInt8.t'int d.hour
+  /\ (UInt8.t'int (Seq.get s 14) - 48) * 10 + UInt8.t'int (Seq.get s 15) - 48 = UInt8.t'int d.min
+  /\ (UInt8.t'int (Seq.get s 17) - 48) * 10 + UInt8.t'int (Seq.get s 18) - 48 = UInt8.t'int d.sec
+  /\ (UInt8.t'int (Seq.get s 20) - 48) * 1000 + (UInt8.t'int (Seq.get s 21) - 48) * 100
+        + (UInt8.t'int (Seq.get s 22) - 48) * 10
+      + UInt8.t'int (Seq.get s 23)
+    - 48
+  = UInt16.t'int d.year
+
+meta "rewrite_def" predicate asctime_encoding
+
+meta "compute_max_steps" 1000000
+
+meta "select_lsinst" "all"
+
+constant s : Seq.seq UInt8.t
+
+function encoding_laws (s: Seq.seq UInt8.t) : ()
+
+goal vc_encoding_laws:
+  [@stop_split] [@expl:encoding_laws ensures] ([@stop_split] [@expl:encoding_laws ensures #0] forall d: t_RawDate. asctime_encoding s d
+      -> Seq.length s = 24)
+  /\ ([@stop_split] [@expl:encoding_laws ensures #1] forall a: t_RawDate, b: t_RawDate. asctime_encoding s a
+      /\ asctime_encoding s b -> a = b)

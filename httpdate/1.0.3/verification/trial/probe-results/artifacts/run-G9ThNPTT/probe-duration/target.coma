@@ -1,0 +1,72 @@
+use creusot.int.UInt64
+use int.ComputerDivision
+use creusot.int.UInt32
+use creusot.prelude.Any
+use int.Int
+
+type t_Duration
+
+predicate inv_Duration (_1: t_Duration)
+
+predicate invariant_ref_Duration [@inline:trivial] (self: t_Duration) = inv_Duration self
+
+meta "rewrite_def" predicate invariant_ref_Duration
+
+predicate inv_ref_Duration [@inline:trivial] (_1: t_Duration) = invariant_ref_Duration _1
+
+meta "rewrite_def" predicate inv_ref_Duration
+
+function nanos_to_secs (nanos: int) : int = ComputerDivision.div nanos 1000000000
+
+predicate ge_log_Int [@inline:trivial] (self: int) (other: int) = other <= self
+
+meta "rewrite_def" predicate ge_log_Int
+
+function secs_to_nanos (secs: int) : int = secs * 1000000000
+
+constant const_MAX: UInt64.t = (18446744073709551615: UInt64.t)
+
+function view_Duration (self: t_Duration) : int
+
+axiom view_Duration_spec: forall self: t_Duration [view_Duration self]. ge_log_Int (view_Duration self) 0
+    /\ view_Duration self <= secs_to_nanos (UInt64.t'int const_MAX) + 999999999
+
+let as_secs (self_: t_Duration) (return (x: UInt64.t)) =
+{[@stop_split] [@expl:as_secs 'self_' type invariant] inv_ref_Duration self_}
+  any
+  [ return (result: UInt64.t) -> {[@stop_split] [@expl:as_secs ensures] UInt64.t'int result
+    = nanos_to_secs (view_Duration self_)}
+    (! return {result}) ]
+
+let subsec_nanos (self_: t_Duration) (return (x: UInt32.t)) =
+{[@stop_split] [@expl:subsec_nanos 'self_' type invariant] inv_ref_Duration self_}
+  any
+  [ return (result: UInt32.t) ->
+  {[@stop_split] [@expl:subsec_nanos ensures] ([@stop_split] [@expl:subsec_nanos ensures #0] UInt32.t'int result
+      = ComputerDivision.mod (view_Duration self_) 1000000000)
+    /\ ([@stop_split] [@expl:subsec_nanos ensures #1] UInt32.lt result (1000000000: UInt32.t))}
+    (! return {result}) ]
+
+type tup2_u64_u32 = { f0: UInt64.t; f1: UInt32.t }
+
+meta "compute_max_steps" 1000000
+
+meta "select_lsinst" "all"
+
+let duration_parts (d: t_Duration) (return (x: tup2_u64_u32)) =
+{[@stop_split] [@expl:duration_parts 'd' type invariant] inv_Duration d}
+  (! bb0
+  [ bb0 = s0
+    [ s0 = as_secs {d} (fun (_x: UInt64.t) -> [ &_4 <- _x ] s1)
+    | s1 = subsec_nanos {d} (fun (_x: UInt32.t) -> [ &_6 <- _x ] s2)
+    | s2 = [ &_ret <- { f0 = _4; f1 = _6 } ] s3
+    | s3 = return {_ret} ] ]
+  [ & _ret: tup2_u64_u32 = Any.any_l ()
+  | & d: t_Duration = d
+  | & _4: UInt64.t = Any.any_l ()
+  | & _6: UInt32.t = Any.any_l () ])
+  [ return (result: tup2_u64_u32) -> {[@stop_split] [@expl:duration_parts ensures] UInt64.t'int result.f0 * 1000000000
+        + UInt32.t'int result.f1
+      = view_Duration d
+    /\ UInt32.t'int result.f1 < 1000000000}
+    (! return {result}) ]

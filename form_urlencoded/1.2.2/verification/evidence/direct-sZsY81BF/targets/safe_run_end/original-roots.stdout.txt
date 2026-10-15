@@ -1,0 +1,106 @@
+theory Coma
+  
+  (* use why3.BuiltIn.BuiltIn *)
+  
+  (* use why3.Bool.Bool *)
+  
+  (* use why3.Unit.Unit *)
+  
+  (* use creusot.int.UInt8 *)
+  
+  (* use seq.Seq *)
+  
+  predicate unchanged_byte (byte:int) =
+    byte = 42 \/
+    byte = 45 \/
+    byte = 46 \/
+    48 <= byte /\ byte <= 57 \/
+    65 <= byte /\ byte <= 90 \/ byte = 95 \/ 97 <= byte /\ byte <= 122
+  
+  axiom unchanged_byte_spec :
+    forall byte:int [unchanged_byte byte].
+     unchanged_byte byte <->
+     byte = 42 \/
+     byte = 45 \/
+     byte = 46 \/
+     48 <= byte /\ byte <= 57 \/
+     65 <= byte /\ byte <= 90 \/ byte = 95 \/ 97 <= byte /\ byte <= 122
+  
+  predicate ge_log_Int (self:int) (other:int) = other <= self
+  
+  (* meta rewrite_def predicate ge_log_Int *)
+  
+  predicate gt_log_Int (self:int) (other:int) = other < self
+  
+  (* meta rewrite_def predicate gt_log_Int *)
+  
+  predicate well_founded_relation_Int (self:int) (other:int) =
+    ge_log_Int self 0 /\ gt_log_Int self other
+  
+  (* meta rewrite_def predicate well_founded_relation_Int *)
+  
+  (* meta compute_max_steps 1000000 *)
+  
+  (* meta select_lsinst "all" *)
+  
+  constant bytes : seq t
+  
+  constant start : int
+  
+  function safe_run_end (seq t) int : int
+  
+  goal vc_safe_run_end :
+    0 <= start /\ start <= length bytes ->
+    (if start < length bytes
+     then (unchanged_byte (t'int (get bytes start)) <->
+           t'int (get bytes start) = 42 \/
+           t'int (get bytes start) = 45 \/
+           t'int (get bytes start) = 46 \/
+           48 <= t'int (get bytes start) /\ t'int (get bytes start) <= 57 \/
+           65 <= t'int (get bytes start) /\ t'int (get bytes start) <= 90 \/
+           t'int (get bytes start) = 95 \/
+           97 <= t'int (get bytes start) /\ t'int (get bytes start) <= 122) ->
+          (if unchanged_byte (t'int (get bytes start))
+           then ((0 <= (start + 1) /\ (start + 1) <= length bytes) /\
+                 well_founded_relation_Int (length bytes - start)
+                 (length bytes - (start + 1))) /\
+                (((start + 1) <= safe_run_end bytes (start + 1) /\
+                  safe_run_end bytes (start + 1) <= length bytes) /\
+                 (forall i:int.
+                   (start + 1) <= i /\ i < safe_run_end bytes (start + 1) ->
+                   unchanged_byte (t'int (get bytes i))) /\
+                 (safe_run_end bytes (start + 1) = length bytes \/
+                  not unchanged_byte
+                      (t'int (get bytes (safe_run_end bytes (start + 1))))) /\
+                 ((start + 1) < length bytes /\
+                  unchanged_byte (t'int (get bytes (start + 1))) ->
+                  (start + 1) < safe_run_end bytes (start + 1)) ->
+                 (let result = safe_run_end bytes (start + 1) in
+                  (start <= result /\ result <= length bytes) /\
+                  (forall i:int.
+                    start <= i /\ i < result ->
+                    unchanged_byte (t'int (get bytes i))) /\
+                  (result = length bytes \/
+                   not unchanged_byte (t'int (get bytes result))) /\
+                  (start < length bytes /\
+                   unchanged_byte (t'int (get bytes start)) -> start < result)))
+           else let result = start in
+                (start <= result /\ result <= length bytes) /\
+                (forall i:int.
+                  start <= i /\ i < result ->
+                  unchanged_byte (t'int (get bytes i))) /\
+                (result = length bytes \/
+                 not unchanged_byte (t'int (get bytes result))) /\
+                (start < length bytes /\
+                 unchanged_byte (t'int (get bytes start)) -> start < result))
+     else let result = start in
+          (start <= result /\ result <= length bytes) /\
+          (forall i:int.
+            start <= i /\ i < result -> unchanged_byte (t'int (get bytes i))) /\
+          (result = length bytes \/
+           not unchanged_byte (t'int (get bytes result))) /\
+          (start < length bytes /\ unchanged_byte (t'int (get bytes start)) ->
+           start < result))
+  
+end
+

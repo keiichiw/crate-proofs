@@ -1,0 +1,253 @@
+{
+  "status": "passed",
+  "root_count": 10,
+  "direct_smt_goals": 22,
+  "results": [
+    {
+      "goal": "Coma.vc_elim_Owned",
+      "status": "closed",
+      "export_mode": "untransformed",
+      "smt_results": [
+        {
+          "file": "000-vc_elim_Owned/untransformed/strict_cow_decode-Coma-vc_elim_Owned.smt2",
+          "exit_code": 0,
+          "statuses": [
+            "unsat"
+          ],
+          "passed": true
+        }
+      ]
+    },
+    {
+      "goal": "Coma.vc_from_utf8",
+      "status": "closed",
+      "export_mode": "untransformed",
+      "smt_results": [
+        {
+          "file": "001-vc_from_utf8/untransformed/strict_cow_decode-Coma-vc_from_utf8.smt2",
+          "exit_code": 0,
+          "statuses": [
+            "unsat"
+          ],
+          "passed": true
+        }
+      ]
+    },
+    {
+      "goal": "Coma.vc_elim_Err",
+      "status": "closed",
+      "export_mode": "untransformed",
+      "smt_results": [
+        {
+          "file": "002-vc_elim_Err/untransformed/strict_cow_decode-Coma-vc_elim_Err.smt2",
+          "exit_code": 0,
+          "statuses": [
+            "unsat"
+          ],
+          "passed": true
+        }
+      ]
+    },
+    {
+      "goal": "Coma.vc_utf8_error",
+      "status": "closed",
+      "export_mode": "untransformed",
+      "smt_results": [
+        {
+          "file": "003-vc_utf8_error/untransformed/strict_cow_decode-Coma-vc_utf8_error.smt2",
+          "exit_code": 0,
+          "statuses": [
+            "unsat"
+          ],
+          "passed": true
+        }
+      ]
+    },
+    {
+      "goal": "Coma.vc_elim_Ok",
+      "status": "closed",
+      "export_mode": "untransformed",
+      "smt_results": [
+        {
+          "file": "004-vc_elim_Ok/untransformed/strict_cow_decode-Coma-vc_elim_Ok.smt2",
+          "exit_code": 0,
+          "statuses": [
+            "unsat"
+          ],
+          "passed": true
+        }
+      ]
+    },
+    {
+      "goal": "Coma.vc_elim_Borrowed",
+      "status": "closed",
+      "export_mode": "untransformed",
+      "smt_results": [
+        {
+          "file": "005-vc_elim_Borrowed/untransformed/strict_cow_decode-Coma-vc_elim_Borrowed.smt2",
+          "exit_code": 0,
+          "statuses": [
+            "unsat"
+          ],
+          "passed": true
+        }
+      ]
+    },
+    {
+      "goal": "Coma.vc_from_utf8'0",
+      "status": "closed",
+      "export_mode": "untransformed",
+      "smt_results": [
+        {
+          "file": "006-vc_from_utf8'0/untransformed/strict_cow_decode-Coma-vc_from_utf8qt0.smt2",
+          "exit_code": 0,
+          "statuses": [
+            "unsat"
+          ],
+          "passed": true
+        }
+      ]
+    },
+    {
+      "goal": "Coma.vc_elim_Err'0",
+      "status": "closed",
+      "export_mode": "untransformed",
+      "smt_results": [
+        {
+          "file": "007-vc_elim_Err'0/untransformed/strict_cow_decode-Coma-vc_elim_Errqt0.smt2",
+          "exit_code": 0,
+          "statuses": [
+            "unsat"
+          ],
+          "passed": true
+        }
+      ]
+    },
+    {
+      "goal": "Coma.vc_elim_Ok'0",
+      "status": "closed",
+      "export_mode": "untransformed",
+      "smt_results": [
+        {
+          "file": "008-vc_elim_Ok'0/untransformed/strict_cow_decode-Coma-vc_elim_Okqt0.smt2",
+          "exit_code": 0,
+          "statuses": [
+            "unsat"
+          ],
+          "passed": true
+        }
+      ]
+    },
+    {
+      "goal": "Coma.vc_strict_cow_decode",
+      "status": "closed",
+      "export_mode": "transformed",
+      "smt_results": [
+        {
+          "file": "009-vc_strict_cow_decode/transformed/strict_cow_decode-Coma-vc_strict_cow_decode.smt2",
+          "exit_code": 0,
+          "statuses": [
+            "unsat"
+          ],
+          "passed": true
+        },
+        {
+          "file": "009-vc_strict_cow_decode/transformed/strict_cow_decode-Coma-vc_strict_cow_decode1.smt2",
+          "exit_code": 0,
+          "statuses": [
+            "unsat"
+          ],
+          "passed": true
+        },
+        {
+          "file": "009-vc_strict_cow_decode/transformed/strict_cow_decode-Coma-vc_strict_cow_decode10.smt2",
+          "exit_code": 0,
+          "statuses": [
+            "unsat"
+          ],
+          "passed": true
+        },
+        {
+          "file": "009-vc_strict_cow_decode/transformed/strict_cow_decode-Coma-vc_strict_cow_decode11.smt2",
+          "exit_code": 0,
+          "statuses": [
+            "unsat"
+          ],
+          "passed": true
+        },
+        {
+          "file": "009-vc_strict_cow_decode/transformed/strict_cow_decode-Coma-vc_strict_cow_decode12.smt2",
+          "exit_code": 0,
+          "statuses": [
+            "unsat"
+          ],
+          "passed": true
+        },
+        {
+          "file": "009-vc_strict_cow_decode/transformed/strict_cow_decode-Coma-vc_strict_cow_decode2.smt2",
+          "exit_code": 0,
+          "statuses": [
+            "unsat"
+          ],
+          "passed": true
+        },
+        {
+          "file": "009-vc_strict_cow_decode/transformed/strict_cow_decode-Coma-vc_strict_cow_decode3.smt2",
+          "exit_code": 0,
+          "statuses": [
+            "unsat"
+          ],
+          "passed": true
+        },
+        {
+          "file": "009-vc_strict_cow_decode/transformed/strict_cow_decode-Coma-vc_strict_cow_decode4.smt2",
+          "exit_code": 0,
+          "statuses": [
+            "unsat"
+          ],
+          "passed": true
+        },
+        {
+          "file": "009-vc_strict_cow_decode/transformed/strict_cow_decode-Coma-vc_strict_cow_decode5.smt2",
+          "exit_code": 0,
+          "statuses": [
+            "unsat"
+          ],
+          "passed": true
+        },
+        {
+          "file": "009-vc_strict_cow_decode/transformed/strict_cow_decode-Coma-vc_strict_cow_decode6.smt2",
+          "exit_code": 0,
+          "statuses": [
+            "unsat"
+          ],
+          "passed": true
+        },
+        {
+          "file": "009-vc_strict_cow_decode/transformed/strict_cow_decode-Coma-vc_strict_cow_decode7.smt2",
+          "exit_code": 0,
+          "statuses": [
+            "unsat"
+          ],
+          "passed": true
+        },
+        {
+          "file": "009-vc_strict_cow_decode/transformed/strict_cow_decode-Coma-vc_strict_cow_decode8.smt2",
+          "exit_code": 0,
+          "statuses": [
+            "unsat"
+          ],
+          "passed": true
+        },
+        {
+          "file": "009-vc_strict_cow_decode/transformed/strict_cow_decode-Coma-vc_strict_cow_decode9.smt2",
+          "exit_code": 0,
+          "statuses": [
+            "unsat"
+          ],
+          "passed": true
+        }
+      ]
+    }
+  ]
+}

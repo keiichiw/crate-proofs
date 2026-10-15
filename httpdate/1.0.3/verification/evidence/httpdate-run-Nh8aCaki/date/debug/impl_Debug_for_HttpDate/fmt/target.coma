@@ -1,0 +1,1130 @@
+(* <date::HttpDate as std::fmt::Debug> *)
+
+use seq.Seq
+use creusot.prelude.Char
+use creusot.int.UInt32
+use creusot.int.UInt64
+use creusot.prelude.MutBorrow
+use creusot.slice.Slice64
+use creusot.int.UInt8
+use int.ComputerDivision
+use creusot.int.UInt16
+use creusot.prelude.Any
+use int.Int
+
+constant concat_law : ()
+
+axiom concat_law_spec: forall a: Seq.seq Char.t, b: Seq.seq Char.t, c: Seq.seq Char.t. Seq.(++) (Seq.(++) a b) c
+    = Seq.(++) a (Seq.(++) b c)
+
+type t_Formatter
+
+type t_Option_bool = None | Some bool
+
+predicate inv_Formatter (_1: t_Formatter)
+
+predicate invariant_ref_Formatter [@inline:trivial] (self: t_Formatter) = inv_Formatter self
+
+meta "rewrite_def" predicate invariant_ref_Formatter
+
+predicate inv_ref_Formatter [@inline:trivial] (_1: t_Formatter) = invariant_ref_Formatter _1
+
+meta "rewrite_def" predicate inv_ref_Formatter
+
+type t_Option_usize = None'0 | Some'0 UInt64.t
+
+type t_Alignment = Left | Right | Center
+
+type t_Option_Alignment = None'1 | Some'1 t_Alignment
+
+type t_DebugOptions = {
+  flags: UInt32.t;
+  width: t_Option_usize;
+  precision: t_Option_usize;
+  fill: Char.t;
+  align: t_Option_Alignment }
+
+predicate plain_options [@inline:trivial] (o: t_DebugOptions) =
+  (o.flags = (0: UInt32.t) \/ o.flags = (4: UInt32.t))
+  /\ o.width = None'0 /\ o.precision = None'0 /\ o.fill = Char.of_int 32 /\ o.align = None'1
+
+meta "rewrite_def" predicate plain_options
+
+function debug_options (_f: t_Formatter) : t_DebugOptions
+
+let debug_mode (f: t_Formatter) (return (x: t_Option_bool)) =
+{[@stop_split] [@expl:debug_mode 'f' type invariant] inv_ref_Formatter f}
+  any
+  [ return (result: t_Option_bool) -> {[@stop_split] [@expl:debug_mode ensures] match result with
+      | Some pretty -> plain_options (debug_options f) /\ pretty = ((debug_options f).flags = (4: UInt32.t))
+      | None -> not plain_options (debug_options f)
+      end}
+    (! return {result}) ]
+
+let elim_Some (_x: t_Option_bool) (return (f0: bool)) = any
+  [ _k (f0: bool) -> {Some f0 = _x} (! return {f0})
+  | _chk -> (! {[@expl:elim Some] match _x with
+      | Some _ -> true
+      | _ -> false
+      end}
+    any) ]
+
+function formatter_output (_f: t_Formatter) : Seq.seq Char.t
+
+predicate append_sink (_f: t_Formatter)
+
+function literal_char (b: UInt8.t) : Char.t = if b = (10: UInt8.t) then
+    Char.of_int 10
+  else
+    if b = (32: UInt8.t) then
+      Char.of_int 32
+    else
+      if b = (123: UInt8.t) then
+        Char.of_int 123
+      else
+        if b = (125: UInt8.t) then
+          Char.of_int 125
+        else
+          if b = (40: UInt8.t) then
+            Char.of_int 40
+          else
+            if b = (41: UInt8.t) then
+              Char.of_int 41
+            else
+              if b = (58: UInt8.t) then
+                Char.of_int 58
+              else
+                if b = (44: UInt8.t) then
+                  Char.of_int 44
+                else
+                  if b = (72: UInt8.t) then
+                    Char.of_int 72
+                  else
+                    if b = (116: UInt8.t) then
+                      Char.of_int 116
+                    else
+                      if b = (112: UInt8.t) then
+                        Char.of_int 112
+                      else
+                        if b = (68: UInt8.t) then
+                          Char.of_int 68
+                        else
+                          if b = (97: UInt8.t) then
+                            Char.of_int 97
+                          else
+                            if b = (101: UInt8.t) then
+                              Char.of_int 101
+                            else
+                              if b = (115: UInt8.t) then
+                                Char.of_int 115
+                              else
+                                if b = (99: UInt8.t) then
+                                  Char.of_int 99
+                                else
+                                  if b = (109: UInt8.t) then
+                                    Char.of_int 109
+                                  else
+                                    if b = (105: UInt8.t) then
+                                      Char.of_int 105
+                                    else
+                                      if b = (110: UInt8.t) then
+                                        Char.of_int 110
+                                      else
+                                        if b = (104: UInt8.t) then
+                                          Char.of_int 104
+                                        else
+                                          if b = (111: UInt8.t) then
+                                            Char.of_int 111
+                                          else
+                                            if b = (117: UInt8.t) then
+                                              Char.of_int 117
+                                            else
+                                              if b = (114: UInt8.t) then
+                                                Char.of_int 114
+                                              else
+                                                if b = (100: UInt8.t) then
+                                                  Char.of_int 100
+                                                else
+                                                  if b = (121: UInt8.t) then
+                                                    Char.of_int 121
+                                                  else
+                                                    if b = (119: UInt8.t) then
+                                                      Char.of_int 119
+                                                    else
+                                                      if b = (69: UInt8.t) then
+                                                        Char.of_int 69
+                                                      else
+                                                        if b = (48: UInt8.t) then
+                                                          Char.of_int 48
+                                                        else
+                                                          if b = (49: UInt8.t) then
+                                                            Char.of_int 49
+                                                          else
+                                                            if b = (50: UInt8.t) then
+                                                              Char.of_int 50
+                                                            else
+                                                              if b = (51: UInt8.t) then
+                                                                Char.of_int 51
+                                                              else
+                                                                if b = (52: UInt8.t) then
+                                                                  Char.of_int 52
+                                                                else
+                                                                  if b = (53: UInt8.t) then
+                                                                    Char.of_int 53
+                                                                  else
+                                                                    if b = (54: UInt8.t) then
+                                                                      Char.of_int 54
+                                                                    else
+                                                                      if b = (55: UInt8.t) then
+                                                                        Char.of_int 55
+                                                                      else
+                                                                        if b = (56: UInt8.t) then
+                                                                          Char.of_int 56
+                                                                        else
+                                                                          if b = (57: UInt8.t) then
+                                                                            Char.of_int 57
+                                                                          else
+                                                                            Char.of_int 0
+                                                                        
+                                                                      
+                                                                    
+                                                                  
+                                                                
+                                                              
+                                                            
+                                                          
+                                                        
+                                                      
+                                                    
+                                                  
+                                                
+                                              
+                                            
+                                          
+                                        
+                                      
+                                    
+                                  
+                                
+                              
+                            
+                          
+                        
+                      
+                    
+                  
+                
+              
+            
+          
+        
+      
+    
+  
+
+
+function ascii_chars [@inline:trivial] (bytes: Seq.seq UInt8.t) : Seq.seq Char.t =
+  Seq.create (Seq.length bytes) (fun (i: int) -> literal_char (Seq.get bytes i))
+
+meta "rewrite_def" function ascii_chars
+
+type t_Result_unit_Error = Ok () | Err ()
+
+predicate invariant_refmut_Formatter [@inline:trivial] (self: MutBorrow.t t_Formatter) =
+  inv_Formatter self.current /\ inv_Formatter self.final
+
+meta "rewrite_def" predicate invariant_refmut_Formatter
+
+predicate inv_refmut_Formatter [@inline:trivial] (_1: MutBorrow.t t_Formatter) = invariant_refmut_Formatter _1
+
+meta "rewrite_def" predicate inv_refmut_Formatter
+
+let write_ascii (f: MutBorrow.t t_Formatter) (bytes: Slice64.slice UInt8.t) (return (x: t_Result_unit_Error)) =
+{[@stop_split] [@expl:write_ascii requires] ([@stop_split] [@expl:write_ascii 'f' type invariant] inv_refmut_Formatter f)
+  /\ ([@stop_split] [@expl:write_ascii requires] forall i: int. 0 <= i /\ i < Seq.length (Slice64.view bytes)
+    -> UInt8.t'int (Seq.get (Slice64.view bytes) i) < 128
+    /\ Char.to_int (literal_char (Seq.get (Slice64.view bytes) i)) = UInt8.t'int (Seq.get (Slice64.view bytes) i))}
+  any
+  [ return (result: t_Result_unit_Error) -> {[@stop_split] [@expl:write_ascii ensures] match result with
+      | Ok () -> debug_options f.final = debug_options f.current
+      /\ (append_sink f.current
+      -> append_sink f.final
+      /\ formatter_output f.final = Seq.(++) (formatter_output f.current) (ascii_chars (Slice64.view bytes)))
+      | Err _ -> true
+      end}
+    (! return {result}) ]
+
+type t_Result_Infallible_Error = Ok'0 () | Err'0 ()
+
+type t_ControlFlow_Result_Infallible_Error_unit = Continue () | Break t_Result_Infallible_Error
+
+predicate inv_Infallible [@inline:trivial] (_1: ()) = false
+
+meta "rewrite_def" predicate inv_Infallible
+
+predicate inv_Result_Infallible_Error (_1: t_Result_Infallible_Error)
+
+axiom inv_axiom [@rewrite]:
+  forall x: t_Result_Infallible_Error [inv_Result_Infallible_Error x]. inv_Result_Infallible_Error x
+    = match x with
+      | Ok'0 f0 -> inv_Infallible f0
+      | Err'0 f0 -> true
+      end
+
+predicate inv_ControlFlow_Result_Infallible_Error_unit (_1: t_ControlFlow_Result_Infallible_Error_unit)
+
+axiom inv_axiom'0 [@rewrite]:
+  forall x: t_ControlFlow_Result_Infallible_Error_unit [inv_ControlFlow_Result_Infallible_Error_unit x]. inv_ControlFlow_Result_Infallible_Error_unit x
+    = match x with
+      | Continue f0 -> true
+      | Break f0 -> inv_Result_Infallible_Error f0
+      end
+
+let branch_Result_unit_Error (self_: t_Result_unit_Error) (return (x: t_ControlFlow_Result_Infallible_Error_unit)) = any
+  [ return (result: t_ControlFlow_Result_Infallible_Error_unit) ->
+  {[@stop_split] [@expl:branch_Result_unit_Error ensures] ([@stop_split] [@expl:branch result type invariant] inv_ControlFlow_Result_Infallible_Error_unit result)
+    /\ ([@stop_split] [@expl:branch ensures] match self_ with
+      | Ok v -> result = Continue v
+      | Err e -> result = Break (Err'0 e)
+      end)}
+    (! return {result}) ]
+
+predicate resolve_refmut_Formatter [@inline:trivial] (_1: MutBorrow.t t_Formatter) = _1.final = _1.current
+
+meta "rewrite_def" predicate resolve_refmut_Formatter
+
+let elim_Break (_x: t_ControlFlow_Result_Infallible_Error_unit) (return (f0: t_Result_Infallible_Error)) = any
+  [ _k (f0: t_Result_Infallible_Error) -> {Break f0 = _x} (! return {f0})
+  | _chk -> (! {[@expl:elim Break] match _x with
+      | Break _ -> true
+      | _ -> false
+      end}
+    any) ]
+
+type tup2_Result_unit_Error_Result_Infallible_Error = { f0: t_Result_unit_Error; f1: t_Result_Infallible_Error }
+
+predicate postcondition_from (self: ()) (args: ()) (result: ()) = let self_ = args in result = self_
+
+meta "rewrite_def" predicate postcondition_from
+
+let from_Error (self_: ()) (return (x: ())) = any
+  [ return (result: ()) -> {[@stop_split] [@expl:from ensures] result = self_} (! return {result}) ]
+
+let from_residual_Result_unit_Error (residual: t_Result_Infallible_Error) (return (x: t_Result_unit_Error)) =
+{[@stop_split] [@expl:from_residual 'residual' type invariant] inv_Result_Infallible_Error residual}
+  any
+  [ return (result: t_Result_unit_Error) -> {[@stop_split] [@expl:from_residual ensures] match { f0 = result;
+                                                                                                 f1 = residual } with
+      | {f0 = Err result'0; f1 = Err'0 residual'0} -> postcondition_from () residual'0 result'0
+      | _ -> false
+      end}
+    (! return {result}) ]
+
+function prefix_chars [@inline:trivial] (pretty: bool) (first: bool) : Seq.seq Char.t = if pretty then
+    if first then
+      Seq.(++) (Seq.create 3 [|Char.of_int 32;Char.of_int 123;Char.of_int 10|]) (Seq.create 4 [|Char.of_int 32;Char.of_int 32;Char.of_int 32;Char.of_int 32|])
+    else
+      Seq.create 4 [|Char.of_int 32;Char.of_int 32;Char.of_int 32;Char.of_int 32|]
+  
+  else
+    if first then
+      Seq.create 3 [|Char.of_int 32;Char.of_int 123;Char.of_int 32|]
+    else
+      Seq.create 2 [|Char.of_int 44;Char.of_int 32|]
+  
+
+
+meta "rewrite_def" function prefix_chars
+
+function field_chars [@inline:trivial] (pretty: bool) (first: bool) (name: Seq.seq Char.t) (number: Seq.seq Char.t) : Seq.seq Char.t
+ =
+  let body = Seq.(++) (Seq.(++) (Seq.(++) (prefix_chars pretty first) name) (Seq.create 2 [|Char.of_int 58;Char.of_int 32|])) number in if pretty then
+    Seq.(++) body (Seq.create 2 [|Char.of_int 44;Char.of_int 10|])
+  else
+    body
+
+
+meta "rewrite_def" function field_chars
+
+function digit_char (d: int) : Char.t = if d = 0 then
+    Char.of_int 48
+  else
+    if d = 1 then
+      Char.of_int 49
+    else
+      if d = 2 then
+        Char.of_int 50
+      else
+        if d = 3 then
+          Char.of_int 51
+        else
+          if d = 4 then
+            Char.of_int 52
+          else
+            if d = 5 then
+              Char.of_int 53
+            else
+              if d = 6 then
+                Char.of_int 54
+              else
+                if d = 7 then Char.of_int 55 else if d = 8 then Char.of_int 56 else Char.of_int 57
+            
+          
+        
+      
+    
+  
+
+
+function decimal_chars (v: int) : Seq.seq Char.t = if v < 10 then
+    Seq.create 1 [|digit_char v|]
+  else
+    if v < 100 then
+      Seq.create 2 [|digit_char (ComputerDivision.div v 10);digit_char (ComputerDivision.mod v 10)|]
+    else
+      if v < 1000 then
+        Seq.create 3 [|digit_char (ComputerDivision.div v 100);digit_char (ComputerDivision.mod (ComputerDivision.div v 10) 10);digit_char (ComputerDivision.mod v 10)|]
+      else
+        if v < 10000 then
+          Seq.create 4 [|digit_char (ComputerDivision.div v 1000);digit_char (ComputerDivision.mod (ComputerDivision.div v 100) 10);digit_char (ComputerDivision.mod (ComputerDivision.div v 10) 10);digit_char (ComputerDivision.mod v 10)|]
+        else
+          Seq.create 5 [|digit_char (ComputerDivision.div v 10000);digit_char (ComputerDivision.mod (ComputerDivision.div v 1000) 10);digit_char (ComputerDivision.mod (ComputerDivision.div v 100) 10);digit_char (ComputerDivision.mod (ComputerDivision.div v 10) 10);digit_char (ComputerDivision.mod v 10)|]
+      
+    
+  
+
+
+type t_HttpDate = {
+  sec: UInt8.t;
+  min: UInt8.t;
+  hour: UInt8.t;
+  day: UInt8.t;
+  mon: UInt8.t;
+  year: UInt16.t;
+  wday: UInt8.t }
+
+let write_field_u8 (f: MutBorrow.t t_Formatter) (pretty: bool) (first: bool) (name: Slice64.slice UInt8.t)
+  (value: UInt8.t) (return (x: t_Result_unit_Error)) =
+{[@stop_split] [@expl:write_field_u8 requires] ([@stop_split] [@expl:write_field_u8 'f' type invariant] inv_refmut_Formatter f)
+  /\ ([@stop_split] [@expl:write_field_u8 requires #0] plain_options (debug_options f.current))
+  /\ ([@stop_split] [@expl:write_field_u8 requires #1] forall i: int. 0 <= i /\ i < Seq.length (Slice64.view name)
+    -> UInt8.t'int (Seq.get (Slice64.view name) i) < 128
+    /\ Char.to_int (literal_char (Seq.get (Slice64.view name) i)) = UInt8.t'int (Seq.get (Slice64.view name) i))}
+  any
+  [ return (result: t_Result_unit_Error) -> {[@stop_split] [@expl:write_field_u8 ensures] match result with
+      | Ok () -> debug_options f.final = debug_options f.current
+      /\ (append_sink f.current
+      -> append_sink f.final
+      /\ formatter_output f.final
+      = Seq.(++) (formatter_output f.current) (field_chars pretty first (ascii_chars (Slice64.view name)) (decimal_chars (UInt8.t'int value))))
+      | Err _ -> true
+      end}
+    (! return {result}) ]
+
+let write_field_u16 (f: MutBorrow.t t_Formatter) (pretty: bool) (first: bool) (name: Slice64.slice UInt8.t)
+  (value: UInt16.t) (return (x: t_Result_unit_Error)) =
+{[@stop_split] [@expl:write_field_u16 requires] ([@stop_split] [@expl:write_field_u16 'f' type invariant] inv_refmut_Formatter f)
+  /\ ([@stop_split] [@expl:write_field_u16 requires #0] plain_options (debug_options f.current))
+  /\ ([@stop_split] [@expl:write_field_u16 requires #1] forall i: int. 0 <= i /\ i < Seq.length (Slice64.view name)
+    -> UInt8.t'int (Seq.get (Slice64.view name) i) < 128
+    /\ Char.to_int (literal_char (Seq.get (Slice64.view name) i)) = UInt8.t'int (Seq.get (Slice64.view name) i))}
+  any
+  [ return (result: t_Result_unit_Error) -> {[@stop_split] [@expl:write_field_u16 ensures] match result with
+      | Ok () -> debug_options f.final = debug_options f.current
+      /\ (append_sink f.current
+      -> append_sink f.final
+      /\ formatter_output f.final
+      = Seq.(++) (formatter_output f.current) (field_chars pretty first (ascii_chars (Slice64.view name)) (decimal_chars (UInt16.t'int value))))
+      | Err _ -> true
+      end}
+    (! return {result}) ]
+
+type t_DebugStruct
+
+predicate inv_DebugStruct (_1: t_DebugStruct)
+
+let debug_struct (self_: MutBorrow.t t_Formatter) (name: string) (return (x: t_DebugStruct)) =
+{[@stop_split] [@expl:debug_struct 'self_' type invariant] inv_refmut_Formatter self_}
+  any
+  [ return (result: t_DebugStruct) -> {[@stop_split] [@expl:debug_struct result type invariant] inv_DebugStruct result}
+    (! return {result}) ]
+
+type dyn_Debug
+
+function dyn_Debug_of_u8 (x: UInt8.t) : dyn_Debug
+
+predicate invariant_refmut_DebugStruct [@inline:trivial] (self: MutBorrow.t t_DebugStruct) =
+  inv_DebugStruct self.current /\ inv_DebugStruct self.final
+
+meta "rewrite_def" predicate invariant_refmut_DebugStruct
+
+predicate inv_refmut_DebugStruct [@inline:trivial] (_1: MutBorrow.t t_DebugStruct) = invariant_refmut_DebugStruct _1
+
+meta "rewrite_def" predicate inv_refmut_DebugStruct
+
+let field (self_: MutBorrow.t t_DebugStruct) (name: string) (value: dyn_Debug) (return (x: MutBorrow.t t_DebugStruct)) =
+{[@stop_split] [@expl:field 'self_' type invariant] inv_refmut_DebugStruct self_}
+  any
+  [ return (result: MutBorrow.t t_DebugStruct) ->
+  {[@stop_split] [@expl:field result type invariant] inv_refmut_DebugStruct result}
+    (! return {result}) ]
+
+function dyn_Debug_of_u16 (x: UInt16.t) : dyn_Debug
+
+let finish (self_: MutBorrow.t t_DebugStruct) (return (x: t_Result_unit_Error)) =
+{[@stop_split] [@expl:finish 'self_' type invariant] inv_refmut_DebugStruct self_}
+  any [ return (result: t_Result_unit_Error) -> (! return {result}) ]
+
+predicate resolve_DebugStruct (_1: t_DebugStruct)
+
+predicate resolve_refmut_DebugStruct [@inline:trivial] (_1: MutBorrow.t t_DebugStruct) = _1.final = _1.current
+
+meta "rewrite_def" predicate resolve_refmut_DebugStruct
+
+type t_RawDate = {
+  sec'0: UInt8.t;
+  min'0: UInt8.t;
+  hour'0: UInt8.t;
+  day'0: UInt8.t;
+  mon'0: UInt8.t;
+  year'0: UInt16.t;
+  wday'0: UInt8.t }
+
+function leap_adjustment [@inline:trivial] (year'1: int) : int = if ComputerDivision.mod year'1 4 = 0
+  /\ (ComputerDivision.mod year'1 100 <> 0 \/ ComputerDivision.mod year'1 400 = 0) then
+    1
+  else
+    0
+
+
+meta "rewrite_def" function leap_adjustment
+
+function month_length [@inline:trivial] (year'1: int) (month: int) : int = if month = 2 then
+    28 + leap_adjustment year'1
+  else
+    if month = 4 \/ month = 6 \/ month = 9 \/ month = 11 then 30 else 31
+
+
+meta "rewrite_def" function month_length
+
+function january_start [@inline:trivial] (year'1: int) : int = (year'1 - 1970) * 365
+      + ComputerDivision.div (year'1 - 1969) 4
+    - ComputerDivision.div (year'1 - 1901) 100
+  + ComputerDivision.div (year'1 - 1601) 400
+
+meta "rewrite_def" function january_start
+
+function january_offset [@inline:trivial] (month: int) : int = if month = 1 then
+    0
+  else
+    if month = 2 then
+      31
+    else
+      if month = 3 then
+        59
+      else
+        if month = 4 then
+          90
+        else
+          if month = 5 then
+            120
+          else
+            if month = 6 then
+              151
+            else
+              if month = 7 then
+                181
+              else
+                if month = 8 then
+                  212
+                else
+                  if month = 9 then 243 else if month = 10 then 273 else if month = 11 then 304 else 334
+              
+            
+          
+        
+      
+    
+  
+
+
+meta "rewrite_def" function january_offset
+
+predicate gt_log_Int [@inline:trivial] (self: int) (other: int) = other < self
+
+meta "rewrite_def" predicate gt_log_Int
+
+function gregorian_day [@inline:trivial] (d: t_RawDate) : int = january_start (UInt16.t'int d.year'0)
+        + january_offset (UInt8.t'int d.mon'0)
+      + UInt8.t'int d.day'0
+    - 1
+  + (if gt_log_Int (UInt8.t'int d.mon'0) 2 then leap_adjustment (UInt16.t'int d.year'0) else 0)
+
+meta "rewrite_def" function gregorian_day
+
+predicate valid_calendar [@inline:trivial] (d: t_RawDate) =
+  UInt8.t'int d.sec'0 < 60
+  /\ UInt8.t'int d.min'0 < 60
+  /\ UInt8.t'int d.hour'0 < 24
+  /\ 1970 <= UInt16.t'int d.year'0
+  /\ UInt16.t'int d.year'0 <= 9999
+  /\ 1 <= UInt8.t'int d.mon'0
+  /\ UInt8.t'int d.mon'0 <= 12
+  /\ 1 <= UInt8.t'int d.day'0
+  /\ UInt8.t'int d.day'0 <= month_length (UInt16.t'int d.year'0) (UInt8.t'int d.mon'0)
+  /\ UInt8.t'int d.wday'0 = ComputerDivision.mod (gregorian_day d + 3) 7 + 1
+
+meta "rewrite_def" predicate valid_calendar
+
+function raw_model [@inline:trivial] (self: t_HttpDate) : t_RawDate = { sec'0 = self.sec;
+                                                                        min'0 = self.min;
+                                                                        hour'0 = self.hour;
+                                                                        day'0 = self.day;
+                                                                        mon'0 = self.mon;
+                                                                        year'0 = self.year;
+                                                                        wday'0 = self.wday }
+
+meta "rewrite_def" function raw_model
+
+predicate invariant_HttpDate (self: t_HttpDate) = valid_calendar (raw_model self)
+
+predicate inv_HttpDate (_1: t_HttpDate)
+
+axiom inv_axiom'1 [@rewrite]: forall x: t_HttpDate [inv_HttpDate x]. inv_HttpDate x = invariant_HttpDate x
+
+predicate invariant_ref_HttpDate [@inline:trivial] (self: t_HttpDate) = inv_HttpDate self
+
+meta "rewrite_def" predicate invariant_ref_HttpDate
+
+predicate inv_ref_HttpDate [@inline:trivial] (_1: t_HttpDate) = invariant_ref_HttpDate _1
+
+meta "rewrite_def" predicate inv_ref_HttpDate
+
+function date_debug_chars [@inline:trivial] (sec'1: UInt8.t) (min'1: UInt8.t) (hour'1: UInt8.t) (day'1: UInt8.t) (mon'1: UInt8.t) (year'1: UInt16.t) (wday'1: UInt8.t) (pretty: bool) : Seq.seq Char.t
+ =
+  Seq.(++) (Seq.(++) (Seq.(++) (Seq.(++) (Seq.(++) (Seq.(++) (Seq.(++) (Seq.(++) (Seq.create 8 [|Char.of_int 72;Char.of_int 116;Char.of_int 116;Char.of_int 112;Char.of_int 68;Char.of_int 97;Char.of_int 116;Char.of_int 101|]) (field_chars pretty true (Seq.create 3 [|Char.of_int 115;Char.of_int 101;Char.of_int 99|]) (decimal_chars (UInt8.t'int sec'1)))) (field_chars pretty false (Seq.create 3 [|Char.of_int 109;Char.of_int 105;Char.of_int 110|]) (decimal_chars (UInt8.t'int min'1)))) (field_chars pretty false (Seq.create 4 [|Char.of_int 104;Char.of_int 111;Char.of_int 117;Char.of_int 114|]) (decimal_chars (UInt8.t'int hour'1)))) (field_chars pretty false (Seq.create 3 [|Char.of_int 100;Char.of_int 97;Char.of_int 121|]) (decimal_chars (UInt8.t'int day'1)))) (field_chars pretty false (Seq.create 3 [|Char.of_int 109;Char.of_int 111;Char.of_int 110|]) (decimal_chars (UInt8.t'int mon'1)))) (field_chars pretty false (Seq.create 4 [|Char.of_int 121;Char.of_int 101;Char.of_int 97;Char.of_int 114|]) (decimal_chars (UInt16.t'int year'1)))) (field_chars pretty false (Seq.create 4 [|Char.of_int 119;Char.of_int 100;Char.of_int 97;Char.of_int 121|]) (decimal_chars (UInt8.t'int wday'1)))) (if pretty then
+    Seq.create 1 [|Char.of_int 125|]
+  else
+    Seq.create 2 [|Char.of_int 32;Char.of_int 125|]
+  )
+
+meta "rewrite_def" function date_debug_chars
+
+meta "compute_max_steps" 1000000
+
+meta "select_lsinst" "all"
+
+let fmt_HttpDate (self: t_HttpDate) (f: MutBorrow.t t_Formatter) (return (x: t_Result_unit_Error)) =
+{[@stop_split] [@expl:fmt_HttpDate requires] ([@stop_split] [@expl:fmt 'self' type invariant] inv_ref_HttpDate self)
+  /\ ([@stop_split] [@expl:fmt 'f' type invariant] inv_refmut_Formatter f)}
+  (! bb0
+  [ bb0 = s0
+    [ s0 = {[@expl:assertion] let _ = concat_law in true} s1
+    | s1 = debug_mode {f.current} (fun (_x: t_Option_bool) -> [ &_9 <- _x ] s2)
+    | s2 = any [ br0 -> {_9 = None} (! bb4) | br1 (x0: bool) -> {_9 = Some x0} (! bb5) ] ]
+  | bb5 = s0
+    [ s0 = elim_Some {_9} (fun (r0: bool) -> [ &pretty'0 <- r0 ] s1)
+    | s1 = [ &pretty <- pretty'0 ] s2
+    | s2 = [ &initial <- formatter_output f.current ] s3
+    | s3 = [ &sink <- append_sink f.current ] s4
+    | s4 = any
+      [ any_ (__arr_temp: Slice64.array UInt8.t) -> (! -{Seq.get __arr_temp.Slice64.elts 0 = (72: UInt8.t)
+        /\ Seq.get __arr_temp.Slice64.elts 1 = (116: UInt8.t)
+        /\ Seq.get __arr_temp.Slice64.elts 2 = (116: UInt8.t)
+        /\ Seq.get __arr_temp.Slice64.elts 3 = (112: UInt8.t)
+        /\ Seq.get __arr_temp.Slice64.elts 4 = (68: UInt8.t)
+        /\ Seq.get __arr_temp.Slice64.elts 5 = (97: UInt8.t)
+        /\ Seq.get __arr_temp.Slice64.elts 6 = (116: UInt8.t)
+        /\ Seq.get __arr_temp.Slice64.elts 7 = (101: UInt8.t) /\ Seq.length __arr_temp.Slice64.elts = 8}-
+        [ &header <- __arr_temp ] s5) ]
+    | s5 =
+      {[@expl:assertion] Seq.(==) (ascii_chars (Slice64.view header)) (Seq.create 8 [|Char.of_int 72;Char.of_int 116;Char.of_int 116;Char.of_int 112;Char.of_int 68;Char.of_int 97;Char.of_int 116;Char.of_int 101|])}
+      s6
+    | s6 =
+      [ &chars0 <- Seq.create 8 [|Char.of_int 72;Char.of_int 116;Char.of_int 116;Char.of_int 112;Char.of_int 68;Char.of_int 97;Char.of_int 116;Char.of_int 101|] ]
+      s7
+    | s7 = [ &_86 <- header ] s8
+    | s8 = MutBorrow.borrow_mut <t_Formatter> {f.current}
+        (fun (_bor: MutBorrow.t t_Formatter) ->
+          [ &_83 <- _bor ] -{inv_Formatter _bor.final}-
+          [ &f <- { f with current = _bor.final } ] s9)
+      [ _ck -> (! {[@expl:type invariant] inv_Formatter f.current} any) ]
+    | s9 = write_ascii {_83} {_86} (fun (_x: t_Result_unit_Error) -> [ &_82 <- _x ] s10)
+    | s10 = branch_Result_unit_Error {_82} (fun (_x: t_ControlFlow_Result_Infallible_Error_unit) -> [ &_81 <- _x ] s11)
+    | s11 = any
+      [ br0 (x0: ()) -> {_81 = Continue x0} (! bb22)
+      | br1 (x0: t_Result_Infallible_Error) -> {_81 = Break x0} (! bb21) ] ]
+  | bb21 = s0
+    [ s0 = s1 [ _ck -> (! {[@expl:type invariant] inv_refmut_Formatter f} any) ]
+    | s1 = -{resolve_refmut_Formatter f}- s2
+    | s2 = elim_Break {_81} (fun (r0: t_Result_Infallible_Error) -> [ &residual <- r0 ] s3)
+    | s3 = from_residual_Result_unit_Error {residual} (fun (_x: t_Result_unit_Error) -> [ &_ret <- _x ] s4)
+    | s4 = return {_ret} ]
+  | bb22 = s0
+    [ s0 = {[@expl:assertion] sink -> formatter_output f.current = Seq.(++) initial chars0} s1
+    | s1 = any
+      [ any_ (__arr_temp: Slice64.array UInt8.t) -> (! -{Seq.get __arr_temp.Slice64.elts 0 = (115: UInt8.t)
+        /\ Seq.get __arr_temp.Slice64.elts 1 = (101: UInt8.t)
+        /\ Seq.get __arr_temp.Slice64.elts 2 = (99: UInt8.t) /\ Seq.length __arr_temp.Slice64.elts = 3}-
+        [ &name1 <- __arr_temp ] s2) ]
+    | s2 =
+      {[@expl:assertion] Seq.(==) (ascii_chars (Slice64.view name1)) (Seq.create 3 [|Char.of_int 115;Char.of_int 101;Char.of_int 99|])}
+      s3
+    | s3 =
+      [ &chars1 <- Seq.(++) chars0 (field_chars pretty true (Seq.create 3 [|Char.of_int 115;Char.of_int 101;Char.of_int 99|]) (decimal_chars (UInt8.t'int self.sec))) ]
+      s4
+    | s4 = [ &_114 <- name1 ] s5
+    | s5 = MutBorrow.borrow_mut <t_Formatter> {f.current}
+        (fun (_bor: MutBorrow.t t_Formatter) ->
+          [ &_110 <- _bor ] -{inv_Formatter _bor.final}-
+          [ &f <- { f with current = _bor.final } ] s6)
+      [ _ck -> (! {[@expl:type invariant] inv_Formatter f.current} any) ]
+    | s6 = write_field_u8 {_110} {pretty} {true} {_114} {self.sec} (fun (_x: t_Result_unit_Error) -> [ &_109 <- _x ] s7)
+    | s7 = branch_Result_unit_Error {_109} (fun (_x: t_ControlFlow_Result_Infallible_Error_unit) -> [ &_108 <- _x ] s8)
+    | s8 = any
+      [ br0 (x0: ()) -> {_108 = Continue x0} (! bb30)
+      | br1 (x0: t_Result_Infallible_Error) -> {_108 = Break x0} (! bb29) ] ]
+  | bb29 = s0
+    [ s0 = s1 [ _ck -> (! {[@expl:type invariant] inv_refmut_Formatter f} any) ]
+    | s1 = -{resolve_refmut_Formatter f}- s2
+    | s2 = elim_Break {_108} (fun (r0: t_Result_Infallible_Error) -> [ &residual'0 <- r0 ] s3)
+    | s3 = from_residual_Result_unit_Error {residual'0} (fun (_x: t_Result_unit_Error) -> [ &_ret <- _x ] s4)
+    | s4 = return {_ret} ]
+  | bb30 = s0
+    [ s0 = {[@expl:assertion] sink -> formatter_output f.current = Seq.(++) initial chars1} s1
+    | s1 = any
+      [ any_ (__arr_temp: Slice64.array UInt8.t) -> (! -{Seq.get __arr_temp.Slice64.elts 0 = (109: UInt8.t)
+        /\ Seq.get __arr_temp.Slice64.elts 1 = (105: UInt8.t)
+        /\ Seq.get __arr_temp.Slice64.elts 2 = (110: UInt8.t) /\ Seq.length __arr_temp.Slice64.elts = 3}-
+        [ &name2 <- __arr_temp ] s2) ]
+    | s2 =
+      {[@expl:assertion] Seq.(==) (ascii_chars (Slice64.view name2)) (Seq.create 3 [|Char.of_int 109;Char.of_int 105;Char.of_int 110|])}
+      s3
+    | s3 =
+      [ &chars2 <- Seq.(++) chars1 (field_chars pretty false (Seq.create 3 [|Char.of_int 109;Char.of_int 105;Char.of_int 110|]) (decimal_chars (UInt8.t'int self.min))) ]
+      s4
+    | s4 = [ &_143 <- name2 ] s5
+    | s5 = MutBorrow.borrow_mut <t_Formatter> {f.current}
+        (fun (_bor: MutBorrow.t t_Formatter) ->
+          [ &_139 <- _bor ] -{inv_Formatter _bor.final}-
+          [ &f <- { f with current = _bor.final } ] s6)
+      [ _ck -> (! {[@expl:type invariant] inv_Formatter f.current} any) ]
+    | s6 = write_field_u8 {_139} {pretty} {false} {_143} {self.min}
+        (fun (_x: t_Result_unit_Error) -> [ &_138 <- _x ] s7)
+    | s7 = branch_Result_unit_Error {_138} (fun (_x: t_ControlFlow_Result_Infallible_Error_unit) -> [ &_137 <- _x ] s8)
+    | s8 = any
+      [ br0 (x0: ()) -> {_137 = Continue x0} (! bb38)
+      | br1 (x0: t_Result_Infallible_Error) -> {_137 = Break x0} (! bb37) ] ]
+  | bb37 = s0
+    [ s0 = s1 [ _ck -> (! {[@expl:type invariant] inv_refmut_Formatter f} any) ]
+    | s1 = -{resolve_refmut_Formatter f}- s2
+    | s2 = elim_Break {_137} (fun (r0: t_Result_Infallible_Error) -> [ &residual'1 <- r0 ] s3)
+    | s3 = from_residual_Result_unit_Error {residual'1} (fun (_x: t_Result_unit_Error) -> [ &_ret <- _x ] s4)
+    | s4 = return {_ret} ]
+  | bb38 = s0
+    [ s0 = {[@expl:assertion] sink -> formatter_output f.current = Seq.(++) initial chars2} s1
+    | s1 = any
+      [ any_ (__arr_temp: Slice64.array UInt8.t) -> (! -{Seq.get __arr_temp.Slice64.elts 0 = (104: UInt8.t)
+        /\ Seq.get __arr_temp.Slice64.elts 1 = (111: UInt8.t)
+        /\ Seq.get __arr_temp.Slice64.elts 2 = (117: UInt8.t)
+        /\ Seq.get __arr_temp.Slice64.elts 3 = (114: UInt8.t) /\ Seq.length __arr_temp.Slice64.elts = 4}-
+        [ &name3 <- __arr_temp ] s2) ]
+    | s2 =
+      {[@expl:assertion] Seq.(==) (ascii_chars (Slice64.view name3)) (Seq.create 4 [|Char.of_int 104;Char.of_int 111;Char.of_int 117;Char.of_int 114|])}
+      s3
+    | s3 =
+      [ &chars3 <- Seq.(++) chars2 (field_chars pretty false (Seq.create 4 [|Char.of_int 104;Char.of_int 111;Char.of_int 117;Char.of_int 114|]) (decimal_chars (UInt8.t'int self.hour))) ]
+      s4
+    | s4 = [ &_172 <- name3 ] s5
+    | s5 = MutBorrow.borrow_mut <t_Formatter> {f.current}
+        (fun (_bor: MutBorrow.t t_Formatter) ->
+          [ &_168 <- _bor ] -{inv_Formatter _bor.final}-
+          [ &f <- { f with current = _bor.final } ] s6)
+      [ _ck -> (! {[@expl:type invariant] inv_Formatter f.current} any) ]
+    | s6 = write_field_u8 {_168} {pretty} {false} {_172} {self.hour}
+        (fun (_x: t_Result_unit_Error) -> [ &_167 <- _x ] s7)
+    | s7 = branch_Result_unit_Error {_167} (fun (_x: t_ControlFlow_Result_Infallible_Error_unit) -> [ &_166 <- _x ] s8)
+    | s8 = any
+      [ br0 (x0: ()) -> {_166 = Continue x0} (! bb46)
+      | br1 (x0: t_Result_Infallible_Error) -> {_166 = Break x0} (! bb45) ] ]
+  | bb45 = s0
+    [ s0 = s1 [ _ck -> (! {[@expl:type invariant] inv_refmut_Formatter f} any) ]
+    | s1 = -{resolve_refmut_Formatter f}- s2
+    | s2 = elim_Break {_166} (fun (r0: t_Result_Infallible_Error) -> [ &residual'2 <- r0 ] s3)
+    | s3 = from_residual_Result_unit_Error {residual'2} (fun (_x: t_Result_unit_Error) -> [ &_ret <- _x ] s4)
+    | s4 = return {_ret} ]
+  | bb46 = s0
+    [ s0 = {[@expl:assertion] sink -> formatter_output f.current = Seq.(++) initial chars3} s1
+    | s1 = any
+      [ any_ (__arr_temp: Slice64.array UInt8.t) -> (! -{Seq.get __arr_temp.Slice64.elts 0 = (100: UInt8.t)
+        /\ Seq.get __arr_temp.Slice64.elts 1 = (97: UInt8.t)
+        /\ Seq.get __arr_temp.Slice64.elts 2 = (121: UInt8.t) /\ Seq.length __arr_temp.Slice64.elts = 3}-
+        [ &name4 <- __arr_temp ] s2) ]
+    | s2 =
+      {[@expl:assertion] Seq.(==) (ascii_chars (Slice64.view name4)) (Seq.create 3 [|Char.of_int 100;Char.of_int 97;Char.of_int 121|])}
+      s3
+    | s3 =
+      [ &chars4 <- Seq.(++) chars3 (field_chars pretty false (Seq.create 3 [|Char.of_int 100;Char.of_int 97;Char.of_int 121|]) (decimal_chars (UInt8.t'int self.day))) ]
+      s4
+    | s4 = [ &_201 <- name4 ] s5
+    | s5 = MutBorrow.borrow_mut <t_Formatter> {f.current}
+        (fun (_bor: MutBorrow.t t_Formatter) ->
+          [ &_197 <- _bor ] -{inv_Formatter _bor.final}-
+          [ &f <- { f with current = _bor.final } ] s6)
+      [ _ck -> (! {[@expl:type invariant] inv_Formatter f.current} any) ]
+    | s6 = write_field_u8 {_197} {pretty} {false} {_201} {self.day}
+        (fun (_x: t_Result_unit_Error) -> [ &_196 <- _x ] s7)
+    | s7 = branch_Result_unit_Error {_196} (fun (_x: t_ControlFlow_Result_Infallible_Error_unit) -> [ &_195 <- _x ] s8)
+    | s8 = any
+      [ br0 (x0: ()) -> {_195 = Continue x0} (! bb54)
+      | br1 (x0: t_Result_Infallible_Error) -> {_195 = Break x0} (! bb53) ] ]
+  | bb53 = s0
+    [ s0 = s1 [ _ck -> (! {[@expl:type invariant] inv_refmut_Formatter f} any) ]
+    | s1 = -{resolve_refmut_Formatter f}- s2
+    | s2 = elim_Break {_195} (fun (r0: t_Result_Infallible_Error) -> [ &residual'3 <- r0 ] s3)
+    | s3 = from_residual_Result_unit_Error {residual'3} (fun (_x: t_Result_unit_Error) -> [ &_ret <- _x ] s4)
+    | s4 = return {_ret} ]
+  | bb54 = s0
+    [ s0 = {[@expl:assertion] sink -> formatter_output f.current = Seq.(++) initial chars4} s1
+    | s1 = any
+      [ any_ (__arr_temp: Slice64.array UInt8.t) -> (! -{Seq.get __arr_temp.Slice64.elts 0 = (109: UInt8.t)
+        /\ Seq.get __arr_temp.Slice64.elts 1 = (111: UInt8.t)
+        /\ Seq.get __arr_temp.Slice64.elts 2 = (110: UInt8.t) /\ Seq.length __arr_temp.Slice64.elts = 3}-
+        [ &name5 <- __arr_temp ] s2) ]
+    | s2 =
+      {[@expl:assertion] Seq.(==) (ascii_chars (Slice64.view name5)) (Seq.create 3 [|Char.of_int 109;Char.of_int 111;Char.of_int 110|])}
+      s3
+    | s3 =
+      [ &chars5 <- Seq.(++) chars4 (field_chars pretty false (Seq.create 3 [|Char.of_int 109;Char.of_int 111;Char.of_int 110|]) (decimal_chars (UInt8.t'int self.mon))) ]
+      s4
+    | s4 = [ &_230 <- name5 ] s5
+    | s5 = MutBorrow.borrow_mut <t_Formatter> {f.current}
+        (fun (_bor: MutBorrow.t t_Formatter) ->
+          [ &_226 <- _bor ] -{inv_Formatter _bor.final}-
+          [ &f <- { f with current = _bor.final } ] s6)
+      [ _ck -> (! {[@expl:type invariant] inv_Formatter f.current} any) ]
+    | s6 = write_field_u8 {_226} {pretty} {false} {_230} {self.mon}
+        (fun (_x: t_Result_unit_Error) -> [ &_225 <- _x ] s7)
+    | s7 = branch_Result_unit_Error {_225} (fun (_x: t_ControlFlow_Result_Infallible_Error_unit) -> [ &_224 <- _x ] s8)
+    | s8 = any
+      [ br0 (x0: ()) -> {_224 = Continue x0} (! bb62)
+      | br1 (x0: t_Result_Infallible_Error) -> {_224 = Break x0} (! bb61) ] ]
+  | bb61 = s0
+    [ s0 = s1 [ _ck -> (! {[@expl:type invariant] inv_refmut_Formatter f} any) ]
+    | s1 = -{resolve_refmut_Formatter f}- s2
+    | s2 = elim_Break {_224} (fun (r0: t_Result_Infallible_Error) -> [ &residual'4 <- r0 ] s3)
+    | s3 = from_residual_Result_unit_Error {residual'4} (fun (_x: t_Result_unit_Error) -> [ &_ret <- _x ] s4)
+    | s4 = return {_ret} ]
+  | bb62 = s0
+    [ s0 = {[@expl:assertion] sink -> formatter_output f.current = Seq.(++) initial chars5} s1
+    | s1 = any
+      [ any_ (__arr_temp: Slice64.array UInt8.t) -> (! -{Seq.get __arr_temp.Slice64.elts 0 = (121: UInt8.t)
+        /\ Seq.get __arr_temp.Slice64.elts 1 = (101: UInt8.t)
+        /\ Seq.get __arr_temp.Slice64.elts 2 = (97: UInt8.t)
+        /\ Seq.get __arr_temp.Slice64.elts 3 = (114: UInt8.t) /\ Seq.length __arr_temp.Slice64.elts = 4}-
+        [ &name6 <- __arr_temp ] s2) ]
+    | s2 =
+      {[@expl:assertion] Seq.(==) (ascii_chars (Slice64.view name6)) (Seq.create 4 [|Char.of_int 121;Char.of_int 101;Char.of_int 97;Char.of_int 114|])}
+      s3
+    | s3 =
+      [ &chars6 <- Seq.(++) chars5 (field_chars pretty false (Seq.create 4 [|Char.of_int 121;Char.of_int 101;Char.of_int 97;Char.of_int 114|]) (decimal_chars (UInt16.t'int self.year))) ]
+      s4
+    | s4 = [ &_259 <- name6 ] s5
+    | s5 = MutBorrow.borrow_mut <t_Formatter> {f.current}
+        (fun (_bor: MutBorrow.t t_Formatter) ->
+          [ &_255 <- _bor ] -{inv_Formatter _bor.final}-
+          [ &f <- { f with current = _bor.final } ] s6)
+      [ _ck -> (! {[@expl:type invariant] inv_Formatter f.current} any) ]
+    | s6 = write_field_u16 {_255} {pretty} {false} {_259} {self.year}
+        (fun (_x: t_Result_unit_Error) -> [ &_254 <- _x ] s7)
+    | s7 = branch_Result_unit_Error {_254} (fun (_x: t_ControlFlow_Result_Infallible_Error_unit) -> [ &_253 <- _x ] s8)
+    | s8 = any
+      [ br0 (x0: ()) -> {_253 = Continue x0} (! bb70)
+      | br1 (x0: t_Result_Infallible_Error) -> {_253 = Break x0} (! bb69) ] ]
+  | bb69 = s0
+    [ s0 = s1 [ _ck -> (! {[@expl:type invariant] inv_refmut_Formatter f} any) ]
+    | s1 = -{resolve_refmut_Formatter f}- s2
+    | s2 = elim_Break {_253} (fun (r0: t_Result_Infallible_Error) -> [ &residual'5 <- r0 ] s3)
+    | s3 = from_residual_Result_unit_Error {residual'5} (fun (_x: t_Result_unit_Error) -> [ &_ret <- _x ] s4)
+    | s4 = return {_ret} ]
+  | bb70 = s0
+    [ s0 = {[@expl:assertion] sink -> formatter_output f.current = Seq.(++) initial chars6} s1
+    | s1 = any
+      [ any_ (__arr_temp: Slice64.array UInt8.t) -> (! -{Seq.get __arr_temp.Slice64.elts 0 = (119: UInt8.t)
+        /\ Seq.get __arr_temp.Slice64.elts 1 = (100: UInt8.t)
+        /\ Seq.get __arr_temp.Slice64.elts 2 = (97: UInt8.t)
+        /\ Seq.get __arr_temp.Slice64.elts 3 = (121: UInt8.t) /\ Seq.length __arr_temp.Slice64.elts = 4}-
+        [ &name7 <- __arr_temp ] s2) ]
+    | s2 =
+      {[@expl:assertion] Seq.(==) (ascii_chars (Slice64.view name7)) (Seq.create 4 [|Char.of_int 119;Char.of_int 100;Char.of_int 97;Char.of_int 121|])}
+      s3
+    | s3 =
+      [ &chars7 <- Seq.(++) chars6 (field_chars pretty false (Seq.create 4 [|Char.of_int 119;Char.of_int 100;Char.of_int 97;Char.of_int 121|]) (decimal_chars (UInt8.t'int self.wday))) ]
+      s4
+    | s4 = [ &_288 <- name7 ] s5
+    | s5 = MutBorrow.borrow_mut <t_Formatter> {f.current}
+        (fun (_bor: MutBorrow.t t_Formatter) ->
+          [ &_284 <- _bor ] -{inv_Formatter _bor.final}-
+          [ &f <- { f with current = _bor.final } ] s6)
+      [ _ck -> (! {[@expl:type invariant] inv_Formatter f.current} any) ]
+    | s6 = write_field_u8 {_284} {pretty} {false} {_288} {self.wday}
+        (fun (_x: t_Result_unit_Error) -> [ &_283 <- _x ] s7)
+    | s7 = branch_Result_unit_Error {_283} (fun (_x: t_ControlFlow_Result_Infallible_Error_unit) -> [ &_282 <- _x ] s8)
+    | s8 = any
+      [ br0 (x0: ()) -> {_282 = Continue x0} (! bb78)
+      | br1 (x0: t_Result_Infallible_Error) -> {_282 = Break x0} (! bb77) ] ]
+  | bb77 = s0
+    [ s0 = s1 [ _ck -> (! {[@expl:type invariant] inv_refmut_Formatter f} any) ]
+    | s1 = -{resolve_refmut_Formatter f}- s2
+    | s2 = elim_Break {_282} (fun (r0: t_Result_Infallible_Error) -> [ &residual'6 <- r0 ] s3)
+    | s3 = from_residual_Result_unit_Error {residual'6} (fun (_x: t_Result_unit_Error) -> [ &_ret <- _x ] s4)
+    | s4 = return {_ret} ]
+  | bb78 = s0
+    [ s0 = {[@expl:assertion] sink -> formatter_output f.current = Seq.(++) initial chars7} s1
+    | s1 = any [ br0 -> {pretty = false} (! bb82) | br1 -> {pretty} (! bb81) ] ]
+  | bb81 = s0
+    [ s0 = any
+      [ any_ (__arr_temp: Slice64.array UInt8.t) -> (! -{Seq.get __arr_temp.Slice64.elts 0 = (125: UInt8.t)
+        /\ Seq.length __arr_temp.Slice64.elts = 1}-
+        [ &end' <- __arr_temp ] s1) ]
+    | s1 = {[@expl:assertion] Seq.(==) (ascii_chars (Slice64.view end')) (Seq.create 1 [|Char.of_int 125|])} s2
+    | s2 = [ &_309 <- end' ] s3
+    | s3 = MutBorrow.borrow_final <t_Formatter> {f.current} {MutBorrow.get_id f}
+        (fun (_bor: MutBorrow.t t_Formatter) ->
+          [ &_306 <- _bor ] -{inv_Formatter _bor.final}-
+          [ &f <- { f with current = _bor.final } ] s4)
+      [ _ck -> (! {[@expl:type invariant] inv_Formatter f.current} any) ]
+    | s4 = write_ascii {_306} {_309} (fun (_x: t_Result_unit_Error) -> [ &_ret <- _x ] s5)
+    | s5 = s6 [ _ck -> (! {[@expl:type invariant] inv_refmut_Formatter f} any) ]
+    | s6 = -{resolve_refmut_Formatter f}- s7
+    | s7 = return {_ret} ]
+  | bb82 = s0
+    [ s0 = any
+      [ any_ (__arr_temp: Slice64.array UInt8.t) -> (! -{Seq.get __arr_temp.Slice64.elts 0 = (32: UInt8.t)
+        /\ Seq.get __arr_temp.Slice64.elts 1 = (125: UInt8.t) /\ Seq.length __arr_temp.Slice64.elts = 2}-
+        [ &end''0 <- __arr_temp ] s1) ]
+    | s1 =
+      {[@expl:assertion] Seq.(==) (ascii_chars (Slice64.view end''0)) (Seq.create 2 [|Char.of_int 32;Char.of_int 125|])}
+      s2
+    | s2 = [ &_317 <- end''0 ] s3
+    | s3 = MutBorrow.borrow_final <t_Formatter> {f.current} {MutBorrow.get_id f}
+        (fun (_bor: MutBorrow.t t_Formatter) ->
+          [ &_314 <- _bor ] -{inv_Formatter _bor.final}-
+          [ &f <- { f with current = _bor.final } ] s4)
+      [ _ck -> (! {[@expl:type invariant] inv_Formatter f.current} any) ]
+    | s4 = write_ascii {_314} {_317} (fun (_x: t_Result_unit_Error) -> [ &_ret <- _x ] s5)
+    | s5 = s6 [ _ck -> (! {[@expl:type invariant] inv_refmut_Formatter f} any) ]
+    | s6 = -{resolve_refmut_Formatter f}- s7
+    | s7 = return {_ret} ]
+  | bb4 = s0
+    [ s0 = [ &_32 <- "HttpDate" ] s1
+    | s1 = MutBorrow.borrow_final <t_Formatter> {f.current} {MutBorrow.get_id f}
+        (fun (_bor: MutBorrow.t t_Formatter) ->
+          [ &_30 <- _bor ] -{inv_Formatter _bor.final}-
+          [ &f <- { f with current = _bor.final } ] s2)
+      [ _ck -> (! {[@expl:type invariant] inv_Formatter f.current} any) ]
+    | s2 = debug_struct {_30} {_32} (fun (_x: t_DebugStruct) -> [ &_29 <- _x ] s3)
+    | s3 = [ &_34 <- "sec" ] s4
+    | s4 = [ &_37 <- self.sec ] s5
+    | s5 = [ &_35 <- dyn_Debug_of_u8 _37 ] s6
+    | s6 = MutBorrow.borrow_mut <t_DebugStruct> {_29}
+        (fun (_bor: MutBorrow.t t_DebugStruct) ->
+          [ &_28 <- _bor ] -{inv_DebugStruct _bor.final}-
+          [ &_29 <- _bor.final ] s7) [ _ck -> (! {[@expl:type invariant] inv_DebugStruct _29} any) ]
+    | s7 = field {_28} {_34} {_35} (fun (_x: MutBorrow.t t_DebugStruct) -> [ &_27 <- _x ] s8)
+    | s8 = [ &_39 <- "min" ] s9
+    | s9 = [ &_42 <- self.min ] s10
+    | s10 = [ &_40 <- dyn_Debug_of_u8 _42 ] s11
+    | s11 = MutBorrow.borrow_final <t_DebugStruct> {_27.current} {MutBorrow.get_id _27}
+        (fun (_bor: MutBorrow.t t_DebugStruct) ->
+          [ &_26 <- _bor ] -{inv_DebugStruct _bor.final}-
+          [ &_27 <- { _27 with current = _bor.final } ] s12)
+      [ _ck -> (! {[@expl:type invariant] inv_DebugStruct _27.current} any) ]
+    | s12 = field {_26} {_39} {_40} (fun (_x: MutBorrow.t t_DebugStruct) -> [ &_25 <- _x ] s13)
+    | s13 = [ &_44 <- "hour" ] s14
+    | s14 = [ &_47 <- self.hour ] s15
+    | s15 = [ &_45 <- dyn_Debug_of_u8 _47 ] s16
+    | s16 = MutBorrow.borrow_final <t_DebugStruct> {_25.current} {MutBorrow.get_id _25}
+        (fun (_bor: MutBorrow.t t_DebugStruct) ->
+          [ &_24 <- _bor ] -{inv_DebugStruct _bor.final}-
+          [ &_25 <- { _25 with current = _bor.final } ] s17)
+      [ _ck -> (! {[@expl:type invariant] inv_DebugStruct _25.current} any) ]
+    | s17 = field {_24} {_44} {_45} (fun (_x: MutBorrow.t t_DebugStruct) -> [ &_23 <- _x ] s18)
+    | s18 = [ &_49 <- "day" ] s19
+    | s19 = [ &_52 <- self.day ] s20
+    | s20 = [ &_50 <- dyn_Debug_of_u8 _52 ] s21
+    | s21 = MutBorrow.borrow_final <t_DebugStruct> {_23.current} {MutBorrow.get_id _23}
+        (fun (_bor: MutBorrow.t t_DebugStruct) ->
+          [ &_22 <- _bor ] -{inv_DebugStruct _bor.final}-
+          [ &_23 <- { _23 with current = _bor.final } ] s22)
+      [ _ck -> (! {[@expl:type invariant] inv_DebugStruct _23.current} any) ]
+    | s22 = field {_22} {_49} {_50} (fun (_x: MutBorrow.t t_DebugStruct) -> [ &_21 <- _x ] s23)
+    | s23 = [ &_54 <- "mon" ] s24
+    | s24 = [ &_57 <- self.mon ] s25
+    | s25 = [ &_55 <- dyn_Debug_of_u8 _57 ] s26
+    | s26 = MutBorrow.borrow_final <t_DebugStruct> {_21.current} {MutBorrow.get_id _21}
+        (fun (_bor: MutBorrow.t t_DebugStruct) ->
+          [ &_20 <- _bor ] -{inv_DebugStruct _bor.final}-
+          [ &_21 <- { _21 with current = _bor.final } ] s27)
+      [ _ck -> (! {[@expl:type invariant] inv_DebugStruct _21.current} any) ]
+    | s27 = field {_20} {_54} {_55} (fun (_x: MutBorrow.t t_DebugStruct) -> [ &_19 <- _x ] s28)
+    | s28 = [ &_59 <- "year" ] s29
+    | s29 = [ &_62 <- self.year ] s30
+    | s30 = [ &_60 <- dyn_Debug_of_u16 _62 ] s31
+    | s31 = MutBorrow.borrow_final <t_DebugStruct> {_19.current} {MutBorrow.get_id _19}
+        (fun (_bor: MutBorrow.t t_DebugStruct) ->
+          [ &_18 <- _bor ] -{inv_DebugStruct _bor.final}-
+          [ &_19 <- { _19 with current = _bor.final } ] s32)
+      [ _ck -> (! {[@expl:type invariant] inv_DebugStruct _19.current} any) ]
+    | s32 = field {_18} {_59} {_60} (fun (_x: MutBorrow.t t_DebugStruct) -> [ &_17 <- _x ] s33)
+    | s33 = [ &_64 <- "wday" ] s34
+    | s34 = [ &_67 <- self.wday ] s35
+    | s35 = [ &_65 <- dyn_Debug_of_u8 _67 ] s36
+    | s36 = MutBorrow.borrow_final <t_DebugStruct> {_17.current} {MutBorrow.get_id _17}
+        (fun (_bor: MutBorrow.t t_DebugStruct) ->
+          [ &_16 <- _bor ] -{inv_DebugStruct _bor.final}-
+          [ &_17 <- { _17 with current = _bor.final } ] s37)
+      [ _ck -> (! {[@expl:type invariant] inv_DebugStruct _17.current} any) ]
+    | s37 = field {_16} {_64} {_65} (fun (_x: MutBorrow.t t_DebugStruct) -> [ &_15 <- _x ] s38)
+    | s38 = MutBorrow.borrow_final <t_DebugStruct> {_15.current} {MutBorrow.get_id _15}
+        (fun (_bor: MutBorrow.t t_DebugStruct) ->
+          [ &_14 <- _bor ] -{inv_DebugStruct _bor.final}-
+          [ &_15 <- { _15 with current = _bor.final } ] s39)
+      [ _ck -> (! {[@expl:type invariant] inv_DebugStruct _15.current} any) ]
+    | s39 = finish {_14} (fun (_x: t_Result_unit_Error) -> [ &_ret <- _x ] s40)
+    | s40 = s41 [ _ck -> (! {[@expl:type invariant] inv_DebugStruct _29} any) ]
+    | s41 = -{resolve_DebugStruct _29}- s42
+    | s42 = s43 [ _ck -> (! {[@expl:type invariant] inv_refmut_DebugStruct _27} any) ]
+    | s43 = -{resolve_refmut_DebugStruct _27}- s44
+    | s44 = s45 [ _ck -> (! {[@expl:type invariant] inv_refmut_DebugStruct _25} any) ]
+    | s45 = -{resolve_refmut_DebugStruct _25}- s46
+    | s46 = s47 [ _ck -> (! {[@expl:type invariant] inv_refmut_DebugStruct _23} any) ]
+    | s47 = -{resolve_refmut_DebugStruct _23}- s48
+    | s48 = s49 [ _ck -> (! {[@expl:type invariant] inv_refmut_DebugStruct _21} any) ]
+    | s49 = -{resolve_refmut_DebugStruct _21}- s50
+    | s50 = s51 [ _ck -> (! {[@expl:type invariant] inv_refmut_DebugStruct _19} any) ]
+    | s51 = -{resolve_refmut_DebugStruct _19}- s52
+    | s52 = s53 [ _ck -> (! {[@expl:type invariant] inv_refmut_DebugStruct _17} any) ]
+    | s53 = -{resolve_refmut_DebugStruct _17}- s54
+    | s54 = s55 [ _ck -> (! {[@expl:type invariant] inv_refmut_DebugStruct _15} any) ]
+    | s55 = -{resolve_refmut_DebugStruct _15}- s56
+    | s56 = s57 [ _ck -> (! {[@expl:type invariant] inv_refmut_Formatter f} any) ]
+    | s57 = -{resolve_refmut_Formatter f}- s58
+    | s58 = return {_ret} ] ]
+  [ & _ret: t_Result_unit_Error = Any.any_l ()
+  | & self: t_HttpDate = self
+  | & f: MutBorrow.t t_Formatter = f
+  | & pretty: bool = Any.any_l ()
+  | & _9: t_Option_bool = Any.any_l ()
+  | & pretty'0: bool = Any.any_l ()
+  | & _14: MutBorrow.t t_DebugStruct = Any.any_l ()
+  | & _15: MutBorrow.t t_DebugStruct = Any.any_l ()
+  | & _16: MutBorrow.t t_DebugStruct = Any.any_l ()
+  | & _17: MutBorrow.t t_DebugStruct = Any.any_l ()
+  | & _18: MutBorrow.t t_DebugStruct = Any.any_l ()
+  | & _19: MutBorrow.t t_DebugStruct = Any.any_l ()
+  | & _20: MutBorrow.t t_DebugStruct = Any.any_l ()
+  | & _21: MutBorrow.t t_DebugStruct = Any.any_l ()
+  | & _22: MutBorrow.t t_DebugStruct = Any.any_l ()
+  | & _23: MutBorrow.t t_DebugStruct = Any.any_l ()
+  | & _24: MutBorrow.t t_DebugStruct = Any.any_l ()
+  | & _25: MutBorrow.t t_DebugStruct = Any.any_l ()
+  | & _26: MutBorrow.t t_DebugStruct = Any.any_l ()
+  | & _27: MutBorrow.t t_DebugStruct = Any.any_l ()
+  | & _28: MutBorrow.t t_DebugStruct = Any.any_l ()
+  | & _29: t_DebugStruct = Any.any_l ()
+  | & _30: MutBorrow.t t_Formatter = Any.any_l ()
+  | & _32: string = Any.any_l ()
+  | & _34: string = Any.any_l ()
+  | & _35: dyn_Debug = Any.any_l ()
+  | & _37: UInt8.t = Any.any_l ()
+  | & _39: string = Any.any_l ()
+  | & _40: dyn_Debug = Any.any_l ()
+  | & _42: UInt8.t = Any.any_l ()
+  | & _44: string = Any.any_l ()
+  | & _45: dyn_Debug = Any.any_l ()
+  | & _47: UInt8.t = Any.any_l ()
+  | & _49: string = Any.any_l ()
+  | & _50: dyn_Debug = Any.any_l ()
+  | & _52: UInt8.t = Any.any_l ()
+  | & _54: string = Any.any_l ()
+  | & _55: dyn_Debug = Any.any_l ()
+  | & _57: UInt8.t = Any.any_l ()
+  | & _59: string = Any.any_l ()
+  | & _60: dyn_Debug = Any.any_l ()
+  | & _62: UInt16.t = Any.any_l ()
+  | & _64: string = Any.any_l ()
+  | & _65: dyn_Debug = Any.any_l ()
+  | & _67: UInt8.t = Any.any_l ()
+  | & initial: Seq.seq Char.t = Any.any_l ()
+  | & sink: bool = Any.any_l ()
+  | & header: Slice64.array UInt8.t = Any.any_l ()
+  | & chars0: Seq.seq Char.t = Any.any_l ()
+  | & _81: t_ControlFlow_Result_Infallible_Error_unit = Any.any_l ()
+  | & _82: t_Result_unit_Error = Any.any_l ()
+  | & _83: MutBorrow.t t_Formatter = Any.any_l ()
+  | & _86: Slice64.array UInt8.t = Any.any_l ()
+  | & residual: t_Result_Infallible_Error = Any.any_l ()
+  | & name1: Slice64.array UInt8.t = Any.any_l ()
+  | & chars1: Seq.seq Char.t = Any.any_l ()
+  | & _108: t_ControlFlow_Result_Infallible_Error_unit = Any.any_l ()
+  | & _109: t_Result_unit_Error = Any.any_l ()
+  | & _110: MutBorrow.t t_Formatter = Any.any_l ()
+  | & _114: Slice64.array UInt8.t = Any.any_l ()
+  | & residual'0: t_Result_Infallible_Error = Any.any_l ()
+  | & name2: Slice64.array UInt8.t = Any.any_l ()
+  | & chars2: Seq.seq Char.t = Any.any_l ()
+  | & _137: t_ControlFlow_Result_Infallible_Error_unit = Any.any_l ()
+  | & _138: t_Result_unit_Error = Any.any_l ()
+  | & _139: MutBorrow.t t_Formatter = Any.any_l ()
+  | & _143: Slice64.array UInt8.t = Any.any_l ()
+  | & residual'1: t_Result_Infallible_Error = Any.any_l ()
+  | & name3: Slice64.array UInt8.t = Any.any_l ()
+  | & chars3: Seq.seq Char.t = Any.any_l ()
+  | & _166: t_ControlFlow_Result_Infallible_Error_unit = Any.any_l ()
+  | & _167: t_Result_unit_Error = Any.any_l ()
+  | & _168: MutBorrow.t t_Formatter = Any.any_l ()
+  | & _172: Slice64.array UInt8.t = Any.any_l ()
+  | & residual'2: t_Result_Infallible_Error = Any.any_l ()
+  | & name4: Slice64.array UInt8.t = Any.any_l ()
+  | & chars4: Seq.seq Char.t = Any.any_l ()
+  | & _195: t_ControlFlow_Result_Infallible_Error_unit = Any.any_l ()
+  | & _196: t_Result_unit_Error = Any.any_l ()
+  | & _197: MutBorrow.t t_Formatter = Any.any_l ()
+  | & _201: Slice64.array UInt8.t = Any.any_l ()
+  | & residual'3: t_Result_Infallible_Error = Any.any_l ()
+  | & name5: Slice64.array UInt8.t = Any.any_l ()
+  | & chars5: Seq.seq Char.t = Any.any_l ()
+  | & _224: t_ControlFlow_Result_Infallible_Error_unit = Any.any_l ()
+  | & _225: t_Result_unit_Error = Any.any_l ()
+  | & _226: MutBorrow.t t_Formatter = Any.any_l ()
+  | & _230: Slice64.array UInt8.t = Any.any_l ()
+  | & residual'4: t_Result_Infallible_Error = Any.any_l ()
+  | & name6: Slice64.array UInt8.t = Any.any_l ()
+  | & chars6: Seq.seq Char.t = Any.any_l ()
+  | & _253: t_ControlFlow_Result_Infallible_Error_unit = Any.any_l ()
+  | & _254: t_Result_unit_Error = Any.any_l ()
+  | & _255: MutBorrow.t t_Formatter = Any.any_l ()
+  | & _259: Slice64.array UInt8.t = Any.any_l ()
+  | & residual'5: t_Result_Infallible_Error = Any.any_l ()
+  | & name7: Slice64.array UInt8.t = Any.any_l ()
+  | & chars7: Seq.seq Char.t = Any.any_l ()
+  | & _282: t_ControlFlow_Result_Infallible_Error_unit = Any.any_l ()
+  | & _283: t_Result_unit_Error = Any.any_l ()
+  | & _284: MutBorrow.t t_Formatter = Any.any_l ()
+  | & _288: Slice64.array UInt8.t = Any.any_l ()
+  | & residual'6: t_Result_Infallible_Error = Any.any_l ()
+  | & end': Slice64.array UInt8.t = Any.any_l ()
+  | & _306: MutBorrow.t t_Formatter = Any.any_l ()
+  | & _309: Slice64.array UInt8.t = Any.any_l ()
+  | & end''0: Slice64.array UInt8.t = Any.any_l ()
+  | & _314: MutBorrow.t t_Formatter = Any.any_l ()
+  | & _317: Slice64.array UInt8.t = Any.any_l () ])
+  [ return (result: t_Result_unit_Error) -> {[@stop_split] [@expl:fmt ensures] match result with
+      | Ok () -> plain_options (debug_options f.current) /\ append_sink f.current
+      -> formatter_output f.final
+      = Seq.(++) (formatter_output f.current) (date_debug_chars self.sec self.min self.hour self.day self.mon self.year self.wday ((debug_options f.current).flags
+      = (4: UInt32.t)))
+      | Err _ -> true
+      end}
+    (! return {result}) ]

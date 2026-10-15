@@ -1,0 +1,50 @@
+use seq.Seq
+use int.Int
+
+type t_T
+
+predicate gt_log_Int [@inline:trivial] (self: int) (other: int) = other < self
+
+meta "rewrite_def" predicate gt_log_Int
+
+function tail_T (self: Seq.seq t_T) : Seq.seq t_T = Seq.([..]) self 1 (Seq.length self)
+
+predicate nonempty_tail_at_index_T (left: Seq.seq t_T) (right: Seq.seq t_T) (i: int)
+
+axiom nonempty_tail_at_index_T_spec:
+  forall left: Seq.seq t_T, right: Seq.seq t_T, i: int [nonempty_tail_at_index_T left right i]. gt_log_Int (Seq.length left) 0
+    -> 0 <= i /\ i < Seq.length (Seq.(++) (tail_T left) right) -> nonempty_tail_at_index_T left right i
+
+axiom nonempty_tail_at_index_T_spec'0:
+  forall left: Seq.seq t_T, right: Seq.seq t_T, i: int. gt_log_Int (Seq.length left) 0
+    -> 0 <= i /\ i < Seq.length (Seq.(++) (tail_T left) right)
+    -> Seq.get (tail_T (Seq.(++) left right)) i = Seq.get (Seq.(++) (tail_T left) right) i
+
+meta "compute_max_steps" 1000000
+
+meta "select_lsinst" "all"
+
+constant left : Seq.seq t_T
+
+constant right : Seq.seq t_T
+
+predicate nonempty_left_concat_tail_T (left: Seq.seq t_T) (right: Seq.seq t_T)
+
+goal vc_nonempty_left_concat_tail_T: gt_log_Int (Seq.length left) 0
+  -> (let joined_tail = tail_T (Seq.(++) left right) in let tail_joined = Seq.(++) (tail_T left) right in Seq.length joined_tail
+    = Seq.length tail_joined
+  && (forall i: int. if 0 <= i then
+        if i < Seq.length joined_tail then
+          [@stop_split] [@expl:nonempty_tail_at_index requires] ([@stop_split] [@expl:nonempty_tail_at_index requires #0] gt_log_Int (Seq.length left) 0)
+          /\ ([@stop_split] [@expl:nonempty_tail_at_index requires #1] 0 <= i
+          /\ i < Seq.length (Seq.(++) (tail_T left) right))
+        else
+          true
+      
+      else
+        true
+    )
+  /\ (forall i: int. 0 <= i /\ i < Seq.length joined_tail -> nonempty_tail_at_index_T left right i)
+  && Seq.(==) joined_tail tail_joined
+  && ([@stop_split] [@expl:nonempty_left_concat_tail_T ensures] ([@stop_split] [@expl:nonempty_left_concat_tail ensures #0] true)
+  /\ ([@stop_split] [@expl:nonempty_left_concat_tail ensures #1] Seq.(==) (tail_T (Seq.(++) left right)) (Seq.(++) (tail_T left) right))))

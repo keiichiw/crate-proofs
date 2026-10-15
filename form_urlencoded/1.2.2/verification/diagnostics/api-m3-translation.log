@@ -1,0 +1,123 @@
+warning: unused import: `Borrow`
+  --> crate/src/lib.rs:26:21
+   |
+26 | use alloc::borrow::{Borrow, Cow};
+   |                     ^^^^^^
+   |
+   = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: function `raw_pair_bounds` is never used
+  --> crate/src/lib.rs:77:4
+   |
+77 | fn raw_pair_bounds(input: &[u8]) -> Option<(usize, usize, usize, usize)> {
+   |    ^^^^^^^^^^^^^^^
+   |
+   = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: function `decode` is never used
+   --> crate/src/lib.rs:126:4
+    |
+126 | fn decode(input: &[u8]) -> Cow<'_, str> {
+    |    ^^^^^^
+
+warning: function `find_plus` is never used
+   --> crate/src/lib.rs:139:4
+    |
+139 | fn find_plus(input: &[u8]) -> Option<usize> {
+    |    ^^^^^^^^^
+
+warning: function `replace_plus_in_place` is never used
+   --> crate/src/lib.rs:157:4
+    |
+157 | fn replace_plus_in_place(bytes: &mut [u8], first: usize) {
+    |    ^^^^^^^^^^^^^^^^^^^^^
+
+warning: function `replace_plus` is never used
+   --> crate/src/lib.rs:176:4
+    |
+176 | fn replace_plus(input: &[u8]) -> Cow<'_, [u8]> {
+    |    ^^^^^^^^^^^^
+
+warning: function `decode_utf8_lossy` is never used
+   --> crate/src/lib.rs:934:15
+    |
+934 | pub(crate) fn decode_utf8_lossy(input: Cow<'_, [u8]>) -> Cow<'_, str> {
+    |               ^^^^^^^^^^^^^^^^^
+
+warning: calling external function `percent_decode` with no contract will yield an impossible precondition
+   --> crate/src/lib.rs:128:29
+    |
+128 |     decode_utf8_lossy(match percent_decode(&replaced).into() {
+    |                             ^^^^^^^^^^^^^^^^^^^^^^^^^ function called here
+    |
+    = note: `#[warn(creusot::contractless_external_function)]` on by default
+
+warning: calling external function `split_first` with no contract will yield an impossible precondition
+   --> crate/src/lib.rs:599:39
+    |
+599 |         if let Some((&first, tail)) = self.bytes.split_first() {
+    |                                       ^^^^^^^^^^^^^^^^^^^^^^^^ function called here
+
+warning: calling external function `from_utf8_unchecked` with no contract will yield an impossible precondition
+   --> crate/src/lib.rs:605:30
+    |
+605 |                     unsafe { str::from_utf8_unchecked(percent_encoded_bytes(first)) }
+    |                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ function called here
+
+warning: calling external function `position` with no contract will yield an impossible precondition
+   --> crate/src/lib.rs:608:28
+    |
+608 |             let position = tail.iter().position(|&b| !byte_serialized_unchanged(b));
+    |                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ function called here
+
+warning: calling external function `index` with no contract will yield an impossible precondition
+   --> crate/src/lib.rs:611:41
+    |
+611 |                 None => (self.bytes, &[][..]),
+    |                                         ^^^^ function called here
+
+warning: calling external function `split_at` with no contract will yield an impossible precondition
+   --> crate/src/lib.rs:610:28
+    |
+610 |                 Some(i) => self.bytes.split_at(1 + i),
+    |                            ^^^^^^^^^^^^^^^^^^^^^^^^^^ function called here
+
+warning: calling external function `from_utf8_unchecked` with no contract will yield an impossible precondition
+   --> crate/src/lib.rs:614:27
+    |
+614 |             Some(unsafe { str::from_utf8_unchecked(unchanged_slice) })
+    |                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ function called here
+
+warning: calling external function `from_utf8_lossy` with no contract will yield an impossible precondition
+   --> crate/src/lib.rs:937:33
+    |
+937 |         Cow::Borrowed(bytes) => String::from_utf8_lossy(bytes),
+    |                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ function called here
+
+warning: calling external function `from_utf8_lossy` with no contract will yield an impossible precondition
+   --> crate/src/lib.rs:939:19
+    |
+939 |             match String::from_utf8_lossy(&bytes) {
+    |                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ function called here
+
+warning: calling external function `as_bytes` with no contract will yield an impossible precondition
+   --> crate/src/lib.rs:948:49
+    |
+948 |                     let raw_utf8: *const [u8] = utf8.as_bytes();
+    |                                                 ^^^^^^^^^^^^^^^ function called here
+
+warning: calling external function `eq` with no contract will yield an impossible precondition
+   --> crate/src/lib.rs:949:35
+    |
+949 |                     debug_assert!(core::ptr::eq(raw_utf8, &*bytes));
+    |                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ function called here
+
+warning: `form_urlencoded` (lib) generated 18 warnings (run `cargo fix --lib -p form_urlencoded` to apply 1 suggestion)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.03s
+Warning: found dangling files and directories:
+  verif/form-urlencoded-7jrJt6z9/bundle/percent_encoded_bytes/proof.json
+  verif/form-urlencoded-7jrJt6z9/bundle/find_plus/proof.json
+  verif/form-urlencoded-7jrJt6z9/bundle/byte_serialized_unchanged/proof.json
+  verif/form-urlencoded-7jrJt6z9/bundle/replace_plus_in_place/proof.json
+  verif/form-urlencoded-7jrJt6z9/bundle/raw_pair_bounds/proof.json
+Run 'cargo creusot clean' to remove them

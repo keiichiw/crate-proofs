@@ -1,0 +1,85 @@
+theory Coma
+  
+  (* use why3.BuiltIn.BuiltIn *)
+  
+  (* use why3.Bool.Bool *)
+  
+  (* use why3.Unit.Unit *)
+  
+  (* use creusot.int.UInt8 *)
+  
+  (* use seq.Seq *)
+  
+  (* use creusot.int.UInt32 *)
+  
+  predicate ge_log_Int (self:int) (other:int) = other <= self
+  
+  (* meta rewrite_def predicate ge_log_Int *)
+  
+  predicate should_encode_model (mask:seq t) (byte:t1) =
+    ge_log_Int (t'int byte) 128 \/
+    not bw_and (get mask (div (t'int byte) 32))
+        (shl (1:t) (of_int (t'int (bw_and1 byte (31:t1))))) = (0:t)
+  
+  predicate gt_log_Int (self:int) (other:int) = other < self
+  
+  (* meta rewrite_def predicate gt_log_Int *)
+  
+  predicate well_founded_relation_Int (self:int) (other:int) =
+    ge_log_Int self 0 /\ gt_log_Int self other
+  
+  (* meta rewrite_def predicate well_founded_relation_Int *)
+  
+  (* meta compute_max_steps 1000000 *)
+  
+  (* meta select_lsinst "all" *)
+  
+  constant input : seq t1
+  
+  constant start : int
+  
+  constant mask : seq t
+  
+  function safe_run_end (seq t1) int (seq t) : int
+  
+  goal vc_safe_run_end :
+    0 <= start /\ start <= length input ->
+    length mask = 4 ->
+    (if ge_log_Int start (length input)
+     then let result = start in
+          (start <= result /\ result <= length input) /\
+          (forall i:int.
+            start <= i /\ i < result ->
+            not should_encode_model mask (get input i)) /\
+          (result = length input \/
+           should_encode_model mask (get input result))
+     else if should_encode_model mask (get input start)
+          then let result = start in
+               (start <= result /\ result <= length input) /\
+               (forall i:int.
+                 start <= i /\ i < result ->
+                 not should_encode_model mask (get input i)) /\
+               (result = length input \/
+                should_encode_model mask (get input result))
+          else (((0 <= (start + 1) /\ (start + 1) <= length input) /\
+                 length mask = 4) /\
+                well_founded_relation_Int (length input - start)
+                (length input - (start + 1))) /\
+               (((start + 1) <= safe_run_end input (start + 1) mask /\
+                 safe_run_end input (start + 1) mask <= length input) /\
+                (forall i:int.
+                  (start + 1) <= i /\ i < safe_run_end input (start + 1) mask ->
+                  not should_encode_model mask (get input i)) /\
+                (safe_run_end input (start + 1) mask = length input \/
+                 should_encode_model mask
+                 (get input (safe_run_end input (start + 1) mask))) ->
+                (let result = safe_run_end input (start + 1) mask in
+                 (start <= result /\ result <= length input) /\
+                 (forall i:int.
+                   start <= i /\ i < result ->
+                   not should_encode_model mask (get input i)) /\
+                 (result = length input \/
+                  should_encode_model mask (get input result)))))
+  
+end
+

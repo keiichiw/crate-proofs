@@ -1,0 +1,68 @@
+use creusot.int.UInt8
+use seq.Seq
+use map.Map
+use int.Int
+
+function index_Mapping_u8_Int [@inline:trivial] (self: Map.map UInt8.t int) (a: UInt8.t) : int = Map.get self a
+
+meta "rewrite_def" function index_Mapping_u8_Int
+
+function map_u8 (self: Seq.seq UInt8.t) (m: Map.map UInt8.t int) : Seq.seq int
+
+axiom map_u8_spec: forall self: Seq.seq UInt8.t, m: Map.map UInt8.t int [map_u8 self m]. Seq.length (map_u8 self m)
+    = Seq.length self
+
+axiom map_u8_spec'0: forall self: Seq.seq UInt8.t, m: Map.map UInt8.t int [map_u8 self m]. forall i: int. 0 <= i
+        /\ i < Seq.length self -> Seq.get (map_u8 self m) i = index_Mapping_u8_Int m (Seq.get self i)
+
+function byte_sequence_as_ints (bytes: Seq.seq UInt8.t) : Seq.seq int =
+  map_u8 bytes (fun (byte: UInt8.t) -> UInt8.t'int byte)
+
+predicate byte_model_subsequence (bytes: Seq.seq UInt8.t) (start: int) (end': int)
+
+axiom byte_model_subsequence_spec:
+  forall bytes: Seq.seq UInt8.t, start: int, end': int [byte_model_subsequence bytes start end']. 0 <= start
+      /\ start <= end' /\ end' <= Seq.length bytes -> byte_model_subsequence bytes start end'
+
+axiom byte_model_subsequence_spec'0: forall bytes: Seq.seq UInt8.t, start: int, end': int. 0 <= start
+      /\ start <= end' /\ end' <= Seq.length bytes
+    -> byte_sequence_as_ints (Seq.([..]) bytes start end') = Seq.([..]) (byte_sequence_as_ints bytes) start end'
+
+meta "compute_max_steps" 1000000
+
+meta "select_lsinst" "all"
+
+constant bytes : Seq.seq UInt8.t
+
+constant start : int
+
+predicate byte_map_nested_tail (bytes: Seq.seq UInt8.t) (start: int)
+
+goal vc_byte_map_nested_tail: 0 <= start /\ start < Seq.length bytes
+  -> ([@stop_split] [@expl:byte_model_subsequence requires] 0 <= start
+    /\ start <= Seq.length bytes /\ Seq.length bytes <= Seq.length bytes)
+  /\ (([@stop_split] [@expl:byte_model_subsequence ensures] ([@stop_split] [@expl:byte_model_subsequence ensures #0] byte_model_subsequence bytes start (Seq.length bytes))
+    /\ ([@stop_split] [@expl:byte_model_subsequence ensures #1] byte_sequence_as_ints (Seq.([..]) bytes start (Seq.length bytes))
+    = Seq.([..]) (byte_sequence_as_ints bytes) start (Seq.length bytes)))
+  -> (let _ = byte_model_subsequence bytes start (Seq.length bytes) in ([@stop_split] [@expl:byte_model_subsequence requires] 0
+      <= start + 1
+    /\ start + 1 <= Seq.length bytes /\ Seq.length bytes <= Seq.length bytes)
+  /\ (([@stop_split] [@expl:byte_model_subsequence ensures] ([@stop_split] [@expl:byte_model_subsequence ensures #0] byte_model_subsequence bytes (start
+      + 1) (Seq.length bytes))
+    /\ ([@stop_split] [@expl:byte_model_subsequence ensures #1] byte_sequence_as_ints (Seq.([..]) bytes (start
+      + 1) (Seq.length bytes))
+    = Seq.([..]) (byte_sequence_as_ints bytes) (start + 1) (Seq.length bytes)))
+  -> (let _ = byte_model_subsequence bytes (start
+  + 1) (Seq.length bytes) in ([@stop_split] [@expl:byte_model_subsequence requires] 0 <= 1
+    /\ 1 <= Seq.length bytes - start
+    /\ Seq.length bytes - start <= Seq.length (Seq.([..]) bytes start (Seq.length bytes)))
+  /\ (([@stop_split] [@expl:byte_model_subsequence ensures] ([@stop_split] [@expl:byte_model_subsequence ensures #0] byte_model_subsequence (Seq.([..]) bytes start (Seq.length bytes)) 1 (Seq.length bytes
+      - start))
+    /\ ([@stop_split] [@expl:byte_model_subsequence ensures #1] byte_sequence_as_ints (Seq.([..]) (Seq.([..]) bytes start (Seq.length bytes)) 1 (Seq.length bytes
+      - start))
+    = Seq.([..]) (byte_sequence_as_ints (Seq.([..]) bytes start (Seq.length bytes))) 1 (Seq.length bytes - start)))
+  -> (let _ = byte_model_subsequence (Seq.([..]) bytes start (Seq.length bytes)) 1 (Seq.length bytes
+  - start) in [@stop_split] [@expl:byte_map_nested_tail ensures] ([@stop_split] [@expl:byte_map_nested_tail ensures #0] true)
+  /\ ([@stop_split] [@expl:byte_map_nested_tail ensures #1] Seq.([..]) (byte_sequence_as_ints (Seq.([..]) bytes start (Seq.length bytes))) 1 (Seq.length bytes
+    - start)
+  = byte_sequence_as_ints (Seq.([..]) bytes (start + 1) (Seq.length bytes)))))))))

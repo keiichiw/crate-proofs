@@ -1,0 +1,90 @@
+use int.ComputerDivision
+use creusot.int.UInt8
+use seq.Seq
+use creusot.prelude.Char
+use creusot.prelude.Any
+use int.Int
+
+type t_SystemTime
+
+type t_HttpDate
+
+predicate inv_SystemTime (_1: t_SystemTime)
+
+function time_ns (_t: t_SystemTime) : int
+
+predicate invariant_HttpDate (self: t_HttpDate)
+
+predicate inv_HttpDate (_1: t_HttpDate)
+
+axiom inv_axiom: forall x: t_HttpDate [inv_HttpDate x]. inv_HttpDate x -> invariant_HttpDate x
+
+type t_RawDate
+
+predicate valid_calendar (d: t_RawDate)
+
+function raw_model (self: t_HttpDate) : t_RawDate
+
+function unix_seconds_model (d: t_RawDate) : int
+
+let from_HttpDate (v: t_SystemTime) (return (x: t_HttpDate)) =
+{[@stop_split] [@expl:from_HttpDate requires] ([@stop_split] [@expl:from 'v' type invariant] inv_SystemTime v)
+  /\ ([@stop_split] [@expl:from requires] 0 <= time_ns v /\ time_ns v < 253402300800000000000)}
+  any
+  [ return (result: t_HttpDate) ->
+  {[@stop_split] [@expl:from_HttpDate ensures] ([@stop_split] [@expl:from result type invariant] inv_HttpDate result)
+    /\ ([@stop_split] [@expl:from ensures #0] valid_calendar (raw_model result))
+    /\ ([@stop_split] [@expl:from ensures #1] unix_seconds_model (raw_model result)
+    = ComputerDivision.div (time_ns v) 1000000000)}
+    (! return {result}) ]
+
+type t_String
+
+predicate invariant_ref_HttpDate [@inline:trivial] (self: t_HttpDate) = inv_HttpDate self
+
+meta "rewrite_def" predicate invariant_ref_HttpDate
+
+predicate inv_ref_HttpDate [@inline:trivial] (_1: t_HttpDate) = invariant_ref_HttpDate _1
+
+meta "rewrite_def" predicate inv_ref_HttpDate
+
+predicate inv_String (_1: t_String)
+
+predicate imf_encoding (s: Seq.seq UInt8.t) (d: t_RawDate)
+
+predicate ascii_content [@inline:trivial] (chars: Seq.seq Char.t) (bytes: Seq.seq UInt8.t) =
+  Seq.length chars = Seq.length bytes
+  /\ (forall i: int. 0 <= i /\ i < Seq.length chars -> Char.to_int (Seq.get chars i) = UInt8.t'int (Seq.get bytes i))
+
+meta "rewrite_def" predicate ascii_content
+
+function view_String (self: t_String) : Seq.seq Char.t
+
+let imf_string (self: t_HttpDate) (return (x: t_String)) =
+{[@stop_split] [@expl:imf_string 'self' type invariant] inv_ref_HttpDate self}
+  any
+  [ return (result: t_String) ->
+  {[@stop_split] [@expl:imf_string ensures] ([@stop_split] [@expl:imf_string result type invariant] inv_String result)
+    /\ ([@stop_split] [@expl:imf_string ensures] exists bytes: Seq.seq UInt8.t. imf_encoding bytes (raw_model self)
+      /\ ascii_content (view_String result) bytes)}
+    (! return {result}) ]
+
+meta "compute_max_steps" 1000000
+
+meta "select_lsinst" "all"
+
+let fmt_http_date (d: t_SystemTime) (return (x: t_String)) =
+{[@stop_split] [@expl:fmt_http_date requires] ([@stop_split] [@expl:fmt_http_date 'd' type invariant] inv_SystemTime d)
+  /\ ([@stop_split] [@expl:fmt_http_date requires] 0 <= time_ns d /\ time_ns d < 253402300800000000000)}
+  (! bb0
+  [ bb0 = s0
+    [ s0 = from_HttpDate {d} (fun (_x: t_HttpDate) -> [ &_7 <- _x ] s1)
+    | s1 = imf_string {_7} (fun (_x: t_String) -> [ &_ret <- _x ] s2)
+    | s2 = return {_ret} ] ]
+  [ & _ret: t_String = Any.any_l () | & d: t_SystemTime = d | & _7: t_HttpDate = Any.any_l () ])
+  [ return (result: t_String) ->
+  {[@stop_split] [@expl:fmt_http_date ensures] ([@stop_split] [@expl:fmt_http_date result type invariant] inv_String result)
+    /\ ([@stop_split] [@expl:fmt_http_date ensures] exists raw: t_RawDate, bytes: Seq.seq UInt8.t. valid_calendar raw
+      /\ unix_seconds_model raw = ComputerDivision.div (time_ns d) 1000000000
+      /\ imf_encoding bytes raw /\ ascii_content (view_String result) bytes)}
+    (! return {result}) ]

@@ -1,0 +1,48 @@
+   Compiling httpdate v1.0.3 (/workspace/proof-env/httpdate/1.0.3/crate)
+    Finished `release` profile [optimized] target(s) in 0.87s
+     Running unittests src/lib.rs (target/release/deps/httpdate-2823de119c093a9f)
+
+running 34 tests
+test date::asctime::tests::asctime_valid_day_encodings_match_upstream ... ok
+test date::hash_tests::equal_public_dates_have_equal_hash_streams_without_assuming_injective_hashing ... ok
+test date::asctime::tests::asctime_length_variations_match_upstream ... ok
+test date::hash_tests::hash_slice_uses_the_default_per_item_stream_for_public_dates ... ok
+test date::hash_tests::public_hash_writes_seven_typed_fields_in_upstream_order ... ok
+test date::rfc850::tests::weekday_prefixes_and_two_digit_year_pivot ... ok
+test date::asctime::tests::asctime_all_ascii_single_byte_mutations_match_upstream ... ok
+test date::rfc850::tests::year_hour_separator_behavior_matches_upstream ... ok
+test date::trial_tests::display_writes_to_custom_sinks_and_propagates_sink_errors ... ok
+test date::trial_tests::error_display_and_io_conversion_keep_the_public_message_and_kind ... ok
+test date::trial_tests::extracted_conversion_matches_upstream_at_time_and_calendar_boundaries ... ok
+test date::trial_tests::public_fmt_http_date_matches_upstream_at_boundaries_and_subseconds ... ok
+test date::trial_tests::native_system_time_wrappers_preserve_panics_and_truncate_subseconds ... ok
+test date::trial_tests::public_httpdate_traits_match_upstream_for_valid_dates ... ok
+test date::trial_tests::public_parser_preserves_legacy_year_padding_and_ascii_trim_behavior ... ok
+test date::trial_tests::public_rfc850_parser_matches_upstream_prefix_pivot_and_mutation_behavior ... ok
+test date::verification_tests::imf_fixdate_parser_extracts_fixture_fields ... ok
+test date::verification_tests::imf_fixdate_parser_handles_arbitrary_lengths_without_panicking ... ok
+test date::verification_tests::imf_fixdate_parser_handles_single_byte_substitutions_without_panicking ... ok
+test date::verification_tests::imf_fixdate_parser_rejects_malformed_delimiters_and_names ... ok
+test date::verification_tests::decimal_helpers_match_ascii_digit_specification ... ok
+test date::verification_tests::raw_parser_accepts_syntax_fields_while_public_parser_checks_calendar_ranges ... ok
+test debug_tests::debug_formatting_matches_upstream_for_valid_boundary_dates_and_error ... ok
+test error_tests::public_error_inherited_methods_and_io_conversion_preserve_payload ... ok
+test tests::size_of ... ok
+test tests::test2 ... ok
+test tests::test3 ... ok
+test tests::test_date_comparison ... ok
+test tests::test_fmt ... ok
+test tests::test_parse_bad_date ... ok
+test tests::test_rfc_example ... ok
+test debug_tests::debug_writer_chunks_and_failures_match_upstream ... ok
+test date::trial_tests::extracted_validator_matches_upstream_on_valid_and_invalid_calendar_fields ... ok
+test date::trial_tests::extracted_conversion_and_formatter_match_upstream_on_every_day ... ok
+
+test result: ok. 34 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.66s
+
+   Doc-tests httpdate
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+

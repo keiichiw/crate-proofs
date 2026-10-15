@@ -1,0 +1,85 @@
+use creusot.slice.Slice64
+use creusot.int.UInt8
+use seq.Seq
+use creusot.prelude.Char
+use creusot.prelude.Any
+use creusot.int.UInt64
+use int.Int
+
+type t_Utf8Error
+
+type t_Result_ref_str_Utf8Error = Ok string | Err t_Utf8Error
+
+predicate inv_Utf8Error (_1: t_Utf8Error)
+
+predicate inv_Result_ref_str_Utf8Error (_1: t_Result_ref_str_Utf8Error)
+
+axiom inv_axiom [@rewrite]:
+  forall x: t_Result_ref_str_Utf8Error [inv_Result_ref_str_Utf8Error x]. inv_Result_ref_str_Utf8Error x
+    = match x with
+      | Ok f0 -> true
+      | Err f0 -> inv_Utf8Error f0
+      end
+
+function view_str (self: string) : Seq.seq Char.t
+
+let from_utf8 (v: Slice64.slice UInt8.t) (return (x: t_Result_ref_str_Utf8Error)) =
+{[@stop_split] [@expl:from_utf8 requires] forall i: int. 0 <= i /\ i < Seq.length (Slice64.view v)
+    -> UInt8.t'int (Seq.get (Slice64.view v) i) < 128}
+  any
+  [ return (result: t_Result_ref_str_Utf8Error) ->
+  {[@stop_split] [@expl:from_utf8 ensures] ([@stop_split] [@expl:from_utf8 result type invariant] inv_Result_ref_str_Utf8Error result)
+    /\ ([@stop_split] [@expl:from_utf8 ensures] match result with
+      | Ok s -> Seq.length (view_str s) = Seq.length (Slice64.view v)
+      /\ (forall i: int. 0 <= i /\ i < Seq.length (Slice64.view v)
+        -> Char.to_int (Seq.get (view_str s) i) = UInt8.t'int (Seq.get (Slice64.view v) i))
+      | Err _ -> false
+      end)}
+    (! return {result}) ]
+
+let unwrap_ref_str (self_: t_Result_ref_str_Utf8Error) (return (x: string)) =
+{[@stop_split] [@expl:unwrap_ref_str requires] ([@stop_split] [@expl:unwrap 'self_' type invariant] inv_Result_ref_str_Utf8Error self_)
+  /\ ([@stop_split] [@expl:unwrap requires] exists t: string. self_ = Ok t)}
+  any [ return (result: string) -> {[@stop_split] [@expl:unwrap ensures] Ok result = self_} (! return {result}) ]
+
+predicate inv_Seq_u8 [@inline:trivial] (_1: Seq.seq UInt8.t) = true
+
+meta "rewrite_def" predicate inv_Seq_u8
+
+predicate invariant_array_u8_29 (self: Slice64.array UInt8.t) =
+  inv_Seq_u8 (Slice64.view self) /\ Seq.length (Slice64.view self) = UInt64.t'int (29: UInt64.t)
+
+predicate inv_array_u8_29 [@inline:trivial] (_1: Slice64.array UInt8.t) = invariant_array_u8_29 _1
+
+meta "rewrite_def" predicate inv_array_u8_29
+
+predicate invariant_ref_array_u8_29 [@inline:trivial] (self: Slice64.array UInt8.t) = inv_array_u8_29 self
+
+meta "rewrite_def" predicate invariant_ref_array_u8_29
+
+predicate inv_ref_array_u8_29 [@inline:trivial] (_1: Slice64.array UInt8.t) = invariant_ref_array_u8_29 _1
+
+meta "rewrite_def" predicate inv_ref_array_u8_29
+
+meta "compute_max_steps" 1000000
+
+meta "select_lsinst" "all"
+
+let ascii_text (bytes: Slice64.array UInt8.t) (return (x: string)) =
+{[@stop_split] [@expl:ascii_text requires] ([@stop_split] [@expl:ascii_text 'bytes' type invariant] inv_ref_array_u8_29 bytes)
+  /\ ([@stop_split] [@expl:ascii_text requires] forall i: int. 0 <= i /\ i < 29
+    -> UInt8.t'int (Seq.get (Slice64.view bytes) i) < 128)}
+  (! bb0
+  [ bb0 = s0
+    [ s0 = from_utf8 {bytes} (fun (_x: t_Result_ref_str_Utf8Error) -> [ &_7 <- _x ] s1)
+    | s1 = unwrap_ref_str {_7} (fun (_x: string) -> [ &_6 <- _x ] s2)
+    | s2 = [ &_ret <- _6 ] s3
+    | s3 = return {_ret} ] ]
+  [ & _ret: string = Any.any_l ()
+  | & bytes: Slice64.array UInt8.t = bytes
+  | & _6: string = Any.any_l ()
+  | & _7: t_Result_ref_str_Utf8Error = Any.any_l () ])
+  [ return (result: string) -> {[@stop_split] [@expl:ascii_text ensures] Seq.length (view_str result) = 29
+    /\ (forall i: int. 0 <= i /\ i < 29
+      -> Char.to_int (Seq.get (view_str result) i) = UInt8.t'int (Seq.get (Slice64.view bytes) i))}
+    (! return {result}) ]

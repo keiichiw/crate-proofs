@@ -1,0 +1,50 @@
+theory Coma
+  
+  (* use why3.BuiltIn.BuiltIn *)
+  
+  (* use why3.Bool.Bool *)
+  
+  (* use why3.Unit.Unit *)
+  
+  (* use creusot.slice.Slice64 *)
+  
+  (* use creusot.int.UInt8 *)
+  
+  (* use creusot.prelude.Any *)
+  
+  type t_Vec_u8_Global
+  
+  constant const_MAX : t = (18446744073709551615:t)
+  
+  function view_Vec_u8_Global t_Vec_u8_Global : seq t1
+  
+  axiom view_Vec_u8_Global_spec :
+    forall self:t_Vec_u8_Global [view_Vec_u8_Global self].
+     length (view_Vec_u8_Global self) <= t'int const_MAX
+  
+  predicate postcondition_clone (self:unit) (args:t1) (result:t1) =
+    let self_ = args in result = self_
+  
+  (* meta rewrite_def predicate postcondition_clone *)
+  
+  goal vc_clone_u8 : true
+  
+  goal vc_to_vec_u8 : true
+  
+  (* meta compute_max_steps 1000000 *)
+  
+  (* meta select_lsinst "all" *)
+  
+  goal vc_copy_bytes :
+    forall input:slice t1.
+     forall result:t_Vec_u8_Global.
+      length (view_Vec_u8_Global result) = length (view input) /\
+      (forall i:int.
+        0 <= i /\ i < length (view input) ->
+        postcondition_clone () (get (view input) i)
+        (get (view_Vec_u8_Global result) i)) ->
+      view_Vec_u8_Global result == view input &&
+      view_Vec_u8_Global result == view input
+  
+end
+

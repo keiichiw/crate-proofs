@@ -1,0 +1,229 @@
+theory Coma
+  
+  (* use why3.BuiltIn.BuiltIn *)
+  
+  (* use why3.Bool.Bool *)
+  
+  (* use why3.Unit.Unit *)
+  
+  (* use seq.Seq *)
+  
+  (* use creusot.int.UInt8 *)
+  
+  (* use creusot.int.UInt32 *)
+  
+  (* use creusot.prelude.MutBorrow *)
+  
+  (* use creusot.slice.Slice64 *)
+  
+  (* use creusot.prelude.Any *)
+  
+  type t_Option_bool =
+    | None
+    | Some bool
+  
+  type t_DebugTrace =
+    | T_DebugTrace'mk (struct_name:string) (field_names:seq string)
+        (field_type_tags:seq t) (word_values:seq (seq t1)) (byte_values:seq
+        (seq t)) (iter_values:seq (seq t)) (ascii_set_values:seq (seq t1))
+        (finish_status:t_Option_bool)
+  
+  (* meta model_record function finish_status *)
+  
+  (* meta model_record function ascii_set_values *)
+  
+  (* meta model_record function iter_values *)
+  
+  (* meta model_record function byte_values *)
+  
+  (* meta model_record function word_values *)
+  
+  (* meta model_record function field_type_tags *)
+  
+  (* meta model_record function field_names *)
+  
+  (* meta model_record function struct_name *)
+  
+  goal vc_empty : true
+  
+  goal vc_borrow_mut_DebugTrace : true
+  
+  type t_Formatter
+  
+  predicate inv_Formatter t_Formatter
+  
+  type t_DebugStruct
+  
+  predicate invariant_refmut_Formatter (self:t2 t_Formatter) =
+    inv_Formatter (self.current) /\ inv_Formatter (self.final)
+  
+  (* meta rewrite_def predicate invariant_refmut_Formatter *)
+  
+  predicate inv_refmut_Formatter (_1:t2 t_Formatter) =
+    invariant_refmut_Formatter _1
+  
+  (* meta rewrite_def predicate inv_refmut_Formatter *)
+  
+  predicate inv_DebugStruct t_DebugStruct
+  
+  goal vc_start : true
+  
+  type t_Iter_u8
+  
+  type t_PercentDecode =
+    | T_PercentDecode'mk (bytes:t_Iter_u8)
+  
+  (* meta model_record function bytes *)
+  
+  predicate invariant_refmut_DebugStruct (self:t2 t_DebugStruct) =
+    inv_DebugStruct (self.current) /\ inv_DebugStruct (self.final)
+  
+  (* meta rewrite_def predicate invariant_refmut_DebugStruct *)
+  
+  predicate inv_refmut_DebugStruct (_1:t2 t_DebugStruct) =
+    invariant_refmut_DebugStruct _1
+  
+  (* meta rewrite_def predicate inv_refmut_DebugStruct *)
+  
+  predicate inv_Iter_u8 t_Iter_u8
+  
+  predicate invariant_ref_Iter_u8 (self:t_Iter_u8) = inv_Iter_u8 self
+  
+  (* meta rewrite_def predicate invariant_ref_Iter_u8 *)
+  
+  predicate inv_ref_Iter_u8 (_1:t_Iter_u8) = invariant_ref_Iter_u8 _1
+  
+  (* meta rewrite_def predicate inv_ref_Iter_u8 *)
+  
+  function view_Iter_u8 t_Iter_u8 : slice t
+  
+  goal vc_field_byte_iter : true
+  
+  predicate resolve_refmut_DebugStruct (_1:t2 t_DebugStruct) =
+    _1.final = _1.current
+  
+  (* meta rewrite_def predicate resolve_refmut_DebugStruct *)
+  
+  type t_Result_unit_Error =
+    | Ok unit
+    | Err unit
+  
+  goal vc_finish : true
+  
+  predicate resolve_DebugStruct t_DebugStruct
+  
+  predicate resolve_refmut_Formatter (_1:t2 t_Formatter) =
+    _1.final = _1.current
+  
+  (* meta rewrite_def predicate resolve_refmut_Formatter *)
+  
+  predicate inv_PercentDecode t_PercentDecode
+  
+  axiom inv_axiom :
+    forall x:t_PercentDecode [inv_PercentDecode x].
+     inv_PercentDecode x <-> inv_Iter_u8 (x.bytes)
+  
+  predicate invariant_ref_PercentDecode (self:t_PercentDecode) =
+    inv_PercentDecode self
+  
+  (* meta rewrite_def predicate invariant_ref_PercentDecode *)
+  
+  predicate inv_ref_PercentDecode (_1:t_PercentDecode) =
+    invariant_ref_PercentDecode _1
+  
+  (* meta rewrite_def predicate inv_ref_PercentDecode *)
+  
+  (* meta compute_max_steps 1000000 *)
+  
+  (* meta select_lsinst "all" *)
+  
+  goal vc_fmt_PercentDecode :
+    forall self:t_Iter_u8, formatter:t2 t_Formatter.
+     inv_PercentDecode (T_PercentDecode'mk self) /\
+     inv_refmut_Formatter formatter ->
+     (forall fin:t_DebugTrace.
+       (forall fin1:t_Formatter.
+         inv_Formatter fin1 ->
+         inv_refmut_Formatter
+         (t'mk (formatter.current) fin1 (get_id formatter)) /\
+         (forall result:t_DebugStruct.
+           inv_DebugStruct result /\
+           fin.struct_name = ("PercentDecode":string) /\
+           length (fin.field_names) = 0 /\
+           length (fin.field_type_tags) = 0 /\
+           length (fin.word_values) = 0 /\
+           length (fin.byte_values) = 0 /\
+           length (fin.iter_values) = 0 /\
+           length (fin.ascii_set_values) = 0 /\ fin.finish_status = None ->
+           (forall fin2:t_DebugStruct, id:int.
+             inv_DebugStruct fin2 ->
+             (forall fin3:t_DebugTrace.
+               (forall fin4:t_DebugStruct.
+                 inv_DebugStruct fin4 ->
+                 (inv_refmut_DebugStruct
+                  (t'mk result fin4 (get_id (t'mk result fin2 id))) /\
+                  inv_ref_Iter_u8 self) /\
+                 (fin3.field_names = snoc (fin.field_names) ("bytes":string) /\
+                  fin3.field_type_tags = snoc (fin.field_type_tags) (2:t) /\
+                  fin3.iter_values =
+                  snoc (fin.iter_values) (view (view_Iter_u8 self)) /\
+                  fin3.struct_name = fin.struct_name /\
+                  fin3.word_values = fin.word_values /\
+                  fin3.byte_values = fin.byte_values /\
+                  fin3.ascii_set_values = fin.ascii_set_values /\
+                  fin3.finish_status = fin.finish_status ->
+                  (resolve_refmut_DebugStruct (t'mk fin4 fin2 id) ->
+                   (forall fin5:t_DebugStruct, id1:int.
+                     inv_DebugStruct fin5 ->
+                     (forall fin6:t_DebugTrace.
+                       (forall fin7:t_DebugStruct.
+                         inv_DebugStruct fin7 ->
+                         inv_refmut_DebugStruct
+                         (t'mk fin2 fin7 (get_id (t'mk fin2 fin5 id1))) /\
+                         (forall result1:t_Result_unit_Error.
+                           fin6.finish_status =
+                           Some
+                           match result1 with
+                           | Ok () -> True
+                           | Err _ -> False
+                           end /\
+                           fin6.struct_name = fin3.struct_name /\
+                           fin6.field_names = fin3.field_names /\
+                           fin6.field_type_tags = fin3.field_type_tags /\
+                           fin6.word_values = fin3.word_values /\
+                           fin6.byte_values = fin3.byte_values /\
+                           fin6.iter_values = fin3.iter_values /\
+                           fin6.ascii_set_values = fin3.ascii_set_values ->
+                           (resolve_refmut_DebugStruct (t'mk fin7 fin5 id1) ->
+                            (resolve_DebugStruct fin5 ->
+                             (resolve_refmut_Formatter
+                              (t'mk fin1 (formatter.final) (formatter.id2)) ->
+                              fin6.struct_name = ("PercentDecode":string) &&
+                              length (fin6.field_names) = 1 &&
+                              get (fin6.field_names) 0 = ("bytes":string) &&
+                              get (fin6.field_type_tags) 0 = (2:t) &&
+                              length (fin6.iter_values) = 1 &&
+                              get (fin6.iter_values) 0 =
+                              view (view_Iter_u8 self) &&
+                              length (fin6.word_values) = 0 &&
+                              length (fin6.byte_values) = 0 &&
+                              length (fin6.ascii_set_values) = 0 &&
+                              fin6.finish_status =
+                              Some
+                              match result1 with
+                              | Ok () -> True
+                              | Err _ -> False
+                              end) /\
+                             inv_refmut_Formatter
+                             (t'mk fin1 (formatter.final) (formatter.id2))) /\
+                            inv_DebugStruct fin5) /\
+                           inv_refmut_DebugStruct (t'mk fin7 fin5 id1))) /\
+                       inv_DebugStruct fin2)) /\
+                   inv_DebugStruct fin2) /\
+                  inv_refmut_DebugStruct (t'mk fin4 fin2 id))) /\
+               inv_DebugStruct result)) /\
+           inv_DebugStruct result)) /\
+       inv_Formatter (formatter.current))
+  
+end
+

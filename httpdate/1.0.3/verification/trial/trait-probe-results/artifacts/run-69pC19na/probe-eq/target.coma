@@ -1,0 +1,32 @@
+use creusot.int.UInt16
+use creusot.int.UInt8
+use creusot.prelude.Any
+
+type t_Date = { year: UInt16.t; month: UInt8.t; day: UInt8.t }
+
+let eq_Date (self: t_Date) (other: t_Date) (return (x: bool)) = any [ return (result: bool) -> (! return {result}) ]
+
+type t_DateDeepModel = { year'0: int; month'0: int; day'0: int }
+
+function deep_model_u16 [@inline:trivial] (self: UInt16.t) : int = UInt16.t'int self
+
+meta "rewrite_def" function deep_model_u16
+
+function deep_model_u8 [@inline:trivial] (self: UInt8.t) : int = UInt8.t'int self
+
+meta "rewrite_def" function deep_model_u8
+
+function deep_model_Date (self: t_Date) : t_DateDeepModel = { year'0 = deep_model_u16 self.year;
+                                                              month'0 = deep_model_u8 self.month;
+                                                              day'0 = deep_model_u8 self.day }
+
+meta "compute_max_steps" 1000000
+
+meta "select_lsinst" "all"
+
+let structural_eq (a: t_Date) (b: t_Date) (return (x: bool)) = (! bb0
+  [ bb0 = s0 [ s0 = eq_Date {a} {b} (fun (_x: bool) -> [ &_ret <- _x ] s1) | s1 = return {_ret} ] ]
+  [ & _ret: bool = Any.any_l () | & a: t_Date = a | & b: t_Date = b ])
+  [ return (result: bool) -> {[@stop_split] [@expl:structural_eq ensures] result
+    = (deep_model_Date a = deep_model_Date b)}
+    (! return {result}) ]

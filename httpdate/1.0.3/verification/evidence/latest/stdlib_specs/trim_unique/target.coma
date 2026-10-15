@@ -1,0 +1,34 @@
+use creusot.prelude.Char
+use seq.Seq
+use int.Int
+
+predicate ascii_whitespace [@inline:trivial] (c: Char.t) =
+  Char.to_int c = 32 \/ 9 <= Char.to_int c /\ Char.to_int c <= 13
+
+meta "rewrite_def" predicate ascii_whitespace
+
+predicate ascii_trim_relation [@inline:trivial] (input: Seq.seq Char.t) (output: Seq.seq Char.t) =
+  exists lo: int, hi: int. 0 <= lo
+    /\ lo <= hi
+    /\ hi <= Seq.length input
+    /\ output = Seq.([..]) input lo hi
+    /\ (forall i: int. 0 <= i /\ i < lo -> ascii_whitespace (Seq.get input i))
+    /\ (forall i: int. hi <= i /\ i < Seq.length input -> ascii_whitespace (Seq.get input i))
+    /\ (lo = hi \/ not ascii_whitespace (Seq.get input lo) /\ not ascii_whitespace (Seq.get input (hi - 1)))
+
+meta "rewrite_def" predicate ascii_trim_relation
+
+meta "compute_max_steps" 1000000
+
+meta "select_lsinst" "all"
+
+constant s : Seq.seq Char.t
+
+constant a : Seq.seq Char.t
+
+constant b : Seq.seq Char.t
+
+function trim_unique (s: Seq.seq Char.t) (a: Seq.seq Char.t) (b: Seq.seq Char.t) : ()
+
+goal vc_trim_unique: ascii_trim_relation s a /\ ascii_trim_relation s b
+  -> ([@stop_split] [@expl:trim_unique ensures] a = b)

@@ -1,0 +1,181 @@
+theory Coma
+  
+  (* use why3.BuiltIn.BuiltIn *)
+  
+  (* use why3.Bool.Bool *)
+  
+  (* use why3.Unit.Unit *)
+  
+  (* use creusot.slice.Slice64 *)
+  
+  (* use creusot.prelude.MutBorrow *)
+  
+  (* use creusot.int.UInt8 *)
+  
+  (* use creusot.prelude.Any *)
+  
+  goal vc_len_u8 : true
+  
+  predicate resolve_refmut_slice_u8 (_1:t (slice t1)) = _1.final = _1.current
+  
+  (* meta rewrite_def predicate resolve_refmut_slice_u8 *)
+  
+  (* meta compute_max_steps 1000000 *)
+  
+  (* meta select_lsinst "all" *)
+  
+  goal vc_replace_plus_in_place :
+    forall bytes:t (slice t1), first:t2.
+     t'int first < length (view (bytes.current)) /\
+     t'int1 (get (view (bytes.current)) (t'int first)) = 43 /\
+     (forall i:int.
+       0 <= i /\ i < t'int first ->
+       not t'int1 (get (view (bytes.current)) i) = 43) ->
+     (forall result:ptr.
+       slice_ptr_len result = length1 (bytes.current) ->
+       lt first (slice_ptr_len result) &&
+       t'int first < length ((bytes.current).elts) /\
+       (forall result1:slice t1.
+         length (result1.elts) = length ((bytes.current).elts) ->
+         (result1.elts)[t'int first] = (32:t1) ->
+         (forall j:int.
+           (0 <= j /\ j < length ((bytes.current).elts)) /\
+           not j = t'int first ->
+           (result1.elts)[j] = ((bytes.current).elts)[j]) ->
+         in_bounds (t'int first + t'int (1:t2)) /\
+         (forall result2:t2.
+           t'int result2 = (t'int first + t'int (1:t2)) ->
+           (t'int first < t'int result2 /\
+            t'int result2 <= length (view result1) /\
+            length (view result1) = length (view (bytes.current)) /\
+            (forall j:int.
+              0 <= j /\ j < t'int result2 ->
+              (if t'int1 (get (view (bytes.current)) j) = 43
+               then t'int1 (get (view result1) j) = 32
+               else t'int1 (get (view result1) j) =
+                    t'int1 (get (view (bytes.current)) j))) /\
+            (forall j:int.
+              t'int result2 <= j /\ j < length (view result1) ->
+              t'int1 (get (view result1) j) =
+              t'int1 (get (view (bytes.current)) j))) /\
+           (forall bytes1:t (slice t1), i:t2, _35:t2, _36:ptr, _37:t2, _38:
+             bool.
+             forall bytes2:t (slice t1), _24:bool, _26:t2, _29:bool, _30:t1,
+              _31:t2, _32:ptr, _33:t2, _34:bool, _351:t2, _361:ptr, _371:t2,
+              _381:bool.
+              (bytes.final = bytes1.final ->
+               t'int first < t'int i /\
+               t'int i <= length (view (bytes1.current)) /\
+               length (view (bytes1.current)) = length (view (bytes.current)) /\
+               (forall j:int.
+                 0 <= j /\ j < t'int i ->
+                 (if t'int1 (get (view (bytes.current)) j) = 43
+                  then t'int1 (get (view (bytes1.current)) j) = 32
+                  else t'int1 (get (view (bytes1.current)) j) =
+                       t'int1 (get (view (bytes.current)) j))) /\
+               (forall j:int.
+                 t'int i <= j /\ j < length (view (bytes1.current)) ->
+                 t'int1 (get (view (bytes1.current)) j) =
+                 t'int1 (get (view (bytes.current)) j)) ->
+               (forall result3:t2.
+                 length (view (bytes1.current)) = t'int result3 ->
+                 (not lt i result3 ->
+                  resolve_refmut_slice_u8 bytes1 ->
+                  length (view (bytes.final)) = length (view (bytes.current)) /\
+                  (forall i1:int.
+                    0 <= i1 /\ i1 < length (view (bytes.current)) ->
+                    (if t'int1 (get (view (bytes.current)) i1) = 43
+                     then t'int1 (get (view (bytes.final)) i1) = 32
+                     else t'int1 (get (view (bytes.final)) i1) =
+                          t'int1 (get (view (bytes.current)) i1)))) /\
+                 (lt i result3 ->
+                  (forall result4:ptr.
+                    slice_ptr_len result4 = length1 (bytes1.current) ->
+                    lt i (slice_ptr_len result4) &&
+                    t'int i < length ((bytes1.current).elts) &&
+                    (get ((bytes1.current).elts) (t'int i) = (43:t1) ->
+                     (forall result5:ptr.
+                       slice_ptr_len result5 = length1 (bytes1.current) ->
+                       lt i (slice_ptr_len result5) &&
+                       t'int i < length ((bytes1.current).elts))))))) /\
+              (bytes.final = bytes1.final /\
+               (t'int first < t'int i /\
+                t'int i <= length (view (bytes1.current)) /\
+                length (view (bytes1.current)) =
+                length (view (bytes.current)) /\
+                (forall j:int.
+                  0 <= j /\ j < t'int i ->
+                  (if t'int1 (get (view (bytes.current)) j) = 43
+                   then t'int1 (get (view (bytes1.current)) j) = 32
+                   else t'int1 (get (view (bytes1.current)) j) =
+                        t'int1 (get (view (bytes.current)) j))) /\
+                (forall j:int.
+                  t'int i <= j /\ j < length (view (bytes1.current)) ->
+                  t'int1 (get (view (bytes1.current)) j) =
+                  t'int1 (get (view (bytes.current)) j))) /\
+               (exists result3:t2.
+                 length (view (bytes1.current)) = t'int result3 /\
+                 lt i result3 /\
+                 (exists result4:ptr.
+                   slice_ptr_len result4 = length1 (bytes1.current) /\
+                   lt i (slice_ptr_len result4) /\
+                   t'int i < length ((bytes1.current).elts) /\
+                   (not get ((bytes1.current).elts) (t'int i) = (43:t1) /\
+                    bytes2 = bytes1 /\
+                    (if lt i result3 then _24 = True else _24 = False) /\
+                    _26 = result3 /\
+                    (if get ((bytes1.current).elts) (t'int i) = (43:t1)
+                     then _29 = True else _29 = False) /\
+                    _30 = get ((bytes1.current).elts) (t'int i) /\
+                    _31 = i /\
+                    _32 = result4 /\
+                    _33 = slice_ptr_len result4 /\
+                    (if lt i (slice_ptr_len result4) then _34 = True
+                     else _34 = False) /\
+                    _351 = _35 /\ _361 = _36 /\ _371 = _37 /\ _381 = _38 \/
+                    get ((bytes1.current).elts) (t'int i) = (43:t1) /\
+                    slice_ptr_len _361 = length1 (bytes1.current) /\
+                    lt i (slice_ptr_len _361) /\
+                    (exists result5:slice t1.
+                      length (result5.elts) = length ((bytes1.current).elts) /\
+                      (result5.elts)[t'int i] = (32:t1) /\
+                      (forall j:int.
+                        (0 <= j /\ j < length ((bytes1.current).elts)) /\
+                        not j = t'int i ->
+                        (result5.elts)[j] = ((bytes1.current).elts)[j]) /\
+                      bytes2 = t'mk result5 (bytes1.final) (bytes1.id) /\
+                      (if lt i result3 then _24 = True else _24 = False) /\
+                      _26 = result3 /\
+                      (if get ((bytes1.current).elts) (t'int i) = (43:t1)
+                       then _29 = True else _29 = False) /\
+                      _30 = get ((bytes1.current).elts) (t'int i) /\
+                      _31 = i /\
+                      _32 = result4 /\
+                      _33 = slice_ptr_len result4 /\
+                      (if lt i (slice_ptr_len result4) then _34 = True
+                       else _34 = False) /\
+                      _351 = i /\
+                      _371 = slice_ptr_len _361 /\
+                      (if lt i (slice_ptr_len _361) then _381 = True
+                       else _381 = False))))) ->
+               in_bounds (t'int i + t'int (1:t2)) /\
+               (forall result3:t2.
+                 t'int result3 = (t'int i + t'int (1:t2)) ->
+                 bytes.final = bytes2.final &&
+                 t'int first < t'int result3 /\
+                 t'int result3 <= length (view (bytes2.current)) /\
+                 length (view (bytes2.current)) =
+                 length (view (bytes.current)) /\
+                 (forall j:int.
+                   0 <= j /\ j < t'int result3 ->
+                   (if t'int1 (get (view (bytes.current)) j) = 43
+                    then t'int1 (get (view (bytes2.current)) j) = 32
+                    else t'int1 (get (view (bytes2.current)) j) =
+                         t'int1 (get (view (bytes.current)) j))) /\
+                 (forall j:int.
+                   t'int result3 <= j /\ j < length (view (bytes2.current)) ->
+                   t'int1 (get (view (bytes2.current)) j) =
+                   t'int1 (get (view (bytes.current)) j))))))))
+  
+end
+

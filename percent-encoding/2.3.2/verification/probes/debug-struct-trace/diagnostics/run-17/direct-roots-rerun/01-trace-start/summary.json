@@ -1,0 +1,211 @@
+{
+  "status": "passed",
+  "root_count": 12,
+  "direct_smt_goals": 15,
+  "results": [
+    {
+      "goal": "Coma.vc_debug_struct",
+      "status": "closed",
+      "export_mode": "untransformed",
+      "smt_results": [
+        {
+          "file": "000-vc_debug_struct/untransformed/start-Coma-vc_debug_struct.smt2",
+          "exit_code": 0,
+          "statuses": [
+            "unsat"
+          ],
+          "passed": true
+        }
+      ]
+    },
+    {
+      "goal": "Coma.vc_deref_mut_Ghost_refmut_DebugTrace",
+      "status": "closed",
+      "export_mode": "untransformed",
+      "smt_results": [
+        {
+          "file": "001-vc_deref_mut_Ghost_refmut_DebugTrace/untransformed/start-Coma-vc_deref_mut_Ghost_refmut_DebugTrace.smt2",
+          "exit_code": 0,
+          "statuses": [
+            "unsat"
+          ],
+          "passed": true
+        }
+      ]
+    },
+    {
+      "goal": "Coma.vc_new_ref_str",
+      "status": "closed",
+      "export_mode": "untransformed",
+      "smt_results": [
+        {
+          "file": "002-vc_new_ref_str/untransformed/start-Coma-vc_new_ref_str.smt2",
+          "exit_code": 0,
+          "statuses": [
+            "unsat"
+          ],
+          "passed": true
+        }
+      ]
+    },
+    {
+      "goal": "Coma.vc_into_inner_Seq_ref_str",
+      "status": "closed",
+      "export_mode": "untransformed",
+      "smt_results": [
+        {
+          "file": "003-vc_into_inner_Seq_ref_str/untransformed/start-Coma-vc_into_inner_Seq_ref_str.smt2",
+          "exit_code": 0,
+          "statuses": [
+            "unsat"
+          ],
+          "passed": true
+        }
+      ]
+    },
+    {
+      "goal": "Coma.vc_new_u8",
+      "status": "closed",
+      "export_mode": "untransformed",
+      "smt_results": [
+        {
+          "file": "004-vc_new_u8/untransformed/start-Coma-vc_new_u8.smt2",
+          "exit_code": 0,
+          "statuses": [
+            "unsat"
+          ],
+          "passed": true
+        }
+      ]
+    },
+    {
+      "goal": "Coma.vc_into_inner_Seq_u8",
+      "status": "closed",
+      "export_mode": "untransformed",
+      "smt_results": [
+        {
+          "file": "005-vc_into_inner_Seq_u8/untransformed/start-Coma-vc_into_inner_Seq_u8.smt2",
+          "exit_code": 0,
+          "statuses": [
+            "unsat"
+          ],
+          "passed": true
+        }
+      ]
+    },
+    {
+      "goal": "Coma.vc_new_Snapshot_Seq_u32",
+      "status": "closed",
+      "export_mode": "untransformed",
+      "smt_results": [
+        {
+          "file": "006-vc_new_Snapshot_Seq_u32/untransformed/start-Coma-vc_new_Snapshot_Seq_u32.smt2",
+          "exit_code": 0,
+          "statuses": [
+            "unsat"
+          ],
+          "passed": true
+        }
+      ]
+    },
+    {
+      "goal": "Coma.vc_into_inner_Seq_Snapshot_Seq_u32",
+      "status": "closed",
+      "export_mode": "untransformed",
+      "smt_results": [
+        {
+          "file": "007-vc_into_inner_Seq_Snapshot_Seq_u32/untransformed/start-Coma-vc_into_inner_Seq_Snapshot_Seq_u32.smt2",
+          "exit_code": 0,
+          "statuses": [
+            "unsat"
+          ],
+          "passed": true
+        }
+      ]
+    },
+    {
+      "goal": "Coma.vc_new_Snapshot_Seq_u8",
+      "status": "closed",
+      "export_mode": "untransformed",
+      "smt_results": [
+        {
+          "file": "008-vc_new_Snapshot_Seq_u8/untransformed/start-Coma-vc_new_Snapshot_Seq_u8.smt2",
+          "exit_code": 0,
+          "statuses": [
+            "unsat"
+          ],
+          "passed": true
+        }
+      ]
+    },
+    {
+      "goal": "Coma.vc_into_inner_Seq_Snapshot_Seq_u8",
+      "status": "closed",
+      "export_mode": "untransformed",
+      "smt_results": [
+        {
+          "file": "009-vc_into_inner_Seq_Snapshot_Seq_u8/untransformed/start-Coma-vc_into_inner_Seq_Snapshot_Seq_u8.smt2",
+          "exit_code": 0,
+          "statuses": [
+            "unsat"
+          ],
+          "passed": true
+        }
+      ]
+    },
+    {
+      "goal": "Coma.vc_new_unit",
+      "status": "closed",
+      "export_mode": "untransformed",
+      "smt_results": [
+        {
+          "file": "010-vc_new_unit/untransformed/start-Coma-vc_new_unit.smt2",
+          "exit_code": 0,
+          "statuses": [
+            "unsat"
+          ],
+          "passed": true
+        }
+      ]
+    },
+    {
+      "goal": "Coma.vc_start",
+      "status": "closed",
+      "export_mode": "transformed",
+      "smt_results": [
+        {
+          "file": "011-vc_start/transformed/start-Coma-vc_start.smt2",
+          "exit_code": 0,
+          "statuses": [
+            "unsat"
+          ],
+          "passed": true
+        },
+        {
+          "file": "011-vc_start/transformed/start-Coma-vc_start1.smt2",
+          "exit_code": 0,
+          "statuses": [
+            "unsat"
+          ],
+          "passed": true
+        },
+        {
+          "file": "011-vc_start/transformed/start-Coma-vc_start2.smt2",
+          "exit_code": 0,
+          "statuses": [
+            "unsat"
+          ],
+          "passed": true
+        },
+        {
+          "file": "011-vc_start/transformed/start-Coma-vc_start3.smt2",
+          "exit_code": 0,
+          "statuses": [
+            "unsat"
+          ],
+          "passed": true
+        }
+      ]
+    }
+  ]
+}

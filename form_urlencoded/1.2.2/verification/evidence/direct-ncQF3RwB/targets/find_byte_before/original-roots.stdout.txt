@@ -1,0 +1,74 @@
+theory Coma
+  
+  (* use why3.BuiltIn.BuiltIn *)
+  
+  (* use why3.Bool.Bool *)
+  
+  (* use why3.Unit.Unit *)
+  
+  (* use creusot.int.UInt8 *)
+  
+  (* use seq.Seq *)
+  
+  predicate ge_log_Int (self:int) (other:int) = other <= self
+  
+  (* meta rewrite_def predicate ge_log_Int *)
+  
+  predicate gt_log_Int (self:int) (other:int) = other < self
+  
+  (* meta rewrite_def predicate gt_log_Int *)
+  
+  predicate well_founded_relation_Int (self:int) (other:int) =
+    ge_log_Int self 0 /\ gt_log_Int self other
+  
+  (* meta rewrite_def predicate well_founded_relation_Int *)
+  
+  (* meta compute_max_steps 1000000 *)
+  
+  (* meta select_lsinst "all" *)
+  
+  constant input : seq t
+  
+  constant start : int
+  
+  constant end' : int
+  
+  constant byte : int
+  
+  function find_byte_before (seq t) int int int : int
+  
+  goal vc_find_byte_before :
+    0 <= start /\ start <= end' /\ end' <= length input ->
+    (if start < end'
+     then if not t'int (get input start) = byte
+          then ((0 <= (start + 1) /\
+                 (start + 1) <= end' /\ end' <= length input) /\
+                well_founded_relation_Int (end' - start) (end' - (start + 1))) /\
+               (((start + 1) <= find_byte_before input (start + 1) end' byte /\
+                 find_byte_before input (start + 1) end' byte <= end') /\
+                (forall i:int.
+                  (start + 1) <= i /\
+                  i < find_byte_before input (start + 1) end' byte ->
+                  not t'int (get input i) = byte) /\
+                (find_byte_before input (start + 1) end' byte = end' \/
+                 t'int
+                 (get input (find_byte_before input (start + 1) end' byte)) =
+                 byte) ->
+                (let result = find_byte_before input (start + 1) end' byte in
+                 (start <= result /\ result <= end') /\
+                 (forall i:int.
+                   start <= i /\ i < result -> not t'int (get input i) = byte) /\
+                 (result = end' \/ t'int (get input result) = byte)))
+          else let result = start in
+               (start <= result /\ result <= end') /\
+               (forall i:int.
+                 start <= i /\ i < result -> not t'int (get input i) = byte) /\
+               (result = end' \/ t'int (get input result) = byte)
+     else let result = start in
+          (start <= result /\ result <= end') /\
+          (forall i:int.
+            start <= i /\ i < result -> not t'int (get input i) = byte) /\
+          (result = end' \/ t'int (get input result) = byte))
+  
+end
+

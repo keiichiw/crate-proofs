@@ -1,0 +1,105 @@
+theory Coma
+  
+  (* use why3.BuiltIn.BuiltIn *)
+  
+  (* use why3.Bool.Bool *)
+  
+  (* use why3.Unit.Unit *)
+  
+  (* use creusot.slice.Slice64 *)
+  
+  (* use creusot.int.UInt8 *)
+  
+  (* use creusot.prelude.Char *)
+  
+  (* use map.Map *)
+  
+  (* use creusot.int.UInt32 *)
+  
+  (* use creusot.prelude.Any *)
+  
+  function tail_char (self:seq t) : seq t = self[1..length self]
+  
+  function flat_map_char (seq t) (t -> seq t1) : seq t1
+  
+  axiom flat_map_char_def :
+    forall self:seq t, other:t -> seq t1 [flat_map_char self other].
+     flat_map_char self other =
+     (if length self = 0 then empty: seq t1
+      else get other (get1 self 0) ++ flat_map_char (tail_char self) other)
+  
+  function to_utf8_char t : seq t1
+  
+  axiom to_utf8_char_spec :
+    forall self:t [to_utf8_char self].
+     1 <= length (to_utf8_char self) /\ length (to_utf8_char self) <= 4
+  
+  function to_bytes (self:seq t) : seq t1 =
+    flat_map_char self (fun (c:t) -> to_utf8_char c)
+  
+  function view_str string : seq t
+  
+  goal vc_as_bytes : true
+  
+  type t_AsciiSet
+  
+  type t_PercentEncode =
+    | T_PercentEncode'mk (bytes:slice t1) (ascii_set:t_AsciiSet)
+  
+  (* meta model_record function ascii_set *)
+  
+  (* meta model_record function bytes *)
+  
+  predicate inv_AsciiSet t_AsciiSet
+  
+  predicate invariant_ref_AsciiSet (self:t_AsciiSet) = inv_AsciiSet self
+  
+  (* meta rewrite_def predicate invariant_ref_AsciiSet *)
+  
+  predicate inv_ref_AsciiSet (_1:t_AsciiSet) = invariant_ref_AsciiSet _1
+  
+  (* meta rewrite_def predicate inv_ref_AsciiSet *)
+  
+  predicate inv_PercentEncode t_PercentEncode
+  
+  axiom inv_axiom :
+    forall x:t_PercentEncode [inv_PercentEncode x].
+     inv_PercentEncode x <-> inv_ref_AsciiSet (x.ascii_set)
+  
+  function remaining_input (self:t_PercentEncode) : seq t1 =
+    view (self.bytes)
+  
+  (* meta rewrite_def function remaining_input *)
+  
+  function mask_words t_AsciiSet : seq t2
+  
+  axiom mask_words_spec :
+    forall self:t_AsciiSet [mask_words self]. length (mask_words self) = 4
+  
+  function configured_set (self:t_PercentEncode) : seq t2 =
+    mask_words (self.ascii_set)
+  
+  (* meta rewrite_def function configured_set *)
+  
+  goal vc_percent_encode : true
+  
+  (* meta compute_max_steps 1000000 *)
+  
+  (* meta select_lsinst "all" *)
+  
+  goal vc_utf8_percent_encode :
+    forall input:string, ascii_set'0:t_AsciiSet.
+     inv_ref_AsciiSet ascii_set'0 ->
+     (forall result:slice t1.
+       view result = to_bytes (view_str input) ->
+       inv_ref_AsciiSet ascii_set'0 /\
+       (forall result1:t_PercentEncode.
+         inv_PercentEncode result1 /\
+         remaining_input result1 = view result /\
+         configured_set result1 = mask_words ascii_set'0 ->
+         inv_PercentEncode result1 /\
+         remaining_input result1 = to_bytes (view_str input) /\
+         configured_set result1 = mask_words ascii_set'0))
+  
+end
+

@@ -1,0 +1,74 @@
+theory Coma
+  
+  (* use why3.BuiltIn.BuiltIn *)
+  
+  (* use why3.Bool.Bool *)
+  
+  (* use why3.Unit.Unit *)
+  
+  (* use seq.Seq *)
+  
+  function percent_hex_value_model (byte:int) : int =
+    if 48 <= byte /\ byte <= 57 then byte - 48
+    else if 65 <= byte /\ byte <= 70 then byte - 55
+         else if 97 <= byte /\ byte <= 102 then byte - 87 else (- 1)
+  
+  predicate ge_log_Int (self:int) (other:int) = other <= self
+  
+  (* meta rewrite_def predicate ge_log_Int *)
+  
+  predicate gt_log_Int (self:int) (other:int) = other < self
+  
+  (* meta rewrite_def predicate gt_log_Int *)
+  
+  predicate well_founded_relation_Int (self:int) (other:int) =
+    ge_log_Int self 0 /\ gt_log_Int self other
+  
+  (* meta rewrite_def predicate well_founded_relation_Int *)
+  
+  (* meta compute_max_steps 1000000 *)
+  
+  (* meta select_lsinst "all" *)
+  
+  constant bytes : seq int
+  
+  constant index : int
+  
+  function percent_decoded_from (seq int) int : seq int
+  
+  goal vc_percent_decoded_from :
+    0 <= index /\ index <= length bytes ->
+    (if index = length bytes then true
+     else let first = get bytes index in
+          if first = 37
+          then if (index + 3) <= length bytes
+               then let high =
+                      percent_hex_value_model (get bytes (index + 1))
+                    in
+                    let low =
+                      percent_hex_value_model (get bytes (index + 2))
+                    in
+                    if ge_log_Int high 0
+                    then if ge_log_Int low 0
+                         then (0 <= (index + 3) /\
+                               (index + 3) <= length bytes) /\
+                              well_founded_relation_Int
+                              (length bytes - index)
+                              (length bytes - (index + 3))
+                         else (0 <= (index + 1) /\
+                               (index + 1) <= length bytes) /\
+                              well_founded_relation_Int
+                              (length bytes - index)
+                              (length bytes - (index + 1))
+                    else (0 <= (index + 1) /\ (index + 1) <= length bytes) /\
+                         well_founded_relation_Int (length bytes - index)
+                         (length bytes - (index + 1))
+               else (0 <= (index + 1) /\ (index + 1) <= length bytes) /\
+                    well_founded_relation_Int (length bytes - index)
+                    (length bytes - (index + 1))
+          else (0 <= (index + 1) /\ (index + 1) <= length bytes) /\
+               well_founded_relation_Int (length bytes - index)
+               (length bytes - (index + 1)))
+  
+end
+

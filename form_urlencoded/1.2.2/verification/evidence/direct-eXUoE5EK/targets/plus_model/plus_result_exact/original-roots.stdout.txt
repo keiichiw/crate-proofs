@@ -1,0 +1,53 @@
+theory Coma
+  
+  (* use why3.BuiltIn.BuiltIn *)
+  
+  (* use why3.Bool.Bool *)
+  
+  (* use why3.Unit.Unit *)
+  
+  (* use creusot.int.UInt8 *)
+  
+  (* use seq.Seq *)
+  
+  (* use map.Map *)
+  
+  function index_Mapping_u8_u8 (self:t -> t) (a:t) : t = get self a
+  
+  (* meta rewrite_def function index_Mapping_u8_u8 *)
+  
+  function map_u8 (seq t) (t -> t) : seq t
+  
+  axiom map_u8_spec :
+    forall self:seq t, m:t -> t [map_u8 self m].
+     length (map_u8 self m) = length self
+  
+  axiom map_u8_spec'0 :
+    forall self:seq t, m:t -> t [map_u8 self m].
+     forall i:int.
+      0 <= i /\ i < length self ->
+      get1 (map_u8 self m) i = index_Mapping_u8_u8 m (get1 self i)
+  
+  function replace_plus_model (bytes:seq t) : seq t =
+    map_u8 bytes (fun (byte:t) -> if t'int byte = 43 then (32:t) else byte)
+  
+  (* meta compute_max_steps 1000000 *)
+  
+  (* meta select_lsinst "all" *)
+  
+  constant original : seq t
+  
+  constant result_bytes : seq t
+  
+  predicate plus_result_exact (seq t) (seq t)
+  
+  goal vc_plus_result_exact :
+    length result_bytes = length original ->
+    (forall i:int.
+      0 <= i /\ i < length original ->
+      t'int (get1 result_bytes i) =
+      (if t'int (get1 original i) = 43 then 32 else t'int (get1 original i))) ->
+    true /\ result_bytes = replace_plus_model original
+  
+end
+

@@ -1,0 +1,319 @@
+{
+  "status": "passed",
+  "root_count": 8,
+  "direct_smt_goals": 32,
+  "results": [
+    {
+      "goal": "Coma.vc_iter_u8",
+      "status": "closed",
+      "export_mode": "untransformed",
+      "smt_results": [
+        {
+          "file": "000-vc_iter_u8/untransformed/trace_decoder-Coma-vc_iter_u8.smt2",
+          "exit_code": 0,
+          "statuses": [
+            "unsat"
+          ],
+          "passed": true
+        }
+      ]
+    },
+    {
+      "goal": "Coma.vc_next_Iter_u8",
+      "status": "closed",
+      "export_mode": "untransformed",
+      "smt_results": [
+        {
+          "file": "001-vc_next_Iter_u8/untransformed/trace_decoder-Coma-vc_next_Iter_u8.smt2",
+          "exit_code": 0,
+          "statuses": [
+            "unsat"
+          ],
+          "passed": true
+        }
+      ]
+    },
+    {
+      "goal": "Coma.vc_empty",
+      "status": "closed",
+      "export_mode": "untransformed",
+      "smt_results": [
+        {
+          "file": "002-vc_empty/untransformed/trace_decoder-Coma-vc_empty.smt2",
+          "exit_code": 0,
+          "statuses": [
+            "unsat"
+          ],
+          "passed": true
+        }
+      ]
+    },
+    {
+      "goal": "Coma.vc_borrow_mut_DebugTrace",
+      "status": "closed",
+      "export_mode": "untransformed",
+      "smt_results": [
+        {
+          "file": "003-vc_borrow_mut_DebugTrace/untransformed/trace_decoder-Coma-vc_borrow_mut_DebugTrace.smt2",
+          "exit_code": 0,
+          "statuses": [
+            "unsat"
+          ],
+          "passed": true
+        }
+      ]
+    },
+    {
+      "goal": "Coma.vc_start",
+      "status": "closed",
+      "export_mode": "untransformed",
+      "smt_results": [
+        {
+          "file": "004-vc_start/untransformed/trace_decoder-Coma-vc_start.smt2",
+          "exit_code": 0,
+          "statuses": [
+            "unsat"
+          ],
+          "passed": true
+        }
+      ]
+    },
+    {
+      "goal": "Coma.vc_field_byte_iter",
+      "status": "closed",
+      "export_mode": "untransformed",
+      "smt_results": [
+        {
+          "file": "005-vc_field_byte_iter/untransformed/trace_decoder-Coma-vc_field_byte_iter.smt2",
+          "exit_code": 0,
+          "statuses": [
+            "unsat"
+          ],
+          "passed": true
+        }
+      ]
+    },
+    {
+      "goal": "Coma.vc_finish",
+      "status": "closed",
+      "export_mode": "untransformed",
+      "smt_results": [
+        {
+          "file": "006-vc_finish/untransformed/trace_decoder-Coma-vc_finish.smt2",
+          "exit_code": 0,
+          "statuses": [
+            "unsat"
+          ],
+          "passed": true
+        }
+      ]
+    },
+    {
+      "goal": "Coma.vc_trace_decoder",
+      "status": "closed",
+      "export_mode": "transformed",
+      "smt_results": [
+        {
+          "file": "007-vc_trace_decoder/transformed/trace_decoder-Coma-vc_trace_decoder.smt2",
+          "exit_code": 0,
+          "statuses": [
+            "unsat"
+          ],
+          "passed": true
+        },
+        {
+          "file": "007-vc_trace_decoder/transformed/trace_decoder-Coma-vc_trace_decoder1.smt2",
+          "exit_code": 0,
+          "statuses": [
+            "unsat"
+          ],
+          "passed": true
+        },
+        {
+          "file": "007-vc_trace_decoder/transformed/trace_decoder-Coma-vc_trace_decoder10.smt2",
+          "exit_code": 0,
+          "statuses": [
+            "unsat"
+          ],
+          "passed": true
+        },
+        {
+          "file": "007-vc_trace_decoder/transformed/trace_decoder-Coma-vc_trace_decoder11.smt2",
+          "exit_code": 0,
+          "statuses": [
+            "unsat"
+          ],
+          "passed": true
+        },
+        {
+          "file": "007-vc_trace_decoder/transformed/trace_decoder-Coma-vc_trace_decoder12.smt2",
+          "exit_code": 0,
+          "statuses": [
+            "unsat"
+          ],
+          "passed": true
+        },
+        {
+          "file": "007-vc_trace_decoder/transformed/trace_decoder-Coma-vc_trace_decoder13.smt2",
+          "exit_code": 0,
+          "statuses": [
+            "unsat"
+          ],
+          "passed": true
+        },
+        {
+          "file": "007-vc_trace_decoder/transformed/trace_decoder-Coma-vc_trace_decoder14.smt2",
+          "exit_code": 0,
+          "statuses": [
+            "unsat"
+          ],
+          "passed": true
+        },
+        {
+          "file": "007-vc_trace_decoder/transformed/trace_decoder-Coma-vc_trace_decoder15.smt2",
+          "exit_code": 0,
+          "statuses": [
+            "unsat"
+          ],
+          "passed": true
+        },
+        {
+          "file": "007-vc_trace_decoder/transformed/trace_decoder-Coma-vc_trace_decoder16.smt2",
+          "exit_code": 0,
+          "statuses": [
+            "unsat"
+          ],
+          "passed": true
+        },
+        {
+          "file": "007-vc_trace_decoder/transformed/trace_decoder-Coma-vc_trace_decoder17.smt2",
+          "exit_code": 0,
+          "statuses": [
+            "unsat"
+          ],
+          "passed": true
+        },
+        {
+          "file": "007-vc_trace_decoder/transformed/trace_decoder-Coma-vc_trace_decoder18.smt2",
+          "exit_code": 0,
+          "statuses": [
+            "unsat"
+          ],
+          "passed": true
+        },
+        {
+          "file": "007-vc_trace_decoder/transformed/trace_decoder-Coma-vc_trace_decoder19.smt2",
+          "exit_code": 0,
+          "statuses": [
+            "unsat"
+          ],
+          "passed": true
+        },
+        {
+          "file": "007-vc_trace_decoder/transformed/trace_decoder-Coma-vc_trace_decoder2.smt2",
+          "exit_code": 0,
+          "statuses": [
+            "unsat"
+          ],
+          "passed": true
+        },
+        {
+          "file": "007-vc_trace_decoder/transformed/trace_decoder-Coma-vc_trace_decoder20.smt2",
+          "exit_code": 0,
+          "statuses": [
+            "unsat"
+          ],
+          "passed": true
+        },
+        {
+          "file": "007-vc_trace_decoder/transformed/trace_decoder-Coma-vc_trace_decoder21.smt2",
+          "exit_code": 0,
+          "statuses": [
+            "unsat"
+          ],
+          "passed": true
+        },
+        {
+          "file": "007-vc_trace_decoder/transformed/trace_decoder-Coma-vc_trace_decoder22.smt2",
+          "exit_code": 0,
+          "statuses": [
+            "unsat"
+          ],
+          "passed": true
+        },
+        {
+          "file": "007-vc_trace_decoder/transformed/trace_decoder-Coma-vc_trace_decoder23.smt2",
+          "exit_code": 0,
+          "statuses": [
+            "unsat"
+          ],
+          "passed": true
+        },
+        {
+          "file": "007-vc_trace_decoder/transformed/trace_decoder-Coma-vc_trace_decoder24.smt2",
+          "exit_code": 0,
+          "statuses": [
+            "unsat"
+          ],
+          "passed": true
+        },
+        {
+          "file": "007-vc_trace_decoder/transformed/trace_decoder-Coma-vc_trace_decoder3.smt2",
+          "exit_code": 0,
+          "statuses": [
+            "unsat"
+          ],
+          "passed": true
+        },
+        {
+          "file": "007-vc_trace_decoder/transformed/trace_decoder-Coma-vc_trace_decoder4.smt2",
+          "exit_code": 0,
+          "statuses": [
+            "unsat"
+          ],
+          "passed": true
+        },
+        {
+          "file": "007-vc_trace_decoder/transformed/trace_decoder-Coma-vc_trace_decoder5.smt2",
+          "exit_code": 0,
+          "statuses": [
+            "unsat"
+          ],
+          "passed": true
+        },
+        {
+          "file": "007-vc_trace_decoder/transformed/trace_decoder-Coma-vc_trace_decoder6.smt2",
+          "exit_code": 0,
+          "statuses": [
+            "unsat"
+          ],
+          "passed": true
+        },
+        {
+          "file": "007-vc_trace_decoder/transformed/trace_decoder-Coma-vc_trace_decoder7.smt2",
+          "exit_code": 0,
+          "statuses": [
+            "unsat"
+          ],
+          "passed": true
+        },
+        {
+          "file": "007-vc_trace_decoder/transformed/trace_decoder-Coma-vc_trace_decoder8.smt2",
+          "exit_code": 0,
+          "statuses": [
+            "unsat"
+          ],
+          "passed": true
+        },
+        {
+          "file": "007-vc_trace_decoder/transformed/trace_decoder-Coma-vc_trace_decoder9.smt2",
+          "exit_code": 0,
+          "statuses": [
+            "unsat"
+          ],
+          "passed": true
+        }
+      ]
+    }
+  ]
+}

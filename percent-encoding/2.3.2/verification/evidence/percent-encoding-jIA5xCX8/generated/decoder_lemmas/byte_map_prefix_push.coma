@@ -1,0 +1,48 @@
+use creusot.int.UInt8
+use seq.Seq
+use map.Map
+use int.Int
+
+function index_Mapping_u8_Int [@inline:trivial] (self: Map.map UInt8.t int) (a: UInt8.t) : int = Map.get self a
+
+meta "rewrite_def" function index_Mapping_u8_Int
+
+function map_u8 (self: Seq.seq UInt8.t) (m: Map.map UInt8.t int) : Seq.seq int
+
+axiom map_u8_spec: forall self: Seq.seq UInt8.t, m: Map.map UInt8.t int [map_u8 self m]. Seq.length (map_u8 self m)
+    = Seq.length self
+
+axiom map_u8_spec'0: forall self: Seq.seq UInt8.t, m: Map.map UInt8.t int [map_u8 self m]. forall i: int. 0 <= i
+        /\ i < Seq.length self -> Seq.get (map_u8 self m) i = index_Mapping_u8_Int m (Seq.get self i)
+
+function byte_sequence_as_ints (bytes: Seq.seq UInt8.t) : Seq.seq int =
+  map_u8 bytes (fun (byte: UInt8.t) -> UInt8.t'int byte)
+
+predicate byte_int_prefix_push (bytes: Seq.seq UInt8.t) (index: int)
+
+axiom byte_int_prefix_push_spec: forall bytes: Seq.seq UInt8.t, index: int [byte_int_prefix_push bytes index]. 0
+        <= index
+      /\ index < Seq.length bytes -> byte_int_prefix_push bytes index
+
+axiom byte_int_prefix_push_spec'0: forall bytes: Seq.seq UInt8.t, index: int. 0 <= index /\ index < Seq.length bytes
+    -> Seq.([..]) (byte_sequence_as_ints bytes) 0 (index + 1)
+    = Seq.(++) (Seq.([..]) (byte_sequence_as_ints bytes) 0 index) (Seq.singleton (UInt8.t'int (Seq.get bytes index)))
+
+meta "compute_max_steps" 1000000
+
+meta "select_lsinst" "all"
+
+constant bytes : Seq.seq UInt8.t
+
+constant index : int
+
+predicate byte_map_prefix_push (bytes: Seq.seq UInt8.t) (index: int)
+
+goal vc_byte_map_prefix_push: 0 <= index /\ index < Seq.length bytes
+  -> ([@stop_split] [@expl:byte_int_prefix_push requires] 0 <= index /\ index < Seq.length bytes)
+  /\ (([@stop_split] [@expl:byte_int_prefix_push ensures] ([@stop_split] [@expl:byte_int_prefix_push ensures #0] byte_int_prefix_push bytes index)
+    /\ ([@stop_split] [@expl:byte_int_prefix_push ensures #1] Seq.([..]) (byte_sequence_as_ints bytes) 0 (index + 1)
+    = Seq.(++) (Seq.([..]) (byte_sequence_as_ints bytes) 0 index) (Seq.singleton (UInt8.t'int (Seq.get bytes index)))))
+  -> (let _ = byte_int_prefix_push bytes index in [@stop_split] [@expl:byte_map_prefix_push ensures] ([@stop_split] [@expl:byte_map_prefix_push ensures #0] true)
+  /\ ([@stop_split] [@expl:byte_map_prefix_push ensures #1] Seq.([..]) (byte_sequence_as_ints bytes) 0 (index + 1)
+  = Seq.(++) (Seq.([..]) (byte_sequence_as_ints bytes) 0 index) (Seq.singleton (UInt8.t'int (Seq.get bytes index))))))

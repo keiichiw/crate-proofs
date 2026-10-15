@@ -1,0 +1,15 @@
+target/
+verif/
+.why3find/
+_creusot_erasure/
+**/verification/runs/
+__pycache__/
+
+# percent-encoding local build caches and transient diagnostics
+percent-encoding/**/target-*/
+percent-encoding/**/debug-ascii-native-target/
+percent-encoding/2.3.2/crate/diagnostics/
+percent-encoding/2.3.2/crate/rustc-ice-*.txt
+
+# Isolated local verification tools and caches
+.local-verification/

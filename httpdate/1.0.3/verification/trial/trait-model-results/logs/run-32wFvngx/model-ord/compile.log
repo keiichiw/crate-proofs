@@ -1,0 +1,49 @@
+COMMAND: cargo creusot --only=coma --span-mode off --output-dir /workspace/proof-env/httpdate/1.0.3/verification/trial/trait-models/verif/model-run-run-32wFvngx/model-ord/coma -- --locked --features model-ord
+    Checking httpdate-trait-model-probes v0.0.0 (/workspace/proof-env/httpdate/1.0.3/verification/trial/trait-models)
+warning: unused imports: `PartialEq` and `pearlite`
+  --> src/lib.rs:51:35
+   |
+51 |         prelude::{DeepModel, Int, PartialEq, ensures, logic, pearlite},
+   |                                   ^^^^^^^^^                  ^^^^^^^^
+   |
+   = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: struct `Date` is never constructed
+  --> src/lib.rs:58:16
+   |
+58 |     pub struct Date { year: u16, month: u8, day: u8 }
+   |                ^^^^
+   |
+   = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: associated function `new` is never used
+  --> src/lib.rs:61:16
+   |
+60 |     impl Date {
+   |     --------- associated function in this implementation
+61 |         pub fn new(year: u16, month: u8, day: u8) -> Self { Self { year, month, day } }
+   |                ^^^
+
+warning: struct `DateModel` is never constructed
+  --> src/lib.rs:65:16
+   |
+65 |     pub struct DateModel { pub year: Int, pub month: Int, pub day: Int }
+   |                ^^^^^^^^^
+
+warning: function `lex_key` is never used
+  --> src/lib.rs:78:12
+   |
+78 |     pub fn lex_key(d: DateModel) -> Seq<Int> {
+   |            ^^^^^^^
+
+warning: function `chronological_cmp` is never used
+   --> src/lib.rs:129:12
+    |
+129 |     pub fn chronological_cmp(a: Date, b: Date) -> Ordering { a.cmp(&b) }
+    |            ^^^^^^^^^^^^^^^^^
+
+warning: `httpdate-trait-model-probes` (lib) generated 6 warnings (run `cargo fix --lib -p httpdate-trait-model-probes` to apply 1 suggestion)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.18s
+Warning: found dangling files and directories:
+  verif/model-run-run-QtQb6EzV/model-ord
+Run 'cargo creusot clean' to remove them

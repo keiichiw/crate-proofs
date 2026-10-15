@@ -1,0 +1,25 @@
+    Checking percent-encoding-utf8-model-module-probe v0.0.0 (/workspace/proof-env/percent-encoding/2.3.2/verification/probes/utf8-model-module)
+warning: unused variable: `value`
+  --> src/../../../../crate/src/utf8_models.rs:88:20
+   |
+88 |                 Ok(value) => {
+   |                    ^^^^^ help: if this is intentional, prefix it with an underscore: `_value`
+   |
+   = note: `#[warn(unused_variables)]` (part of `#[warn(unused)]`) on by default
+
+warning: function `decode_utf8` is never used
+  --> src/../../../../crate/src/utf8_models.rs:79:15
+   |
+79 | pub(crate) fn decode_utf8(input: Cow<'_, [u8]>) -> Result<Cow<'_, str>, Utf8Error> {
+   |               ^^^^^^^^^^^
+   |
+   = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: function `decode_utf8_lossy` is never used
+   --> src/../../../../crate/src/utf8_models.rs:112:15
+    |
+112 | pub(crate) fn decode_utf8_lossy(input: Cow<'_, [u8]>) -> Cow<'_, str> {
+    |               ^^^^^^^^^^^^^^^^^
+
+warning: `percent-encoding-utf8-model-module-probe` (lib) generated 3 warnings
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.06s

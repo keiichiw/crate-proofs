@@ -1,0 +1,454 @@
+theory Coma
+  
+  (* use why3.BuiltIn.BuiltIn *)
+  
+  (* use why3.Bool.Bool *)
+  
+  (* use why3.Unit.Unit *)
+  
+  (* use creusot.slice.Slice64 *)
+  
+  (* use creusot.int.UInt8 *)
+  
+  (* use map.Map *)
+  
+  (* use creusot.prelude.Char *)
+  
+  (* use creusot.prelude.Any *)
+  
+  type t_Vec_u8_Global
+  
+  type t_Cow_slice_u8 =
+    | Borrowed (slice t)
+    | Owned t_Vec_u8_Global
+  
+  function index_Mapping_u8_u8 (self:t -> t) (a:t) : t = get self a
+  
+  (* meta rewrite_def function index_Mapping_u8_u8 *)
+  
+  function map_u8 (seq t) (t -> t) : seq t
+  
+  axiom map_u8_spec :
+    forall self:seq t, m:t -> t [map_u8 self m].
+     length (map_u8 self m) = length self
+  
+  axiom map_u8_spec'0 :
+    forall self:seq t, m:t -> t [map_u8 self m].
+     forall i:int.
+      0 <= i /\ i < length self ->
+      get1 (map_u8 self m) i = index_Mapping_u8_u8 m (get1 self i)
+  
+  function replace_plus_model (bytes:seq t) : seq t =
+    map_u8 bytes (fun (byte:t) -> if t'int byte = 43 then (32:t) else byte)
+  
+  constant const_MAX : t1 = (18446744073709551615:t1)
+  
+  function view_Vec_u8_Global t_Vec_u8_Global : seq t
+  
+  axiom view_Vec_u8_Global_spec :
+    forall self:t_Vec_u8_Global [view_Vec_u8_Global self].
+     length (view_Vec_u8_Global self) <= t'int1 const_MAX
+  
+  predicate cow_bytes_borrowed (value:t_Cow_slice_u8) =
+    match value with
+    | Borrowed _ -> true
+    | Owned _ -> false
+    end
+  
+  predicate no_plus (bytes:seq t) =
+    forall i:int. 0 <= i /\ i < length bytes -> not t'int (get1 bytes i) = 43
+  
+  goal vc_replace_plus : true
+  
+  goal vc_elim_Owned : true
+  
+  goal vc_deref_Vec_u8_Global : true
+  
+  function percent_hex_value_model (byte:int) : int =
+    if 48 <= byte /\ byte <= 57 then byte - 48
+    else if 65 <= byte /\ byte <= 70 then byte - 55
+         else if 97 <= byte /\ byte <= 102 then byte - 87 else (- 1)
+  
+  predicate ge_log_Int (self:int) (other:int) = other <= self
+  
+  (* meta rewrite_def predicate ge_log_Int *)
+  
+  function percent_decoded_from (seq int) int : seq int
+  
+  axiom percent_decoded_from_def :
+    forall bytes:seq int, index:int [percent_decoded_from bytes index].
+     0 <= index /\ index <= length bytes ->
+     percent_decoded_from bytes index =
+     (if index = length bytes then empty: seq int
+      else let first = get1 bytes index in
+           if first = 37 /\ (index + 3) <= length bytes
+           then let high =
+                  percent_hex_value_model (get1 bytes (index + 1))
+                in
+                let low = percent_hex_value_model (get1 bytes (index + 2)) in
+                if ge_log_Int high 0 /\ ge_log_Int low 0
+                then singleton ((high * 16) + low)
+                     ++ percent_decoded_from bytes (index + 3)
+                else singleton first
+                     ++ percent_decoded_from bytes (index + 1)
+           else singleton first ++ percent_decoded_from bytes (index + 1))
+  
+  function percent_decoded_model (seq int) : seq int
+  
+  axiom percent_decoded_model_def :
+    forall bytes:seq int [percent_decoded_model bytes].
+     percent_decoded_model bytes = percent_decoded_from bytes 0
+  
+  function index_Mapping_u8_Int (self:t -> int) (a:t) : int = get self a
+  
+  (* meta rewrite_def function index_Mapping_u8_Int *)
+  
+  function map_u8'0 (seq t) (t -> int) : seq int
+  
+  axiom map_u8_spec'1 :
+    forall self:seq t, m:t -> int [map_u8'0 self m].
+     length (map_u8'0 self m) = length self
+  
+  axiom map_u8_spec'2 :
+    forall self:seq t, m:t -> int [map_u8'0 self m].
+     forall i:int.
+      0 <= i /\ i < length self ->
+      get1 (map_u8'0 self m) i = index_Mapping_u8_Int m (get1 self i)
+  
+  function byte_sequence_as_ints (bytes:seq t) : seq int =
+    map_u8'0 bytes (fun (byte:t) -> t'int byte)
+  
+  goal vc_percent_decode_local : true
+  
+  goal vc_elim_Borrowed : true
+  
+  type t_String
+  
+  type t_Cow_str =
+    | Borrowed'0 string
+    | Owned'0 t_String
+  
+  predicate inv_String t_String
+  
+  predicate inv_Cow_str t_Cow_str
+  
+  axiom inv_axiom :
+    forall x:t_Cow_str [inv_Cow_str x].
+     inv_Cow_str x <->
+     match x with
+     | Borrowed'0 f0 -> true
+     | Owned'0 f0 -> inv_String f0
+     end
+  
+  type tup3_Int_Int_bool =
+    | Tup3_Int_Int_bool'mk (f0:int) (f1:int) (f2:bool)
+  
+  (* meta model_record function f2 *)
+  
+  (* meta model_record function f1 *)
+  
+  (* meta model_record function f0 *)
+  
+  function utf8_step (bytes:seq int) (pos:int) : tup3_Int_Int_bool =
+    let b0 = get1 bytes pos in
+    let remaining = length bytes - pos in
+    if 0 <= b0 /\ b0 <= 127 then Tup3_Int_Int_bool'mk b0 1 True
+    else if 194 <= b0 /\ b0 <= 223
+         then if remaining < 2
+              then Tup3_Int_Int_bool'mk 65533 remaining False
+              else let b1 = get1 bytes (pos + 1) in
+                   if 128 <= b1 /\ b1 <= 191
+                   then Tup3_Int_Int_bool'mk (((b0 - 192) * 64) + (b1 - 128))
+                        2 True
+                   else Tup3_Int_Int_bool'mk 65533 1 False
+         else if 224 <= b0 /\ b0 <= 239
+              then if remaining < 2
+                   then Tup3_Int_Int_bool'mk 65533 remaining False
+                   else let b1 = get1 bytes (pos + 1) in
+                        let second_ok =
+                          (if if b0 = 224 then 160 <= b1 /\ b1 <= 191
+                              else if b0 = 237 then 128 <= b1 /\ b1 <= 159
+                                   else 128 <= b1 /\ b1 <= 191
+                           then True else False)
+                        in
+                        if not second_ok = True
+                        then Tup3_Int_Int_bool'mk 65533 1 False
+                        else if remaining < 3
+                             then Tup3_Int_Int_bool'mk 65533 remaining False
+                             else let b2 = get1 bytes (pos + 2) in
+                                  if 128 <= b2 /\ b2 <= 191
+                                  then Tup3_Int_Int_bool'mk
+                                       ((((b0 - 224) * 4096)
+                                         + ((b1 - 128) * 64))
+                                        + (b2 - 128))
+                                       3 True
+                                  else Tup3_Int_Int_bool'mk 65533 2 False
+              else if 240 <= b0 /\ b0 <= 244
+                   then if remaining < 2
+                        then Tup3_Int_Int_bool'mk 65533 remaining False
+                        else let b1 = get1 bytes (pos + 1) in
+                             let second_ok =
+                               (if if b0 = 240 then 144 <= b1 /\ b1 <= 191
+                                   else if b0 = 244
+                                        then 128 <= b1 /\ b1 <= 143
+                                        else 128 <= b1 /\ b1 <= 191
+                                then True else False)
+                             in
+                             if not second_ok = True
+                             then Tup3_Int_Int_bool'mk 65533 1 False
+                             else if remaining < 3
+                                  then Tup3_Int_Int_bool'mk 65533 remaining
+                                       False
+                                  else let b2 = get1 bytes (pos + 2) in
+                                       if not (128 <= b2 /\ b2 <= 191)
+                                       then Tup3_Int_Int_bool'mk 65533 2
+                                            False
+                                       else if remaining < 4
+                                            then Tup3_Int_Int_bool'mk 65533
+                                                 remaining False
+                                            else let b3 =
+                                                   get1 bytes (pos + 3)
+                                                 in
+                                                 if 128 <= b3 /\ b3 <= 191
+                                                 then Tup3_Int_Int_bool'mk
+                                                      (((((b0 - 240) * 262144)
+                                                         + ((b1 - 128) * 4096))
+                                                        + ((b2 - 128) * 64))
+                                                       + (b3 - 128))
+                                                      4 True
+                                                 else Tup3_Int_Int_bool'mk
+                                                      65533 3 False
+                   else Tup3_Int_Int_bool'mk 65533 1 False
+  
+  axiom utf8_step_spec :
+    forall bytes:seq int, pos:int [utf8_step bytes pos].
+     0 <= pos /\ pos < length bytes ->
+     1 <= (utf8_step bytes pos).f1 /\
+     (utf8_step bytes pos).f1 <= (length bytes - pos)
+  
+  axiom utf8_step_spec'0 :
+    forall bytes:seq int, pos:int [utf8_step bytes pos].
+     0 <= pos /\ pos < length bytes ->
+     (utf8_step bytes pos).f0 = 65533 \/
+     0 <= (utf8_step bytes pos).f0 /\ (utf8_step bytes pos).f0 <= 55295 \/
+     57344 <= (utf8_step bytes pos).f0 /\ (utf8_step bytes pos).f0 <= 1114111
+  
+  predicate utf8_is_valid (seq int)
+  
+  axiom utf8_is_valid_def :
+    forall bytes:seq int [utf8_is_valid bytes].
+     utf8_is_valid bytes <->
+     (if length bytes = 0 then true
+      else match utf8_step bytes 0 with
+      | Tup3_Int_Int_bool'mk _ consumed valid ->
+          valid = True /\ utf8_is_valid bytes[consumed..length bytes]
+      end)
+  
+  function index_Mapping_char_Int (self:t2 -> int) (a:t2) : int = get self a
+  
+  (* meta rewrite_def function index_Mapping_char_Int *)
+  
+  function map_char (seq t2) (t2 -> int) : seq int
+  
+  axiom map_char_spec :
+    forall self:seq t2, m:t2 -> int [map_char self m].
+     length (map_char self m) = length self
+  
+  axiom map_char_spec'0 :
+    forall self:seq t2, m:t2 -> int [map_char self m].
+     forall i:int.
+      0 <= i /\ i < length self ->
+      get1 (map_char self m) i = index_Mapping_char_Int m (get1 self i)
+  
+  function view_str string : seq t2
+  
+  function utf8_lossy_model (seq int) : seq int
+  
+  axiom utf8_lossy_model_def :
+    forall bytes:seq int [utf8_lossy_model bytes].
+     utf8_lossy_model bytes =
+     (if length bytes = 0 then empty: seq int
+      else match utf8_step bytes 0 with
+      | Tup3_Int_Int_bool'mk scalar consumed _ ->
+          singleton scalar ++ utf8_lossy_model bytes[consumed..length bytes]
+      end)
+  
+  function tail_char (self:seq t2) : seq t2 = self[1..length self]
+  
+  function flat_map_char (seq t2) (t2 -> seq t) : seq t
+  
+  axiom flat_map_char_def :
+    forall self:seq t2, other:t2 -> seq t [flat_map_char self other].
+     flat_map_char self other =
+     (if length self = 0 then empty: seq t
+      else get other (get1 self 0) ++ flat_map_char (tail_char self) other)
+  
+  function to_utf8_char t2 : seq t
+  
+  axiom to_utf8_char_spec :
+    forall self:t2 [to_utf8_char self].
+     1 <= length (to_utf8_char self) /\ length (to_utf8_char self) <= 4
+  
+  function to_bytes (self:seq t2) : seq t =
+    flat_map_char self (fun (c:t2) -> to_utf8_char c)
+  
+  function view_String t_String : seq t2
+  
+  goal vc_decode_utf8_lossy : true
+  
+  function string_scalars (s:seq t2) : seq int =
+    map_char s (fun (c:t2) -> to_int c)
+  
+  function cow_str_scalars (value:t_Cow_str) : seq int =
+    match value with
+    | Borrowed'0 s -> string_scalars (view_str s)
+    | Owned'0 s -> string_scalars (view_String s)
+    end
+  
+  function decoded_string_model (bytes:seq t) : seq int =
+    utf8_lossy_model
+    (percent_decoded_model (byte_sequence_as_ints (replace_plus_model bytes)))
+  
+  predicate cow_str_borrowed (value:t_Cow_str) =
+    match value with
+    | Borrowed'0 _ -> true
+    | Owned'0 _ -> false
+    end
+  
+  predicate decode_borrows (bytes:seq t) =
+    no_plus bytes /\
+    (let decoded =
+       percent_decoded_model
+       (byte_sequence_as_ints (replace_plus_model bytes))
+     in length decoded = length bytes /\ utf8_is_valid decoded)
+  
+  (* meta compute_max_steps 1000000 *)
+  
+  (* meta select_lsinst "all" *)
+  
+  goal vc_decode :
+    forall input:slice t.
+     forall replaced:t_Cow_slice_u8, decoded:t_Cow_slice_u8, _9:
+      t_Cow_slice_u8, bytes:slice t, bytes'0:t_Vec_u8_Global, _15:slice t.
+      (forall result:t_Cow_slice_u8.
+        match result with
+        | Borrowed bytes1 ->
+            view bytes1 = view input /\
+            replace_plus_model (view input) = view input
+        | Owned bytes1 ->
+            view_Vec_u8_Global bytes1 = replace_plus_model (view input)
+        end /\ (cow_bytes_borrowed result <-> no_plus (view input)) ->
+        (forall x0:slice t.
+          result = Borrowed x0 ->
+          match result with
+          | Borrowed _ -> true
+          | _ -> false
+          end) /\
+        (forall x0:t_Vec_u8_Global.
+          result = Owned x0 ->
+          match result with
+          | Owned _ -> true
+          | _ -> false
+          end)) /\
+      ((exists result:t_Cow_slice_u8.
+         (match result with
+          | Borrowed bytes1 ->
+              view bytes1 = view input /\
+              replace_plus_model (view input) = view input
+          | Owned bytes1 ->
+              view_Vec_u8_Global bytes1 = replace_plus_model (view input)
+          end /\ (cow_bytes_borrowed result <-> no_plus (view input))) /\
+         ((exists x0:slice t.
+            result = Borrowed x0 /\
+            Borrowed bytes = result /\
+            match decoded with
+            | Borrowed bytes1 ->
+                percent_decoded_model (byte_sequence_as_ints (view bytes)) =
+                byte_sequence_as_ints (view bytes1) /\
+                view bytes1 = view bytes /\
+                length
+                (percent_decoded_model (byte_sequence_as_ints (view bytes))) =
+                length (view bytes)
+            | Owned bytes1 ->
+                percent_decoded_model (byte_sequence_as_ints (view bytes)) =
+                byte_sequence_as_ints (view_Vec_u8_Global bytes1) /\
+                length
+                (percent_decoded_model (byte_sequence_as_ints (view bytes)))
+                < length (view bytes)
+            end /\
+            replaced = result /\
+            _9 = result /\
+            bytes'0 = (any_l (): t_Vec_u8_Global) /\
+            _15 = (any_l (): slice t)) \/
+          (exists x0:t_Vec_u8_Global.
+            result = Owned x0 /\
+            Owned bytes'0 = result /\
+            view _15 = view_Vec_u8_Global bytes'0 /\
+            match decoded with
+            | Borrowed bytes1 ->
+                percent_decoded_model (byte_sequence_as_ints (view _15)) =
+                byte_sequence_as_ints (view bytes1) /\
+                view bytes1 = view _15 /\
+                length
+                (percent_decoded_model (byte_sequence_as_ints (view _15))) =
+                length (view _15)
+            | Owned bytes1 ->
+                percent_decoded_model (byte_sequence_as_ints (view _15)) =
+                byte_sequence_as_ints (view_Vec_u8_Global bytes1) /\
+                length
+                (percent_decoded_model (byte_sequence_as_ints (view _15)))
+                < length (view _15)
+            end /\
+            replaced = result /\ _9 = result /\ bytes = (any_l (): slice t)))) ->
+       (forall x0:slice t.
+         decoded = Borrowed x0 ->
+         (forall result:t_Cow_str.
+           inv_Cow_str result /\
+           match replaced with
+           | Borrowed bytes1 ->
+               match result with
+               | Borrowed'0 s ->
+                   utf8_is_valid (byte_sequence_as_ints (view bytes1)) /\
+                   map_char (view_str s) (fun (c:t2) -> to_int c) =
+                   utf8_lossy_model (byte_sequence_as_ints (view bytes1)) /\
+                   to_bytes (view_str s) = view bytes1
+               | Owned'0 s ->
+                   not utf8_is_valid (byte_sequence_as_ints (view bytes1)) /\
+                   map_char (view_String s) (fun (c:t2) -> to_int c) =
+                   utf8_lossy_model (byte_sequence_as_ints (view bytes1))
+               end
+           | Owned bytes1 ->
+               match result with
+               | Borrowed'0 _ -> false
+               | Owned'0 s ->
+                   map_char (view_String s) (fun (c:t2) -> to_int c) =
+                   utf8_lossy_model
+                   (byte_sequence_as_ints (view_Vec_u8_Global bytes1))
+               end
+           end ->
+           inv_Cow_str result /\
+           cow_str_scalars result = decoded_string_model (view input) /\
+           (cow_str_borrowed result <-> decode_borrows (view input)))) /\
+       (forall x0:t_Vec_u8_Global.
+         decoded = Owned x0 ->
+         (forall f01:t_Vec_u8_Global.
+           Owned f01 = decoded ->
+           (forall result:t_Cow_str.
+             inv_Cow_str result /\
+             match result with
+             | Borrowed'0 _ -> false
+             | Owned'0 s ->
+                 map_char (view_String s) (fun (c:t2) -> to_int c) =
+                 utf8_lossy_model
+                 (byte_sequence_as_ints (view_Vec_u8_Global f01))
+             end ->
+             inv_Cow_str result /\
+             cow_str_scalars result = decoded_string_model (view input) /\
+             (cow_str_borrowed result <-> decode_borrows (view input)))) /\
+         match decoded with
+         | Owned _ -> true
+         | _ -> false
+         end))
+  
+end
+

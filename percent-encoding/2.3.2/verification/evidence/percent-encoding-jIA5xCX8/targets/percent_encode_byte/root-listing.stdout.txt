@@ -1,0 +1,197 @@
+theory Coma
+  
+  (* use why3.BuiltIn.BuiltIn *)
+  
+  (* use why3.Bool.Bool *)
+  
+  (* use why3.Unit.Unit *)
+  
+  (* use creusot.int.UInt8 *)
+  
+  (* use creusot.slice.Slice64 *)
+  
+  (* use map.Map *)
+  
+  (* use creusot.prelude.Char *)
+  
+  (* use creusot.prelude.Any *)
+  
+  predicate inv_Seq_u8 (_1:seq t) = true
+  
+  (* meta rewrite_def predicate inv_Seq_u8 *)
+  
+  predicate invariant_array_u8_3 (self:slice t) =
+    inv_Seq_u8 (view self) /\ length (view self) = t'int (3:t1)
+  
+  predicate inv_array_u8_3 (_1:slice t) = invariant_array_u8_3 _1
+  
+  (* meta rewrite_def predicate inv_array_u8_3 *)
+  
+  predicate invariant_ref_array_u8_3 (self:slice t) = inv_array_u8_3 self
+  
+  (* meta rewrite_def predicate invariant_ref_array_u8_3 *)
+  
+  predicate inv_ref_array_u8_3 (_1:slice t) = invariant_ref_array_u8_3 _1
+  
+  (* meta rewrite_def predicate inv_ref_array_u8_3 *)
+  
+  function index_array_u8_3 (self:slice t) (ix:int) : t = get (view self) ix
+  
+  (* meta rewrite_def function index_array_u8_3 *)
+  
+  function uppercase_hex (digit:int) : int =
+    if digit < 10 then 48 + digit else 55 + digit
+  
+  axiom uppercase_hex_spec :
+    forall digit:int [uppercase_hex digit].
+     uppercase_hex digit = (if digit < 10 then 48 + digit else 55 + digit)
+  
+  function uppercase_hex'0 (digit:int) : int = uppercase_hex digit
+  
+  goal vc_percent_encoded_bytes : true
+  
+  predicate ascii_three (seq t)
+  
+  axiom ascii_three_spec :
+    forall bytes:seq t [ascii_three bytes].
+     length bytes = 3 ->
+     t'int1 (get bytes 0) < 128 /\
+     t'int1 (get bytes 1) < 128 /\ t'int1 (get bytes 2) < 128 ->
+     ascii_three bytes
+  
+  axiom ascii_three_spec'0 :
+    forall bytes:seq t.
+     length bytes = 3 ->
+     t'int1 (get bytes 0) < 128 /\
+     t'int1 (get bytes 1) < 128 /\ t'int1 (get bytes 2) < 128 ->
+     (forall i:int. 0 <= i /\ i < length bytes -> t'int1 (get bytes i) < 128)
+  
+  function index_Mapping_u8_Int (self:t -> int) (a:t) : int = get1 self a
+  
+  (* meta rewrite_def function index_Mapping_u8_Int *)
+  
+  function map_u8 (seq t) (t -> int) : seq int
+  
+  axiom map_u8_spec :
+    forall self:seq t, m:t -> int [map_u8 self m].
+     length (map_u8 self m) = length self
+  
+  axiom map_u8_spec'0 :
+    forall self:seq t, m:t -> int [map_u8 self m].
+     forall i:int.
+      0 <= i /\ i < length self ->
+      get (map_u8 self m) i = index_Mapping_u8_Int m (get self i)
+  
+  function byte_sequence_as_ints (bytes:seq t) : seq int =
+    map_u8 bytes (fun (byte:t) -> t'int1 byte)
+  
+  function escaped_byte_chunk (byte:int) : seq int =
+    if byte = 32 then singleton 43
+    else (singleton 37 ++ singleton (uppercase_hex (div byte 16)))
+         ++ singleton (uppercase_hex (mod byte 16))
+  
+  predicate encoded_array_model (seq t) int
+  
+  axiom encoded_array_model_spec :
+    forall bytes:seq t, byte:int [encoded_array_model bytes byte].
+     not byte = 32 /\ length bytes = 3 ->
+     t'int1 (get bytes 0) = 37 ->
+     t'int1 (get bytes 1) = uppercase_hex (div byte 16) ->
+     t'int1 (get bytes 2) = uppercase_hex (mod byte 16) ->
+     encoded_array_model bytes byte
+  
+  axiom encoded_array_model_spec'0 :
+    forall bytes:seq t, byte:int.
+     not byte = 32 /\ length bytes = 3 ->
+     t'int1 (get bytes 0) = 37 ->
+     t'int1 (get bytes 1) = uppercase_hex (div byte 16) ->
+     t'int1 (get bytes 2) = uppercase_hex (mod byte 16) ->
+     byte_sequence_as_ints bytes = escaped_byte_chunk byte
+  
+  function encoded_byte_model (byte:int) : seq int =
+    (singleton 37 ++ singleton (uppercase_hex'0 (div byte 16)))
+    ++ singleton (uppercase_hex'0 (mod byte 16))
+  
+  function tail_char (self:seq t2) : seq t2 = self[1..length self]
+  
+  function flat_map_char (seq t2) (t2 -> seq t) : seq t
+  
+  axiom flat_map_char_def :
+    forall self:seq t2, other:t2 -> seq t [flat_map_char self other].
+     flat_map_char self other =
+     (if length self = 0 then empty: seq t
+      else get1 other (get self 0) ++ flat_map_char (tail_char self) other)
+  
+  function to_utf8_char t2 : seq t
+  
+  axiom to_utf8_char_spec :
+    forall self:t2 [to_utf8_char self].
+     1 <= length (to_utf8_char self) /\ length (to_utf8_char self) <= 4
+  
+  function to_bytes (self:seq t2) : seq t =
+    flat_map_char self (fun (c:t2) -> to_utf8_char c)
+  
+  function view_str string : seq t2
+  
+  goal vc_from_utf8_unchecked : true
+  
+  (* meta compute_max_steps 1000000 *)
+  
+  (* meta select_lsinst "all" *)
+  
+  goal vc_percent_encode_byte :
+    forall byte:t.
+     forall encoded:slice t, _11:bool.
+      (forall result:slice t.
+        inv_ref_array_u8_3 result /\
+        length (view result) = 3 /\
+        t'int1 (index_array_u8_3 result 0) = 37 /\
+        t'int1 (index_array_u8_3 result 1) =
+        uppercase_hex'0 (div (t'int1 byte) 16) /\
+        t'int1 (index_array_u8_3 result 2) =
+        uppercase_hex'0 (mod (t'int1 byte) 16) /\
+        t'int1 (index_array_u8_3 result 0) < 128 /\
+        t'int1 (index_array_u8_3 result 1) < 128 /\
+        t'int1 (index_array_u8_3 result 2) < 128 ->
+        ascii_three (view result) &&
+        (byte = (32:t) ->
+         encoded_byte_model (t'int1 byte) =
+         ((singleton 37 ++ singleton 50) ++ singleton 48)) /\
+        (not byte = (32:t) ->
+         encoded_array_model (view result) (t'int1 byte) &&
+         encoded_byte_model (t'int1 byte) = escaped_byte_chunk (t'int1 byte))) /\
+      ((exists result:slice t.
+         (inv_ref_array_u8_3 result /\
+          length (view result) = 3 /\
+          t'int1 (index_array_u8_3 result 0) = 37 /\
+          t'int1 (index_array_u8_3 result 1) =
+          uppercase_hex'0 (div (t'int1 byte) 16) /\
+          t'int1 (index_array_u8_3 result 2) =
+          uppercase_hex'0 (mod (t'int1 byte) 16) /\
+          t'int1 (index_array_u8_3 result 0) < 128 /\
+          t'int1 (index_array_u8_3 result 1) < 128 /\
+          t'int1 (index_array_u8_3 result 2) < 128) /\
+         ascii_three (view result) /\
+         (byte = (32:t) /\
+          encoded_byte_model (t'int1 byte) =
+          ((singleton 37 ++ singleton 50) ++ singleton 48) /\
+          encoded = result /\
+          (if not byte = (32:t) then _11 = True else _11 = False) \/
+          not byte = (32:t) /\
+          encoded_array_model (view result) (t'int1 byte) /\
+          encoded_byte_model (t'int1 byte) = escaped_byte_chunk (t'int1 byte) /\
+          encoded = result /\
+          (if not byte = (32:t) then _11 = True else _11 = False))) ->
+       byte_sequence_as_ints (view encoded) =
+       encoded_byte_model (t'int1 byte) &&
+       ((forall i:int.
+          0 <= i /\ i < length (view encoded) ->
+          t'int1 (get (view encoded) i) < 128) \/
+        (exists s:seq t2. to_bytes s = view encoded)) /\
+       (forall result:string.
+         to_bytes (view_str result) = view encoded ->
+         byte_sequence_as_ints (to_bytes (view_str result)) =
+         encoded_byte_model (t'int1 byte)))
+  
+end
+

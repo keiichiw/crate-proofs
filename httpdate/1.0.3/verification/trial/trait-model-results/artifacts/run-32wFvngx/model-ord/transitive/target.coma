@@ -1,0 +1,53 @@
+(* <ord_model::DateModel as creusot_std::logic::PartialOrdLogic> *)
+
+use seq.Seq
+use int.Int
+
+type t_DateModel = { year: int; month: int; day: int }
+
+predicate lt_log_Seq_Int (self: Seq.seq int) (other: Seq.seq int) =
+  (exists i: int. 0 <= i
+      /\ i < Seq.length self
+      /\ i < Seq.length other
+      /\ (forall j: int. 0 <= j /\ j < i -> Seq.get self j = Seq.get other j) /\ Seq.get self i < Seq.get other i)
+  \/ Seq.length self < Seq.length other
+  /\ (forall i: int. 0 <= i /\ i < Seq.length self -> Seq.get self i = Seq.get other i)
+
+predicate le_log_Seq_Int [@inline:trivial] (self: Seq.seq int) (other: Seq.seq int) =
+  lt_log_Seq_Int self other \/ self = other
+
+meta "rewrite_def" predicate le_log_Seq_Int
+
+function le_lt_log_Seq_Int (self: Seq.seq int) (other: Seq.seq int) : ()
+
+axiom le_lt_log_Seq_Int_spec: forall self: Seq.seq int, other: Seq.seq int. le_log_Seq_Int self other
+    = (lt_log_Seq_Int self other \/ self = other)
+
+function transitive_Seq_Int (x: Seq.seq int) (y: Seq.seq int) (z: Seq.seq int) : ()
+
+axiom transitive_Seq_Int_spec: forall x: Seq.seq int, y: Seq.seq int, z: Seq.seq int. lt_log_Seq_Int x y
+    -> lt_log_Seq_Int y z -> lt_log_Seq_Int x z
+
+function irreflexive_Seq_Int (self: Seq.seq int) : ()
+
+axiom irreflexive_Seq_Int_spec: forall self: Seq.seq int. not lt_log_Seq_Int self self
+
+function lex_key (d: t_DateModel) : Seq.seq int =
+  Seq.snoc (Seq.snoc (Seq.snoc (Seq.empty: Seq.seq int) d.year) d.month) d.day
+
+predicate lt_log_DateModel (self: t_DateModel) (other: t_DateModel) = lt_log_Seq_Int (lex_key self) (lex_key other)
+
+meta "compute_max_steps" 1000000
+
+meta "select_lsinst" "all"
+
+constant x : t_DateModel
+
+constant y : t_DateModel
+
+constant z : t_DateModel
+
+function transitive_DateModel (x: t_DateModel) (y: t_DateModel) (z: t_DateModel) : ()
+
+goal vc_transitive_DateModel: lt_log_DateModel x y
+  -> lt_log_DateModel y z -> ([@stop_split] [@expl:transitive ensures] lt_log_DateModel x z)

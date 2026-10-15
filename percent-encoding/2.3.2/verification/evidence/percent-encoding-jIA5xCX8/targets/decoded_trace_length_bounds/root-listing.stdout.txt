@@ -1,0 +1,146 @@
+theory Coma
+  
+  (* use why3.BuiltIn.BuiltIn *)
+  
+  (* use why3.Bool.Bool *)
+  
+  (* use why3.Unit.Unit *)
+  
+  (* use seq.Seq *)
+  
+  predicate ge_log_Int (self:int) (other:int) = other <= self
+  
+  (* meta rewrite_def predicate ge_log_Int *)
+  
+  function percent_hex_value_model (byte:int) : int =
+    if 48 <= byte /\ byte <= 57 then byte - 48
+    else if 65 <= byte /\ byte <= 70 then byte - 55
+         else if 97 <= byte /\ byte <= 102 then byte - 87 else (- 1)
+  
+  function decoded_trace (seq int) : seq int
+  
+  axiom decoded_trace_def :
+    forall input:seq int [decoded_trace input].
+     decoded_trace input =
+     (if length input = 0 then empty: seq int
+      else if ge_log_Int (length input) 3 /\
+              get input 0 = 37 /\
+              ge_log_Int (percent_hex_value_model (get input 1)) 0 /\
+              ge_log_Int (percent_hex_value_model (get input 2)) 0
+           then singleton
+                ((percent_hex_value_model (get input 1) * 16)
+                 + percent_hex_value_model (get input 2))
+                ++ decoded_trace input[3..length input]
+           else singleton (get input 0)
+                ++ decoded_trace input[1..length input])
+  
+  predicate gt_log_Int (self:int) (other:int) = other < self
+  
+  (* meta rewrite_def predicate gt_log_Int *)
+  
+  predicate well_founded_relation_Int (self:int) (other:int) =
+    ge_log_Int self 0 /\ gt_log_Int self other
+  
+  (* meta rewrite_def predicate well_founded_relation_Int *)
+  
+  (* meta compute_max_steps 1000000 *)
+  
+  (* meta select_lsinst "all" *)
+  
+  constant input : seq int
+  
+  predicate decoded_trace_length_bounds (seq int)
+  
+  goal vc_decoded_trace_length_bounds :
+    if length input = 0
+    then true /\
+         length (decoded_trace input) <= length input /\
+         length input <= (3 * length (decoded_trace input))
+    else if ge_log_Int (length input) 3
+         then if get input 0 = 37
+              then if ge_log_Int (percent_hex_value_model (get input 1)) 0
+                   then if ge_log_Int (percent_hex_value_model (get input 2))
+                           0
+                        then let tail = input[3..length input] in
+                             well_founded_relation_Int (length input)
+                             (length tail) /\
+                             (decoded_trace_length_bounds tail /\
+                              length (decoded_trace tail) <= length tail /\
+                              length tail
+                              <= (3 * length (decoded_trace tail)) ->
+                              (if decoded_trace_length_bounds tail
+                               then length (decoded_trace input) =
+                                    (1 + length (decoded_trace tail)) /\
+                                    length (decoded_trace input)
+                                    <= length input /\
+                                    length input
+                                    <= (3 * length (decoded_trace input))
+                               else false /\
+                                    length (decoded_trace input)
+                                    <= length input /\
+                                    length input
+                                    <= (3 * length (decoded_trace input))))
+                        else let tail = input[1..length input] in
+                             well_founded_relation_Int (length input)
+                             (length tail) /\
+                             (decoded_trace_length_bounds tail /\
+                              length (decoded_trace tail) <= length tail /\
+                              length tail
+                              <= (3 * length (decoded_trace tail)) ->
+                              (if decoded_trace_length_bounds tail
+                               then length (decoded_trace input) =
+                                    (1 + length (decoded_trace tail)) /\
+                                    length (decoded_trace input)
+                                    <= length input /\
+                                    length input
+                                    <= (3 * length (decoded_trace input))
+                               else false /\
+                                    length (decoded_trace input)
+                                    <= length input /\
+                                    length input
+                                    <= (3 * length (decoded_trace input))))
+                   else let tail = input[1..length input] in
+                        well_founded_relation_Int (length input)
+                        (length tail) /\
+                        (decoded_trace_length_bounds tail /\
+                         length (decoded_trace tail) <= length tail /\
+                         length tail <= (3 * length (decoded_trace tail)) ->
+                         (if decoded_trace_length_bounds tail
+                          then length (decoded_trace input) =
+                               (1 + length (decoded_trace tail)) /\
+                               length (decoded_trace input) <= length input /\
+                               length input
+                               <= (3 * length (decoded_trace input))
+                          else false /\
+                               length (decoded_trace input) <= length input /\
+                               length input
+                               <= (3 * length (decoded_trace input))))
+              else let tail = input[1..length input] in
+                   well_founded_relation_Int (length input) (length tail) /\
+                   (decoded_trace_length_bounds tail /\
+                    length (decoded_trace tail) <= length tail /\
+                    length tail <= (3 * length (decoded_trace tail)) ->
+                    (if decoded_trace_length_bounds tail
+                     then length (decoded_trace input) =
+                          (1 + length (decoded_trace tail)) /\
+                          length (decoded_trace input) <= length input /\
+                          length input <= (3 * length (decoded_trace input))
+                     else false /\
+                          length (decoded_trace input) <= length input /\
+                          length input <= (3 * length (decoded_trace input))))
+         else let tail = input[1..length input] in
+              well_founded_relation_Int (length input) (length tail) /\
+              (decoded_trace_length_bounds tail /\
+               length (decoded_trace tail) <= length tail /\
+               length tail <= (3 * length (decoded_trace tail)) ->
+               (if decoded_trace_length_bounds tail
+                then length (decoded_trace input) =
+                     (1 + length (decoded_trace tail)) /\
+                     length (decoded_trace input) <= length input /\
+                     length input <= (3 * length (decoded_trace input))
+                else false /\
+                     length (decoded_trace input) <= length input /\
+                     length input <= (3 * length (decoded_trace input))))
+  
+end
+

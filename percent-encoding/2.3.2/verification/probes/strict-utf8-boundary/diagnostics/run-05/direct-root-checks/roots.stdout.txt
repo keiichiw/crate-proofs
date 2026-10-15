@@ -1,0 +1,265 @@
+theory Coma
+  
+  (* use why3.BuiltIn.BuiltIn *)
+  
+  (* use why3.Bool.Bool *)
+  
+  (* use why3.Unit.Unit *)
+  
+  (* use creusot.slice.Slice64 *)
+  
+  (* use creusot.int.UInt8 *)
+  
+  (* use creusot.prelude.Char *)
+  
+  (* use map.Map *)
+  
+  (* use creusot.prelude.Any *)
+  
+  type t_Vec_u8_Global
+  
+  type t_Cow_slice_u8 =
+    | Borrowed (slice t)
+    | Owned t_Vec_u8_Global
+  
+  goal vc_elim_Owned : true
+  
+  constant const_MAX : t1 = (18446744073709551615:t1)
+  
+  function view_Vec_u8_Global t_Vec_u8_Global : seq t
+  
+  axiom view_Vec_u8_Global_spec :
+    forall self:t_Vec_u8_Global [view_Vec_u8_Global self].
+     length (view_Vec_u8_Global self) <= t'int const_MAX
+  
+  type t_String
+  
+  type t_FromUtf8Error
+  
+  type t_Result_String_FromUtf8Error =
+    | Ok t_String
+    | Err t_FromUtf8Error
+  
+  predicate inv_String t_String
+  
+  predicate inv_FromUtf8Error t_FromUtf8Error
+  
+  predicate inv_Result_String_FromUtf8Error t_Result_String_FromUtf8Error
+  
+  axiom inv_axiom :
+    forall x:t_Result_String_FromUtf8Error
+     [inv_Result_String_FromUtf8Error x].
+     inv_Result_String_FromUtf8Error x <->
+     match x with
+     | Ok f0 -> inv_String f0
+     | Err f0 -> inv_FromUtf8Error f0
+     end
+  
+  function tail_char (self:seq t2) : seq t2 = self[1..length self]
+  
+  function flat_map_char (seq t2) (t2 -> seq t) : seq t
+  
+  axiom flat_map_char_def :
+    forall self:seq t2, other:t2 -> seq t [flat_map_char self other].
+     flat_map_char self other =
+     (if length self = 0 then empty: seq t
+      else get other (get1 self 0) ++ flat_map_char (tail_char self) other)
+  
+  function to_utf8_char t2 : seq t
+  
+  axiom to_utf8_char_spec :
+    forall self:t2 [to_utf8_char self].
+     1 <= length (to_utf8_char self) /\ length (to_utf8_char self) <= 4
+  
+  function to_bytes (self:seq t2) : seq t =
+    flat_map_char self (fun (c:t2) -> to_utf8_char c)
+  
+  predicate utf8_valid (bytes:seq t) =
+    exists chars:seq t2. to_bytes chars = bytes
+  
+  function view_String t_String : seq t2
+  
+  goal vc_from_utf8 : true
+  
+  goal vc_elim_Err : true
+  
+  predicate resolve_FromUtf8Error t_FromUtf8Error
+  
+  type t_Utf8Error
+  
+  predicate invariant_ref_FromUtf8Error (self:t_FromUtf8Error) =
+    inv_FromUtf8Error self
+  
+  (* meta rewrite_def predicate invariant_ref_FromUtf8Error *)
+  
+  predicate inv_ref_FromUtf8Error (_1:t_FromUtf8Error) =
+    invariant_ref_FromUtf8Error _1
+  
+  (* meta rewrite_def predicate inv_ref_FromUtf8Error *)
+  
+  predicate inv_Utf8Error t_Utf8Error
+  
+  goal vc_utf8_error : true
+  
+  type t_Cow_str =
+    | Borrowed'0 string
+    | Owned'0 t_String
+  
+  type t_Result_Cow_str_Utf8Error =
+    | Ok'0 t_Cow_str
+    | Err'0 t_Utf8Error
+  
+  goal vc_elim_Ok : true
+  
+  goal vc_elim_Borrowed : true
+  
+  type t_Result_ref_str_Utf8Error =
+    | Ok'1 string
+    | Err'1 t_Utf8Error
+  
+  predicate inv_Result_ref_str_Utf8Error t_Result_ref_str_Utf8Error
+  
+  axiom inv_axiom'0 :
+    forall x:t_Result_ref_str_Utf8Error [inv_Result_ref_str_Utf8Error x].
+     inv_Result_ref_str_Utf8Error x <->
+     match x with
+     | Ok'1 f0 -> true
+     | Err'1 f0 -> inv_Utf8Error f0
+     end
+  
+  function view_str string : seq t2
+  
+  goal vc_from_utf8'0 : true
+  
+  goal vc_elim_Err'0 : true
+  
+  goal vc_elim_Ok'0 : true
+  
+  predicate inv_Cow_str t_Cow_str
+  
+  axiom inv_axiom'1 :
+    forall x:t_Cow_str [inv_Cow_str x].
+     inv_Cow_str x <->
+     match x with
+     | Borrowed'0 f0 -> true
+     | Owned'0 f0 -> inv_String f0
+     end
+  
+  predicate inv_Result_Cow_str_Utf8Error t_Result_Cow_str_Utf8Error
+  
+  axiom inv_axiom'2 :
+    forall x:t_Result_Cow_str_Utf8Error [inv_Result_Cow_str_Utf8Error x].
+     inv_Result_Cow_str_Utf8Error x <->
+     match x with
+     | Ok'0 f0 -> inv_Cow_str f0
+     | Err'0 f0 -> inv_Utf8Error f0
+     end
+  
+  function cow_bytes (value:t_Cow_slice_u8) : seq t =
+    match value with
+    | Borrowed bytes -> view bytes
+    | Owned bytes -> view_Vec_u8_Global bytes
+    end
+  
+  (* meta compute_max_steps 1000000 *)
+  
+  (* meta select_lsinst "all" *)
+  
+  goal vc_strict_cow_decode :
+    forall input:t_Cow_slice_u8.
+     (forall x0:slice t.
+       input = Borrowed x0 ->
+       (forall f0:slice t.
+         Borrowed f0 = input ->
+         (forall result:t_Result_ref_str_Utf8Error.
+           inv_Result_ref_str_Utf8Error result /\
+           match result with
+           | Ok'1 value ->
+               utf8_valid (view f0) /\
+               (exists chars:seq t2.
+                 to_bytes chars = view f0 /\ view_str value = chars)
+           | Err'1 _ -> not utf8_valid (view f0)
+           end ->
+           (forall x01:string.
+             result = Ok'1 x01 ->
+             (forall f01:string.
+               Ok'1 f01 = result ->
+               inv_Result_Cow_str_Utf8Error (Ok'0 (Borrowed'0 f01)) /\
+               (exists chars:seq t2.
+                 to_bytes chars = cow_bytes input /\
+                 view_str f01 = chars /\
+                 match input with
+                 | Borrowed _ -> true
+                 | Owned _ -> false
+                 end)) /\
+             match result with
+             | Ok'1 _ -> true
+             | _ -> false
+             end) /\
+           (forall x01:t_Utf8Error.
+             result = Err'1 x01 ->
+             (forall f01:t_Utf8Error.
+               Err'1 f01 = result ->
+               inv_Result_Cow_str_Utf8Error (Err'0 f01) /\
+               not utf8_valid (cow_bytes input)) /\
+             match result with
+             | Err'1 _ -> true
+             | _ -> false
+             end))) /\
+       match input with
+       | Borrowed _ -> true
+       | _ -> false
+       end) /\
+     (forall x0:t_Vec_u8_Global.
+       input = Owned x0 ->
+       (forall f0:t_Vec_u8_Global.
+         Owned f0 = input ->
+         (forall result:t_Result_String_FromUtf8Error.
+           inv_Result_String_FromUtf8Error result /\
+           match result with
+           | Ok value ->
+               utf8_valid (view_Vec_u8_Global f0) /\
+               (exists chars:seq t2.
+                 to_bytes chars = view_Vec_u8_Global f0 /\
+                 view_String value = chars)
+           | Err _ -> not utf8_valid (view_Vec_u8_Global f0)
+           end ->
+           (forall x01:t_String.
+             result = Ok x01 ->
+             (forall f01:t_String.
+               Ok f01 = result ->
+               inv_Result_Cow_str_Utf8Error (Ok'0 (Owned'0 f01)) /\
+               (exists chars:seq t2.
+                 to_bytes chars = cow_bytes input /\
+                 view_String f01 = chars /\
+                 match input with
+                 | Borrowed _ -> false
+                 | Owned _ -> true
+                 end)) /\
+             match result with
+             | Ok _ -> true
+             | _ -> false
+             end) /\
+           (forall x01:t_FromUtf8Error.
+             result = Err x01 ->
+             (forall f01:t_FromUtf8Error.
+               Err f01 = result ->
+               not utf8_valid (view_Vec_u8_Global f0) &&
+               (resolve_FromUtf8Error f01 ->
+                inv_ref_FromUtf8Error f01 /\
+                (forall result1:t_Utf8Error.
+                  inv_Utf8Error result1 ->
+                  inv_Result_Cow_str_Utf8Error (Err'0 result1) /\
+                  not utf8_valid (cow_bytes input))) /\
+               inv_FromUtf8Error f01) /\
+             match result with
+             | Err _ -> true
+             | _ -> false
+             end))) /\
+       match input with
+       | Owned _ -> true
+       | _ -> false
+       end)
+  
+end
+

@@ -1,0 +1,20 @@
+{
+  "selected": {
+    "raw_pair_bounds": "Checked bounds for the first nonempty segment, first equals byte, delimiter boundary, skipped ampersands, and consumed prefix.",
+    "find_plus": "Checked first plus index, or checked absence over the complete input.",
+    "replace_plus_in_place": "Checked length preservation and pointwise plus-to-space replacement after the proven first plus.",
+    "byte_serialized_unchanged": "Checked exact classification of the unchanged URL-encoded ASCII byte set.",
+    "percent_encoded_bytes": "Checked all 256 output triples: percent marker, uppercase high/low hex digits, and ASCII bytes."
+  },
+  "expected_open": {},
+  "excluded_generated": {
+    "byte_serialize": "Public iterator constructor; selected byte core targets are the exact classifier and percent-byte table helper.",
+    "decode": "Depends on external percent decoding and lossy UTF-8 conversion, which are outside this milestone.",
+    "decode_utf8_lossy": "Standard-library lossy UTF-8 boundary is not modeled.",
+    "impl_Clone_for_Parse/clone": "Trait implementation has no selected semantic refinement in this milestone.",
+    "impl_Debug_for_ByteSerialize/fmt": "Debug formatting is outside the byte parsing/encoding core.",
+    "impl_Parse/into_owned": "Owned iterator wrapper refinement is outside scope; the custom Iterator implementation is omitted under cfg(creusot).",
+    "parse": "Public iterator constructor; decoded public pair semantics are outside scope.",
+    "replace_plus": "Cow ownership/allocation wrapper; the checked find and in-place mapping helpers are selected separately."
+  }
+}

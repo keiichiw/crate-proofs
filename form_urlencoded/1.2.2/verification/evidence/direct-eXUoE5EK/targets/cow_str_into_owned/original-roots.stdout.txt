@@ -1,0 +1,80 @@
+theory Coma
+  
+  (* use why3.BuiltIn.BuiltIn *)
+  
+  (* use why3.Bool.Bool *)
+  
+  (* use why3.Unit.Unit *)
+  
+  (* use creusot.prelude.Char *)
+  
+  (* use seq.Seq *)
+  
+  (* use creusot.prelude.Any *)
+  
+  type t_String
+  
+  type t_Cow_str =
+    | Borrowed string
+    | Owned t_String
+  
+  goal vc_elim_Owned : true
+  
+  goal vc_elim_Borrowed : true
+  
+  predicate inv_String t_String
+  
+  function view_String t_String : seq t
+  
+  function view_str string : seq t
+  
+  goal vc_to_owned_str : true
+  
+  predicate inv_Cow_str t_Cow_str
+  
+  axiom inv_axiom :
+    forall x:t_Cow_str [inv_Cow_str x].
+     inv_Cow_str x <->
+     match x with
+     | Borrowed f0 -> true
+     | Owned f0 -> inv_String f0
+     end
+  
+  (* meta compute_max_steps 1000000 *)
+  
+  (* meta select_lsinst "all" *)
+  
+  goal vc_cow_str_into_owned :
+    forall value:t_Cow_str.
+     inv_Cow_str value ->
+     (forall x0:string.
+       value = Borrowed x0 ->
+       (forall f0:string.
+         Borrowed f0 = value ->
+         (forall result:t_String.
+           inv_String result /\ view_String result = view_str f0 ->
+           inv_String result /\
+           match value with
+           | Borrowed s -> view_String result = view_str s
+           | Owned s -> view_String result = view_String s
+           end)) /\
+       match value with
+       | Borrowed _ -> true
+       | _ -> false
+       end) /\
+     (forall x0:t_String.
+       value = Owned x0 ->
+       (forall f0:t_String.
+         Owned f0 = value ->
+         inv_String f0 /\
+         match value with
+         | Borrowed s -> view_String f0 = view_str s
+         | Owned s -> view_String f0 = view_String s
+         end) /\
+       match value with
+       | Owned _ -> true
+       | _ -> false
+       end)
+  
+end
+

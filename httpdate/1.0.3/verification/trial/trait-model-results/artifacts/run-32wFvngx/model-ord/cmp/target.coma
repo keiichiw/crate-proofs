@@ -1,0 +1,146 @@
+(* <ord_model::Date as std::cmp::Ord> *)
+
+use creusot.int.UInt16
+use creusot.int.UInt8
+use creusot.prelude.Any
+use seq.Seq
+use int.Int
+
+type t_Date = { year: UInt16.t; month: UInt8.t; day: UInt8.t }
+
+type t_Ordering = Less | Equal | Greater
+
+function cmp_log_Int (self: int) (other: int) : t_Ordering = if self = other then
+    Equal
+  else
+    if self < other then Less else Greater
+
+
+function deep_model_u16 [@inline:trivial] (self: UInt16.t) : int = UInt16.t'int self
+
+meta "rewrite_def" function deep_model_u16
+
+let cmp_u16 (self_: UInt16.t) (rhs: UInt16.t) (return (x: t_Ordering)) = any
+  [ return (result: t_Ordering) -> {[@stop_split] [@expl:cmp ensures] result
+    = cmp_log_Int (deep_model_u16 self_) (deep_model_u16 rhs)}
+    (! return {result}) ]
+
+function deep_model_u8 [@inline:trivial] (self: UInt8.t) : int = UInt8.t'int self
+
+meta "rewrite_def" function deep_model_u8
+
+let cmp_u8 (self_: UInt8.t) (rhs: UInt8.t) (return (x: t_Ordering)) = any
+  [ return (result: t_Ordering) -> {[@stop_split] [@expl:cmp ensures] result
+    = cmp_log_Int (deep_model_u8 self_) (deep_model_u8 rhs)}
+    (! return {result}) ]
+
+type t_DateModel = { year'0: int; month'0: int; day'0: int }
+
+predicate lt_log_Seq_Int (self: Seq.seq int) (other: Seq.seq int) =
+  (exists i: int. 0 <= i
+      /\ i < Seq.length self
+      /\ i < Seq.length other
+      /\ (forall j: int. 0 <= j /\ j < i -> Seq.get self j = Seq.get other j) /\ Seq.get self i < Seq.get other i)
+  \/ Seq.length self < Seq.length other
+  /\ (forall i: int. 0 <= i /\ i < Seq.length self -> Seq.get self i = Seq.get other i)
+
+predicate le_log_Seq_Int [@inline:trivial] (self: Seq.seq int) (other: Seq.seq int) =
+  lt_log_Seq_Int self other \/ self = other
+
+meta "rewrite_def" predicate le_log_Seq_Int
+
+function le_lt_log_Seq_Int (self: Seq.seq int) (other: Seq.seq int) : ()
+
+axiom le_lt_log_Seq_Int_spec: forall self: Seq.seq int, other: Seq.seq int. le_log_Seq_Int self other
+    = (lt_log_Seq_Int self other \/ self = other)
+
+function transitive_Seq_Int (x: Seq.seq int) (y: Seq.seq int) (z: Seq.seq int) : ()
+
+axiom transitive_Seq_Int_spec: forall x: Seq.seq int, y: Seq.seq int, z: Seq.seq int. lt_log_Seq_Int x y
+    -> lt_log_Seq_Int y z -> lt_log_Seq_Int x z
+
+function irreflexive_Seq_Int (self: Seq.seq int) : ()
+
+axiom irreflexive_Seq_Int_spec: forall self: Seq.seq int. not lt_log_Seq_Int self self
+
+function lex_key (d: t_DateModel) : Seq.seq int =
+  Seq.snoc (Seq.snoc (Seq.snoc (Seq.empty: Seq.seq int) d.year'0) d.month'0) d.day'0
+
+predicate lt_log_DateModel (self: t_DateModel) (other: t_DateModel) = lt_log_Seq_Int (lex_key self) (lex_key other)
+
+predicate le_log_DateModel [@inline:trivial] (self: t_DateModel) (other: t_DateModel) =
+  lt_log_DateModel self other \/ self = other
+
+meta "rewrite_def" predicate le_log_DateModel
+
+function le_lt_log_DateModel (self: t_DateModel) (other: t_DateModel) : () = ()
+
+axiom le_lt_log_DateModel_spec: forall self: t_DateModel, other: t_DateModel. le_log_DateModel self other
+    = (lt_log_DateModel self other \/ self = other)
+
+function transitive_DateModel (x: t_DateModel) (y: t_DateModel) (z: t_DateModel) : () = ()
+
+axiom transitive_DateModel_spec: forall x: t_DateModel, y: t_DateModel, z: t_DateModel. lt_log_DateModel x y
+    -> lt_log_DateModel y z -> lt_log_DateModel x z
+
+function irreflexive_DateModel (self: t_DateModel) : () = ()
+
+axiom irreflexive_DateModel_spec: forall self: t_DateModel. not lt_log_DateModel self self
+
+function lt_log_total_Seq_Int (self: Seq.seq int) (other: Seq.seq int) : ()
+
+axiom lt_log_total_Seq_Int_spec: forall self: Seq.seq int, other: Seq.seq int. lt_log_Seq_Int self other
+    \/ self = other \/ lt_log_Seq_Int other self
+
+function lt_log_total_DateModel (self: t_DateModel) (other: t_DateModel) : () =
+  let _ = lt_log_total_Seq_Int (lex_key self) (lex_key other) in ()
+
+axiom lt_log_total_DateModel_spec: forall self: t_DateModel, other: t_DateModel. lt_log_DateModel self other
+    \/ self = other \/ lt_log_DateModel other self
+
+function cmp_log_DateModel (self: t_DateModel) (other: t_DateModel) : t_Ordering = if self = other then
+    Equal
+  else
+    if lt_log_DateModel self other then Less else Greater
+
+
+function deep_model_Date (self: t_Date) : t_DateModel = { year'0 = UInt16.t'int self.year;
+                                                          month'0 = UInt8.t'int self.month;
+                                                          day'0 = UInt8.t'int self.day }
+
+function deep_model_ref_Date [@inline:trivial] (self: t_Date) : t_DateModel = deep_model_Date self
+
+meta "rewrite_def" function deep_model_ref_Date
+
+meta "compute_max_steps" 1000000
+
+meta "select_lsinst" "all"
+
+let cmp_Date (self: t_Date) (other: t_Date) (return (x: t_Ordering)) = (! bb0
+  [ bb0 = s0
+    [ s0 = [ &_9 <- other.year ] s1
+    | s1 = cmp_u16 {self.year} {_9} (fun (_x: t_Ordering) -> [ &_6 <- _x ] s2)
+    | s2 = any [ br0 -> {_6 = Less} (! bb2) | br1 -> {_6 = Equal} (! bb4) | br2 -> {_6 = Greater} (! bb2) ] ]
+  | bb2 = s0 [ s0 = [ &ordering'0 <- _6 ] s1 | s1 = [ &_ret <- ordering'0 ] s2 | s2 = return {_ret} ]
+  | bb4 = s0
+    [ s0 = [ &_14 <- other.month ] s1
+    | s1 = cmp_u8 {self.month} {_14} (fun (_x: t_Ordering) -> [ &_11 <- _x ] s2)
+    | s2 = any [ br0 -> {_11 = Less} (! bb6) | br1 -> {_11 = Equal} (! bb8) | br2 -> {_11 = Greater} (! bb6) ] ]
+  | bb6 = s0 [ s0 = [ &ordering <- _11 ] s1 | s1 = [ &_ret <- ordering ] s2 | s2 = return {_ret} ]
+  | bb8 = s0
+    [ s0 = [ &_18 <- other.day ] s1
+    | s1 = cmp_u8 {self.day} {_18} (fun (_x: t_Ordering) -> [ &_ret <- _x ] s2)
+    | s2 = return {_ret} ] ]
+  [ & _ret: t_Ordering = Any.any_l ()
+  | & self: t_Date = self
+  | & other: t_Date = other
+  | & _6: t_Ordering = Any.any_l ()
+  | & _9: UInt16.t = Any.any_l ()
+  | & _11: t_Ordering = Any.any_l ()
+  | & _14: UInt8.t = Any.any_l ()
+  | & _18: UInt8.t = Any.any_l ()
+  | & ordering: t_Ordering = Any.any_l ()
+  | & ordering'0: t_Ordering = Any.any_l () ])
+  [ return (result: t_Ordering) -> {[@stop_split] [@expl:cmp ensures] result
+    = cmp_log_DateModel (deep_model_ref_Date self) (deep_model_ref_Date other)}
+    (! return {result}) ]

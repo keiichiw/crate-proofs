@@ -1,0 +1,162 @@
+theory Coma
+  
+  (* use why3.BuiltIn.BuiltIn *)
+  
+  (* use why3.Bool.Bool *)
+  
+  (* use why3.Unit.Unit *)
+  
+  (* use creusot.slice.Slice64 *)
+  
+  (* use creusot.prelude.MutBorrow *)
+  
+  (* use creusot.prelude.Any *)
+  
+  type tup2_ref_str_bool =
+    | Tup2_ref_str_bool'mk (f0:string) (f1:bool)
+  
+  (* meta model_record function f1 *)
+  
+  (* meta model_record function f0 *)
+  
+  goal vc_new_tup2_ref_str_bool : true
+  
+  goal vc_len_ref_str : true
+  
+  predicate successful_prefix (chunks:seq string) (trace:seq
+    tup2_ref_str_bool) (count:int) =
+    length trace = count /\
+    (forall j:int.
+      0 <= j /\ j < count ->
+      (get trace j).f0 = get chunks j /\ (get trace j).f1 = True)
+  
+  type t_Formatter
+  
+  predicate inv_Formatter t_Formatter
+  
+  predicate invariant_refmut_Formatter (self:t t_Formatter) =
+    inv_Formatter (self.current) /\ inv_Formatter (self.final)
+  
+  (* meta rewrite_def predicate invariant_refmut_Formatter *)
+  
+  predicate inv_refmut_Formatter (_1:t t_Formatter) =
+    invariant_refmut_Formatter _1
+  
+  (* meta rewrite_def predicate inv_refmut_Formatter *)
+  
+  goal vc_borrow_mut_Seq_tup2_ref_str_bool : true
+  
+  type t_Result_unit_Error =
+    | Ok unit
+    | Err unit
+  
+  goal vc_request_write : true
+  
+  predicate resolve_refmut_Formatter (_1:t t_Formatter) =
+    _1.final = _1.current
+  
+  (* meta rewrite_def predicate resolve_refmut_Formatter *)
+  
+  goal vc_elim_Err : true
+  
+  predicate failed_prefix (chunks:seq string) (trace:seq tup2_ref_str_bool)
+    (count:int) =
+    length trace = (count + 1) /\
+    (forall j:int.
+      0 <= j /\ j < count ->
+      (get trace j).f0 = get chunks j /\
+      (get trace j).f1 = True /\
+      (get trace count).f0 = get chunks count /\
+      not (get trace count).f1 = True)
+  
+  (* meta compute_max_steps 1000000 *)
+  
+  (* meta select_lsinst "all" *)
+  
+  goal vc_pair_trace :
+    forall f:t t_Formatter, left:string, right:string.
+     inv_refmut_Formatter f ->
+     (forall f2:t t_Formatter, chunks:slice string, trace:seq
+       tup2_ref_str_bool, i:t1, _19:bool, _21:t1, chunk:string, _25:t1, _26:
+       bool, _27:t_Result_unit_Error, _28:t t_Formatter, _30:t (seq
+       tup2_ref_str_bool), _31:t (seq tup2_ref_str_bool), _old:t_Formatter.
+       (forall __arr_temp:slice string.
+         get (__arr_temp.elts) 0 = left /\
+         get (__arr_temp.elts) 1 = right /\ length (__arr_temp.elts) = 2 ->
+         (inv_refmut_Formatter f &&
+          (0 <= t'int (0:t1) /\ t'int (0:t1) <= length (view __arr_temp)) &&
+          successful_prefix (view __arr_temp) (empty: seq tup2_ref_str_bool)
+          (t'int (0:t1))) /\
+         (forall f3:t t_Formatter, trace1:seq tup2_ref_str_bool, i1:t1.
+           inv_refmut_Formatter f3 ->
+           f.final = f3.final ->
+           0 <= t'int i1 /\ t'int i1 <= length (view __arr_temp) ->
+           successful_prefix (view __arr_temp) trace1 (t'int i1) ->
+           (forall result:t1.
+             length (view __arr_temp) = t'int result ->
+             (not lt i1 result -> inv_refmut_Formatter f3) /\
+             (lt i1 result ->
+              lt i1 (2:t1) &&
+              t'int i1 < length (__arr_temp.elts) &&
+              (forall fin:seq tup2_ref_str_bool.
+                (forall fin1:t_Formatter, id:int.
+                  inv_Formatter fin1 ->
+                  inv_refmut_Formatter (t'mk (f3.current) fin1 id) /\
+                  (forall result1:t_Result_unit_Error.
+                    fin =
+                    snoc trace1
+                    (Tup2_ref_str_bool'mk (get (__arr_temp.elts) (t'int i1))
+                     match result1 with
+                     | Ok () -> True
+                     | Err _ -> False
+                     end) ->
+                    result1 = Ok () ->
+                    in_bounds (t'int i1 + t'int (1:t1)) /\
+                    (forall result2:t1.
+                      t'int result2 = (t'int i1 + t'int (1:t1)) ->
+                      inv_refmut_Formatter (t'mk fin1 (f3.final) (f3.id1)) &&
+                      f.final = f3.final &&
+                      (0 <= t'int result2 /\
+                       t'int result2 <= length (view __arr_temp)) &&
+                      successful_prefix (view __arr_temp) fin (t'int result2)))) /\
+                inv_Formatter (f3.current)))))) /\
+       ((get (chunks.elts) 0 = left /\
+         get (chunks.elts) 1 = right /\ length (chunks.elts) = 2) /\
+        (exists f3:t t_Formatter, trace1:seq tup2_ref_str_bool.
+          inv_refmut_Formatter f3 /\
+          f.final = f3.final /\
+          (0 <= t'int i /\ t'int i <= length (view chunks)) /\
+          successful_prefix (view chunks) trace1 (t'int i) /\
+          length (view chunks) = t'int _21 /\
+          lt i _21 /\
+          lt i (2:t1) /\
+          t'int i < length (chunks.elts) /\
+          (exists id:int.
+            _30 = t'mk trace1 trace id /\
+            (exists fin:t_Formatter, id2:int.
+              inv_Formatter fin /\
+              _30.final =
+              snoc (_30.current)
+              (Tup2_ref_str_bool'mk (get (chunks.elts) (t'int i))
+               match _27 with
+               | Ok () -> True
+               | Err _ -> False
+               end) /\
+              _27 = Err () /\
+              f2 = t'mk fin (f3.final) (f3.id1) /\
+              (if lt i _21 then _19 = True else _19 = False) /\
+              chunk = get (chunks.elts) (t'int i) /\
+              _25 = i /\
+              (if lt i (2:t1) then _26 = True else _26 = False) /\
+              _28 = t'mk (f3.current) fin id2 /\
+              _31 = t'mk trace1 trace id /\ _old = f.final))) ->
+        (resolve_refmut_Formatter f2 ->
+         (Err () = _27 -> failed_prefix (view chunks) trace (t'int i)) /\
+         match _27 with
+         | Err _ -> true
+         | _ -> false
+         end) /\
+        inv_refmut_Formatter f2))
+  
+end
+

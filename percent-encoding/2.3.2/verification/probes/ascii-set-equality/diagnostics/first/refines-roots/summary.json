@@ -1,0 +1,46 @@
+{
+  "status": "passed",
+  "root_count": 1,
+  "direct_smt_goals": 4,
+  "results": [
+    {
+      "goal": "Coma.refines",
+      "status": "closed",
+      "export_mode": "transformed",
+      "smt_results": [
+        {
+          "file": "000-refines/transformed/eq__refines-Coma-refines.smt2",
+          "exit_code": 0,
+          "statuses": [
+            "unsat"
+          ],
+          "passed": true
+        },
+        {
+          "file": "000-refines/transformed/eq__refines-Coma-refines1.smt2",
+          "exit_code": 0,
+          "statuses": [
+            "unsat"
+          ],
+          "passed": true
+        },
+        {
+          "file": "000-refines/transformed/eq__refines-Coma-refines2.smt2",
+          "exit_code": 0,
+          "statuses": [
+            "unsat"
+          ],
+          "passed": true
+        },
+        {
+          "file": "000-refines/transformed/eq__refines-Coma-refines3.smt2",
+          "exit_code": 0,
+          "statuses": [
+            "unsat"
+          ],
+          "passed": true
+        }
+      ]
+    }
+  ]
+}

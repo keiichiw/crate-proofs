@@ -1,0 +1,280 @@
+theory Coma
+  
+  (* use why3.BuiltIn.BuiltIn *)
+  
+  (* use why3.Bool.Bool *)
+  
+  (* use why3.Unit.Unit *)
+  
+  (* use creusot.slice.Slice64 *)
+  
+  (* use creusot.int.UInt8 *)
+  
+  (* use creusot.prelude.MutBorrow *)
+  
+  (* use creusot.int.UInt32 *)
+  
+  (* use creusot.prelude.Any *)
+  
+  type t_Iter_u8
+  
+  predicate inv_Iter_u8 t_Iter_u8
+  
+  function view_Iter_u8 t_Iter_u8 : slice t
+  
+  goal vc_iter_u8 : true
+  
+  type t_Option_ref_u8 =
+    | None
+    | Some t
+  
+  predicate invariant_refmut_Iter_u8 (self:t1 t_Iter_u8) =
+    inv_Iter_u8 (self.current) /\ inv_Iter_u8 (self.final)
+  
+  (* meta rewrite_def predicate invariant_refmut_Iter_u8 *)
+  
+  predicate inv_refmut_Iter_u8 (_1:t1 t_Iter_u8) =
+    invariant_refmut_Iter_u8 _1
+  
+  (* meta rewrite_def predicate inv_refmut_Iter_u8 *)
+  
+  function index_slice_u8 (self:slice t) (ix:int) : t = get (view self) ix
+  
+  (* meta rewrite_def function index_slice_u8 *)
+  
+  function to_ref_seq_slice_u8 (slice t) : seq t
+  
+  axiom to_ref_seq_slice_u8_spec :
+    forall self:slice t [to_ref_seq_slice_u8 self].
+     length (to_ref_seq_slice_u8 self) = length (view self)
+  
+  axiom to_ref_seq_slice_u8_spec'0 :
+    forall self:slice t [to_ref_seq_slice_u8 self].
+     forall i:int.
+      0 <= i /\ i < length (to_ref_seq_slice_u8 self) ->
+      get (to_ref_seq_slice_u8 self) i = index_slice_u8 self i
+  
+  predicate produces_Iter_u8 (self:t_Iter_u8) (visited:seq t) (tl:
+    t_Iter_u8) =
+    to_ref_seq_slice_u8 (view_Iter_u8 self) =
+    (visited ++ to_ref_seq_slice_u8 (view_Iter_u8 tl))
+  
+  function produces_trans_Iter_u8 t_Iter_u8 (seq t) t_Iter_u8 (seq t)
+    t_Iter_u8 : unit
+  
+  axiom produces_trans_Iter_u8_spec :
+    forall a:t_Iter_u8, ab:seq t, b:t_Iter_u8, bc:seq t, c:t_Iter_u8.
+     produces_Iter_u8 a ab b ->
+     produces_Iter_u8 b bc c -> produces_Iter_u8 a (ab ++ bc) c
+  
+  function produces_refl_Iter_u8 t_Iter_u8 : unit
+  
+  axiom produces_refl_Iter_u8_spec :
+    forall self:t_Iter_u8. produces_Iter_u8 self (empty: seq t) self
+  
+  predicate resolve_refmut_Iter_u8 (_1:t1 t_Iter_u8) = _1.final = _1.current
+  
+  (* meta rewrite_def predicate resolve_refmut_Iter_u8 *)
+  
+  predicate completed_Iter_u8 (self:t1 t_Iter_u8) =
+    resolve_refmut_Iter_u8 self /\
+    view (view_Iter_u8 (self.current)) = (empty: seq t)
+  
+  goal vc_next_Iter_u8 : true
+  
+  type t_Option_bool =
+    | None'0
+    | Some'0 bool
+  
+  type t_DebugTrace =
+    | T_DebugTrace'mk (struct_name:string) (field_names:seq string)
+        (field_type_tags:seq t) (word_values:seq (seq t2)) (byte_values:seq
+        (seq t)) (iter_values:seq (seq t)) (ascii_set_values:seq (seq t2))
+        (finish_status:t_Option_bool)
+  
+  (* meta model_record function finish_status *)
+  
+  (* meta model_record function ascii_set_values *)
+  
+  (* meta model_record function iter_values *)
+  
+  (* meta model_record function byte_values *)
+  
+  (* meta model_record function word_values *)
+  
+  (* meta model_record function field_type_tags *)
+  
+  (* meta model_record function field_names *)
+  
+  (* meta model_record function struct_name *)
+  
+  goal vc_empty : true
+  
+  goal vc_borrow_mut_DebugTrace : true
+  
+  type t_Formatter
+  
+  predicate inv_Formatter t_Formatter
+  
+  type t_DebugStruct
+  
+  predicate invariant_refmut_Formatter (self:t1 t_Formatter) =
+    inv_Formatter (self.current) /\ inv_Formatter (self.final)
+  
+  (* meta rewrite_def predicate invariant_refmut_Formatter *)
+  
+  predicate inv_refmut_Formatter (_1:t1 t_Formatter) =
+    invariant_refmut_Formatter _1
+  
+  (* meta rewrite_def predicate inv_refmut_Formatter *)
+  
+  predicate inv_DebugStruct t_DebugStruct
+  
+  goal vc_start : true
+  
+  predicate resolve_Iter_u8 t_Iter_u8
+  
+  predicate invariant_refmut_DebugStruct (self:t1 t_DebugStruct) =
+    inv_DebugStruct (self.current) /\ inv_DebugStruct (self.final)
+  
+  (* meta rewrite_def predicate invariant_refmut_DebugStruct *)
+  
+  predicate inv_refmut_DebugStruct (_1:t1 t_DebugStruct) =
+    invariant_refmut_DebugStruct _1
+  
+  (* meta rewrite_def predicate inv_refmut_DebugStruct *)
+  
+  predicate invariant_ref_Iter_u8 (self:t_Iter_u8) = inv_Iter_u8 self
+  
+  (* meta rewrite_def predicate invariant_ref_Iter_u8 *)
+  
+  predicate inv_ref_Iter_u8 (_1:t_Iter_u8) = invariant_ref_Iter_u8 _1
+  
+  (* meta rewrite_def predicate inv_ref_Iter_u8 *)
+  
+  goal vc_field_byte_iter : true
+  
+  predicate resolve_refmut_DebugStruct (_1:t1 t_DebugStruct) =
+    _1.final = _1.current
+  
+  (* meta rewrite_def predicate resolve_refmut_DebugStruct *)
+  
+  type t_Result_unit_Error =
+    | Ok unit
+    | Err unit
+  
+  goal vc_finish : true
+  
+  predicate resolve_DebugStruct t_DebugStruct
+  
+  predicate resolve_refmut_Formatter (_1:t1 t_Formatter) =
+    _1.final = _1.current
+  
+  (* meta rewrite_def predicate resolve_refmut_Formatter *)
+  
+  (* meta compute_max_steps 1000000 *)
+  
+  (* meta select_lsinst "all" *)
+  
+  goal vc_trace_decoder :
+    forall formatter:t1 t_Formatter, bytes:slice t.
+     inv_refmut_Formatter formatter ->
+     (forall result:t_Iter_u8.
+       inv_Iter_u8 result /\ view_Iter_u8 result = bytes ->
+       (forall fin:t_Iter_u8, id:int.
+         inv_Iter_u8 fin ->
+         inv_refmut_Iter_u8 (t'mk result fin id) /\
+         (forall result1:t_Option_ref_u8.
+           match result1 with
+           | None -> completed_Iter_u8 (t'mk result fin id)
+           | Some v -> produces_Iter_u8 result (singleton v) fin
+           end ->
+           (forall fin1:t_DebugTrace.
+             (forall fin2:t_Formatter.
+               inv_Formatter fin2 ->
+               inv_refmut_Formatter
+               (t'mk (formatter.current) fin2 (get_id formatter)) /\
+               (forall result2:t_DebugStruct.
+                 inv_DebugStruct result2 /\
+                 fin1.struct_name = ("PercentDecode":string) /\
+                 length (fin1.field_names) = 0 /\
+                 length (fin1.field_type_tags) = 0 /\
+                 length (fin1.word_values) = 0 /\
+                 length (fin1.byte_values) = 0 /\
+                 length (fin1.iter_values) = 0 /\
+                 length (fin1.ascii_set_values) = 0 /\
+                 fin1.finish_status = None'0 ->
+                 (forall fin3:t_DebugStruct, id1:int.
+                   inv_DebugStruct fin3 ->
+                   (resolve_Iter_u8 fin ->
+                    (forall fin4:t_DebugTrace.
+                      (forall fin5:t_DebugStruct.
+                        inv_DebugStruct fin5 ->
+                        (inv_refmut_DebugStruct
+                         (t'mk result2 fin5 (get_id (t'mk result2 fin3 id1))) /\
+                         inv_ref_Iter_u8 fin) /\
+                        (fin4.field_names =
+                         snoc (fin1.field_names) ("bytes":string) /\
+                         fin4.field_type_tags =
+                         snoc (fin1.field_type_tags) (2:t) /\
+                         fin4.iter_values =
+                         snoc (fin1.iter_values) (view (view_Iter_u8 fin)) /\
+                         fin4.struct_name = fin1.struct_name /\
+                         fin4.word_values = fin1.word_values /\
+                         fin4.byte_values = fin1.byte_values /\
+                         fin4.ascii_set_values = fin1.ascii_set_values /\
+                         fin4.finish_status = fin1.finish_status ->
+                         (resolve_refmut_DebugStruct (t'mk fin5 fin3 id1) ->
+                          (forall fin6:t_DebugStruct, id2:int.
+                            inv_DebugStruct fin6 ->
+                            (forall fin7:t_DebugTrace.
+                              (forall fin8:t_DebugStruct.
+                                inv_DebugStruct fin8 ->
+                                inv_refmut_DebugStruct
+                                (t'mk fin3 fin8 (get_id (t'mk fin3 fin6 id2))) /\
+                                (forall result3:t_Result_unit_Error.
+                                  fin7.finish_status =
+                                  Some'0
+                                  match result3 with
+                                  | Ok () -> True
+                                  | Err _ -> False
+                                  end /\
+                                  fin7.struct_name = fin4.struct_name /\
+                                  fin7.field_names = fin4.field_names /\
+                                  fin7.field_type_tags = fin4.field_type_tags /\
+                                  fin7.word_values = fin4.word_values /\
+                                  fin7.byte_values = fin4.byte_values /\
+                                  fin7.iter_values = fin4.iter_values /\
+                                  fin7.ascii_set_values =
+                                  fin4.ascii_set_values ->
+                                  (resolve_refmut_DebugStruct
+                                   (t'mk fin8 fin6 id2) ->
+                                   (resolve_DebugStruct fin6 ->
+                                    (resolve_refmut_Formatter
+                                     (t'mk fin2 (formatter.final)
+                                      (formatter.id3)) ->
+                                     length (fin7.field_names) = 1 &&
+                                     get (fin7.field_type_tags) 0 = (2:t) &&
+                                     length (fin7.iter_values) = 1 &&
+                                     fin7.finish_status =
+                                     Some'0
+                                     match result3 with
+                                     | Ok () -> True
+                                     | Err _ -> False
+                                     end) /\
+                                    inv_refmut_Formatter
+                                    (t'mk fin2 (formatter.final)
+                                     (formatter.id3))) /\
+                                   inv_DebugStruct fin6) /\
+                                  inv_refmut_DebugStruct (t'mk fin8 fin6 id2))) /\
+                              inv_DebugStruct fin3)) /\
+                          inv_DebugStruct fin3) /\
+                         inv_refmut_DebugStruct (t'mk fin5 fin3 id1))) /\
+                      inv_DebugStruct result2)) /\
+                   inv_Iter_u8 fin) /\
+                 inv_DebugStruct result2)) /\
+             inv_Formatter (formatter.current)))) /\
+       inv_Iter_u8 result)
+  
+end
+

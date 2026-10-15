@@ -1,0 +1,780 @@
+theory Coma
+  
+  (* use why3.BuiltIn.BuiltIn *)
+  
+  (* use why3.Bool.Bool *)
+  
+  (* use why3.Unit.Unit *)
+  
+  (* use creusot.int.UInt64 *)
+  
+  (* use creusot.slice.Slice64 *)
+  
+  (* use creusot.int.UInt8 *)
+  
+  (* use map.Map *)
+  
+  (* use creusot.prelude.MutBorrow *)
+  
+  (* use creusot.prelude.Any *)
+  
+  type t_Vec_u8_Global
+  
+  type t_Option_Vec_u8_Global =
+    | None
+    | Some t_Vec_u8_Global
+  
+  goal vc_len_u8 : true
+  
+  constant const_MAX : t = (18446744073709551615:t)
+  
+  function view_Vec_u8_Global t_Vec_u8_Global : seq t1
+  
+  axiom view_Vec_u8_Global_spec :
+    forall self:t_Vec_u8_Global [view_Vec_u8_Global self].
+     length (view_Vec_u8_Global self) <= t'int const_MAX
+  
+  function percent_hex_value_model (byte:int) : int =
+    if 48 <= byte /\ byte <= 57 then byte - 48
+    else if 65 <= byte /\ byte <= 70 then byte - 55
+         else if 97 <= byte /\ byte <= 102 then byte - 87 else (- 1)
+  
+  predicate ge_log_Int (self:int) (other:int) = other <= self
+  
+  (* meta rewrite_def predicate ge_log_Int *)
+  
+  function percent_decoded_from (seq int) int : seq int
+  
+  axiom percent_decoded_from_def :
+    forall bytes:seq int, index:int [percent_decoded_from bytes index].
+     0 <= index /\ index <= length bytes ->
+     percent_decoded_from bytes index =
+     (if index = length bytes then empty: seq int
+      else let first = get bytes index in
+           if first = 37 /\ (index + 3) <= length bytes
+           then let high = percent_hex_value_model (get bytes (index + 1)) in
+                let low = percent_hex_value_model (get bytes (index + 2)) in
+                if ge_log_Int high 0 /\ ge_log_Int low 0
+                then singleton ((high * 16) + low)
+                     ++ percent_decoded_from bytes (index + 3)
+                else singleton first
+                     ++ percent_decoded_from bytes (index + 1)
+           else singleton first ++ percent_decoded_from bytes (index + 1))
+  
+  function percent_decoded_model (seq int) : seq int
+  
+  axiom percent_decoded_model_def :
+    forall bytes:seq int [percent_decoded_model bytes].
+     percent_decoded_model bytes = percent_decoded_from bytes 0
+  
+  function index_Mapping_u8_Int (self:t1 -> int) (a:t1) : int = get1 self a
+  
+  (* meta rewrite_def function index_Mapping_u8_Int *)
+  
+  function map_u8 (seq t1) (t1 -> int) : seq int
+  
+  axiom map_u8_spec :
+    forall self:seq t1, m:t1 -> int [map_u8 self m].
+     length (map_u8 self m) = length self
+  
+  axiom map_u8_spec'0 :
+    forall self:seq t1, m:t1 -> int [map_u8 self m].
+     forall i:int.
+      0 <= i /\ i < length self ->
+      get (map_u8 self m) i = index_Mapping_u8_Int m (get self i)
+  
+  function byte_sequence_as_ints (bytes:seq t1) : seq int =
+    map_u8 bytes (fun (byte:t1) -> t'int1 byte)
+  
+  type t_Option_u8 =
+    | None'0
+    | Some'0 t1
+  
+  goal vc_percent_hex_value : true
+  
+  type tup2_Option_u8_Option_u8 =
+    | Tup2_Option_u8_Option_u8'mk (f0:t_Option_u8) (f1:t_Option_u8)
+  
+  (* meta model_record function f1 *)
+  
+  (* meta model_record function f0 *)
+  
+  goal vc_elim_Some : true
+  
+  predicate percent_decoded_from_step (seq int) int
+  
+  axiom percent_decoded_from_step_spec :
+    forall bytes:seq int, index:int [percent_decoded_from_step bytes index].
+     0 <= index /\ index < length bytes ->
+     percent_decoded_from_step bytes index
+  
+  axiom percent_decoded_from_step_spec'0 :
+    forall bytes:seq int, index:int.
+     0 <= index /\ index < length bytes ->
+     percent_decoded_from bytes index =
+     (if get bytes index = 37 /\
+         (index + 3) <= length bytes /\
+         ge_log_Int (percent_hex_value_model (get bytes (index + 1))) 0 /\
+         ge_log_Int (percent_hex_value_model (get bytes (index + 2))) 0
+      then singleton
+           ((percent_hex_value_model (get bytes (index + 1)) * 16)
+            + percent_hex_value_model (get bytes (index + 2)))
+           ++ percent_decoded_from bytes (index + 3)
+      else singleton (get bytes index)
+           ++ percent_decoded_from bytes (index + 1))
+  
+  predicate byte_model_subsequence (seq t1) int int
+  
+  axiom byte_model_subsequence_spec :
+    forall bytes:seq t1, start:int, end':int
+     [byte_model_subsequence bytes start end'].
+     0 <= start /\ start <= end' /\ end' <= length bytes ->
+     byte_model_subsequence bytes start end'
+  
+  axiom byte_model_subsequence_spec'0 :
+    forall bytes:seq t1, start:int, end':int.
+     0 <= start /\ start <= end' /\ end' <= length bytes ->
+     byte_sequence_as_ints bytes[start..end'] =
+     (byte_sequence_as_ints bytes)[start..end']
+  
+  function concat_assoc_Int (seq int) (seq int) (seq int) : unit
+  
+  axiom concat_assoc_Int_spec :
+    forall self:seq int, other1:seq int, other2:seq int.
+     ((self ++ other1) ++ other2) = (self ++ (other1 ++ other2))
+  
+  goal vc_append_decoded_byte : true
+  
+  predicate resolve_refmut_Option_Vec_u8_Global (_1:t2
+    t_Option_Vec_u8_Global) = _1.final = _1.current
+  
+  (* meta rewrite_def predicate resolve_refmut_Option_Vec_u8_Global *)
+  
+  function index_slice_u8 (self:slice t1) (ix:t) : t1 =
+    get (view self) (t'int ix)
+  
+  (* meta rewrite_def function index_slice_u8 *)
+  
+  predicate int_prefix_push (seq int) int
+  
+  axiom int_prefix_push_spec :
+    forall bytes:seq int, index:int [int_prefix_push bytes index].
+     0 <= index /\ index < length bytes -> int_prefix_push bytes index
+  
+  axiom int_prefix_push_spec'0 :
+    forall bytes:seq int, index:int.
+     0 <= index /\ index < length bytes ->
+     bytes[0..(index + 1)] = (bytes[0..index] ++ singleton (get bytes index))
+  
+  predicate byte_int_prefix_push (bytes:seq t1) (index:int) =
+    int_prefix_push (byte_sequence_as_ints bytes) index /\
+    get (byte_sequence_as_ints bytes) index = t'int1 (get bytes index)
+  
+  axiom byte_int_prefix_push_spec :
+    forall bytes:seq t1, index:int [byte_int_prefix_push bytes index].
+     0 <= index /\ index < length bytes -> byte_int_prefix_push bytes index
+  
+  axiom byte_int_prefix_push_spec'0 :
+    forall bytes:seq t1, index:int.
+     0 <= index /\ index < length bytes ->
+     (byte_sequence_as_ints bytes)[0..(index + 1)] =
+     ((byte_sequence_as_ints bytes)[0..index]
+      ++ singleton (t'int1 (get bytes index)))
+  
+  type tup2_Option_Vec_u8_Global_Option_Vec_u8_Global =
+    | Tup2_Option_Vec_u8_Global_Option_Vec_u8_Global'mk (f0'0:
+        t_Option_Vec_u8_Global) (f1'0:t_Option_Vec_u8_Global)
+  
+  (* meta model_record function f1'0 *)
+  
+  (* meta model_record function f0'0 *)
+  
+  goal vc_append_literal_byte : true
+  
+  goal vc_elim_Some'0 : true
+  
+  type t_Cow_slice_u8 =
+    | Borrowed (slice t1)
+    | Owned t_Vec_u8_Global
+  
+  (* meta compute_max_steps 1000000 *)
+  
+  (* meta select_lsinst "all" *)
+  
+  goal vc_percent_decode_local :
+    forall input:slice t1.
+     forall output:t_Option_Vec_u8_Global, index:t, _18:bool, _20:t.
+      (((0 <= t'int (0:t) /\
+         t'int (0:t) <= length (view input) /\
+         percent_decoded_model (byte_sequence_as_ints (view input)) =
+         ((byte_sequence_as_ints (view input))[0..t'int (0:t)]
+          ++ percent_decoded_from (byte_sequence_as_ints (view input))
+             (t'int (0:t)))) &&
+        true) /\
+       (forall output1:t_Option_Vec_u8_Global, index1:t, _28:bool, _29:t,
+         _30:t, _33:tup2_Option_u8_Option_u8, _34:t_Option_u8, _35:t1, _36:t,
+         _38:t, _39:bool, _40:t_Option_u8, _41:t1, _42:t, _44:t, _45:bool,
+         high:t1, low:t1, _50:t1, _51:t1.
+         forall _181:bool, _201:t, decoded:t_Option_u8, _23:bool, _24:t1,
+          _25:t, _26:t, _27:bool, _281:bool, _291:t, _301:t, _331:
+          tup2_Option_u8_Option_u8, _341:t_Option_u8, _351:t1, _361:t, _381:
+          t, _391:bool, _401:t_Option_u8, _411:t1, _421:t, _441:t, _451:bool,
+          high1:t1, low1:t1, _501:t1, _511:t1.
+          (0 <= t'int index1 /\
+           t'int index1 <= length (view input) /\
+           percent_decoded_model (byte_sequence_as_ints (view input)) =
+           (match output1 with
+            | Some bytes'0 ->
+                byte_sequence_as_ints (view_Vec_u8_Global bytes'0)
+            | None -> (byte_sequence_as_ints (view input))[0..t'int index1]
+            end
+            ++ percent_decoded_from (byte_sequence_as_ints (view input))
+               (t'int index1)) ->
+           match output1 with
+           | Some bytes'0 ->
+               length (view_Vec_u8_Global bytes'0) < t'int index1
+           | None -> true
+           end ->
+           (forall result:t.
+             length (view input) = t'int result ->
+             lt index1 result ->
+             lt index1 (length1 input) &&
+             t'int index1 < length (input.elts) &&
+             (get (input.elts) (t'int index1) = (37:t1) ->
+              (forall result1:t.
+                length (view input) = t'int result1 ->
+                in_bounds (t'int result1 - t'int index1) /\
+                (forall result2:t.
+                  t'int result2 = (t'int result1 - t'int index1) ->
+                  ge result2 (3:t) ->
+                  in_bounds (t'int index1 + t'int (1:t)) /\
+                  (forall result3:t.
+                    t'int result3 = (t'int index1 + t'int (1:t)) ->
+                    lt result3 (length1 input) &&
+                    t'int result3 < length (input.elts) &&
+                    (forall result4:t_Option_u8.
+                      match result4 with
+                      | Some'0 value ->
+                          percent_hex_value_model
+                          (t'int1 (get (input.elts) (t'int result3))) =
+                          t'int1 value /\
+                          0 <= t'int1 value /\ t'int1 value <= 15
+                      | None'0 ->
+                          percent_hex_value_model
+                          (t'int1 (get (input.elts) (t'int result3))) = (- 1)
+                      end ->
+                      in_bounds (t'int index1 + t'int (2:t)) /\
+                      (forall result5:t.
+                        t'int result5 = (t'int index1 + t'int (2:t)) ->
+                        lt result5 (length1 input) &&
+                        t'int result5 < length (input.elts) &&
+                        (forall result6:t_Option_u8.
+                          match result6 with
+                          | Some'0 value ->
+                              percent_hex_value_model
+                              (t'int1 (get (input.elts) (t'int result5))) =
+                              t'int1 value /\
+                              0 <= t'int1 value /\ t'int1 value <= 15
+                          | None'0 ->
+                              percent_hex_value_model
+                              (t'int1 (get (input.elts) (t'int result5))) =
+                              (- 1)
+                          end ->
+                          (forall x0:t1.
+                            result4 = Some'0 x0 ->
+                            (forall x01:t1.
+                              result6 = Some'0 x01 ->
+                              (forall f0'01:t1.
+                                Some'0 f0'01 = result4 ->
+                                (forall f0'02:t1.
+                                  Some'0 f0'02 = result6 ->
+                                  in_bounds1 (t'int1 f0'01 * t'int1 (16:t1)) /\
+                                  (forall result7:t1.
+                                    t'int1 result7 =
+                                    (t'int1 f0'01 * t'int1 (16:t1)) ->
+                                    in_bounds1
+                                    (t'int1 result7 + t'int1 f0'02))) /\
+                                match result6 with
+                                | Some'0 _ -> true
+                                | _ -> false
+                                end) /\
+                              match result4 with
+                              | Some'0 _ -> true
+                              | _ -> false
+                              end))))))))))) /\
+          ((0 <= t'int index1 /\
+            t'int index1 <= length (view input) /\
+            percent_decoded_model (byte_sequence_as_ints (view input)) =
+            (match output1 with
+             | Some bytes'0 ->
+                 byte_sequence_as_ints (view_Vec_u8_Global bytes'0)
+             | None -> (byte_sequence_as_ints (view input))[0..t'int index1]
+             end
+             ++ percent_decoded_from (byte_sequence_as_ints (view input))
+                (t'int index1))) /\
+           match output1 with
+           | Some bytes'0 ->
+               length (view_Vec_u8_Global bytes'0) < t'int index1
+           | None -> true
+           end /\
+           (exists result:t.
+             length (view input) = t'int result /\
+             lt index1 result /\
+             lt index1 (length1 input) /\
+             t'int index1 < length (input.elts) /\
+             (not get (input.elts) (t'int index1) = (37:t1) /\
+              (if lt index1 result then _181 = True else _181 = False) /\
+              _201 = result /\
+              decoded = None'0 /\
+              (if get (input.elts) (t'int index1) = (37:t1) then _23 = True
+               else _23 = False) /\
+              _24 = get (input.elts) (t'int index1) /\
+              _25 = index1 /\
+              _26 = length1 input /\
+              (if lt index1 (length1 input) then _27 = True else _27 = False) /\
+              _281 = _28 /\
+              _291 = _29 /\
+              _301 = _30 /\
+              _331 = _33 /\
+              _341 = _34 /\
+              _351 = _35 /\
+              _361 = _36 /\
+              _381 = _38 /\
+              _391 = _39 /\
+              _401 = _40 /\
+              _411 = _41 /\
+              _421 = _42 /\
+              _441 = _44 /\
+              _451 = _45 /\
+              high1 = high /\ low1 = low /\ _501 = _50 /\ _511 = _51 \/
+              get (input.elts) (t'int index1) = (37:t1) /\
+              (exists result1:t.
+                length (view input) = t'int result1 /\
+                (exists result2:t.
+                  t'int result2 = (t'int result1 - t'int index1) /\
+                  (not ge result2 (3:t) /\
+                   (if lt index1 result then _181 = True else _181 = False) /\
+                   _201 = result /\
+                   decoded = None'0 /\
+                   (if get (input.elts) (t'int index1) = (37:t1)
+                    then _23 = True else _23 = False) /\
+                   _24 = get (input.elts) (t'int index1) /\
+                   _25 = index1 /\
+                   _26 = length1 input /\
+                   (if lt index1 (length1 input) then _27 = True
+                    else _27 = False) /\
+                   (if ge result2 (3:t) then _281 = True else _281 = False) /\
+                   _291 = result2 /\
+                   _301 = result1 /\
+                   _331 = _33 /\
+                   _341 = _34 /\
+                   _351 = _35 /\
+                   _361 = _36 /\
+                   _381 = _38 /\
+                   _391 = _39 /\
+                   _401 = _40 /\
+                   _411 = _41 /\
+                   _421 = _42 /\
+                   _441 = _44 /\
+                   _451 = _45 /\
+                   high1 = high /\ low1 = low /\ _501 = _50 /\ _511 = _51 \/
+                   ge result2 (3:t) /\
+                   (exists result3:t.
+                     t'int result3 = (t'int index1 + t'int (1:t)) /\
+                     lt result3 (length1 input) /\
+                     t'int result3 < length (input.elts) /\
+                     (exists result4:t_Option_u8.
+                       match result4 with
+                       | Some'0 value ->
+                           percent_hex_value_model
+                           (t'int1 (get (input.elts) (t'int result3))) =
+                           t'int1 value /\
+                           0 <= t'int1 value /\ t'int1 value <= 15
+                       | None'0 ->
+                           percent_hex_value_model
+                           (t'int1 (get (input.elts) (t'int result3))) =
+                           (- 1)
+                       end /\
+                       (exists result5:t.
+                         t'int result5 = (t'int index1 + t'int (2:t)) /\
+                         lt result5 (length1 input) /\
+                         t'int result5 < length (input.elts) /\
+                         (exists result6:t_Option_u8.
+                           match result6 with
+                           | Some'0 value ->
+                               percent_hex_value_model
+                               (t'int1 (get (input.elts) (t'int result5))) =
+                               t'int1 value /\
+                               0 <= t'int1 value /\ t'int1 value <= 15
+                           | None'0 ->
+                               percent_hex_value_model
+                               (t'int1 (get (input.elts) (t'int result5))) =
+                               (- 1)
+                           end /\
+                           (result4 = None'0 /\
+                            (if lt index1 result then _181 = True
+                             else _181 = False) /\
+                            _201 = result /\
+                            decoded = None'0 /\
+                            (if get (input.elts) (t'int index1) = (37:t1)
+                             then _23 = True else _23 = False) /\
+                            _24 = get (input.elts) (t'int index1) /\
+                            _25 = index1 /\
+                            _26 = length1 input /\
+                            (if lt index1 (length1 input) then _27 = True
+                             else _27 = False) /\
+                            (if ge result2 (3:t) then _281 = True
+                             else _281 = False) /\
+                            _291 = result2 /\
+                            _301 = result1 /\
+                            _331 =
+                            Tup2_Option_u8_Option_u8'mk result4 result6 /\
+                            _341 = result4 /\
+                            _351 = get (input.elts) (t'int result3) /\
+                            _361 = result3 /\
+                            _381 = length1 input /\
+                            (if lt result3 (length1 input) then _391 = True
+                             else _391 = False) /\
+                            _401 = result6 /\
+                            _411 = get (input.elts) (t'int result5) /\
+                            _421 = result5 /\
+                            _441 = length1 input /\
+                            (if lt result5 (length1 input) then _451 = True
+                             else _451 = False) /\
+                            high1 = high /\
+                            low1 = low /\ _501 = _50 /\ _511 = _51 \/
+                            (exists x0:t1.
+                              result4 = Some'0 x0 /\
+                              (result6 = None'0 /\
+                               (if lt index1 result then _181 = True
+                                else _181 = False) /\
+                               _201 = result /\
+                               decoded = None'0 /\
+                               (if get (input.elts) (t'int index1) = (37:t1)
+                                then _23 = True else _23 = False) /\
+                               _24 = get (input.elts) (t'int index1) /\
+                               _25 = index1 /\
+                               _26 = length1 input /\
+                               (if lt index1 (length1 input) then _27 = True
+                                else _27 = False) /\
+                               (if ge result2 (3:t) then _281 = True
+                                else _281 = False) /\
+                               _291 = result2 /\
+                               _301 = result1 /\
+                               _331 =
+                               Tup2_Option_u8_Option_u8'mk result4 result6 /\
+                               _341 = result4 /\
+                               _351 = get (input.elts) (t'int result3) /\
+                               _361 = result3 /\
+                               _381 = length1 input /\
+                               (if lt result3 (length1 input)
+                                then _391 = True else _391 = False) /\
+                               _401 = result6 /\
+                               _411 = get (input.elts) (t'int result5) /\
+                               _421 = result5 /\
+                               _441 = length1 input /\
+                               (if lt result5 (length1 input)
+                                then _451 = True else _451 = False) /\
+                               high1 = high /\
+                               low1 = low /\ _501 = _50 /\ _511 = _51 \/
+                               (exists x01:t1.
+                                 result6 = Some'0 x01 /\
+                                 Some'0 high1 = result4 /\
+                                 Some'0 low1 = result6 /\
+                                 t'int1 _511 =
+                                 (t'int1 high1 * t'int1 (16:t1)) /\
+                                 t'int1 _501 = (t'int1 _511 + t'int1 low1) /\
+                                 (if lt index1 result then _181 = True
+                                  else _181 = False) /\
+                                 _201 = result /\
+                                 decoded = Some'0 _501 /\
+                                 (if get (input.elts) (t'int index1) =
+                                     (37:t1)
+                                  then _23 = True else _23 = False) /\
+                                 _24 = get (input.elts) (t'int index1) /\
+                                 _25 = index1 /\
+                                 _26 = length1 input /\
+                                 (if lt index1 (length1 input)
+                                  then _27 = True else _27 = False) /\
+                                 (if ge result2 (3:t) then _281 = True
+                                  else _281 = False) /\
+                                 _291 = result2 /\
+                                 _301 = result1 /\
+                                 _331 =
+                                 Tup2_Option_u8_Option_u8'mk result4 result6 /\
+                                 _341 = result4 /\
+                                 _351 = get (input.elts) (t'int result3) /\
+                                 _361 = result3 /\
+                                 _381 = length1 input /\
+                                 (if lt result3 (length1 input)
+                                  then _391 = True else _391 = False) /\
+                                 _401 = result6 /\
+                                 _411 = get (input.elts) (t'int result5) /\
+                                 _421 = result5 /\
+                                 _441 = length1 input /\
+                                 (if lt result5 (length1 input)
+                                  then _451 = True else _451 = False)))))))))))))) ->
+           (decoded = None'0 ->
+            percent_decoded_from_step (byte_sequence_as_ints (view input))
+            (t'int index1) &&
+            percent_decoded_from (byte_sequence_as_ints (view input))
+            (t'int index1) =
+            (singleton (t'int1 (index_slice_u8 input index1))
+             ++ percent_decoded_from (byte_sequence_as_ints (view input))
+                (t'int index1 + 1)) &&
+            byte_int_prefix_push (view input) (t'int index1) &&
+            (let one = singleton (t'int1 (index_slice_u8 input index1)) in
+             let rest =
+               percent_decoded_from (byte_sequence_as_ints (view input))
+               (t'int index1 + 1)
+             in
+             concat_assoc_Int
+             match output1 with
+             | Some bytes'0 ->
+                 byte_sequence_as_ints (view_Vec_u8_Global bytes'0)
+             | None -> (byte_sequence_as_ints (view input))[0..t'int index1]
+             end one rest = () /\
+             ((match output1 with
+               | Some bytes'0 ->
+                   byte_sequence_as_ints (view_Vec_u8_Global bytes'0)
+               | None ->
+                   (byte_sequence_as_ints (view input))[0..t'int index1]
+               end ++ one)
+              ++ rest) =
+             (match output1 with
+              | Some bytes'0 ->
+                  byte_sequence_as_ints (view_Vec_u8_Global bytes'0)
+              | None -> (byte_sequence_as_ints (view input))[0..t'int index1]
+              end ++ (one ++ rest))) &&
+            (forall fin:t_Option_Vec_u8_Global, id:int.
+              forall fin1:t_Option_Vec_u8_Global.
+               (t'int index1 < length (view input) /\
+                match output1 with
+                | Some before ->
+                    length (view_Vec_u8_Global before) < t'int index1
+                | None -> true
+                end) /\
+               (match fin1 with
+                | None -> match output1 with
+                    | None -> true
+                    | _ -> false
+                    end
+                | Some x ->
+                    match output1 with
+                    | Some x1 ->
+                        view_Vec_u8_Global x =
+                        snoc (view_Vec_u8_Global x1)
+                        (index_slice_u8 input index1) /\
+                        byte_sequence_as_ints (view_Vec_u8_Global x) =
+                        (byte_sequence_as_ints (view_Vec_u8_Global x1)
+                         ++ singleton (t'int1 (index_slice_u8 input index1)))
+                    | _ -> false
+                    end
+                end /\
+                match fin1 with
+                | None ->
+                    (byte_sequence_as_ints (view input))[0..(t'int index1 + 1)] =
+                    ((byte_sequence_as_ints (view input))[0..t'int index1]
+                     ++ singleton (t'int1 (index_slice_u8 input index1)))
+                | Some after ->
+                    length (view_Vec_u8_Global after) < (t'int index1 + 1)
+                end /\
+                match fin1 with
+                | None -> match output1 with
+                    | None -> true
+                    | _ -> false
+                    end
+                | Some x ->
+                    match output1 with
+                    | Some x1 ->
+                        length (view_Vec_u8_Global x) =
+                        (length (view_Vec_u8_Global x1) + 1)
+                    | _ -> false
+                    end
+                end ->
+                resolve_refmut_Option_Vec_u8_Global (t'mk fin1 fin id) ->
+                match fin with
+                | Some bytes'0 ->
+                    byte_sequence_as_ints (view_Vec_u8_Global bytes'0) =
+                    (match output1 with
+                     | Some bytes'01 ->
+                         byte_sequence_as_ints (view_Vec_u8_Global bytes'01)
+                     | None ->
+                         (byte_sequence_as_ints (view input))[0..t'int index1]
+                     end ++ singleton (t'int1 (index_slice_u8 input index1)))
+                | None ->
+                    (byte_sequence_as_ints (view input))[0..(t'int index1 + 1)] =
+                    (match output1 with
+                     | Some bytes'0 ->
+                         byte_sequence_as_ints (view_Vec_u8_Global bytes'0)
+                     | None ->
+                         (byte_sequence_as_ints (view input))[0..t'int index1]
+                     end ++ singleton (t'int1 (index_slice_u8 input index1)))
+                end &&
+                in_bounds (t'int index1 + t'int (1:t)) /\
+                (forall result:t.
+                  t'int result = (t'int index1 + t'int (1:t)) ->
+                  (0 <= t'int result /\
+                   t'int result <= length (view input) /\
+                   percent_decoded_model (byte_sequence_as_ints (view input)) =
+                   (match fin with
+                    | Some bytes'0 ->
+                        byte_sequence_as_ints (view_Vec_u8_Global bytes'0)
+                    | None ->
+                        (byte_sequence_as_ints (view input))[0..t'int result]
+                    end
+                    ++ percent_decoded_from
+                       (byte_sequence_as_ints (view input)) (t'int result))) &&
+                  match fin with
+                  | Some bytes'0 ->
+                      length (view_Vec_u8_Global bytes'0) < t'int result
+                  | None -> true
+                  end)))) /\
+           (forall x0:t1.
+             decoded = Some'0 x0 ->
+             (forall f0'01:t1.
+               Some'0 f0'01 = decoded ->
+               percent_decoded_from_step (byte_sequence_as_ints (view input))
+               (t'int index1) &&
+               percent_decoded_from (byte_sequence_as_ints (view input))
+               (t'int index1) =
+               (singleton (t'int1 f0'01)
+                ++ percent_decoded_from (byte_sequence_as_ints (view input))
+                   (t'int index1 + 3)) &&
+               byte_model_subsequence (view input) 0 (t'int index1) &&
+               (let prefix =
+                  match output1 with
+                | Some bytes'0 ->
+                    byte_sequence_as_ints (view_Vec_u8_Global bytes'0)
+                | None ->
+                    (byte_sequence_as_ints (view input))[0..t'int index1]
+                end
+                in
+                let one = singleton (t'int1 f0'01) in
+                let rest =
+                  percent_decoded_from (byte_sequence_as_ints (view input))
+                  (t'int index1 + 3)
+                in
+                concat_assoc_Int prefix one rest = () /\
+                ((prefix ++ one) ++ rest) = (prefix ++ (one ++ rest))) &&
+               (forall fin:t_Option_Vec_u8_Global, id:int.
+                 forall fin1:t_Option_Vec_u8_Global.
+                  ((t'int index1 + 3) <= length (view input) /\
+                   match output1 with
+                   | Some before ->
+                       length (view_Vec_u8_Global before) < t'int index1
+                   | None -> true
+                   end) /\
+                  (match fin1 with
+                   | Some after ->
+                       view_Vec_u8_Global after =
+                       snoc
+                       match output1 with
+                       | Some before -> view_Vec_u8_Global before
+                       | None -> (view input)[0..t'int index1]
+                       end f0'01
+                   | None -> false
+                   end /\
+                   match fin1 with
+                   | Some after ->
+                       byte_sequence_as_ints (view_Vec_u8_Global after) =
+                       (match output1 with
+                        | Some before ->
+                            byte_sequence_as_ints (view_Vec_u8_Global before)
+                        | None ->
+                            (byte_sequence_as_ints (view input))[0..t'int
+                                                                    index1]
+                        end ++ singleton (t'int1 f0'01))
+                   | None -> false
+                   end /\
+                   match fin1 with
+                   | Some after ->
+                       length (view_Vec_u8_Global after) =
+                       match output1 with
+                       | Some before ->
+                           length (view_Vec_u8_Global before) + 1
+                       | None -> t'int index1 + 1
+                       end
+                   | None -> false
+                   end /\
+                   match fin1 with
+                   | Some after ->
+                       length (view_Vec_u8_Global after) < (t'int index1 + 3)
+                   | None -> false
+                   end ->
+                   resolve_refmut_Option_Vec_u8_Global (t'mk fin1 fin id) ->
+                   match fin with
+                   | Some bytes'0 ->
+                       byte_sequence_as_ints (view_Vec_u8_Global bytes'0) =
+                       (match output1 with
+                        | Some bytes'01 ->
+                            byte_sequence_as_ints
+                            (view_Vec_u8_Global bytes'01)
+                        | None ->
+                            (byte_sequence_as_ints (view input))[0..t'int
+                                                                    index1]
+                        end ++ singleton (t'int1 f0'01))
+                   | None -> false
+                   end &&
+                   in_bounds (t'int index1 + t'int (3:t)) /\
+                   (forall result:t.
+                     t'int result = (t'int index1 + t'int (3:t)) ->
+                     (0 <= t'int result /\
+                      t'int result <= length (view input) /\
+                      percent_decoded_model
+                      (byte_sequence_as_ints (view input)) =
+                      (match fin with
+                       | Some bytes'0 ->
+                           byte_sequence_as_ints (view_Vec_u8_Global bytes'0)
+                       | None ->
+                           (byte_sequence_as_ints (view input))[0..t'int
+                                                                   result]
+                       end
+                       ++ percent_decoded_from
+                          (byte_sequence_as_ints (view input)) (t'int result))) &&
+                     match fin with
+                     | Some bytes'0 ->
+                         length (view_Vec_u8_Global bytes'0) < t'int result
+                     | None -> true
+                     end)))) /\
+             match decoded with
+             | Some'0 _ -> true
+             | _ -> false
+             end)))) /\
+      ((0 <= t'int index /\
+        t'int index <= length (view input) /\
+        percent_decoded_model (byte_sequence_as_ints (view input)) =
+        (match output with
+         | Some bytes'0 -> byte_sequence_as_ints (view_Vec_u8_Global bytes'0)
+         | None -> (byte_sequence_as_ints (view input))[0..t'int index]
+         end
+         ++ percent_decoded_from (byte_sequence_as_ints (view input))
+            (t'int index))) /\
+       match output with
+       | Some bytes'0 -> length (view_Vec_u8_Global bytes'0) < t'int index
+       | None -> true
+       end /\
+       length (view input) = t'int _20 /\
+       not lt index _20 /\ (if lt index _20 then _18 = True else _18 = False) ->
+       (output = None ->
+        percent_decoded_model (byte_sequence_as_ints (view input)) =
+        byte_sequence_as_ints (view input) /\
+        true /\
+        length (percent_decoded_model (byte_sequence_as_ints (view input))) =
+        length (view input)) /\
+       (forall x0:t_Vec_u8_Global.
+         output = Some x0 ->
+         (forall f0'1:t_Vec_u8_Global.
+           Some f0'1 = output ->
+           percent_decoded_model (byte_sequence_as_ints (view input)) =
+           byte_sequence_as_ints (view_Vec_u8_Global f0'1) /\
+           length
+           (percent_decoded_model (byte_sequence_as_ints (view input)))
+           < length (view input)) /\
+         match output with
+         | Some _ -> true
+         | _ -> false
+         end))
+  
+end
+
