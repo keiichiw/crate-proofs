@@ -27,12 +27,15 @@ TARGETS = {
     "date/impl_FromStr_for_HttpDate/from_str": "crate/src/date.rs",
     "date/impl_Display_for_HttpDate/fmt": "crate/src/date.rs",
 }
-APIS = {
-    "httpdate::parse_http_date",
-    "httpdate::fmt_http_date",
-    "<httpdate::HttpDate as std::str::FromStr>::from_str",
-    "<httpdate::HttpDate as std::fmt::Display>::fmt",
-}
+# Each set names one API, including the standard trait's rustdoc catalogue alias.
+API_PATHS = (
+    frozenset({"httpdate::parse_http_date"}),
+    frozenset({"httpdate::fmt_http_date"}),
+    frozenset({"<httpdate::HttpDate as std::str::FromStr>::from_str",
+               "<httpdate::HttpDate as FromStr>::from_str"}),
+    frozenset({"<httpdate::HttpDate as std::fmt::Display>::fmt",
+               "<httpdate::HttpDate as Display>::fmt"}),
+)
 
 
 def require(condition, message):
@@ -135,8 +138,8 @@ def check_sarif(path):
     require(run["invocations"][0]["executionSuccessful"] is True, "Recording failed")
     contracts = proof["contracts"]
     require(len(contracts) == 4, "Exactly four verified API contracts are required")
-    actual = {api for contract in contracts for api in contract["api_paths"]}
-    require(actual == APIS, f"Unexpected/missing API identities: {sorted(actual)}")
+    actual = {frozenset(contract["api_paths"]) for contract in contracts}
+    require(actual == set(API_PATHS), f"Unexpected/missing API identities: {actual}")
     harnesses = {contract["harness"] for contract in contracts}
     require(len(harnesses) == 4, "Duplicate contract harness")
     results = run["results"]

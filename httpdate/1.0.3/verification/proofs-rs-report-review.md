@@ -60,7 +60,10 @@ The current local preflight tooling uses cargo-proofs 0.3.5 at commit
 The unmodified scanner produces `date::std::fmt::Display` and
 `date::std::str::FromStr` for these methods. The patch reuses its existing external
 path renderer, removing the spurious private-module prefix while preserving
-external qualification and local trait identities. It adds two regression tests.
+external qualification and local trait identities. It also records the standard
+`Display` and `FromStr` short names used by the public rustdoc catalogue, alongside
+their qualified names. Custom and local traits retain their qualification. The
+patch adds four regression tests.
 It does not alter Creusot, the prover, contracts, safety checks, proof sessions,
 Git provenance checks, or SARIF success criteria. Service catalogue matching is
 still authoritative; a local name check is not server acceptance.
