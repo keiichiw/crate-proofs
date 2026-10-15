@@ -26,7 +26,7 @@ The independent native-comparison workspace runs both crates' public APIs and re
 the [comparison results and source/tool fingerprints](correspondence/evidence/latest/manifest.json).
 This is not a formal equivalence proof between the distribution and the fork.
 
-To repeat the check, run `bash httpdate/1.0.3/scripts/check-correspondence.sh`. It runs independently of formal evidence, using fixed local sources and the lockfile; missing Cargo dependencies may be downloaded. Formal evidence binding is a separate `capture-correspondence.py --bind RUN_DIRECTORY` step; explicitly use `--fetch` to fetch the archive again or `--archive` to check an existing archive. No submission draft is currently maintained; proofs.rs recording remains a separate task.
+To repeat the check, run `bash httpdate/1.0.3/scripts/check-correspondence.sh`. It runs independently of formal evidence, using fixed local sources and the lockfile; missing Cargo dependencies may be downloaded. Formal evidence binding is a separate `capture-correspondence.py --bind RUN_DIRECTORY` step; explicitly use `--fetch` to fetch the archive again or `--archive` to check an existing archive. The [submission guide](proofs-rs-report-review.md) describes the current parse/format report and its separate proofs.rs recording workflow.
 
 ## Changes in the verification fork
 
@@ -40,7 +40,7 @@ The upstream `src/date.rs` was saved unchanged as [trial/reference/date.rs](tria
 
 The results apply only to functions and contracts selected in this fork. They do not prove the upstream commit itself or the crates.io distribution. See the [specification](specification.md) for the selected public wrapper / trait proof surface, and coverage and the latest manifest for its actual status. One forward `From<SystemTime>` refinement is open because native code has panic counterexamples before the Epoch and from year 10000 onward. A bounded body proof does not close this trait refinement. Additional Debug options, private `RawDate` Debug, and dynamic Error payload observers remain unverified.
 
-The proofs use conditional standard-library assumptions listed in the ledger. The scope is 64-bit Linux and the supported date range stated there. Formatter output is guaranteed only under `Ok(()) && append_sink`; arbitrary sinks and partial writes on `Err` are unconstrained. These are not proofs of the Rust standard-library implementation. Application-level date calculations, parser, formatter, and trait bodies are not trusted.
+The proofs use conditional standard-library assumptions listed in the ledger. The model review covers 64-bit Linux or macOS arm64 and the supported date range stated there. Formatter output is guaranteed only under `Ok(()) && append_sink`; arbitrary sinks and partial writes on `Err` are unconstrained. These are not proofs of the Rust standard-library implementation. Application-level date calculations, parser, formatter, and trait bodies are not trusted.
 
 The fork's Cargo.toml adds `creusot-std = "=0.13.0"` and changes the minimum Rust version from 1.56 to 1.91. Dependencies are pinned in the workspace Cargo.lock. No upstream MSRV compatibility is claimed. Formal proof, native tests, and finite upstream differential tests are separate evidence; the latter do not show formal equivalence over all inputs.
 

@@ -1,0 +1,52 @@
+--- a/cli/src/scan.rs
++++ b/cli/src/scan.rs
+@@ -650,7 +650,9 @@
+                 let traits = if local_trait {
+                     self.creusot_public_paths(&tr)?
+                 } else {
+-                    external_trait_paths(&tr)
++                    // Use the same resolved external path as the harness. resolve()
++                    // can retain a private module prefix for imported extern paths.
++                    external_trait_paths(&self.render_path(&bare_trait, module, generics)?)
+                 };
+                 Ok(types
+                     .iter()
+@@ -1463,6 +1465,38 @@
+     }
+ 
+     #[test]
++    fn nested_external_trait_paths_do_not_include_private_module() {
++        let c = creusot_contracts(
++            r#"
++mod date {
++    use std::fmt::Display;
++    use std::str::FromStr;
++    pub struct HttpDate;
++    impl Display for HttpDate { #[ensures(true)] fn fmt(&self) {} }
++    impl FromStr for HttpDate { #[ensures(true)] fn from_str() {} }
++}
++pub use date::HttpDate;
++"#,
++            CreusotTarget::Annotated,
++        );
++        assert_eq!(c.len(), 2);
++        assert_eq!(c[0].api_paths, ["<demo::HttpDate as std::fmt::Display>::fmt"]);
++        assert_eq!(c[1].api_paths, ["<demo::HttpDate as std::str::FromStr>::from_str"]);
++        assert_eq!(c[0].harness, "<demo::date::HttpDate as std::fmt::Display>::fmt");
++    }
++
++    #[test]
++    fn nested_external_traits_keep_qualification_and_local_trait_identity() {
++        let c = creusot_contracts(
++            "mod hidden { use custom::Default; pub struct S; pub trait T {} impl Default for S { #[ensures(true)] fn default() {} } impl T for S { #[ensures(true)] fn m() {} } } pub use hidden::{S, T};",
++            CreusotTarget::Annotated,
++        );
++        assert_eq!(c.len(), 2);
++        assert_eq!(c[0].api_paths, ["<demo::S as custom::Default>::default"]);
++        assert_eq!(c[1].api_paths, ["<demo::S as demo::T>::m"]);
++    }
++
++    #[test]
+     fn standard_trait_catalog_aliases_are_explicit_and_limited() {
+         let c = creusot_contracts("use core::default::Default; pub struct S; impl Default for S { #[ensures(true)] fn default() -> Self { S } }", CreusotTarget::Annotated);
+         assert_eq!(
