@@ -1,0 +1,971 @@
+[report]
+title = "ipnet 2.12.2 core, CIDR, containment, IPv4/IPv6 iteration, and value traits"
+explanation = "One hundred sixty public contracts (acceptance gated by the frozen full verifier) cover selected IPv4 and IPv6 core methods, independent CIDR arithmetic, containment, concrete and cross-family masks, concrete and tagged structural value traits, singleton error value traits, full runtime assertion constructors, full raw concrete and tagged range iteration, and full raw concrete and tagged subnet next classification. Actual-call subnet traces prove finite ordered disjoint partition, fixed-prefix enumeration and globally minimum count against arbitrary finite canonical exact covers for both families. IPv6 count and tagged count preserve exact checked usize overflow on the pinned 64-bit target."
+trusted_assumptions = "Rust-to-LLBC-to-Lean translation and selected Aeneas standard-library semantics. Reviewed narrow boundaries include concrete IPv4/IPv6 Ord::cmp correspondence; U32/U128 trailing_zeros intrinsic models; exact eight-segment IPv6Addr::new byte-layout model; drop-free Result::ok applications; array/slice/scalar equality and baseline PartialOrd::le default models. Pure checked scalar MAX+1 and Unit clone lemmas add no semantic model. Lean binder hygiene alpha-renames namespace-shadowing locals without changing application bodies. See verification/model-boundaries.md. The transitive Lean audit accepts only propext, Classical.choice, and Quot.sound."
+limitations = "This is selected API coverage, not whole-crate verification. IPv4/IPv6 aggregation, address parsing and formatting, Hash, optional serde/schemars integrations, and unselected inherited defaults remain outside the public mappings. Live raw subnet iterators with q above family width follow a checked modeled panic path. IPv6 count of a range longer than usizeMAX fails with checked integerOverflow; the usize theorem assumes a 64-bit platform. Rust correspondence for reviewed standard-library models is external, not a proved Rust body. Native tests are separate finite observations."
+environment = "macOS arm64; exact tool revisions in verification/toolchain.json"
+
+[tool]
+name = "aeneas"
+version = "8e62dc3dc765602833c86b68dceb18a475a50a8f"
+lean_dir = "proofs"
+
+[[tool.proofs]]
+api = "Ipv4Net::new"
+module = "Proofs.Core"
+theorem = "ipnet.ipnet.ipv4_new_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "Ipv4Net::new_assert"
+module = "Proofs.NewAssertInvalid"
+theorem = "NewAssertInvalid.ipv4_full_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "Ipv4Net::addr"
+module = "Proofs.Core"
+theorem = "ipnet.ipnet.ipv4_addr_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "Ipv4Net::prefix_len"
+module = "Proofs.Core"
+theorem = "ipnet.ipnet.ipv4_prefix_len_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "Ipv4Net::max_prefix_len"
+module = "Proofs.Core"
+theorem = "ipnet.ipnet.ipv4_max_prefix_len_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "Ipv6Net::new"
+module = "Proofs.Core"
+theorem = "ipnet.ipnet.ipv6_new_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "Ipv6Net::new_assert"
+module = "Proofs.NewAssertInvalid"
+theorem = "NewAssertInvalid.ipv6_full_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "Ipv6Net::addr"
+module = "Proofs.Core"
+theorem = "ipnet.ipnet.ipv6_addr_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "Ipv6Net::prefix_len"
+module = "Proofs.Core"
+theorem = "ipnet.ipnet.ipv6_prefix_len_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "Ipv6Net::max_prefix_len"
+module = "Proofs.Core"
+theorem = "ipnet.ipnet.ipv6_max_prefix_len_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "IpNet::new"
+module = "Proofs.Core"
+theorem = "ipnet.ipnet.ip_new_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "IpNet::new_assert"
+module = "Proofs.NewAssertInvalid"
+theorem = "NewAssertInvalid.tagged_full_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "IpNet::addr"
+module = "Proofs.Core"
+theorem = "ipnet.ipnet.ip_addr_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "IpNet::prefix_len"
+module = "Proofs.Core"
+theorem = "ipnet.ipnet.ip_prefix_len_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "IpNet::max_prefix_len"
+module = "Proofs.Core"
+theorem = "ipnet.ipnet.ip_max_prefix_len_spec"
+precondition = "true"
+[[tool.proofs]]
+api = "From<Ipv4Net> for IpNet"
+module = "Proofs.Core"
+theorem = "ipnet.ipnet.from_ipv4_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "From<Ipv6Net> for IpNet"
+module = "Proofs.Core"
+theorem = "ipnet.ipnet.from_ipv6_spec"
+precondition = "true"
+
+
+[[tool.proofs]]
+api = "ipext::Ipv4AddrRange::new"
+module = "Proofs.Collections"
+theorem = "ipnet.ipv4_range_new_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "ipext::Ipv6AddrRange::new"
+module = "Proofs.Collections"
+theorem = "ipnet.ipv6_range_new_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "Ipv4Subnets::new"
+module = "Proofs.Collections"
+theorem = "ipnet.ipnet.ipv4_subnets_new_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "Ipv6Subnets::new"
+module = "Proofs.Collections"
+theorem = "ipnet.ipnet.ipv6_subnets_new_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "Ipv4Net::netmask"
+module = "Proofs.Arithmetic"
+theorem = "ipnet.ipv4_netmask_nat_spec"
+precondition = "n.prefix_len.val ≤ 32"
+
+[[tool.proofs]]
+api = "Ipv4Net::hostmask"
+module = "Proofs.Arithmetic"
+theorem = "ipnet.ipv4_hostmask_nat_spec"
+precondition = "n.prefix_len.val ≤ 32"
+
+[[tool.proofs]]
+api = "Ipv4Net::network"
+module = "Proofs.Arithmetic"
+theorem = "ipnet.ipv4_network_nat_spec"
+precondition = "n.prefix_len.val ≤ 32"
+
+[[tool.proofs]]
+api = "Ipv4Net::broadcast"
+module = "Proofs.Arithmetic"
+theorem = "ipnet.ipv4_broadcast_nat_spec"
+precondition = "n.prefix_len.val ≤ 32"
+
+[[tool.proofs]]
+api = "Ipv4Net::trunc"
+module = "Proofs.Arithmetic"
+theorem = "ipnet.ipv4_trunc_nat_spec"
+precondition = "n.prefix_len.val ≤ 32"
+
+[[tool.proofs]]
+api = "Ipv6Net::netmask"
+module = "Proofs.Arithmetic"
+theorem = "ipnet.ipv6_netmask_nat_spec"
+precondition = "n.prefix_len.val ≤ 128"
+
+[[tool.proofs]]
+api = "Ipv6Net::hostmask"
+module = "Proofs.Arithmetic"
+theorem = "ipnet.ipv6_hostmask_nat_spec"
+precondition = "n.prefix_len.val ≤ 128"
+
+[[tool.proofs]]
+api = "Ipv6Net::network"
+module = "Proofs.Arithmetic"
+theorem = "ipnet.ipv6_network_nat_spec"
+precondition = "n.prefix_len.val ≤ 128"
+
+[[tool.proofs]]
+api = "Ipv6Net::broadcast"
+module = "Proofs.Arithmetic"
+theorem = "ipnet.ipv6_broadcast_nat_spec"
+precondition = "n.prefix_len.val ≤ 128"
+
+[[tool.proofs]]
+api = "Ipv6Net::trunc"
+module = "Proofs.Arithmetic"
+theorem = "ipnet.ipv6_trunc_nat_spec"
+precondition = "n.prefix_len.val ≤ 128"
+
+[[tool.proofs]]
+api = "IpNet::netmask"
+module = "Proofs.Arithmetic"
+theorem = "ipnet.ip_netmask_nat_spec"
+precondition = "match n with | .V4 v => v.prefix_len.val ≤ 32 | .V6 v => v.prefix_len.val ≤ 128"
+
+[[tool.proofs]]
+api = "IpNet::hostmask"
+module = "Proofs.Arithmetic"
+theorem = "ipnet.ip_hostmask_nat_spec"
+precondition = "match n with | .V4 v => v.prefix_len.val ≤ 32 | .V6 v => v.prefix_len.val ≤ 128"
+
+[[tool.proofs]]
+api = "IpNet::network"
+module = "Proofs.Arithmetic"
+theorem = "ipnet.ip_network_nat_spec"
+precondition = "match n with | .V4 v => v.prefix_len.val ≤ 32 | .V6 v => v.prefix_len.val ≤ 128"
+
+[[tool.proofs]]
+api = "IpNet::broadcast"
+module = "Proofs.Arithmetic"
+theorem = "ipnet.ip_broadcast_nat_spec"
+precondition = "match n with | .V4 v => v.prefix_len.val ≤ 32 | .V6 v => v.prefix_len.val ≤ 128"
+
+[[tool.proofs]]
+api = "IpNet::trunc"
+module = "Proofs.Arithmetic"
+theorem = "ipnet.ip_trunc_nat_spec"
+precondition = "match n with | .V4 v => v.prefix_len.val ≤ 32 | .V6 v => v.prefix_len.val ≤ 128"
+
+[[tool.proofs]]
+api = "Ipv4Net::contains<&Ipv4Addr>"
+module = "Proofs.Contains"
+theorem = "ipnet.ipv4_public_contains_addr_spec"
+precondition = "n.prefix_len.val ≤ 32"
+
+[[tool.proofs]]
+api = "Ipv6Net::contains<&Ipv6Addr>"
+module = "Proofs.Contains"
+theorem = "ipnet.ipv6_public_contains_addr_spec"
+precondition = "n.prefix_len.val ≤ 128"
+
+[[tool.proofs]]
+api = "Ipv4Net::contains<&Ipv4Net>"
+module = "Proofs.Contains"
+theorem = "ipnet.ipv4_public_contains_net_spec"
+precondition = "n.prefix_len.val ≤ 32 and m.prefix_len.val ≤ 32"
+
+[[tool.proofs]]
+api = "Ipv6Net::contains<&Ipv6Net>"
+module = "Proofs.Contains"
+theorem = "ipnet.ipv6_public_contains_net_spec"
+precondition = "n.prefix_len.val ≤ 128 and m.prefix_len.val ≤ 128"
+
+[[tool.proofs]]
+api = "IpNet::contains<&IpAddr>"
+module = "Proofs.Contains"
+theorem = "ipnet.ip_public_contains_addr_spec"
+precondition = "receiver prefix within its family width"
+
+[[tool.proofs]]
+api = "IpNet::contains<&IpNet>"
+module = "Proofs.Contains"
+theorem = "ipnet.ip_public_contains_net_spec"
+precondition = "both prefixes within their respective family widths"
+
+[[tool.proofs]]
+api = "Ipv4AddrRange::next"
+module = "Proofs.RangeNext"
+theorem = "RangeNext.range_next_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "Ipv4AddrRange::next_back"
+module = "Proofs.RangeMore"
+theorem = "RangeMore.range_next_back_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "Ipv4AddrRange::nth"
+module = "Proofs.RangeMore"
+theorem = "RangeMore.range_nth_spec"
+precondition = "System.Platform.numBits = 64"
+
+[[tool.proofs]]
+api = "Ipv4AddrRange::nth_back"
+module = "Proofs.RangeMore"
+theorem = "RangeMore.range_nth_back_spec"
+precondition = "System.Platform.numBits = 64"
+
+[[tool.proofs]]
+api = "Ipv4AddrRange::count"
+module = "Proofs.RangeMore"
+theorem = "RangeMore.range_count_spec"
+precondition = "System.Platform.numBits = 64"
+
+[[tool.proofs]]
+api = "Ipv4AddrRange::size_hint"
+module = "Proofs.RangeMore"
+theorem = "RangeMore.range_size_hint_spec"
+precondition = "System.Platform.numBits = 64"
+
+[[tool.proofs]]
+api = "Ipv4AddrRange::last"
+module = "Proofs.RangeMore"
+theorem = "RangeMore.range_last_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "Ipv4AddrRange::min"
+module = "Proofs.RangeMore"
+theorem = "RangeMore.range_min_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "Ipv4AddrRange::max"
+module = "Proofs.RangeMore"
+theorem = "RangeMore.range_max_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "Ipv4Addr::IpSub<u32>::saturating_sub"
+module = "Proofs.RangeMore"
+theorem = "RangeMore.ipv4_saturating_sub_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "Ipv4Addr::IpSub<Ipv4Addr>::saturating_sub"
+module = "Proofs.RangeMore"
+theorem = "RangeMore.ipv4_saturating_sub_addr_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "Default for Ipv4Net"
+module = "Proofs.IPv4NetOps"
+theorem = "IPv4NetOps.default_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "From<Ipv4Addr> for Ipv4Net"
+module = "Proofs.IPv4NetOps"
+theorem = "IPv4NetOps.from_ipv4_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "Ipv4Net::hosts"
+module = "Proofs.IPv4NetOps"
+theorem = "IPv4NetOps.hosts_spec"
+precondition = "n.prefix_len.val ≤ 32"
+
+[[tool.proofs]]
+api = "Ipv4Net::subnets"
+module = "Proofs.IPv4NetOps"
+theorem = "IPv4NetOps.subnets_spec"
+precondition = "n.prefix_len.val ≤ 32"
+
+[[tool.proofs]]
+api = "Ipv4Net::supernet"
+module = "Proofs.IPv4NetOps"
+theorem = "IPv4NetOps.supernet_spec"
+precondition = "n.prefix_len.val ≤ 32"
+
+[[tool.proofs]]
+api = "Ipv4Net::is_sibling"
+module = "Proofs.IPv4NetOps"
+theorem = "IPv4NetOps.is_sibling_spec"
+precondition = "n.prefix_len.val ≤ 32 and m.prefix_len.val ≤ 32"
+
+[[tool.proofs]]
+api = "Ipv4Addr::IpBitAnd<Ipv4Addr>::bitand"
+module = "Proofs.BitOps"
+theorem = "BitOps.ipv4_and_addr_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "Ipv4Addr::IpBitAnd<u32>::bitand"
+module = "Proofs.BitOps"
+theorem = "BitOps.ipv4_and_u32_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "Ipv4Addr::IpBitOr<Ipv4Addr>::bitor"
+module = "Proofs.BitOps"
+theorem = "BitOps.ipv4_or_addr_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "Ipv4Addr::IpBitOr<u32>::bitor"
+module = "Proofs.BitOps"
+theorem = "BitOps.ipv4_or_u32_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "Ipv4Addr::IpAdd<u32>::saturating_add"
+module = "Proofs.RangeNext"
+theorem = "RangeNext.ipv4_saturating_add_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "mask::ipv4_mask_to_prefix"
+module = "Proofs.IPv4MaskOps"
+theorem = "IPv4MaskOps.ipv4_mask_to_prefix_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "Ipv4Net::with_netmask"
+module = "Proofs.IPv4MaskOps"
+theorem = "IPv4MaskOps.with_netmask_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "Ipv4Subnets::next"
+module = "Proofs.IPv4SubnetAll"
+theorem = "IPv4SubnetAll.next_raw_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "Clone for Ipv4Net"
+module = "Proofs.IPv4Derived"
+theorem = "IPv4Derived.clone_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "PartialEq::eq for Ipv4Net"
+module = "Proofs.IPv4Derived"
+theorem = "IPv4Derived.eq_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "Ord::cmp for Ipv4Net"
+module = "Proofs.IPv4Derived"
+theorem = "IPv4Derived.cmp_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "PartialOrd::partial_cmp for Ipv4Net"
+module = "Proofs.IPv4Derived"
+theorem = "IPv4Derived.partial_cmp_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "Clone for Ipv4AddrRange"
+module = "Proofs.IPv4IteratorDerived"
+theorem = "IPv4IteratorDerived.range_clone_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "PartialEq::eq for Ipv4AddrRange"
+module = "Proofs.IPv4IteratorDerived"
+theorem = "IPv4IteratorDerived.range_eq_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "Ord::cmp for Ipv4AddrRange"
+module = "Proofs.IPv4IteratorDerived"
+theorem = "IPv4IteratorDerived.range_cmp_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "PartialOrd::partial_cmp for Ipv4AddrRange"
+module = "Proofs.IPv4IteratorDerived"
+theorem = "IPv4IteratorDerived.range_partial_cmp_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "Clone for Ipv4Subnets"
+module = "Proofs.IPv4IteratorDerived"
+theorem = "IPv4IteratorDerived.subnets_clone_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "PartialEq::eq for Ipv4Subnets"
+module = "Proofs.IPv4IteratorDerived"
+theorem = "IPv4IteratorDerived.subnets_eq_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "Ord::cmp for Ipv4Subnets"
+module = "Proofs.IPv4IteratorDerived"
+theorem = "IPv4IteratorDerived.subnets_cmp_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "PartialOrd::partial_cmp for Ipv4Subnets"
+module = "Proofs.IPv4IteratorDerived"
+theorem = "IPv4IteratorDerived.subnets_partial_cmp_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "From<Ipv4AddrRange> for IpAddrRange"
+module = "Proofs.TaggedIPv4"
+theorem = "TaggedIPv4.from_ipv4_range_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "From<Ipv4Subnets> for IpSubnets"
+module = "Proofs.TaggedIPv4"
+theorem = "TaggedIPv4.from_ipv4_subnets_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "From<Ipv6AddrRange> for IpAddrRange"
+module = "Proofs.TaggedIPv4"
+theorem = "TaggedIPv4.from_ipv6_range_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "From<Ipv6Subnets> for IpSubnets"
+module = "Proofs.TaggedIPv4"
+theorem = "TaggedIPv4.from_ipv6_subnets_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "IpNet::hosts(V4)"
+module = "Proofs.TaggedIPv4"
+theorem = "TaggedIPv4.hosts_v4_spec"
+precondition = "n.prefix_len.val ≤ 32"
+
+[[tool.proofs]]
+api = "IpNet::subnets(V4)"
+module = "Proofs.TaggedIPv4"
+theorem = "TaggedIPv4.subnets_v4_spec"
+precondition = "n.prefix_len.val ≤ 32"
+
+[[tool.proofs]]
+api = "IpNet::supernet(V4)"
+module = "Proofs.TaggedIPv4"
+theorem = "TaggedIPv4.supernet_v4_spec"
+precondition = "n.prefix_len.val ≤ 32"
+
+[[tool.proofs]]
+api = "IpNet::is_sibling(V4,V4)"
+module = "Proofs.TaggedIPv4"
+theorem = "TaggedIPv4.is_sibling_v4_spec"
+precondition = "n.prefix_len.val ≤ 32 and m.prefix_len.val ≤ 32"
+
+[[tool.proofs]]
+api = "IpNet::is_sibling(V4,V6)"
+module = "Proofs.TaggedIPv4"
+theorem = "TaggedIPv4.is_sibling_v4_v6_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "IpNet::is_sibling(V6,V4)"
+module = "Proofs.TaggedIPv4"
+theorem = "TaggedIPv4.is_sibling_v6_v4_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "Default for IpNet"
+module = "Proofs.TaggedDefaultFrom"
+theorem = "TaggedDefaultFrom.ipnet_default_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "From<IpAddr> for IpNet"
+module = "Proofs.TaggedDefaultFrom"
+theorem = "TaggedDefaultFrom.ipnet_from_addr_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "From<Ipv6Addr> for Ipv6Net"
+module = "Proofs.TaggedDefaultFrom"
+theorem = "TaggedDefaultFrom.ipv6_from_addr_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "Ipv6Net::hosts"
+module = "Proofs.IPv6NetOps"
+theorem = "IPv6NetOps.hosts_spec"
+precondition = "n.prefix_len.val ≤ 128"
+
+[[tool.proofs]]
+api = "Ipv6Net::subnets"
+module = "Proofs.IPv6NetOps"
+theorem = "IPv6NetOps.subnets_spec"
+precondition = "n.prefix_len.val ≤ 128"
+
+[[tool.proofs]]
+api = "Ipv6Net::supernet"
+module = "Proofs.IPv6NetOps"
+theorem = "IPv6NetOps.supernet_spec"
+precondition = "n.prefix_len.val ≤ 128"
+
+[[tool.proofs]]
+api = "Ipv6Net::is_sibling"
+module = "Proofs.IPv6NetOps"
+theorem = "IPv6NetOps.is_sibling_spec"
+precondition = "n.prefix_len.val ≤ 128 and m.prefix_len.val ≤ 128"
+
+[[tool.proofs]]
+api = "IpNet::hosts(V6)"
+module = "Proofs.TaggedIPv6"
+theorem = "TaggedIPv6.hosts_v6_spec"
+precondition = "n.prefix_len.val ≤ 128"
+
+[[tool.proofs]]
+api = "IpNet::subnets(V6)"
+module = "Proofs.TaggedIPv6"
+theorem = "TaggedIPv6.subnets_v6_spec"
+precondition = "n.prefix_len.val ≤ 128"
+
+[[tool.proofs]]
+api = "IpNet::supernet(V6)"
+module = "Proofs.TaggedIPv6"
+theorem = "TaggedIPv6.supernet_v6_spec"
+precondition = "n.prefix_len.val ≤ 128"
+
+[[tool.proofs]]
+api = "IpNet::is_sibling(V6,V6)"
+module = "Proofs.TaggedIPv6"
+theorem = "TaggedIPv6.is_sibling_v6_spec"
+precondition = "n.prefix_len.val ≤ 128 and m.prefix_len.val ≤ 128"
+
+[[tool.proofs]]
+api = "Clone for Ipv6Net"
+module = "Proofs.IPv6Derived"
+theorem = "IPv6Derived.net_clone_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "PartialEq::eq for Ipv6Net"
+module = "Proofs.IPv6Derived"
+theorem = "IPv6Derived.net_eq_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "Ord::cmp for Ipv6Net"
+module = "Proofs.IPv6Derived"
+theorem = "IPv6Derived.net_cmp_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "PartialOrd::partial_cmp for Ipv6Net"
+module = "Proofs.IPv6Derived"
+theorem = "IPv6Derived.net_partial_cmp_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "Clone for Ipv6AddrRange"
+module = "Proofs.IPv6Derived"
+theorem = "IPv6Derived.range_clone_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "PartialEq::eq for Ipv6AddrRange"
+module = "Proofs.IPv6Derived"
+theorem = "IPv6Derived.range_eq_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "Ord::cmp for Ipv6AddrRange"
+module = "Proofs.IPv6Derived"
+theorem = "IPv6Derived.range_cmp_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "PartialOrd::partial_cmp for Ipv6AddrRange"
+module = "Proofs.IPv6Derived"
+theorem = "IPv6Derived.range_partial_cmp_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "Clone for Ipv6Subnets"
+module = "Proofs.IPv6Derived"
+theorem = "IPv6Derived.subnets_clone_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "PartialEq::eq for Ipv6Subnets"
+module = "Proofs.IPv6Derived"
+theorem = "IPv6Derived.subnets_eq_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "Ord::cmp for Ipv6Subnets"
+module = "Proofs.IPv6Derived"
+theorem = "IPv6Derived.subnets_cmp_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "PartialOrd::partial_cmp for Ipv6Subnets"
+module = "Proofs.IPv6Derived"
+theorem = "IPv6Derived.subnets_partial_cmp_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "Ipv6AddrRange::last"
+module = "Proofs.IPv6RangeBasic"
+theorem = "IPv6RangeBasic.last_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "Ipv6AddrRange::max"
+module = "Proofs.IPv6RangeBasic"
+theorem = "IPv6RangeBasic.max_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "Ipv6AddrRange::min"
+module = "Proofs.IPv6RangeBasic"
+theorem = "IPv6RangeBasic.min_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "Ipv6Addr::IpSub<Ipv6Addr>::saturating_sub"
+module = "Proofs.IPv6RangeBasic"
+theorem = "IPv6RangeBasic.ipv6_saturating_sub_addr_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "Ipv6AddrRange::count"
+module = "Proofs.IPv6RangeBasic"
+theorem = "IPv6RangeBasic.count_spec"
+precondition = "System.Platform.numBits = 64"
+
+[[tool.proofs]]
+api = "Ipv6Addr::IpAdd<u128>::saturating_add"
+module = "Proofs.IPv6RangeSteps"
+theorem = "IPv6RangeSteps.ipv6_saturating_add_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "Ipv6Addr::IpSub<u128>::saturating_sub"
+module = "Proofs.IPv6RangeSteps"
+theorem = "IPv6RangeSteps.ipv6_saturating_sub_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "Ipv6AddrRange::next"
+module = "Proofs.IPv6RangeSteps"
+theorem = "IPv6RangeSteps.range_next_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "Ipv6AddrRange::next_back"
+module = "Proofs.IPv6RangeSteps"
+theorem = "IPv6RangeSteps.range_next_back_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "Ipv6AddrRange::size_hint"
+module = "Proofs.IPv6RangeSkips"
+theorem = "IPv6RangeSkips.size_hint_spec"
+precondition = "System.Platform.numBits = 64"
+
+[[tool.proofs]]
+api = "Ipv6AddrRange::nth"
+module = "Proofs.IPv6RangeSkips"
+theorem = "IPv6RangeSkips.nth_remaining_spec"
+precondition = "System.Platform.numBits = 64"
+
+[[tool.proofs]]
+api = "Ipv6AddrRange::nth_back"
+module = "Proofs.IPv6RangeSkips"
+theorem = "IPv6RangeSkips.nth_back_remaining_spec"
+precondition = "System.Platform.numBits = 64"
+
+[[tool.proofs]]
+api = "mask::ipv6_mask_to_prefix"
+module = "Proofs.IPv6MaskOps"
+theorem = "IPv6MaskOps.ipv6_mask_to_prefix_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "Ipv6Net::with_netmask"
+module = "Proofs.IPv6MaskOps"
+theorem = "IPv6MaskOps.with_netmask_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "Ipv6Addr::IpBitAnd<Ipv6Addr>::bitand"
+module = "Proofs.IPv6BitOps"
+theorem = "IPv6BitOps.ipv6_and_addr_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "Ipv6Addr::IpBitAnd<u128>::bitand"
+module = "Proofs.IPv6BitOps"
+theorem = "IPv6BitOps.ipv6_and_u128_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "Ipv6Addr::IpBitOr<Ipv6Addr>::bitor"
+module = "Proofs.IPv6BitOps"
+theorem = "IPv6BitOps.ipv6_or_addr_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "Ipv6Addr::IpBitOr<u128>::bitor"
+module = "Proofs.IPv6BitOps"
+theorem = "IPv6BitOps.ipv6_or_u128_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "Default for Ipv6Net"
+module = "Proofs.IPv6Default"
+theorem = "IPv6Default.default_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "Ipv6Subnets::next"
+module = "Proofs.IPv6SubnetAll"
+theorem = "IPv6SubnetAll.next_raw_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "IpSubnets::next"
+module = "Proofs.TaggedSubnets"
+theorem = "TaggedSubnets.next_raw_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "IpAddrRange::next"
+module = "Proofs.TaggedRange"
+theorem = "TaggedRange.next_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "IpAddrRange::next_back"
+module = "Proofs.TaggedRange"
+theorem = "TaggedRange.next_back_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "IpAddrRange::nth"
+module = "Proofs.TaggedRange"
+theorem = "TaggedRange.nth_spec"
+precondition = "System.Platform.numBits = 64"
+
+[[tool.proofs]]
+api = "IpAddrRange::nth_back"
+module = "Proofs.TaggedRange"
+theorem = "TaggedRange.nth_back_spec"
+precondition = "System.Platform.numBits = 64"
+
+[[tool.proofs]]
+api = "IpAddrRange::last"
+module = "Proofs.TaggedRange"
+theorem = "TaggedRange.last_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "IpAddrRange::max"
+module = "Proofs.TaggedRange"
+theorem = "TaggedRange.max_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "IpAddrRange::min"
+module = "Proofs.TaggedRange"
+theorem = "TaggedRange.min_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "IpAddrRange::size_hint"
+module = "Proofs.TaggedRange"
+theorem = "TaggedRange.size_hint_spec"
+precondition = "System.Platform.numBits = 64"
+
+[[tool.proofs]]
+api = "IpAddrRange::count"
+module = "Proofs.TaggedRange"
+theorem = "TaggedRange.count_spec"
+precondition = "System.Platform.numBits = 64"
+
+[[tool.proofs]]
+api = "mask::ip_mask_to_prefix"
+module = "Proofs.TaggedMask"
+theorem = "TaggedMask.ip_mask_to_prefix_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "IpNet::with_netmask"
+module = "Proofs.TaggedMask"
+theorem = "TaggedMask.with_netmask_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "Clone for IpNet"
+module = "Proofs.TaggedDerived"
+theorem = "TaggedDerived.net_clone_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "PartialEq::eq for IpNet"
+module = "Proofs.TaggedDerived"
+theorem = "TaggedDerived.net_eq_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "Ord::cmp for IpNet"
+module = "Proofs.TaggedDerived"
+theorem = "TaggedDerived.net_cmp_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "PartialOrd::partial_cmp for IpNet"
+module = "Proofs.TaggedDerived"
+theorem = "TaggedDerived.net_partial_cmp_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "Clone for IpAddrRange"
+module = "Proofs.TaggedDerived"
+theorem = "TaggedDerived.range_clone_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "PartialEq::eq for IpAddrRange"
+module = "Proofs.TaggedDerived"
+theorem = "TaggedDerived.range_eq_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "Ord::cmp for IpAddrRange"
+module = "Proofs.TaggedDerived"
+theorem = "TaggedDerived.range_cmp_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "PartialOrd::partial_cmp for IpAddrRange"
+module = "Proofs.TaggedDerived"
+theorem = "TaggedDerived.range_partial_cmp_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "Clone for IpSubnets"
+module = "Proofs.TaggedDerived"
+theorem = "TaggedDerived.subnets_clone_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "PartialEq::eq for IpSubnets"
+module = "Proofs.TaggedDerived"
+theorem = "TaggedDerived.subnets_eq_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "Ord::cmp for IpSubnets"
+module = "Proofs.TaggedDerived"
+theorem = "TaggedDerived.subnets_cmp_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "PartialOrd::partial_cmp for IpSubnets"
+module = "Proofs.TaggedDerived"
+theorem = "TaggedDerived.subnets_partial_cmp_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "Clone for PrefixLenError"
+module = "Proofs.PrefixLenErrorValue"
+theorem = "PrefixLenErrorValue.clone_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "PartialEq::eq for PrefixLenError"
+module = "Proofs.PrefixLenErrorValue"
+theorem = "PrefixLenErrorValue.eq_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "Clone for AddrParseError"
+module = "Proofs.AddrParseErrorValue"
+theorem = "AddrParseErrorValue.clone_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "PartialEq::eq for AddrParseError"
+module = "Proofs.AddrParseErrorValue"
+theorem = "AddrParseErrorValue.eq_spec"
+precondition = "true"

@@ -1,0 +1,3428 @@
+{
+  "status": "passed",
+  "scope": "named Lean theorem and transitive axiom audit only",
+  "checked": [
+    {
+      "name": "ipnet.ipnet.ipv4_new_spec",
+      "module": "Proofs.Core",
+      "scope": "public-model"
+    },
+    {
+      "name": "ipnet.ipnet.ipv4_new_assert_spec",
+      "module": "Proofs.Core",
+      "scope": "helper",
+      "precondition": "p.val \u2264 32"
+    },
+    {
+      "name": "ipnet.ipnet.ipv4_addr_spec",
+      "module": "Proofs.Core",
+      "scope": "public-model"
+    },
+    {
+      "name": "ipnet.ipnet.ipv4_prefix_len_spec",
+      "module": "Proofs.Core",
+      "scope": "public-model"
+    },
+    {
+      "name": "ipnet.ipnet.ipv4_max_prefix_len_spec",
+      "module": "Proofs.Core",
+      "scope": "public-model"
+    },
+    {
+      "name": "ipnet.ipnet.ipv6_new_spec",
+      "module": "Proofs.Core",
+      "scope": "public-model"
+    },
+    {
+      "name": "ipnet.ipnet.ipv6_new_assert_spec",
+      "module": "Proofs.Core",
+      "scope": "helper",
+      "precondition": "p.val \u2264 128"
+    },
+    {
+      "name": "ipnet.ipnet.ipv6_addr_spec",
+      "module": "Proofs.Core",
+      "scope": "public-model"
+    },
+    {
+      "name": "ipnet.ipnet.ipv6_prefix_len_spec",
+      "module": "Proofs.Core",
+      "scope": "public-model"
+    },
+    {
+      "name": "ipnet.ipnet.ipv6_max_prefix_len_spec",
+      "module": "Proofs.Core",
+      "scope": "public-model"
+    },
+    {
+      "name": "ipnet.ipnet.ip_new_spec",
+      "module": "Proofs.Core",
+      "scope": "public-model"
+    },
+    {
+      "name": "ipnet.ipnet.ip_new_assert_spec",
+      "module": "Proofs.Core",
+      "scope": "helper",
+      "precondition": "match ip with | .V4 _ => p.val \u2264 32 | .V6 _ => p.val \u2264 128"
+    },
+    {
+      "name": "ipnet.ipnet.ip_addr_spec",
+      "module": "Proofs.Core",
+      "scope": "public-model"
+    },
+    {
+      "name": "ipnet.ipnet.ip_prefix_len_spec",
+      "module": "Proofs.Core",
+      "scope": "public-model"
+    },
+    {
+      "name": "ipnet.ipnet.ip_max_prefix_len_spec",
+      "module": "Proofs.Core",
+      "scope": "public-model"
+    },
+    {
+      "name": "ipnet.ipnet.from_ipv4_spec",
+      "module": "Proofs.Core",
+      "scope": "public-model"
+    },
+    {
+      "name": "ipnet.ipnet.from_ipv6_spec",
+      "module": "Proofs.Core",
+      "scope": "public-model"
+    },
+    {
+      "name": "ipnet.ipv4_range_new_spec",
+      "module": "Proofs.Collections",
+      "scope": "public-model"
+    },
+    {
+      "name": "ipnet.ipv6_range_new_spec",
+      "module": "Proofs.Collections",
+      "scope": "public-model"
+    },
+    {
+      "name": "ipnet.ipnet.ipv4_subnets_new_spec",
+      "module": "Proofs.Collections",
+      "scope": "public-model"
+    },
+    {
+      "name": "ipnet.ipnet.ipv6_subnets_new_spec",
+      "module": "Proofs.Collections",
+      "scope": "public-model"
+    },
+    {
+      "name": "CidrModel.bytesValue_bound",
+      "module": "Proofs.CidrModel",
+      "scope": "helper"
+    },
+    {
+      "name": "CidrModel.ipv4Value_bound",
+      "module": "Proofs.CidrModel",
+      "scope": "helper"
+    },
+    {
+      "name": "CidrModel.ipv6Value_bound",
+      "module": "Proofs.CidrModel",
+      "scope": "helper"
+    },
+    {
+      "name": "CidrModel.size_pos",
+      "module": "Proofs.CidrModel",
+      "scope": "helper"
+    },
+    {
+      "name": "CidrModel.lower_le_address",
+      "module": "Proofs.CidrModel",
+      "scope": "helper"
+    },
+    {
+      "name": "CidrModel.address_lt_lower_add_size",
+      "module": "Proofs.CidrModel",
+      "scope": "helper"
+    },
+    {
+      "name": "CidrModel.upper_eq",
+      "module": "Proofs.CidrModel",
+      "scope": "helper"
+    },
+    {
+      "name": "CidrModel.lower_le_upper",
+      "module": "Proofs.CidrModel",
+      "scope": "helper"
+    },
+    {
+      "name": "CidrModel.address_le_upper",
+      "module": "Proofs.CidrModel",
+      "scope": "helper"
+    },
+    {
+      "name": "CidrModel.address_mem",
+      "module": "Proofs.CidrModel",
+      "scope": "helper"
+    },
+    {
+      "name": "CidrModel.lower_mem",
+      "module": "Proofs.CidrModel",
+      "scope": "helper"
+    },
+    {
+      "name": "CidrModel.upper_mem",
+      "module": "Proofs.CidrModel",
+      "scope": "helper"
+    },
+    {
+      "name": "CidrModel.lower_add_size_le_width",
+      "module": "Proofs.CidrModel",
+      "scope": "helper"
+    },
+    {
+      "name": "CidrModel.upper_lt_width",
+      "module": "Proofs.CidrModel",
+      "scope": "helper"
+    },
+    {
+      "name": "CidrModel.lower_normalize",
+      "module": "Proofs.CidrModel",
+      "scope": "helper"
+    },
+    {
+      "name": "CidrModel.upper_normalize",
+      "module": "Proofs.CidrModel",
+      "scope": "helper"
+    },
+    {
+      "name": "CidrModel.member_normalize",
+      "module": "Proofs.CidrModel",
+      "scope": "helper"
+    },
+    {
+      "name": "CidrModel.upper_eq_of_lower_eq",
+      "module": "Proofs.CidrModel",
+      "scope": "helper"
+    },
+    {
+      "name": "CidrModel.member_eq_of_lower_eq",
+      "module": "Proofs.CidrModel",
+      "scope": "helper"
+    },
+    {
+      "name": "CidrModel.subset_iff_endpoints",
+      "module": "Proofs.CidrModel",
+      "scope": "helper"
+    },
+    {
+      "name": "CidrModel.tagged_subset_iff",
+      "module": "Proofs.CidrModel",
+      "scope": "helper"
+    },
+    {
+      "name": "CidrModel.subset_refl",
+      "module": "Proofs.CidrModel",
+      "scope": "helper"
+    },
+    {
+      "name": "CidrModel.subset_trans",
+      "module": "Proofs.CidrModel",
+      "scope": "helper"
+    },
+    {
+      "name": "CidrModel.subset_normalize_left",
+      "module": "Proofs.CidrModel",
+      "scope": "helper"
+    },
+    {
+      "name": "CidrModel.subset_normalize_right",
+      "module": "Proofs.CidrModel",
+      "scope": "helper"
+    },
+    {
+      "name": "CidrModel.mutual_subset_iff_endpoints",
+      "module": "Proofs.CidrModel",
+      "scope": "helper"
+    },
+    {
+      "name": "CidrModel.size_zero",
+      "module": "Proofs.CidrModel",
+      "scope": "helper"
+    },
+    {
+      "name": "CidrModel.size_full",
+      "module": "Proofs.CidrModel",
+      "scope": "helper"
+    },
+    {
+      "name": "CidrModel.lower_full",
+      "module": "Proofs.CidrModel",
+      "scope": "helper"
+    },
+    {
+      "name": "CidrModel.upper_full",
+      "module": "Proofs.CidrModel",
+      "scope": "helper"
+    },
+    {
+      "name": "CidrModel.member_full",
+      "module": "Proofs.CidrModel",
+      "scope": "helper"
+    },
+    {
+      "name": "CidrModel.lower_zero",
+      "module": "Proofs.CidrModel",
+      "scope": "helper"
+    },
+    {
+      "name": "CidrModel.upper_zero",
+      "module": "Proofs.CidrModel",
+      "scope": "helper"
+    },
+    {
+      "name": "CidrModel.member_zero",
+      "module": "Proofs.CidrModel",
+      "scope": "helper"
+    },
+    {
+      "name": "AddressConversions.fromLEValue",
+      "module": "Proofs.AddressConversions",
+      "scope": "helper"
+    },
+    {
+      "name": "AddressConversions.leValue_append_singleton",
+      "module": "Proofs.AddressConversions",
+      "scope": "helper"
+    },
+    {
+      "name": "AddressConversions.leValue_reverse",
+      "module": "Proofs.AddressConversions",
+      "scope": "helper"
+    },
+    {
+      "name": "AddressConversions.fromBEValue",
+      "module": "Proofs.AddressConversions",
+      "scope": "helper"
+    },
+    {
+      "name": "AddressConversions.u32_from_be_bytes_value",
+      "module": "Proofs.AddressConversions",
+      "scope": "helper"
+    },
+    {
+      "name": "AddressConversions.u128_from_be_bytes_value",
+      "module": "Proofs.AddressConversions",
+      "scope": "helper"
+    },
+    {
+      "name": "AddressConversions.ipv4_to_bits_spec",
+      "module": "Proofs.AddressConversions",
+      "scope": "helper"
+    },
+    {
+      "name": "AddressConversions.ipv6_to_bits_spec",
+      "module": "Proofs.AddressConversions",
+      "scope": "helper"
+    },
+    {
+      "name": "AddressConversions.ipv4_into_u32_spec",
+      "module": "Proofs.AddressConversions",
+      "scope": "helper"
+    },
+    {
+      "name": "AddressConversions.ipv6_into_u128_spec",
+      "module": "Proofs.AddressConversions",
+      "scope": "helper"
+    },
+    {
+      "name": "AddressConversions.be_roundtrip",
+      "module": "Proofs.AddressConversions",
+      "scope": "helper"
+    },
+    {
+      "name": "AddressConversions.u32_to_be_bytes_value",
+      "module": "Proofs.AddressConversions",
+      "scope": "helper"
+    },
+    {
+      "name": "AddressConversions.u128_to_be_bytes_value",
+      "module": "Proofs.AddressConversions",
+      "scope": "helper"
+    },
+    {
+      "name": "AddressConversions.ipv4_from_bits_spec",
+      "module": "Proofs.AddressConversions",
+      "scope": "helper"
+    },
+    {
+      "name": "AddressConversions.ipv6_from_bits_spec",
+      "module": "Proofs.AddressConversions",
+      "scope": "helper"
+    },
+    {
+      "name": "AddressConversions.ipv4_from_u32_spec",
+      "module": "Proofs.AddressConversions",
+      "scope": "helper"
+    },
+    {
+      "name": "AddressConversions.ipv6_from_u128_spec",
+      "module": "Proofs.AddressConversions",
+      "scope": "helper"
+    },
+    {
+      "name": "MaskMath.max_shiftLeft_value",
+      "module": "Proofs.MaskMath",
+      "scope": "helper"
+    },
+    {
+      "name": "MaskMath.max_ushiftRight_value",
+      "module": "Proofs.MaskMath",
+      "scope": "helper"
+    },
+    {
+      "name": "NetworkMath.and_high_mask",
+      "module": "Proofs.NetworkMath",
+      "scope": "helper"
+    },
+    {
+      "name": "NetworkMath.or_low_mask",
+      "module": "Proofs.NetworkMath",
+      "scope": "helper"
+    },
+    {
+      "name": "NetworkMath.and_netmask_eq_lower",
+      "module": "Proofs.NetworkMath",
+      "scope": "helper"
+    },
+    {
+      "name": "NetworkMath.or_hostmask_eq_upper",
+      "module": "Proofs.NetworkMath",
+      "scope": "helper"
+    },
+    {
+      "name": "ipnet.u32_and_value",
+      "module": "Proofs.Arithmetic",
+      "scope": "helper"
+    },
+    {
+      "name": "ipnet.u32_or_value",
+      "module": "Proofs.Arithmetic",
+      "scope": "helper"
+    },
+    {
+      "name": "ipnet.u128_and_value",
+      "module": "Proofs.Arithmetic",
+      "scope": "helper"
+    },
+    {
+      "name": "ipnet.u128_or_value",
+      "module": "Proofs.Arithmetic",
+      "scope": "helper"
+    },
+    {
+      "name": "ipnet.max32_shiftLeft_value",
+      "module": "Proofs.Arithmetic",
+      "scope": "helper"
+    },
+    {
+      "name": "ipnet.max32_ushiftRight_value",
+      "module": "Proofs.Arithmetic",
+      "scope": "helper"
+    },
+    {
+      "name": "ipnet.max128_shiftLeft_value",
+      "module": "Proofs.Arithmetic",
+      "scope": "helper"
+    },
+    {
+      "name": "ipnet.max128_ushiftRight_value",
+      "module": "Proofs.Arithmetic",
+      "scope": "helper"
+    },
+    {
+      "name": "ipnet.checked_shl_u32_spec",
+      "module": "Proofs.Arithmetic",
+      "scope": "helper"
+    },
+    {
+      "name": "ipnet.checked_shr_u32_spec",
+      "module": "Proofs.Arithmetic",
+      "scope": "helper"
+    },
+    {
+      "name": "ipnet.checked_shl_u128_spec",
+      "module": "Proofs.Arithmetic",
+      "scope": "helper"
+    },
+    {
+      "name": "ipnet.checked_shr_u128_spec",
+      "module": "Proofs.Arithmetic",
+      "scope": "helper"
+    },
+    {
+      "name": "ipnet.ipv4_netmask_u32_spec",
+      "module": "Proofs.Arithmetic",
+      "scope": "helper"
+    },
+    {
+      "name": "ipnet.ipv4_netmask_spec",
+      "module": "Proofs.Arithmetic",
+      "scope": "helper"
+    },
+    {
+      "name": "ipnet.ipv4_hostmask_u32_spec",
+      "module": "Proofs.Arithmetic",
+      "scope": "helper"
+    },
+    {
+      "name": "ipnet.ipv4_hostmask_spec",
+      "module": "Proofs.Arithmetic",
+      "scope": "helper"
+    },
+    {
+      "name": "ipnet.ipv6_netmask_u128_spec",
+      "module": "Proofs.Arithmetic",
+      "scope": "helper"
+    },
+    {
+      "name": "ipnet.ipv6_hostmask_u128_spec",
+      "module": "Proofs.Arithmetic",
+      "scope": "helper"
+    },
+    {
+      "name": "ipnet.ipv4_netmask_u32_nat_spec",
+      "module": "Proofs.Arithmetic",
+      "scope": "helper"
+    },
+    {
+      "name": "ipnet.ipv4_hostmask_u32_nat_spec",
+      "module": "Proofs.Arithmetic",
+      "scope": "helper"
+    },
+    {
+      "name": "ipnet.ipv6_netmask_u128_nat_spec",
+      "module": "Proofs.Arithmetic",
+      "scope": "helper"
+    },
+    {
+      "name": "ipnet.ipv6_hostmask_u128_nat_spec",
+      "module": "Proofs.Arithmetic",
+      "scope": "helper"
+    },
+    {
+      "name": "ipnet.ipv4_netmask_nat_spec",
+      "module": "Proofs.Arithmetic",
+      "scope": "public-model",
+      "precondition": "n.prefix_len.val \u2264 32"
+    },
+    {
+      "name": "ipnet.ipv4_hostmask_nat_spec",
+      "module": "Proofs.Arithmetic",
+      "scope": "public-model",
+      "precondition": "n.prefix_len.val \u2264 32"
+    },
+    {
+      "name": "ipnet.ipv6_netmask_nat_spec",
+      "module": "Proofs.Arithmetic",
+      "scope": "public-model",
+      "precondition": "n.prefix_len.val \u2264 128"
+    },
+    {
+      "name": "ipnet.ipv6_hostmask_nat_spec",
+      "module": "Proofs.Arithmetic",
+      "scope": "public-model",
+      "precondition": "n.prefix_len.val \u2264 128"
+    },
+    {
+      "name": "ipnet.ip_netmask_nat_spec",
+      "module": "Proofs.Arithmetic",
+      "scope": "public-model",
+      "precondition": "match n with | .V4 v => v.prefix_len.val \u2264 32 | .V6 v => v.prefix_len.val \u2264 128"
+    },
+    {
+      "name": "ipnet.ip_hostmask_nat_spec",
+      "module": "Proofs.Arithmetic",
+      "scope": "public-model",
+      "precondition": "match n with | .V4 v => v.prefix_len.val \u2264 32 | .V6 v => v.prefix_len.val \u2264 128"
+    },
+    {
+      "name": "ipnet.ipv4_network_bitwise_spec",
+      "module": "Proofs.Arithmetic",
+      "scope": "helper"
+    },
+    {
+      "name": "ipnet.ipv4_broadcast_bitwise_spec",
+      "module": "Proofs.Arithmetic",
+      "scope": "helper"
+    },
+    {
+      "name": "ipnet.ipv6_network_bitwise_spec",
+      "module": "Proofs.Arithmetic",
+      "scope": "helper"
+    },
+    {
+      "name": "ipnet.ipv6_broadcast_bitwise_spec",
+      "module": "Proofs.Arithmetic",
+      "scope": "helper"
+    },
+    {
+      "name": "ipnet.ipv4_network_nat_spec",
+      "module": "Proofs.Arithmetic",
+      "scope": "public-model",
+      "precondition": "n.prefix_len.val \u2264 32"
+    },
+    {
+      "name": "ipnet.ipv4_broadcast_nat_spec",
+      "module": "Proofs.Arithmetic",
+      "scope": "public-model",
+      "precondition": "n.prefix_len.val \u2264 32"
+    },
+    {
+      "name": "ipnet.ipv6_network_nat_spec",
+      "module": "Proofs.Arithmetic",
+      "scope": "public-model",
+      "precondition": "n.prefix_len.val \u2264 128"
+    },
+    {
+      "name": "ipnet.ipv6_broadcast_nat_spec",
+      "module": "Proofs.Arithmetic",
+      "scope": "public-model",
+      "precondition": "n.prefix_len.val \u2264 128"
+    },
+    {
+      "name": "ipnet.ip_network_nat_spec",
+      "module": "Proofs.Arithmetic",
+      "scope": "public-model",
+      "precondition": "match n with | .V4 v => v.prefix_len.val \u2264 32 | .V6 v => v.prefix_len.val \u2264 128"
+    },
+    {
+      "name": "ipnet.ip_broadcast_nat_spec",
+      "module": "Proofs.Arithmetic",
+      "scope": "public-model",
+      "precondition": "match n with | .V4 v => v.prefix_len.val \u2264 32 | .V6 v => v.prefix_len.val \u2264 128"
+    },
+    {
+      "name": "ipnet.ipv4_trunc_nat_spec",
+      "module": "Proofs.Arithmetic",
+      "scope": "public-model",
+      "precondition": "n.prefix_len.val \u2264 32"
+    },
+    {
+      "name": "ipnet.ipv6_trunc_nat_spec",
+      "module": "Proofs.Arithmetic",
+      "scope": "public-model",
+      "precondition": "n.prefix_len.val \u2264 128"
+    },
+    {
+      "name": "ipnet.ip_trunc_nat_spec",
+      "module": "Proofs.Arithmetic",
+      "scope": "public-model",
+      "precondition": "match n with | .V4 v => v.prefix_len.val \u2264 32 | .V6 v => v.prefix_len.val \u2264 128"
+    },
+    {
+      "name": "OrderMath.digitsValue_bound",
+      "module": "Proofs.OrderMath",
+      "scope": "helper"
+    },
+    {
+      "name": "OrderMath.lexCompare_eq_compare_value",
+      "module": "Proofs.OrderMath",
+      "scope": "helper"
+    },
+    {
+      "name": "OrderMath.bytesValue_eq_digitsValue",
+      "module": "Proofs.OrderMath",
+      "scope": "helper"
+    },
+    {
+      "name": "OrderMath.byte_lexCompare_eq_value",
+      "module": "Proofs.OrderMath",
+      "scope": "helper"
+    },
+    {
+      "name": "OrderMath.word_lexCompare_eq_value",
+      "module": "Proofs.OrderMath",
+      "scope": "helper"
+    },
+    {
+      "name": "Segments.pairedBytes_pairsOfBytes",
+      "module": "Proofs.Segments",
+      "scope": "helper"
+    },
+    {
+      "name": "Segments.pairValue_bound",
+      "module": "Proofs.Segments",
+      "scope": "helper"
+    },
+    {
+      "name": "Segments.pairedBytes_length",
+      "module": "Proofs.Segments",
+      "scope": "helper"
+    },
+    {
+      "name": "Segments.segmentDigits_length",
+      "module": "Proofs.Segments",
+      "scope": "helper"
+    },
+    {
+      "name": "Segments.segmentDigits_bound",
+      "module": "Proofs.Segments",
+      "scope": "helper"
+    },
+    {
+      "name": "Segments.segmentDigits_value",
+      "module": "Proofs.Segments",
+      "scope": "helper"
+    },
+    {
+      "name": "Segments.segmentDigits_value_even",
+      "module": "Proofs.Segments",
+      "scope": "helper"
+    },
+    {
+      "name": "Segments.ipv6_segmentDigits_length",
+      "module": "Proofs.Segments",
+      "scope": "helper"
+    },
+    {
+      "name": "Segments.ipv6_segmentDigits_value",
+      "module": "Proofs.Segments",
+      "scope": "helper"
+    },
+    {
+      "name": "Comparisons.array_to_slice_val",
+      "module": "Proofs.Comparisons",
+      "scope": "helper"
+    },
+    {
+      "name": "Comparisons.ipv4_cmp_spec",
+      "module": "Proofs.Comparisons",
+      "scope": "helper"
+    },
+    {
+      "name": "Comparisons.ipv4_cmp_slice_lex_spec",
+      "module": "Proofs.Comparisons",
+      "scope": "helper"
+    },
+    {
+      "name": "Comparisons.ipv4_partial_cmp_spec",
+      "module": "Proofs.Comparisons",
+      "scope": "helper"
+    },
+    {
+      "name": "Comparisons.ipv4_le_spec",
+      "module": "Proofs.Comparisons",
+      "scope": "helper"
+    },
+    {
+      "name": "Comparisons.ipv6_cmp_spec",
+      "module": "Proofs.Comparisons",
+      "scope": "helper"
+    },
+    {
+      "name": "Comparisons.ipv6_cmp_slice_lex_spec",
+      "module": "Proofs.Comparisons",
+      "scope": "helper"
+    },
+    {
+      "name": "Comparisons.ipv6_partial_cmp_spec",
+      "module": "Proofs.Comparisons",
+      "scope": "helper"
+    },
+    {
+      "name": "Comparisons.ipv6_le_spec",
+      "module": "Proofs.Comparisons",
+      "scope": "helper"
+    },
+    {
+      "name": "ipnet.ipv4_contains_addr_result",
+      "module": "Proofs.Contains",
+      "scope": "helper"
+    },
+    {
+      "name": "ipnet.ipv6_contains_addr_result",
+      "module": "Proofs.Contains",
+      "scope": "helper"
+    },
+    {
+      "name": "ipnet.ipv4_contains_net_result",
+      "module": "Proofs.Contains",
+      "scope": "helper"
+    },
+    {
+      "name": "ipnet.ipv6_contains_net_result",
+      "module": "Proofs.Contains",
+      "scope": "helper"
+    },
+    {
+      "name": "ipnet.ipv4_contains_addr_spec",
+      "module": "Proofs.Contains",
+      "scope": "helper"
+    },
+    {
+      "name": "ipnet.ipv6_contains_addr_spec",
+      "module": "Proofs.Contains",
+      "scope": "helper"
+    },
+    {
+      "name": "ipnet.ipv4_contains_net_spec",
+      "module": "Proofs.Contains",
+      "scope": "helper"
+    },
+    {
+      "name": "ipnet.ipv6_contains_net_spec",
+      "module": "Proofs.Contains",
+      "scope": "helper"
+    },
+    {
+      "name": "ipnet.ip_contains_addr_spec",
+      "module": "Proofs.Contains",
+      "scope": "helper"
+    },
+    {
+      "name": "ipnet.ip_contains_net_spec",
+      "module": "Proofs.Contains",
+      "scope": "helper"
+    },
+    {
+      "name": "ipnet.ipv4_public_contains_addr_spec",
+      "module": "Proofs.Contains",
+      "scope": "public-model",
+      "precondition": "n.prefix_len.val \u2264 32"
+    },
+    {
+      "name": "ipnet.ipv6_public_contains_addr_spec",
+      "module": "Proofs.Contains",
+      "scope": "public-model",
+      "precondition": "n.prefix_len.val \u2264 128"
+    },
+    {
+      "name": "ipnet.ipv4_public_contains_net_spec",
+      "module": "Proofs.Contains",
+      "scope": "public-model",
+      "precondition": "n.prefix_len.val \u2264 32 and m.prefix_len.val \u2264 32"
+    },
+    {
+      "name": "ipnet.ipv6_public_contains_net_spec",
+      "module": "Proofs.Contains",
+      "scope": "public-model",
+      "precondition": "n.prefix_len.val \u2264 128 and m.prefix_len.val \u2264 128"
+    },
+    {
+      "name": "ipnet.ip_public_contains_addr_spec",
+      "module": "Proofs.Contains",
+      "scope": "public-model",
+      "precondition": "receiver prefix within its family width"
+    },
+    {
+      "name": "ipnet.ip_public_contains_net_spec",
+      "module": "Proofs.Contains",
+      "scope": "public-model",
+      "precondition": "both prefixes within their respective family widths"
+    },
+    {
+      "name": "RangeMath.ofInclusive_empty_iff",
+      "module": "Proofs.RangeMath",
+      "scope": "helper"
+    },
+    {
+      "name": "RangeMath.ofInclusive_live_iff",
+      "module": "Proofs.RangeMath",
+      "scope": "helper"
+    },
+    {
+      "name": "RangeMath.mem_ofInclusive_iff",
+      "module": "Proofs.RangeMath",
+      "scope": "helper"
+    },
+    {
+      "name": "RangeMath.size_ofInclusive",
+      "module": "Proofs.RangeMath",
+      "scope": "helper"
+    },
+    {
+      "name": "RangeMath.endpoint_le_limit",
+      "module": "Proofs.RangeMath",
+      "scope": "helper"
+    },
+    {
+      "name": "RangeMath.live_bounds",
+      "module": "Proofs.RangeMath",
+      "scope": "helper"
+    },
+    {
+      "name": "RangeMath.maxAddress_eq",
+      "module": "Proofs.RangeMath",
+      "scope": "helper"
+    },
+    {
+      "name": "RangeMath.saturatingSucc_lt",
+      "module": "Proofs.RangeMath",
+      "scope": "helper"
+    },
+    {
+      "name": "RangeMath.saturatingSucc_max",
+      "module": "Proofs.RangeMath",
+      "scope": "helper"
+    },
+    {
+      "name": "RangeMath.next_lt",
+      "module": "Proofs.RangeMath",
+      "scope": "helper"
+    },
+    {
+      "name": "RangeMath.next_eq",
+      "module": "Proofs.RangeMath",
+      "scope": "helper"
+    },
+    {
+      "name": "RangeMath.next_gt",
+      "module": "Proofs.RangeMath",
+      "scope": "helper"
+    },
+    {
+      "name": "RangeMath.sentinel_empty",
+      "module": "Proofs.RangeMath",
+      "scope": "helper"
+    },
+    {
+      "name": "RangeMath.next_eq_sentinel",
+      "module": "Proofs.RangeMath",
+      "scope": "helper"
+    },
+    {
+      "name": "RangeMath.next_none_iff",
+      "module": "Proofs.RangeMath",
+      "scope": "helper"
+    },
+    {
+      "name": "RangeMath.next_some_size",
+      "module": "Proofs.RangeMath",
+      "scope": "helper"
+    },
+    {
+      "name": "RangeMath.next_partition",
+      "module": "Proofs.RangeMath",
+      "scope": "helper"
+    },
+    {
+      "name": "RangeMath.next_residual_excludes_head",
+      "module": "Proofs.RangeMath",
+      "scope": "helper"
+    },
+    {
+      "name": "RangeMath.next_empty",
+      "module": "Proofs.RangeMath",
+      "scope": "helper"
+    },
+    {
+      "name": "RangeMath.advance_empty",
+      "module": "Proofs.RangeMath",
+      "scope": "helper"
+    },
+    {
+      "name": "RangeMath.full_range",
+      "module": "Proofs.RangeMath",
+      "scope": "helper"
+    },
+    {
+      "name": "RangeMath.zero_singleton_step",
+      "module": "Proofs.RangeMath",
+      "scope": "helper"
+    },
+    {
+      "name": "RangeMath.max_singleton_step",
+      "module": "Proofs.RangeMath",
+      "scope": "helper"
+    },
+    {
+      "name": "RangeMath.full_range_step",
+      "module": "Proofs.RangeMath",
+      "scope": "helper"
+    },
+    {
+      "name": "RangeNext.u32_saturating_add_value",
+      "module": "Proofs.RangeNext",
+      "scope": "helper"
+    },
+    {
+      "name": "RangeNext.ipv4_saturating_add_spec",
+      "module": "Proofs.RangeNext",
+      "scope": "public-model"
+    },
+    {
+      "name": "RangeNext.ipv4_add_one_spec",
+      "module": "Proofs.RangeNext",
+      "scope": "helper"
+    },
+    {
+      "name": "RangeNext.zeroAddr_value",
+      "module": "Proofs.RangeNext",
+      "scope": "helper"
+    },
+    {
+      "name": "RangeNext.oneAddr_value",
+      "module": "Proofs.RangeNext",
+      "scope": "helper"
+    },
+    {
+      "name": "RangeNext.ipv4_replace_zero_spec",
+      "module": "Proofs.RangeNext",
+      "scope": "helper"
+    },
+    {
+      "name": "RangeNext.ipv4_replace_one_spec",
+      "module": "Proofs.RangeNext",
+      "scope": "helper"
+    },
+    {
+      "name": "RangeNext.constructor_remaining",
+      "module": "Proofs.RangeNext",
+      "scope": "helper"
+    },
+    {
+      "name": "RangeNext.range_next_spec",
+      "module": "Proofs.RangeNext",
+      "scope": "public-model",
+      "precondition": "true"
+    },
+    {
+      "name": "RangeLaws.next_none_iff_empty",
+      "module": "Proofs.RangeLaws",
+      "scope": "helper"
+    },
+    {
+      "name": "RangeLaws.next_some_laws",
+      "module": "Proofs.RangeLaws",
+      "scope": "helper"
+    },
+    {
+      "name": "RangeLaws.next_empty_preserved",
+      "module": "Proofs.RangeLaws",
+      "scope": "helper"
+    },
+    {
+      "name": "RangeLaws.next_none_no_revival",
+      "module": "Proofs.RangeLaws",
+      "scope": "helper"
+    },
+    {
+      "name": "RangeLaws.finite_no_revival",
+      "module": "Proofs.RangeLaws",
+      "scope": "helper"
+    },
+    {
+      "name": "RangeMore.range_next_back_spec",
+      "module": "Proofs.RangeMore",
+      "scope": "public-model"
+    },
+    {
+      "name": "RangeMore.range_nth_spec",
+      "module": "Proofs.RangeMore",
+      "scope": "public-model",
+      "precondition": "System.Platform.numBits = 64"
+    },
+    {
+      "name": "RangeMore.range_nth_back_spec",
+      "module": "Proofs.RangeMore",
+      "scope": "public-model",
+      "precondition": "System.Platform.numBits = 64"
+    },
+    {
+      "name": "RangeMore.range_count_spec",
+      "module": "Proofs.RangeMore",
+      "scope": "public-model",
+      "precondition": "System.Platform.numBits = 64"
+    },
+    {
+      "name": "RangeMore.range_size_hint_spec",
+      "module": "Proofs.RangeMore",
+      "scope": "public-model",
+      "precondition": "System.Platform.numBits = 64"
+    },
+    {
+      "name": "RangeMore.range_last_spec",
+      "module": "Proofs.RangeMore",
+      "scope": "public-model"
+    },
+    {
+      "name": "RangeMore.range_min_spec",
+      "module": "Proofs.RangeMore",
+      "scope": "public-model"
+    },
+    {
+      "name": "RangeMore.range_max_spec",
+      "module": "Proofs.RangeMore",
+      "scope": "public-model"
+    },
+    {
+      "name": "RangeMore.ipv4_saturating_sub_spec",
+      "module": "Proofs.RangeMore",
+      "scope": "public-model"
+    },
+    {
+      "name": "RangeMore.ipv4_saturating_sub_addr_spec",
+      "module": "Proofs.RangeMore",
+      "scope": "public-model"
+    },
+    {
+      "name": "IPv4NetOps.default_spec",
+      "module": "Proofs.IPv4NetOps",
+      "scope": "public-model"
+    },
+    {
+      "name": "IPv4NetOps.from_ipv4_spec",
+      "module": "Proofs.IPv4NetOps",
+      "scope": "public-model"
+    },
+    {
+      "name": "IPv4NetOps.hosts_spec",
+      "module": "Proofs.IPv4NetOps",
+      "scope": "public-model",
+      "precondition": "n.prefix_len.val \u2264 32"
+    },
+    {
+      "name": "IPv4NetOps.subnets_spec",
+      "module": "Proofs.IPv4NetOps",
+      "scope": "public-model",
+      "precondition": "n.prefix_len.val \u2264 32"
+    },
+    {
+      "name": "IPv4NetOps.supernet_spec",
+      "module": "Proofs.IPv4NetOps",
+      "scope": "public-model",
+      "precondition": "n.prefix_len.val \u2264 32"
+    },
+    {
+      "name": "IPv4NetOps.is_sibling_spec",
+      "module": "Proofs.IPv4NetOps",
+      "scope": "public-model",
+      "precondition": "n.prefix_len.val \u2264 32 and m.prefix_len.val \u2264 32"
+    },
+    {
+      "name": "BitOps.ipv4_and_addr_spec",
+      "module": "Proofs.BitOps",
+      "scope": "public-model"
+    },
+    {
+      "name": "BitOps.ipv4_and_u32_spec",
+      "module": "Proofs.BitOps",
+      "scope": "public-model"
+    },
+    {
+      "name": "BitOps.ipv4_or_addr_spec",
+      "module": "Proofs.BitOps",
+      "scope": "public-model"
+    },
+    {
+      "name": "BitOps.ipv4_or_u32_spec",
+      "module": "Proofs.BitOps",
+      "scope": "public-model"
+    },
+    {
+      "name": "RangeMore.ipv4_sub_one_spec",
+      "module": "Proofs.RangeMore",
+      "scope": "helper"
+    },
+    {
+      "name": "RangeMore.backStep_lt",
+      "module": "Proofs.RangeMore",
+      "scope": "helper"
+    },
+    {
+      "name": "RangeMore.backStep_eq",
+      "module": "Proofs.RangeMore",
+      "scope": "helper"
+    },
+    {
+      "name": "RangeMore.backStep_gt",
+      "module": "Proofs.RangeMore",
+      "scope": "helper"
+    },
+    {
+      "name": "RangeMore.range_count_u64_spec",
+      "module": "Proofs.RangeMore",
+      "scope": "helper"
+    },
+    {
+      "name": "RangeMore.range_empty_no_revival",
+      "module": "Proofs.RangeMore",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv4NetMath.size_ge_four",
+      "module": "Proofs.IPv4NetMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv4NetMath.host_adjustment_bounds",
+      "module": "Proofs.IPv4NetMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv4NetMath.host_start_no_saturation",
+      "module": "Proofs.IPv4NetMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv4NetMath.host_endpoints_in_width",
+      "module": "Proofs.IPv4NetMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv4NetMath.hosts_remaining_lt31",
+      "module": "Proofs.IPv4NetMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv4NetMath.hosts_remaining_ge31",
+      "module": "Proofs.IPv4NetMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv4NetMath.hosts_remaining_nonempty",
+      "module": "Proofs.IPv4NetMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv4NetMath.parent_contains_child",
+      "module": "Proofs.IPv4NetMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv4NetMath.lower_eq_of_member_same_prefix",
+      "module": "Proofs.IPv4NetMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv4NetMath.parent_contains_child_iff_same_parent",
+      "module": "Proofs.IPv4NetMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv4MaskOps.ipv4_mask_to_prefix_spec",
+      "module": "Proofs.IPv4MaskOps",
+      "scope": "public-model"
+    },
+    {
+      "name": "IPv4MaskOps.with_netmask_spec",
+      "module": "Proofs.IPv4MaskOps",
+      "scope": "public-model"
+    },
+    {
+      "name": "IPv4MaskMath.mask_core",
+      "module": "Proofs.IPv4MaskMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv4MaskMath.lz_val",
+      "module": "Proofs.IPv4MaskMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv4MaskMath.not_val",
+      "module": "Proofs.IPv4MaskMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv4MaskMath.mask_numeric_iff",
+      "module": "Proofs.IPv4MaskMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv4MaskMath.log_pow_sub_one",
+      "module": "Proofs.IPv4MaskMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv4MaskMath.valid_mask_prefix",
+      "module": "Proofs.IPv4MaskMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv4MaskOps.prefix_bound",
+      "module": "Proofs.IPv4MaskOps",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv4MaskOps.shift_zero_iff",
+      "module": "Proofs.IPv4MaskOps",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv4MaskOps.candidate_spec",
+      "module": "Proofs.IPv4MaskOps",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv4SubnetMath.singleton_eligible",
+      "module": "Proofs.IPv4SubnetMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv4SubnetMath.eligible_exists",
+      "module": "Proofs.IPv4SubnetMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv4SubnetMath.best_eligible",
+      "module": "Proofs.IPv4SubnetMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv4SubnetMath.best_le_of_eligible",
+      "module": "Proofs.IPv4SubnetMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv4SubnetMath.best_eq_iff",
+      "module": "Proofs.IPv4SubnetMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv4SubnetMath.best_eq_max_of_thresholds",
+      "module": "Proofs.IPv4SubnetMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv4SubnetMath.best_bounds",
+      "module": "Proofs.IPv4SubnetMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv4SubnetMath.best_height_eligible",
+      "module": "Proofs.IPv4SubnetMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv4SubnetMath.height_le_best",
+      "module": "Proofs.IPv4SubnetMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv4SubnetMath.blockSize_pos",
+      "module": "Proofs.IPv4SubnetMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv4SubnetMath.block_fits",
+      "module": "Proofs.IPv4SubnetMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv4SubnetMath.block_aligned",
+      "module": "Proofs.IPv4SubnetMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv4SubnetMath.eligible_size_le_best",
+      "module": "Proofs.IPv4SubnetMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv4SubnetMath.block_canonical",
+      "module": "Proofs.IPv4SubnetMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv4SubnetMath.block_membership",
+      "module": "Proofs.IPv4SubnetMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv4SubnetMath.residual_partition",
+      "module": "Proofs.IPv4SubnetMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv4SubnetMath.residual_size",
+      "module": "Proofs.IPv4SubnetMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv4SubnetMath.residual_strictly_smaller",
+      "module": "Proofs.IPv4SubnetMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv4SubnetMath.selected_endpoint_in_range",
+      "module": "Proofs.IPv4SubnetMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv4SubnetMath.full_range_q0",
+      "module": "Proofs.IPv4SubnetMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv4SubnetMath.zero_singleton_q32",
+      "module": "Proofs.IPv4SubnetMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv4SubnetMath.max_singleton_q32",
+      "module": "Proofs.IPv4SubnetMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv4SubnetMath.best_q32",
+      "module": "Proofs.IPv4SubnetMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv4SubnetMath.full_range_best",
+      "module": "Proofs.IPv4SubnetMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv4SubnetBits.lz_eq_clz",
+      "module": "Proofs.IPv4SubnetBits",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv4SubnetBits.mod_pow_iff_bits",
+      "module": "Proofs.IPv4SubnetBits",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv4SubnetBits.ctz_mod_iff",
+      "module": "Proofs.IPv4SubnetBits",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv4SubnetBits.trailing_zeros_value",
+      "module": "Proofs.IPv4SubnetBits",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv4SubnetBits.trailing_zeros_mod_spec",
+      "module": "Proofs.IPv4SubnetBits",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv4SubnetBits.trailing_zeros_le_width",
+      "module": "Proofs.IPv4SubnetBits",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv4SubnetBits.start_prefix_alignment",
+      "module": "Proofs.IPv4SubnetBits",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv4SubnetRangeBits.leading_zeros_value",
+      "module": "Proofs.IPv4SubnetRangeBits",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv4SubnetRangeBits.leading_zeros_range_bounds",
+      "module": "Proofs.IPv4SubnetRangeBits",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv4SubnetRangeBits.complement_mod",
+      "module": "Proofs.IPv4SubnetRangeBits",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv4SubnetRangeBits.trailing_ones_mersenne",
+      "module": "Proofs.IPv4SubnetRangeBits",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv4SubnetRangeBits.range_threshold_nat",
+      "module": "Proofs.IPv4SubnetRangeBits",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv4SubnetStep.trailing_zeros_spec",
+      "module": "Proofs.IPv4SubnetStep",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv4SubnetStep.trailing_ones_spec",
+      "module": "Proofs.IPv4SubnetStep",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv4SubnetStep.constructor_remaining",
+      "module": "Proofs.IPv4SubnetStep",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv4SubnetStep.next_empty_spec",
+      "module": "Proofs.IPv4SubnetStep",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv4SubnetRangeBits.range_prefix_threshold",
+      "module": "Proofs.IPv4SubnetRangeBits",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv4SubnetRangeBits.range_prefix_all",
+      "module": "Proofs.IPv4SubnetRangeBits",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv4SubnetStep.u32_sub_ok",
+      "module": "Proofs.IPv4SubnetStep",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv4SubnetStep.u32_add_ok",
+      "module": "Proofs.IPv4SubnetStep",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv4SubnetStep.u32_to_u8_value",
+      "module": "Proofs.IPv4SubnetStep",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv4SubnetStep.u8_max_ok",
+      "module": "Proofs.IPv4SubnetStep",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv4SubnetStep.best_prefix_from_counts",
+      "module": "Proofs.IPv4SubnetStep",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv4SubnetStep.range_prefix_computation",
+      "module": "Proofs.IPv4SubnetStep",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv4SubnetStep.next_ipv4_subnet_live_spec",
+      "module": "Proofs.IPv4SubnetStep",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv4SubnetTraceMath.residual_valid",
+      "module": "Proofs.IPv4SubnetTraceMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv4SubnetTraceMath.trace_length_bound",
+      "module": "Proofs.IPv4SubnetTraceMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv4SubnetTraceMath.trace_empty_only",
+      "module": "Proofs.IPv4SubnetTraceMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv4SubnetTraceMath.trace_unique",
+      "module": "Proofs.IPv4SubnetTraceMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv4SubnetTraceMath.trace_exists",
+      "module": "Proofs.IPv4SubnetTraceMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv4SubnetTraceMath.trace_partition",
+      "module": "Proofs.IPv4SubnetTraceMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv4SubnetTraceMath.trace_canonical",
+      "module": "Proofs.IPv4SubnetTraceMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv4SubnetTraceMath.trace_output_start_in_range",
+      "module": "Proofs.IPv4SubnetTraceMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv4SubnetTraceMath.trace_ordered",
+      "module": "Proofs.IPv4SubnetTraceMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv4SubnetTraceMath.trace_pairwise_disjoint",
+      "module": "Proofs.IPv4SubnetTraceMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv4SubnetTraceMath.fixed_blocks_length",
+      "module": "Proofs.IPv4SubnetTraceMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv4SubnetTraceMath.fixed_blocks_mem_iff",
+      "module": "Proofs.IPv4SubnetTraceMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv4SubnetTraceMath.fixed_blocks_get_opt",
+      "module": "Proofs.IPv4SubnetTraceMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv4SubnetTraceMath.best_eq_requested",
+      "module": "Proofs.IPv4SubnetTraceMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv4SubnetTraceMath.fixed_trace",
+      "module": "Proofs.IPv4SubnetTraceMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv4SubnetTraceMath.network_size_factor",
+      "module": "Proofs.IPv4SubnetTraceMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv4SubnetTraceMath.network_lower_align_requested",
+      "module": "Proofs.IPv4SubnetTraceMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv4SubnetTraceMath.network_origin_fixed_trace",
+      "module": "Proofs.IPv4SubnetTraceMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv4SubnetTraceMath.network_origin_partition",
+      "module": "Proofs.IPv4SubnetTraceMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv4SubnetTraceMath.network_origin_count",
+      "module": "Proofs.IPv4SubnetTraceMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv4AddressEq.bytesValue_injective_same_length",
+      "module": "Proofs.IPv4AddressEq",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv4AddressEq.ipv4Value_injective",
+      "module": "Proofs.IPv4AddressEq",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv4AddressEq.ipv4Value_eq_iff",
+      "module": "Proofs.IPv4AddressEq",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv4SubnetStep.ipv4_eq_bool",
+      "module": "Proofs.IPv4SubnetEquality",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv4SubnetStep.ipv4_eq_value",
+      "module": "Proofs.IPv4SubnetEquality",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv4SubnetStateMath.residualBlock_eq_selected",
+      "module": "Proofs.IPv4SubnetStateMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv4SubnetStateMath.saturated_iff_max",
+      "module": "Proofs.IPv4SubnetStateMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv4SubnetStateMath.saturated_residual_empty",
+      "module": "Proofs.IPv4SubnetStateMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv4SubnetStateMath.unsaturated_residual",
+      "module": "Proofs.IPv4SubnetStateMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv4SubnetStateMath.singleton_residual_empty",
+      "module": "Proofs.IPv4SubnetStateMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv4SubnetStep.next_live_spec",
+      "module": "Proofs.IPv4SubnetIterator",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv4SubnetInvalid.ipv4_new_invalid",
+      "module": "Proofs.IPv4SubnetInvalid",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv4SubnetInvalid.ipv4_unwrap_invalid",
+      "module": "Proofs.IPv4SubnetInvalid",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv4SubnetInvalid.helper_invalid_live",
+      "module": "Proofs.IPv4SubnetInvalid",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv4SubnetInvalid.next_invalid_live",
+      "module": "Proofs.IPv4SubnetInvalid",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv4SubnetActualTrace.actual_trace_terminal",
+      "module": "Proofs.IPv4SubnetActualTrace",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv4SubnetActualTrace.transfer_of_law",
+      "module": "Proofs.IPv4SubnetActualTrace",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv4SubnetActualTrace.remaining_valid",
+      "module": "Proofs.IPv4SubnetActualTrace",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv4SubnetActualTrace.actual_trace_exists_of_law",
+      "module": "Proofs.IPv4SubnetActualTrace",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv4SubnetActualTrace.actual_trace_properties_of_law",
+      "module": "Proofs.IPv4SubnetActualTrace",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv4SubnetActualTrace.actual_trace_canonical_of_law",
+      "module": "Proofs.IPv4SubnetActualTrace",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv4SubnetActualTrace.constructor_fixed_trace_of_law",
+      "module": "Proofs.IPv4SubnetActualTrace",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv4SubnetActualTrace.liveLaw_checked",
+      "module": "Proofs.IPv4SubnetActualTrace",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv4SubnetActualTrace.actual_trace_exists",
+      "module": "Proofs.IPv4SubnetActualTrace",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv4SubnetActualTrace.actual_trace_properties",
+      "module": "Proofs.IPv4SubnetActualTrace",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv4SubnetActualTrace.actual_trace_canonical",
+      "module": "Proofs.IPv4SubnetActualTrace",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv4SubnetActualTrace.constructor_fixed_trace",
+      "module": "Proofs.IPv4SubnetActualTrace",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv4SubnetAll.next_raw_spec",
+      "module": "Proofs.IPv4SubnetAll",
+      "scope": "public-model",
+      "precondition": "true"
+    },
+    {
+      "name": "IPv4AggregateMath.merge_union",
+      "module": "Proofs.IPv4AggregateMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv4AggregateMath.saturated_touch_iff",
+      "module": "Proofs.IPv4AggregateMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv4AggregateMath.separated",
+      "module": "Proofs.IPv4AggregateMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv4AggregateMath.separated_order",
+      "module": "Proofs.IPv4AggregateMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv4Derived.clone_spec",
+      "module": "Proofs.IPv4Derived",
+      "scope": "public-model",
+      "precondition": "true"
+    },
+    {
+      "name": "IPv4Derived.eq_spec",
+      "module": "Proofs.IPv4Derived",
+      "scope": "public-model",
+      "precondition": "true"
+    },
+    {
+      "name": "IPv4Derived.cmp_spec",
+      "module": "Proofs.IPv4Derived",
+      "scope": "public-model",
+      "precondition": "true"
+    },
+    {
+      "name": "IPv4Derived.partial_cmp_spec",
+      "module": "Proofs.IPv4Derived",
+      "scope": "public-model",
+      "precondition": "true"
+    },
+    {
+      "name": "IPv4IteratorDerived.range_clone_spec",
+      "module": "Proofs.IPv4IteratorDerived",
+      "scope": "public-model",
+      "precondition": "true"
+    },
+    {
+      "name": "IPv4IteratorDerived.range_eq_spec",
+      "module": "Proofs.IPv4IteratorDerived",
+      "scope": "public-model",
+      "precondition": "true"
+    },
+    {
+      "name": "IPv4IteratorDerived.range_cmp_spec",
+      "module": "Proofs.IPv4IteratorDerived",
+      "scope": "public-model",
+      "precondition": "true"
+    },
+    {
+      "name": "IPv4IteratorDerived.range_partial_cmp_spec",
+      "module": "Proofs.IPv4IteratorDerived",
+      "scope": "public-model",
+      "precondition": "true"
+    },
+    {
+      "name": "IPv4IteratorDerived.subnets_clone_spec",
+      "module": "Proofs.IPv4IteratorDerived",
+      "scope": "public-model",
+      "precondition": "true"
+    },
+    {
+      "name": "IPv4IteratorDerived.subnets_eq_spec",
+      "module": "Proofs.IPv4IteratorDerived",
+      "scope": "public-model",
+      "precondition": "true"
+    },
+    {
+      "name": "IPv4IteratorDerived.subnets_cmp_spec",
+      "module": "Proofs.IPv4IteratorDerived",
+      "scope": "public-model",
+      "precondition": "true"
+    },
+    {
+      "name": "IPv4IteratorDerived.subnets_partial_cmp_spec",
+      "module": "Proofs.IPv4IteratorDerived",
+      "scope": "public-model",
+      "precondition": "true"
+    },
+    {
+      "name": "TaggedIPv4.from_ipv4_range_spec",
+      "module": "Proofs.TaggedIPv4",
+      "scope": "public-model",
+      "precondition": "true"
+    },
+    {
+      "name": "TaggedIPv4.from_ipv4_subnets_spec",
+      "module": "Proofs.TaggedIPv4",
+      "scope": "public-model",
+      "precondition": "true"
+    },
+    {
+      "name": "TaggedIPv4.from_ipv6_range_spec",
+      "module": "Proofs.TaggedIPv4",
+      "scope": "public-model",
+      "precondition": "true"
+    },
+    {
+      "name": "TaggedIPv4.from_ipv6_subnets_spec",
+      "module": "Proofs.TaggedIPv4",
+      "scope": "public-model",
+      "precondition": "true"
+    },
+    {
+      "name": "TaggedIPv4.hosts_v4_spec",
+      "module": "Proofs.TaggedIPv4",
+      "scope": "public-model",
+      "precondition": "n.prefix_len.val \u2264 32"
+    },
+    {
+      "name": "TaggedIPv4.subnets_v4_spec",
+      "module": "Proofs.TaggedIPv4",
+      "scope": "public-model",
+      "precondition": "n.prefix_len.val \u2264 32"
+    },
+    {
+      "name": "TaggedIPv4.supernet_v4_spec",
+      "module": "Proofs.TaggedIPv4",
+      "scope": "public-model",
+      "precondition": "n.prefix_len.val \u2264 32"
+    },
+    {
+      "name": "TaggedIPv4.is_sibling_v4_spec",
+      "module": "Proofs.TaggedIPv4",
+      "scope": "public-model",
+      "precondition": "n.prefix_len.val \u2264 32 and m.prefix_len.val \u2264 32"
+    },
+    {
+      "name": "TaggedIPv4.is_sibling_v4_v6_spec",
+      "module": "Proofs.TaggedIPv4",
+      "scope": "public-model",
+      "precondition": "true"
+    },
+    {
+      "name": "TaggedIPv4.is_sibling_v6_v4_spec",
+      "module": "Proofs.TaggedIPv4",
+      "scope": "public-model",
+      "precondition": "true"
+    },
+    {
+      "name": "TaggedDefaultFrom.ipnet_default_spec",
+      "module": "Proofs.TaggedDefaultFrom",
+      "scope": "public-model",
+      "precondition": "true"
+    },
+    {
+      "name": "TaggedDefaultFrom.ipnet_from_addr_spec",
+      "module": "Proofs.TaggedDefaultFrom",
+      "scope": "public-model",
+      "precondition": "true"
+    },
+    {
+      "name": "TaggedDefaultFrom.ipv6_from_addr_spec",
+      "module": "Proofs.TaggedDefaultFrom",
+      "scope": "public-model",
+      "precondition": "true"
+    },
+    {
+      "name": "IPv6NetMath.maxAddress_eq",
+      "module": "Proofs.IPv6NetMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6NetMath.host_endpoints_in_width",
+      "module": "Proofs.IPv6NetMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6NetMath.hosts_remaining_live",
+      "module": "Proofs.IPv6NetMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6NetMath.hosts_remaining_nonempty",
+      "module": "Proofs.IPv6NetMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6NetMath.hosts_remaining_size",
+      "module": "Proofs.IPv6NetMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6NetMath.hosts_remaining_zero",
+      "module": "Proofs.IPv6NetMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6NetMath.hosts_remaining_full",
+      "module": "Proofs.IPv6NetMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6NetMath.parent_contains_child",
+      "module": "Proofs.IPv6NetMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6NetMath.lower_eq_of_member_same_prefix",
+      "module": "Proofs.IPv6NetMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6NetMath.parent_contains_child_iff_same_parent",
+      "module": "Proofs.IPv6NetMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6NetOps.hosts_spec",
+      "module": "Proofs.IPv6NetOps",
+      "scope": "public-model",
+      "precondition": "n.prefix_len.val \u2264 128"
+    },
+    {
+      "name": "IPv6NetOps.subnets_spec",
+      "module": "Proofs.IPv6NetOps",
+      "scope": "public-model",
+      "precondition": "n.prefix_len.val \u2264 128"
+    },
+    {
+      "name": "IPv6NetOps.supernet_spec",
+      "module": "Proofs.IPv6NetOps",
+      "scope": "public-model",
+      "precondition": "n.prefix_len.val \u2264 128"
+    },
+    {
+      "name": "IPv6NetOps.is_sibling_spec",
+      "module": "Proofs.IPv6NetOps",
+      "scope": "public-model",
+      "precondition": "n.prefix_len.val \u2264 128 and m.prefix_len.val \u2264 128"
+    },
+    {
+      "name": "TaggedIPv6.hosts_v6_spec",
+      "module": "Proofs.TaggedIPv6",
+      "scope": "public-model",
+      "precondition": "n.prefix_len.val \u2264 128"
+    },
+    {
+      "name": "TaggedIPv6.subnets_v6_spec",
+      "module": "Proofs.TaggedIPv6",
+      "scope": "public-model",
+      "precondition": "n.prefix_len.val \u2264 128"
+    },
+    {
+      "name": "TaggedIPv6.supernet_v6_spec",
+      "module": "Proofs.TaggedIPv6",
+      "scope": "public-model",
+      "precondition": "n.prefix_len.val \u2264 128"
+    },
+    {
+      "name": "TaggedIPv6.is_sibling_v6_spec",
+      "module": "Proofs.TaggedIPv6",
+      "scope": "public-model",
+      "precondition": "n.prefix_len.val \u2264 128 and m.prefix_len.val \u2264 128"
+    },
+    {
+      "name": "IPv6AddressEq.ipv6Value_injective",
+      "module": "Proofs.IPv6AddressEq",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6AddressEq.ipv6Value_eq_iff",
+      "module": "Proofs.IPv6AddressEq",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6AddressEq.ipv6_eq_bool",
+      "module": "Proofs.IPv6AddressEq",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6AddressEq.ipv6_eq_value",
+      "module": "Proofs.IPv6AddressEq",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6Derived.net_clone_spec",
+      "module": "Proofs.IPv6Derived",
+      "scope": "public-model",
+      "precondition": "true"
+    },
+    {
+      "name": "IPv6Derived.net_eq_spec",
+      "module": "Proofs.IPv6Derived",
+      "scope": "public-model",
+      "precondition": "true"
+    },
+    {
+      "name": "IPv6Derived.net_cmp_spec",
+      "module": "Proofs.IPv6Derived",
+      "scope": "public-model",
+      "precondition": "true"
+    },
+    {
+      "name": "IPv6Derived.net_partial_cmp_spec",
+      "module": "Proofs.IPv6Derived",
+      "scope": "public-model",
+      "precondition": "true"
+    },
+    {
+      "name": "IPv6Derived.range_clone_spec",
+      "module": "Proofs.IPv6Derived",
+      "scope": "public-model",
+      "precondition": "true"
+    },
+    {
+      "name": "IPv6Derived.range_eq_spec",
+      "module": "Proofs.IPv6Derived",
+      "scope": "public-model",
+      "precondition": "true"
+    },
+    {
+      "name": "IPv6Derived.range_cmp_spec",
+      "module": "Proofs.IPv6Derived",
+      "scope": "public-model",
+      "precondition": "true"
+    },
+    {
+      "name": "IPv6Derived.range_partial_cmp_spec",
+      "module": "Proofs.IPv6Derived",
+      "scope": "public-model",
+      "precondition": "true"
+    },
+    {
+      "name": "IPv6Derived.subnets_clone_spec",
+      "module": "Proofs.IPv6Derived",
+      "scope": "public-model",
+      "precondition": "true"
+    },
+    {
+      "name": "IPv6Derived.subnets_eq_spec",
+      "module": "Proofs.IPv6Derived",
+      "scope": "public-model",
+      "precondition": "true"
+    },
+    {
+      "name": "IPv6Derived.subnets_cmp_spec",
+      "module": "Proofs.IPv6Derived",
+      "scope": "public-model",
+      "precondition": "true"
+    },
+    {
+      "name": "IPv6Derived.subnets_partial_cmp_spec",
+      "module": "Proofs.IPv6Derived",
+      "scope": "public-model",
+      "precondition": "true"
+    },
+    {
+      "name": "IPv6RangeMath.limit_pos",
+      "module": "Proofs.IPv6RangeMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6RangeMath.usize_limit_pos",
+      "module": "Proofs.IPv6RangeMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6RangeMath.usize_limit_lt_limit",
+      "module": "Proofs.IPv6RangeMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6RangeMath.card_empty",
+      "module": "Proofs.IPv6RangeMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6RangeMath.card_live",
+      "module": "Proofs.IPv6RangeMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6RangeMath.card_pos",
+      "module": "Proofs.IPv6RangeMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6RangeMath.card_le_limit",
+      "module": "Proofs.IPv6RangeMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6RangeMath.card_eq_limit_iff_full",
+      "module": "Proofs.IPv6RangeMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6RangeMath.countU128_some_iff",
+      "module": "Proofs.IPv6RangeMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6RangeMath.sizeHint_exact",
+      "module": "Proofs.IPv6RangeMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6RangeMath.countNormal_some_iff",
+      "module": "Proofs.IPv6RangeMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6RangeMath.countNormal_none_iff",
+      "module": "Proofs.IPv6RangeMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6RangeMath.sizeHint_overflow",
+      "module": "Proofs.IPv6RangeMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6RangeMath.sizeHint_full",
+      "module": "Proofs.IPv6RangeMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6RangeMath.nth_out_of_bounds",
+      "module": "Proofs.IPv6RangeMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6RangeMath.nth_last",
+      "module": "Proofs.IPv6RangeMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6RangeMath.nth_middle",
+      "module": "Proofs.IPv6RangeMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6RangeMath.nthBack_out_of_bounds",
+      "module": "Proofs.IPv6RangeMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6RangeMath.nthBack_last",
+      "module": "Proofs.IPv6RangeMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6RangeMath.nthBack_middle",
+      "module": "Proofs.IPv6RangeMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6RangeMath.nth_middle_card",
+      "module": "Proofs.IPv6RangeMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6RangeMath.nthBack_middle_card",
+      "module": "Proofs.IPv6RangeMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6RangeMath.countU128_full",
+      "module": "Proofs.IPv6RangeMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6RangeMath.nth_full",
+      "module": "Proofs.IPv6RangeMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6RangeMath.nthBack_full",
+      "module": "Proofs.IPv6RangeMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6RangeMath.exhausted_remaining",
+      "module": "Proofs.IPv6RangeMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6RangeMath.nth_no_revival",
+      "module": "Proofs.IPv6RangeMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6ConstructorMath.u16_to_be_bytes_value",
+      "module": "Proofs.IPv6ConstructorMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6ConstructorMath.bytesValue_append",
+      "module": "Proofs.IPv6ConstructorMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6ConstructorMath.segmentBytes_length",
+      "module": "Proofs.IPv6ConstructorMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6ConstructorMath.segmentBytes_value",
+      "module": "Proofs.IPv6ConstructorMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6ConstructorMath.eight_segments_bytes_length",
+      "module": "Proofs.IPv6ConstructorMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6ConstructorMath.eight_segments_value_bound",
+      "module": "Proofs.IPv6ConstructorMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6ConstructorMath.ipv6_new_value_spec",
+      "module": "Proofs.IPv6ConstructorMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6ConstructorMath.ipv6_new_zero_spec",
+      "module": "Proofs.IPv6ConstructorMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6ConstructorMath.ipv6_new_one_spec",
+      "module": "Proofs.IPv6ConstructorMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6ConstructorMath.ipv6_new_max_spec",
+      "module": "Proofs.IPv6ConstructorMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6RangeBasic.last_spec",
+      "module": "Proofs.IPv6RangeBasic",
+      "scope": "public-model",
+      "precondition": "true"
+    },
+    {
+      "name": "IPv6RangeBasic.max_spec",
+      "module": "Proofs.IPv6RangeBasic",
+      "scope": "public-model",
+      "precondition": "true"
+    },
+    {
+      "name": "IPv6RangeBasic.min_spec",
+      "module": "Proofs.IPv6RangeBasic",
+      "scope": "public-model",
+      "precondition": "true"
+    },
+    {
+      "name": "IPv6RangeBasic.ipv6_saturating_sub_addr_spec",
+      "module": "Proofs.IPv6RangeBasic",
+      "scope": "public-model",
+      "precondition": "true"
+    },
+    {
+      "name": "IPv6RangeBasic.count_u128_full_fail",
+      "module": "Proofs.IPv6RangeBasic",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6RangeBasic.count_u128_normal",
+      "module": "Proofs.IPv6RangeBasic",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6RangeBasic.can_count_u128_spec",
+      "module": "Proofs.IPv6RangeBasic",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6RangeBasic.count_normal_spec",
+      "module": "Proofs.IPv6RangeBasic",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6RangeBasic.count_overflow_spec",
+      "module": "Proofs.IPv6RangeBasic",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6RangeBasic.count_spec",
+      "module": "Proofs.IPv6RangeBasic",
+      "scope": "public-model",
+      "precondition": "System.Platform.numBits = 64"
+    },
+    {
+      "name": "IPv6RangeSteps.ipv6_saturating_add_spec",
+      "module": "Proofs.IPv6RangeSteps",
+      "scope": "public-model",
+      "precondition": "true"
+    },
+    {
+      "name": "IPv6RangeSteps.ipv6_add_one_spec",
+      "module": "Proofs.IPv6RangeSteps",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6RangeSteps.ipv6_saturating_sub_spec",
+      "module": "Proofs.IPv6RangeSteps",
+      "scope": "public-model",
+      "precondition": "true"
+    },
+    {
+      "name": "IPv6RangeSteps.ipv6_sub_one_spec",
+      "module": "Proofs.IPv6RangeSteps",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6RangeSteps.constructor_remaining",
+      "module": "Proofs.IPv6RangeSteps",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6RangeSteps.ipv6_replace_zero_spec",
+      "module": "Proofs.IPv6RangeSteps",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6RangeSteps.ipv6_replace_one_spec",
+      "module": "Proofs.IPv6RangeSteps",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6RangeSteps.range_next_spec",
+      "module": "Proofs.IPv6RangeSteps",
+      "scope": "public-model",
+      "precondition": "true"
+    },
+    {
+      "name": "IPv6RangeSteps.range_next_back_spec",
+      "module": "Proofs.IPv6RangeSteps",
+      "scope": "public-model",
+      "precondition": "true"
+    },
+    {
+      "name": "IPv6RangeSteps.range_empty_no_revival",
+      "module": "Proofs.IPv6RangeSteps",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6RangeSkips.size_hint_spec",
+      "module": "Proofs.IPv6RangeSkips",
+      "scope": "public-model",
+      "precondition": "System.Platform.numBits = 64"
+    },
+    {
+      "name": "IPv6RangeSkips.nth_spec",
+      "module": "Proofs.IPv6RangeSkips",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6RangeSkips.nth_back_spec",
+      "module": "Proofs.IPv6RangeSkips",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6RangeSkips.nth_remaining_spec",
+      "module": "Proofs.IPv6RangeSkips",
+      "scope": "public-model",
+      "precondition": "System.Platform.numBits = 64"
+    },
+    {
+      "name": "IPv6RangeSkips.nth_back_remaining_spec",
+      "module": "Proofs.IPv6RangeSkips",
+      "scope": "public-model",
+      "precondition": "System.Platform.numBits = 64"
+    },
+    {
+      "name": "IPv6RangeSkips.range_empty_no_revival",
+      "module": "Proofs.IPv6RangeSkips",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6RangeSkips.finite_mixed_no_revival",
+      "module": "Proofs.IPv6RangeSkips",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6MaskMath.mask_core",
+      "module": "Proofs.IPv6MaskMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6MaskMath.lz_val",
+      "module": "Proofs.IPv6MaskMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6MaskMath.not_val",
+      "module": "Proofs.IPv6MaskMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6MaskMath.mask_numeric_iff",
+      "module": "Proofs.IPv6MaskMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6MaskMath.log_pow_sub_one",
+      "module": "Proofs.IPv6MaskMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6MaskMath.valid_mask_prefix",
+      "module": "Proofs.IPv6MaskMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6MaskOps.prefix_bound",
+      "module": "Proofs.IPv6MaskOps",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6MaskOps.shift_zero_iff",
+      "module": "Proofs.IPv6MaskOps",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6MaskOps.candidate_spec",
+      "module": "Proofs.IPv6MaskOps",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6MaskOps.ipv6_mask_to_prefix_spec",
+      "module": "Proofs.IPv6MaskOps",
+      "scope": "public-model",
+      "precondition": "true"
+    },
+    {
+      "name": "IPv6MaskOps.with_netmask_spec",
+      "module": "Proofs.IPv6MaskOps",
+      "scope": "public-model",
+      "precondition": "true"
+    },
+    {
+      "name": "IPv6BitOps.ipv6_and_addr_spec",
+      "module": "Proofs.IPv6BitOps",
+      "scope": "public-model",
+      "precondition": "true"
+    },
+    {
+      "name": "IPv6BitOps.ipv6_and_u128_spec",
+      "module": "Proofs.IPv6BitOps",
+      "scope": "public-model",
+      "precondition": "true"
+    },
+    {
+      "name": "IPv6BitOps.ipv6_or_addr_spec",
+      "module": "Proofs.IPv6BitOps",
+      "scope": "public-model",
+      "precondition": "true"
+    },
+    {
+      "name": "IPv6BitOps.ipv6_or_u128_spec",
+      "module": "Proofs.IPv6BitOps",
+      "scope": "public-model",
+      "precondition": "true"
+    },
+    {
+      "name": "IPv6Default.default_spec",
+      "module": "Proofs.IPv6Default",
+      "scope": "public-model",
+      "precondition": "true"
+    },
+    {
+      "name": "IPv6SubnetMath.singleton_eligible",
+      "module": "Proofs.IPv6SubnetMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6SubnetMath.eligible_exists",
+      "module": "Proofs.IPv6SubnetMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6SubnetMath.best_eligible",
+      "module": "Proofs.IPv6SubnetMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6SubnetMath.best_le_of_eligible",
+      "module": "Proofs.IPv6SubnetMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6SubnetMath.best_eq_iff",
+      "module": "Proofs.IPv6SubnetMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6SubnetMath.best_eq_max_of_thresholds",
+      "module": "Proofs.IPv6SubnetMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6SubnetMath.best_bounds",
+      "module": "Proofs.IPv6SubnetMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6SubnetMath.best_height_eligible",
+      "module": "Proofs.IPv6SubnetMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6SubnetMath.height_le_best",
+      "module": "Proofs.IPv6SubnetMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6SubnetMath.blockSize_pos",
+      "module": "Proofs.IPv6SubnetMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6SubnetMath.block_fits",
+      "module": "Proofs.IPv6SubnetMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6SubnetMath.block_aligned",
+      "module": "Proofs.IPv6SubnetMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6SubnetMath.eligible_size_le_best",
+      "module": "Proofs.IPv6SubnetMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6SubnetMath.block_canonical",
+      "module": "Proofs.IPv6SubnetMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6SubnetMath.block_membership",
+      "module": "Proofs.IPv6SubnetMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6SubnetMath.residual_partition",
+      "module": "Proofs.IPv6SubnetMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6SubnetMath.residual_size",
+      "module": "Proofs.IPv6SubnetMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6SubnetMath.residual_strictly_smaller",
+      "module": "Proofs.IPv6SubnetMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6SubnetMath.selected_endpoint_in_range",
+      "module": "Proofs.IPv6SubnetMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6SubnetMath.full_range_q0",
+      "module": "Proofs.IPv6SubnetMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6SubnetMath.zero_singleton_q128",
+      "module": "Proofs.IPv6SubnetMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6SubnetMath.max_singleton_q128",
+      "module": "Proofs.IPv6SubnetMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6SubnetMath.best_q128",
+      "module": "Proofs.IPv6SubnetMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6SubnetMath.full_range_best",
+      "module": "Proofs.IPv6SubnetMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6SubnetBits.lz_eq_clz",
+      "module": "Proofs.IPv6SubnetBits",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6SubnetBits.mod_pow_iff_bits",
+      "module": "Proofs.IPv6SubnetBits",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6SubnetBits.ctz_mod_iff",
+      "module": "Proofs.IPv6SubnetBits",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6SubnetBits.trailing_zeros_value",
+      "module": "Proofs.IPv6SubnetBits",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6SubnetBits.trailing_zeros_mod_spec",
+      "module": "Proofs.IPv6SubnetBits",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6SubnetBits.trailing_zeros_le_width",
+      "module": "Proofs.IPv6SubnetBits",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6SubnetBits.start_prefix_alignment",
+      "module": "Proofs.IPv6SubnetBits",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6SubnetRangeBits.leading_zeros_value",
+      "module": "Proofs.IPv6SubnetRangeBits",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6SubnetRangeBits.leading_zeros_range_bounds",
+      "module": "Proofs.IPv6SubnetRangeBits",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6SubnetRangeBits.complement_mod",
+      "module": "Proofs.IPv6SubnetRangeBits",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6SubnetRangeBits.trailing_ones_mersenne",
+      "module": "Proofs.IPv6SubnetRangeBits",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6SubnetRangeBits.range_threshold_nat",
+      "module": "Proofs.IPv6SubnetRangeBits",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6SubnetRangeBits.range_prefix_threshold",
+      "module": "Proofs.IPv6SubnetRangeBits",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6SubnetRangeBits.range_prefix_all",
+      "module": "Proofs.IPv6SubnetRangeBits",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6SubnetStateMath.residualBlock_eq_selected",
+      "module": "Proofs.IPv6SubnetStateMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6SubnetStateMath.saturated_iff_max",
+      "module": "Proofs.IPv6SubnetStateMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6SubnetStateMath.saturated_residual_empty",
+      "module": "Proofs.IPv6SubnetStateMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6SubnetStateMath.unsaturated_residual",
+      "module": "Proofs.IPv6SubnetStateMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6SubnetStateMath.singleton_residual_empty",
+      "module": "Proofs.IPv6SubnetStateMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6SubnetTraceMath.residual_valid",
+      "module": "Proofs.IPv6SubnetTraceMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6SubnetTraceMath.trace_length_bound",
+      "module": "Proofs.IPv6SubnetTraceMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6SubnetTraceMath.trace_empty_only",
+      "module": "Proofs.IPv6SubnetTraceMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6SubnetTraceMath.trace_unique",
+      "module": "Proofs.IPv6SubnetTraceMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6SubnetTraceMath.trace_exists",
+      "module": "Proofs.IPv6SubnetTraceMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6SubnetTraceMath.trace_partition",
+      "module": "Proofs.IPv6SubnetTraceMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6SubnetTraceMath.trace_canonical",
+      "module": "Proofs.IPv6SubnetTraceMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6SubnetTraceMath.trace_output_start_in_range",
+      "module": "Proofs.IPv6SubnetTraceMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6SubnetTraceMath.trace_ordered",
+      "module": "Proofs.IPv6SubnetTraceMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6SubnetTraceMath.trace_pairwise_disjoint",
+      "module": "Proofs.IPv6SubnetTraceMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6SubnetTraceMath.fixed_blocks_length",
+      "module": "Proofs.IPv6SubnetTraceMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6SubnetTraceMath.fixed_blocks_mem_iff",
+      "module": "Proofs.IPv6SubnetTraceMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6SubnetTraceMath.fixed_blocks_get_opt",
+      "module": "Proofs.IPv6SubnetTraceMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6SubnetTraceMath.best_eq_requested",
+      "module": "Proofs.IPv6SubnetTraceMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6SubnetTraceMath.fixed_trace",
+      "module": "Proofs.IPv6SubnetTraceMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6SubnetTraceMath.network_size_factor",
+      "module": "Proofs.IPv6SubnetTraceMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6SubnetTraceMath.network_lower_align_requested",
+      "module": "Proofs.IPv6SubnetTraceMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6SubnetTraceMath.network_origin_fixed_trace",
+      "module": "Proofs.IPv6SubnetTraceMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6SubnetTraceMath.network_origin_partition",
+      "module": "Proofs.IPv6SubnetTraceMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6SubnetTraceMath.network_origin_count",
+      "module": "Proofs.IPv6SubnetTraceMath",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6SubnetStep.u128_sub_ok",
+      "module": "Proofs.IPv6SubnetStep",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6SubnetStep.u32_to_u8_value",
+      "module": "Proofs.IPv6SubnetStep",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6SubnetStep.trailing_ones_spec",
+      "module": "Proofs.IPv6SubnetStep",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6SubnetStep.best_prefix_from_counts",
+      "module": "Proofs.IPv6SubnetStep",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6SubnetStep.range_prefix_computation",
+      "module": "Proofs.IPv6SubnetStep",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6SubnetStep.next_ipv6_subnet_live_spec",
+      "module": "Proofs.IPv6SubnetStep",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6SubnetStep.constructor_remaining",
+      "module": "Proofs.IPv6SubnetStep",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6SubnetStep.next_empty_spec",
+      "module": "Proofs.IPv6SubnetStep",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6SubnetStep.next_live_spec",
+      "module": "Proofs.IPv6SubnetIterator",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6SubnetInvalid.ipv6_new_invalid",
+      "module": "Proofs.IPv6SubnetInvalid",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6SubnetInvalid.ipv6_unwrap_invalid",
+      "module": "Proofs.IPv6SubnetInvalid",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6SubnetInvalid.helper_invalid_live",
+      "module": "Proofs.IPv6SubnetInvalid",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6SubnetInvalid.next_invalid_live",
+      "module": "Proofs.IPv6SubnetInvalid",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6SubnetActualTrace.actual_trace_terminal",
+      "module": "Proofs.IPv6SubnetActualTrace",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6SubnetActualTrace.transfer_of_law",
+      "module": "Proofs.IPv6SubnetActualTrace",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6SubnetActualTrace.remaining_valid",
+      "module": "Proofs.IPv6SubnetActualTrace",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6SubnetActualTrace.actual_trace_exists_of_law",
+      "module": "Proofs.IPv6SubnetActualTrace",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6SubnetActualTrace.actual_trace_properties_of_law",
+      "module": "Proofs.IPv6SubnetActualTrace",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6SubnetActualTrace.actual_trace_canonical_of_law",
+      "module": "Proofs.IPv6SubnetActualTrace",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6SubnetActualTrace.constructor_fixed_trace_of_law",
+      "module": "Proofs.IPv6SubnetActualTrace",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6SubnetActualTrace.liveLaw_checked",
+      "module": "Proofs.IPv6SubnetActualTrace",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6SubnetActualTrace.actual_trace_exists",
+      "module": "Proofs.IPv6SubnetActualTrace",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6SubnetActualTrace.actual_trace_properties",
+      "module": "Proofs.IPv6SubnetActualTrace",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6SubnetActualTrace.actual_trace_canonical",
+      "module": "Proofs.IPv6SubnetActualTrace",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6SubnetActualTrace.constructor_fixed_trace",
+      "module": "Proofs.IPv6SubnetActualTrace",
+      "scope": "helper"
+    },
+    {
+      "name": "IPv6SubnetAll.next_raw_spec",
+      "module": "Proofs.IPv6SubnetAll",
+      "scope": "public-model",
+      "precondition": "true"
+    },
+    {
+      "name": "TaggedSubnets.forward_v4_ok",
+      "module": "Proofs.TaggedSubnets",
+      "scope": "helper"
+    },
+    {
+      "name": "TaggedSubnets.forward_v6_ok",
+      "module": "Proofs.TaggedSubnets",
+      "scope": "helper"
+    },
+    {
+      "name": "TaggedSubnets.forward_v4_panic",
+      "module": "Proofs.TaggedSubnets",
+      "scope": "helper"
+    },
+    {
+      "name": "TaggedSubnets.forward_v6_panic",
+      "module": "Proofs.TaggedSubnets",
+      "scope": "helper"
+    },
+    {
+      "name": "TaggedSubnets.next_v4_raw_spec",
+      "module": "Proofs.TaggedSubnets",
+      "scope": "helper"
+    },
+    {
+      "name": "TaggedSubnets.next_v6_raw_spec",
+      "module": "Proofs.TaggedSubnets",
+      "scope": "helper"
+    },
+    {
+      "name": "TaggedSubnets.next_raw_spec",
+      "module": "Proofs.TaggedSubnets",
+      "scope": "public-model",
+      "precondition": "true"
+    },
+    {
+      "name": "TaggedRange.next_spec",
+      "module": "Proofs.TaggedRange",
+      "scope": "public-model",
+      "precondition": "true"
+    },
+    {
+      "name": "TaggedRange.next_back_spec",
+      "module": "Proofs.TaggedRange",
+      "scope": "public-model",
+      "precondition": "true"
+    },
+    {
+      "name": "TaggedRange.nth_spec",
+      "module": "Proofs.TaggedRange",
+      "scope": "public-model",
+      "precondition": "System.Platform.numBits = 64"
+    },
+    {
+      "name": "TaggedRange.nth_back_spec",
+      "module": "Proofs.TaggedRange",
+      "scope": "public-model",
+      "precondition": "System.Platform.numBits = 64"
+    },
+    {
+      "name": "TaggedRange.last_spec",
+      "module": "Proofs.TaggedRange",
+      "scope": "public-model",
+      "precondition": "true"
+    },
+    {
+      "name": "TaggedRange.max_spec",
+      "module": "Proofs.TaggedRange",
+      "scope": "public-model",
+      "precondition": "true"
+    },
+    {
+      "name": "TaggedRange.min_spec",
+      "module": "Proofs.TaggedRange",
+      "scope": "public-model",
+      "precondition": "true"
+    },
+    {
+      "name": "TaggedRange.size_hint_spec",
+      "module": "Proofs.TaggedRange",
+      "scope": "public-model",
+      "precondition": "System.Platform.numBits = 64"
+    },
+    {
+      "name": "TaggedRange.count_spec",
+      "module": "Proofs.TaggedRange",
+      "scope": "public-model",
+      "precondition": "System.Platform.numBits = 64"
+    },
+    {
+      "name": "TaggedMask.candidate",
+      "module": "Proofs.TaggedMask",
+      "scope": "helper",
+      "precondition": "true"
+    },
+    {
+      "name": "TaggedMask.expectedNet_injective",
+      "module": "Proofs.TaggedMask",
+      "scope": "helper",
+      "precondition": "true"
+    },
+    {
+      "name": "TaggedMask.ip_mask_to_prefix_spec",
+      "module": "Proofs.TaggedMask",
+      "scope": "public-model",
+      "precondition": "true"
+    },
+    {
+      "name": "TaggedMask.with_netmask_spec",
+      "module": "Proofs.TaggedMask",
+      "scope": "public-model",
+      "precondition": "true"
+    },
+    {
+      "name": "NewAssertInvalid.ipv4_invalid",
+      "module": "Proofs.NewAssertInvalid",
+      "scope": "helper",
+      "precondition": "prefix exceeds address-family width"
+    },
+    {
+      "name": "NewAssertInvalid.ipv6_invalid",
+      "module": "Proofs.NewAssertInvalid",
+      "scope": "helper",
+      "precondition": "prefix exceeds address-family width"
+    },
+    {
+      "name": "NewAssertInvalid.tagged_invalid",
+      "module": "Proofs.NewAssertInvalid",
+      "scope": "helper",
+      "precondition": "prefix exceeds address-family width"
+    },
+    {
+      "name": "NewAssertInvalid.ipv4_full_spec",
+      "module": "Proofs.NewAssertInvalid",
+      "scope": "public-model",
+      "precondition": "true"
+    },
+    {
+      "name": "NewAssertInvalid.ipv6_full_spec",
+      "module": "Proofs.NewAssertInvalid",
+      "scope": "public-model",
+      "precondition": "true"
+    },
+    {
+      "name": "NewAssertInvalid.tagged_full_spec",
+      "module": "Proofs.NewAssertInvalid",
+      "scope": "public-model",
+      "precondition": "true"
+    },
+    {
+      "name": "TaggedDerived.net_clone_spec",
+      "module": "Proofs.TaggedDerived",
+      "scope": "public-model",
+      "precondition": "true"
+    },
+    {
+      "name": "TaggedDerived.net_eq_spec",
+      "module": "Proofs.TaggedDerived",
+      "scope": "public-model",
+      "precondition": "true"
+    },
+    {
+      "name": "TaggedDerived.net_cmp_spec",
+      "module": "Proofs.TaggedDerived",
+      "scope": "public-model",
+      "precondition": "true"
+    },
+    {
+      "name": "TaggedDerived.net_partial_cmp_spec",
+      "module": "Proofs.TaggedDerived",
+      "scope": "public-model",
+      "precondition": "true"
+    },
+    {
+      "name": "TaggedDerived.range_clone_spec",
+      "module": "Proofs.TaggedDerived",
+      "scope": "public-model",
+      "precondition": "true"
+    },
+    {
+      "name": "TaggedDerived.range_eq_spec",
+      "module": "Proofs.TaggedDerived",
+      "scope": "public-model",
+      "precondition": "true"
+    },
+    {
+      "name": "TaggedDerived.range_cmp_spec",
+      "module": "Proofs.TaggedDerived",
+      "scope": "public-model",
+      "precondition": "true"
+    },
+    {
+      "name": "TaggedDerived.range_partial_cmp_spec",
+      "module": "Proofs.TaggedDerived",
+      "scope": "public-model",
+      "precondition": "true"
+    },
+    {
+      "name": "TaggedDerived.subnets_clone_spec",
+      "module": "Proofs.TaggedDerived",
+      "scope": "public-model",
+      "precondition": "true"
+    },
+    {
+      "name": "TaggedDerived.subnets_eq_spec",
+      "module": "Proofs.TaggedDerived",
+      "scope": "public-model",
+      "precondition": "true"
+    },
+    {
+      "name": "TaggedDerived.subnets_cmp_spec",
+      "module": "Proofs.TaggedDerived",
+      "scope": "public-model",
+      "precondition": "true"
+    },
+    {
+      "name": "TaggedDerived.subnets_partial_cmp_spec",
+      "module": "Proofs.TaggedDerived",
+      "scope": "public-model",
+      "precondition": "true"
+    },
+    {
+      "name": "PrefixLenErrorValue.clone_spec",
+      "module": "Proofs.PrefixLenErrorValue",
+      "scope": "public-model",
+      "precondition": "true"
+    },
+    {
+      "name": "PrefixLenErrorValue.eq_spec",
+      "module": "Proofs.PrefixLenErrorValue",
+      "scope": "public-model",
+      "precondition": "true"
+    },
+    {
+      "name": "AddrParseErrorValue.clone_spec",
+      "module": "Proofs.AddrParseErrorValue",
+      "scope": "public-model",
+      "precondition": "true"
+    },
+    {
+      "name": "AddrParseErrorValue.eq_spec",
+      "module": "Proofs.AddrParseErrorValue",
+      "scope": "public-model",
+      "precondition": "true"
+    },
+    {
+      "name": "SubnetMinimumMath.aligned_no_cross",
+      "module": "Proofs.SubnetMinimumMath",
+      "scope": "helper",
+      "precondition": "theorem-specific hypotheses"
+    },
+    {
+      "name": "SubnetMinimumMath.greedy_boundary_no_cross",
+      "module": "Proofs.SubnetMinimumMath",
+      "scope": "helper",
+      "precondition": "theorem-specific hypotheses"
+    },
+    {
+      "name": "SubnetMinimumMath.candidate_interval",
+      "module": "Proofs.SubnetMinimumMath",
+      "scope": "helper",
+      "precondition": "theorem-specific hypotheses"
+    },
+    {
+      "name": "SubnetMinimumMath.candidate_inside_of_cover",
+      "module": "Proofs.SubnetMinimumMath",
+      "scope": "helper",
+      "precondition": "theorem-specific hypotheses"
+    },
+    {
+      "name": "SubnetMinimumMath.trace_minimum",
+      "module": "Proofs.SubnetMinimumMath",
+      "scope": "helper",
+      "precondition": "theorem-specific hypotheses"
+    },
+    {
+      "name": "SubnetMinimumMath.from_ipv4_trace",
+      "module": "Proofs.SubnetMinimumMath",
+      "scope": "helper",
+      "precondition": "theorem-specific hypotheses"
+    },
+    {
+      "name": "SubnetMinimumMath.from_ipv6_trace",
+      "module": "Proofs.SubnetMinimumMath",
+      "scope": "helper",
+      "precondition": "theorem-specific hypotheses"
+    },
+    {
+      "name": "SubnetMinimumMath.ipv4_trace_minimum",
+      "module": "Proofs.SubnetMinimumMath",
+      "scope": "helper",
+      "precondition": "theorem-specific hypotheses"
+    },
+    {
+      "name": "SubnetMinimumMath.ipv6_trace_minimum",
+      "module": "Proofs.SubnetMinimumMath",
+      "scope": "helper",
+      "precondition": "theorem-specific hypotheses"
+    },
+    {
+      "name": "SubnetMinimumActual.ipv4_actual_trace_minimum",
+      "module": "Proofs.SubnetMinimumActual",
+      "scope": "helper",
+      "precondition": "valid requested subnet prefix; arbitrary raw endpoints and canonical exact-cover competitors"
+    },
+    {
+      "name": "SubnetMinimumActual.ipv6_actual_trace_minimum",
+      "module": "Proofs.SubnetMinimumActual",
+      "scope": "helper",
+      "precondition": "valid requested subnet prefix; arbitrary raw endpoints and canonical exact-cover competitors"
+    }
+  ],
+  "mapping_metadata_checked": true,
+  "allowed_axioms": [
+    "propext",
+    "Classical.choice",
+    "Quot.sound"
+  ],
+  "files_sha256": {
+    "Audit0.lean": "79aadb17e3c0a6bd690256a2a9ca644fa93408406e19140cb271a235d31bb43a",
+    "Audit1.lean": "31e9eb7c236de3acf22bbe069e440c5e8d7ee3187baf6056c7d9dce0c1a814e4",
+    "Audit10.lean": "6ddba6b35804ad64ffb38185e1ff541d4bfe2813d438f38c98308b8e8632a534",
+    "Audit11.lean": "0a49e7781cbad1fa53881c91ac8738178896b88a4565976efd7613a81dfdd6cf",
+    "Audit12.lean": "8f898935fd3047b82dc0c20235bbe5ed60e656f1a7d02ef95293800c1b4446d5",
+    "Audit13.lean": "fcb440b654099c0cd43e68c328ba86d2edd954f08273a67fb631e1c8f6edbb69",
+    "Audit14.lean": "b7994b7f24b7754604a3842a92676e6208010ecf83e8f40e0a76c48f0977bfeb",
+    "Audit15.lean": "4a1d161f590375eba911a619f2c541fca32dd51975bd2aa22fa335f2ae7ed443",
+    "Audit16.lean": "37fad3bc355b27e61028f30fcc1baa9a2c19deebe6eb2485cfcc3f1562f34412",
+    "Audit17.lean": "a98df5f8337ac7be648a32b123656ed6c6a5c440e8518c894f7b4293e70cd3f0",
+    "Audit18.lean": "7a091892a2c5b5cbc9ab5d995d58180e38c9b32d68c1dc131ef29279bcfa1377",
+    "Audit19.lean": "433f1be71b6dd02eb959507e56c0ceca6f13a1c101c0c4023aa6be023a934cd7",
+    "Audit2.lean": "5f5840243707f44f68acc416bfe6d8ee507428c2a88ad8c3fcc0348397f1d358",
+    "Audit20.lean": "f109c05b164c132084274b3ec8aa5b316a3d56b8187a721fa98b51d20e539fb0",
+    "Audit21.lean": "76d3f6e4c47341cbc74060340444428fe092f88aad451d8a9cce5ffd9039c3d7",
+    "Audit22.lean": "db4b620ce62db5469f3e3b3cfcf762b0182fb6d64d27c37b8727a453b06124f7",
+    "Audit23.lean": "d2fdcc6ca04f567a3935034d661455579aebe08f838becd0f8d1207057f235c3",
+    "Audit24.lean": "6bbdebc5eff98b7f1255441abda37cc7cff3c2d8f70aecb5f1ce20265df5c4fb",
+    "Audit25.lean": "bdf289f0002c3a64189936c41d17505cda073f7f9ffd13faff78803b0deb5c52",
+    "Audit26.lean": "976a2b63715a7db3a7beb27bd845610d1fa24ee9c8cab27f5ee2ee9759bb0bbd",
+    "Audit27.lean": "6ab1078edadbfab293e0ed4afb2908c148d05e5689baff2a2357f0cc91b7fc98",
+    "Audit28.lean": "5428bffbc28971da1e9f47e373179785e5bee3cdca8e2f7847e28d4cdbfcc4c5",
+    "Audit29.lean": "da76ab6c44ce750f1029e4c1b46296f21d9db0e2348a8dade305d30ea7a926cf",
+    "Audit3.lean": "d90934aa22d70a00a3f62c1952f862d4f356a254cd7378049aa7430f48940875",
+    "Audit30.lean": "34ea7d641bcdcc5cba1a23a27e3bba99edaed6f20c35935cdfa320aa0472705e",
+    "Audit31.lean": "68053ce697315ef61c0255a31f0a070b30b141e2fec3883c8eee49cabb206b96",
+    "Audit32.lean": "d2c6f93f90bf083eecb090da29daea5d34c243b85f1b42721fab39ad08fddcbd",
+    "Audit33.lean": "3eb1bc32aa05c975a1d56118919972b06e04f5c5555923ee1f66d16bbee59fb7",
+    "Audit34.lean": "ea931c30c65519d5022fdbbc5e774551b62f577762da98bd5650cfb37269b88a",
+    "Audit35.lean": "4c3354ece903a2850b36a9291584626c251d63b8a843c844d9defb47eb36efd8",
+    "Audit36.lean": "8c41f406e31ce069dda5ba6638f2c18f6803fcbfc253f0e6896dea6a3ddd0aa0",
+    "Audit37.lean": "b42ee15595c11d3c0290de662c86c09e938325e93f192434c38499b5cf1b2801",
+    "Audit38.lean": "f93eb5740a435081e650e1ea4070964eb357c440108788a08baf9f5446d682d5",
+    "Audit39.lean": "0d177fcb2ec4bf2c0d00e3b1a9c6307dc0d803ff7ab3babf949bbe36d50027ce",
+    "Audit4.lean": "02dc3e50bf23a78440f1bf86619211ebf3deb7cdee64600a28b56b3cbfba1f65",
+    "Audit40.lean": "f899a85aac82231167ab7ffd7fdc56fe2dcd12e97d85b01659c3efbfd09657c1",
+    "Audit41.lean": "38fa8e9c784449a7a917b610bf0f2247cdddce390f64c1cbfe61e643ec9606d6",
+    "Audit42.lean": "95363014b49998a7cc337f6410c9714c2f9d3bdb863c249328e04459f38c6bd0",
+    "Audit43.lean": "dea8707e25304b15adfc4d4539bd34a1873c38ce9388dc418cb8151119637f8c",
+    "Audit44.lean": "25637f1e0408866053209218211091d05c06c2c5e0f8065583ee69bfd570e7a3",
+    "Audit45.lean": "ed89b6a1ab779182e08a401db764b04b8518a3dceaf5769c197bc21a187a8147",
+    "Audit46.lean": "795d3188ce43cb512c105e2ab1c7fba67d689e0b5a4528984f6949011293fa45",
+    "Audit47.lean": "2946f564de959ec49e7ab69d17bca33d2b14318f13aaea640b687c8de546cda4",
+    "Audit48.lean": "4c6a562a822f0fe9b6707c7695ffc4963c616a02375b5e088eb67c5f8afddcdc",
+    "Audit49.lean": "a677f8259398c8baeba0f8c9b30954e364c0eb804042d1b08902f9ffc34916e9",
+    "Audit5.lean": "2dd655fd74151add4cd48bde73706386ea1671e85b5aad19425c08ef0bba9999",
+    "Audit50.lean": "b946d166c600a4877f706c2aee6df195157cd0fee21e4e37f438f7bb0171cfa1",
+    "Audit51.lean": "303188301cdd4e10f8db867257a409e0a8b2ef332c53490ffd5ce25bfef868ab",
+    "Audit52.lean": "bc404353047b4ce9028e5a2e6811c46f25222f855f78377b7fa0e9e862da64ad",
+    "Audit53.lean": "4c32811dbac88319c8f152c1e83c75fc3de44782b7d8ee3671de265b5b77e9b7",
+    "Audit54.lean": "7791ac237f3479ef4d6ade440a5a82b71a4e0f7c746edf5226b2b530bb23ada9",
+    "Audit55.lean": "7383085fc473bfa6147b46b1bf835dc0aa003b34121862bee9eab302665ce686",
+    "Audit56.lean": "745236386745f46467332abcec292df6b29cfce7eb5cbbde3bffc77c29d54e85",
+    "Audit57.lean": "5b254244aac942759ac7c00881f79416cefee19e6e9a05115228289db5d823f1",
+    "Audit58.lean": "d42f9f7e83e3c8a401f1423b5c0fd765dcf6eeb5be2de5835d071da78f91bd86",
+    "Audit59.lean": "4db65fdb2a1232e27b72c5d220a1a7c39ce4760c078ab85f5bcf5f5ac423d56f",
+    "Audit6.lean": "058b7a0a100ce3dbbef8d3ffb3d523bd8e3ff11daf90818ae316519f7b7c7dc5",
+    "Audit60.lean": "5a08f13cecdf53353726ec152508c28a21483774ce7354f56170536bf192ca70",
+    "Audit61.lean": "ecbc973458087601dad9f522f1dc8c91381c89c79a8984c73f380059e7af70de",
+    "Audit62.lean": "c0d6f0de33dd2fbc73a36ad407b0974afdbee6d8e3b983194043b34d770dbdf1",
+    "Audit63.lean": "7a08e136e7c09a85596c3491e0aa2f00d3b0be011e4ac72fda97ac6484943f7e",
+    "Audit64.lean": "9cbac5fb5bb0e4f65ded959c449ce9f4bf7572a4dae85fbe656a2d663f3504bd",
+    "Audit65.lean": "558f05ae78906b36a4dbc817e3083f8a37ede3e289451623b1dd3407208071bf",
+    "Audit66.lean": "240086a9e96fa9d2c8403ad8d88763aa9582bab21c9388dfdcdc0a2ecec5588f",
+    "Audit67.lean": "96e87e4b99e7f889527394098c98ec5ab8dcbddd48da2bd4db6147337c49f86c",
+    "Audit68.lean": "b5a2d84d734ad4cf3c32b15f25730d531758696c29ef680fc892b38ed8405621",
+    "Audit69.lean": "1f3d112d7dccac66a578162e52fbdf5944fc49176c8204a3824137862360ac8b",
+    "Audit7.lean": "4f7496d7cd6419b615eaf734b59ff5650aed4b477ed88271f5ab9291d18c23de",
+    "Audit8.lean": "7060e6b13880f441f4db4f8fc7ebb6003e9aa5f3d1e4548c3f3a46af1b8091a9",
+    "Audit9.lean": "7b315f95c8e4a8ea20272b2b39f0db41be555c9ae05108037231fa42d0547226",
+    "audit0.log": "3b8d195fefc72d25b00244761c1bc7d0bd9e0f8460f96e65497d35d7c5be43f5",
+    "audit1.log": "a0ab1c8590f1533967ed484ef8dfc315dfdb3671d844ab9d0ffb2fac4a2bd696",
+    "audit10.log": "7b48e5d928615e0dca7e895d9ff33517a72adc7c507b34428a2d6f0562aa909d",
+    "audit11.log": "defa68f8fc68966fe30e6d8add8f8a3500f1c07a50b7d6ff1840fce6d1f55b8f",
+    "audit12.log": "01e0588f537d5f9796ef943d5f3ae27453fd7fabc3c121661db0eb9ae8ef307c",
+    "audit13.log": "6de874f95f087966110ae305a7d8a33d624e35f9a9ebe9c0e3c2181f3fa4dda2",
+    "audit14.log": "a3994a1deb7a9861972eeb6c79e09acb91324a6a6c6080919049b8fce1343033",
+    "audit15.log": "1e2fde581dccdafcb5f6aad84a6a005dfaae25d5860b6d790798cf00378b8092",
+    "audit16.log": "e705a65ed2596121598cc3d6dc5bbbd5c6f9f92c70d4fda9e3f173d9bfea3d6f",
+    "audit17.log": "115fa14f053eb6ad1366c2cdf0ddce478374120093bfb3ae68b0bd392ad1d3ab",
+    "audit18.log": "b13305a490fcfeb0957513d04e54aa7794b8696e4b797513242491c1d9290645",
+    "audit19.log": "0728dac5a149771f909b9e406d488b1c581b98f04381a7099692350331d160ca",
+    "audit2.log": "9024424ba23d9d209af31e2f6c764e2654807ed6cb74a5810e54c86a51129946",
+    "audit20.log": "8d05a77a86064c60c18490c8f83c4f6d935f2e82041955b9a27332faabae024f",
+    "audit21.log": "2935c0b84f2bd40955c84df4a78bfc580bee5050f485deb7f717f76627d4710f",
+    "audit22.log": "c01dd36299496d5d6cbbfe24ea95c6d66fde1af24bcd433d5385a803309bc9c3",
+    "audit23.log": "18127201acceb80baa0356f8b85c624b025a3875dfb0d3220389074de88f7446",
+    "audit24.log": "1ff0bcb73408ddd243dfd418dd0a0f02505ecaf2ad189638fc4519ccf40295d0",
+    "audit25.log": "f891599df78a458de19ce6d8fa5ddffaa7eaa29044b7deb01b26834422563026",
+    "audit26.log": "604ab28f486c705157afd8e869d868c44bb949f51810a9377cc99db8289e5bd2",
+    "audit27.log": "0ea17311fb8db256392a68895008477da8576a82facb47fc17284780b3dede6d",
+    "audit28.log": "a510cbfcb5a9e76b6f042e26804e2e746e448479e00a4c8100b88188ad17ef55",
+    "audit29.log": "c25e846a69840ce85f51357e4d43cff678c3d0fb2cfacf4631887d3af30ffc7c",
+    "audit3.log": "3f0d0a8fefb99b2f4e43e7da188059db2d7af600fe25073ed22e9c842cd99396",
+    "audit30.log": "62edddb6100c853d57540d0120d402bd9e60c5fef588abe2b4608622ebfbaabc",
+    "audit31.log": "663a8cc86bf9ab7f154007589e7f1bda2c3d1e9c1dbf419bb01dfb9a67f37fe6",
+    "audit32.log": "9a9d3bd7d2f2f3fac9ad338578116f8d8e90917b01d021dcded73cb53225bea4",
+    "audit33.log": "d349c89ef922a950d35d17e758b1b6fc7755fcc008e1526efc37c51871ab58b7",
+    "audit34.log": "95f00354dec82edbad94000d6fecf61e06bc73e2be5af8bc7be2f58919fd04dd",
+    "audit35.log": "2ca11b490d4f84b7fed4fb08c29c8bb052cfbdbdd40a5b0c5d25ec34eaac709d",
+    "audit36.log": "4d5c5fe81542b706e6f339d84abeb9b3205d5c677e1d22a32a5beee31e2c1ae7",
+    "audit37.log": "687987541530a2332abe0cc50fc1d8f0803a9dbf940c064ff9ca8bc0fe614b60",
+    "audit38.log": "e4d47b4815c425beca093b0e67b369471d9f7e49a3f25c9958fb29f306aa0923",
+    "audit39.log": "2f98c001c8d8f2eef252118c6b31f967efe06d78be2fff9d3153c180ec572333",
+    "audit4.log": "94e69240971fdf3d63478f5df2fcc2c8323463b03107347212e2781b807ae170",
+    "audit40.log": "ca17ee1aa2d537ecc7af29d9323c35ba4457e15d4f9ef241e7b12a774745649a",
+    "audit41.log": "48bb57cc35b330c2321c28a136037d84111a6833960e5a629786a2f791c5d541",
+    "audit42.log": "e801e9798a51361e0346e8e7ec4ac5af2393b32650847efa7524c3cbd0dbc608",
+    "audit43.log": "34c95c4f27fc85679ab4e290473bb30638ce10b8437eca867012e7bdb15a1260",
+    "audit44.log": "9cda114c0b913dc29cee1698979435dc1d69c8cf09986a9d3cbae7dd0178fcab",
+    "audit45.log": "cd7fc7aa09f3e5a4ae61c1526abf214e8c17a8f087a11379f4b61336144f13bb",
+    "audit46.log": "b763adcc56c459b19b1a7dd02eed23bc21d9ae153f7b84de5d8262ebd24bc418",
+    "audit47.log": "58cb3302c3166c7bda4edcfc73e7ab4c30d91771e87977d95163796621e5425d",
+    "audit48.log": "9225ae30e2b43fb0f76901705b35d69c88437f0d3d71d769af37e8889d93b0ce",
+    "audit49.log": "0e2de34fe66887d57da5a23d5dcc488bc93a2bc6eedc30dfec7170f3fe5f4a43",
+    "audit5.log": "b0061f1fceaa9c2c08cbf5bdcd6b3dff3545c2cc4c16c4e44563234b37193432",
+    "audit50.log": "190cc9acc5a82861d9b6aaafc5129e8bfd7b01bae29a646f25c3468bf23d3ca1",
+    "audit51.log": "fcd44ec1ddcc00a87b51729584041782c575d197710c8e06ecb952b41adfae4e",
+    "audit52.log": "048f15d4cd116c76ff86d98dd60c7ac4415ab1c1711a43fb9634ef5ad379506d",
+    "audit53.log": "303c244e61a85ee668f87eaea9cd10e19bc2e6e8fc91e229ecc1dcbf6622d40b",
+    "audit54.log": "767b806e476ea05e87cdc81183213003f890ecfa4e343468e073886d0ab5d3e7",
+    "audit55.log": "7b64e61975195a8d56ceec36a20a99362208eb24d2b29add13fc695d8812dc46",
+    "audit56.log": "e15ca8487b25679232d1adbcfe3efce57303216b6bb6520d0e396701520d3007",
+    "audit57.log": "c5358b34763c2c2154352b44007b4e61858d4ec4541abeaa71a39fe88ab6f2ea",
+    "audit58.log": "969d53757ce42bd1fd0fc44eaacc43ce70c1d5a8f5fbb401b2eeb820ab26f2fa",
+    "audit59.log": "e7c2a09c124b83d08cc30fd923fad8f5ce2cdb3a922684f73d80b495ab2c6156",
+    "audit6.log": "265776c1090faac1e97eb9be921976689896aff24d6bceb9500691e8c0733f5e",
+    "audit60.log": "20482e8acb1b221f50e010fa31f6a29e2cad67becc3f7d5f39b0077c97a9f43e",
+    "audit61.log": "37ccf2ea8bfe5cca47396739ff395fe45b600764759ec7d71160a9f28250df77",
+    "audit62.log": "28439ec7c337eef4310ce6fa2fe06caf0f11bee5335a876d0828bf94950f1c39",
+    "audit63.log": "79a919506d9ec5dde86da4290314c0f287e50a827e4ba93586416a6a19e90dd2",
+    "audit64.log": "0826d686290ac28889e992bb404756907f2ffbf3dbe47f7f2c250348564ae709",
+    "audit65.log": "c5c444e71fd4a189dda5cfeb942df5924eb0f8aec3ba317930489ed00b12b3ea",
+    "audit66.log": "d84b0b93f7d3e09753c0b1edb506ff8886dc9825523d9a7597adb95b77987b1b",
+    "audit67.log": "f0678b8d67dc190e5459d02966bf82ad906d22b0b4c2aeaf2e1fb08e9440315a",
+    "audit68.log": "79e05a5064468e7732b84fc5f9fb0dbe3aa810b47cd92db1465cd4da9b14610d",
+    "audit69.log": "8a58fb96f279bb89bfae3f0e3d98d1279c1907b75069ba90a5857bfe2f0f7db4",
+    "audit7.log": "e07259e5491ebdaa3d5efa9b4636bdc4acc37474377c916689970e272803c7de",
+    "audit8.log": "523a64d34bbdaa33b0fc329c3a8b4fdbf1e74139e23f295dc3a40cb76d3c6ed8",
+    "audit9.log": "529dafaaa47a4784afcdd3397ecb3b14760cd38bf7dac0f98dae032a79847c55",
+    "build.log": "44e8c3198e28dbc78b4951185b7fa5db2a2f9c2c387bf78529b71e0e0decbe6c",
+    "inputs-after.json": "5b47e781b1223614bd8a3d198fdb8444d03309a7dcbb45e2b5612fab7c9e2ab7",
+    "inputs-before.json": "5b47e781b1223614bd8a3d198fdb8444d03309a7dcbb45e2b5612fab7c9e2ab7"
+  }
+}

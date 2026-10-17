@@ -1,0 +1,200 @@
+   Compiling proc-macro2 v1.0.107
+   Compiling unicode-ident v1.0.26
+   Compiling quote v1.0.47
+   Compiling serde_core v1.0.229
+   Compiling zmij v1.0.23
+   Compiling serde v1.0.229
+   Compiling serde_json v1.0.151
+   Compiling memchr v2.8.3
+   Compiling ref-cast v1.0.25
+   Compiling itoa v1.0.18
+   Compiling heapless v0.9.2
+   Compiling schemars v0.8.22
+   Compiling byteorder v1.5.0
+   Compiling dyn-clone v1.0.20
+   Compiling hash32 v0.3.1
+   Compiling stable_deref_trait v1.2.1
+   Compiling syn v3.0.6
+   Compiling syn v2.0.119
+   Compiling ref-cast-impl v1.0.25
+   Compiling serde_derive v1.0.229
+   Compiling schemars v1.2.1
+   Compiling serde_test v1.0.177
+   Compiling ipnet v2.12.2 (/Users/keiichiw/workspace/crate-proofs/ipnet/2.12.2)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 5.84s
+     Running unittests upstream/src/lib.rs (verification/runs/check-ijyIhpBm/target/debug/deps/ipnet-22056eca537c6b87)
+
+running 37 tests
+test ipnet::tests::ipv6net_default ... ok
+test ipnet::tests::ipnet_default ... ok
+test ipnet::tests::ipv4net_default ... ok
+test ipext::tests::test_ipaddrrange ... ok
+test ipnet::tests::ipnet_aggregate ... ok
+test ipnet::tests::new_assert ... ok
+test ipnet::tests::test_ipv4_subnets_max_max ... ok
+test ipnet::tests::test_ipv4_subnets_none ... ok
+test ipnet::tests::ipv4net_new_assert_panics - should panic ... ok
+test ipnet::tests::ipv6net_new_assert_panics - should panic ... ok
+test ipnet::tests::test_ipv4_subnets_one ... ok
+test ipnet::tests::test_ipv4_subnets_taper ... ok
+test ipnet::tests::test_ipv4_subnets_two ... ok
+test ipnet::tests::test_ipv4_subnets_zero_max ... ok
+test ipnet::tests::test_ipv4_subnets_zero_max_minus_one ... ok
+test ipnet::tests::test_ipv4_subnets_zero_zero ... ok
+test ipnet::tests::test_ipv6_subnets_max_max ... ok
+test ipnet::tests::test_ipv6_subnets_none ... ok
+test ipnet::tests::test_ipv6_subnets_one ... ok
+test ipnet::tests::test_ipv6_subnets_taper ... ok
+test ipnet::tests::test_ipv6_subnets_two ... ok
+test ipnet::tests::test_ipv6_subnets_zero_max ... ok
+test ipnet::tests::test_ipv6_subnets_zero_zero ... ok
+test ipnet::tests::test_ipv6_subnets_zero_max_minus_one ... ok
+test ipnet::tests::test_make_ipnet_vec ... ok
+test ipnet_serde::tests::test_serialize_ipnet_v4 ... ok
+test ipnet_serde::tests::test_serialize_ipnet_v6 ... ok
+test ipnet_serde::tests::test_serialize_ipv4_net ... ok
+test ipnet_serde::tests::test_serialize_ipv6_net ... ok
+test mask::tests::invalid_v4_mask_to_prefix ... ok
+test mask::tests::invalid_v6_mask_to_prefix ... ok
+test mask::tests::ipv4net_with_netmask ... ok
+test mask::tests::ipv6net_with_netmask ... ok
+test mask::tests::v4_mask_to_prefix ... ok
+test mask::tests::v4_mask_to_prefix_max ... ok
+test mask::tests::v6_mask_to_prefix ... ok
+test mask::tests::v6_mask_to_prefix_max ... ok
+
+test result: ok. 37 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/cidr_semantics.rs (verification/runs/check-ijyIhpBm/target/debug/deps/cidr_semantics-9da601a9ea0bd106)
+
+running 6 tests
+test range_mixed_direction_and_skip_preserves_remaining_sequence ... ok
+test hosts_endpoints_and_size_hint_use_full_mathematical_ranges ... ok
+test contains_all_prefixes_and_host_bits_against_intervals ... ok
+test subnet_partitions_include_maximum_boundary_and_reversed_empty_ranges ... ok
+test net_subnets_partition_noncanonical_networks_at_every_prefix ... ok
+test aggregation_preserves_exact_union_and_canonical_disjoint_output ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/comparison_boundaries.rs (verification/runs/check-ijyIhpBm/target/debug/deps/comparison_boundaries-5ed23c094d24ac75)
+
+running 3 tests
+test asymmetric_bytes_form_big_endian_segments ... ok
+test public_contains_preserves_sets_and_family_for_noncanonical_inputs ... ok
+test address_order_uses_the_first_differing_high_digit ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/ipv4_aggregate_semantics.rs (verification/runs/check-ijyIhpBm/target/debug/deps/ipv4_aggregate_semantics-35586beb2be784bf)
+
+running 1 test
+test aggregate_boundary_unions_and_noncanonical_inputs ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.18s
+
+     Running tests/ipv4_api_semantics.rs (verification/runs/check-ijyIhpBm/target/debug/deps/ipv4_api_semantics-e18d2e28508b90bb)
+
+running 5 tests
+test ipv4_bitwise_overloads_preserve_network_byte_order ... ok
+test ipv4_public_arithmetic_clamps_at_both_ends ... ok
+test ipv4_range_observers_and_skips_match_numeric_intervals ... ok
+test ipv4_masks_preserve_address_and_reject_holes ... ok
+test ipv4_net_parent_hosts_and_subnet_initialization_all_prefixes ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/ipv4_subnets_semantics.rs (verification/runs/check-ijyIhpBm/target/debug/deps/ipv4_subnets_semantics-beedc0a74d3f3edf)
+
+running 1 test
+test greedy_subnets_boundaries_and_short_intervals ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests/ipv6_range_boundaries.rs (verification/runs/check-ijyIhpBm/target/debug/deps/ipv6_range_boundaries-e24b57b9f2ab0e9c)
+
+running 4 tests
+test exhaustion_remains_empty_across_front_and_back_operations ... ok
+test standard_segment_constructor_preserves_network_byte_order ... ok
+test full_range_skip_and_hint_do_not_compute_overflowing_cardinality ... ok
+test checked_count_distinguishes_usize_and_u128_overflow_boundaries ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/ipv6_subnets_boundaries.rs (verification/runs/check-ijyIhpBm/target/debug/deps/ipv6_subnets_boundaries-847538169cf1c437)
+
+running 2 tests
+test whole_space_and_top_block_terminate_without_saturation_revival ... ok
+test small_unaligned_ranges_have_exact_canonical_greedy_cover ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/range_next.rs (verification/runs/check-ijyIhpBm/target/debug/deps/range_next-4f0db2811227729e)
+
+running 1 test
+test next_matches_half_open_interval_and_remaining_state ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests ipnet
+
+running 56 tests
+test upstream/src/ipext.rs - ipext::IpBitAnd (line 100) ... ok
+test upstream/src/ipnet.rs - ipnet::IpNet (line 40) ... ok
+test upstream/src/ipext.rs - ipext::IpBitOr (line 130) ... ok
+test upstream/src/ipext.rs - ipext::Ipv4AddrRange (line 307) ... ok
+test upstream/src/ipext.rs - ipext::IpSub (line 66) ... ok
+test upstream/src/ipext.rs - ipext::Ipv6AddrRange (line 336) ... ok
+test upstream/src/ipnet.rs - ipnet::Contains (line 1396) ... ok
+test upstream/src/ipext.rs - ipext::IpAddrRange (line 269) ... ok
+test upstream/src/ipext.rs - ipext::IpAdd (line 23) ... ok
+test upstream/src/ipnet.rs - ipnet::IpNet::aggregate (line 523) ... ok
+test upstream/src/ipnet.rs - ipnet::IpNet::broadcast (line 323) ... ok
+test upstream/src/ipnet.rs - ipnet::IpNet::contains (line 480) ... ok
+test upstream/src/ipnet.rs - ipnet::IpNet::hostmask (line 281) ... ok
+test upstream/src/ipnet.rs - ipnet::IpNet::hosts (line 401) ... ok
+test upstream/src/ipnet.rs - ipnet::IpNet::is_sibling (line 373) ... ok
+test upstream/src/ipnet.rs - ipnet::IpNet::netmask (line 260) ... ok
+test upstream/src/ipnet.rs - ipnet::IpNet::network (line 302) ... ok
+test upstream/src/ipnet.rs - ipnet::IpNet::new (line 139) ... ok
+test upstream/src/ipnet.rs - ipnet::IpNet::new_assert (line 163) ... ok
+test upstream/src/ipnet.rs - ipnet::IpNet::subnets (line 437) ... ok
+test upstream/src/ipnet.rs - ipnet::IpNet::supernet (line 344) ... ok
+test upstream/src/ipnet.rs - ipnet::IpNet::trunc (line 212) ... ok
+test upstream/src/ipnet.rs - ipnet::IpNet::with_netmask (line 192) ... ok
+test upstream/src/ipnet.rs - ipnet::IpSubnets (line 1483) ... ok
+test upstream/src/ipnet.rs - ipnet::Ipv4Net (line 73) ... ok
+test upstream/src/ipnet.rs - ipnet::Ipv4Net::aggregate (line 931) ... ok
+test upstream/src/ipnet.rs - ipnet::Ipv4Net::broadcast (line 773) ... ok
+test upstream/src/ipnet.rs - ipnet::Ipv4Net::contains (line 906) ... ok
+test upstream/src/ipnet.rs - ipnet::Ipv4Net::hostmask (line 739) ... ok
+test upstream/src/ipnet.rs - ipnet::Ipv4Net::hosts (line 831) ... ok
+test upstream/src/ipnet.rs - ipnet::Ipv4Net::is_sibling (line 807) ... ok
+test upstream/src/ipnet.rs - ipnet::Ipv4Net::netmask (line 720) ... ok
+test upstream/src/ipnet.rs - ipnet::Ipv4Net::network (line 758) ... ok
+test upstream/src/ipnet.rs - ipnet::Ipv4Net::new (line 613) ... ok
+test upstream/src/ipnet.rs - ipnet::Ipv4Net::new_assert (line 638) ... ok
+test upstream/src/ipnet.rs - ipnet::Ipv4Net::subnets (line 864) ... ok
+test upstream/src/ipnet.rs - ipnet::Ipv4Net::supernet (line 788) ... ok
+test upstream/src/ipnet.rs - ipnet::Ipv4Net::trunc (line 686) ... ok
+test upstream/src/ipnet.rs - ipnet::Ipv4Net::with_netmask (line 666) ... ok
+test upstream/src/ipnet.rs - ipnet::Ipv4Subnets (line 1530) ... ok
+test upstream/src/ipnet.rs - ipnet::Ipv6Net (line 106) ... ok
+test upstream/src/ipnet.rs - ipnet::Ipv6Net::aggregate (line 1317) ... ok
+test upstream/src/ipnet.rs - ipnet::Ipv6Net::broadcast (line 1174) ... ok
+test upstream/src/ipnet.rs - ipnet::Ipv6Net::contains (line 1292) ... ok
+test upstream/src/ipnet.rs - ipnet::Ipv6Net::hostmask (line 1137) ... ok
+test upstream/src/ipnet.rs - ipnet::Ipv6Net::hosts (line 1229) ... ok
+test upstream/src/ipnet.rs - ipnet::Ipv6Net::is_sibling (line 1209) ... ok
+test upstream/src/ipnet.rs - ipnet::Ipv6Net::netmask (line 1118) ... ok
+test upstream/src/ipnet.rs - ipnet::Ipv6Net::network (line 1156) ... ok
+test upstream/src/ipnet.rs - ipnet::Ipv6Net::new (line 1011) ... ok
+test upstream/src/ipnet.rs - ipnet::Ipv6Net::new_assert (line 1036) ... ok
+test upstream/src/ipnet.rs - ipnet::Ipv6Net::subnets (line 1250) ... ok
+test upstream/src/ipnet.rs - ipnet::Ipv6Net::supernet (line 1189) ... ok
+test upstream/src/ipnet.rs - ipnet::Ipv6Net::trunc (line 1084) ... ok
+test upstream/src/ipnet.rs - ipnet::Ipv6Net::with_netmask (line 1064) ... ok
+test upstream/src/ipnet.rs - ipnet::Ipv6Subnets (line 1564) ... ok
+
+test result: ok. 56 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 8.02s
+

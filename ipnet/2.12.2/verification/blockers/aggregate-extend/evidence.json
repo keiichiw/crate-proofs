@@ -1,0 +1,56 @@
+{
+  "classification": "four expected incomplete-model rejections; no aggregate proof",
+  "run": "aggregate-refresh-d_3uk372",
+  "active_aeneas_patch_sha256": "28bb672278bbb11b7ddcf66fb359e3f31fb7b74f900c6da567eac80d1e8ea7ac",
+  "active_aeneas_binary_sha256": "ce751c740dcf086ec94e7720dd33c6864a5a94751efdb6685722ff853cb354bb",
+  "outcomes": [
+    {
+      "case": "01",
+      "config": "01-config.json",
+      "extract_exit": 1,
+      "generated": "01-extend-generated.txt"
+    },
+    {
+      "case": "02",
+      "config": "02-config.json",
+      "extract_exit": 1,
+      "generated": "02-spec-extend-generated.txt"
+    },
+    {
+      "case": "03",
+      "config": "03-config.json",
+      "extract_exit": 1,
+      "generated": "03-extend-desugared-generated.txt"
+    },
+    {
+      "case": "04",
+      "config": "04-ipv6-config.json",
+      "extract_exit": 1,
+      "generated": "04-ipv6-generated.txt"
+    }
+  ],
+  "files_sha256": {
+    "01-aeneas.log": "29194edc2dd048acae84f8bd186204a810fd3f8e8ed99424351d5a38cef333c5",
+    "01-charon.log": "18dfc6c39ae7957322c2fe6e5afe776f584a7ae7770d2f22306a409bb6326735",
+    "01-config.json": "b19056a4b986c85fd522d58d478da5d0c931e862c0c70e89d8905f11b485bb40",
+    "01-extend-generated.txt": "51248bebebbf8766d08a87c5a9122a02a129b04b64630abb2aff47f8e11acd3d",
+    "01-extract.log": "2319544199edacfdc23dde9f232c6c4b19fb28e66f00d7e1e5bedeaf089acc43",
+    "02-aeneas.log": "e7e5a10f0ffe8d224606c6655ff9a3bcb6c77bd496ed47feb318bd5e49d2301f",
+    "02-charon.log": "ee808afc1d0dae746ec8e0cd821243d4003bcfe785b8441b7903bbdc5e8552b6",
+    "02-config.json": "f92acb8368051191d8dffc154b328b8cd5e567daf762380a300ba9bbff0d7cca",
+    "02-extract.log": "2319544199edacfdc23dde9f232c6c4b19fb28e66f00d7e1e5bedeaf089acc43",
+    "02-spec-extend-generated.txt": "14960b2a90b633a29d602b9fd8679be9c3bfab4b864ab09a8bdf03cda8813bda",
+    "03-aeneas.log": "3e03a416b20be8daceceba563faecd41f8a2321a392c7c5bd07955bad82a9816",
+    "03-charon.log": "21c86023eafa20e7f3e84b56c4a8bf7dca68d3251b3cb01573cbfae56ad55877",
+    "03-config.json": "acd511ce694e50d07785072dd753456d11614b7a5949d32b93668d981c383e93",
+    "03-extend-desugared-generated.txt": "ada0e426bbfe43507d1a9c489a9af0268ee9d7f06b59c6c479ab12279fdeb6bc",
+    "03-extract.log": "2319544199edacfdc23dde9f232c6c4b19fb28e66f00d7e1e5bedeaf089acc43",
+    "04-aeneas.log": "ab4ecf83d5c51b4326594227ea39b440a3960c028c9ed96524ee13ff3d9551de",
+    "04-charon.log": "bdddd6ea7091a62980ff03b369bf9423351db81ed04c6f59e400f2965295de8a",
+    "04-extract.log": "2319544199edacfdc23dde9f232c6c4b19fb28e66f00d7e1e5bedeaf089acc43",
+    "04-ipv6-config.json": "8ae776bb1ee81edb10e0bc60bd605d4bf1b37f47e66bdca9f2f91dd1470e4464",
+    "04-ipv6-generated.txt": "ad07290c01c55403f282e0b084f2c87d4b1b1de61e0d1c3baa1757cf78e0571d",
+    "probe-aeneas.patch": "5cbffc594387acde11f17a08f210e158ceebab857b41f6901a7a42460492a8bc",
+    "refresh.py": "c64ae705296b43ed490317b51140bbb382a6230586d992e709e5cf5d96764359"
+  }
+}

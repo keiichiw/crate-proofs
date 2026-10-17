@@ -1,0 +1,26 @@
+diff --git a/backends/lean/Aeneas/Std/Scalar/Bitwise.lean b/backends/lean/Aeneas/Std/Scalar/Bitwise.lean
+index efde6d5a..d3708bd1 100644
+--- a/backends/lean/Aeneas/Std/Scalar/Bitwise.lean
++++ b/backends/lean/Aeneas/Std/Scalar/Bitwise.lean
+@@ -36,6 +36,21 @@ Bit shifts
+   Result (UScalar ty) :=
+   x.shiftRight s.val
+ 
++/- The extracted unchecked integer shifts use the Rust intrinsic names.  The
++   underlying shift operation keeps its width precondition here, so an
++   unchecked shift with an out-of-range count fails in the Result model. -/
++@[expose] def U32.shl (x : U32) (s : U32) : Result U32 :=
++  UScalar.shiftLeft_UScalar x s
++
++@[expose] def U32.shr (x : U32) (s : U32) : Result U32 :=
++  UScalar.shiftRight_UScalar x s
++
++@[expose] def U128.shl (x : U128) (s : U32) : Result U128 :=
++  UScalar.shiftLeft_UScalar x s
++
++@[expose] def U128.shr (x : U128) (s : U32) : Result U128 :=
++  UScalar.shiftRight_UScalar x s
++
+ @[expose] def UScalar.shiftLeft_IScalar {ty tys} (x : UScalar ty) (s : IScalar tys) :
+   Result (UScalar ty) :=
+   if s.val ≥ 0 then

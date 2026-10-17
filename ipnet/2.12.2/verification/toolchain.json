@@ -1,0 +1,42 @@
+{
+  "checked_at": "2026-10-16",
+  "proofs_rs_repository": "https://github.com/proofs-rs/proofs-rs",
+  "proofs_rs_revision": "a2335432635301597f203e1159e3d16888ce2333",
+  "proofs_rs_selection": "upstream HEAD confirmed by git ls-remote",
+  "cargo_proofs": "0.4.1",
+  "aeneas": "8e62dc3dc765602833c86b68dceb18a475a50a8f",
+  "charon": "08d7c9d50144bd84848212c24701253585e90d1f",
+  "extraction_rust": "nightly-2026-09-17",
+  "native_rust": "1.91.1",
+  "lean": "leanprover/lean4:v4.35.0",
+  "host": "aarch64-apple-darwin",
+  "ocaml": "5.4.0",
+  "opam_switch": "default",
+  "proofs_rs_local_patch": "verification/patches/proofs-rs-audit-identifier.patch",
+  "patch_reason": "Aeneas reserves the token name; use theorem_name in the Lean audit. Audit semantics and allowed axioms are unchanged.",
+  "charon_binary_provenance": "Rebuilt from exact pinned Charon revision plus recorded runtime-UB and concrete inherent-matcher compatibility patch with build-dev-charon-rust.",
+  "tool_binaries_sha256": {
+    ".tools/aeneas/bin/aeneas": "ce751c740dcf086ec94e7720dd33c6864a5a94751efdb6685722ff853cb354bb",
+    ".tools/aeneas/charon/bin/charon": "7810e6141d03d888b57cf3fac1418c7a664484a1121ffd9918958e42468ada8e",
+    ".tools/aeneas/charon/bin/charon-driver": "6e3cef0575c0ba9eb9d70165da1e78b80e4db589564602e11a41aa0e208a0c3d",
+    ".tools/cargo-proofs/bin/cargo-proofs": "9e1e7e7962218a3dc27fcc04cc1d77d825f0382c614625544975929a2423dcd9"
+  },
+  "charon_local_patch": "verification/patches/charon-runtime-ipv6-matcher.patch",
+  "charon_patch_reason": "Lower only true recorded MIR UbChecks (true in runtime and const contexts) and reconstruct divergent panic_nounwind_fmt using existing panic representation. Other settings stay unsupported. Complete inherent implementation name selection by delegating its concrete type to existing matches_ty; reviewed use is exact region-free IPv6 constructor selection, with IPv4 and unrelated methods retained.",
+  "extraction_runtime_checks": {
+    "ub_checks": true,
+    "overflow_checks": true,
+    "contract_checks": false
+  },
+  "extraction_scope": "Runtime methods under pinned Charon cfg/model choices; not a general const-evaluation or abort/unwind equivalence proof.",
+  "extraction_sysroot": "Pinned Charon default Miri sysroot; cfg!(miri) true in core. Optional language-UB diagnostic checks may be skipped; generated scalar operation safety remains a proof obligation.",
+  "aeneas_local_patch": "verification/patches/aeneas-runtime-ipv6-constructor.patch",
+  "aeneas_patch_reason": "Checked U32/U128 shift wrappers; exact erasure of unused unwrap Debug dictionary and trait-filter validation fix; concrete IPv4/IPv6 octet types and Ord::cmp registrations with reviewed trusted Rust correspondence (model-boundaries.md). Exact U32 saturating-add value lemma about the unchanged baseline scalar model. Formatter unchanged. Generated registration metadata and rebuilt OCaml executable are pinned. Exact Result::ok match model for the reviewed drop-free Ipv4Net/PrefixLenError application; map remains extracted. Exact U32 saturating subtraction value lemma about unchanged baseline model. Reviewed U32 trailing_zeros model via fixed-width bit reversal and leading-zero count; trailing_ones remains actual extracted Rust. Result::ok reviewed scope also includes drop-free Ipv6Net. Narrow reviewed Ipv6Addr::new standard constructor model concatenates eight U16 big-endian byte pairs; exact registration, no generic transmute or application model. Reviewed U128 trailing_zeros uses fixed-width128 reversal and leadingZeros with U32 result; actual U128 trailing_ones remains extracted. U128 saturating-add/sub value lemmas describe the unchanged scalar models. Kernel U128/Usize MAX+1 failure lemmas describe unchanged checked addition and introduce no executable model. Lean local-binder allocator avoids ordinary dotted declaration namespace roots, fixing mask parameter shadowing by alpha-renaming; no application model or runtime semantic change. Expose the unchanged BuiltinClone definition and prove its exact Unit clone equation by rfl; no executable model or registration change.",
+  "extraction_rustc_verbose": "rustc 1.100.0-nightly (923c95cdf 2026-09-16)\nbinary: rustc\ncommit-hash: 923c95cdf5ba65cea505aa2ea829f578e1506ed8\ncommit-date: 2026-09-16\nhost: aarch64-apple-darwin\nrelease: 1.100.0-nightly\nLLVM version: 23.1.1",
+  "extraction_target_cfg": {
+    "target_arch": "aarch64",
+    "target_os": "macos",
+    "target_endian": "little",
+    "target_pointer_width": "64"
+  }
+}

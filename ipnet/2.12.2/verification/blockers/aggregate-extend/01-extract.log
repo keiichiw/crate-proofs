@@ -1,0 +1,10 @@
+Traceback (most recent call last):
+  File "/Users/keiichiw/workspace/crate-proofs/scripts/aeneas-extract.py", line 111, in <module>
+    main()
+    ~~~~^^
+  File "/Users/keiichiw/workspace/crate-proofs/scripts/aeneas-extract.py", line 107, in main
+    extract(args.project, args.config, args.output)
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/keiichiw/workspace/crate-proofs/scripts/aeneas-extract.py", line 86, in extract
+    raise ValueError(f'unsupported or incomplete generated model: {filename}')
+ValueError: unsupported or incomplete generated model: Ipnet.lean

@@ -1,0 +1,54 @@
+diff --git a/charon/src/transform/resugar/reconstruct_panic_calls.rs b/charon/src/transform/resugar/reconstruct_panic_calls.rs
+index 64df23fca..27960f7f3 100644
+--- a/charon/src/transform/resugar/reconstruct_panic_calls.rs
++++ b/charon/src/transform/resugar/reconstruct_panic_calls.rs
+@@ -13,6 +13,8 @@ impl Transform {
+     pub fn new(ctx: &TransformCtx) -> CowBox<dyn UllbcPass> {
+         let explicit_panic = Name::from_path(names::EXPLICIT_PANIC_NAME);
+         let assert_failed = Name::from_path(&["core", "panicking", "assert_failed"]);
++        // This runtime-UB-check helper unconditionally panics when called.
++        let panic_nounwind_fmt = Name::from_path(&["core", "panicking", "panic_nounwind_fmt"]);
+         let panic_fns = ctx
+             .translated
+             .fun_decls
+@@ -30,7 +32,8 @@ impl Transform {
+                 );
+                 (is_panic_lang_item
+                     || decl.item_meta.name == explicit_panic
+-                    || decl.item_meta.name == assert_failed)
++                    || decl.item_meta.name == assert_failed
++                    || decl.item_meta.name == panic_nounwind_fmt)
+                     .then(|| (id, decl.item_meta.name.clone()))
+             })
+             .collect();
+diff --git a/charon/src/transform/simplify_output/simplify_constants.rs b/charon/src/transform/simplify_output/simplify_constants.rs
+index 3d4dee089..4d599eff8 100644
+--- a/charon/src/transform/simplify_output/simplify_constants.rs
++++ b/charon/src/transform/simplify_output/simplify_constants.rs
+@@ -235,6 +235,26 @@ impl UllbcPass for Transform {
+     }
+ 
+     fn transform_function(&self, ctx: &mut TransformCtx, fun_decl: &mut FunDecl) {
++        // MIR UB checks are true both during const evaluation and in a
++        // runtime session whose recorded UB-check setting is true. Lower only
++        // that shared case: when runtime checks are disabled, a blanket false
++        // substitution would change const evaluation semantics.
++        let checks = ctx.translated.runtime_checks;
++        if checks.ub_checks && let Some(body) = fun_decl.body.as_unstructured_mut() {
++            for block in body.body.iter_mut() {
++                block.dyn_visit_in_body_mut(|rvalue: &mut Rvalue| {
++                    if let Rvalue::NullaryOp(NullOp::UbChecks) = rvalue {
++                        *rvalue = Rvalue::Use(
++                            Operand::Const(ConstantExpr::new(
++                                ConstantExprKind::Bool(true),
++                                Ty::mk_bool(),
++                            )),
++                            WithRetag::No,
++                        );
++                    }
++                });
++            }
++        }
+         fun_decl.transform_ullbc_operands(ctx, transform_operand);
+         if let Some(body) = fun_decl.body.as_unstructured_mut() {
+             for block in body.body.iter_mut() {
