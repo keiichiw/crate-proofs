@@ -1,0 +1,31 @@
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.00s
+     Running unittests upstream/src/lib.rs (target/debug/deps/adler2-cdd9c0dc70178c16)
+
+running 6 tests
+test tests::wiki ... ok
+test tests::mixed ... ok
+test tests::zeroes ... ok
+test tests::ones ... ok
+test tests::resume ... ok
+test tests::bufread ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+     Running tests/harness.rs (target/debug/deps/harness-e6c4c571ce4636c2)
+
+running 2 tests
+test state_roundtrip ... ok
+test scalar_reference_at_chunk_boundaries ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.04s
+
+   Doc-tests adler2
+
+running 4 tests
+test upstream/src/lib.rs - adler32 (line 190) - compile ... ok
+test upstream/src/lib.rs - Adler32::from_checksum (line 106) ... ok
+test upstream/src/lib.rs - Adler32 (line 44) ... ok
+test upstream/src/lib.rs - Adler32 (line 57) ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.48s
+

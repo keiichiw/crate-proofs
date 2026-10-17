@@ -1,0 +1,257 @@
+{
+  "checked": [
+    {
+      "name": "adler2.new_spec",
+      "module": "Proofs.Smoke",
+      "scope": "public-model"
+    },
+    {
+      "name": "adler2.initial_checksum",
+      "module": "Proofs.Smoke",
+      "scope": "public-model"
+    },
+    {
+      "name": "adler2.checksum_spec",
+      "module": "Proofs.Codec",
+      "scope": "public-model"
+    },
+    {
+      "name": "adler2.from_checksum_spec",
+      "module": "Proofs.Codec",
+      "scope": "public-model"
+    },
+    {
+      "name": "adler2.checksum_from_checksum",
+      "module": "Proofs.Codec",
+      "scope": "public-model"
+    },
+    {
+      "name": "adler2.from_checksum_checksum",
+      "module": "Proofs.Codec",
+      "scope": "public-model"
+    },
+    {
+      "name": "adler2.chunksExact_length",
+      "module": "Proofs.ChunkLemmas",
+      "scope": "standard-model-bridge"
+    },
+    {
+      "name": "adler2.chunksExact_remainder_lt",
+      "module": "Proofs.ChunkLemmas",
+      "scope": "standard-model-bridge"
+    },
+    {
+      "name": "adler2.chunksExact_partition",
+      "module": "Proofs.ChunkLemmas",
+      "scope": "standard-model-bridge"
+    },
+    {
+      "name": "adler2.sliceChunksExact_partition",
+      "module": "Proofs.ChunkLemmas",
+      "scope": "standard-model-bridge"
+    },
+    {
+      "name": "adler2.chunksExact_getRemainder",
+      "module": "Proofs.ChunkLemmas",
+      "scope": "standard-model-bridge"
+    },
+    {
+      "name": "adler2.chunksExact_next_cons",
+      "module": "Proofs.ChunkLemmas",
+      "scope": "standard-model-bridge"
+    },
+    {
+      "name": "adler2.chunksExact_next_nil",
+      "module": "Proofs.ChunkLemmas",
+      "scope": "standard-model-bridge"
+    },
+    {
+      "name": "adler2.u32x4_from_spec",
+      "module": "Proofs.AlgoHelpers",
+      "scope": "algorithm-helper"
+    },
+    {
+      "name": "adler2.run_append",
+      "module": "Proofs.Spec",
+      "scope": "scalar-reference"
+    },
+    {
+      "name": "adler2.run_normalize_seed",
+      "module": "Proofs.Spec",
+      "scope": "scalar-reference"
+    },
+    {
+      "name": "adler2.u32x4_rem_assign_spec",
+      "module": "Proofs.AlgoOps",
+      "scope": "algorithm-helper"
+    },
+    {
+      "name": "adler2.u32x4_add_assign_spec",
+      "module": "Proofs.AlgoOps",
+      "scope": "algorithm-helper"
+    },
+    {
+      "name": "adler2.u32x4_mul_assign_spec",
+      "module": "Proofs.AlgoOps",
+      "scope": "algorithm-helper"
+    },
+    {
+      "name": "adler2.laneInv_initial_normalized",
+      "module": "Proofs.LaneMath",
+      "scope": "algorithm-bridge"
+    },
+    {
+      "name": "adler2.laneInv_step",
+      "module": "Proofs.LaneMath",
+      "scope": "algorithm-bridge"
+    },
+    {
+      "name": "adler2.laneInv_mod",
+      "module": "Proofs.LaneMath",
+      "scope": "algorithm-bridge"
+    },
+    {
+      "name": "adler2.laneInv_combine",
+      "module": "Proofs.LaneMath",
+      "scope": "algorithm-bridge"
+    },
+    {
+      "name": "adler2.compute_loop1_spec",
+      "module": "Proofs.LaneLoop",
+      "scope": "algorithm-loop"
+    },
+    {
+      "name": "adler2.compute_loop0_loop0_spec",
+      "module": "Proofs.LaneLoop",
+      "scope": "algorithm-loop"
+    },
+    {
+      "name": "adler2.sliceChunks4_spec",
+      "module": "Proofs.FourChunks",
+      "scope": "standard-model-bridge"
+    },
+    {
+      "name": "adler2.sliceChunks4_full",
+      "module": "Proofs.FourChunks",
+      "scope": "standard-model-bridge"
+    },
+    {
+      "name": "adler2.sliceChunks4_short",
+      "module": "Proofs.FourChunks",
+      "scope": "standard-model-bridge"
+    },
+    {
+      "name": "adler2.compute_loop4_spec",
+      "module": "Proofs.Loop4",
+      "scope": "algorithm-loop"
+    },
+    {
+      "name": "adler2.compute_loop2_spec",
+      "module": "Proofs.SumLoops",
+      "scope": "algorithm-loop"
+    },
+    {
+      "name": "adler2.compute_loop3_spec",
+      "module": "Proofs.SumLoops",
+      "scope": "algorithm-loop"
+    },
+    {
+      "name": "adler2.normalize_rawRun",
+      "module": "Proofs.RawBridge",
+      "scope": "algorithm-bridge"
+    },
+    {
+      "name": "adler2.laneInv_groups",
+      "module": "Proofs.GroupBridge",
+      "scope": "algorithm-bridge"
+    },
+    {
+      "name": "adler2.remainder_chunk_multiple4",
+      "module": "Proofs.ComputeChunks",
+      "scope": "standard-model-bridge"
+    },
+    {
+      "name": "adler2.loop0_body_cons_numeric",
+      "module": "Proofs.OuterLoop",
+      "scope": "algorithm-loop"
+    },
+    {
+      "name": "adler2.compute_loop0_spec",
+      "module": "Proofs.OuterLoop",
+      "scope": "algorithm-loop"
+    },
+    {
+      "name": "adler2.split4Prelude_spec",
+      "module": "Proofs.SplitPrelude",
+      "scope": "algorithm-bridge"
+    },
+    {
+      "name": "adler2.finalCombine_laneInv",
+      "module": "Proofs.FinalCombine",
+      "scope": "algorithm-bridge"
+    },
+    {
+      "name": "adler2.finalTail_spec",
+      "module": "Proofs.FinalTail",
+      "scope": "algorithm-bridge"
+    },
+    {
+      "name": "adler2.compute_spec",
+      "module": "Proofs.Compute",
+      "scope": "algorithm-core"
+    },
+    {
+      "name": "adler2.write_slice_spec",
+      "module": "Proofs.PublicUpdate",
+      "scope": "public-model"
+    },
+    {
+      "name": "adler2.adler32_slice_spec",
+      "module": "Proofs.PublicUpdate",
+      "scope": "public-model"
+    },
+    {
+      "name": "adler2.split_update_spec",
+      "module": "Proofs.PublicUpdate",
+      "scope": "public-model"
+    },
+    {
+      "name": "adler2.write_slice_append_spec",
+      "module": "Proofs.PublicUpdate",
+      "scope": "public-model"
+    },
+    {
+      "name": "adler2.write_slice_resume_spec",
+      "module": "Proofs.PublicUpdate",
+      "scope": "public-model"
+    },
+    {
+      "name": "adler2.resume_checksum_spec",
+      "module": "Proofs.PublicUpdate",
+      "scope": "public-model"
+    }
+  ],
+  "recorder_mappings": [
+    {
+      "api": "Adler32::new",
+      "theorem": "adler2.new_spec"
+    },
+    {
+      "api": "Adler32::checksum",
+      "theorem": "adler2.checksum_spec"
+    },
+    {
+      "api": "Adler32::from_checksum",
+      "theorem": "adler2.from_checksum_spec"
+    },
+    {
+      "api": "Adler32::write_slice",
+      "theorem": "adler2.write_slice_spec"
+    },
+    {
+      "api": "adler32_slice",
+      "theorem": "adler2.adler32_slice_spec"
+    }
+  ],
+  "extracted_but_unproved": []
+}

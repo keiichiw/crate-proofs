@@ -1,0 +1,13 @@
+name = "adler2-proofs"
+defaultTargets = ["Proofs"]
+
+[[lean_lib]]
+name = "Proofs"
+
+[[lean_lib]]
+name = "Adler2"
+
+[[require]]
+name = "aeneas"
+git = { url = "https://github.com/AeneasVerif/aeneas", subDir = "backends/lean" }
+rev = "be86ab0f1989d04944292b345b24c435be3ad10a"

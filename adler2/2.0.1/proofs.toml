@@ -1,0 +1,41 @@
+[report]
+title = "adler2 2.0.1 Aeneas computation core"
+explanation = "The mapped theorems prove constructor and codec laws, total success and scalar Adler-32 equivalence for arbitrary-state slice updates, and the one-shot checksum. Supplementary theorems prove successful split-update and checksum-resumption equivalence. The actual optimized compute body is extracted from the unchanged pinned upstream submodule, whose src/ matches the checksummed release; scripts/verify.sh checks regeneration and all named theorems."
+trusted_assumptions = "Rust-to-LLBC-to-Lean translation and Aeneas standard library semantics; Lean kernel and only propext, Classical.choice, Quot.sound are permitted by the audit."
+limitations = "Scope is the computation core under default features on macOS arm64. Generic BufRead IO and errors, derived traits and Hasher laws, no_std formal proofs, alternative targets, and whole-crate verification are not established. Concatenation laws require a representable combined slice. cargo-proofs does not rerun extraction. This CLI needs submodule checkout support before recording this layout."
+environment = "macOS arm64; tool revisions in verification/toolchain.json"
+
+[tool]
+name = "aeneas"
+version = "be86ab0f1989d04944292b345b24c435be3ad10a"
+lean_dir = "proofs"
+
+[[tool.proofs]]
+api = "Adler32::new"
+module = "Proofs.Smoke"
+theorem = "adler2.new_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "Adler32::checksum"
+module = "Proofs.Codec"
+theorem = "adler2.checksum_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "Adler32::from_checksum"
+module = "Proofs.Codec"
+theorem = "adler2.from_checksum_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "Adler32::write_slice"
+module = "Proofs.PublicUpdate"
+theorem = "adler2.write_slice_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "adler32_slice"
+module = "Proofs.PublicUpdate"
+theorem = "adler2.adler32_slice_spec"
+precondition = "true"

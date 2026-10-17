@@ -1,0 +1,17 @@
+{
+  "checked_at": "2026-10-16",
+  "proofs_rs_repository": "https://github.com/proofs-rs/proofs-rs",
+  "proofs_rs_revision": "2f439b8b37dac42e41f8b9dd805ba770d65fc239",
+  "proofs_rs_selection": "upstream HEAD confirmed by git ls-remote",
+  "cargo_proofs": "0.4.0",
+  "aeneas": "be86ab0f1989d04944292b345b24c435be3ad10a",
+  "charon": "08d7c9d50144bd84848212c24701253585e90d1f",
+  "extraction_rust": "nightly-2026-09-17",
+  "native_rust": "1.91.1",
+  "lean": "leanprover/lean4:v4.35.0",
+  "host": "aarch64-apple-darwin",
+  "ocaml": "5.4.0",
+  "opam_switch": "default",
+  "proofs_rs_local_patch": "verification/patches/proofs-rs-audit-identifier.patch",
+  "patch_reason": "Aeneas reserves the token name; use theorem_name in the Lean audit. Audit semantics and allowed axioms are unchanged."
+}

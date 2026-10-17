@@ -1,0 +1,158 @@
+Pinned clean submodule, gitlink, Cargo build surface, and release src/ identity: OK
+Pinned tool sources, Lean dependency, and cargo-proofs version: OK
+Latest proofs-rs base plus exact audit-identifier compatibility patch: OK
+Audits synchronized with 46 checked theorems and 5 recorder mapping(s)
+Pinned clean submodule, gitlink, Cargo build surface, and release src/ identity: OK
+   Compiling adler2 v2.0.1 (/Users/keiichiw/workspace/crate-proofs/adler2/2.0.1)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.31s
+[[92mInfo[39m ] Imported: /Users/keiichiw/workspace/crate-proofs/adler2/2.0.1/verification/runs/check-mxgcyMMw/generated/adler2.llbc
+[?25lApplied prepasses:  [--------------------------------------------------]  0/45 ⠋Applied prepasses:  [#-------------------------------------------------]  1/45 ⠋Applied prepasses:  [#############-------------------------------------] 12/45 ⠋Applied prepasses:  [##################################################] 45/45 ✔️
+[?25h[?25lTranslated globals:  [---------------------------------------------------] 0/2 ⠋Translated globals:  [###################################################] 2/2 ✔️
+[?25h[?25lTranslated opaque functions:  [----------------------------------------]  0/22 ⠋Translated opaque functions:  [########################################] 22/22 ✔️
+[?25h[?25lTranslated transparent functions:  [-----------------------------------]  0/13 ⠋Translated transparent functions:  [##---------------------------------]  1/13 ⠋Translated transparent functions:  [################-------------------]  6/13 ⠋Translated transparent functions:  [################################---] 12/13 ⠙Translated transparent functions:  [###################################] 13/13 ⠹Translated transparent functions:  [###################################] 13/13 ✔️
+[?25h[?25lTranslated trait declarations:  [--------------------------------------]  0/30 ⠋Translated trait declarations:  [######--------------------------------]  5/30 ✔️
+[?25h[?25lTranslated trait impls:  [---------------------------------------------]  0/22 ⠋Translated trait impls:  [########-------------------------------------]  4/22 ✔️
+[?25h[?25lPost-processed translated opaque functions:  [-------------------------]  0/22 ⠋Post-processed translated opaque functions:  [#------------------------]  1/22 ⠋Post-processed translated opaque functions:  [#########################] 22/22 ✔️
+[?25h[?25lPost-processed translated transparent functions:  [--------------------]  0/13 ⠋Post-processed translated transparent functions:  [#-------------------]  1/13 ⠋Post-processed translated transparent functions:  [####################] 13/13 ⠙Post-processed translated transparent functions:  [####################] 13/13 ✔️
+[?25h[[92mInfo[39m ] Generated: /Users/keiichiw/workspace/crate-proofs/adler2/2.0.1/verification/runs/check-mxgcyMMw/generated/Adler2.lean
+[[92mInfo[39m ] Total execution time: 1.724150 seconds
+Generated local model inventory and absence of axioms/sorry: OK
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.00s
+     Running unittests upstream/src/lib.rs (target/debug/deps/adler2-cdd9c0dc70178c16)
+
+running 6 tests
+test tests::wiki ... ok
+test tests::mixed ... ok
+test tests::zeroes ... ok
+test tests::ones ... ok
+test tests::resume ... ok
+test tests::bufread ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+     Running tests/harness.rs (target/debug/deps/harness-e6c4c571ce4636c2)
+
+running 2 tests
+test state_roundtrip ... ok
+test scalar_reference_at_chunk_boundaries ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.04s
+
+   Doc-tests adler2
+
+running 4 tests
+test upstream/src/lib.rs - adler32 (line 190) - compile ... ok
+test upstream/src/lib.rs - Adler32::from_checksum (line 106) ... ok
+test upstream/src/lib.rs - Adler32 (line 44) ... ok
+test upstream/src/lib.rs - Adler32 (line 57) ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.48s
+
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.00s
+     Running unittests upstream/src/lib.rs (target/debug/deps/adler2-0421fc89e84ddd3a)
+
+running 5 tests
+test tests::wiki ... ok
+test tests::mixed ... ok
+test tests::zeroes ... ok
+test tests::ones ... ok
+test tests::resume ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+     Running tests/harness.rs (target/debug/deps/harness-f701cda153029159)
+
+running 2 tests
+test state_roundtrip ... ok
+test scalar_reference_at_chunk_boundaries ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.04s
+
+   Doc-tests adler2
+
+running 3 tests
+test upstream/src/lib.rs - Adler32 (line 44) ... ok
+test upstream/src/lib.rs - Adler32 (line 57) ... ok
+test upstream/src/lib.rs - Adler32::from_checksum (line 106) ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.47s
+
+✔ [1796/1819] Built Proofs.ChunkLemmas (5.8s)
+✔ [1797/1819] Built Adler2 (6.1s)
+✔ [1798/1819] Built Proofs.ComputeChunks (3.3s)
+✔ [1799/1819] Built Proofs.FourChunks (3.3s)
+✔ [1800/1819] Built Proofs.Spec (3.3s)
+✔ [1801/1819] Built Proofs.LoopBridge (3.3s)
+✔ [1802/1819] Built Proofs.Smoke (3.5s)
+✔ [1803/1819] Built Proofs.Codec (3.5s)
+✔ [1804/1819] Built Proofs.AlgoHelpers (3.5s)
+✔ [1805/1819] Built Proofs.AlgoOps (4.6s)
+✔ [1806/1819] Built Proofs.LaneMath (2.3s)
+✔ [1807/1819] Built Proofs.Loop4 (2.4s)
+✔ [1808/1819] Built Proofs.SumLoops (2.1s)
+✔ [1809/1819] Built Proofs.RawBridge (2.1s)
+✔ [1810/1819] Built Proofs.LaneLoop (2.3s)
+✔ [1811/1819] Built Proofs.GroupBridge (2.0s)
+✔ [1812/1819] Built Proofs.OuterLoop (2.2s)
+✔ [1813/1819] Built Proofs.FinalCombine (4.6s)
+✔ [1814/1819] Built Proofs.SplitPrelude (2.4s)
+✔ [1815/1819] Built Proofs.FinalTail (2.2s)
+✔ [1816/1819] Built Proofs.Compute (2.2s)
+✔ [1817/1819] Built Proofs.PublicUpdate (2.0s)
+✔ [1818/1819] Built Proofs (9.6s)
+Build completed successfully (1819 jobs).
+AUDIT OK: adler2.new_spec; axioms: [propext, Classical.choice, Quot.sound]
+AUDIT OK: adler2.initial_checksum; axioms: [propext, Classical.choice, Quot.sound]
+AUDIT OK: adler2.checksum_spec; axioms: [propext, Classical.choice, Quot.sound]
+AUDIT OK: adler2.from_checksum_spec; axioms: [propext, Classical.choice, Quot.sound]
+AUDIT OK: adler2.checksum_from_checksum; axioms: [propext, Classical.choice, Quot.sound]
+AUDIT OK: adler2.from_checksum_checksum; axioms: [propext, Classical.choice, Quot.sound]
+AUDIT OK: adler2.chunksExact_length; axioms: [propext, Classical.choice, Quot.sound]
+AUDIT OK: adler2.chunksExact_remainder_lt; axioms: [propext, Classical.choice, Quot.sound]
+AUDIT OK: adler2.chunksExact_partition; axioms: [propext, Classical.choice, Quot.sound]
+AUDIT OK: adler2.sliceChunksExact_partition; axioms: [propext, Classical.choice, Quot.sound]
+AUDIT OK: adler2.chunksExact_getRemainder; axioms: [propext, Quot.sound]
+AUDIT OK: adler2.chunksExact_next_cons; axioms: [propext, Quot.sound]
+AUDIT OK: adler2.chunksExact_next_nil; axioms: [propext, Quot.sound]
+AUDIT OK: adler2.u32x4_from_spec; axioms: [propext, Classical.choice, Quot.sound]
+AUDIT OK: adler2.run_append; axioms: [propext, Quot.sound]
+AUDIT OK: adler2.run_normalize_seed; axioms: [propext]
+AUDIT OK: adler2.u32x4_rem_assign_spec; axioms: [propext, Classical.choice, Quot.sound]
+AUDIT OK: adler2.u32x4_add_assign_spec; axioms: [propext, Classical.choice, Quot.sound]
+AUDIT OK: adler2.u32x4_mul_assign_spec; axioms: [propext, Classical.choice, Quot.sound]
+AUDIT OK: adler2.laneInv_initial_normalized; axioms: [propext]
+AUDIT OK: adler2.laneInv_step; axioms: [propext, Quot.sound]
+AUDIT OK: adler2.laneInv_mod; axioms: [propext]
+AUDIT OK: adler2.laneInv_combine; axioms: [propext, Quot.sound]
+AUDIT OK: adler2.compute_loop1_spec; axioms: [propext, Classical.choice, Quot.sound]
+AUDIT OK: adler2.compute_loop0_loop0_spec; axioms: [propext, Classical.choice, Quot.sound]
+AUDIT OK: adler2.sliceChunks4_spec; axioms: [propext, Classical.choice, Quot.sound]
+AUDIT OK: adler2.sliceChunks4_full; axioms: [propext, Classical.choice, Quot.sound]
+AUDIT OK: adler2.sliceChunks4_short; axioms: [propext, Classical.choice, Quot.sound]
+AUDIT OK: adler2.compute_loop4_spec; axioms: [propext, Classical.choice, Quot.sound]
+AUDIT OK: adler2.compute_loop2_spec; axioms: [propext, Classical.choice, Quot.sound]
+AUDIT OK: adler2.compute_loop3_spec; axioms: [propext, Classical.choice, Quot.sound]
+AUDIT OK: adler2.normalize_rawRun; axioms: [propext]
+AUDIT OK: adler2.laneInv_groups; axioms: [propext, Classical.choice, Quot.sound]
+AUDIT OK: adler2.remainder_chunk_multiple4; axioms: [propext, Quot.sound]
+AUDIT OK: adler2.loop0_body_cons_numeric; axioms: [propext, Classical.choice, Quot.sound]
+AUDIT OK: adler2.compute_loop0_spec; axioms: [propext, Classical.choice, Quot.sound]
+AUDIT OK: adler2.split4Prelude_spec; axioms: [propext, Classical.choice, Quot.sound]
+AUDIT OK: adler2.finalCombine_laneInv; axioms: [propext, Classical.choice, Quot.sound]
+AUDIT OK: adler2.finalTail_spec; axioms: [propext, Classical.choice, Quot.sound]
+AUDIT OK: adler2.compute_spec; axioms: [propext, Classical.choice, Quot.sound]
+AUDIT OK: adler2.write_slice_spec; axioms: [propext, Classical.choice, Quot.sound]
+AUDIT OK: adler2.adler32_slice_spec; axioms: [propext, Classical.choice, Quot.sound]
+AUDIT OK: adler2.split_update_spec; axioms: [propext, Classical.choice, Quot.sound]
+AUDIT OK: adler2.write_slice_append_spec; axioms: [propext, Classical.choice, Quot.sound]
+AUDIT OK: adler2.write_slice_resume_spec; axioms: [propext, Classical.choice, Quot.sound]
+AUDIT OK: adler2.resume_checksum_spec; axioms: [propext, Classical.choice, Quot.sound]
+proofs.rs:checked:adler2.new_spec
+proofs.rs:checked:adler2.checksum_spec
+proofs.rs:checked:adler2.from_checksum_spec
+proofs.rs:checked:adler2.write_slice_spec
+proofs.rs:checked:adler2.adler32_slice_spec
+Pinned clean submodule, gitlink, Cargo build surface, and release src/ identity: OK
+Pinned tool sources, Lean dependency, and cargo-proofs version: OK
+Latest proofs-rs base plus exact audit-identifier compatibility patch: OK
+Audits synchronized with 46 checked theorems and 5 recorder mapping(s)

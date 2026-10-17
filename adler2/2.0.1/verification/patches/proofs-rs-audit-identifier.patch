@@ -1,0 +1,19 @@
+diff --git a/cli/src/aeneas.rs b/cli/src/aeneas.rs
+index 8c55620..0ef3d59 100644
+--- a/cli/src/aeneas.rs
++++ b/cli/src/aeneas.rs
+@@ -213,11 +213,11 @@ pub fn audit_source(tool: &Tool) -> String {
+         source.push_str(&format!(
+             r#"
+ run_cmd do
+-  let name := `{theorem}
+-  match (← getEnv).find? name with
++  let theorem_name := `{theorem}
++  match (← getEnv).find? theorem_name with
+   | some (.thmInfo _) => pure ()
+   | _ => throwError "Expected a theorem: {theorem}"
+-  let axioms ← Lean.collectAxioms name
++  let axioms ← Lean.collectAxioms theorem_name
+   for ax in axioms do
+     unless [``propext, ``Classical.choice, ``Quot.sound].contains ax do
+       throwError "Unapproved axiom in {theorem}: {{ax}}"
