@@ -16,6 +16,10 @@ Read [setup and runner](references/setup-and-runner.md) when preparing a target 
 changing its toolchain. Read the target's specification and current results before
 extending its scope. Use [proof patterns](references/proof-patterns.md) for loops,
 modular arithmetic, model boundaries, and stateful API composition.
+When extraction or generated Lean fails, use [boundary diagnosis](references/boundary-diagnosis.md)
+to locate the failing stage and design a faithful minimal reproduction. For experiments
+whose failures or interruptions must remain analyzable, use the optional
+[trial recorder](../../../verification/trial-recording.md).
 
 1. Establish source identity. Prefer an unchanged upstream submodule plus an external
    manifest pointing at its source. Pin the Gitlink and verify the actual checkout,

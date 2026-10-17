@@ -32,6 +32,9 @@ Ask primary about unclear specifications, contracts, or evidence. Consult Astra 
 
 ## Shared tools and public reports
 
+- For diagnostic experiments that need a durable record even on failure, use the
+  optional [trial recorder](../../../verification/trial-recording.md). Process exit
+  and log diagnostics remain separate from the proof manifest's verdict.
 - Refer to the [shared tool procedures and formats](../../../verification/tools.md).
   `scripts/capture-crate-release.py NAME VERSION --output DIRECTORY` saves a distributed archive
   after checking it against the registry checksum, and `--check DIRECTORY` rechecks it offline.
