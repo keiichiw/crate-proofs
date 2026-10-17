@@ -1,0 +1,16 @@
+[package]
+name = "ipnet-heapless-feature-repro"
+version = "0.0.0"
+publish = false
+edition = "2021"
+default-run = "ipnet-heapless-feature-repro"
+
+[workspace]
+
+[features]
+heapless = ["ipnet/heapless"]
+legacy = ["ipnet/serde", "ipnet/ser_as_str"]
+
+[dependencies]
+ipnet = { path = "../../.." }
+serde = "1"

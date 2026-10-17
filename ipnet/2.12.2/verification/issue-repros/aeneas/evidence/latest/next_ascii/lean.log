@@ -1,0 +1,10 @@
+warning: aeneas: repository has local changes:
+  /Users/keiichiw/workspace/crate-proofs/ipnet/2.12.2/proofs/.lake/packages/aeneas
+/Users/keiichiw/workspace/crate-proofs/ipnet/2.12.2/verification/issue-repros/aeneas/runs/check-JvjA9xWu/next_ascii/Repro.lean:61:5: error: expected a product type, got
+  Option T
+/Users/keiichiw/workspace/crate-proofs/ipnet/2.12.2/verification/issue-repros/aeneas/runs/check-JvjA9xWu/next_ascii/Repro.lean:101:4: error: Type mismatch
+  CoreOpsFunctionFnOnceTupleMut0CursorOptionU8.call_once
+has type
+  closure → Cursor → Result (Option U8 × Cursor)
+but is expected to have type
+  closure → Cursor → Result (Option U8)

@@ -1,0 +1,113 @@
+{
+  "checks": [
+    {
+      "name": "schema",
+      "command": [
+        "cargo",
+        "+1.91.1",
+        "run",
+        "--offline",
+        "--locked",
+        "--manifest-path",
+        "/Users/keiichiw/workspace/crate-proofs/ipnet/2.12.2/verification/issue-repros/ipnet/Cargo.toml"
+      ],
+      "exit_code": 0
+    },
+    {
+      "name": "schema-check",
+      "command": [
+        "/Users/keiichiw/workspace/crate-proofs/ipnet/2.12.2/.tools/schema-python/bin/python",
+        "/Users/keiichiw/workspace/crate-proofs/ipnet/2.12.2/verification/issue-repros/ipnet/schema-minimal.py"
+      ],
+      "exit_code": 0
+    },
+    {
+      "name": "ipnet-heapless-feature-repro-heapless",
+      "command": [
+        "cargo",
+        "+1.91.1",
+        "run",
+        "--offline",
+        "--locked",
+        "--manifest-path",
+        "/Users/keiichiw/workspace/crate-proofs/ipnet/2.12.2/verification/bugs/heapless-feature-repro/Cargo.toml",
+        "--features",
+        "heapless"
+      ],
+      "exit_code": 0
+    },
+    {
+      "name": "ipnet-heapless-feature-repro-legacy",
+      "command": [
+        "cargo",
+        "+1.91.1",
+        "run",
+        "--offline",
+        "--locked",
+        "--manifest-path",
+        "/Users/keiichiw/workspace/crate-proofs/ipnet/2.12.2/verification/bugs/heapless-feature-repro/Cargo.toml",
+        "--features",
+        "legacy"
+      ],
+      "exit_code": 0
+    },
+    {
+      "name": "ipv6-heapless",
+      "command": [
+        "cargo",
+        "+1.91.1",
+        "run",
+        "--offline",
+        "--locked",
+        "--manifest-path",
+        "/Users/keiichiw/workspace/crate-proofs/ipnet/2.12.2/verification/bugs/heapless-feature-repro/Cargo.toml",
+        "--features",
+        "heapless",
+        "--bin",
+        "ipv6"
+      ],
+      "exit_code": 0
+    },
+    {
+      "name": "ipv6-legacy",
+      "command": [
+        "cargo",
+        "+1.91.1",
+        "run",
+        "--offline",
+        "--locked",
+        "--manifest-path",
+        "/Users/keiichiw/workspace/crate-proofs/ipnet/2.12.2/verification/bugs/heapless-feature-repro/Cargo.toml",
+        "--features",
+        "legacy",
+        "--bin",
+        "ipv6"
+      ],
+      "exit_code": 0
+    }
+  ],
+  "fresh_target": "issue-repros-enmxzrur",
+  "sha256": {
+    "verification/issue-repros/ipnet/run.py": "a797047ede939aab48c21215a096a11f152426bc8e1a4bef04d8495f1f993b52",
+    "verification/issue-repros/ipnet/Cargo.toml": "c0310dfe31ae00cee9be6823b7c72e77a0213c9b3b59f4133bd34148fd3103a2",
+    "verification/issue-repros/ipnet/Cargo.lock": "890965270b22d72a5390432442000ea5919ea469d850dfdbacf4dc23e33718af",
+    "verification/issue-repros/ipnet/schema-minimal.rs": "a531469a91662e27084fc655e66de3907dc21c2c1d33abac22d98a7d11bc65f8",
+    "verification/issue-repros/ipnet/schema-minimal.py": "f70eaca3ef181ee0c16a21172249e127e808a99e4515226da961881da8d33db8",
+    "verification/issue-repros/ipnet/schema.stdout": "88d7b01ecc0395002aa423600b622330eda7460247c2fb89f547c824ddac45aa",
+    "verification/issue-repros/ipnet/ipnet-heapless-feature-repro-legacy.stdout": "5d457df76dff368d1813e7d85e5140c03981b6f744e8c973bd275726452ab063",
+    "verification/issue-repros/ipnet/ipnet-heapless-feature-repro-heapless.stdout": "3ef3c91377cdc3596f72d973fccee3d248e502efdb98c5d563980d7ed02093e6",
+    "verification/issue-repros/ipnet/ipv6-legacy.stdout": "58aad0d5bd8bd6055923d7f4491c680dfe0ad07066de733146da890f2f5bc924",
+    "verification/issue-repros/ipnet/schema-check.stdout": "342e89fef635cd8f2fef5bde9a850faf72f6c040d7eab2d331e0cedfe9afc4ea",
+    "verification/issue-repros/ipnet/ipv6-heapless.stdout": "c9cc9a80044b751a76ac866c49e4f0160adafc25c25af533684ec41c96aaef06",
+    "verification/issue-repros/ipnet/ipnet-heapless-feature-repro-heapless.stderr": "a7a7f2d88ad4ddd995d01d6c43e3d0272571c9429dadfeb029751d2a4e477990",
+    "verification/issue-repros/ipnet/ipnet-heapless-feature-repro-legacy.stderr": "b1aba23b3063875147204790e425cdd01e576d3e8b01a4b9156865e27c716beb",
+    "verification/issue-repros/ipnet/schema.stderr": "6b08634baac6a764ad6b4639caf5e5e7976d90aa6969bcc8054d119cc84646fb",
+    "verification/issue-repros/ipnet/schema-check.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "verification/issue-repros/ipnet/ipv6-heapless.stderr": "58935cafba0b68abb936681c4d26355f1d2e76c5eb516a6648fbc0833954652e",
+    "verification/issue-repros/ipnet/ipv6-legacy.stderr": "2ad92a532a3bbb684981393b3e7d49f4c80645f53a53da43ff52291827499ad8",
+    "verification/bugs/heapless-feature-repro/src/main.rs": "844356a492517335b61043ec238d2280dbdffaf454f163925706a0973beeba72",
+    "verification/bugs/heapless-feature-repro/src/bin/ipv6.rs": "d48ed7e168e05d958625707b350e289886182a9c8a35f4a3c5d663c1322c25f1",
+    "verification/bugs/heapless-feature-repro/Cargo.toml": "842ca8bfe0a04d6ad75dc50dde0585838b1de2750b5719ba55ec52a731a64ed2",
+    "verification/bugs/heapless-feature-repro/Cargo.lock": "6d92d56829bc99cc13639d670e4d1b9ac497543c2f23b50a8b2cabb47d47083e"
+  }
+}

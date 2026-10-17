@@ -1,0 +1,95 @@
+{
+  "status": "counterexamples-reproduced",
+  "jsonschema_version": "4.25.1",
+  "rows": [
+    {
+      "feature": "schemars08",
+      "value": "192.168.0.0/24",
+      "IpNet": false,
+      "Ipv4Net": true,
+      "Ipv6Net": true,
+      "ipnet_parses": true,
+      "ipv6_parses": false,
+      "ipnet_deserializes": true,
+      "ipv6_deserializes": false
+    },
+    {
+      "feature": "schemars08",
+      "value": "0.0.0.0/0",
+      "IpNet": false,
+      "Ipv4Net": true,
+      "Ipv6Net": true,
+      "ipnet_parses": true,
+      "ipv6_parses": false,
+      "ipnet_deserializes": true,
+      "ipv6_deserializes": false
+    },
+    {
+      "feature": "schemars08",
+      "value": "fd00::/32",
+      "IpNet": true,
+      "Ipv4Net": false,
+      "Ipv6Net": true,
+      "ipnet_parses": true,
+      "ipv6_parses": true,
+      "ipnet_deserializes": true,
+      "ipv6_deserializes": true
+    },
+    {
+      "feature": "schemars08",
+      "value": "a/64",
+      "IpNet": true,
+      "Ipv4Net": false,
+      "Ipv6Net": true,
+      "ipnet_parses": false,
+      "ipv6_parses": false,
+      "ipnet_deserializes": false,
+      "ipv6_deserializes": false
+    },
+    {
+      "feature": "schemars1",
+      "value": "192.168.0.0/24",
+      "IpNet": false,
+      "Ipv4Net": true,
+      "Ipv6Net": true,
+      "ipnet_parses": true,
+      "ipv6_parses": false,
+      "ipnet_deserializes": true,
+      "ipv6_deserializes": false
+    },
+    {
+      "feature": "schemars1",
+      "value": "0.0.0.0/0",
+      "IpNet": false,
+      "Ipv4Net": true,
+      "Ipv6Net": true,
+      "ipnet_parses": true,
+      "ipv6_parses": false,
+      "ipnet_deserializes": true,
+      "ipv6_deserializes": false
+    },
+    {
+      "feature": "schemars1",
+      "value": "fd00::/32",
+      "IpNet": true,
+      "Ipv4Net": false,
+      "Ipv6Net": true,
+      "ipnet_parses": true,
+      "ipv6_parses": true,
+      "ipnet_deserializes": true,
+      "ipv6_deserializes": true
+    },
+    {
+      "feature": "schemars1",
+      "value": "a/64",
+      "IpNet": true,
+      "Ipv4Net": false,
+      "Ipv6Net": true,
+      "ipnet_parses": false,
+      "ipv6_parses": false,
+      "ipnet_deserializes": false,
+      "ipv6_deserializes": false
+    }
+  ],
+  "scope": "Native counterexamples against generated schemas; not formal proof."
+}

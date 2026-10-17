@@ -1,0 +1,162 @@
+{
+  "samples": [
+    {
+      "input": "192.168.0.0/24",
+      "ipnet_deserializes": true,
+      "ipnet_parses": true,
+      "ipv6_deserializes": false,
+      "ipv6_parses": false,
+      "serialized": "192.168.0.0/24"
+    },
+    {
+      "input": "0.0.0.0/0",
+      "ipnet_deserializes": true,
+      "ipnet_parses": true,
+      "ipv6_deserializes": false,
+      "ipv6_parses": false,
+      "serialized": "0.0.0.0/0"
+    },
+    {
+      "input": "fd00::/32",
+      "ipnet_deserializes": true,
+      "ipnet_parses": true,
+      "ipv6_deserializes": true,
+      "ipv6_parses": true,
+      "serialized": "fd00::/32"
+    },
+    {
+      "input": "a/64",
+      "ipnet_deserializes": false,
+      "ipnet_parses": false,
+      "ipv6_deserializes": false,
+      "ipv6_parses": false,
+      "serialized": null
+    }
+  ],
+  "schemars08": {
+    "IpNet": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "description": "An IPv4 or IPv6 address with prefix length",
+      "examples": [
+        "192.168.0.0/24",
+        "fd00::/32"
+      ],
+      "oneOf": [
+        {
+          "description": "An IPv4 address with prefix length",
+          "examples": [
+            "0.0.0.0/0",
+            "192.168.0.0/24"
+          ],
+          "maxLength": 18,
+          "pattern": "^(?:(?:25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\\.){3}(?:25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\\/(?:3[0-2]|[1-2][0-9]|[0-9])$",
+          "title": "IPv4 network",
+          "type": "string"
+        },
+        {
+          "description": "An IPv6 address with prefix length",
+          "examples": [
+            "::/0",
+            "fd00::/32"
+          ],
+          "maxLength": 43,
+          "pattern": "^[0-9A-Fa-f:\\.]+\\/(?:[0-9]|[1-9][0-9]|1[0-1][0-9]|12[0-8])$",
+          "title": "IPv6 network",
+          "type": "string"
+        }
+      ],
+      "title": "IP network"
+    },
+    "Ipv4Net": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "description": "An IPv4 address with prefix length",
+      "examples": [
+        "0.0.0.0/0",
+        "192.168.0.0/24"
+      ],
+      "maxLength": 18,
+      "pattern": "^(?:(?:25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\\.){3}(?:25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\\/(?:3[0-2]|[1-2][0-9]|[0-9])$",
+      "title": "IPv4 network",
+      "type": "string"
+    },
+    "Ipv6Net": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "description": "An IPv6 address with prefix length",
+      "examples": [
+        "::/0",
+        "fd00::/32"
+      ],
+      "maxLength": 43,
+      "pattern": "^[0-9A-Fa-f:\\.]+\\/(?:[0-9]|[1-9][0-9]|1[0-1][0-9]|12[0-8])$",
+      "title": "IPv6 network",
+      "type": "string"
+    }
+  },
+  "schemars1": {
+    "IpNet": {
+      "$defs": {
+        "Ipv4Net": {
+          "description": "An IPv4 address with prefix length",
+          "examples": [
+            "0.0.0.0/0",
+            "192.168.0.0/24"
+          ],
+          "maxLength": 18,
+          "pattern": "^(?:(?:25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\\.){3}(?:25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\\/(?:3[0-2]|[1-2][0-9]|[0-9])$",
+          "title": "IPv4 network",
+          "type": "string"
+        },
+        "Ipv6Net": {
+          "description": "An IPv6 address with prefix length",
+          "examples": [
+            "::/0",
+            "fd00::/32"
+          ],
+          "maxLength": 43,
+          "pattern": "^[0-9A-Fa-f:\\.]+\\/(?:[0-9]|[1-9][0-9]|1[0-1][0-9]|12[0-8])$",
+          "title": "IPv6 network",
+          "type": "string"
+        }
+      },
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "description": "An IPv4 or IPv6 address with prefix length",
+      "examples": [
+        "192.168.0.0/24",
+        "fd00::/32"
+      ],
+      "oneOf": [
+        {
+          "$ref": "#/$defs/Ipv4Net"
+        },
+        {
+          "$ref": "#/$defs/Ipv6Net"
+        }
+      ],
+      "title": "IP network"
+    },
+    "Ipv4Net": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "description": "An IPv4 address with prefix length",
+      "examples": [
+        "0.0.0.0/0",
+        "192.168.0.0/24"
+      ],
+      "maxLength": 18,
+      "pattern": "^(?:(?:25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\\.){3}(?:25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\\/(?:3[0-2]|[1-2][0-9]|[0-9])$",
+      "title": "IPv4 network",
+      "type": "string"
+    },
+    "Ipv6Net": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "description": "An IPv6 address with prefix length",
+      "examples": [
+        "::/0",
+        "fd00::/32"
+      ],
+      "maxLength": 43,
+      "pattern": "^[0-9A-Fa-f:\\.]+\\/(?:[0-9]|[1-9][0-9]|1[0-1][0-9]|12[0-8])$",
+      "title": "IPv6 network",
+      "type": "string"
+    }
+  }
+}

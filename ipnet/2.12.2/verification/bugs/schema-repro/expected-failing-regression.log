@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "/Users/keiichiw/workspace/crate-proofs/ipnet/2.12.2/verification/bugs/schema-repro/check.py", line 31, in <module>
+    assert validity['IpNet'], f'Output conformance violated: {row}'
+           ~~~~~~~~^^^^^^^^^
+AssertionError: Output conformance violated: {'feature': 'schemars08', 'value': '192.168.0.0/24', 'IpNet': False, 'Ipv4Net': True, 'Ipv6Net': True, 'ipnet_parses': True, 'ipv6_parses': False, 'ipnet_deserializes': True, 'ipv6_deserializes': False}
