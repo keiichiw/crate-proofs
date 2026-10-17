@@ -8,43 +8,125 @@
 title = "httpdate 1.0.3: correct HTTP-date parsing and bounded formatting"
 
 explanation = '''
-httpdate parses the date strings used in HTTP headers (IMF-fixdate, RFC 850, and asctime) into HttpDate or SystemTime values, and formats timestamps as IMF-fixdate. This report covers parse_http_date, HttpDate::from_str, fmt_http_date, and Display for HttpDate, as implemented in a verification fork of version 1.0.3 (see limitations). The supported timestamp range is UNIX_EPOCH <= t < UNIX_EPOCH + 253402300800 seconds, from the Unix Epoch through the end of 9999-12-31, including fractional seconds. Parsing is verified for arbitrary input strings; formatting discards fractional seconds. All guarantees are conditional on the standard-library assumptions listed below.
+`httpdate` parses dates in HTTP headers and formats timestamps as IMF-fixdate. This report covers **four API bodies in a verification fork of version 1.0.3**. All guarantees depend on the standard-library assumptions below; the relationship to the published crate is described under Technical limitations.
 
-Parsing. For every input string, HttpDate::from_str either rejects the input or returns a valid HttpDate whose seven fields (second, minute, hour, day, month, year, weekday) match what the input encodes after ASCII whitespace is trimmed. parse_http_date accepts the same inputs and returns the corresponding whole-second SystemTime. Valid means a real Gregorian date in the supported range: the day exists in that month, leap years follow the Gregorian rule, and the weekday agrees with the calendar date. Any input containing non-ASCII characters is rejected. The three formats are tried in order: IMF-fixdate, then RFC 850, then asctime. The error direction is proved as well: if a trimmed input matches one of the three grammars, it is rejected only when the date it encodes is calendar-invalid, so a well-formed string for a valid date is never rejected. Two-digit RFC 850 years map to 1970-2069. One upstream quirk is preserved on purpose: the separator byte between the RFC 850 year and the time is not checked, so this is not a claim of strict RFC conformance.
+| API | Input domain | Guaranteed result |
+| --- | --- | --- |
+| `HttpDate::from_str` | Any input string | A calendar-valid `HttpDate` matching the trimmed input, or rejection as described below |
+| `parse_http_date` | Any input string | The same acceptance behavior, returning the corresponding whole-second `SystemTime` |
+| `fmt_http_date` | `SystemTime` in the supported range | Canonical 29-character IMF-fixdate in GMT, with fractional seconds discarded |
+| `Display for HttpDate` | Valid `HttpDate` | The same canonical text when the write succeeds and the writer is an append sink |
 
-Formatting. For every SystemTime t in the supported range, fmt_http_date returns the canonical 29-character IMF-fixdate string for t in GMT, truncating fractional seconds. Converting a SystemTime in the supported range to an HttpDate and back returns the original time truncated to whole seconds. Display for HttpDate writes the same 29-character string, under one condition: the guarantee applies only when the write succeeds and the writer behind the Formatter appends what it is given (see trusted_assumptions); nothing is promised about partial output when a write fails.
+**Supported timestamp range:** `UNIX_EPOCH <= t < UNIX_EPOCH + 253402300800 seconds`, from 1970-01-01 through the end of 9999-12-31, including fractional seconds. Parsing accepts arbitrary strings for validation; it can only return dates in this range.
 
-Panic freedom. For arbitrary parser inputs, timestamps in the supported formatting range, and valid HttpDate values passed to Display, the selected bodies are proved free of panics, including arithmetic overflow and out-of-bounds indexing, given the modeled library contracts. Not covered: allocation failure, aborts, and panics raised by a user-supplied writer. The proofs cover the parsing, calendar, validation, conversion, and formatting helpers these APIs call, together with their supporting lemmas; the application helpers are proved, not assumed.
+# Parsing
+
+For every input string, `HttpDate::from_str` either rejects it or returns a valid date whose seven fields—second, minute, hour, day, month, year, and weekday—match the input after ASCII whitespace is trimmed. `parse_http_date` accepts the same inputs and returns the corresponding whole-second `SystemTime`.
+
+- **Calendar validity:** the date is in the supported range, the day exists in its month, leap years follow the Gregorian rule, and the weekday agrees with the date.
+- **Accepted formats:** IMF-fixdate, RFC 850, and asctime, tried in that order. Non-ASCII input is rejected; two-digit RFC 850 years map to 1970–2069.
+- **Error completeness:** if a trimmed input matches one of the three grammars, it is rejected only when the encoded date is calendar-invalid. A well-formed encoding of a valid date is never rejected.
+
+**Compatibility quirk:** the RFC 850 separator byte between the year and time is not checked, matching upstream. For example, `Sunday, 06-Nov-94x08:49:37 GMT` is accepted. This is not a claim of strict RFC conformance.
+
+# Formatting
+
+For every `SystemTime` t in the supported range, `fmt_http_date` returns the canonical 29-character IMF-fixdate string for t in GMT, truncating fractional seconds. Converting a `SystemTime` in the supported range to an `HttpDate` and back returns the original time truncated to whole seconds. `Display for HttpDate` writes the same 29-character string, under one condition: the guarantee applies only when the write succeeds and the writer behind the `Formatter` appends what it is given (see What is trusted); nothing is promised about partial output when a write fails.
+
+# Panic freedom
+
+For arbitrary parser inputs, timestamps in the supported formatting range, and valid `HttpDate` values passed to Display, the selected bodies are proved free of panics, including arithmetic overflow and out-of-bounds indexing, given the modeled library contracts. Not covered: allocation failure, aborts, and panics raised by a user-supplied writer. The proofs cover the parsing, calendar, validation, conversion, and formatting helpers these APIs call, together with their supporting lemmas; the application helpers are proved, not assumed.
 '''
 
 trusted_assumptions = '''
 The proofs reach the Rust standard library through a small set of modeled contracts. These are source-reviewed assumptions, not proofs of the standard library. They matter to a user in three places.
 
-Timestamps. SystemTime is modeled as a nanosecond count with UNIX_EPOCH at zero. duration_since is assumed to return the nonnegative difference when it fits in a Duration, and an error for a negative difference (the error value is left unspecified). Adding a Duration to UNIX_EPOCH is assumed to produce a timestamp equal to the duration's nanosecond count; the proofs only use this with UNIX_EPOCH on the left and a duration within the supported range, and establish both bounds before relying on it. The recorded review of the pinned Rust 1.91.0 and nightly sources finds that the reviewed 64-bit Linux and macOS arm64 targets store SystemTime as a normalized Unix timespec with signed 64-bit seconds, which the bounded epoch addition fits. Clock reads and SystemTime arithmetic outside this pattern are not modeled.
+# Timestamps
 
-Text. str::is_ascii, str::trim (on ASCII strings, removing bytes 9-13 and 32), str::as_bytes (preserving byte values on ASCII strings), and str::from_utf8 (succeeding and preserving characters on ASCII bytes) are assumed to behave as documented. The formatter's bytes are proved to be ASCII before from_utf8 is applied. These contracts connect the byte-level grammar proofs to the public String results; their implementations remain trusted.
+`SystemTime` is modeled as a nanosecond count with `UNIX_EPOCH` at zero. `duration_since` is assumed to return the nonnegative difference when it fits in a `Duration`, and an error for a negative difference (the error value is left unspecified). Adding a `Duration` to `UNIX_EPOCH` is assumed to produce a timestamp equal to the duration's nanosecond count; the proofs only use this with `UNIX_EPOCH` on the left and a duration within the supported range, and establish both bounds before relying on it. The recorded review of the pinned Rust 1.91.0 and nightly sources finds that the reviewed 64-bit Linux and macOS arm64 targets store `SystemTime` as a normalized Unix timespec with signed 64-bit seconds, which the bounded epoch addition fits. Clock reads and `SystemTime` arithmetic outside this pattern are not modeled.
 
-Display. The Formatter model tracks the output already written and uses an "append sink" condition: a successful write_str appends the given text to the output provided the underlying writer faithfully appends successful writes, as a plain buffer does and a writer that inserts indentation or transforms text does not. The pinned Rust 1.91 source forwards the formatter's write_str unchanged to the underlying writer. This explains the boundary but does not establish faithful behavior or panic freedom for an arbitrary user-supplied writer. The output guarantee is relative to whatever the writer already contained; no empty initial buffer is assumed.
+# Text
 
-Other standard operations (Duration, Result, slices, integers, string views) rely on Creusot's standard library models. The complete list of 41 conditional declarations, including those for traits outside this report's scope, is in the assumptions ledger kept with the evidence.
+`str::is_ascii`, `str::trim` (on ASCII strings, removing bytes 9-13 and 32), `str::as_bytes` (preserving byte values on ASCII strings), and `str::from_utf8` (succeeding and preserving characters on ASCII bytes) are assumed to behave as documented. The formatter's bytes are proved to be ASCII before `from_utf8` is applied. These contracts connect the byte-level grammar proofs to the public `String` results; their implementations remain trusted.
+
+# Display
+
+The `Formatter` model tracks the output already written and uses an "append sink" condition: a successful `write_str` appends the given text to the output provided the underlying writer faithfully appends successful writes, as a plain buffer does and a writer that inserts indentation or transforms text does not. The pinned Rust 1.91 source forwards the formatter's `write_str` unchanged to the underlying writer. This explains the boundary but does not establish faithful behavior or panic freedom for an arbitrary user-supplied writer. The output guarantee is relative to whatever the writer already contained; no empty initial buffer is assumed.
+
+Other standard operations (`Duration`, Result, slices, integers, string views) rely on Creusot's standard library models. The complete list of 41 conditional declarations, including those for traits outside this report's scope, is in the assumptions ledger kept with the evidence.
 '''
 
 limitations = '''
-Adapted source. The verified code is a fork of httpdate 1.0.3, not the unmodified crates.io artifact. Before modification, the two runtime files copied from the source Git revision, src/lib.rs and src/date.rs, match the crates.io release byte for byte; the archive SHA-256 and source revisions are recorded with the evidence. The fork restructures the implementation so that intermediate values and relationships can be specified: a private RawDate holds syntactically parsed fields, and validation converts it to the public HttpDate through checked bridges that preserve all seven fields; the calendar arithmetic is extracted into integer helpers; validity is checked by a raw whole-second round trip instead of a public SystemTime round trip; Result::or_else and byte-string slice patterns are replaced by an explicit ordered match and scalar comparisons, preserving the original parser order; and formatting builds the String from the extracted 29-byte layout rather than format!. The fork also makes several derived or default trait implementations explicit (Clone, Eq, Ord, Hash, Debug, Error); those traits have their own proofs but are outside this report's API scope.
+# Adapted source
 
-Relationship to the release. Equivalence between the fork and the release is supported by source review and finite native comparison, not by formal proof. The recorded comparison runs both programs side by side on one representative instant of every supported civil day (2,932,897 days), on boundary and fractional-second instants, on 132,353 additional parser cases covering valid, malformed, and mutated inputs, and on formatting and writer-failure cases, with agreement on all of them. These are comparison counts, not counts of unique input strings. Four small runtime helpers (toint_1, toint_2, toint_4, is_leap_year) are checked byte for byte against the release. Allocation behavior and performance equivalence are not established.
+The verified code is a fork of httpdate 1.0.3, not the unmodified crates.io artifact. Before modification, the two runtime files copied from the source Git revision, `src/lib.rs` and `src/date.rs`, match the crates.io release byte for byte; the archive SHA-256 and source revisions are recorded with the evidence.
 
-Out-of-range input. Before the Unix Epoch and from year 10000 on, SystemTime-to-date conversion and fmt_http_date panic, in the release as in the fork. Because the From<SystemTime> for HttpDate trait accepts any SystemTime, its unconditional trait obligation is the one open goal in the supporting full-suite run; proving the implementation body on the supported range does not close it, and this report makes no claim for out-of-range timestamps.
+The fork restructures the implementation so intermediate values and relationships can be specified:
 
-Not claimed. Complete crate coverage; a general Rust undefined-behavior proof; behavior with arbitrary writers; and the release's Rust 1.56 minimum version (the fork requires Rust 1.91). The supporting full-suite run is a fresh macOS arm64 execution; 64-bit Linux is covered by the same source review of the standard library, but this run is not a fresh Linux execution and no other platform is claimed.
+- **Parsing and validation:** a private `RawDate` holds syntactically parsed fields. Checked bridges preserve all seven fields when validation constructs a public `HttpDate`.
+- **Calendar arithmetic:** integer helpers expose the calculations. Validity is checked by a raw whole-second round trip instead of a public `SystemTime` round trip.
+- **Parser control flow:** explicit ordered matches and scalar comparisons replace `Result::or_else` and byte-string slice patterns, preserving the original parser order.
+- **Formatting:** the `String` is built from the extracted 29-byte layout rather than `format!`.
+
+Several derived or default trait implementations (`Clone`, `Eq`, `Ord`, `Hash`, `Debug`, `Error`) are also made explicit. Their selected proofs are outside this report's four-API scope.
+
+# Relationship to the release
+
+Equivalence between the fork and the release is supported by source review and finite native comparison, not by formal proof. The recorded comparison runs both programs side by side on one representative instant of every supported civil day (2,932,897 days), on boundary and fractional-second instants, on 132,353 additional parser cases covering valid, malformed, and mutated inputs, and on formatting and writer-failure cases, with agreement on all of them. These are comparison counts, not counts of unique input strings. Four small runtime helpers (`toint_1`, `toint_2`, `toint_4`, `is_leap_year`) are checked byte for byte against the release. Allocation behavior and performance equivalence are not established.
+
+# Out-of-range input
+
+Before the Unix Epoch and from year 10000 on, `SystemTime`-to-date conversion and `fmt_http_date` panic, in the release as in the fork. Because the `From<SystemTime> for HttpDate` trait accepts any `SystemTime`, its unconditional trait obligation is the one open goal in the supporting full-suite run; proving the implementation body on the supported range does not close it, and this report makes no claim for out-of-range timestamps.
+
+# Not claimed
+
+Complete crate coverage; a general Rust undefined-behavior proof; behavior with arbitrary writers; and the release's Rust 1.56 minimum version (the fork requires Rust 1.91). The supporting full-suite run is a fresh macOS arm64 execution; 64-bit Linux is covered by the same source review of the standard library, but this run is not a fresh Linux execution and no other platform is claimed.
 '''
 
 environment = '''
-Supporting full-suite evidence: crate-proofs commit 9e9100c8b1727568d60a9db388f352eb4a8bf040, directory httpdate/1.0.3. Native Rust 1.91.0; Creusot 0.13.0 at commit 318615be3b8bbc60d1f6d52469ba5c0bdebed4f1 with nightly-2026-06-22. The inspected Creusot source checkout is unmodified. Why3, Why3find, and solver identities are pinned in the formal manifest. The version-local prover configuration uses per-query CVC5 time limits, affecting proof search rather than the logical statements.
+# Recorded environment
 
-The full-suite archive includes the application helpers used by the four reported APIs. Submission recording is a separate run that retains source positions and checks those four APIs against matching source and contracts; its source revision and execution details belong to the recorded SARIF.
+| Component | Supporting full-suite run |
+| --- | --- |
+| Source snapshot | `crate-proofs` commit `9e9100c8b1727568d60a9db388f352eb4a8bf040`, directory `httpdate/1.0.3` |
+| Execution platform | macOS arm64 |
+| Native Rust | 1.91.0 |
+| Creusot | 0.13.0, commit `318615be3b8bbc60d1f6d52469ba5c0bdebed4f1`, unmodified source checkout |
+| Translation toolchain | `nightly-2026-06-22` |
+| Provers | Why3, Why3find, and solver identities pinned in the formal manifest |
 
-Evidence (repository-relative): formal run httpdate/1.0.3/verification/evidence/httpdate-run-Nh8aCaki/manifest.json with independent-audit.json; native correspondence httpdate/1.0.3/verification/correspondence/evidence/correspondence-qZmQ5PXk/manifest.json. Scope, standard-library assumptions, release provenance, and the source-change table are in verification/coverage.md, verification/stdlib-assumptions.md, and verification/correspondence/README.md under that directory. Reproduce the formal run with bash httpdate/1.0.3/scripts/verify.sh in the documented verification environment, and the native comparison with bash httpdate/1.0.3/scripts/check-correspondence.sh using ordinary Rust/Cargo. The separate API-recording procedure is in verification/proofs-rs-report-review.md.
+The version-local prover configuration uses per-query CVC5 time limits, affecting proof search rather than the logical statements.
+
+# Evidence
+
+Paths below are relative to `httpdate/1.0.3/` in the evidence repository.
+
+| Evidence | Location |
+| --- | --- |
+| Formal run and independent audit | `verification/evidence/httpdate-run-Nh8aCaki/manifest.json` and `independent-audit.json` in the same directory |
+| Native correspondence, separately bound to the formal run | `verification/correspondence/evidence/correspondence-qZmQ5PXk/manifest.json` |
+| Verified scope and results | `verification/coverage.md` |
+| Standard-library assumptions | `verification/stdlib-assumptions.md` |
+| Release provenance and source-change table | `verification/correspondence/README.md` |
+| Separate API-recording procedure | `verification/proofs-rs-report-review.md` |
+
+The full-suite archive includes the application helpers used by the four reported APIs. Native comparison is finite regression evidence, not formal equivalence with the release.
+
+Submission recording is a separate run that retains source positions and checks those four APIs against matching source and contracts. Its source revision and execution details belong to the recorded SARIF. The Creusot importer records `panic_contract`; the functional guarantees described here are supported by the proof archive, not separately registered functional-correctness or `no_ub` claims.
+
+# Reproduction
+
+From the repository root, in the documented verification environment, reproduce the formal run with:
+
+```sh
+bash httpdate/1.0.3/scripts/verify.sh
+```
+
+Run the independent native comparison using ordinary Rust/Cargo with:
+
+```sh
+bash httpdate/1.0.3/scripts/check-correspondence.sh
+```
 '''
 
 [tool]
