@@ -32,6 +32,21 @@ bash scripts/check-tools.sh
 
 If setup is already complete, run activate and check. Check verifies an independent bootstrap sample proof; it does not check the results for individual crates. Environment packages and tool data are stored in `/workspace/.cargo`, `/workspace/.rustup`, `/workspace/.opam`, and `/workspace/.local`.
 
+## Aeneas + Lean workflow
+
+For Aeneas targets, use the [Aeneas/Lean skill](.agents/skills/aeneas-lean-verification/SKILL.md).
+It covers unchanged upstream submodules, compatible tool pins, independent specifications,
+actual generated-body proofs, and reproducible local evidence. The shared helpers are:
+
+- `python3 scripts/aeneas-extract.py --help`: config-driven local-crate extraction with expected model/body checks.
+- `python3 scripts/aeneas-audit.py --help`: named-theorem builds, module/API mapping checks and transitive axiom audits.
+
+The [setup/runner reference](.agents/skills/aeneas-lean-verification/references/setup-and-runner.md)
+contains configuration examples and the required source/freshness checks around these helpers.
+Tool installation and mathematical proofs remain target-specific; these helpers do not
+claim automatic verification or proofs.rs recording. Use each target’s version-local
+runner and maintained evidence bundle for its current checked scope.
+
 ## Work by crate
 
 Follow the commands and verification scope documented in each version's README, AGENTS.md, and skill. Specify that version's `Cargo.toml` for ordinary Cargo commands, and use its `scripts/verify.sh` for formal verification. Place additional crates and versions in the same layout.
@@ -46,13 +61,15 @@ Do not treat hyper or atoi as verified; first assess feasibility on an important
 
 | Crate | Version | Procedure and scope |
 | --- | --- | --- |
+| adler2 | 2.0.1 | [Aeneas/Lean harness](adler2/2.0.1/README.md) / [results](adler2/2.0.1/verification/results.md) |
+| ipnet | 2.12.2 | [Aeneas/Lean harness](ipnet/2.12.2/README.md) / [scope and results](ipnet/2.12.2/verification/results.md) / [bug and tool reproductions](ipnet/2.12.2/verification/issue-repros/README.md) |
 | httpdate | 1.0.3 | [Procedure](httpdate/1.0.3/README.md) / [scope and recorded results](httpdate/1.0.3/verification/coverage.md) |
 | form_urlencoded | 1.2.2 | [Scope](form_urlencoded/1.2.2/verification/coverage.md) / [recorded results](form_urlencoded/1.2.2/verification/results.md) |
 | percent-encoding | 2.3.2 | [Scope](percent-encoding/2.3.2/verification/coverage.md) / [recorded results](percent-encoding/2.3.2/verification/results.md) |
 
 Use the linked results pages and manifests for each version’s current input freshness and selected proof scope. Historical bundles remain tied to their own frozen inputs. These are not whole-crate or unmodified-release verification claims. Native and differential tests are reported separately.
 
-For form_urlencoded's expanded scope, run `bash form_urlencoded/1.2.2/scripts/verify-direct.sh --ground-fallback`; `scripts/verify.sh` retains the historical Why3find workflow. The current direct evidence pointer is `verification/evidence/latest-direct`, while `latest` refers to the old byte-core milestone. For percent-encoding, the independent Cargo workspace and lockfile are inside `crate/`; its native and formal commands are in the results page.
+For form_urlencoded's expanded scope, run `bash form_urlencoded/1.2.2/scripts/verify.sh` for standard Why3find verification; see its results page for the current `verification/evidence/latest` bundle. The historical direct-SMT evidence remains under `latest-direct`. For percent-encoding, the independent Cargo workspace and lockfile are inside `crate/`; use `scripts/verify-why3find.sh` for fresh native checks followed by standard verification. Its results page records the standard run status and evidence.
 
 A refresh must prove form_urlencoded first, then review and update percent-encoding's pinned dependency evidence path and SHA-256 before its native and formal runs. See the [refresh procedure](verification/refresh.md).
 
