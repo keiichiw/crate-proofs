@@ -1,9 +1,123 @@
 [report]
-title = "adler2 2.0.1 Aeneas computation core"
-explanation = "The mapped theorems prove constructor and codec laws, total success and scalar Adler-32 equivalence for arbitrary-state slice updates, and the one-shot checksum. Supplementary theorems prove successful split-update and checksum-resumption equivalence. The actual optimized compute body is extracted from the unchanged pinned upstream submodule, whose src/ matches the checksummed release; scripts/verify.sh checks regeneration and all named theorems."
-trusted_assumptions = "Rust-to-LLBC-to-Lean translation and Aeneas standard library semantics; Lean kernel and only propext, Classical.choice, Quot.sound are permitted by the audit."
-limitations = "Scope is the computation core under default features on macOS arm64. Generic BufRead IO and errors, derived traits and Hasher laws, no_std formal proofs, alternative targets, and whole-crate verification are not established. Concatenation laws require a representable combined slice. cargo-proofs does not rerun extraction. This CLI needs submodule checkout support before recording this layout."
-environment = "macOS arm64; tool revisions in verification/toolchain.json"
+title = "adler2 2.0.1: Adler-32 computation core verified with Aeneas and Lean"
+explanation = '''
+## Verified API contracts
+
+This report covers the Adler-32 computation core extracted with default Cargo
+features for macOS arm64. The five mapped theorems prove successful execution
+and functional correctness in the extracted Lean model:
+
+- **`Adler32::new`** returns the initial state `(a, b) = (1, 0)`.
+- **`Adler32::checksum`** returns `65536 * b + a` for every state.
+- **`Adler32::from_checksum`** decodes every `u32` into
+  `a = checksum % 65536` and `b = checksum / 65536`.
+- **`Adler32::write_slice`** updates the state exactly as specified by the scalar
+  Adler-32 recurrence, for every representable initial state and byte slice.
+- **`adler32_slice`** returns the checksum of that recurrence starting from `(1, 0)`.
+
+In Rust, `write_slice` mutates the state and returns `()`. The extracted Lean
+function represents this mutation by returning the updated state.
+
+## Meaning of update correctness
+
+An initial state consists of two 16-bit unsigned values: `a` and `b` may each
+range from `0` through `65535`. The contracts cover all such states, including
+those restored from arbitrary `u32` checksums.
+
+The specification first reduces both state halves modulo `65521`, then processes
+each byte `x` in order:
+
+```text
+a := (a + x) mod 65521
+b := (b + a) mod 65521
+```
+
+The proof covers the actual extracted optimized compute body, including its loops,
+machine arithmetic, and indexing. It proves a successful result in the model,
+not merely a property conditional on execution succeeding. There is no
+normalized-seed assumption or input-length bound beyond slice representability.
+
+**Empty updates also normalize the state.** For example, restoring `0xffffffff`
+and writing an empty slice produces state `(14, 14)`, with checksum `0x000e000e`.
+Encoding and decoding alone do not perform this normalization.
+
+## Supplementary proofs
+
+The local theorem inventory also includes proofs that:
+
+- Encoding and decoding round-trip every state and every `u32` checksum.
+- Split updates and an update over their concatenation both succeed and return
+  the same complete state.
+- Saving the intermediate checksum, restoring it, and continuing the update
+  produces that same state.
+
+These are supplementary audited theorems, not additional API mappings. The split
+and resumption laws take slices `xs`, `ys`, and `whole` whose byte sequences satisfy
+`whole = xs ++ ys`. Thus the concatenated input must itself be representable as
+a slice; these laws do not establish the success of allocating that slice.
+
+## Source and evidence
+
+The model is extracted from unchanged upstream sources pinned by a Git submodule.
+Source checks compare `src/` with the checksummed release archive and check the
+outer Cargo manifest's features and dependencies against upstream.
+
+**Local verification workflow.** `scripts/verify.sh` checks source identity,
+regenerates and compares the Lean model, rebuilds the proofs, and checks input
+fingerprints before and after verification. Its audit starts from the 46 named
+theorem roots in `verification/theorems.json` and follows their proof dependencies.
+Those roots include the five API contracts, supplementary laws, and implementation
+lemmas. The number 46 is not a count of verified APIs or of every auxiliary theorem.
+Native tests are separate evidence, not the basis of the universal contracts above.
+
+**Saved verification evidence.** The accepted local run dated 2026-10-16, recorded
+in `verification/results.md`, completed this workflow and separately checked the
+five API mappings. That run did not execute `cargo proofs run`; its evidence is
+distinct from subsequent recorder experiments.
+
+**proofs.rs recording.** The Aeneas adapter builds the configured Lean modules
+and transitively audits the five mapped theorem roots. It does not rerun
+Charon/Aeneas extraction or independently establish the correspondence between
+Rust and the Lean model. Fresh extraction, source identity, and the supplementary
+theorem audit belong to the separate local verification workflow above.
+'''
+trusted_assumptions = '''
+## Trusted boundaries
+
+- **Translation:** the pinned Charon/Aeneas Rust-to-LLBC-to-Lean translation.
+- **Library models:** the correspondence between Aeneas standard-library models
+  and Rust, including slice and iterator semantics.
+- **Proof checking:** the Lean kernel. The transitive theorem audit permits only
+  `propext`, `Classical.choice`, and `Quot.sound`.
+
+The audit rejects `sorryAx`, custom axioms, and native-decision axioms. The
+algorithm contracts do not assume correctness of the optimized compute body.
+'''
+limitations = '''
+## Scope exclusions
+
+This report concerns the computation core under default Cargo features for the
+macOS arm64 extraction target. It does not establish whole-crate correctness.
+The following remain outside the formal scope:
+
+- Generic `BufRead` I/O and its error behavior.
+- Derived traits and `Hasher` laws.
+- `no_std` configurations and alternative targets.
+
+Native `no_std` tests are separate finite observations, not formal proofs for
+that configuration.
+
+'''
+environment = '''
+- **Extraction target:** `aarch64-apple-darwin` (macOS arm64), default Cargo features.
+- **Lean:** `4.35.0`.
+- **Aeneas:** `be86ab0f1989d04944292b345b24c435be3ad10a`.
+- **Charon:** `08d7c9d50144bd84848212c24701253585e90d1f`.
+- **Extraction Rust:** `nightly-2026-09-17`.
+- **Native-test Rust:** `1.91.1`.
+
+The local verification toolchain pins are recorded in `verification/toolchain.json`.
+'''
 
 [tool]
 name = "aeneas"
