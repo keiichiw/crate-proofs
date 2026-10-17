@@ -1,0 +1,119 @@
+   Compiling proc-macro2 v1.0.107
+   Compiling unicode-ident v1.0.26
+   Compiling quote v1.0.47
+   Compiling serde_core v1.0.229
+   Compiling serde v1.0.229
+   Compiling byteorder v1.5.0
+   Compiling heapless v0.9.2
+   Compiling stable_deref_trait v1.2.1
+   Compiling hash32 v0.3.1
+   Compiling syn v3.0.6
+   Compiling serde_derive v1.0.229
+   Compiling serde_test v1.0.177
+   Compiling ipnet v2.12.2 (/Users/keiichiw/workspace/crate-proofs/ipnet/2.12.2/verification/heapless-candidate)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 5.08s
+     Running unittests src/lib.rs (runs/check-rt6e1h3s/target/debug/deps/ipnet-e50248da82a0e5bd)
+
+running 37 tests
+test ipnet::tests::ipv6net_default ... ok
+test ipnet::tests::ipnet_default ... ok
+test ipnet::tests::ipv4net_default ... ok
+test ipnet::tests::new_assert ... ok
+test ipnet::tests::test_ipv4_subnets_max_max ... ok
+test ipext::tests::test_ipaddrrange ... ok
+test ipnet::tests::test_ipv4_subnets_none ... ok
+test ipnet::tests::ipnet_aggregate ... ok
+test ipnet::tests::test_ipv4_subnets_one ... ok
+test ipnet::tests::ipv6net_new_assert_panics - should panic ... ok
+test ipnet::tests::ipv4net_new_assert_panics - should panic ... ok
+test ipnet::tests::test_ipv4_subnets_taper ... ok
+test ipnet::tests::test_ipv4_subnets_two ... ok
+test ipnet::tests::test_ipv4_subnets_zero_max ... ok
+test ipnet::tests::test_ipv4_subnets_zero_max_minus_one ... ok
+test ipnet::tests::test_ipv4_subnets_zero_zero ... ok
+test ipnet::tests::test_ipv6_subnets_max_max ... ok
+test ipnet::tests::test_ipv6_subnets_one ... ok
+test ipnet::tests::test_ipv6_subnets_none ... ok
+test ipnet::tests::test_ipv6_subnets_taper ... ok
+test ipnet::tests::test_ipv6_subnets_two ... ok
+test ipnet::tests::test_ipv6_subnets_zero_max ... ok
+test ipnet::tests::test_ipv6_subnets_zero_zero ... ok
+test ipnet::tests::test_make_ipnet_vec ... ok
+test ipnet::tests::test_ipv6_subnets_zero_max_minus_one ... ok
+test ipnet_serde::tests::test_serialize_ipnet_v4 ... ok
+test ipnet_serde::tests::test_serialize_ipnet_v6 ... ok
+test ipnet_serde::tests::test_serialize_ipv4_net ... ok
+test ipnet_serde::tests::test_serialize_ipv6_net ... ok
+test mask::tests::invalid_v4_mask_to_prefix ... ok
+test mask::tests::invalid_v6_mask_to_prefix ... ok
+test mask::tests::ipv4net_with_netmask ... ok
+test mask::tests::ipv6net_with_netmask ... ok
+test mask::tests::v4_mask_to_prefix_max ... ok
+test mask::tests::v4_mask_to_prefix ... ok
+test mask::tests::v6_mask_to_prefix ... ok
+test mask::tests::v6_mask_to_prefix_max ... ok
+
+test result: ok. 37 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests ipnet
+
+running 56 tests
+test src/ipext.rs - ipext::IpSub (line 66) ... ok
+test src/ipext.rs - ipext::IpBitAnd (line 100) ... ok
+test src/ipext.rs - ipext::IpAdd (line 23) ... ok
+test src/ipext.rs - ipext::Ipv4AddrRange (line 307) ... ok
+test src/ipext.rs - ipext::Ipv6AddrRange (line 336) ... ok
+test src/ipext.rs - ipext::IpBitOr (line 130) ... ok
+test src/ipnet.rs - ipnet::Contains (line 1396) ... ok
+test src/ipext.rs - ipext::IpAddrRange (line 269) ... ok
+test src/ipnet.rs - ipnet::IpNet (line 40) ... ok
+test src/ipnet.rs - ipnet::IpNet::aggregate (line 523) ... ok
+test src/ipnet.rs - ipnet::IpNet::broadcast (line 323) ... ok
+test src/ipnet.rs - ipnet::IpNet::contains (line 480) ... ok
+test src/ipnet.rs - ipnet::IpNet::hostmask (line 281) ... ok
+test src/ipnet.rs - ipnet::IpNet::hosts (line 401) ... ok
+test src/ipnet.rs - ipnet::IpNet::is_sibling (line 373) ... ok
+test src/ipnet.rs - ipnet::IpNet::netmask (line 260) ... ok
+test src/ipnet.rs - ipnet::IpNet::network (line 302) ... ok
+test src/ipnet.rs - ipnet::IpNet::new (line 139) ... ok
+test src/ipnet.rs - ipnet::IpNet::new_assert (line 163) ... ok
+test src/ipnet.rs - ipnet::IpNet::subnets (line 437) ... ok
+test src/ipnet.rs - ipnet::IpNet::supernet (line 344) ... ok
+test src/ipnet.rs - ipnet::IpNet::trunc (line 212) ... ok
+test src/ipnet.rs - ipnet::IpNet::with_netmask (line 192) ... ok
+test src/ipnet.rs - ipnet::IpSubnets (line 1483) ... ok
+test src/ipnet.rs - ipnet::Ipv4Net (line 73) ... ok
+test src/ipnet.rs - ipnet::Ipv4Net::aggregate (line 931) ... ok
+test src/ipnet.rs - ipnet::Ipv4Net::broadcast (line 773) ... ok
+test src/ipnet.rs - ipnet::Ipv4Net::contains (line 906) ... ok
+test src/ipnet.rs - ipnet::Ipv4Net::hostmask (line 739) ... ok
+test src/ipnet.rs - ipnet::Ipv4Net::hosts (line 831) ... ok
+test src/ipnet.rs - ipnet::Ipv4Net::is_sibling (line 807) ... ok
+test src/ipnet.rs - ipnet::Ipv4Net::netmask (line 720) ... ok
+test src/ipnet.rs - ipnet::Ipv4Net::network (line 758) ... ok
+test src/ipnet.rs - ipnet::Ipv4Net::new (line 613) ... ok
+test src/ipnet.rs - ipnet::Ipv4Net::new_assert (line 638) ... ok
+test src/ipnet.rs - ipnet::Ipv4Net::subnets (line 864) ... ok
+test src/ipnet.rs - ipnet::Ipv4Net::supernet (line 788) ... ok
+test src/ipnet.rs - ipnet::Ipv4Net::trunc (line 686) ... ok
+test src/ipnet.rs - ipnet::Ipv4Net::with_netmask (line 666) ... ok
+test src/ipnet.rs - ipnet::Ipv4Subnets (line 1530) ... ok
+test src/ipnet.rs - ipnet::Ipv6Net (line 106) ... ok
+test src/ipnet.rs - ipnet::Ipv6Net::aggregate (line 1317) ... ok
+test src/ipnet.rs - ipnet::Ipv6Net::broadcast (line 1174) ... ok
+test src/ipnet.rs - ipnet::Ipv6Net::contains (line 1292) ... ok
+test src/ipnet.rs - ipnet::Ipv6Net::hostmask (line 1137) ... ok
+test src/ipnet.rs - ipnet::Ipv6Net::hosts (line 1229) ... ok
+test src/ipnet.rs - ipnet::Ipv6Net::is_sibling (line 1209) ... ok
+test src/ipnet.rs - ipnet::Ipv6Net::netmask (line 1118) ... ok
+test src/ipnet.rs - ipnet::Ipv6Net::network (line 1156) ... ok
+test src/ipnet.rs - ipnet::Ipv6Net::new (line 1011) ... ok
+test src/ipnet.rs - ipnet::Ipv6Net::new_assert (line 1036) ... ok
+test src/ipnet.rs - ipnet::Ipv6Net::subnets (line 1250) ... ok
+test src/ipnet.rs - ipnet::Ipv6Net::supernet (line 1189) ... ok
+test src/ipnet.rs - ipnet::Ipv6Net::trunc (line 1084) ... ok
+test src/ipnet.rs - ipnet::Ipv6Net::with_netmask (line 1064) ... ok
+test src/ipnet.rs - ipnet::Ipv6Subnets (line 1564) ... ok
+
+test result: ok. 56 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 8.08s
+

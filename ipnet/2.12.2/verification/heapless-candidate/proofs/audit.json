@@ -1,0 +1,177 @@
+{
+  "scope": "conditional mathematical helpers only, no actual Serialize/Display API claim",
+  "module": "CapacityMath.lean",
+  "source_sha256": "9563b3c651853781c3ec236905b17a01b475fe4154e85413165ab9d9186f6d1c",
+  "audit_log_sha256": "5945936693ccbd141b3d5aa634e634bd7926f16fa7409870196499810d3f5d11",
+  "checked": [
+    {
+      "name": "HeaplessCandidateMath.decimal_prefix4_length",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "HeaplessCandidateMath.decimal_prefix6_length",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "HeaplessCandidateMath.decimal_octet_length",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "HeaplessCandidateMath.hex_segment_length",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "HeaplessCandidateMath.dotted_quad_bound",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "HeaplessCandidateMath.ipv6_group_bound",
+      "axioms": [
+        "propext",
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "HeaplessCandidateMath.mapped_ipv4_bound",
+      "axioms": [
+        "propext",
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "HeaplessCandidateMath.compressed_ipv6_bound",
+      "axioms": [
+        "propext",
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "HeaplessCandidateMath.text4_exact",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "HeaplessCandidateMath.text6_exact",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "HeaplessCandidateMath.text4_matches_standard",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "HeaplessCandidateMath.text6_matches_standard",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "HeaplessCandidateMath.text4_capacity",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "HeaplessCandidateMath.text6_capacity",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "HeaplessCandidateMath.appendWithin_exact",
+      "axioms": [
+        "propext"
+      ]
+    },
+    {
+      "name": "HeaplessCandidateMath.appendWithin_length",
+      "axioms": [
+        "propext",
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "HeaplessCandidateMath.renderThree_exact",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "HeaplessCandidateMath.concatChunks_bytes",
+      "axioms": [
+        "propext",
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "HeaplessCandidateMath.writeChunks_exact",
+      "axioms": [
+        "propext",
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "HeaplessCandidateMath.renderThenSerialize_exact",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "HeaplessCandidateMath.render_ipv4_exact",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "HeaplessCandidateMath.render_ipv6_exact",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    }
+  ],
+  "fresh_evidence": "evidence/latest/capacity-axioms.log"
+}
