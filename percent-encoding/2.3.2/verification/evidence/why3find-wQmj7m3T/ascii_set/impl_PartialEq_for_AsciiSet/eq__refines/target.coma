@@ -1,0 +1,74 @@
+(* #"/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/ascii_set.rs" 94 4 94 38 *)
+
+(* <ascii_set::AsciiSet as core::cmp::PartialEq> *)
+
+let%span sascii_set = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/ascii_set.rs" 94 11 94 15
+let%span sascii_set'0 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/ascii_set.rs" 94 17 94 22
+let%span sascii_set'1 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/ascii_set.rs" 93 32 93 83
+let%span sascii_set'2 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/ascii_set.rs" 86 32 86 59
+let%span sascii_set'3 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/ascii_set.rs" 88 8 88 25
+let%span sascii_set'4 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/ascii_set.rs" 114 14 114 31
+let%span sascii_set'5 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/ascii_set.rs" 116 20 116 58
+let%span sinvariant = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/invariant.rs" 85 8 85 18
+let%span sarray = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/std/array.rs" 9 20 9 51
+let%span smodel = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/model.rs" 37 8 37 28
+let%span scmp = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/std/cmp.rs" 15 23 15 27
+let%span scmp'0 = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/std/cmp.rs" 15 29 15 32
+let%span scmp'1 = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/std/cmp.rs" 14 26 14 75
+
+use creusot.slice.Slice64
+use creusot.int.UInt32
+use seq.Seq
+use creusot.int.UInt64
+
+type t_AsciiSet = { mask: Slice64.array UInt32.t }
+
+predicate inv_Seq_u32 [@inline:trivial] (_1: Seq.seq UInt32.t) = true
+
+meta "rewrite_def" predicate inv_Seq_u32
+
+predicate invariant_array_u32_4 (self: Slice64.array UInt32.t) =
+  [%#sarray] inv_Seq_u32 (Slice64.view self) /\ Seq.length (Slice64.view self) = UInt64.t'int (4: UInt64.t)
+
+predicate inv_array_u32_4 [@inline:trivial] (_1: Slice64.array UInt32.t) = invariant_array_u32_4 _1
+
+meta "rewrite_def" predicate inv_array_u32_4
+
+predicate inv_AsciiSet (_1: t_AsciiSet)
+
+axiom inv_axiom [@rewrite]: forall x: t_AsciiSet [inv_AsciiSet x]. inv_AsciiSet x = inv_array_u32_4 x.mask
+
+predicate invariant_ref_AsciiSet [@inline:trivial] (self: t_AsciiSet) = [%#sinvariant] inv_AsciiSet self
+
+meta "rewrite_def" predicate invariant_ref_AsciiSet
+
+predicate inv_ref_AsciiSet [@inline:trivial] (_1: t_AsciiSet) = invariant_ref_AsciiSet _1
+
+meta "rewrite_def" predicate inv_ref_AsciiSet
+
+function mask_words [#"/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/ascii_set.rs" 115 4 115 40] (self: t_AsciiSet) : Seq.seq UInt32.t
+ = [%#sascii_set'5] Seq.create 4 (fun (i: int) -> Seq.get (Slice64.view self.mask) i)
+
+axiom mask_words_spec: forall self: t_AsciiSet [mask_words self]. [%#sascii_set'4] Seq.length (mask_words self) = 4
+
+function deep_model_AsciiSet [#"/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/ascii_set.rs" 87 4 87 35] (self: t_AsciiSet) : Seq.seq UInt32.t
+ = [%#sascii_set'3] mask_words self
+
+axiom deep_model_AsciiSet_spec:
+  forall self: t_AsciiSet [deep_model_AsciiSet self]. [%#sascii_set'2] deep_model_AsciiSet self = mask_words self
+
+function deep_model_ref_AsciiSet [@inline:trivial] (self: t_AsciiSet) : Seq.seq UInt32.t =
+  [%#smodel] deep_model_AsciiSet self
+
+meta "rewrite_def" function deep_model_ref_AsciiSet
+
+meta "compute_max_steps" 1000000
+
+meta "select_lsinst" "all"
+
+goal refines: forall self_: t_AsciiSet, rhs: t_AsciiSet. ([%#scmp] inv_ref_AsciiSet self_)
+    -> ([%#scmp'0] inv_ref_AsciiSet rhs)
+    -> ([%#sascii_set] inv_ref_AsciiSet self_)
+    /\ ([%#sascii_set'0] inv_ref_AsciiSet rhs)
+    /\ (forall result: bool. ([%#sascii_set'1] result = (deep_model_ref_AsciiSet self_ = deep_model_ref_AsciiSet rhs))
+      -> ([%#scmp'1] result = (deep_model_ref_AsciiSet self_ = deep_model_ref_AsciiSet rhs)))

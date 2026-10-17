@@ -1,0 +1,45 @@
+(* #"/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/encode_models.rs" 68 0 68 75 *)
+
+let%span sord = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/logic/ord.rs" 34 8 34 21
+let%span sencode_models = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/encode_models.rs" 60 11 60 26
+let%span sencode_models'0 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/encode_models.rs" 61 11 61 40
+let%span sencode_models'1 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/encode_models.rs" 62 23 63 44
+let%span sencode_models'2 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/encode_models.rs" 64 11 64 49
+let%span sencode_models'3 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/encode_models.rs" 65 10 65 16
+let%span sencode_models'4 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/encode_models.rs" 66 22 67 44
+let%span sencode_models'5 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/encode_models.rs" 16 8 16 74
+
+use creusot.int.UInt8
+use seq.Seq
+use creusot.int.UInt32
+use int.ComputerDivision
+use int.Int
+
+predicate ge_log_Int [@inline:trivial] (self: int) (other: int) = [%#sord] other <= self
+
+meta "rewrite_def" predicate ge_log_Int
+
+predicate should_encode_model [#"/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/encode_models.rs" 14 0 14 60] (mask: Seq.seq UInt32.t) (byte: UInt8.t) =
+  [%#sencode_models'5] ge_log_Int (UInt8.t'int byte) 128
+  \/ UInt32.bw_and (Seq.get mask (ComputerDivision.div (UInt8.t'int byte) 32)) (UInt32.shl (1: UInt32.t) (UInt32.of_int (UInt8.t'int (UInt8.bw_and byte (31: UInt8.t)))))
+  <> (0: UInt32.t)
+
+meta "compute_max_steps" 1000000
+
+meta "select_lsinst" "all"
+
+constant input : Seq.seq UInt8.t
+
+constant mask : Seq.seq UInt32.t
+
+constant end' : int
+
+predicate safe_prefix_extend [#"/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/encode_models.rs" 68 0 68 75] (input: Seq.seq UInt8.t) (mask: Seq.seq UInt32.t) (end': int)
+
+goal vc_safe_prefix_extend: ([%#sencode_models] Seq.length mask = 4)
+  -> ([%#sencode_models'0] 0 <= end' /\ end' < Seq.length input)
+  -> ([%#sencode_models'1] forall i: int. 0 <= i /\ i < end' -> not should_encode_model mask (Seq.get input i))
+  -> ([%#sencode_models'2] not should_encode_model mask (Seq.get input end'))
+  -> ([@stop_split] [@expl:safe_prefix_extend ensures] ([@stop_split] [@expl:safe_prefix_extend ensures #0] [%#sencode_models'3] true)
+  /\ ([@stop_split] [@expl:safe_prefix_extend ensures #1] [%#sencode_models'4] forall i: int. 0 <= i /\ i < end' + 1
+    -> not should_encode_model mask (Seq.get input i)))

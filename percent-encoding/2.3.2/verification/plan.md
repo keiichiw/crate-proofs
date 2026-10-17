@@ -28,3 +28,5 @@ The earlier 21-target byte-core bundle is retained as historical evidence under 
 ## Final run requirements
 
 After source and documentation freeze, regenerate Coma in a unique directory, fingerprint the exact source/dependency inputs, enumerate every emitted target, and run the independent proof runner on the manifest-selected set. Require successful translation, positive roots, all selected goal trees closed, no unclassified emitted targets, and fresh native/differential checks. Keep primary Z3 results and any explicitly approved secondary CVC5 results separate, with exact SMT hashes, commands, versions, and time limits. Translation alone and finite differential tests are not proof results.
+
+The standard runner is `scripts/verify-why3find.sh`: fresh source-spanned Coma, Why3find with Z3/CVC5 and no cache, full positive root-tree audit, and a pinned standard Why3find dependency bundle. `scripts/verify.sh` retains the historical direct-SMT workflow.

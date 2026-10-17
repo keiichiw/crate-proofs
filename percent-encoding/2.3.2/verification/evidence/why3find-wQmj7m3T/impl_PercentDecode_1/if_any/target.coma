@@ -1,0 +1,724 @@
+(* #"/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 1117 4 1117 39 *)
+
+(* PercentDecode<'a> *)
+
+let%span sinvariant = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/invariant.rs" 93 20 93 44
+let%span sinvariant'0 = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/invariant.rs" 85 8 85 18
+let%span sord = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/logic/ord.rs" 34 8 34 21
+let%span sord'0 = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/logic/ord.rs" 22 8 22 20
+let%span swell_founded = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/logic/well_founded.rs" 43 8 43 33
+let%span slib = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 1118 28 1118 49
+let%span slib'0 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 1120 38 1120 39
+let%span slib'1 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 1121 36 1121 48
+let%span slib'2 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 1125 14 1125 25
+let%span slib'3 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 1125 28 1125 29
+let%span slib'4 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 1124 38 1124 257
+let%span slib'5 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 1123 38 1123 118
+let%span slib'6 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 1122 38 1122 82
+let%span slib'7 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 1126 37 1126 56
+let%span slib'8 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 1126 37 1126 65
+let%span slib'9 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 1127 23 1127 27
+let%span slib'10 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 1128 32 1128 48
+let%span slib'11 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 1129 44 1129 74
+let%span slib'12 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 1207 30 1207 89
+let%span slib'13 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 1208 30 1211 21
+let%span slib'14 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 1212 30 1217 17
+let%span slib'15 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 1218 30 1220 17
+let%span slib'16 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 1221 30 1223 17
+let%span slib'17 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 1224 30 1228 21
+let%span slib'18 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 1229 30 1231 17
+let%span slib'19 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 1232 30 1235 21
+let%span slib'20 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 1236 30 1238 17
+let%span slib'21 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 1239 30 1241 17
+let%span slib'22 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 1243 20 1247 54
+let%span slib'23 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 1249 30 1254 17
+let%span slib'24 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 1256 35 1256 36
+let%span slib'25 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 1256 12 1256 36
+let%span slib'26 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 1258 26 1260 13
+let%span slib'27 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 1261 34 1261 57
+let%span slib'28 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 1132 38 1134 25
+let%span slib'29 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 1135 38 1137 25
+let%span slib'30 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 1138 38 1140 25
+let%span slib'31 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 1141 38 1143 25
+let%span slib'32 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 1144 38 1146 25
+let%span slib'33 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 1147 38 1150 29
+let%span slib'34 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 1151 38 1154 29
+let%span slib'35 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 1155 38 1158 29
+let%span slib'36 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 1159 38 1161 25
+let%span slib'37 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 1162 38 1168 33
+let%span slib'38 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 1169 38 1172 29
+let%span slib'39 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 1173 38 1173 71
+let%span slib'40 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 1175 28 1180 33
+let%span slib'41 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 1184 51 1184 74
+let%span slib'42 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 1184 38 1184 83
+let%span slib'43 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 1186 34 1188 65
+let%span slib'44 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 1190 56 1190 64
+let%span slib'45 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 1191 20 1191 46
+let%span slib'46 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 1193 34 1195 21
+let%span slib'47 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 1197 34 1200 66
+let%span slib'48 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 1201 20 1201 80
+let%span slib'49 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 1265 26 1265 70
+let%span slib'50 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 1266 26 1266 78
+let%span slib'51 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 1267 26 1269 66
+let%span slib'52 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 1270 26 1270 93
+let%span slib'53 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 1117 15 1117 19
+let%span slib'54 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 1108 32 1116 5
+let%span slib'55 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 98 10 98 21
+let%span slib'56 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 101 8 113 9
+let%span slib'57 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 375 16 375 43
+let%span slib'58 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 921 22 921 26
+let%span slib'59 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 900 28 920 1
+let%span slib'60 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 431 11 431 59
+let%span slib'61 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 432 10 432 16
+let%span slib'62 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 433 10 434 59
+let%span slib'63 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 361 4 369 5
+let%span slib'64 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 893 11 893 44
+let%span slib'65 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 894 10 894 16
+let%span slib'66 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 895 10 897 46
+let%span slib'67 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 119 10 119 21
+let%span slib'68 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 120 10 120 16
+let%span slib'69 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 121 10 121 51
+let%span slib'70 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 122 10 122 55
+let%span slib'71 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 1079 40 1079 44
+let%span slib'72 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 1074 4 1077 9
+let%span slib'73 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 883 20 883 32
+let%span sseq = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/logic/seq.rs" 443 14 443 86
+let%span sseq'0 = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/logic/seq.rs" 301 14 301 24
+let%span sseq'1 = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/logic/seq.rs" 299 14 299 40
+let%span sseq'2 = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/logic/seq.rs" 300 14 300 76
+let%span sseq'3 = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/logic/seq.rs" 160 8 160 39
+let%span smapping = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/logic/mapping.rs" 66 8 66 19
+let%span sdecoder_lemmas = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/decoder_lemmas.rs" 75 11 75 26
+let%span sdecoder_lemmas'0 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/decoder_lemmas.rs" 76 11 78 58
+let%span sdecoder_lemmas'1 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/decoder_lemmas.rs" 79 10 79 16
+let%span sdecoder_lemmas'2 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/decoder_lemmas.rs" 80 10 83 5
+let%span sdecoder_lemmas'3 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/decoder_lemmas.rs" 23 11 23 44
+let%span sdecoder_lemmas'4 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/decoder_lemmas.rs" 24 10 24 16
+let%span sdecoder_lemmas'5 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/decoder_lemmas.rs" 25 10 27 83
+let%span sdecoder_lemmas'6 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/decoder_lemmas.rs" 51 11 51 44
+let%span sdecoder_lemmas'7 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/decoder_lemmas.rs" 52 10 52 16
+let%span sdecoder_lemmas'8 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/decoder_lemmas.rs" 53 10 55 46
+let%span sdecoder_lemmas'9 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/decoder_lemmas.rs" 39 10 39 16
+let%span sdecoder_lemmas'10 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/decoder_lemmas.rs" 40 10 41 40
+let%span sdecoder_lemmas'11 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/decoder_lemmas.rs" 91 11 91 27
+let%span sdecoder_lemmas'12 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/decoder_lemmas.rs" 92 11 92 25
+let%span sdecoder_lemmas'13 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/decoder_lemmas.rs" 93 11 93 61
+let%span sdecoder_lemmas'14 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/decoder_lemmas.rs" 94 11 94 61
+let%span sdecoder_lemmas'15 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/decoder_lemmas.rs" 95 10 95 16
+let%span sdecoder_lemmas'16 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/decoder_lemmas.rs" 96 10 100 69
+let%span sdecoder_lemmas'17 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/decoder_lemmas.rs" 64 10 64 16
+let%span sdecoder_lemmas'18 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/decoder_lemmas.rs" 65 10 66 77
+let%span svec = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/std/vec.rs" 18 14 18 41
+let%span svec'0 = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/std/vec.rs" 118 18 118 48
+let%span sstdlib_models = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/stdlib_models.rs" 147 18 152 9
+let%span sslice = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/std/slice.rs" 744 21 744 25
+let%span sslice'0 = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/std/slice.rs" 743 18 743 35
+let%span sslice'1 = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/std/slice.rs" 331 18 331 22
+let%span sslice'2 = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/std/slice.rs" 405 29 405 33
+let%span sslice'3 = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/std/slice.rs" 469 19 469 38
+let%span sslice'4 = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/std/slice.rs" 470 18 470 46
+let%span sslice'5 = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/std/slice.rs" 524 18 524 46
+let%span sslice'6 = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/std/slice.rs" 525 18 525 117
+let%span sslice'7 = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/std/slice.rs" 233 20 233 44
+let%span sslice'8 = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/std/slice.rs" 238 20 238 67
+let%span sslice'9 = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/std/slice.rs" 216 20 216 42
+let%span sslice'10 = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/std/slice.rs" 221 20 221 57
+let%span snum = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/std/num.rs" 50 26 50 32
+let%span soption = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/std/option.rs" 137 19 137 23
+let%span soption'0 = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/std/option.rs" 138 34 138 38
+
+use creusot.slice.Slice64
+use creusot.int.UInt8
+use creusot.int.UInt64
+use seq.Seq
+use map.Map
+use creusot.prelude.MutBorrow
+use creusot.prelude.Any
+use int.Int
+
+type t_Iter_u8
+
+type t_PercentDecode = { bytes: t_Iter_u8 }
+
+predicate inv_Iter_u8 (_1: t_Iter_u8)
+
+predicate invariant_ref_Iter_u8 [@inline:trivial] (self: t_Iter_u8) = [%#sinvariant'0] inv_Iter_u8 self
+
+meta "rewrite_def" predicate invariant_ref_Iter_u8
+
+predicate inv_ref_Iter_u8 [@inline:trivial] (_1: t_Iter_u8) = invariant_ref_Iter_u8 _1
+
+meta "rewrite_def" predicate inv_ref_Iter_u8
+
+function view_Iter_u8 (self: t_Iter_u8) : Slice64.slice UInt8.t
+
+let as_slice_u8 (self_: t_Iter_u8) (return (x: Slice64.slice UInt8.t)) =
+{[@stop_split] [@expl:as_slice 'self_' type invariant] [%#sslice] inv_ref_Iter_u8 self_}
+  any
+  [ return (result: Slice64.slice UInt8.t) -> {[@stop_split] [@expl:as_slice ensures] [%#sslice'0] Slice64.view result
+    = Slice64.view (view_Iter_u8 self_)}
+    (! return {result}) ]
+
+predicate ge_log_Int [@inline:trivial] (self: int) (other: int) = [%#sord] other <= self
+
+meta "rewrite_def" predicate ge_log_Int
+
+predicate gt_log_Int [@inline:trivial] (self: int) (other: int) = [%#sord'0] other < self
+
+meta "rewrite_def" predicate gt_log_Int
+
+predicate well_founded_relation_Int [@inline:trivial] (self: int) (other: int) =
+  [%#swell_founded] ge_log_Int self 0 /\ gt_log_Int self other
+
+meta "rewrite_def" predicate well_founded_relation_Int
+
+let len_u8 (self_: Slice64.slice UInt8.t) (return (x: UInt64.t)) = any
+  [ return (result: UInt64.t) -> {[@stop_split] [@expl:len ensures] [%#sslice'1] Seq.length (Slice64.view self_)
+    = UInt64.t'int result}
+    (! return {result}) ]
+
+function percent_hex_value_model (byte: int) : int = [%#slib'63] if 48 <= byte /\ byte <= 57 then
+    byte - 48
+  else
+    if 65 <= byte /\ byte <= 70 then byte - 55 else if 97 <= byte /\ byte <= 102 then byte - 87 else - 1
+
+
+function decoded_trace [#"/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 99 0 99 49] (input: Seq.seq int) : Seq.seq int
+
+axiom decoded_trace_def: forall input: Seq.seq int [decoded_trace input]. decoded_trace input
+    = ([%#slib'56] if Seq.length input = 0 then
+      Seq.empty: Seq.seq int
+    else
+      if ge_log_Int (Seq.length input) 3
+      /\ Seq.get input 0 = 37
+      /\ ge_log_Int (percent_hex_value_model (Seq.get input 1)) 0
+      /\ ge_log_Int (percent_hex_value_model (Seq.get input 2)) 0 then
+        Seq.(++) (Seq.singleton (percent_hex_value_model (Seq.get input 1) * 16
+        + percent_hex_value_model (Seq.get input 2))) (decoded_trace (Seq.([..]) input 3 (Seq.length input)))
+      else
+        Seq.(++) (Seq.singleton (Seq.get input 0)) (decoded_trace (Seq.([..]) input 1 (Seq.length input)))
+    
+    )
+
+function index_Mapping_u8_Int [@inline:trivial] (self: Map.map UInt8.t int) (a: UInt8.t) : int =
+  [%#smapping] Map.get self a
+
+meta "rewrite_def" function index_Mapping_u8_Int
+
+function map_u8 (self: Seq.seq UInt8.t) (m: Map.map UInt8.t int) : Seq.seq int
+
+axiom map_u8_spec:
+  forall self: Seq.seq UInt8.t, m: Map.map UInt8.t int [map_u8 self m]. [%#sseq'1] Seq.length (map_u8 self m)
+    = Seq.length self
+
+axiom map_u8_spec'0: forall self: Seq.seq UInt8.t, m: Map.map UInt8.t int [map_u8 self m]. [%#sseq'2] forall i: int. 0
+          <= i
+        /\ i < Seq.length self -> Seq.get (map_u8 self m) i = index_Mapping_u8_Int m (Seq.get self i)
+
+function byte_sequence_as_ints (bytes'0: Seq.seq UInt8.t) : Seq.seq int =
+  [%#slib'57] map_u8 bytes'0 (fun (byte: UInt8.t) -> UInt8.t'int byte)
+
+type tup2_ref_u8_ref_slice_u8 = { f0: UInt8.t; f1: Slice64.slice UInt8.t }
+
+type t_Option_tup2_ref_u8_ref_slice_u8 = None | Some tup2_ref_u8_ref_slice_u8
+
+function tail_u8 (self: Seq.seq UInt8.t) : Seq.seq UInt8.t = [%#sseq'3] Seq.([..]) self 1 (Seq.length self)
+
+let split_first_u8 (self_: Slice64.slice UInt8.t) (return (x: t_Option_tup2_ref_u8_ref_slice_u8)) = any
+  [ return (result: t_Option_tup2_ref_u8_ref_slice_u8) ->
+  {[@stop_split] [@expl:split_first ensures] [%#sstdlib_models] match result with
+      | Some {f0 = first; f1 = tail} -> gt_log_Int (Seq.length (Slice64.view self_)) 0
+      /\ first = Seq.get (Slice64.view self_) 0 /\ Slice64.view tail = tail_u8 (Slice64.view self_)
+      | None -> Slice64.view self_ = (Seq.empty: Seq.seq UInt8.t)
+      end}
+    (! return {result}) ]
+
+let unwrap_tup2_ref_u8_ref_slice_u8 (self_: t_Option_tup2_ref_u8_ref_slice_u8) (return (x: tup2_ref_u8_ref_slice_u8)) =
+{[@stop_split] [@expl:unwrap requires] [%#soption] self_ <> None}
+  any
+  [ return (result: tup2_ref_u8_ref_slice_u8) -> {[@stop_split] [@expl:unwrap ensures] [%#soption'0] Some result
+    = self_}
+    (! return {result}) ]
+
+let iter_u8 (self_: Slice64.slice UInt8.t) (return (x: t_Iter_u8)) = any
+  [ return (result: t_Iter_u8) ->
+  {[@stop_split] [@expl:iter_u8 ensures] ([@stop_split] [@expl:iter result type invariant] inv_Iter_u8 result)
+    /\ ([@stop_split] [@expl:iter ensures] [%#sslice'2] view_Iter_u8 result = self_)}
+    (! return {result}) ]
+
+type t_Option_u8 = None'0 | Some'0 UInt8.t
+
+predicate invariant_refmut_Iter_u8 [@inline:trivial] (self: MutBorrow.t t_Iter_u8) =
+  [%#sinvariant] inv_Iter_u8 self.current /\ inv_Iter_u8 self.final
+
+meta "rewrite_def" predicate invariant_refmut_Iter_u8
+
+predicate inv_refmut_Iter_u8 [@inline:trivial] (_1: MutBorrow.t t_Iter_u8) = invariant_refmut_Iter_u8 _1
+
+meta "rewrite_def" predicate inv_refmut_Iter_u8
+
+let after_percent_sign (iter: MutBorrow.t t_Iter_u8) (return (x: t_Option_u8)) =
+{[@stop_split] [@expl:after_percent_sign 'iter' type invariant] [%#slib'58] inv_refmut_Iter_u8 iter}
+  any
+  [ return (result: t_Option_u8) -> {[@stop_split] [@expl:after_percent_sign ensures] [%#slib'59] match result with
+      | Some'0 value -> let before = byte_sequence_as_ints (Slice64.view (view_Iter_u8 iter.current)) in let after = byte_sequence_as_ints (Slice64.view (view_Iter_u8 iter.final)) in ge_log_Int (Seq.length before) 2
+      /\ ge_log_Int (percent_hex_value_model (Seq.get before 0)) 0
+      /\ ge_log_Int (percent_hex_value_model (Seq.get before 1)) 0
+      /\ UInt8.t'int value
+        = percent_hex_value_model (Seq.get before 0) * 16 + percent_hex_value_model (Seq.get before 1)
+      /\ after = Seq.([..]) before 2 (Seq.length before)
+      | None'0 -> Slice64.view (view_Iter_u8 iter.final) = Slice64.view (view_Iter_u8 iter.current)
+      /\ (Seq.length (byte_sequence_as_ints (Slice64.view (view_Iter_u8 iter.current))) < 2
+      \/ ge_log_Int (Seq.length (byte_sequence_as_ints (Slice64.view (view_Iter_u8 iter.current)))) 2
+        /\ percent_hex_value_model (Seq.get (byte_sequence_as_ints (Slice64.view (view_Iter_u8 iter.current))) 0) < 0
+      \/ ge_log_Int (Seq.length (byte_sequence_as_ints (Slice64.view (view_Iter_u8 iter.current)))) 2
+      /\ percent_hex_value_model (Seq.get (byte_sequence_as_ints (Slice64.view (view_Iter_u8 iter.current))) 1) < 0)
+      end}
+    (! return {result}) ]
+
+predicate resolve_refmut_Iter_u8 [@inline:trivial] (_1: MutBorrow.t t_Iter_u8) = _1.final = _1.current
+
+meta "rewrite_def" predicate resolve_refmut_Iter_u8
+
+predicate resolve_Iter_u8 (_1: t_Iter_u8)
+
+predicate byte_model_subsequence (bytes'0: Seq.seq UInt8.t) (start: int) (end': int)
+
+axiom byte_model_subsequence_spec:
+  forall bytes'0: Seq.seq UInt8.t, start: int, end': int [byte_model_subsequence bytes'0 start end']. ([%#slib'60] 0
+        <= start
+      /\ start <= end' /\ end' <= Seq.length bytes'0) -> ([%#slib'61] byte_model_subsequence bytes'0 start end')
+
+axiom byte_model_subsequence_spec'0: forall bytes'0: Seq.seq UInt8.t, start: int, end': int. ([%#slib'60] 0 <= start
+      /\ start <= end' /\ end' <= Seq.length bytes'0)
+    -> ([%#slib'62] byte_sequence_as_ints (Seq.([..]) bytes'0 start end')
+    = Seq.([..]) (byte_sequence_as_ints bytes'0) start end')
+
+predicate decoded_trace_plain_step [#"/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/decoder_lemmas.rs" 84 0 84 63] (input: Seq.seq int)
+
+axiom decoded_trace_plain_step_spec:
+  forall input: Seq.seq int [decoded_trace_plain_step input]. ([%#sdecoder_lemmas] gt_log_Int (Seq.length input) 0)
+    -> ([%#sdecoder_lemmas'0] not (ge_log_Int (Seq.length input) 3
+      /\ Seq.get input 0 = 37
+      /\ ge_log_Int (percent_hex_value_model (Seq.get input 1)) 0
+      /\ ge_log_Int (percent_hex_value_model (Seq.get input 2)) 0))
+    -> ([%#sdecoder_lemmas'1] decoded_trace_plain_step input)
+
+axiom decoded_trace_plain_step_spec'0: forall input: Seq.seq int. ([%#sdecoder_lemmas] gt_log_Int (Seq.length input) 0)
+    -> ([%#sdecoder_lemmas'0] not (ge_log_Int (Seq.length input) 3
+      /\ Seq.get input 0 = 37
+      /\ ge_log_Int (percent_hex_value_model (Seq.get input 1)) 0
+      /\ ge_log_Int (percent_hex_value_model (Seq.get input 2)) 0))
+    -> ([%#sdecoder_lemmas'2] decoded_trace input
+    = Seq.(++) (Seq.singleton (Seq.get input 0)) (decoded_trace (Seq.([..]) input 1 (Seq.length input))))
+
+predicate byte_map_nested_tail [#"/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/decoder_lemmas.rs" 28 0 28 70] (bytes'0: Seq.seq UInt8.t) (start: int)
+
+axiom byte_map_nested_tail_spec:
+  forall bytes'0: Seq.seq UInt8.t, start: int [byte_map_nested_tail bytes'0 start]. ([%#sdecoder_lemmas'3] 0 <= start
+      /\ start < Seq.length bytes'0) -> ([%#sdecoder_lemmas'4] byte_map_nested_tail bytes'0 start)
+
+axiom byte_map_nested_tail_spec'0: forall bytes'0: Seq.seq UInt8.t, start: int. ([%#sdecoder_lemmas'3] 0 <= start
+      /\ start < Seq.length bytes'0)
+    -> ([%#sdecoder_lemmas'5] Seq.([..]) (byte_sequence_as_ints (Seq.([..]) bytes'0 start (Seq.length bytes'0))) 1 (Seq.length bytes'0
+      - start)
+    = byte_sequence_as_ints (Seq.([..]) bytes'0 (start + 1) (Seq.length bytes'0)))
+
+predicate byte_map_prefix_push [#"/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/decoder_lemmas.rs" 56 0 56 70] (bytes'0: Seq.seq UInt8.t) (index: int)
+
+axiom byte_map_prefix_push_spec:
+  forall bytes'0: Seq.seq UInt8.t, index: int [byte_map_prefix_push bytes'0 index]. ([%#sdecoder_lemmas'6] 0 <= index
+      /\ index < Seq.length bytes'0) -> ([%#sdecoder_lemmas'7] byte_map_prefix_push bytes'0 index)
+
+axiom byte_map_prefix_push_spec'0: forall bytes'0: Seq.seq UInt8.t, index: int. ([%#sdecoder_lemmas'6] 0 <= index
+      /\ index < Seq.length bytes'0)
+    -> ([%#sdecoder_lemmas'8] Seq.([..]) (byte_sequence_as_ints bytes'0) 0 (index + 1)
+    = Seq.(++) (Seq.([..]) (byte_sequence_as_ints bytes'0) 0 index) (Seq.singleton (UInt8.t'int (Seq.get bytes'0 index))))
+
+predicate byte_int_prefix_push (bytes'0: Seq.seq UInt8.t) (index: int)
+
+axiom byte_int_prefix_push_spec:
+  forall bytes'0: Seq.seq UInt8.t, index: int [byte_int_prefix_push bytes'0 index]. ([%#slib'64] 0 <= index
+      /\ index < Seq.length bytes'0) -> ([%#slib'65] byte_int_prefix_push bytes'0 index)
+
+axiom byte_int_prefix_push_spec'0: forall bytes'0: Seq.seq UInt8.t, index: int. ([%#slib'64] 0 <= index
+      /\ index < Seq.length bytes'0)
+    -> ([%#slib'66] Seq.([..]) (byte_sequence_as_ints bytes'0) 0 (index + 1)
+    = Seq.(++) (Seq.([..]) (byte_sequence_as_ints bytes'0) 0 index) (Seq.singleton (UInt8.t'int (Seq.get bytes'0 index))))
+
+predicate concat_assoc_Int [#"/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/decoder_lemmas.rs" 42 0 42 82] (left: Seq.seq int) (middle: Seq.seq int) (right: Seq.seq int)
+
+axiom concat_assoc_Int_spec:
+  forall left: Seq.seq int, middle: Seq.seq int, right: Seq.seq int [concat_assoc_Int left middle right]. [%#sdecoder_lemmas'9] concat_assoc_Int left middle right
+
+axiom concat_assoc_Int_spec'0:
+  forall left: Seq.seq int, middle: Seq.seq int, right: Seq.seq int. [%#sdecoder_lemmas'10] Seq.(++) left (Seq.(++) middle right)
+    = Seq.(++) (Seq.(++) left middle) right
+
+type t_RangeFrom_usize = { start: UInt64.t }
+
+predicate in_bounds_RangeFrom_usize (self: t_RangeFrom_usize) (seq: Seq.seq UInt8.t) =
+  [%#sslice'7] UInt64.t'int self.start <= Seq.length seq
+
+predicate has_value_RangeFrom_usize (self: t_RangeFrom_usize) (seq: Seq.seq UInt8.t) (out: Slice64.slice UInt8.t) =
+  [%#sslice'8] Seq.([..]) seq (UInt64.t'int self.start) (Seq.length seq) = Slice64.view out
+
+let index_slice_u8 (self_: Slice64.slice UInt8.t) (ix: t_RangeFrom_usize) (return (x: Slice64.slice UInt8.t)) =
+{[@stop_split] [@expl:index requires] [%#sslice'3] in_bounds_RangeFrom_usize ix (Slice64.view self_)}
+  any
+  [ return (result: Slice64.slice UInt8.t) ->
+  {[@stop_split] [@expl:index ensures] [%#sslice'4] has_value_RangeFrom_usize ix (Slice64.view self_) result}
+    (! return {result}) ]
+
+let elim_Some (_x: t_Option_u8) (return (f0'0: UInt8.t)) = any
+  [ _k (f0'0: UInt8.t) -> {Some'0 f0'0 = _x} (! return {f0'0})
+  | _chk -> (! {[@expl:elim Some] match _x with
+      | Some'0 _ -> true
+      | _ -> false
+      end}
+    any) ]
+
+predicate decoded_trace_length_bounds [#"/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 123 0 123 55] (input: Seq.seq int)
+
+axiom decoded_trace_length_bounds_spec:
+  forall input: Seq.seq int [decoded_trace_length_bounds input]. [%#slib'68] decoded_trace_length_bounds input
+
+axiom decoded_trace_length_bounds_spec'0: forall input: Seq.seq int. [%#slib'69] Seq.length (decoded_trace input)
+    <= Seq.length input
+
+axiom decoded_trace_length_bounds_spec'1: forall input: Seq.seq int. [%#slib'70] Seq.length input
+    <= 3 * Seq.length (decoded_trace input)
+
+predicate decoded_trace_escape_step [#"/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/decoder_lemmas.rs" 101 0 101 64] (input: Seq.seq int)
+
+axiom decoded_trace_escape_step_spec:
+  forall input: Seq.seq int [decoded_trace_escape_step input]. ([%#sdecoder_lemmas'11] ge_log_Int (Seq.length input) 3)
+    -> ([%#sdecoder_lemmas'12] Seq.get input 0 = 37)
+    -> ([%#sdecoder_lemmas'13] ge_log_Int (percent_hex_value_model (Seq.get input 1)) 0)
+    -> ([%#sdecoder_lemmas'14] ge_log_Int (percent_hex_value_model (Seq.get input 2)) 0)
+    -> ([%#sdecoder_lemmas'15] decoded_trace_escape_step input)
+
+axiom decoded_trace_escape_step_spec'0:
+  forall input: Seq.seq int. ([%#sdecoder_lemmas'11] ge_log_Int (Seq.length input) 3)
+    -> ([%#sdecoder_lemmas'12] Seq.get input 0 = 37)
+    -> ([%#sdecoder_lemmas'13] ge_log_Int (percent_hex_value_model (Seq.get input 1)) 0)
+    -> ([%#sdecoder_lemmas'14] ge_log_Int (percent_hex_value_model (Seq.get input 2)) 0)
+    -> ([%#sdecoder_lemmas'16] decoded_trace input
+    = Seq.(++) (Seq.singleton (percent_hex_value_model (Seq.get input 1) * 16
+    + percent_hex_value_model (Seq.get input 2))) (decoded_trace (Seq.([..]) input 3 (Seq.length input))))
+
+function concat_assoc_Int'0 (self: Seq.seq int) (other1: Seq.seq int) (other2: Seq.seq int) : ()
+
+axiom concat_assoc_Int_spec'1:
+  forall self: Seq.seq int, other1: Seq.seq int, other2: Seq.seq int. [%#sseq] Seq.(++) (Seq.(++) self other1) other2
+    = Seq.(++) self (Seq.(++) other1 other2)
+
+type t_RangeTo_usize = { end': UInt64.t }
+
+predicate in_bounds_RangeTo_usize (self: t_RangeTo_usize) (seq: Seq.seq UInt8.t) =
+  [%#sslice'9] UInt64.t'int self.end' <= Seq.length seq
+
+predicate has_value_RangeTo_usize (self: t_RangeTo_usize) (seq: Seq.seq UInt8.t) (out: Slice64.slice UInt8.t) =
+  [%#sslice'10] Seq.([..]) seq 0 (UInt64.t'int self.end') = Slice64.view out
+
+let index_slice_u8'0 (self_: Slice64.slice UInt8.t) (ix: t_RangeTo_usize) (return (x: Slice64.slice UInt8.t)) =
+{[@stop_split] [@expl:index requires] [%#sslice'3] in_bounds_RangeTo_usize ix (Slice64.view self_)}
+  any
+  [ return (result: Slice64.slice UInt8.t) ->
+  {[@stop_split] [@expl:index ensures] [%#sslice'4] has_value_RangeTo_usize ix (Slice64.view self_) result}
+    (! return {result}) ]
+
+type t_Vec_u8_Global
+
+constant const_MAX: UInt64.t = (18446744073709551615: UInt64.t)
+
+function view_Vec_u8_Global (self: t_Vec_u8_Global) : Seq.seq UInt8.t
+
+axiom view_Vec_u8_Global_spec:
+  forall self: t_Vec_u8_Global [view_Vec_u8_Global self]. [%#svec] Seq.length (view_Vec_u8_Global self)
+    <= UInt64.t'int const_MAX
+
+predicate postcondition_clone (self: ()) (args: UInt8.t) (result: UInt8.t) = let self_ = args in [%#snum] result = self_
+
+meta "rewrite_def" predicate postcondition_clone
+
+let clone_u8 (self_: UInt8.t) (return (x: UInt8.t)) = any
+  [ return (result: UInt8.t) -> {[@stop_split] [@expl:clone ensures] [%#snum] result = self_} (! return {result}) ]
+
+let to_vec_u8 (self_: Slice64.slice UInt8.t) (return (x: t_Vec_u8_Global)) = any
+  [ return (result: t_Vec_u8_Global) ->
+  {[@stop_split] [@expl:to_vec_u8 ensures] ([@stop_split] [@expl:to_vec ensures #0] [%#sslice'5] Seq.length (view_Vec_u8_Global result)
+      = Seq.length (Slice64.view self_))
+    /\ ([@stop_split] [@expl:to_vec ensures #1] [%#sslice'6] forall i: int. 0 <= i
+        /\ i < Seq.length (Slice64.view self_)
+      -> postcondition_clone () (Seq.get (Slice64.view self_) i) (Seq.get (view_Vec_u8_Global result) i))}
+    (! return {result}) ]
+
+let push_u8 (self_: MutBorrow.t t_Vec_u8_Global) (v: UInt8.t) (return (x: ())) = any
+  [ return (result: ()) -> {[@stop_split] [@expl:push ensures] [%#svec'0] view_Vec_u8_Global self_.final
+    = Seq.snoc (view_Vec_u8_Global self_.current) v}
+    (! return {result}) ]
+
+predicate byte_map_push_back [#"/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/decoder_lemmas.rs" 67 0 67 66] (bytes'0: Seq.seq UInt8.t) (byte: UInt8.t)
+
+axiom byte_map_push_back_spec:
+  forall bytes'0: Seq.seq UInt8.t, byte: UInt8.t [byte_map_push_back bytes'0 byte]. [%#sdecoder_lemmas'17] byte_map_push_back bytes'0 byte
+
+axiom byte_map_push_back_spec'0:
+  forall bytes'0: Seq.seq UInt8.t, byte: UInt8.t. [%#sdecoder_lemmas'18] byte_sequence_as_ints (Seq.snoc bytes'0 byte)
+    = Seq.(++) (byte_sequence_as_ints bytes'0) (Seq.singleton (UInt8.t'int byte))
+
+predicate inv_PercentDecode (_1: t_PercentDecode)
+
+axiom inv_axiom [@rewrite]: forall x: t_PercentDecode [inv_PercentDecode x]. inv_PercentDecode x = inv_Iter_u8 x.bytes
+
+function remaining_input [#"/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 882 4 882 43] [@inline:trivial] (self: t_PercentDecode) : Seq.seq UInt8.t
+ = [%#slib'73] Slice64.view (view_Iter_u8 self.bytes)
+
+meta "rewrite_def" function remaining_input
+
+let append_decoded (output: MutBorrow.t t_Vec_u8_Global) (iter: t_PercentDecode) (return (x: ())) =
+{[@stop_split] [@expl:append_decoded 'iter' type invariant] [%#slib'71] inv_PercentDecode iter}
+  any
+  [ return (result: ()) ->
+  {[@stop_split] [@expl:append_decoded ensures] [%#slib'72] byte_sequence_as_ints (view_Vec_u8_Global output.final)
+    = Seq.(++) (byte_sequence_as_ints (view_Vec_u8_Global output.current)) (decoded_trace (byte_sequence_as_ints (remaining_input iter)))}
+    (! return {result}) ]
+
+predicate resolve_refmut_Vec_u8_Global [@inline:trivial] (_1: MutBorrow.t t_Vec_u8_Global) = _1.final = _1.current
+
+meta "rewrite_def" predicate resolve_refmut_Vec_u8_Global
+
+type t_Option_Vec_u8_Global = None'1 | Some'1 t_Vec_u8_Global
+
+predicate invariant_ref_PercentDecode [@inline:trivial] (self: t_PercentDecode) =
+  [%#sinvariant'0] inv_PercentDecode self
+
+meta "rewrite_def" predicate invariant_ref_PercentDecode
+
+predicate inv_ref_PercentDecode [@inline:trivial] (_1: t_PercentDecode) = invariant_ref_PercentDecode _1
+
+meta "rewrite_def" predicate inv_ref_PercentDecode
+
+meta "compute_max_steps" 1000000
+
+meta "select_lsinst" "all"
+
+let if_any [#"/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 1117 4 1117 39]
+  (self: t_PercentDecode) (return (x: t_Option_Vec_u8_Global)) =
+{[@stop_split] [@expl:if_any 'self' type invariant] [%#slib'53] inv_ref_PercentDecode self}
+  (! bb0
+  [ bb0 = s0
+    [ s0 = as_slice_u8 [%#slib] {self.bytes} (fun (_x: Slice64.slice UInt8.t) -> [ &initial_bytes <- _x ] s1)
+    | s1 = [ &input <- initial_bytes ] s2
+    | s2 = [ &unchanged_bytes_len <- [%#slib'0] (0: UInt64.t) ] s3
+    | s3 = bb2 ]
+  | bb2 = bb2invariant
+    [ bb2 =
+      {[@expl:loop variant] well_founded_relation_Int variant_old_bb2 ([%#slib'1] Seq.length (Slice64.view input))}
+      bb2invariant
+    | bb2invariant = {[@expl:loop invariant #0] [%#slib'6] UInt64.t'int unchanged_bytes_len
+      <= Seq.length (Slice64.view initial_bytes)}
+      {[@expl:loop invariant #1] [%#slib'5] Slice64.view input
+      = Seq.([..]) (Slice64.view initial_bytes) (UInt64.t'int unchanged_bytes_len) (Seq.length (Slice64.view initial_bytes))}
+      {[@expl:loop invariant #2] [%#slib'4] decoded_trace (byte_sequence_as_ints (Slice64.view initial_bytes))
+      = Seq.(++) (Seq.([..]) (byte_sequence_as_ints (Slice64.view initial_bytes)) 0 (UInt64.t'int unchanged_bytes_len)) (decoded_trace (byte_sequence_as_ints (Slice64.view input)))}
+      (! [ &variant_old_bb2 <- [%#slib'1] Seq.length (Slice64.view input) ] s0)
+      [ s0 = len_u8 [%#slib'2] {input} (fun (_x: UInt64.t) -> [ &_25 <- _x ] s1)
+      | s1 = [ &_24 <- UInt64.gt _25 ([%#slib'3] (0: UInt64.t)) ] s2
+      | s2 = any [ br0 -> {_24 = false} (! bb23) | br1 -> {_24} (! bb5) ] ]
+      [ bb5 = s0
+        [ s0 = split_first_u8 [%#slib'7] {input} (fun (_x: t_Option_tup2_ref_u8_ref_slice_u8) -> [ &_30 <- _x ] s1)
+        | s1 = unwrap_tup2_ref_u8_ref_slice_u8 [%#slib'8] {_30}
+            (fun (_x: tup2_ref_u8_ref_slice_u8) -> [ &_29 <- _x ] s2)
+        | s2 = [ &byte <- _29.f0 ] s3
+        | s3 = [ &remaining <- _29.f1 ] s4
+        | s4 = [ &_33 <- byte = ([%#slib'9] (37: UInt8.t)) ] s5
+        | s5 = any [ br0 -> {_33 = false} (! bb21) | br1 -> {_33} (! bb8) ] ]
+      | bb8 = s0
+        [ s0 = iter_u8 [%#slib'10] {remaining} (fun (_x: t_Iter_u8) -> [ &after <- _x ] s1)
+        | s1 = MutBorrow.borrow_mut <t_Iter_u8> {after}
+            (fun (_bor: MutBorrow.t t_Iter_u8) ->
+              [ &_39 <- _bor ] -{inv_Iter_u8 _bor.final}-
+              [ &after <- _bor.final ] s2) [ _ck -> (! {[@expl:type invariant] inv_Iter_u8 after} any) ]
+        | s2 = MutBorrow.borrow_final <t_Iter_u8> {_39.current} {MutBorrow.get_id _39}
+            (fun (_bor: MutBorrow.t t_Iter_u8) ->
+              [ &_38 <- _bor ] -{inv_Iter_u8 _bor.final}-
+              [ &_39 <- { _39 with current = _bor.final } ] s3)
+          [ _ck -> (! {[@expl:type invariant] inv_Iter_u8 _39.current} any) ]
+        | s3 = after_percent_sign [%#slib'11] {_38} (fun (_x: t_Option_u8) -> [ &_37 <- _x ] s4)
+        | s4 = s5 [ _ck -> (! {[@expl:type invariant] inv_refmut_Iter_u8 _39} any) ]
+        | s5 = -{resolve_refmut_Iter_u8 _39}- s6
+        | s6 = any [ br0 -> {_37 = None'0} (! bb19) | br1 (x0: UInt8.t) -> {_37 = Some'0 x0} (! bb12) ] ]
+      | bb19 = s0
+        [ s0 = s1 [ _ck -> (! {[@expl:type invariant] inv_Iter_u8 after} any) ]
+        | s1 = -{resolve_Iter_u8 after}- s2
+        | s2 = bb21 ]
+      | bb21 = s0
+        [ s0 =
+          {[@expl:assertion] [%#slib'12] byte_model_subsequence (Slice64.view input) 1 (Seq.length (Slice64.view input))}
+          s1
+        | s1 = {[@expl:assertion] [%#slib'13] byte_sequence_as_ints (Slice64.view remaining)
+          = Seq.([..]) (byte_sequence_as_ints (Slice64.view input)) 1 (Seq.length (byte_sequence_as_ints (Slice64.view input)))}
+          s2
+        | s2 = {[@expl:assertion] [%#slib'14] if ge_log_Int (Seq.length (Slice64.view input)) 3
+          /\ UInt8.t'int (Seq.get (Slice64.view input) 0) = 37 then
+            percent_hex_value_model (UInt8.t'int (Seq.get (Slice64.view input) 1)) < 0
+            \/ percent_hex_value_model (UInt8.t'int (Seq.get (Slice64.view input) 2)) < 0
+          else
+            true
+          }
+          s3
+        | s3 = {[@expl:assertion] [%#slib'15] decoded_trace_plain_step (byte_sequence_as_ints (Slice64.view input))} s4
+        | s4 =
+          {[@expl:assertion] [%#slib'16] byte_model_subsequence (Slice64.view initial_bytes) (UInt64.t'int unchanged_bytes_len) (Seq.length (Slice64.view initial_bytes))}
+          s5
+        | s5 = {[@expl:assertion] [%#slib'17] byte_sequence_as_ints (Slice64.view remaining)
+          = Seq.([..]) (byte_sequence_as_ints (Slice64.view initial_bytes)) (UInt64.t'int unchanged_bytes_len
+          + 1) (Seq.length (byte_sequence_as_ints (Slice64.view initial_bytes)))}
+          s6
+        | s6 =
+          {[@expl:assertion] [%#slib'18] byte_map_nested_tail (Slice64.view initial_bytes) (UInt64.t'int unchanged_bytes_len)}
+          s7
+        | s7 = {[@expl:assertion] [%#slib'19] decoded_trace (byte_sequence_as_ints (Slice64.view input))
+          = Seq.(++) (Seq.singleton (UInt8.t'int byte)) (decoded_trace (byte_sequence_as_ints (Slice64.view remaining)))}
+          s8
+        | s8 =
+          {[@expl:assertion] [%#slib'20] byte_map_prefix_push (Slice64.view initial_bytes) (UInt64.t'int unchanged_bytes_len)}
+          s9
+        | s9 =
+          {[@expl:assertion] [%#slib'21] byte_int_prefix_push (Slice64.view initial_bytes) (UInt64.t'int unchanged_bytes_len)}
+          s10
+        | s10 =
+          {[@expl:assertion] [%#slib'22] Seq.([..]) (byte_sequence_as_ints (Slice64.view initial_bytes)) 0 (UInt64.t'int unchanged_bytes_len
+            + 1)
+          = Seq.(++) (Seq.([..]) (byte_sequence_as_ints (Slice64.view initial_bytes)) 0 (UInt64.t'int unchanged_bytes_len)) (Seq.singleton (UInt8.t'int byte))}
+          s11
+        | s11 =
+          {[@expl:assertion] [%#slib'23] concat_assoc_Int (Seq.([..]) (byte_sequence_as_ints (Slice64.view initial_bytes)) 0 (UInt64.t'int unchanged_bytes_len)) (Seq.singleton (UInt8.t'int byte)) (decoded_trace (byte_sequence_as_ints (Slice64.view remaining)))}
+          s12
+        | s12 = UInt64.add [%#slib'25] {unchanged_bytes_len} {[%#slib'24] (1: UInt64.t)}
+            (fun (_x: UInt64.t) -> [ &unchanged_bytes_len <- _x ] s13)
+        | s13 =
+          {[@expl:assertion] [%#slib'26] byte_model_subsequence (Slice64.view initial_bytes) (UInt64.t'int unchanged_bytes_len) (Seq.length (Slice64.view initial_bytes))}
+          s14
+        | s14 = [ &_186 <- { start = unchanged_bytes_len } ] s15
+        | s15 = index_slice_u8 [%#slib'27] {initial_bytes} {_186}
+            (fun (_x: Slice64.slice UInt8.t) -> [ &_184 <- _x ] s16)
+        | s16 = [ &_183 <- _184 ] s17
+        | s17 = [ &input <- _183 ] s18
+        | s18 = bb2 ] ] ]
+  | bb12 = s0
+    [ s0 = elim_Some {_37} (fun (r0: UInt8.t) -> [ &decoded_byte <- r0 ] s1)
+    | s1 =
+      {[@expl:assertion] [%#slib'28] decoded_trace_length_bounds (byte_sequence_as_ints (Slice64.view (view_Iter_u8 after)))}
+      s2
+    | s2 =
+      {[@expl:assertion] [%#slib'29] byte_model_subsequence (Slice64.view initial_bytes) (UInt64.t'int unchanged_bytes_len) (Seq.length (Slice64.view initial_bytes))}
+      s3
+    | s3 =
+      {[@expl:assertion] [%#slib'30] byte_model_subsequence (Slice64.view input) 1 (Seq.length (Slice64.view input))}
+      s4
+    | s4 =
+      {[@expl:assertion] [%#slib'31] byte_model_subsequence (Slice64.view input) 3 (Seq.length (Slice64.view input))}
+      s5
+    | s5 =
+      {[@expl:assertion] [%#slib'32] byte_model_subsequence (Slice64.view remaining) 2 (Seq.length (Slice64.view remaining))}
+      s6
+    | s6 = {[@expl:assertion] [%#slib'33] byte_sequence_as_ints (Slice64.view remaining)
+      = Seq.([..]) (byte_sequence_as_ints (Slice64.view input)) 1 (Seq.length (byte_sequence_as_ints (Slice64.view input)))}
+      s7
+    | s7 = {[@expl:assertion] [%#slib'34] byte_sequence_as_ints (Slice64.view (view_Iter_u8 after))
+      = Seq.([..]) (byte_sequence_as_ints (Slice64.view remaining)) 2 (Seq.length (byte_sequence_as_ints (Slice64.view remaining)))}
+      s8
+    | s8 = {[@expl:assertion] [%#slib'35] byte_sequence_as_ints (Slice64.view (view_Iter_u8 after))
+      = Seq.([..]) (byte_sequence_as_ints (Slice64.view input)) 3 (Seq.length (byte_sequence_as_ints (Slice64.view input)))}
+      s9
+    | s9 = {[@expl:assertion] [%#slib'36] decoded_trace_escape_step (byte_sequence_as_ints (Slice64.view input))} s10
+    | s10 = {[@expl:assertion] [%#slib'37] UInt8.t'int decoded_byte
+      = percent_hex_value_model (Seq.get (byte_sequence_as_ints (Slice64.view input)) 1) * 16
+      + percent_hex_value_model (Seq.get (byte_sequence_as_ints (Slice64.view input)) 2)}
+      s11
+    | s11 = {[@expl:assertion] [%#slib'38] decoded_trace (byte_sequence_as_ints (Slice64.view input))
+      = Seq.(++) (Seq.singleton (UInt8.t'int decoded_byte)) (decoded_trace (byte_sequence_as_ints (Slice64.view (view_Iter_u8 after))))}
+      s12
+    | s12 = {[@expl:assertion] [%#slib'39] Seq.length (Slice64.view (view_Iter_u8 after))
+      = Seq.length (Slice64.view input) - 3}
+      s13
+    | s13 =
+      {[@expl:assertion] [%#slib'40] let _ = concat_assoc_Int'0 (Seq.([..]) (byte_sequence_as_ints (Slice64.view initial_bytes)) 0 (UInt64.t'int unchanged_bytes_len)) (Seq.singleton (UInt8.t'int decoded_byte)) (decoded_trace (byte_sequence_as_ints (Slice64.view (view_Iter_u8 after)))) in true}
+      s14
+    | s14 = [ &_98 <- { end' = unchanged_bytes_len } ] s15
+    | s15 = index_slice_u8'0 [%#slib'41] {initial_bytes} {_98} (fun (_x: Slice64.slice UInt8.t) -> [ &_96 <- _x ] s16)
+    | s16 = to_vec_u8 [%#slib'42] {_96} (fun (_x: t_Vec_u8_Global) -> [ &decoded <- _x ] s17)
+    | s17 = {[@expl:assertion] [%#slib'43] byte_sequence_as_ints (view_Vec_u8_Global decoded)
+      = Seq.([..]) (byte_sequence_as_ints (Slice64.view initial_bytes)) 0 (UInt64.t'int unchanged_bytes_len)}
+      s18
+    | s18 = [ &decoded_before_push <- [%#slib'44] view_Vec_u8_Global decoded ] s19
+    | s19 = MutBorrow.borrow_mut <t_Vec_u8_Global> {decoded}
+        (fun (_bor: MutBorrow.t t_Vec_u8_Global) -> [ &_109 <- _bor ] [ &decoded <- _bor.final ] s20)
+    | s20 = push_u8 [%#slib'45] {_109} {decoded_byte} (fun (_x: ()) -> [ &_108 <- _x ] s21)
+    | s21 = {[@expl:assertion] [%#slib'46] byte_map_push_back decoded_before_push decoded_byte} s22
+    | s22 = {[@expl:assertion] [%#slib'47] byte_sequence_as_ints (view_Vec_u8_Global decoded)
+      = Seq.(++) (Seq.([..]) (byte_sequence_as_ints (Slice64.view initial_bytes)) 0 (UInt64.t'int unchanged_bytes_len)) (Seq.singleton (UInt8.t'int decoded_byte))}
+      s23
+    | s23 = MutBorrow.borrow_mut <t_Vec_u8_Global> {decoded}
+        (fun (_bor: MutBorrow.t t_Vec_u8_Global) -> [ &_123 <- _bor ] [ &decoded <- _bor.final ] s24)
+    | s24 = [ &_124 <- { bytes = after } ] s25
+    | s25 = MutBorrow.borrow_final <t_Vec_u8_Global> {_123.current} {MutBorrow.get_id _123}
+        (fun (_bor: MutBorrow.t t_Vec_u8_Global) ->
+          [ &_122 <- _bor ] [ &_123 <- { _123 with current = _bor.final } ] s26)
+    | s26 = append_decoded [%#slib'48] {_122} {_124} (fun (_x: ()) -> [ &_121 <- _x ] s27)
+    | s27 = -{resolve_refmut_Vec_u8_Global _123}- s28
+    | s28 = [ &_ret <- Some'1 decoded ] s29
+    | s29 = return {_ret} ]
+  | bb23 = s0
+    [ s0 = {[@expl:assertion] [%#slib'49] UInt64.t'int unchanged_bytes_len = Seq.length (Slice64.view initial_bytes)} s1
+    | s1 = {[@expl:assertion] [%#slib'50] Seq.length (byte_sequence_as_ints (Slice64.view input)) = 0} s2
+    | s2 =
+      {[@expl:assertion] [%#slib'51] Seq.([..]) (byte_sequence_as_ints (Slice64.view initial_bytes)) 0 (UInt64.t'int unchanged_bytes_len)
+      = byte_sequence_as_ints (Slice64.view initial_bytes)}
+      s3
+    | s3 = {[@expl:assertion] [%#slib'52] Seq.length (decoded_trace (byte_sequence_as_ints (Slice64.view input))) = 0}
+      s4
+    | s4 = [ &_ret <- None'1 ] s5
+    | s5 = return {_ret} ] ]
+  [ & _ret: t_Option_Vec_u8_Global = Any.any_l ()
+  | & self: t_PercentDecode = self
+  | & initial_bytes: Slice64.slice UInt8.t = Any.any_l ()
+  | & input: Slice64.slice UInt8.t = Any.any_l ()
+  | & unchanged_bytes_len: UInt64.t = Any.any_l ()
+  | & _24: bool = Any.any_l ()
+  | & _25: UInt64.t = Any.any_l ()
+  | & byte: UInt8.t = Any.any_l ()
+  | & remaining: Slice64.slice UInt8.t = Any.any_l ()
+  | & _29: tup2_ref_u8_ref_slice_u8 = Any.any_l ()
+  | & _30: t_Option_tup2_ref_u8_ref_slice_u8 = Any.any_l ()
+  | & _33: bool = Any.any_l ()
+  | & after: t_Iter_u8 = Any.any_l ()
+  | & _37: t_Option_u8 = Any.any_l ()
+  | & _38: MutBorrow.t t_Iter_u8 = Any.any_l ()
+  | & _39: MutBorrow.t t_Iter_u8 = Any.any_l ()
+  | & decoded_byte: UInt8.t = Any.any_l ()
+  | & decoded: t_Vec_u8_Global = Any.any_l ()
+  | & _96: Slice64.slice UInt8.t = Any.any_l ()
+  | & _98: t_RangeTo_usize = Any.any_l ()
+  | & decoded_before_push: Seq.seq UInt8.t = Any.any_l ()
+  | & _108: () = Any.any_l ()
+  | & _109: MutBorrow.t t_Vec_u8_Global = Any.any_l ()
+  | & _121: () = Any.any_l ()
+  | & _122: MutBorrow.t t_Vec_u8_Global = Any.any_l ()
+  | & _123: MutBorrow.t t_Vec_u8_Global = Any.any_l ()
+  | & _124: t_PercentDecode = Any.any_l ()
+  | & _183: Slice64.slice UInt8.t = Any.any_l ()
+  | & _184: Slice64.slice UInt8.t = Any.any_l ()
+  | & _186: t_RangeFrom_usize = Any.any_l ()
+  | & variant_old_bb2: int = Any.any_l () ])
+  [ return (result: t_Option_Vec_u8_Global) -> {[@stop_split] [@expl:if_any ensures] [%#slib'54] match result with
+      | Some'1 bytes'0 -> byte_sequence_as_ints (view_Vec_u8_Global bytes'0)
+        = decoded_trace (byte_sequence_as_ints (remaining_input self))
+      /\ Seq.length (view_Vec_u8_Global bytes'0) < Seq.length (remaining_input self)
+      | None'1 -> decoded_trace (byte_sequence_as_ints (remaining_input self))
+      = byte_sequence_as_ints (remaining_input self)
+      end}
+    (! return {result}) ]

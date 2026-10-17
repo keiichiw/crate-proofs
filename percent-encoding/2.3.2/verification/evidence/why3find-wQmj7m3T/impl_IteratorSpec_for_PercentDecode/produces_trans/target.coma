@@ -1,0 +1,112 @@
+(* #"/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 1055 4 1055 90 *)
+
+(* <PercentDecode<'_> as creusot_std::prelude::IteratorSpec> *)
+
+let%span sord = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/logic/ord.rs" 34 8 34 21
+let%span slib = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 1052 15 1052 32
+let%span slib'0 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 1053 15 1053 32
+let%span slib'1 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 1054 14 1054 42
+let%span slib'2 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 1035 12 1038 17
+let%span slib'3 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 375 16 375 43
+let%span slib'4 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 98 10 98 21
+let%span slib'5 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 101 8 113 9
+let%span slib'6 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 883 20 883 32
+let%span slib'7 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 361 4 369 5
+let%span sseq = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/logic/seq.rs" 443 14 443 86
+let%span sseq'0 = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/logic/seq.rs" 301 14 301 24
+let%span sseq'1 = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/logic/seq.rs" 299 14 299 40
+let%span sseq'2 = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/logic/seq.rs" 300 14 300 76
+let%span smapping = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/logic/mapping.rs" 66 8 66 19
+
+use creusot.int.UInt8
+use seq.Seq
+use map.Map
+use creusot.slice.Slice64
+use int.Int
+
+type t_Iter_u8
+
+type t_PercentDecode = { bytes: t_Iter_u8 }
+
+predicate ge_log_Int [@inline:trivial] (self: int) (other: int) = [%#sord] other <= self
+
+meta "rewrite_def" predicate ge_log_Int
+
+function percent_hex_value_model (byte: int) : int = [%#slib'7] if 48 <= byte /\ byte <= 57 then
+    byte - 48
+  else
+    if 65 <= byte /\ byte <= 70 then byte - 55 else if 97 <= byte /\ byte <= 102 then byte - 87 else - 1
+
+
+function decoded_trace [#"/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 99 0 99 49] (input: Seq.seq int) : Seq.seq int
+
+axiom decoded_trace_def: forall input: Seq.seq int [decoded_trace input]. decoded_trace input
+    = ([%#slib'5] if Seq.length input = 0 then
+      Seq.empty: Seq.seq int
+    else
+      if ge_log_Int (Seq.length input) 3
+      /\ Seq.get input 0 = 37
+      /\ ge_log_Int (percent_hex_value_model (Seq.get input 1)) 0
+      /\ ge_log_Int (percent_hex_value_model (Seq.get input 2)) 0 then
+        Seq.(++) (Seq.singleton (percent_hex_value_model (Seq.get input 1) * 16
+        + percent_hex_value_model (Seq.get input 2))) (decoded_trace (Seq.([..]) input 3 (Seq.length input)))
+      else
+        Seq.(++) (Seq.singleton (Seq.get input 0)) (decoded_trace (Seq.([..]) input 1 (Seq.length input)))
+    
+    )
+
+function index_Mapping_u8_Int [@inline:trivial] (self: Map.map UInt8.t int) (a: UInt8.t) : int =
+  [%#smapping] Map.get self a
+
+meta "rewrite_def" function index_Mapping_u8_Int
+
+function map_u8 (self: Seq.seq UInt8.t) (m: Map.map UInt8.t int) : Seq.seq int
+
+axiom map_u8_spec:
+  forall self: Seq.seq UInt8.t, m: Map.map UInt8.t int [map_u8 self m]. [%#sseq'1] Seq.length (map_u8 self m)
+    = Seq.length self
+
+axiom map_u8_spec'0: forall self: Seq.seq UInt8.t, m: Map.map UInt8.t int [map_u8 self m]. [%#sseq'2] forall i: int. 0
+          <= i
+        /\ i < Seq.length self -> Seq.get (map_u8 self m) i = index_Mapping_u8_Int m (Seq.get self i)
+
+function byte_sequence_as_ints (bytes'0: Seq.seq UInt8.t) : Seq.seq int =
+  [%#slib'3] map_u8 bytes'0 (fun (byte: UInt8.t) -> UInt8.t'int byte)
+
+function view_Iter_u8 (self: t_Iter_u8) : Slice64.slice UInt8.t
+
+function remaining_input [#"/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 882 4 882 43] [@inline:trivial] (self: t_PercentDecode) : Seq.seq UInt8.t
+ = [%#slib'6] Slice64.view (view_Iter_u8 self.bytes)
+
+meta "rewrite_def" function remaining_input
+
+predicate produces_PercentDecode [#"/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 1033 4 1033 64] (self: t_PercentDecode) (visited: Seq.seq UInt8.t) (o: t_PercentDecode) =
+  [%#slib'2] decoded_trace (byte_sequence_as_ints (remaining_input self))
+  = Seq.(++) (byte_sequence_as_ints visited) (decoded_trace (byte_sequence_as_ints (remaining_input o)))
+
+function concat_assoc_Int (self: Seq.seq int) (other1: Seq.seq int) (other2: Seq.seq int) : ()
+
+axiom concat_assoc_Int_spec:
+  forall self: Seq.seq int, other1: Seq.seq int, other2: Seq.seq int. [%#sseq] Seq.(++) (Seq.(++) self other1) other2
+    = Seq.(++) self (Seq.(++) other1 other2)
+
+meta "compute_max_steps" 1000000
+
+meta "select_lsinst" "all"
+
+constant a : t_PercentDecode
+
+constant ab : Seq.seq UInt8.t
+
+constant b : t_PercentDecode
+
+constant bc : Seq.seq UInt8.t
+
+constant c : t_PercentDecode
+
+function produces_trans_PercentDecode [#"/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 1055 4 1055 90] (a: t_PercentDecode) (ab: Seq.seq UInt8.t) (b: t_PercentDecode) (bc: Seq.seq UInt8.t) (c: t_PercentDecode) : ()
+
+goal vc_produces_trans_PercentDecode: ([%#slib] produces_PercentDecode a ab b)
+  -> ([%#slib'0] produces_PercentDecode b bc c)
+  -> byte_sequence_as_ints (Seq.(++) ab bc) = Seq.(++) (byte_sequence_as_ints ab) (byte_sequence_as_ints bc)
+  && ([@stop_split] [@expl:produces_trans ensures] [%#slib'1] produces_PercentDecode a (Seq.(++) ab bc) c)

@@ -1,0 +1,84 @@
+(* #"/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/ascii_set.rs" 197 4 197 37 *)
+
+(* <ascii_set::AsciiSet as core::ops::Add> *)
+
+let%span sascii_set = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/ascii_set.rs" 198 8 198 25
+let%span sascii_set'0 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/ascii_set.rs" 197 11 197 15
+let%span sascii_set'1 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/ascii_set.rs" 197 17 197 22
+let%span sascii_set'2 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/ascii_set.rs" 197 33 197 37
+let%span sascii_set'3 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/ascii_set.rs" 196 44 196 149
+let%span sascii_set'4 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/ascii_set.rs" 166 24 166 28
+let%span sascii_set'5 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/ascii_set.rs" 166 30 166 35
+let%span sascii_set'6 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/ascii_set.rs" 166 46 166 50
+let%span sascii_set'7 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/ascii_set.rs" 165 44 165 149
+let%span sascii_set'8 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/ascii_set.rs" 114 14 114 31
+let%span sascii_set'9 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/ascii_set.rs" 116 20 116 58
+let%span sinvariant = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/invariant.rs" 85 8 85 18
+let%span sarray = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/std/array.rs" 9 20 9 51
+
+use creusot.slice.Slice64BW
+use creusot.int.UInt32BW
+use seq.Seq
+use creusot.int.UInt64BW
+use creusot.prelude.Any
+use int.Int
+
+predicate inv_Seq_u32 [@inline:trivial] (_1: Seq.seq UInt32BW.t) = true
+
+meta "rewrite_def" predicate inv_Seq_u32
+
+predicate invariant_array_u32_4 (self: Slice64BW.array UInt32BW.t) =
+  [%#sarray] inv_Seq_u32 (Slice64BW.view self) /\ Seq.length (Slice64BW.view self) = UInt64BW.t'int (4: UInt64BW.t)
+
+predicate inv_array_u32_4 [@inline:trivial] (_1: Slice64BW.array UInt32BW.t) = invariant_array_u32_4 _1
+
+meta "rewrite_def" predicate inv_array_u32_4
+
+type t_AsciiSet = { mask: Slice64BW.array UInt32BW.t }
+
+predicate inv_AsciiSet (_1: t_AsciiSet)
+
+axiom inv_axiom [@rewrite]: forall x: t_AsciiSet [inv_AsciiSet x]. inv_AsciiSet x = inv_array_u32_4 x.mask
+
+predicate invariant_ref_AsciiSet [@inline:trivial] (self: t_AsciiSet) = [%#sinvariant] inv_AsciiSet self
+
+meta "rewrite_def" predicate invariant_ref_AsciiSet
+
+predicate inv_ref_AsciiSet [@inline:trivial] (_1: t_AsciiSet) = invariant_ref_AsciiSet _1
+
+meta "rewrite_def" predicate inv_ref_AsciiSet
+
+function mask_words [#"/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/ascii_set.rs" 115 4 115 40] (self: t_AsciiSet) : Seq.seq UInt32BW.t
+ = [%#sascii_set'9] Seq.create 4 (fun (i: int) -> Seq.get (Slice64BW.view self.mask) i)
+
+axiom mask_words_spec: forall self: t_AsciiSet [mask_words self]. [%#sascii_set'8] Seq.length (mask_words self) = 4
+
+let union (self: t_AsciiSet) (other: t_AsciiSet) (return (x: t_AsciiSet)) =
+{[@stop_split] [@expl:union requires] ([@stop_split] [@expl:union 'self' type invariant] [%#sascii_set'4] inv_ref_AsciiSet self)
+  /\ ([@stop_split] [@expl:union 'other' type invariant] [%#sascii_set'5] inv_AsciiSet other)}
+  any
+  [ return (result: t_AsciiSet) ->
+  {[@stop_split] [@expl:union ensures] ([@stop_split] [@expl:union result type invariant] [%#sascii_set'6] inv_AsciiSet result)
+    /\ ([@stop_split] [@expl:union ensures] [%#sascii_set'7] forall i: int. 0 <= i /\ i < 4
+      -> Seq.get (mask_words result) i = UInt32BW.bw_or (Seq.get (mask_words self) i) (Seq.get (mask_words other) i))}
+    (! return {result}) ]
+
+meta "compute_max_steps" 1000000
+
+meta "select_lsinst" "all"
+
+let add_AsciiSet [#"/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/ascii_set.rs" 197 4 197 37]
+  (self: t_AsciiSet) (other: t_AsciiSet) (return (x: t_AsciiSet)) =
+{[@stop_split] [@expl:add_AsciiSet requires] ([@stop_split] [@expl:add 'self' type invariant] [%#sascii_set'0] inv_AsciiSet self)
+  /\ ([@stop_split] [@expl:add 'other' type invariant] [%#sascii_set'1] inv_AsciiSet other)}
+  (! bb0
+  [ bb0 = s0
+    [ s0 = s1 [ _ck -> (! {[@expl:type invariant] inv_AsciiSet self} any) ]
+    | s1 = union [%#sascii_set] {self} {other} (fun (_x: t_AsciiSet) -> [ &_ret <- _x ] s2)
+    | s2 = return {_ret} ] ]
+  [ & _ret: t_AsciiSet = Any.any_l () | & self: t_AsciiSet = self | & other: t_AsciiSet = other ])
+  [ return (result: t_AsciiSet) ->
+  {[@stop_split] [@expl:add_AsciiSet ensures] ([@stop_split] [@expl:add result type invariant] [%#sascii_set'2] inv_AsciiSet result)
+    /\ ([@stop_split] [@expl:add ensures] [%#sascii_set'3] forall i: int. 0 <= i /\ i < 4
+      -> Seq.get (mask_words result) i = UInt32BW.bw_or (Seq.get (mask_words self) i) (Seq.get (mask_words other) i))}
+    (! return {result}) ]

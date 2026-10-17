@@ -1,0 +1,23 @@
+(* #"/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/ascii_set.rs" 115 4 115 40 *)
+
+(* ascii_set::AsciiSet *)
+
+let%span sascii_set = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/ascii_set.rs" 114 14 114 31
+
+use creusot.slice.Slice64
+use creusot.int.UInt32
+use seq.Seq
+
+type t_AsciiSet = { mask: Slice64.array UInt32.t }
+
+meta "compute_max_steps" 1000000
+
+meta "select_lsinst" "all"
+
+constant self : t_AsciiSet
+
+function mask_words [#"/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/ascii_set.rs" 115 4 115 40] (self: t_AsciiSet) : Seq.seq UInt32.t
+
+goal vc_mask_words:
+  [@stop_split] [@expl:mask_words ensures] [%#sascii_set] Seq.length (Seq.create 4 (fun (i: int) -> Seq.get (Slice64.view self.mask) i))
+  = 4

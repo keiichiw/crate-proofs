@@ -1,0 +1,302 @@
+(* #"/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/encoder_bounds.rs" 23 0 23 80 *)
+
+let%span sord = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/logic/ord.rs" 22 8 22 20
+let%span sord'0 = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/logic/ord.rs" 34 8 34 21
+let%span sencode_models = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/encode_models.rs" 89 11 89 45
+let%span sencode_models'0 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/encode_models.rs" 90 11 90 46
+let%span sencode_models'1 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/encode_models.rs" 91 10 91 16
+let%span sencode_models'2 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/encode_models.rs" 92 10 94 72
+let%span sencode_models'3 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/encode_models.rs" 25 11 25 45
+let%span sencode_models'4 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/encode_models.rs" 26 11 26 26
+let%span sencode_models'5 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/encode_models.rs" 27 10 27 50
+let%span sencode_models'6 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/encode_models.rs" 28 22 29 44
+let%span sencode_models'7 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/encode_models.rs" 30 10 30 75
+let%span sencode_models'8 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/encode_models.rs" 31 10 31 92
+let%span sencode_models'9 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/encode_models.rs" 75 11 75 45
+let%span sencode_models'10 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/encode_models.rs" 76 11 76 47
+let%span sencode_models'11 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/encode_models.rs" 77 11 77 46
+let%span sencode_models'12 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/encode_models.rs" 78 10 78 16
+let%span sencode_models'13 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/encode_models.rs" 79 10 81 74
+let%span sencode_models'14 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/encode_models.rs" 104 10 104 21
+let%span sencode_models'15 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/encode_models.rs" 105 11 105 26
+let%span sencode_models'16 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/encode_models.rs" 107 4 121 5
+let%span sencode_models'17 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/encode_models.rs" 125 8 135 9
+let%span sencode_models'18 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/encode_models.rs" 16 8 16 74
+let%span sencode_models'19 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/encode_models.rs" 24 10 24 29
+let%span swell_founded = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/logic/well_founded.rs" 43 8 43 33
+let%span slib = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 90 4 92 57
+let%span slib'0 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 375 16 375 43
+let%span slib'1 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 84 4 84 36
+let%span slib'2 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 1182 10 1182 68
+let%span slib'3 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 1184 4 1184 52
+let%span sseq = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/logic/seq.rs" 301 14 301 24
+let%span sseq'0 = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/logic/seq.rs" 299 14 299 40
+let%span sseq'1 = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/logic/seq.rs" 300 14 300 76
+let%span smapping = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/logic/mapping.rs" 66 8 66 19
+let%span sencoder_bounds = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/encoder_bounds.rs" 17 10 17 21
+let%span sencoder_bounds'0 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/encoder_bounds.rs" 18 11 18 26
+let%span sencoder_bounds'1 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/encoder_bounds.rs" 19 10 19 16
+let%span sencoder_bounds'2 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/encoder_bounds.rs" 20 10 20 73
+let%span sencoder_bounds'3 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/encoder_bounds.rs" 21 10 21 87
+let%span sencoder_bounds'4 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/encoder_bounds.rs" 22 10 22 83
+
+use creusot.int.UInt32
+use seq.Seq
+use creusot.int.UInt8
+use int.ComputerDivision
+use map.Map
+use int.Int
+
+predicate gt_log_Int [@inline:trivial] (self: int) (other: int) = [%#sord] other < self
+
+meta "rewrite_def" predicate gt_log_Int
+
+predicate ge_log_Int [@inline:trivial] (self: int) (other: int) = [%#sord'0] other <= self
+
+meta "rewrite_def" predicate ge_log_Int
+
+predicate should_encode_model [#"/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/encode_models.rs" 14 0 14 60] (mask: Seq.seq UInt32.t) (byte: UInt8.t) =
+  [%#sencode_models'18] ge_log_Int (UInt8.t'int byte) 128
+  \/ UInt32.bw_and (Seq.get mask (ComputerDivision.div (UInt8.t'int byte) 32)) (UInt32.shl (1: UInt32.t) (UInt32.of_int (UInt8.t'int (UInt8.bw_and byte (31: UInt8.t)))))
+  <> (0: UInt32.t)
+
+function uppercase_hex (digit: int) : int = [%#slib'3] if digit < 10 then 48 + digit else 55 + digit
+
+axiom uppercase_hex_spec: forall digit: int [uppercase_hex digit]. [%#slib'2] uppercase_hex digit
+    = (if digit < 10 then 48 + digit else 55 + digit)
+
+function uppercase_hex'0 [#"/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 83 0 83 39] (digit: int) : int
+ = [%#slib'1] uppercase_hex digit
+
+function encoded_byte_model [#"/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 89 0 89 48] (byte: int) : Seq.seq int
+ =
+  [%#slib] Seq.(++) (Seq.(++) (Seq.singleton 37) (Seq.singleton (uppercase_hex'0 (ComputerDivision.div byte 16)))) (Seq.singleton (uppercase_hex'0 (ComputerDivision.mod byte 16)))
+
+function safe_run_end [#"/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/encode_models.rs" 32 0 32 70] (input: Seq.seq UInt8.t) (start: int) (mask: Seq.seq UInt32.t) : int
+
+axiom safe_run_end_spec:
+  forall input: Seq.seq UInt8.t, start: int, mask: Seq.seq UInt32.t [safe_run_end input start mask]. ([%#sencode_models'3] 0
+        <= start
+      /\ start <= Seq.length input)
+    -> ([%#sencode_models'4] Seq.length mask = 4)
+    -> ([%#sencode_models'5] start <= safe_run_end input start mask
+    /\ safe_run_end input start mask <= Seq.length input)
+
+axiom safe_run_end_spec'0:
+  forall input: Seq.seq UInt8.t, start: int, mask: Seq.seq UInt32.t [safe_run_end input start mask]. ([%#sencode_models'3] 0
+        <= start
+      /\ start <= Seq.length input)
+    -> ([%#sencode_models'4] Seq.length mask = 4)
+    -> ([%#sencode_models'6] forall i: int. start <= i /\ i < safe_run_end input start mask
+      -> not should_encode_model mask (Seq.get input i))
+
+axiom safe_run_end_spec'1:
+  forall input: Seq.seq UInt8.t, start: int, mask: Seq.seq UInt32.t [safe_run_end input start mask]. ([%#sencode_models'3] 0
+        <= start
+      /\ start <= Seq.length input)
+    -> ([%#sencode_models'4] Seq.length mask = 4)
+    -> ([%#sencode_models'7] safe_run_end input start mask = Seq.length input
+    \/ should_encode_model mask (Seq.get input (safe_run_end input start mask)))
+
+axiom safe_run_end_spec'2:
+  forall input: Seq.seq UInt8.t, start: int, mask: Seq.seq UInt32.t [safe_run_end input start mask]. ([%#sencode_models'3] 0
+        <= start
+      /\ start <= Seq.length input)
+    -> ([%#sencode_models'4] Seq.length mask = 4)
+    -> ([%#sencode_models'8] start < Seq.length input /\ not should_encode_model mask (Seq.get input start)
+    -> start < safe_run_end input start mask)
+
+function index_Mapping_u8_Int [@inline:trivial] (self: Map.map UInt8.t int) (a: UInt8.t) : int =
+  [%#smapping] Map.get self a
+
+meta "rewrite_def" function index_Mapping_u8_Int
+
+function map_u8 (self: Seq.seq UInt8.t) (m: Map.map UInt8.t int) : Seq.seq int
+
+axiom map_u8_spec:
+  forall self: Seq.seq UInt8.t, m: Map.map UInt8.t int [map_u8 self m]. [%#sseq'0] Seq.length (map_u8 self m)
+    = Seq.length self
+
+axiom map_u8_spec'0: forall self: Seq.seq UInt8.t, m: Map.map UInt8.t int [map_u8 self m]. [%#sseq'1] forall i: int. 0
+          <= i
+        /\ i < Seq.length self -> Seq.get (map_u8 self m) i = index_Mapping_u8_Int m (Seq.get self i)
+
+function byte_sequence_as_ints (bytes: Seq.seq UInt8.t) : Seq.seq int =
+  [%#slib'0] map_u8 bytes (fun (byte: UInt8.t) -> UInt8.t'int byte)
+
+function encoded_chunks [#"/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/encode_models.rs" 123 0 123 70] (mask: Seq.seq UInt32.t) (input: Seq.seq UInt8.t) : Seq.seq (Seq.seq int)
+
+axiom encoded_chunks_def:
+  forall mask: Seq.seq UInt32.t, input: Seq.seq UInt8.t [encoded_chunks mask input]. ([%#sencode_models'15] Seq.length mask
+      = 4)
+    -> encoded_chunks mask input
+    = ([%#sencode_models'17] if Seq.length input = 0 then
+      Seq.empty: Seq.seq (Seq.seq int)
+    else
+      if should_encode_model mask (Seq.get input 0) then
+        Seq.(++) (Seq.singleton (encoded_byte_model (UInt8.t'int (Seq.get input 0)))) (encoded_chunks mask (Seq.([..]) input 1 (Seq.length input)))
+      else
+        let end' = safe_run_end input 0 mask in Seq.(++) (Seq.singleton (byte_sequence_as_ints (Seq.([..]) input 0 end'))) (encoded_chunks mask (Seq.([..]) input end' (Seq.length input)))
+    
+    )
+
+axiom encoded_chunks_spec:
+  forall mask: Seq.seq UInt32.t, input: Seq.seq UInt8.t [encoded_chunks mask input]. ([%#sencode_models'15] Seq.length mask
+      = 4)
+    -> ([%#sencode_models'16] if Seq.length input = 0 then
+      Seq.length (encoded_chunks mask input) = 0
+    else
+      gt_log_Int (Seq.length (encoded_chunks mask input)) 0
+      /\ (if should_encode_model mask (Seq.get input 0) then
+        Seq.get (encoded_chunks mask input) 0 = encoded_byte_model (UInt8.t'int (Seq.get input 0))
+        /\ Seq.([..]) (encoded_chunks mask input) 1 (Seq.length (encoded_chunks mask input))
+        = encoded_chunks mask (Seq.([..]) input 1 (Seq.length input))
+      else
+        let end' = safe_run_end input 0 mask in Seq.get (encoded_chunks mask input) 0
+          = byte_sequence_as_ints (Seq.([..]) input 0 end')
+        /\ Seq.([..]) (encoded_chunks mask input) 1 (Seq.length (encoded_chunks mask input))
+        = encoded_chunks mask (Seq.([..]) input end' (Seq.length input))
+      )
+    )
+
+predicate encoded_chunks_first_escaped [#"/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/encode_models.rs" 95 0 95 75] (mask: Seq.seq UInt32.t) (input: Seq.seq UInt8.t)
+
+axiom encoded_chunks_first_escaped_spec:
+  forall mask: Seq.seq UInt32.t, input: Seq.seq UInt8.t [encoded_chunks_first_escaped mask input]. ([%#sencode_models] gt_log_Int (Seq.length input) 0
+      /\ Seq.length mask = 4)
+    -> ([%#sencode_models'0] should_encode_model mask (Seq.get input 0))
+    -> ([%#sencode_models'1] encoded_chunks_first_escaped mask input)
+
+axiom encoded_chunks_first_escaped_spec'0:
+  forall mask: Seq.seq UInt32.t, input: Seq.seq UInt8.t. ([%#sencode_models] gt_log_Int (Seq.length input) 0
+      /\ Seq.length mask = 4)
+    -> ([%#sencode_models'0] should_encode_model mask (Seq.get input 0))
+    -> ([%#sencode_models'2] encoded_chunks mask input
+    = Seq.(++) (Seq.singleton (encoded_byte_model (UInt8.t'int (Seq.get input 0)))) (encoded_chunks mask (Seq.([..]) input 1 (Seq.length input))))
+
+predicate well_founded_relation_Int [@inline:trivial] (self: int) (other: int) =
+  [%#swell_founded] ge_log_Int self 0 /\ gt_log_Int self other
+
+meta "rewrite_def" predicate well_founded_relation_Int
+
+predicate encoded_chunks_first_run [#"/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/encode_models.rs" 82 0 82 81] (mask: Seq.seq UInt32.t) (input: Seq.seq UInt8.t) (end': int)
+
+axiom encoded_chunks_first_run_spec:
+  forall mask: Seq.seq UInt32.t, input: Seq.seq UInt8.t, end': int [encoded_chunks_first_run mask input end']. ([%#sencode_models'9] gt_log_Int (Seq.length input) 0
+      /\ Seq.length mask = 4)
+    -> ([%#sencode_models'10] not should_encode_model mask (Seq.get input 0))
+    -> ([%#sencode_models'11] end' = safe_run_end input 0 mask)
+    -> ([%#sencode_models'12] encoded_chunks_first_run mask input end')
+
+axiom encoded_chunks_first_run_spec'0:
+  forall mask: Seq.seq UInt32.t, input: Seq.seq UInt8.t, end': int. ([%#sencode_models'9] gt_log_Int (Seq.length input) 0
+      /\ Seq.length mask = 4)
+    -> ([%#sencode_models'10] not should_encode_model mask (Seq.get input 0))
+    -> ([%#sencode_models'11] end' = safe_run_end input 0 mask)
+    -> ([%#sencode_models'13] encoded_chunks mask input
+    = Seq.(++) (Seq.singleton (byte_sequence_as_ints (Seq.([..]) input 0 end'))) (encoded_chunks mask (Seq.([..]) input end' (Seq.length input))))
+
+meta "compute_max_steps" 1000000
+
+meta "select_lsinst" "all"
+
+constant mask : Seq.seq UInt32.t
+
+constant input : Seq.seq UInt8.t
+
+predicate encoded_chunk_count_bounds [#"/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/encoder_bounds.rs" 23 0 23 80] (mask: Seq.seq UInt32.t) (input: Seq.seq UInt8.t)
+
+goal vc_encoded_chunk_count_bounds: ([%#sencoder_bounds'0] Seq.length mask = 4)
+  -> (if Seq.length input = 0 then
+    [@stop_split] [@expl:encoded_chunk_count_bounds ensures] ([@stop_split] [@expl:encoded_chunk_count_bounds ensures #0] [%#sencoder_bounds'1] true)
+    /\ ([@stop_split] [@expl:encoded_chunk_count_bounds ensures #1] [%#sencoder_bounds'2] Seq.length (encoded_chunks mask input)
+      <= Seq.length input)
+    /\ ([@stop_split] [@expl:encoded_chunk_count_bounds ensures #2] [%#sencoder_bounds'3] (Seq.length input = 0)
+      = (Seq.length (encoded_chunks mask input) = 0))
+    /\ ([@stop_split] [@expl:encoded_chunk_count_bounds ensures #3] [%#sencoder_bounds'4] gt_log_Int (Seq.length input) 0
+    -> ge_log_Int (Seq.length (encoded_chunks mask input)) 1)
+  else
+    if should_encode_model mask (Seq.get input 0) then
+      let tail = Seq.([..]) input 1 (Seq.length input) in ([@stop_split] [@expl:encoded_chunks_first_escaped requires] ([@stop_split] [@expl:encoded_chunks_first_escaped requires #0] [%#sencode_models] gt_log_Int (Seq.length input) 0
+          /\ Seq.length mask = 4)
+        /\ ([@stop_split] [@expl:encoded_chunks_first_escaped requires #1] [%#sencode_models'0] should_encode_model mask (Seq.get input 0)))
+      /\ (([@stop_split] [@expl:encoded_chunks_first_escaped ensures] ([@stop_split] [@expl:encoded_chunks_first_escaped ensures #0] [%#sencode_models'1] encoded_chunks_first_escaped mask input)
+        /\ ([@stop_split] [@expl:encoded_chunks_first_escaped ensures #1] [%#sencode_models'2] encoded_chunks mask input
+        = Seq.(++) (Seq.singleton (encoded_byte_model (UInt8.t'int (Seq.get input 0)))) (encoded_chunks mask (Seq.([..]) input 1 (Seq.length input)))))
+      -> (if encoded_chunks_first_escaped mask input then
+        (([@stop_split] [@expl:encoded_chunk_count_bounds requires] [%#sencoder_bounds'0] Seq.length mask = 4)
+          /\ ([@expl:variant decreases] well_founded_relation_Int ([%#sencoder_bounds] Seq.length input) ([%#sencoder_bounds] Seq.length tail)))
+        /\ (([@stop_split] [@expl:encoded_chunk_count_bounds ensures] ([@stop_split] [@expl:encoded_chunk_count_bounds ensures #0] [%#sencoder_bounds'1] encoded_chunk_count_bounds mask tail)
+          /\ ([@stop_split] [@expl:encoded_chunk_count_bounds ensures #1] [%#sencoder_bounds'2] Seq.length (encoded_chunks mask tail)
+            <= Seq.length tail)
+          /\ ([@stop_split] [@expl:encoded_chunk_count_bounds ensures #2] [%#sencoder_bounds'3] (Seq.length tail = 0)
+            = (Seq.length (encoded_chunks mask tail) = 0))
+          /\ ([@stop_split] [@expl:encoded_chunk_count_bounds ensures #3] [%#sencoder_bounds'4] gt_log_Int (Seq.length tail) 0
+          -> ge_log_Int (Seq.length (encoded_chunks mask tail)) 1))
+        -> ([@stop_split] [@expl:encoded_chunk_count_bounds ensures] ([@stop_split] [@expl:encoded_chunk_count_bounds ensures #0] [%#sencoder_bounds'1] encoded_chunk_count_bounds mask tail)
+        /\ ([@stop_split] [@expl:encoded_chunk_count_bounds ensures #1] [%#sencoder_bounds'2] Seq.length (encoded_chunks mask input)
+          <= Seq.length input)
+        /\ ([@stop_split] [@expl:encoded_chunk_count_bounds ensures #2] [%#sencoder_bounds'3] (Seq.length input = 0)
+          = (Seq.length (encoded_chunks mask input) = 0))
+        /\ ([@stop_split] [@expl:encoded_chunk_count_bounds ensures #3] [%#sencoder_bounds'4] gt_log_Int (Seq.length input) 0
+        -> ge_log_Int (Seq.length (encoded_chunks mask input)) 1)))
+      else
+        [@stop_split] [@expl:encoded_chunk_count_bounds ensures] ([@stop_split] [@expl:encoded_chunk_count_bounds ensures #0] [%#sencoder_bounds'1] false)
+        /\ ([@stop_split] [@expl:encoded_chunk_count_bounds ensures #1] [%#sencoder_bounds'2] Seq.length (encoded_chunks mask input)
+          <= Seq.length input)
+        /\ ([@stop_split] [@expl:encoded_chunk_count_bounds ensures #2] [%#sencoder_bounds'3] (Seq.length input = 0)
+          = (Seq.length (encoded_chunks mask input) = 0))
+        /\ ([@stop_split] [@expl:encoded_chunk_count_bounds ensures #3] [%#sencoder_bounds'4] gt_log_Int (Seq.length input) 0
+        -> ge_log_Int (Seq.length (encoded_chunks mask input)) 1)
+      ))
+    else
+      ([@stop_split] [@expl:safe_run_end requires] ([@stop_split] [@expl:safe_run_end requires #0] [%#sencode_models'3] 0
+            <= 0
+          /\ 0 <= Seq.length input)
+        /\ ([@stop_split] [@expl:safe_run_end requires #1] [%#sencode_models'4] Seq.length mask = 4))
+      /\ (([@stop_split] [@expl:safe_run_end ensures] ([@stop_split] [@expl:safe_run_end ensures #0] [%#sencode_models'5] 0
+            <= safe_run_end input 0 mask
+          /\ safe_run_end input 0 mask <= Seq.length input)
+        /\ ([@stop_split] [@expl:safe_run_end ensures #1] [%#sencode_models'6] forall i: int. 0 <= i
+              /\ i < safe_run_end input 0 mask -> not should_encode_model mask (Seq.get input i))
+        /\ ([@stop_split] [@expl:safe_run_end ensures #2] [%#sencode_models'7] safe_run_end input 0 mask
+            = Seq.length input
+          \/ should_encode_model mask (Seq.get input (safe_run_end input 0 mask)))
+        /\ ([@stop_split] [@expl:safe_run_end ensures #3] [%#sencode_models'8] 0 < Seq.length input
+          /\ not should_encode_model mask (Seq.get input 0) -> 0 < safe_run_end input 0 mask))
+      -> (let end' = safe_run_end input 0 mask in let tail = Seq.([..]) input end' (Seq.length input) in ([@stop_split] [@expl:encoded_chunks_first_run requires] ([@stop_split] [@expl:encoded_chunks_first_run requires #0] [%#sencode_models'9] gt_log_Int (Seq.length input) 0
+          /\ Seq.length mask = 4)
+        /\ ([@stop_split] [@expl:encoded_chunks_first_run requires #1] [%#sencode_models'10] not should_encode_model mask (Seq.get input 0))
+        /\ ([@stop_split] [@expl:encoded_chunks_first_run requires #2] [%#sencode_models'11] end'
+        = safe_run_end input 0 mask))
+      /\ (([@stop_split] [@expl:encoded_chunks_first_run ensures] ([@stop_split] [@expl:encoded_chunks_first_run ensures #0] [%#sencode_models'12] encoded_chunks_first_run mask input end')
+        /\ ([@stop_split] [@expl:encoded_chunks_first_run ensures #1] [%#sencode_models'13] encoded_chunks mask input
+        = Seq.(++) (Seq.singleton (byte_sequence_as_ints (Seq.([..]) input 0 end'))) (encoded_chunks mask (Seq.([..]) input end' (Seq.length input)))))
+      -> (if encoded_chunks_first_run mask input end' then
+        (([@stop_split] [@expl:encoded_chunk_count_bounds requires] [%#sencoder_bounds'0] Seq.length mask = 4)
+          /\ ([@expl:variant decreases] well_founded_relation_Int ([%#sencoder_bounds] Seq.length input) ([%#sencoder_bounds] Seq.length tail)))
+        /\ (([@stop_split] [@expl:encoded_chunk_count_bounds ensures] ([@stop_split] [@expl:encoded_chunk_count_bounds ensures #0] [%#sencoder_bounds'1] encoded_chunk_count_bounds mask tail)
+          /\ ([@stop_split] [@expl:encoded_chunk_count_bounds ensures #1] [%#sencoder_bounds'2] Seq.length (encoded_chunks mask tail)
+            <= Seq.length tail)
+          /\ ([@stop_split] [@expl:encoded_chunk_count_bounds ensures #2] [%#sencoder_bounds'3] (Seq.length tail = 0)
+            = (Seq.length (encoded_chunks mask tail) = 0))
+          /\ ([@stop_split] [@expl:encoded_chunk_count_bounds ensures #3] [%#sencoder_bounds'4] gt_log_Int (Seq.length tail) 0
+          -> ge_log_Int (Seq.length (encoded_chunks mask tail)) 1))
+        -> ([@stop_split] [@expl:encoded_chunk_count_bounds ensures] ([@stop_split] [@expl:encoded_chunk_count_bounds ensures #0] [%#sencoder_bounds'1] encoded_chunk_count_bounds mask tail)
+        /\ ([@stop_split] [@expl:encoded_chunk_count_bounds ensures #1] [%#sencoder_bounds'2] Seq.length (encoded_chunks mask input)
+          <= Seq.length input)
+        /\ ([@stop_split] [@expl:encoded_chunk_count_bounds ensures #2] [%#sencoder_bounds'3] (Seq.length input = 0)
+          = (Seq.length (encoded_chunks mask input) = 0))
+        /\ ([@stop_split] [@expl:encoded_chunk_count_bounds ensures #3] [%#sencoder_bounds'4] gt_log_Int (Seq.length input) 0
+        -> ge_log_Int (Seq.length (encoded_chunks mask input)) 1)))
+      else
+        [@stop_split] [@expl:encoded_chunk_count_bounds ensures] ([@stop_split] [@expl:encoded_chunk_count_bounds ensures #0] [%#sencoder_bounds'1] false)
+        /\ ([@stop_split] [@expl:encoded_chunk_count_bounds ensures #1] [%#sencoder_bounds'2] Seq.length (encoded_chunks mask input)
+          <= Seq.length input)
+        /\ ([@stop_split] [@expl:encoded_chunk_count_bounds ensures #2] [%#sencoder_bounds'3] (Seq.length input = 0)
+          = (Seq.length (encoded_chunks mask input) = 0))
+        /\ ([@stop_split] [@expl:encoded_chunk_count_bounds ensures #3] [%#sencoder_bounds'4] gt_log_Int (Seq.length input) 0
+        -> ge_log_Int (Seq.length (encoded_chunks mask input)) 1)
+      ))))
+  
+  )

@@ -35,3 +35,5 @@ The standard library's UTF-8 observer adequacy is intentionally limited to the e
 ## Solver policy
 
 The direct proof runner records the exact generated SMT input, tool version, command line, timeout, and result. Z3 is the primary solver. CVC5 may be recorded as a secondary solver only when it checks the same unmodified exported SMT file; its result is reported separately and does not replace or erase a primary Z3 timeout. No assumptions, axioms, or goal transformations may be removed to obtain a secondary result. Solver outcomes establish the generated verification conditions under the recorded backend and budget; they do not validate the adequacy of external standard-library contracts listed above.
+
+The standard Why3find runner (`scripts/verify-why3find.sh`) uses the same contracts with configured Z3/CVC5 drivers and standard Why3 transformations. It records genuine proof.json trees without direct SMT editing or custom assumption removal. Native results remain separate.

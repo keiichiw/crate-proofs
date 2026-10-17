@@ -1,0 +1,86 @@
+(* #"/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/decoder_lemmas.rs" 28 0 28 70 *)
+
+let%span slib = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 431 11 431 59
+let%span slib'0 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 432 10 432 16
+let%span slib'1 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 433 10 434 59
+let%span slib'2 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 375 16 375 43
+let%span sseq = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/logic/seq.rs" 301 14 301 24
+let%span sseq'0 = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/logic/seq.rs" 299 14 299 40
+let%span sseq'1 = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/logic/seq.rs" 300 14 300 76
+let%span smapping = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/logic/mapping.rs" 66 8 66 19
+let%span sdecoder_lemmas = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/decoder_lemmas.rs" 23 11 23 44
+let%span sdecoder_lemmas'0 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/decoder_lemmas.rs" 24 10 24 16
+let%span sdecoder_lemmas'1 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/decoder_lemmas.rs" 25 10 27 83
+
+use creusot.int.UInt8
+use seq.Seq
+use map.Map
+use int.Int
+
+function index_Mapping_u8_Int [@inline:trivial] (self: Map.map UInt8.t int) (a: UInt8.t) : int =
+  [%#smapping] Map.get self a
+
+meta "rewrite_def" function index_Mapping_u8_Int
+
+function map_u8 (self: Seq.seq UInt8.t) (m: Map.map UInt8.t int) : Seq.seq int
+
+axiom map_u8_spec:
+  forall self: Seq.seq UInt8.t, m: Map.map UInt8.t int [map_u8 self m]. [%#sseq'0] Seq.length (map_u8 self m)
+    = Seq.length self
+
+axiom map_u8_spec'0: forall self: Seq.seq UInt8.t, m: Map.map UInt8.t int [map_u8 self m]. [%#sseq'1] forall i: int. 0
+          <= i
+        /\ i < Seq.length self -> Seq.get (map_u8 self m) i = index_Mapping_u8_Int m (Seq.get self i)
+
+function byte_sequence_as_ints (bytes: Seq.seq UInt8.t) : Seq.seq int =
+  [%#slib'2] map_u8 bytes (fun (byte: UInt8.t) -> UInt8.t'int byte)
+
+predicate byte_model_subsequence (bytes: Seq.seq UInt8.t) (start: int) (end': int)
+
+axiom byte_model_subsequence_spec:
+  forall bytes: Seq.seq UInt8.t, start: int, end': int [byte_model_subsequence bytes start end']. ([%#slib] 0 <= start
+      /\ start <= end' /\ end' <= Seq.length bytes) -> ([%#slib'0] byte_model_subsequence bytes start end')
+
+axiom byte_model_subsequence_spec'0: forall bytes: Seq.seq UInt8.t, start: int, end': int. ([%#slib] 0 <= start
+      /\ start <= end' /\ end' <= Seq.length bytes)
+    -> ([%#slib'1] byte_sequence_as_ints (Seq.([..]) bytes start end')
+    = Seq.([..]) (byte_sequence_as_ints bytes) start end')
+
+meta "compute_max_steps" 1000000
+
+meta "select_lsinst" "all"
+
+constant bytes : Seq.seq UInt8.t
+
+constant start : int
+
+predicate byte_map_nested_tail [#"/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/decoder_lemmas.rs" 28 0 28 70] (bytes: Seq.seq UInt8.t) (start: int)
+
+goal vc_byte_map_nested_tail: ([%#sdecoder_lemmas] 0 <= start /\ start < Seq.length bytes)
+  -> ([@stop_split] [@expl:byte_model_subsequence requires] [%#slib] 0 <= start
+    /\ start <= Seq.length bytes /\ Seq.length bytes <= Seq.length bytes)
+  /\ (([@stop_split] [@expl:byte_model_subsequence ensures] ([@stop_split] [@expl:byte_model_subsequence ensures #0] [%#slib'0] byte_model_subsequence bytes start (Seq.length bytes))
+    /\ ([@stop_split] [@expl:byte_model_subsequence ensures #1] [%#slib'1] byte_sequence_as_ints (Seq.([..]) bytes start (Seq.length bytes))
+    = Seq.([..]) (byte_sequence_as_ints bytes) start (Seq.length bytes)))
+  -> (let _ = byte_model_subsequence bytes start (Seq.length bytes) in ([@stop_split] [@expl:byte_model_subsequence requires] [%#slib] 0
+      <= start + 1
+    /\ start + 1 <= Seq.length bytes /\ Seq.length bytes <= Seq.length bytes)
+  /\ (([@stop_split] [@expl:byte_model_subsequence ensures] ([@stop_split] [@expl:byte_model_subsequence ensures #0] [%#slib'0] byte_model_subsequence bytes (start
+      + 1) (Seq.length bytes))
+    /\ ([@stop_split] [@expl:byte_model_subsequence ensures #1] [%#slib'1] byte_sequence_as_ints (Seq.([..]) bytes (start
+      + 1) (Seq.length bytes))
+    = Seq.([..]) (byte_sequence_as_ints bytes) (start + 1) (Seq.length bytes)))
+  -> (let _ = byte_model_subsequence bytes (start
+  + 1) (Seq.length bytes) in ([@stop_split] [@expl:byte_model_subsequence requires] [%#slib] 0 <= 1
+    /\ 1 <= Seq.length bytes - start
+    /\ Seq.length bytes - start <= Seq.length (Seq.([..]) bytes start (Seq.length bytes)))
+  /\ (([@stop_split] [@expl:byte_model_subsequence ensures] ([@stop_split] [@expl:byte_model_subsequence ensures #0] [%#slib'0] byte_model_subsequence (Seq.([..]) bytes start (Seq.length bytes)) 1 (Seq.length bytes
+      - start))
+    /\ ([@stop_split] [@expl:byte_model_subsequence ensures #1] [%#slib'1] byte_sequence_as_ints (Seq.([..]) (Seq.([..]) bytes start (Seq.length bytes)) 1 (Seq.length bytes
+      - start))
+    = Seq.([..]) (byte_sequence_as_ints (Seq.([..]) bytes start (Seq.length bytes))) 1 (Seq.length bytes - start)))
+  -> (let _ = byte_model_subsequence (Seq.([..]) bytes start (Seq.length bytes)) 1 (Seq.length bytes
+  - start) in [@stop_split] [@expl:byte_map_nested_tail ensures] ([@stop_split] [@expl:byte_map_nested_tail ensures #0] [%#sdecoder_lemmas'0] true)
+  /\ ([@stop_split] [@expl:byte_map_nested_tail ensures #1] [%#sdecoder_lemmas'1] Seq.([..]) (byte_sequence_as_ints (Seq.([..]) bytes start (Seq.length bytes))) 1 (Seq.length bytes
+    - start)
+  = byte_sequence_as_ints (Seq.([..]) bytes (start + 1) (Seq.length bytes)))))))))

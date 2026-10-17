@@ -1,0 +1,87 @@
+(* #"/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 872 4 872 27 *)
+
+(* <PercentDecode<'_> as core::clone::Clone> *)
+
+let%span sinvariant = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/invariant.rs" 85 8 85 18
+let%span slib = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 874 19 874 40
+let%span slib'0 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 874 19 874 47
+let%span slib'1 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 872 14 872 18
+let%span slib'2 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 872 23 872 27
+let%span slib'3 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 871 32 871 82
+let%span slib'4 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 883 20 883 32
+let%span sslice = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/std/slice.rs" 744 21 744 25
+let%span sslice'0 = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/std/slice.rs" 743 18 743 35
+let%span sslice'1 = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/std/slice.rs" 405 29 405 33
+
+use creusot.slice.Slice64
+use creusot.int.UInt8
+use creusot.prelude.Any
+use seq.Seq
+
+type t_Iter_u8
+
+type t_PercentDecode = { bytes: t_Iter_u8 }
+
+predicate inv_Iter_u8 (_1: t_Iter_u8)
+
+predicate invariant_ref_Iter_u8 [@inline:trivial] (self: t_Iter_u8) = [%#sinvariant] inv_Iter_u8 self
+
+meta "rewrite_def" predicate invariant_ref_Iter_u8
+
+predicate inv_ref_Iter_u8 [@inline:trivial] (_1: t_Iter_u8) = invariant_ref_Iter_u8 _1
+
+meta "rewrite_def" predicate inv_ref_Iter_u8
+
+function view_Iter_u8 (self: t_Iter_u8) : Slice64.slice UInt8.t
+
+let as_slice_u8 (self_: t_Iter_u8) (return (x: Slice64.slice UInt8.t)) =
+{[@stop_split] [@expl:as_slice 'self_' type invariant] [%#sslice] inv_ref_Iter_u8 self_}
+  any
+  [ return (result: Slice64.slice UInt8.t) -> {[@stop_split] [@expl:as_slice ensures] [%#sslice'0] Slice64.view result
+    = Slice64.view (view_Iter_u8 self_)}
+    (! return {result}) ]
+
+let iter_u8 (self_: Slice64.slice UInt8.t) (return (x: t_Iter_u8)) = any
+  [ return (result: t_Iter_u8) ->
+  {[@stop_split] [@expl:iter_u8 ensures] ([@stop_split] [@expl:iter result type invariant] inv_Iter_u8 result)
+    /\ ([@stop_split] [@expl:iter ensures] [%#sslice'1] view_Iter_u8 result = self_)}
+    (! return {result}) ]
+
+predicate inv_PercentDecode (_1: t_PercentDecode)
+
+axiom inv_axiom [@rewrite]: forall x: t_PercentDecode [inv_PercentDecode x]. inv_PercentDecode x = inv_Iter_u8 x.bytes
+
+predicate invariant_ref_PercentDecode [@inline:trivial] (self: t_PercentDecode) = [%#sinvariant] inv_PercentDecode self
+
+meta "rewrite_def" predicate invariant_ref_PercentDecode
+
+predicate inv_ref_PercentDecode [@inline:trivial] (_1: t_PercentDecode) = invariant_ref_PercentDecode _1
+
+meta "rewrite_def" predicate inv_ref_PercentDecode
+
+function remaining_input [#"/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 882 4 882 43] [@inline:trivial] (self: t_PercentDecode) : Seq.seq UInt8.t
+ = [%#slib'4] Slice64.view (view_Iter_u8 self.bytes)
+
+meta "rewrite_def" function remaining_input
+
+meta "compute_max_steps" 1000000
+
+meta "select_lsinst" "all"
+
+let clone_PercentDecode [#"/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 872 4 872 27]
+  (self: t_PercentDecode) (return (x: t_PercentDecode)) =
+{[@stop_split] [@expl:clone 'self' type invariant] [%#slib'1] inv_ref_PercentDecode self}
+  (! bb0
+  [ bb0 = s0
+    [ s0 = as_slice_u8 [%#slib] {self.bytes} (fun (_x: Slice64.slice UInt8.t) -> [ &_6 <- _x ] s1)
+    | s1 = iter_u8 [%#slib'0] {_6} (fun (_x: t_Iter_u8) -> [ &_4 <- _x ] s2)
+    | s2 = [ &_ret <- { bytes = _4 } ] s3
+    | s3 = return {_ret} ] ]
+  [ & _ret: t_PercentDecode = Any.any_l ()
+  | & self: t_PercentDecode = self
+  | & _4: t_Iter_u8 = Any.any_l ()
+  | & _6: Slice64.slice UInt8.t = Any.any_l () ])
+  [ return (result: t_PercentDecode) ->
+  {[@stop_split] [@expl:clone_PercentDecode ensures] ([@stop_split] [@expl:clone result type invariant] [%#slib'2] inv_PercentDecode result)
+    /\ ([@stop_split] [@expl:clone ensures] [%#slib'3] remaining_input result = remaining_input self)}
+    (! return {result}) ]

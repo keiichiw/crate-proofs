@@ -1,0 +1,95 @@
+(* #"/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/format_trace.rs" 92 0 97 9 *)
+
+let%span slib = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 1262 16 1262 45
+let%span sseq = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/logic/seq.rs" 301 14 301 24
+let%span sseq'0 = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/logic/seq.rs" 299 14 299 40
+let%span sseq'1 = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/logic/seq.rs" 300 14 300 76
+let%span sseq'2 = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/logic/seq.rs" 311 14 311 24
+let%span sseq'3 = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/logic/seq.rs" 313 8 317 9
+let%span sseq'4 = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/logic/seq.rs" 160 8 160 39
+let%span smapping = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/logic/mapping.rs" 66 8 66 19
+let%span sstring = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/std/string.rs" 190 20 190 56
+let%span schar = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/std/char.rs" 47 14 47 52
+let%span sformat_trace = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/format_trace.rs" 85 11 85 58
+let%span sformat_trace'0 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/format_trace.rs" 86 11 86 33
+let%span sformat_trace'1 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/format_trace.rs" 87 11 87 67
+let%span sformat_trace'2 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/format_trace.rs" 88 10 88 16
+let%span sformat_trace'3 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/format_trace.rs" 89 10 91 1
+let%span sformat_trace'4 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/format_trace.rs" 54 8 58 33
+
+use seq.Seq
+use creusot.int.UInt8
+use map.Map
+use creusot.prelude.Char
+use int.Int
+
+type tup2_ref_str_bool = { f0: string; f1: bool }
+
+function index_Mapping_u8_Int [@inline:trivial] (self: Map.map UInt8.t int) (a: UInt8.t) : int =
+  [%#smapping] Map.get self a
+
+meta "rewrite_def" function index_Mapping_u8_Int
+
+function map_u8 (self: Seq.seq UInt8.t) (m: Map.map UInt8.t int) : Seq.seq int
+
+axiom map_u8_spec:
+  forall self: Seq.seq UInt8.t, m: Map.map UInt8.t int [map_u8 self m]. [%#sseq'0] Seq.length (map_u8 self m)
+    = Seq.length self
+
+axiom map_u8_spec'0: forall self: Seq.seq UInt8.t, m: Map.map UInt8.t int [map_u8 self m]. [%#sseq'1] forall i: int. 0
+          <= i
+        /\ i < Seq.length self -> Seq.get (map_u8 self m) i = index_Mapping_u8_Int m (Seq.get self i)
+
+function tail_char (self: Seq.seq Char.t) : Seq.seq Char.t = [%#sseq'4] Seq.([..]) self 1 (Seq.length self)
+
+function flat_map_char (self: Seq.seq Char.t) (other: Map.map Char.t (Seq.seq UInt8.t)) : Seq.seq UInt8.t
+
+axiom flat_map_char_def:
+  forall self: Seq.seq Char.t, other: Map.map Char.t (Seq.seq UInt8.t) [flat_map_char self other]. flat_map_char self other
+    = ([%#sseq'3] if Seq.length self = 0 then
+      Seq.empty: Seq.seq UInt8.t
+    else
+      Seq.(++) (Map.get other (Seq.get self 0)) (flat_map_char (tail_char self) other)
+    )
+
+function to_utf8_char (self: Char.t) : Seq.seq UInt8.t
+
+axiom to_utf8_char_spec: forall self: Char.t [to_utf8_char self]. [%#schar] 1 <= Seq.length (to_utf8_char self)
+    /\ Seq.length (to_utf8_char self) <= 4
+
+function to_bytes (self: Seq.seq Char.t) : Seq.seq UInt8.t =
+  [%#sstring] flat_map_char self (fun (c: Char.t) -> to_utf8_char c)
+
+function view_str (self: string) : Seq.seq Char.t
+
+function string_chunk_bytes (s: string) : Seq.seq int =
+  [%#slib] map_u8 (to_bytes (view_str s)) (fun (b: UInt8.t) -> UInt8.t'int b)
+
+predicate successful_model_prefix [#"/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/format_trace.rs" 48 0 52 9] (expected: Seq.seq (Seq.seq int)) (trace: Seq.seq tup2_ref_str_bool) (count: int) =
+  [%#sformat_trace'4] 0 <= count
+  /\ count <= Seq.length expected
+  /\ Seq.length trace = count
+  /\ (forall j: int. 0 <= j /\ j < count
+    -> string_chunk_bytes (Seq.get trace j).f0 = Seq.get expected j /\ (Seq.get trace j).f1)
+
+meta "compute_max_steps" 1000000
+
+meta "select_lsinst" "all"
+
+constant expected : Seq.seq (Seq.seq int)
+
+constant trace : Seq.seq tup2_ref_str_bool
+
+constant count : int
+
+constant chunk : string
+
+predicate successful_model_prefix_push [#"/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/format_trace.rs" 92 0 97 9] (expected: Seq.seq (Seq.seq int)) (trace: Seq.seq tup2_ref_str_bool) (count: int) (chunk: string)
+
+goal vc_successful_model_prefix_push: ([%#sformat_trace] successful_model_prefix expected trace count)
+  -> ([%#sformat_trace'0] count < Seq.length expected)
+  -> ([%#sformat_trace'1] string_chunk_bytes chunk = Seq.get expected count)
+  -> ([@stop_split] [@expl:successful_model_prefix_push ensures] ([@stop_split] [@expl:successful_model_prefix_push ensures #0] [%#sformat_trace'2] true)
+  /\ ([@stop_split] [@expl:successful_model_prefix_push ensures #1] [%#sformat_trace'3] successful_model_prefix expected (Seq.snoc trace { f0 = chunk;
+                                                                                                                                           f1 = true }) (count
+  + 1)))

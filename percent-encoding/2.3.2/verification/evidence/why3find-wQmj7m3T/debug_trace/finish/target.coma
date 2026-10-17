@@ -1,0 +1,141 @@
+(* #"/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/debug_trace.rs" 177 0 180 16 *)
+
+let%span sghost = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/ghost.rs" 92 14 92 35
+let%span sghost'0 = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/ghost.rs" 177 14 177 26
+let%span sghost'1 = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/ghost.rs" 120 8 120 22
+let%span sdebug_trace = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/debug_trace.rs" 181 17 181 33
+let%span sdebug_trace'0 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/debug_trace.rs" 184 10 184 16
+let%span sdebug_trace'1 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/debug_trace.rs" 183 4 185 5
+let%span sdebug_trace'2 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/debug_trace.rs" 178 4 178 11
+let%span sdebug_trace'3 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/debug_trace.rs" 176 28 176 477
+let%span sdebug_trace'4 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/debug_trace.rs" 56 23 56 27
+let%span sinvariant = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/invariant.rs" 93 20 93 44
+
+use creusot.prelude.MutBorrow
+use seq.Seq
+use creusot.int.UInt8
+use creusot.int.UInt32
+use creusot.prelude.Any
+
+type t_DebugStruct
+
+predicate inv_DebugStruct (_1: t_DebugStruct)
+
+type t_Result_unit_Error = Ok () | Err ()
+
+predicate invariant_refmut_DebugStruct [@inline:trivial] (self: MutBorrow.t t_DebugStruct) =
+  [%#sinvariant] inv_DebugStruct self.current /\ inv_DebugStruct self.final
+
+meta "rewrite_def" predicate invariant_refmut_DebugStruct
+
+predicate inv_refmut_DebugStruct [@inline:trivial] (_1: MutBorrow.t t_DebugStruct) = invariant_refmut_DebugStruct _1
+
+meta "rewrite_def" predicate inv_refmut_DebugStruct
+
+let finish (self_: MutBorrow.t t_DebugStruct) (return (x: t_Result_unit_Error)) =
+{[@stop_split] [@expl:finish 'self_' type invariant] [%#sdebug_trace'4] inv_refmut_DebugStruct self_}
+  any [ return (result: t_Result_unit_Error) -> (! return {result}) ]
+
+predicate resolve_refmut_DebugStruct [@inline:trivial] (_1: MutBorrow.t t_DebugStruct) = _1.final = _1.current
+
+meta "rewrite_def" predicate resolve_refmut_DebugStruct
+
+type t_Option_bool = None | Some bool
+
+type t_DebugTrace = {
+  struct_name: string;
+  field_names: Seq.seq string;
+  field_type_tags: Seq.seq UInt8.t;
+  word_values: Seq.seq (Seq.seq UInt32.t);
+  byte_values: Seq.seq (Seq.seq UInt8.t);
+  iter_values: Seq.seq (Seq.seq UInt8.t);
+  ascii_set_values: Seq.seq (Seq.seq UInt32.t);
+  finish_status: t_Option_bool }
+
+let deref_mut_Ghost_refmut_DebugTrace (self: MutBorrow.t (MutBorrow.t t_DebugTrace))
+  (return (x: MutBorrow.t (MutBorrow.t t_DebugTrace))) = any
+  [ return (result: MutBorrow.t (MutBorrow.t t_DebugTrace)) ->
+  {[@stop_split] [@expl:deref_mut ensures] [%#sghost] result = self}
+    (! return {result}) ]
+
+predicate resolve_refmut_refmut_DebugTrace [@inline:trivial] (_1: MutBorrow.t (MutBorrow.t t_DebugTrace)) =
+  _1.final = _1.current
+
+meta "rewrite_def" predicate resolve_refmut_refmut_DebugTrace
+
+predicate resolve_refmut_DebugTrace [@inline:trivial] (_1: MutBorrow.t t_DebugTrace) = _1.final = _1.current
+
+meta "rewrite_def" predicate resolve_refmut_DebugTrace
+
+predicate resolve_Ghost_refmut_DebugTrace [@inline:trivial] (self: MutBorrow.t t_DebugTrace) =
+  [%#sghost'1] resolve_refmut_DebugTrace self
+
+meta "rewrite_def" predicate resolve_Ghost_refmut_DebugTrace
+
+predicate resolve_Ghost_refmut_DebugTrace'0 [@inline:trivial] (_1: MutBorrow.t t_DebugTrace) =
+  resolve_Ghost_refmut_DebugTrace _1
+
+meta "rewrite_def" predicate resolve_Ghost_refmut_DebugTrace'0
+
+let new_unit (x: ()) (return (x'0: ())) = any
+  [ return (result: ()) -> {[@stop_split] [@expl:new ensures] [%#sghost'0] result = x} (! return {result}) ]
+
+meta "compute_max_steps" 1000000
+
+meta "select_lsinst" "all"
+
+let finish'0 [#"/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/debug_trace.rs" 177 0 180 16]
+  (builder: MutBorrow.t t_DebugStruct) (trace: MutBorrow.t t_DebugTrace) (return (x: t_Result_unit_Error)) =
+{[@stop_split] [@expl:finish 'builder' type invariant] [%#sdebug_trace'2] inv_refmut_DebugStruct builder}
+  (! bb0
+  [ bb0 = s0
+    [ s0 = MutBorrow.borrow_final <t_DebugStruct> {builder.current} {MutBorrow.get_id builder}
+        (fun (_bor: MutBorrow.t t_DebugStruct) ->
+          [ &_6 <- _bor ] -{inv_DebugStruct _bor.final}-
+          [ &builder <- { builder with current = _bor.final } ] s1)
+      [ _ck -> (! {[@expl:type invariant] inv_DebugStruct builder.current} any) ]
+    | s1 = finish [%#sdebug_trace] {_6} (fun (_x: t_Result_unit_Error) -> [ &result <- _x ] s2)
+    | s2 = s3 [ _ck -> (! {[@expl:type invariant] inv_refmut_DebugStruct builder} any) ]
+    | s3 = -{resolve_refmut_DebugStruct builder}- s4
+    | s4 = any [ br0 (x0: ()) -> {result = Ok x0} (! bb4) | br1 (x0: ()) -> {result = Err x0} (! bb2) ] ]
+  | bb2 = s0 [ s0 = [ &_10 <- false ] s1 | s1 = bb5 ]
+  | bb4 = s0 [ s0 = [ &_10 <- true ] s1 | s1 = bb5 ]
+  | bb5 = s0
+    [ s0 = [ &_9 <- Some _10 ] s1
+    | s1 = MutBorrow.borrow_mut <MutBorrow.t t_DebugTrace> {trace}
+        (fun (_bor: MutBorrow.t (MutBorrow.t t_DebugTrace)) -> [ &_13 <- _bor ] [ &trace <- _bor.final ] s2)
+    | s2 = deref_mut_Ghost_refmut_DebugTrace [%#sdebug_trace'0] {_13}
+        (fun (_x: MutBorrow.t (MutBorrow.t t_DebugTrace)) -> [ &_12 <- _x ] s3)
+    | s3 =
+      [ &_12 <- { _12 with current = { _12.current with current = { _12.current.current with finish_status = _9 } } } ]
+      s4
+    | s4 = -{resolve_refmut_refmut_DebugTrace _12}- s5
+    | s5 = -{resolve_Ghost_refmut_DebugTrace'0 trace}- s6
+    | s6 = new_unit [%#sdebug_trace'1] {_8} (fun (_x: ()) -> [ &_7 <- _x ] s7)
+    | s7 = [ &_ret <- result ] s8
+    | s8 = return {_ret} ] ]
+  [ & _ret: t_Result_unit_Error = Any.any_l ()
+  | & builder: MutBorrow.t t_DebugStruct = builder
+  | & trace: MutBorrow.t t_DebugTrace = trace
+  | & result: t_Result_unit_Error = Any.any_l ()
+  | & _6: MutBorrow.t t_DebugStruct = Any.any_l ()
+  | & _7: () = Any.any_l ()
+  | & _8: () = Any.any_l ()
+  | & _9: t_Option_bool = Any.any_l ()
+  | & _10: bool = Any.any_l ()
+  | & _12: MutBorrow.t (MutBorrow.t t_DebugTrace) = Any.any_l ()
+  | & _13: MutBorrow.t (MutBorrow.t t_DebugTrace) = Any.any_l () ])
+  [ return (result: t_Result_unit_Error) ->
+  {[@stop_split] [@expl:finish ensures] [%#sdebug_trace'3] trace.final.finish_status
+      = Some (match result with
+        | Ok () -> true
+        | Err _ -> false
+        end)
+    /\ trace.final.struct_name = trace.current.struct_name
+    /\ trace.final.field_names = trace.current.field_names
+    /\ trace.final.field_type_tags = trace.current.field_type_tags
+    /\ trace.final.word_values = trace.current.word_values
+    /\ trace.final.byte_values = trace.current.byte_values
+    /\ trace.final.iter_values = trace.current.iter_values
+    /\ trace.final.ascii_set_values = trace.current.ascii_set_values}
+    (! return {result}) ]

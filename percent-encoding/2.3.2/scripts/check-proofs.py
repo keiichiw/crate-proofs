@@ -15,8 +15,8 @@ import sys
 VERSION = Path(__file__).resolve().parent.parent
 REPO = VERSION.parent.parent
 FORM = REPO / "form_urlencoded/1.2.2"
-FORM_EVIDENCE = FORM / "verification/evidence/direct-s8YxnYN7/manifest.json"
-FORM_EVIDENCE_SHA256 = "d21f6c897107588209849a03f887bf2beff597be648160272c756c5d5ad0c9e8"
+FORM_EVIDENCE = FORM / "verification/evidence/form-urlencoded-etJOlOat/manifest.json"
+FORM_EVIDENCE_SHA256 = "7e9efe7807c704fe2bdbc18da585051dcf479c112dc6ffe682f771168ae2a153"
 
 
 def require(ok, message):
@@ -102,7 +102,7 @@ def input_paths():
 
 def tool_hashes():
     result = {}
-    for name in ("cargo", "cargo-creusot", "rustup", "why3", "z3", "cvc5"):
+    for name in ("cargo", "cargo-creusot", "rustup", "why3", "why3find", "z3", "cvc5"):
         found = shutil.which(name)
         require(found is not None, f"required tool missing from activated PATH: {name}")
         path = Path(found).resolve()

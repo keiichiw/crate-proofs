@@ -1,0 +1,62 @@
+(* #"/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/equality_models.rs" 31 0 31 83 *)
+
+let%span smodel = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/model.rs" 37 8 37 28
+let%span sslice = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/std/slice.rs" 55 14 55 44
+let%span sslice'0 = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/std/slice.rs" 56 14 56 91
+let%span sslice'1 = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/std/slice.rs" 67 20 67 29
+let%span snum = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/std/num.rs" 27 28 27 33
+let%span sequality_models = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/equality_models.rs" 28 11 28 50
+let%span sequality_models'0 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/equality_models.rs" 29 10 29 16
+let%span sequality_models'1 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/equality_models.rs" 30 10 30 30
+
+use creusot.slice.Slice64
+use creusot.int.UInt8
+use seq.Seq
+use int.Int
+
+function deep_model_u8 [@inline:trivial] (self: UInt8.t) : int = [%#snum] UInt8.t'int self
+
+meta "rewrite_def" function deep_model_u8
+
+function index_slice_u8 [@inline:trivial] (self: Slice64.slice UInt8.t) (ix: int) : UInt8.t =
+  [%#sslice'1] Seq.get (Slice64.view self) ix
+
+meta "rewrite_def" function index_slice_u8
+
+function deep_model_slice_u8 (self: Slice64.slice UInt8.t) : Seq.seq int
+
+axiom deep_model_slice_u8_spec:
+  forall self: Slice64.slice UInt8.t [deep_model_slice_u8 self]. [%#sslice] Seq.length (Slice64.view self)
+    = Seq.length (deep_model_slice_u8 self)
+
+axiom deep_model_slice_u8_spec'0:
+  forall self: Slice64.slice UInt8.t [deep_model_slice_u8 self]. [%#sslice'0] forall i: int. 0 <= i
+        /\ i < Seq.length (deep_model_slice_u8 self)
+      -> Seq.get (deep_model_slice_u8 self) i = deep_model_u8 (index_slice_u8 self i)
+
+function deep_model_ref_slice_u8 [@inline:trivial] (self: Slice64.slice UInt8.t) : Seq.seq int =
+  [%#smodel] deep_model_slice_u8 self
+
+meta "rewrite_def" function deep_model_ref_slice_u8
+
+meta "compute_max_steps" 1000000
+
+meta "select_lsinst" "all"
+
+constant left : Slice64.slice UInt8.t
+
+constant right : Slice64.slice UInt8.t
+
+predicate slice_byte_views_ext_eq_from_model [#"/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/equality_models.rs" 31 0 31 83] (left: Slice64.slice UInt8.t) (right: Slice64.slice UInt8.t)
+
+goal vc_slice_byte_views_ext_eq_from_model: ([%#sequality_models] deep_model_ref_slice_u8 left
+    = deep_model_ref_slice_u8 right)
+  -> (let left_model = deep_model_ref_slice_u8 left in let right_model = deep_model_ref_slice_u8 right in Seq.length (Slice64.view left)
+    = Seq.length left_model
+  && Seq.length (Slice64.view right) = Seq.length right_model
+  && Seq.length (Slice64.view left) = Seq.length (Slice64.view right)
+  && (forall i: int. 0 <= i /\ i < Seq.length (Slice64.view left)
+      -> UInt8.t'int (Seq.get (Slice64.view left) i) = UInt8.t'int (Seq.get (Slice64.view right) i))
+  && Seq.(==) (Slice64.view left) (Slice64.view right)
+  && ([@stop_split] [@expl:slice_byte_views_ext_eq_from_model ensures] ([@stop_split] [@expl:slice_byte_views_ext_eq_from_model ensures #0] [%#sequality_models'0] true)
+  /\ ([@stop_split] [@expl:slice_byte_views_ext_eq_from_model ensures #1] [%#sequality_models'1] Seq.(==) (Slice64.view left) (Slice64.view right))))

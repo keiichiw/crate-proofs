@@ -1,0 +1,180 @@
+(* #"/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 559 4 559 38 *)
+
+(* <PercentEncode<'_> as core::cmp::PartialEq> *)
+
+let%span sascii_set = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/ascii_set.rs" 114 14 114 31
+let%span sascii_set'0 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/ascii_set.rs" 86 32 86 59
+let%span sinvariant = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/invariant.rs" 85 8 85 18
+let%span smodel = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/model.rs" 37 8 37 28
+let%span slib = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 560 26 560 51
+let%span slib'0 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 562 22 564 9
+let%span slib'1 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 565 23 565 56
+let%span slib'2 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 565 8 565 56
+let%span slib'3 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 559 11 559 15
+let%span slib'4 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 559 17 559 22
+let%span slib'5 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 555 32 558 5
+let%span slib'6 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 586 20 586 31
+let%span slib'7 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 592 20 592 47
+let%span scmp = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/std/cmp.rs" 14 26 14 75
+let%span scmp'0 = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/std/cmp.rs" 15 23 15 27
+let%span scmp'1 = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/std/cmp.rs" 15 29 15 32
+let%span sslice = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/std/slice.rs" 55 14 55 44
+let%span sslice'0 = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/std/slice.rs" 56 14 56 91
+let%span sslice'1 = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/std/slice.rs" 67 20 67 29
+let%span snum = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/std/num.rs" 27 28 27 33
+let%span sequality_models = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/equality_models.rs" 28 11 28 50
+let%span sequality_models'0 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/equality_models.rs" 29 10 29 16
+let%span sequality_models'1 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/equality_models.rs" 30 10 30 30
+let%span sequality_models'2 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/equality_models.rs" 20 16 20 66
+
+use creusot.slice.Slice64
+use creusot.int.UInt8
+use seq.Seq
+use creusot.int.UInt32
+use creusot.prelude.Any
+use int.Int
+
+type t_AsciiSet
+
+type t_PercentEncode = { bytes: Slice64.slice UInt8.t; ascii_set: t_AsciiSet }
+
+function deep_model_u8 [@inline:trivial] (self: UInt8.t) : int = [%#snum] UInt8.t'int self
+
+meta "rewrite_def" function deep_model_u8
+
+function index_slice_u8 [@inline:trivial] (self: Slice64.slice UInt8.t) (ix: int) : UInt8.t =
+  [%#sslice'1] Seq.get (Slice64.view self) ix
+
+meta "rewrite_def" function index_slice_u8
+
+function deep_model_slice_u8 (self: Slice64.slice UInt8.t) : Seq.seq int
+
+axiom deep_model_slice_u8_spec:
+  forall self: Slice64.slice UInt8.t [deep_model_slice_u8 self]. [%#sslice] Seq.length (Slice64.view self)
+    = Seq.length (deep_model_slice_u8 self)
+
+axiom deep_model_slice_u8_spec'0:
+  forall self: Slice64.slice UInt8.t [deep_model_slice_u8 self]. [%#sslice'0] forall i: int. 0 <= i
+        /\ i < Seq.length (deep_model_slice_u8 self)
+      -> Seq.get (deep_model_slice_u8 self) i = deep_model_u8 (index_slice_u8 self i)
+
+function deep_model_ref_slice_u8 [@inline:trivial] (self: Slice64.slice UInt8.t) : Seq.seq int =
+  [%#smodel] deep_model_slice_u8 self
+
+meta "rewrite_def" function deep_model_ref_slice_u8
+
+function deep_model_ref_ref_slice_u8 [@inline:trivial] (self: Slice64.slice UInt8.t) : Seq.seq int =
+  [%#smodel] deep_model_ref_slice_u8 self
+
+meta "rewrite_def" function deep_model_ref_ref_slice_u8
+
+let eq_ref_slice_u8 (self_: Slice64.slice UInt8.t) (rhs: Slice64.slice UInt8.t) (return (x: bool)) = any
+  [ return (result: bool) -> {[@stop_split] [@expl:eq ensures] [%#scmp] result
+    = (deep_model_ref_ref_slice_u8 self_ = deep_model_ref_ref_slice_u8 rhs)}
+    (! return {result}) ]
+
+predicate slice_byte_views_ext_eq_from_model [#"/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/equality_models.rs" 31 0 31 83] (left: Slice64.slice UInt8.t) (right: Slice64.slice UInt8.t)
+
+axiom slice_byte_views_ext_eq_from_model_spec:
+  forall left: Slice64.slice UInt8.t, right: Slice64.slice UInt8.t [slice_byte_views_ext_eq_from_model left right]. ([%#sequality_models] deep_model_ref_slice_u8 left
+      = deep_model_ref_slice_u8 right) -> ([%#sequality_models'0] slice_byte_views_ext_eq_from_model left right)
+
+axiom slice_byte_views_ext_eq_from_model_spec'0:
+  forall left: Slice64.slice UInt8.t, right: Slice64.slice UInt8.t. ([%#sequality_models] deep_model_ref_slice_u8 left
+      = deep_model_ref_slice_u8 right) -> ([%#sequality_models'1] Seq.(==) (Slice64.view left) (Slice64.view right))
+
+predicate inv_AsciiSet (_1: t_AsciiSet)
+
+predicate invariant_ref_AsciiSet [@inline:trivial] (self: t_AsciiSet) = [%#sinvariant] inv_AsciiSet self
+
+meta "rewrite_def" predicate invariant_ref_AsciiSet
+
+predicate inv_ref_AsciiSet [@inline:trivial] (_1: t_AsciiSet) = invariant_ref_AsciiSet _1
+
+meta "rewrite_def" predicate inv_ref_AsciiSet
+
+predicate invariant_ref_ref_AsciiSet [@inline:trivial] (self: t_AsciiSet) = [%#sinvariant] inv_ref_AsciiSet self
+
+meta "rewrite_def" predicate invariant_ref_ref_AsciiSet
+
+predicate inv_ref_ref_AsciiSet [@inline:trivial] (_1: t_AsciiSet) = invariant_ref_ref_AsciiSet _1
+
+meta "rewrite_def" predicate inv_ref_ref_AsciiSet
+
+function mask_words [#"/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/ascii_set.rs" 115 4 115 40] (self: t_AsciiSet) : Seq.seq UInt32.t
+
+axiom mask_words_spec: forall self: t_AsciiSet [mask_words self]. [%#sascii_set] Seq.length (mask_words self) = 4
+
+function deep_model_AsciiSet [#"/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/ascii_set.rs" 87 4 87 35] (self: t_AsciiSet) : Seq.seq UInt32.t
+
+axiom deep_model_AsciiSet_spec:
+  forall self: t_AsciiSet [deep_model_AsciiSet self]. [%#sascii_set'0] deep_model_AsciiSet self = mask_words self
+
+function deep_model_ref_AsciiSet [@inline:trivial] (self: t_AsciiSet) : Seq.seq UInt32.t =
+  [%#smodel] deep_model_AsciiSet self
+
+meta "rewrite_def" function deep_model_ref_AsciiSet
+
+function deep_model_ref_ref_AsciiSet [@inline:trivial] (self: t_AsciiSet) : Seq.seq UInt32.t =
+  [%#smodel] deep_model_ref_AsciiSet self
+
+meta "rewrite_def" function deep_model_ref_ref_AsciiSet
+
+let eq_ref_AsciiSet (self_: t_AsciiSet) (rhs: t_AsciiSet) (return (x: bool)) =
+{[@stop_split] [@expl:eq_ref_AsciiSet requires] ([@stop_split] [@expl:eq 'self_' type invariant] [%#scmp'0] inv_ref_ref_AsciiSet self_)
+  /\ ([@stop_split] [@expl:eq 'rhs' type invariant] [%#scmp'1] inv_ref_ref_AsciiSet rhs)}
+  any
+  [ return (result: bool) -> {[@stop_split] [@expl:eq ensures] [%#scmp] result
+    = (deep_model_ref_ref_AsciiSet self_ = deep_model_ref_ref_AsciiSet rhs)}
+    (! return {result}) ]
+
+predicate inv_PercentEncode (_1: t_PercentEncode)
+
+axiom inv_axiom [@rewrite]: forall x: t_PercentEncode [inv_PercentEncode x]. inv_PercentEncode x
+    = inv_ref_AsciiSet x.ascii_set
+
+predicate invariant_ref_PercentEncode [@inline:trivial] (self: t_PercentEncode) = [%#sinvariant] inv_PercentEncode self
+
+meta "rewrite_def" predicate invariant_ref_PercentEncode
+
+predicate inv_ref_PercentEncode [@inline:trivial] (_1: t_PercentEncode) = invariant_ref_PercentEncode _1
+
+meta "rewrite_def" predicate inv_ref_PercentEncode
+
+predicate percent_encode_eq_model [#"/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/equality_models.rs" 14 0 19 9] (left_input: Seq.seq UInt8.t) (left_set: Seq.seq UInt32.t) (right_input: Seq.seq UInt8.t) (right_set: Seq.seq UInt32.t) =
+  [%#sequality_models'2] left_input = right_input /\ left_set = right_set
+
+function remaining_input [#"/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 585 4 585 43] [@inline:trivial] (self: t_PercentEncode) : Seq.seq UInt8.t
+ = [%#slib'6] Slice64.view self.bytes
+
+meta "rewrite_def" function remaining_input
+
+function configured_set [#"/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 591 4 591 43] [@inline:trivial] (self: t_PercentEncode) : Seq.seq UInt32.t
+ = [%#slib'7] mask_words self.ascii_set
+
+meta "rewrite_def" function configured_set
+
+meta "compute_max_steps" 1000000
+
+meta "select_lsinst" "all"
+
+let eq_PercentEncode [#"/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 559 4 559 38]
+  (self: t_PercentEncode) (other: t_PercentEncode) (return (x: bool)) =
+{[@stop_split] [@expl:eq_PercentEncode requires] ([@stop_split] [@expl:eq 'self' type invariant] [%#slib'3] inv_ref_PercentEncode self)
+  /\ ([@stop_split] [@expl:eq 'other' type invariant] [%#slib'4] inv_ref_PercentEncode other)}
+  (! bb0
+  [ bb0 = s0
+    [ s0 = eq_ref_slice_u8 [%#slib] {self.bytes} {other.bytes} (fun (_x: bool) -> [ &bytes_equal <- _x ] s1)
+    | s1 = {[@expl:assertion] [%#slib'0] bytes_equal -> slice_byte_views_ext_eq_from_model self.bytes other.bytes} s2
+    | s2 = any [ br0 -> {bytes_equal = false} (! bb3) | br1 -> {bytes_equal} (! bb2) ] ]
+  | bb2 = s0
+    [ s0 = eq_ref_AsciiSet [%#slib'1] {self.ascii_set} {other.ascii_set} (fun (_x: bool) -> [ &_ret <- _x ] s1)
+    | s1 = return {_ret} ]
+  | bb3 = s0 [ s0 = [ &_ret <- [%#slib'2] false ] s1 | s1 = return {_ret} ] ]
+  [ & _ret: bool = Any.any_l ()
+  | & self: t_PercentEncode = self
+  | & other: t_PercentEncode = other
+  | & bytes_equal: bool = Any.any_l () ])
+  [ return (result: bool) -> {[@stop_split] [@expl:eq ensures] [%#slib'5] result
+    = percent_encode_eq_model (remaining_input self) (configured_set self) (remaining_input other) (configured_set other)}
+    (! return {result}) ]

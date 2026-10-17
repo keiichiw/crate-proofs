@@ -1,0 +1,48 @@
+(* #"/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 872 4 872 27 *)
+
+(* <PercentDecode<'_> as core::clone::Clone> *)
+
+let%span sinvariant = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/invariant.rs" 85 8 85 18
+let%span slib = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 872 14 872 18
+let%span slib'0 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 872 23 872 27
+let%span slib'1 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 871 32 871 82
+let%span slib'2 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 883 20 883 32
+let%span sclone = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/std/clone.rs" 13 26 13 30
+
+use creusot.int.UInt8
+use seq.Seq
+use creusot.slice.Slice64
+
+type t_Iter_u8
+
+type t_PercentDecode = { bytes: t_Iter_u8 }
+
+predicate inv_Iter_u8 (_1: t_Iter_u8)
+
+predicate inv_PercentDecode (_1: t_PercentDecode)
+
+axiom inv_axiom [@rewrite]: forall x: t_PercentDecode [inv_PercentDecode x]. inv_PercentDecode x = inv_Iter_u8 x.bytes
+
+predicate invariant_ref_PercentDecode [@inline:trivial] (self: t_PercentDecode) = [%#sinvariant] inv_PercentDecode self
+
+meta "rewrite_def" predicate invariant_ref_PercentDecode
+
+predicate inv_ref_PercentDecode [@inline:trivial] (_1: t_PercentDecode) = invariant_ref_PercentDecode _1
+
+meta "rewrite_def" predicate inv_ref_PercentDecode
+
+function view_Iter_u8 (self: t_Iter_u8) : Slice64.slice UInt8.t
+
+function remaining_input [#"/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 882 4 882 43] [@inline:trivial] (self: t_PercentDecode) : Seq.seq UInt8.t
+ = [%#slib'2] Slice64.view (view_Iter_u8 self.bytes)
+
+meta "rewrite_def" function remaining_input
+
+meta "compute_max_steps" 1000000
+
+meta "select_lsinst" "all"
+
+goal refines: forall self_: t_PercentDecode. ([%#sclone] inv_ref_PercentDecode self_)
+    -> ([%#slib] inv_ref_PercentDecode self_)
+    /\ (forall result: t_PercentDecode. ([%#slib'0] inv_PercentDecode result)
+        /\ ([%#slib'1] remaining_input result = remaining_input self_) -> inv_PercentDecode result)

@@ -1,0 +1,226 @@
+(* #"/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/debug_trace.rs" 157 0 163 11 *)
+
+let%span sascii_set = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/ascii_set.rs" 114 14 114 31
+let%span sghost = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/ghost.rs" 92 14 92 35
+let%span sghost'0 = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/ghost.rs" 177 14 177 26
+let%span sghost'1 = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/ghost.rs" 120 8 120 22
+let%span sdebug_trace = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/debug_trace.rs" 165 4 165 30
+let%span sdebug_trace'0 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/debug_trace.rs" 167 32 167 50
+let%span sdebug_trace'1 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/debug_trace.rs" 170 10 170 16
+let%span sdebug_trace'2 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/debug_trace.rs" 170 8 170 51
+let%span sdebug_trace'3 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/debug_trace.rs" 171 10 171 16
+let%span sdebug_trace'4 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/debug_trace.rs" 171 50 171 53
+let%span sdebug_trace'5 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/debug_trace.rs" 171 8 171 54
+let%span sdebug_trace'6 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/debug_trace.rs" 172 10 172 16
+let%span sdebug_trace'7 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/debug_trace.rs" 172 8 172 63
+let%span sdebug_trace'8 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/debug_trace.rs" 169 4 173 5
+let%span sdebug_trace'9 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/debug_trace.rs" 158 4 158 11
+let%span sdebug_trace'10 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/debug_trace.rs" 160 4 160 9
+let%span sdebug_trace'11 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/debug_trace.rs" 153 28 153 90
+let%span sdebug_trace'12 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/debug_trace.rs" 154 28 154 97
+let%span sdebug_trace'13 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/debug_trace.rs" 155 28 155 129
+let%span sdebug_trace'14 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/debug_trace.rs" 156 28 156 278
+let%span sdebug_trace'15 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/debug_trace.rs" 55 29 55 33
+let%span sinvariant = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/invariant.rs" 93 20 93 44
+let%span sinvariant'0 = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/invariant.rs" 85 8 85 18
+let%span sseq = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/logic/seq.rs" 650 14 650 40
+
+use creusot.prelude.MutBorrow
+use creusot.int.UInt32
+use seq.Seq
+use creusot.int.UInt8
+use creusot.prelude.Any
+
+type dyn_Debug
+
+type t_AsciiSet
+
+function dyn_Debug_of_AsciiSet (x: t_AsciiSet) : dyn_Debug
+
+type t_DebugStruct
+
+predicate inv_DebugStruct (_1: t_DebugStruct)
+
+predicate invariant_refmut_DebugStruct [@inline:trivial] (self: MutBorrow.t t_DebugStruct) =
+  [%#sinvariant] inv_DebugStruct self.current /\ inv_DebugStruct self.final
+
+meta "rewrite_def" predicate invariant_refmut_DebugStruct
+
+predicate inv_refmut_DebugStruct [@inline:trivial] (_1: MutBorrow.t t_DebugStruct) = invariant_refmut_DebugStruct _1
+
+meta "rewrite_def" predicate inv_refmut_DebugStruct
+
+let field (self_: MutBorrow.t t_DebugStruct) (name: string) (value: dyn_Debug) (return (x: MutBorrow.t t_DebugStruct)) =
+{[@stop_split] [@expl:field 'self_' type invariant] [%#sdebug_trace'15] inv_refmut_DebugStruct self_}
+  any
+  [ return (result: MutBorrow.t t_DebugStruct) ->
+  {[@stop_split] [@expl:field result type invariant] inv_refmut_DebugStruct result}
+    (! return {result}) ]
+
+predicate resolve_refmut_DebugStruct [@inline:trivial] (_1: MutBorrow.t t_DebugStruct) = _1.final = _1.current
+
+meta "rewrite_def" predicate resolve_refmut_DebugStruct
+
+function mask_words [#"/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/ascii_set.rs" 115 4 115 40] (self: t_AsciiSet) : Seq.seq UInt32.t
+
+axiom mask_words_spec: forall self: t_AsciiSet [mask_words self]. [%#sascii_set] Seq.length (mask_words self) = 4
+
+type t_Option_bool = None | Some bool
+
+type t_DebugTrace = {
+  struct_name: string;
+  field_names: Seq.seq string;
+  field_type_tags: Seq.seq UInt8.t;
+  word_values: Seq.seq (Seq.seq UInt32.t);
+  byte_values: Seq.seq (Seq.seq UInt8.t);
+  iter_values: Seq.seq (Seq.seq UInt8.t);
+  ascii_set_values: Seq.seq (Seq.seq UInt32.t);
+  finish_status: t_Option_bool }
+
+let deref_mut_Ghost_refmut_DebugTrace (self: MutBorrow.t (MutBorrow.t t_DebugTrace))
+  (return (x: MutBorrow.t (MutBorrow.t t_DebugTrace))) = any
+  [ return (result: MutBorrow.t (MutBorrow.t t_DebugTrace)) ->
+  {[@stop_split] [@expl:deref_mut ensures] [%#sghost] result = self}
+    (! return {result}) ]
+
+let push_back_ghost_ref_str (self: MutBorrow.t (Seq.seq string)) (x: string) (return (x'0: ())) = any
+  [ return (result: ()) -> {[@stop_split] [@expl:push_back_ghost ensures] [%#sseq] self.final = Seq.snoc self.current x}
+    (! return {result}) ]
+
+predicate resolve_refmut_refmut_DebugTrace [@inline:trivial] (_1: MutBorrow.t (MutBorrow.t t_DebugTrace)) =
+  _1.final = _1.current
+
+meta "rewrite_def" predicate resolve_refmut_refmut_DebugTrace
+
+let push_back_ghost_u8 (self: MutBorrow.t (Seq.seq UInt8.t)) (x: UInt8.t) (return (x'0: ())) = any
+  [ return (result: ()) -> {[@stop_split] [@expl:push_back_ghost ensures] [%#sseq] self.final = Seq.snoc self.current x}
+    (! return {result}) ]
+
+let push_back_ghost_Snapshot_Seq_u32 (self: MutBorrow.t (Seq.seq (Seq.seq UInt32.t))) (x: Seq.seq UInt32.t)
+  (return (x'0: ())) = any
+  [ return (result: ()) -> {[@stop_split] [@expl:push_back_ghost ensures] [%#sseq] self.final = Seq.snoc self.current x}
+    (! return {result}) ]
+
+predicate resolve_refmut_DebugTrace [@inline:trivial] (_1: MutBorrow.t t_DebugTrace) = _1.final = _1.current
+
+meta "rewrite_def" predicate resolve_refmut_DebugTrace
+
+predicate resolve_Ghost_refmut_DebugTrace [@inline:trivial] (self: MutBorrow.t t_DebugTrace) =
+  [%#sghost'1] resolve_refmut_DebugTrace self
+
+meta "rewrite_def" predicate resolve_Ghost_refmut_DebugTrace
+
+predicate resolve_Ghost_refmut_DebugTrace'0 [@inline:trivial] (_1: MutBorrow.t t_DebugTrace) =
+  resolve_Ghost_refmut_DebugTrace _1
+
+meta "rewrite_def" predicate resolve_Ghost_refmut_DebugTrace'0
+
+let new_unit (x: ()) (return (x'0: ())) = any
+  [ return (result: ()) -> {[@stop_split] [@expl:new ensures] [%#sghost'0] result = x} (! return {result}) ]
+
+predicate inv_AsciiSet (_1: t_AsciiSet)
+
+predicate invariant_ref_AsciiSet [@inline:trivial] (self: t_AsciiSet) = [%#sinvariant'0] inv_AsciiSet self
+
+meta "rewrite_def" predicate invariant_ref_AsciiSet
+
+predicate inv_ref_AsciiSet [@inline:trivial] (_1: t_AsciiSet) = invariant_ref_AsciiSet _1
+
+meta "rewrite_def" predicate inv_ref_AsciiSet
+
+meta "compute_max_steps" 1000000
+
+meta "select_lsinst" "all"
+
+let field_ascii_set [#"/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/debug_trace.rs" 157 0 163 11]
+  (builder: MutBorrow.t t_DebugStruct) (name: string) (value: t_AsciiSet) (trace: MutBorrow.t t_DebugTrace)
+  (return (x: ())) =
+{[@stop_split] [@expl:field_ascii_set requires] ([@stop_split] [@expl:field_ascii_set 'builder' type invariant] [%#sdebug_trace'9] inv_refmut_DebugStruct builder)
+  /\ ([@stop_split] [@expl:field_ascii_set 'value' type invariant] [%#sdebug_trace'10] inv_ref_AsciiSet value)}
+  (! bb0
+  [ bb0 = s0
+    [ s0 = [ &_18 <- dyn_Debug_of_AsciiSet value ] s1
+    | s1 = MutBorrow.borrow_final <t_DebugStruct> {builder.current} {MutBorrow.get_id builder}
+        (fun (_bor: MutBorrow.t t_DebugStruct) ->
+          [ &_16 <- _bor ] -{inv_DebugStruct _bor.final}-
+          [ &builder <- { builder with current = _bor.final } ] s2)
+      [ _ck -> (! {[@expl:type invariant] inv_DebugStruct builder.current} any) ]
+    | s2 = field [%#sdebug_trace] {_16} {name} {_18} (fun (_x: MutBorrow.t t_DebugStruct) -> [ &_15 <- _x ] s3)
+    | s3 = s4 [ _ck -> (! {[@expl:type invariant] inv_refmut_DebugStruct _15} any) ]
+    | s4 = -{resolve_refmut_DebugStruct _15}- s5
+    | s5 = s6 [ _ck -> (! {[@expl:type invariant] inv_refmut_DebugStruct builder} any) ]
+    | s6 = -{resolve_refmut_DebugStruct builder}- s7
+    | s7 = [ &value_model <- [%#sdebug_trace'0] mask_words value ] s8
+    | s8 = MutBorrow.borrow_mut <MutBorrow.t t_DebugTrace> {trace}
+        (fun (_bor: MutBorrow.t (MutBorrow.t t_DebugTrace)) -> [ &_28 <- _bor ] [ &trace <- _bor.final ] s9)
+    | s9 = deref_mut_Ghost_refmut_DebugTrace [%#sdebug_trace'1] {_28}
+        (fun (_x: MutBorrow.t (MutBorrow.t t_DebugTrace)) -> [ &_27 <- _x ] s10)
+    | s10 = MutBorrow.borrow_mut <Seq.seq string> {_27.current.current.field_names}
+        (fun (_bor: MutBorrow.t (Seq.seq string)) ->
+          [ &_26 <- _bor ]
+          [ &_27 <- { _27 with current = { _27.current with current = { _27.current.current with field_names = _bor.final } } } ]
+          s11)
+    | s11 = push_back_ghost_ref_str [%#sdebug_trace'2] {_26} {name} (fun (_x: ()) -> [ &_25 <- _x ] s12)
+    | s12 = -{resolve_refmut_refmut_DebugTrace _27}- s13
+    | s13 = MutBorrow.borrow_mut <MutBorrow.t t_DebugTrace> {trace}
+        (fun (_bor: MutBorrow.t (MutBorrow.t t_DebugTrace)) -> [ &_33 <- _bor ] [ &trace <- _bor.final ] s14)
+    | s14 = deref_mut_Ghost_refmut_DebugTrace [%#sdebug_trace'3] {_33}
+        (fun (_x: MutBorrow.t (MutBorrow.t t_DebugTrace)) -> [ &_32 <- _x ] s15)
+    | s15 = MutBorrow.borrow_mut <Seq.seq UInt8.t> {_32.current.current.field_type_tags}
+        (fun (_bor: MutBorrow.t (Seq.seq UInt8.t)) ->
+          [ &_31 <- _bor ]
+          [ &_32 <- { _32 with current = { _32.current with current = { _32.current.current with field_type_tags = _bor.final } } } ]
+          s16)
+    | s16 = push_back_ghost_u8 [%#sdebug_trace'5] {_31} {[%#sdebug_trace'4] (3: UInt8.t)}
+        (fun (_x: ()) -> [ &_30 <- _x ] s17)
+    | s17 = -{resolve_refmut_refmut_DebugTrace _32}- s18
+    | s18 = MutBorrow.borrow_mut <MutBorrow.t t_DebugTrace> {trace}
+        (fun (_bor: MutBorrow.t (MutBorrow.t t_DebugTrace)) -> [ &_37 <- _bor ] [ &trace <- _bor.final ] s19)
+    | s19 = deref_mut_Ghost_refmut_DebugTrace [%#sdebug_trace'6] {_37}
+        (fun (_x: MutBorrow.t (MutBorrow.t t_DebugTrace)) -> [ &_36 <- _x ] s20)
+    | s20 = MutBorrow.borrow_mut <Seq.seq (Seq.seq UInt32.t)> {_36.current.current.ascii_set_values}
+        (fun (_bor: MutBorrow.t (Seq.seq (Seq.seq UInt32.t))) ->
+          [ &_35 <- _bor ]
+          [ &_36 <- { _36 with current = { _36.current with current = { _36.current.current with ascii_set_values = _bor.final } } } ]
+          s21)
+    | s21 = push_back_ghost_Snapshot_Seq_u32 [%#sdebug_trace'7] {_35} {value_model} (fun (_x: ()) -> [ &_34 <- _x ] s22)
+    | s22 = -{resolve_refmut_refmut_DebugTrace _36}- s23
+    | s23 = -{resolve_Ghost_refmut_DebugTrace'0 trace}- s24
+    | s24 = new_unit [%#sdebug_trace'8] {_24} (fun (_x: ()) -> [ &_23 <- _x ] s25)
+    | s25 = return {_ret} ] ]
+  [ & _ret: () = Any.any_l ()
+  | & builder: MutBorrow.t t_DebugStruct = builder
+  | & name: string = name
+  | & value: t_AsciiSet = value
+  | & trace: MutBorrow.t t_DebugTrace = trace
+  | & _15: MutBorrow.t t_DebugStruct = Any.any_l ()
+  | & _16: MutBorrow.t t_DebugStruct = Any.any_l ()
+  | & _18: dyn_Debug = Any.any_l ()
+  | & value_model: Seq.seq UInt32.t = Any.any_l ()
+  | & _23: () = Any.any_l ()
+  | & _24: () = Any.any_l ()
+  | & _25: () = Any.any_l ()
+  | & _26: MutBorrow.t (Seq.seq string) = Any.any_l ()
+  | & _27: MutBorrow.t (MutBorrow.t t_DebugTrace) = Any.any_l ()
+  | & _28: MutBorrow.t (MutBorrow.t t_DebugTrace) = Any.any_l ()
+  | & _30: () = Any.any_l ()
+  | & _31: MutBorrow.t (Seq.seq UInt8.t) = Any.any_l ()
+  | & _32: MutBorrow.t (MutBorrow.t t_DebugTrace) = Any.any_l ()
+  | & _33: MutBorrow.t (MutBorrow.t t_DebugTrace) = Any.any_l ()
+  | & _34: () = Any.any_l ()
+  | & _35: MutBorrow.t (Seq.seq (Seq.seq UInt32.t)) = Any.any_l ()
+  | & _36: MutBorrow.t (MutBorrow.t t_DebugTrace) = Any.any_l ()
+  | & _37: MutBorrow.t (MutBorrow.t t_DebugTrace) = Any.any_l () ])
+  [ return (result: ()) ->
+  {[@stop_split] [@expl:field_ascii_set ensures] ([@stop_split] [@expl:field_ascii_set ensures #0] [%#sdebug_trace'11] trace.final.field_names
+      = Seq.snoc trace.current.field_names name)
+    /\ ([@stop_split] [@expl:field_ascii_set ensures #1] [%#sdebug_trace'12] trace.final.field_type_tags
+      = Seq.snoc trace.current.field_type_tags (3: UInt8.t))
+    /\ ([@stop_split] [@expl:field_ascii_set ensures #2] [%#sdebug_trace'13] trace.final.ascii_set_values
+      = Seq.snoc trace.current.ascii_set_values (mask_words value))
+    /\ ([@stop_split] [@expl:field_ascii_set ensures #3] [%#sdebug_trace'14] trace.final.struct_name
+      = trace.current.struct_name
+    /\ trace.final.word_values = trace.current.word_values
+    /\ trace.final.byte_values = trace.current.byte_values
+    /\ trace.final.iter_values = trace.current.iter_values /\ trace.final.finish_status = trace.current.finish_status)}
+    (! return {result}) ]

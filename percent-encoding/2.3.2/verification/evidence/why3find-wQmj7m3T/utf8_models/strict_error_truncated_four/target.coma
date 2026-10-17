@@ -1,0 +1,134 @@
+(* #"/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/utf8_models.rs" 231 0 231 43 *)
+
+let%span sutf8_models = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/utf8_models.rs" 233 8 237 28
+let%span sutf8_models'0 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/utf8_models.rs" 130 10 130 21
+let%span sutf8_models'1 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/utf8_models.rs" 132 4 149 5
+let%span sutf8_models'2 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/utf8_models.rs" 28 11 28 40
+let%span sutf8_models'3 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/utf8_models.rs" 30 4 30 24
+
+use seq.Seq
+use creusot.prelude.Any
+use int.Int
+
+type t_Option_Int = None | Some int
+
+type tup2_Int_Option_Int = { f0: int; f1: t_Option_Int }
+
+type t_Option_tup2_Int_Option_Int = None'0 | Some'0 tup2_Int_Option_Int
+
+type tup3_Int_Int_bool = { f0'0: int; f1'0: int; f2'0: bool }
+
+function utf8_step [#"/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/utf8_models.rs" 29 0 29 63] (bytes: Seq.seq int) (pos: int) : tup3_Int_Int_bool
+ = [%#sutf8_models'3] let b0 = Seq.get bytes pos in let remaining = Seq.length bytes - pos in if 0 <= b0
+  /\ b0 <= 127 then
+    { f0'0 = b0; f1'0 = 1; f2'0 = true }
+  else
+    if 194 <= b0 /\ b0 <= 223 then
+      if remaining < 2 then
+        { f0'0 = 65533; f1'0 = remaining; f2'0 = false }
+      else
+        let b1 = Seq.get bytes (pos + 1) in if 128 <= b1 /\ b1 <= 191 then
+          { f0'0 = (b0 - 192) * 64 + (b1 - 128); f1'0 = 2; f2'0 = true }
+        else
+          { f0'0 = 65533; f1'0 = 1; f2'0 = false }
+      
+    
+    else
+      if 224 <= b0 /\ b0 <= 239 then
+        if remaining < 2 then
+          { f0'0 = 65533; f1'0 = remaining; f2'0 = false }
+        else
+          let b1 = Seq.get bytes (pos + 1) in let second_ok = if b0 = 224 then
+            160 <= b1 /\ b1 <= 191
+          else
+            if b0 = 237 then 128 <= b1 /\ b1 <= 159 else 128 <= b1 /\ b1 <= 191
+           in if not second_ok then
+            { f0'0 = 65533; f1'0 = 1; f2'0 = false }
+          else
+            if remaining < 3 then
+              { f0'0 = 65533; f1'0 = remaining; f2'0 = false }
+            else
+              let b2 = Seq.get bytes (pos + 2) in if 128 <= b2 /\ b2 <= 191 then
+                { f0'0 = (b0 - 224) * 4096 + (b1 - 128) * 64 + (b2 - 128); f1'0 = 3; f2'0 = true }
+              else
+                { f0'0 = 65533; f1'0 = 2; f2'0 = false }
+            
+          
+        
+      
+      else
+        if 240 <= b0 /\ b0 <= 244 then
+          if remaining < 2 then
+            { f0'0 = 65533; f1'0 = remaining; f2'0 = false }
+          else
+            let b1 = Seq.get bytes (pos + 1) in let second_ok = if b0 = 240 then
+              144 <= b1 /\ b1 <= 191
+            else
+              if b0 = 244 then 128 <= b1 /\ b1 <= 143 else 128 <= b1 /\ b1 <= 191
+             in if not second_ok then
+              { f0'0 = 65533; f1'0 = 1; f2'0 = false }
+            else
+              if remaining < 3 then
+                { f0'0 = 65533; f1'0 = remaining; f2'0 = false }
+              else
+                let b2 = Seq.get bytes (pos + 2) in if not (128 <= b2 /\ b2 <= 191) then
+                  { f0'0 = 65533; f1'0 = 2; f2'0 = false }
+                else
+                  if remaining < 4 then
+                    { f0'0 = 65533; f1'0 = remaining; f2'0 = false }
+                  else
+                    let b3 = Seq.get bytes (pos + 3) in if 128 <= b3 /\ b3 <= 191 then
+                      { f0'0 = (b0 - 240) * 262144 + (b1 - 128) * 4096 + (b2 - 128) * 64 + (b3 - 128);
+                        f1'0 = 4;
+                        f2'0 = true }
+                    else
+                      { f0'0 = 65533; f1'0 = 3; f2'0 = false }
+                  
+                
+              
+            
+          
+        
+        else
+          { f0'0 = 65533; f1'0 = 1; f2'0 = false }
+      
+    
+  
+
+
+function strict_error [#"/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/utf8_models.rs" 131 0 131 66] (bytes: Seq.seq int) : t_Option_tup2_Int_Option_Int
+
+axiom strict_error_def: forall bytes: Seq.seq int [strict_error bytes]. strict_error bytes
+    = ([%#sutf8_models'1] if Seq.length bytes = 0 then
+      None'0
+    else
+      let {f1'0 = consumed; f2'0 = valid} = utf8_step bytes 0 in if valid then
+        match strict_error (Seq.([..]) bytes consumed (Seq.length bytes)) with
+          | Some'0 {f0 = offset; f1 = len} -> Some'0 { f0 = consumed + offset; f1 = len }
+          | None'0 -> None'0
+          end
+      else
+        let lead = Seq.get bytes 0 in let remaining = Seq.length bytes in let truncated = 194 <= lead
+          /\ lead <= 223 /\ remaining < 2
+        \/ 224 <= lead /\ lead <= 239 /\ remaining < 3 /\ consumed = remaining
+        \/ 240 <= lead /\ lead <= 244 /\ remaining < 4 /\ consumed = remaining in Some'0 { f0 = 0;
+                                                                                           f1 = (if truncated then
+                                                                                             None
+                                                                                           else
+                                                                                             Some consumed
+                                                                                           ) }
+    
+    )
+
+meta "compute_max_steps" 1000000
+
+meta "select_lsinst" "all"
+
+let strict_error_truncated_four [#"/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/utf8_models.rs" 231 0 231 43]
+  (return (x: ())) = (! bb0
+  [ bb0 = s0
+    [ s0 =
+      {[@expl:assertion] [%#sutf8_models] strict_error (Seq.(++) (Seq.(++) (Seq.singleton 240) (Seq.singleton 144)) (Seq.singleton 128))
+      = Some'0 { f0 = 0; f1 = None }}
+      s1
+    | s1 = return {_ret} ] ] [ & _ret: () = Any.any_l () ]) [ return (result: ()) -> (! return {result}) ]

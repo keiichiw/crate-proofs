@@ -1,0 +1,79 @@
+(* #"/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/ascii_set.rs" 207 4 207 24 *)
+
+(* <ascii_set::AsciiSet as core::ops::Not> *)
+
+let%span sascii_set = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/ascii_set.rs" 208 8 208 25
+let%span sascii_set'0 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/ascii_set.rs" 207 11 207 15
+let%span sascii_set'1 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/ascii_set.rs" 207 20 207 24
+let%span sascii_set'2 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/ascii_set.rs" 206 44 206 126
+let%span sascii_set'3 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/ascii_set.rs" 179 29 179 33
+let%span sascii_set'4 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/ascii_set.rs" 179 38 179 42
+let%span sascii_set'5 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/ascii_set.rs" 178 44 178 126
+let%span sascii_set'6 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/ascii_set.rs" 114 14 114 31
+let%span sascii_set'7 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/ascii_set.rs" 116 20 116 58
+let%span sinvariant = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/invariant.rs" 85 8 85 18
+let%span sarray = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/std/array.rs" 9 20 9 51
+
+use creusot.slice.Slice64BW
+use creusot.int.UInt32BW
+use seq.Seq
+use creusot.int.UInt64BW
+use creusot.prelude.Any
+use int.Int
+
+predicate inv_Seq_u32 [@inline:trivial] (_1: Seq.seq UInt32BW.t) = true
+
+meta "rewrite_def" predicate inv_Seq_u32
+
+predicate invariant_array_u32_4 (self: Slice64BW.array UInt32BW.t) =
+  [%#sarray] inv_Seq_u32 (Slice64BW.view self) /\ Seq.length (Slice64BW.view self) = UInt64BW.t'int (4: UInt64BW.t)
+
+predicate inv_array_u32_4 [@inline:trivial] (_1: Slice64BW.array UInt32BW.t) = invariant_array_u32_4 _1
+
+meta "rewrite_def" predicate inv_array_u32_4
+
+type t_AsciiSet = { mask: Slice64BW.array UInt32BW.t }
+
+predicate inv_AsciiSet (_1: t_AsciiSet)
+
+axiom inv_axiom [@rewrite]: forall x: t_AsciiSet [inv_AsciiSet x]. inv_AsciiSet x = inv_array_u32_4 x.mask
+
+predicate invariant_ref_AsciiSet [@inline:trivial] (self: t_AsciiSet) = [%#sinvariant] inv_AsciiSet self
+
+meta "rewrite_def" predicate invariant_ref_AsciiSet
+
+predicate inv_ref_AsciiSet [@inline:trivial] (_1: t_AsciiSet) = invariant_ref_AsciiSet _1
+
+meta "rewrite_def" predicate inv_ref_AsciiSet
+
+function mask_words [#"/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/ascii_set.rs" 115 4 115 40] (self: t_AsciiSet) : Seq.seq UInt32BW.t
+ = [%#sascii_set'7] Seq.create 4 (fun (i: int) -> Seq.get (Slice64BW.view self.mask) i)
+
+axiom mask_words_spec: forall self: t_AsciiSet [mask_words self]. [%#sascii_set'6] Seq.length (mask_words self) = 4
+
+let complement (self: t_AsciiSet) (return (x: t_AsciiSet)) =
+{[@stop_split] [@expl:complement 'self' type invariant] [%#sascii_set'3] inv_ref_AsciiSet self}
+  any
+  [ return (result: t_AsciiSet) ->
+  {[@stop_split] [@expl:complement ensures] ([@stop_split] [@expl:complement result type invariant] [%#sascii_set'4] inv_AsciiSet result)
+    /\ ([@stop_split] [@expl:complement ensures] [%#sascii_set'5] forall i: int. 0 <= i /\ i < 4
+      -> Seq.get (mask_words result) i = UInt32BW.bw_not (Seq.get (mask_words self) i))}
+    (! return {result}) ]
+
+meta "compute_max_steps" 1000000
+
+meta "select_lsinst" "all"
+
+let not_AsciiSet [#"/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/ascii_set.rs" 207 4 207 24]
+  (self: t_AsciiSet) (return (x: t_AsciiSet)) =
+{[@stop_split] [@expl:not 'self' type invariant] [%#sascii_set'0] inv_AsciiSet self}
+  (! bb0
+  [ bb0 = s0
+    [ s0 = s1 [ _ck -> (! {[@expl:type invariant] inv_AsciiSet self} any) ]
+    | s1 = complement [%#sascii_set] {self} (fun (_x: t_AsciiSet) -> [ &_ret <- _x ] s2)
+    | s2 = return {_ret} ] ] [ & _ret: t_AsciiSet = Any.any_l () | & self: t_AsciiSet = self ])
+  [ return (result: t_AsciiSet) ->
+  {[@stop_split] [@expl:not_AsciiSet ensures] ([@stop_split] [@expl:not result type invariant] [%#sascii_set'1] inv_AsciiSet result)
+    /\ ([@stop_split] [@expl:not ensures] [%#sascii_set'2] forall i: int. 0 <= i /\ i < 4
+      -> Seq.get (mask_words result) i = UInt32BW.bw_not (Seq.get (mask_words self) i))}
+    (! return {result}) ]

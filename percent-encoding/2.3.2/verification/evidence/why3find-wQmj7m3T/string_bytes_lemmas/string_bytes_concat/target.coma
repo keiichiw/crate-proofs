@@ -1,0 +1,190 @@
+(* #"/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/string_bytes_lemmas.rs" 118 0 118 79 *)
+
+let%span sord = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/logic/ord.rs" 22 8 22 20
+let%span sord'0 = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/logic/ord.rs" 34 8 34 21
+let%span swell_founded = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/logic/well_founded.rs" 43 8 43 33
+let%span slib = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 375 16 375 43
+let%span sseq = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/logic/seq.rs" 160 8 160 39
+let%span sseq'0 = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/logic/seq.rs" 311 14 311 24
+let%span sseq'1 = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/logic/seq.rs" 313 8 317 9
+let%span sseq'2 = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/logic/seq.rs" 301 14 301 24
+let%span sseq'3 = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/logic/seq.rs" 299 14 299 40
+let%span sseq'4 = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/logic/seq.rs" 300 14 300 76
+let%span smapping = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/logic/mapping.rs" 66 8 66 19
+let%span sstring_bytes_lemmas = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/string_bytes_lemmas.rs" 111 10 111 22
+let%span sstring_bytes_lemmas'0 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/string_bytes_lemmas.rs" 112 10 112 16
+let%span sstring_bytes_lemmas'1 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/string_bytes_lemmas.rs" 113 10 114 50
+let%span sstring_bytes_lemmas'2 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/string_bytes_lemmas.rs" 115 10 117 69
+let%span sstring_bytes_lemmas'3 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/string_bytes_lemmas.rs" 75 11 75 28
+let%span sstring_bytes_lemmas'4 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/string_bytes_lemmas.rs" 76 10 76 16
+let%span sstring_bytes_lemmas'5 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/string_bytes_lemmas.rs" 77 10 78 50
+let%span sstring_bytes_lemmas'6 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/string_bytes_lemmas.rs" 92 10 92 16
+let%span sstring_bytes_lemmas'7 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/string_bytes_lemmas.rs" 93 10 95 57
+let%span sstring_bytes_lemmas'8 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/string_bytes_lemmas.rs" 46 11 46 25
+let%span sstring_bytes_lemmas'9 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/string_bytes_lemmas.rs" 47 10 47 16
+let%span sstring_bytes_lemmas'10 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/string_bytes_lemmas.rs" 48 10 48 69
+let%span sstring_bytes_lemmas'11 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/string_bytes_lemmas.rs" 91 10 91 20
+let%span sstring = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/std/string.rs" 190 20 190 56
+let%span schar = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/std/char.rs" 47 14 47 52
+
+use creusot.prelude.Char
+use seq.Seq
+use creusot.int.UInt8
+use map.Map
+use int.Int
+
+function tail_char (self: Seq.seq Char.t) : Seq.seq Char.t = [%#sseq] Seq.([..]) self 1 (Seq.length self)
+
+function flat_map_char (self: Seq.seq Char.t) (other: Map.map Char.t (Seq.seq UInt8.t)) : Seq.seq UInt8.t
+
+axiom flat_map_char_def:
+  forall self: Seq.seq Char.t, other: Map.map Char.t (Seq.seq UInt8.t) [flat_map_char self other]. flat_map_char self other
+    = ([%#sseq'1] if Seq.length self = 0 then
+      Seq.empty: Seq.seq UInt8.t
+    else
+      Seq.(++) (Map.get other (Seq.get self 0)) (flat_map_char (tail_char self) other)
+    )
+
+function to_utf8_char (self: Char.t) : Seq.seq UInt8.t
+
+axiom to_utf8_char_spec: forall self: Char.t [to_utf8_char self]. [%#schar] 1 <= Seq.length (to_utf8_char self)
+    /\ Seq.length (to_utf8_char self) <= 4
+
+function to_bytes (self: Seq.seq Char.t) : Seq.seq UInt8.t =
+  [%#sstring] flat_map_char self (fun (c: Char.t) -> to_utf8_char c)
+
+function index_Mapping_u8_Int [@inline:trivial] (self: Map.map UInt8.t int) (a: UInt8.t) : int =
+  [%#smapping] Map.get self a
+
+meta "rewrite_def" function index_Mapping_u8_Int
+
+function map_u8 (self: Seq.seq UInt8.t) (m: Map.map UInt8.t int) : Seq.seq int
+
+axiom map_u8_spec:
+  forall self: Seq.seq UInt8.t, m: Map.map UInt8.t int [map_u8 self m]. [%#sseq'3] Seq.length (map_u8 self m)
+    = Seq.length self
+
+axiom map_u8_spec'0: forall self: Seq.seq UInt8.t, m: Map.map UInt8.t int [map_u8 self m]. [%#sseq'4] forall i: int. 0
+          <= i
+        /\ i < Seq.length self -> Seq.get (map_u8 self m) i = index_Mapping_u8_Int m (Seq.get self i)
+
+function byte_sequence_as_ints (bytes: Seq.seq UInt8.t) : Seq.seq int =
+  [%#slib] map_u8 bytes (fun (byte: UInt8.t) -> UInt8.t'int byte)
+
+predicate empty_string_bytes_concat [#"/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/string_bytes_lemmas.rs" 79 0 79 74] (prefix: Seq.seq Char.t) (suffix: Seq.seq Char.t)
+
+axiom empty_string_bytes_concat_spec:
+  forall prefix: Seq.seq Char.t, suffix: Seq.seq Char.t [empty_string_bytes_concat prefix suffix]. ([%#sstring_bytes_lemmas'3] Seq.length prefix
+      = 0) -> ([%#sstring_bytes_lemmas'4] empty_string_bytes_concat prefix suffix)
+
+axiom empty_string_bytes_concat_spec'0:
+  forall prefix: Seq.seq Char.t, suffix: Seq.seq Char.t. ([%#sstring_bytes_lemmas'3] Seq.length prefix = 0)
+    -> ([%#sstring_bytes_lemmas'5] to_bytes (Seq.(++) prefix suffix) = Seq.(++) (to_bytes prefix) (to_bytes suffix))
+
+predicate byte_sequence_as_ints_concat [#"/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/string_bytes_lemmas.rs" 96 0 96 70] (left: Seq.seq UInt8.t) (right: Seq.seq UInt8.t)
+
+axiom byte_sequence_as_ints_concat_spec:
+  forall left: Seq.seq UInt8.t, right: Seq.seq UInt8.t [byte_sequence_as_ints_concat left right]. [%#sstring_bytes_lemmas'6] byte_sequence_as_ints_concat left right
+
+axiom byte_sequence_as_ints_concat_spec'0:
+  forall left: Seq.seq UInt8.t, right: Seq.seq UInt8.t. [%#sstring_bytes_lemmas'7] byte_sequence_as_ints (Seq.(++) left right)
+    = Seq.(++) (byte_sequence_as_ints left) (byte_sequence_as_ints right)
+
+predicate gt_log_Int [@inline:trivial] (self: int) (other: int) = [%#sord] other < self
+
+meta "rewrite_def" predicate gt_log_Int
+
+predicate nonempty_left_concat_tail_char [#"/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/string_bytes_lemmas.rs" 49 0 49 68] (left: Seq.seq Char.t) (right: Seq.seq Char.t)
+
+axiom nonempty_left_concat_tail_char_spec:
+  forall left: Seq.seq Char.t, right: Seq.seq Char.t [nonempty_left_concat_tail_char left right]. ([%#sstring_bytes_lemmas'8] gt_log_Int (Seq.length left) 0)
+    -> ([%#sstring_bytes_lemmas'9] nonempty_left_concat_tail_char left right)
+
+axiom nonempty_left_concat_tail_char_spec'0:
+  forall left: Seq.seq Char.t, right: Seq.seq Char.t. ([%#sstring_bytes_lemmas'8] gt_log_Int (Seq.length left) 0)
+    -> ([%#sstring_bytes_lemmas'10] Seq.(==) (tail_char (Seq.(++) left right)) (Seq.(++) (tail_char left) right))
+
+predicate ge_log_Int [@inline:trivial] (self: int) (other: int) = [%#sord'0] other <= self
+
+meta "rewrite_def" predicate ge_log_Int
+
+predicate well_founded_relation_Int [@inline:trivial] (self: int) (other: int) =
+  [%#swell_founded] ge_log_Int self 0 /\ gt_log_Int self other
+
+meta "rewrite_def" predicate well_founded_relation_Int
+
+meta "compute_max_steps" 1000000
+
+meta "select_lsinst" "all"
+
+constant prefix : Seq.seq Char.t
+
+constant suffix : Seq.seq Char.t
+
+predicate string_bytes_concat [#"/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/string_bytes_lemmas.rs" 118 0 118 79] (prefix: Seq.seq Char.t) (suffix: Seq.seq Char.t)
+
+goal vc_string_bytes_concat: if Seq.length prefix = 0 then
+    ([@stop_split] [@expl:empty_string_bytes_concat requires] [%#sstring_bytes_lemmas'3] Seq.length prefix = 0)
+    /\ (([@stop_split] [@expl:empty_string_bytes_concat ensures] ([@stop_split] [@expl:empty_string_bytes_concat ensures #0] [%#sstring_bytes_lemmas'4] empty_string_bytes_concat prefix suffix)
+      /\ ([@stop_split] [@expl:empty_string_bytes_concat ensures #1] [%#sstring_bytes_lemmas'5] to_bytes (Seq.(++) prefix suffix)
+      = Seq.(++) (to_bytes prefix) (to_bytes suffix)))
+    -> (if empty_string_bytes_concat prefix suffix then
+      ([@stop_split] [@expl:byte_sequence_as_ints_concat ensures] ([@stop_split] [@expl:byte_sequence_as_ints_concat ensures #0] [%#sstring_bytes_lemmas'6] byte_sequence_as_ints_concat (to_bytes prefix) (to_bytes suffix))
+        /\ ([@stop_split] [@expl:byte_sequence_as_ints_concat ensures #1] [%#sstring_bytes_lemmas'7] byte_sequence_as_ints (Seq.(++) (to_bytes prefix) (to_bytes suffix))
+        = Seq.(++) (byte_sequence_as_ints (to_bytes prefix)) (byte_sequence_as_ints (to_bytes suffix))))
+      -> ([@stop_split] [@expl:string_bytes_concat ensures] ([@stop_split] [@expl:string_bytes_concat ensures #0] [%#sstring_bytes_lemmas'0] byte_sequence_as_ints_concat (to_bytes prefix) (to_bytes suffix))
+      /\ ([@stop_split] [@expl:string_bytes_concat ensures #1] [%#sstring_bytes_lemmas'1] to_bytes (Seq.(++) prefix suffix)
+        = Seq.(++) (to_bytes prefix) (to_bytes suffix))
+      /\ ([@stop_split] [@expl:string_bytes_concat ensures #2] [%#sstring_bytes_lemmas'2] byte_sequence_as_ints (to_bytes (Seq.(++) prefix suffix))
+      = Seq.(++) (byte_sequence_as_ints (to_bytes prefix)) (byte_sequence_as_ints (to_bytes suffix))))
+    else
+      [@stop_split] [@expl:string_bytes_concat ensures] ([@stop_split] [@expl:string_bytes_concat ensures #0] [%#sstring_bytes_lemmas'0] false)
+      /\ ([@stop_split] [@expl:string_bytes_concat ensures #1] [%#sstring_bytes_lemmas'1] to_bytes (Seq.(++) prefix suffix)
+        = Seq.(++) (to_bytes prefix) (to_bytes suffix))
+      /\ ([@stop_split] [@expl:string_bytes_concat ensures #2] [%#sstring_bytes_lemmas'2] byte_sequence_as_ints (to_bytes (Seq.(++) prefix suffix))
+      = Seq.(++) (byte_sequence_as_ints (to_bytes prefix)) (byte_sequence_as_ints (to_bytes suffix)))
+    ))
+  else
+    let joined = Seq.(++) prefix suffix in let tail = tail_char prefix in ([@stop_split] [@expl:nonempty_left_concat_tail requires] [%#sstring_bytes_lemmas'8] gt_log_Int (Seq.length prefix) 0)
+    /\ (([@stop_split] [@expl:nonempty_left_concat_tail ensures] ([@stop_split] [@expl:nonempty_left_concat_tail ensures #0] [%#sstring_bytes_lemmas'9] nonempty_left_concat_tail_char prefix suffix)
+      /\ ([@stop_split] [@expl:nonempty_left_concat_tail ensures #1] [%#sstring_bytes_lemmas'10] Seq.(==) (tail_char (Seq.(++) prefix suffix)) (Seq.(++) (tail_char prefix) suffix)))
+    -> (if nonempty_left_concat_tail_char prefix suffix then
+      ([@expl:variant decreases] well_founded_relation_Int ([%#sstring_bytes_lemmas] Seq.length prefix) ([%#sstring_bytes_lemmas] Seq.length tail))
+      /\ (([@stop_split] [@expl:string_bytes_concat ensures] ([@stop_split] [@expl:string_bytes_concat ensures #0] [%#sstring_bytes_lemmas'0] string_bytes_concat tail suffix)
+        /\ ([@stop_split] [@expl:string_bytes_concat ensures #1] [%#sstring_bytes_lemmas'1] to_bytes (Seq.(++) tail suffix)
+          = Seq.(++) (to_bytes tail) (to_bytes suffix))
+        /\ ([@stop_split] [@expl:string_bytes_concat ensures #2] [%#sstring_bytes_lemmas'2] byte_sequence_as_ints (to_bytes (Seq.(++) tail suffix))
+        = Seq.(++) (byte_sequence_as_ints (to_bytes tail)) (byte_sequence_as_ints (to_bytes suffix))))
+      -> (if string_bytes_concat tail suffix then
+        ([@stop_split] [@expl:byte_sequence_as_ints_concat ensures] ([@stop_split] [@expl:byte_sequence_as_ints_concat ensures #0] [%#sstring_bytes_lemmas'6] byte_sequence_as_ints_concat (to_bytes prefix) (to_bytes suffix))
+          /\ ([@stop_split] [@expl:byte_sequence_as_ints_concat ensures #1] [%#sstring_bytes_lemmas'7] byte_sequence_as_ints (Seq.(++) (to_bytes prefix) (to_bytes suffix))
+          = Seq.(++) (byte_sequence_as_ints (to_bytes prefix)) (byte_sequence_as_ints (to_bytes suffix))))
+        -> (if byte_sequence_as_ints_concat (to_bytes prefix) (to_bytes suffix) then
+          [@stop_split] [@expl:string_bytes_concat ensures] ([@stop_split] [@expl:string_bytes_concat ensures #0] [%#sstring_bytes_lemmas'0] to_bytes joined
+            = Seq.(++) (to_bytes prefix) (to_bytes suffix))
+          /\ ([@stop_split] [@expl:string_bytes_concat ensures #1] [%#sstring_bytes_lemmas'1] to_bytes (Seq.(++) prefix suffix)
+            = Seq.(++) (to_bytes prefix) (to_bytes suffix))
+          /\ ([@stop_split] [@expl:string_bytes_concat ensures #2] [%#sstring_bytes_lemmas'2] byte_sequence_as_ints (to_bytes (Seq.(++) prefix suffix))
+          = Seq.(++) (byte_sequence_as_ints (to_bytes prefix)) (byte_sequence_as_ints (to_bytes suffix)))
+        else
+          [@stop_split] [@expl:string_bytes_concat ensures] ([@stop_split] [@expl:string_bytes_concat ensures #0] [%#sstring_bytes_lemmas'0] false)
+          /\ ([@stop_split] [@expl:string_bytes_concat ensures #1] [%#sstring_bytes_lemmas'1] to_bytes (Seq.(++) prefix suffix)
+            = Seq.(++) (to_bytes prefix) (to_bytes suffix))
+          /\ ([@stop_split] [@expl:string_bytes_concat ensures #2] [%#sstring_bytes_lemmas'2] byte_sequence_as_ints (to_bytes (Seq.(++) prefix suffix))
+          = Seq.(++) (byte_sequence_as_ints (to_bytes prefix)) (byte_sequence_as_ints (to_bytes suffix)))
+        )
+      else
+        [@stop_split] [@expl:string_bytes_concat ensures] ([@stop_split] [@expl:string_bytes_concat ensures #0] [%#sstring_bytes_lemmas'0] false)
+        /\ ([@stop_split] [@expl:string_bytes_concat ensures #1] [%#sstring_bytes_lemmas'1] to_bytes (Seq.(++) prefix suffix)
+          = Seq.(++) (to_bytes prefix) (to_bytes suffix))
+        /\ ([@stop_split] [@expl:string_bytes_concat ensures #2] [%#sstring_bytes_lemmas'2] byte_sequence_as_ints (to_bytes (Seq.(++) prefix suffix))
+        = Seq.(++) (byte_sequence_as_ints (to_bytes prefix)) (byte_sequence_as_ints (to_bytes suffix)))
+      ))
+    else
+      [@stop_split] [@expl:string_bytes_concat ensures] ([@stop_split] [@expl:string_bytes_concat ensures #0] [%#sstring_bytes_lemmas'0] false)
+      /\ ([@stop_split] [@expl:string_bytes_concat ensures #1] [%#sstring_bytes_lemmas'1] to_bytes (Seq.(++) prefix suffix)
+        = Seq.(++) (to_bytes prefix) (to_bytes suffix))
+      /\ ([@stop_split] [@expl:string_bytes_concat ensures #2] [%#sstring_bytes_lemmas'2] byte_sequence_as_ints (to_bytes (Seq.(++) prefix suffix))
+      = Seq.(++) (byte_sequence_as_ints (to_bytes prefix)) (byte_sequence_as_ints (to_bytes suffix)))
+    ))
+  

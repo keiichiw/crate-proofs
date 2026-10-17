@@ -1,0 +1,477 @@
+(* #"/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/utf8_models.rs" 439 0 439 69 *)
+
+let%span smodel = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/model.rs" 37 8 37 28
+let%span slib = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 338 4 341 5
+let%span slib'0 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 332 16 332 35
+let%span sseq = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/logic/seq.rs" 301 14 301 24
+let%span sseq'0 = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/logic/seq.rs" 299 14 299 40
+let%span sseq'1 = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/logic/seq.rs" 300 14 300 76
+let%span sseq'2 = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/logic/seq.rs" 311 14 311 24
+let%span sseq'3 = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/logic/seq.rs" 313 8 317 9
+let%span sseq'4 = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/logic/seq.rs" 160 8 160 39
+let%span smapping = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/logic/mapping.rs" 66 8 66 19
+let%span sstring = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/std/string.rs" 196 10 196 90
+let%span sstring'0 = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/std/string.rs" 197 28 197 30
+let%span sstring'1 = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/std/string.rs" 57 19 57 62
+let%span sstring'2 = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/std/string.rs" 58 18 58 46
+let%span sstring'3 = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/std/string.rs" 190 20 190 56
+let%span schar = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/std/char.rs" 47 14 47 52
+let%span sutf8_models = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/utf8_models.rs" 444 29 444 35
+let%span sutf8_models'0 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/utf8_models.rs" 445 50 445 56
+let%span sutf8_models'1 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/utf8_models.rs" 445 26 445 57
+let%span sutf8_models'2 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/utf8_models.rs" 448 30 448 84
+let%span sutf8_models'3 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/utf8_models.rs" 449 30 449 96
+let%span sutf8_models'4 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/utf8_models.rs" 454 37 454 52
+let%span sutf8_models'5 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/utf8_models.rs" 454 55 454 61
+let%span sutf8_models'6 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/utf8_models.rs" 457 24 457 70
+let%span sutf8_models'7 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/utf8_models.rs" 460 40 460 74
+let%span sutf8_models'8 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/utf8_models.rs" 441 32 441 62
+let%span sutf8_models'9 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/utf8_models.rs" 439 57 439 69
+let%span sutf8_models'10 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/utf8_models.rs" 430 12 430 87
+let%span sutf8_models'11 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/utf8_models.rs" 432 28 438 1
+let%span sutf8_models'12 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/utf8_models.rs" 330 8 333 65
+let%span sutf8_models'13 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/utf8_models.rs" 319 8 322 9
+let%span svec = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/std/vec.rs" 202 18 202 34
+let%span svec'0 = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/std/vec.rs" 18 14 18 41
+let%span sstdlib_models = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/stdlib_models.rs" 167 18 173 9
+let%span sstdlib_models'0 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/stdlib_models.rs" 141 18 141 45
+let%span sstdlib_models'1 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/stdlib_models.rs" 121 10 121 21
+let%span sstdlib_models'2 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/stdlib_models.rs" 123 4 128 5
+let%span sstdlib_models'3 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/stdlib_models.rs" 133 16 133 39
+let%span sstdlib_models'4 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/stdlib_models.rs" 107 10 107 21
+let%span sstdlib_models'5 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/stdlib_models.rs" 109 4 116 5
+let%span sstdlib_models'6 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/stdlib_models.rs" 22 11 22 40
+let%span sstdlib_models'7 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/stdlib_models.rs" 23 10 23 56
+let%span sstdlib_models'8 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/stdlib_models.rs" 24 10 25 49
+let%span sstdlib_models'9 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/stdlib_models.rs" 27 4 27 24
+let%span scmp = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/std/cmp.rs" 14 26 14 75
+let%span sslice = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/std/slice.rs" 55 14 55 44
+let%span sslice'0 = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/std/slice.rs" 56 14 56 91
+let%span sslice'1 = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/std/slice.rs" 67 20 67 29
+let%span snum = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/std/num.rs" 27 28 27 33
+
+use creusot.slice.Slice64
+use creusot.int.UInt8
+use seq.Seq
+use creusot.int.UInt64
+use map.Map
+use creusot.prelude.Char
+use creusot.prelude.Any
+use int.Int
+
+type t_Vec_u8_Global
+
+type t_Cow_slice_u8 = Borrowed (Slice64.slice UInt8.t) | Owned t_Vec_u8_Global
+
+let elim_Owned (_x: t_Cow_slice_u8) (return (f0: t_Vec_u8_Global)) = any
+  [ _k (f0: t_Vec_u8_Global) -> {Owned f0 = _x} (! return {f0})
+  | _chk -> (! {[@expl:elim Owned] match _x with
+      | Owned _ -> true
+      | _ -> false
+      end}
+    any) ]
+
+constant const_MAX: UInt64.t = (18446744073709551615: UInt64.t)
+
+function view_Vec_u8_Global (self: t_Vec_u8_Global) : Seq.seq UInt8.t
+
+axiom view_Vec_u8_Global_spec:
+  forall self: t_Vec_u8_Global [view_Vec_u8_Global self]. [%#svec'0] Seq.length (view_Vec_u8_Global self)
+    <= UInt64.t'int const_MAX
+
+let deref_Vec_u8_Global (self_: t_Vec_u8_Global) (return (x: Slice64.slice UInt8.t)) = any
+  [ return (result: Slice64.slice UInt8.t) -> {[@stop_split] [@expl:deref ensures] [%#svec] Slice64.view result
+    = view_Vec_u8_Global self_}
+    (! return {result}) ]
+
+type t_String
+
+type t_Cow_str = Borrowed'0 string | Owned'0 t_String
+
+predicate inv_String (_1: t_String)
+
+predicate inv_Cow_str (_1: t_Cow_str)
+
+axiom inv_axiom [@rewrite]: forall x: t_Cow_str [inv_Cow_str x]. inv_Cow_str x
+    = match x with
+      | Borrowed'0 f0 -> true
+      | Owned'0 f0 -> inv_String f0
+      end
+
+type tup3_Int_Int_bool = { f0: int; f1: int; f2: bool }
+
+function utf8_step (bytes: Seq.seq int) (pos: int) : tup3_Int_Int_bool =
+  [%#sstdlib_models'9] let b0 = Seq.get bytes pos in let remaining = Seq.length bytes - pos in if 0 <= b0
+  /\ b0 <= 127 then
+    { f0 = b0; f1 = 1; f2 = true }
+  else
+    if 194 <= b0 /\ b0 <= 223 then
+      if remaining < 2 then
+        { f0 = 65533; f1 = remaining; f2 = false }
+      else
+        let b1 = Seq.get bytes (pos + 1) in if 128 <= b1 /\ b1 <= 191 then
+          { f0 = (b0 - 192) * 64 + (b1 - 128); f1 = 2; f2 = true }
+        else
+          { f0 = 65533; f1 = 1; f2 = false }
+      
+    
+    else
+      if 224 <= b0 /\ b0 <= 239 then
+        if remaining < 2 then
+          { f0 = 65533; f1 = remaining; f2 = false }
+        else
+          let b1 = Seq.get bytes (pos + 1) in let second_ok = if b0 = 224 then
+            160 <= b1 /\ b1 <= 191
+          else
+            if b0 = 237 then 128 <= b1 /\ b1 <= 159 else 128 <= b1 /\ b1 <= 191
+           in if not second_ok then
+            { f0 = 65533; f1 = 1; f2 = false }
+          else
+            if remaining < 3 then
+              { f0 = 65533; f1 = remaining; f2 = false }
+            else
+              let b2 = Seq.get bytes (pos + 2) in if 128 <= b2 /\ b2 <= 191 then
+                { f0 = (b0 - 224) * 4096 + (b1 - 128) * 64 + (b2 - 128); f1 = 3; f2 = true }
+              else
+                { f0 = 65533; f1 = 2; f2 = false }
+            
+          
+        
+      
+      else
+        if 240 <= b0 /\ b0 <= 244 then
+          if remaining < 2 then
+            { f0 = 65533; f1 = remaining; f2 = false }
+          else
+            let b1 = Seq.get bytes (pos + 1) in let second_ok = if b0 = 240 then
+              144 <= b1 /\ b1 <= 191
+            else
+              if b0 = 244 then 128 <= b1 /\ b1 <= 143 else 128 <= b1 /\ b1 <= 191
+             in if not second_ok then
+              { f0 = 65533; f1 = 1; f2 = false }
+            else
+              if remaining < 3 then
+                { f0 = 65533; f1 = remaining; f2 = false }
+              else
+                let b2 = Seq.get bytes (pos + 2) in if not (128 <= b2 /\ b2 <= 191) then
+                  { f0 = 65533; f1 = 2; f2 = false }
+                else
+                  if remaining < 4 then
+                    { f0 = 65533; f1 = remaining; f2 = false }
+                  else
+                    let b3 = Seq.get bytes (pos + 3) in if 128 <= b3 /\ b3 <= 191 then
+                      { f0 = (b0 - 240) * 262144 + (b1 - 128) * 4096 + (b2 - 128) * 64 + (b3 - 128); f1 = 4; f2 = true }
+                    else
+                      { f0 = 65533; f1 = 3; f2 = false }
+                  
+                
+              
+            
+          
+        
+        else
+          { f0 = 65533; f1 = 1; f2 = false }
+      
+    
+  
+
+
+axiom utf8_step_spec: forall bytes: Seq.seq int, pos: int [utf8_step bytes pos]. ([%#sstdlib_models'6] 0 <= pos
+      /\ pos < Seq.length bytes)
+    -> ([%#sstdlib_models'7] 1 <= (utf8_step bytes pos).f1 /\ (utf8_step bytes pos).f1 <= Seq.length bytes - pos)
+
+axiom utf8_step_spec'0: forall bytes: Seq.seq int, pos: int [utf8_step bytes pos]. ([%#sstdlib_models'6] 0 <= pos
+      /\ pos < Seq.length bytes)
+    -> ([%#sstdlib_models'8] (utf8_step bytes pos).f0 = 65533
+    \/ 0 <= (utf8_step bytes pos).f0 /\ (utf8_step bytes pos).f0 <= 55295
+    \/ 57344 <= (utf8_step bytes pos).f0 /\ (utf8_step bytes pos).f0 <= 1114111)
+
+predicate utf8_is_valid (bytes: Seq.seq int)
+
+axiom utf8_is_valid_def: forall bytes: Seq.seq int [utf8_is_valid bytes]. utf8_is_valid bytes
+    = ([%#sstdlib_models'2] if Seq.length bytes = 0 then
+      true
+    else
+      let {f1 = consumed; f2 = valid} = utf8_step bytes 0 in valid
+      /\ utf8_is_valid (Seq.([..]) bytes consumed (Seq.length bytes))
+    )
+
+function index_Mapping_u8_Int [@inline:trivial] (self: Map.map UInt8.t int) (a: UInt8.t) : int =
+  [%#smapping] Map.get self a
+
+meta "rewrite_def" function index_Mapping_u8_Int
+
+function map_u8 (self: Seq.seq UInt8.t) (m: Map.map UInt8.t int) : Seq.seq int
+
+axiom map_u8_spec:
+  forall self: Seq.seq UInt8.t, m: Map.map UInt8.t int [map_u8 self m]. [%#sseq'0] Seq.length (map_u8 self m)
+    = Seq.length self
+
+axiom map_u8_spec'0: forall self: Seq.seq UInt8.t, m: Map.map UInt8.t int [map_u8 self m]. [%#sseq'1] forall i: int. 0
+          <= i
+        /\ i < Seq.length self -> Seq.get (map_u8 self m) i = index_Mapping_u8_Int m (Seq.get self i)
+
+function index_Mapping_char_Int [@inline:trivial] (self: Map.map Char.t int) (a: Char.t) : int =
+  [%#smapping] Map.get self a
+
+meta "rewrite_def" function index_Mapping_char_Int
+
+function map_char (self: Seq.seq Char.t) (m: Map.map Char.t int) : Seq.seq int
+
+axiom map_char_spec:
+  forall self: Seq.seq Char.t, m: Map.map Char.t int [map_char self m]. [%#sseq'0] Seq.length (map_char self m)
+    = Seq.length self
+
+axiom map_char_spec'0: forall self: Seq.seq Char.t, m: Map.map Char.t int [map_char self m]. [%#sseq'1] forall i: int. 0
+          <= i
+        /\ i < Seq.length self -> Seq.get (map_char self m) i = index_Mapping_char_Int m (Seq.get self i)
+
+function chars_as_scalars [@inline:trivial] (chars: Seq.seq Char.t) : Seq.seq int =
+  [%#sstdlib_models'3] map_char chars (fun (c: Char.t) -> Char.to_int c)
+
+meta "rewrite_def" function chars_as_scalars
+
+function view_str (self: string) : Seq.seq Char.t
+
+function utf8_lossy_model (bytes: Seq.seq int) : Seq.seq int
+
+axiom utf8_lossy_model_def: forall bytes: Seq.seq int [utf8_lossy_model bytes]. utf8_lossy_model bytes
+    = ([%#sstdlib_models'5] if Seq.length bytes = 0 then
+      Seq.empty: Seq.seq int
+    else
+      let {f0 = scalar; f1 = consumed} = utf8_step bytes 0 in Seq.(++) (Seq.singleton scalar) (utf8_lossy_model (Seq.([..]) bytes consumed (Seq.length bytes)))
+    )
+
+function tail_char (self: Seq.seq Char.t) : Seq.seq Char.t = [%#sseq'4] Seq.([..]) self 1 (Seq.length self)
+
+function flat_map_char (self: Seq.seq Char.t) (other: Map.map Char.t (Seq.seq UInt8.t)) : Seq.seq UInt8.t
+
+axiom flat_map_char_def:
+  forall self: Seq.seq Char.t, other: Map.map Char.t (Seq.seq UInt8.t) [flat_map_char self other]. flat_map_char self other
+    = ([%#sseq'3] if Seq.length self = 0 then
+      Seq.empty: Seq.seq UInt8.t
+    else
+      Seq.(++) (Map.get other (Seq.get self 0)) (flat_map_char (tail_char self) other)
+    )
+
+function to_utf8_char (self: Char.t) : Seq.seq UInt8.t
+
+axiom to_utf8_char_spec: forall self: Char.t [to_utf8_char self]. [%#schar] 1 <= Seq.length (to_utf8_char self)
+    /\ Seq.length (to_utf8_char self) <= 4
+
+function to_bytes (self: Seq.seq Char.t) : Seq.seq UInt8.t =
+  [%#sstring'3] flat_map_char self (fun (c: Char.t) -> to_utf8_char c)
+
+function view_String (self: t_String) : Seq.seq Char.t
+
+let from_utf8_lossy (bytes: Slice64.slice UInt8.t) (return (x: t_Cow_str)) = any
+  [ return (result: t_Cow_str) ->
+  {[@stop_split] [@expl:from_utf8_lossy ensures] ([@stop_split] [@expl:from_utf8_lossy result type invariant] inv_Cow_str result)
+    /\ ([@stop_split] [@expl:from_utf8_lossy ensures] [%#sstdlib_models] match result with
+      | Borrowed'0 s -> utf8_is_valid (map_u8 (Slice64.view bytes) (fun (b: UInt8.t) -> UInt8.t'int b))
+      /\ chars_as_scalars (view_str s)
+        = utf8_lossy_model (map_u8 (Slice64.view bytes) (fun (b: UInt8.t) -> UInt8.t'int b))
+      /\ to_bytes (view_str s) = Slice64.view bytes
+      | Owned'0 s -> not utf8_is_valid (map_u8 (Slice64.view bytes) (fun (b: UInt8.t) -> UInt8.t'int b))
+      /\ chars_as_scalars (view_String s)
+      = utf8_lossy_model (map_u8 (Slice64.view bytes) (fun (b: UInt8.t) -> UInt8.t'int b))
+      end)}
+    (! return {result}) ]
+
+predicate postcondition_from_utf8_lossy (self: ()) (args: Slice64.slice UInt8.t) (result: t_Cow_str) =
+  let bytes = args in inv_Cow_str result
+  /\ ([%#sstdlib_models] match result with
+    | Borrowed'0 s -> utf8_is_valid (map_u8 (Slice64.view bytes) (fun (b: UInt8.t) -> UInt8.t'int b))
+    /\ chars_as_scalars (view_str s)
+      = utf8_lossy_model (map_u8 (Slice64.view bytes) (fun (b: UInt8.t) -> UInt8.t'int b))
+    /\ to_bytes (view_str s) = Slice64.view bytes
+    | Owned'0 s -> not utf8_is_valid (map_u8 (Slice64.view bytes) (fun (b: UInt8.t) -> UInt8.t'int b))
+    /\ chars_as_scalars (view_String s)
+    = utf8_lossy_model (map_u8 (Slice64.view bytes) (fun (b: UInt8.t) -> UInt8.t'int b))
+    end)
+
+meta "rewrite_def" predicate postcondition_from_utf8_lossy
+
+function string_scalars (s: Seq.seq Char.t) : Seq.seq int = [%#slib'0] map_char s (fun (c: Char.t) -> Char.to_int c)
+
+function cow_str_scalars (value: t_Cow_str) : Seq.seq int = [%#slib] match value with
+    | Borrowed'0 s -> string_scalars (view_str s)
+    | Owned'0 s -> string_scalars (view_String s)
+    end
+
+predicate lossy_bytes_relation [#"/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/utf8_models.rs" 328 0 328 76] (bytes: Seq.seq UInt8.t) (output: Seq.seq int) =
+  [%#sutf8_models'12] exists raw: Slice64.slice UInt8.t, decoded: t_Cow_str. Slice64.view raw = bytes
+    /\ postcondition_from_utf8_lossy () raw decoded /\ cow_str_scalars decoded = output
+
+let elim_Owned'0 (_x: t_Cow_str) (return (f0'0: t_String)) = any
+  [ _k (f0'0: t_String) -> {Owned'0 f0'0 = _x} (! return {f0'0})
+  | _chk -> (! {[@expl:elim Owned] match _x with
+      | Owned'0 _ -> true
+      | _ -> false
+      end}
+    any) ]
+
+let elim_Borrowed (_x: t_Cow_str) (return (f0'0: string)) = any
+  [ _k (f0'0: string) -> {Borrowed'0 f0'0 = _x} (! return {f0'0})
+  | _chk -> (! {[@expl:elim Borrowed] match _x with
+      | Borrowed'0 _ -> true
+      | _ -> false
+      end}
+    any) ]
+
+let as_bytes (self_: string) (return (x: Slice64.slice UInt8.t)) = any
+  [ return (result: Slice64.slice UInt8.t) ->
+  {[@stop_split] [@expl:as_bytes ensures] [%#sstdlib_models'0] Slice64.view result = to_bytes (view_str self_)}
+    (! return {result}) ]
+
+type tup2_ref_ref_slice_u8_ref_ref_slice_u8 = { f0'0: Slice64.slice UInt8.t; f1'0: Slice64.slice UInt8.t }
+
+function deep_model_u8 [@inline:trivial] (self: UInt8.t) : int = [%#snum] UInt8.t'int self
+
+meta "rewrite_def" function deep_model_u8
+
+function index_slice_u8 [@inline:trivial] (self: Slice64.slice UInt8.t) (ix: int) : UInt8.t =
+  [%#sslice'1] Seq.get (Slice64.view self) ix
+
+meta "rewrite_def" function index_slice_u8
+
+function deep_model_slice_u8 (self: Slice64.slice UInt8.t) : Seq.seq int
+
+axiom deep_model_slice_u8_spec:
+  forall self: Slice64.slice UInt8.t [deep_model_slice_u8 self]. [%#sslice] Seq.length (Slice64.view self)
+    = Seq.length (deep_model_slice_u8 self)
+
+axiom deep_model_slice_u8_spec'0:
+  forall self: Slice64.slice UInt8.t [deep_model_slice_u8 self]. [%#sslice'0] forall i: int. 0 <= i
+        /\ i < Seq.length (deep_model_slice_u8 self)
+      -> Seq.get (deep_model_slice_u8 self) i = deep_model_u8 (index_slice_u8 self i)
+
+function deep_model_ref_slice_u8 [@inline:trivial] (self: Slice64.slice UInt8.t) : Seq.seq int =
+  [%#smodel] deep_model_slice_u8 self
+
+meta "rewrite_def" function deep_model_ref_slice_u8
+
+function deep_model_ref_ref_slice_u8 [@inline:trivial] (self: Slice64.slice UInt8.t) : Seq.seq int =
+  [%#smodel] deep_model_ref_slice_u8 self
+
+meta "rewrite_def" function deep_model_ref_ref_slice_u8
+
+let eq_ref_slice_u8 (self_: Slice64.slice UInt8.t) (rhs: Slice64.slice UInt8.t) (return (x: bool)) = any
+  [ return (result: bool) -> {[@stop_split] [@expl:eq ensures] [%#scmp] result
+    = (deep_model_ref_ref_slice_u8 self_ = deep_model_ref_ref_slice_u8 rhs)}
+    (! return {result}) ]
+
+type t_AssertKind = Eq | Ne | Match
+
+constant injective_to_bytes: () = [%#sstring'0] ()
+
+axiom injective_to_bytes_spec: [%#sstring] forall s1: Seq.seq Char.t, s2: Seq.seq Char.t. to_bytes s1 = to_bytes s2
+    -> s1 = s2
+
+let from_utf8_unchecked (bytes: t_Vec_u8_Global) (return (x: t_String)) =
+{[@stop_split] [@expl:from_utf8_unchecked requires] [%#sstring'1] exists s: Seq.seq Char.t. to_bytes s
+    = view_Vec_u8_Global bytes}
+  any
+  [ return (result: t_String) ->
+  {[@stop_split] [@expl:from_utf8_unchecked ensures] ([@stop_split] [@expl:from_utf8_unchecked result type invariant] inv_String result)
+    /\ ([@stop_split] [@expl:from_utf8_unchecked ensures] [%#sstring'2] to_bytes (view_String result)
+    = view_Vec_u8_Global bytes)}
+    (! return {result}) ]
+
+let elim_Borrowed'0 (_x: t_Cow_slice_u8) (return (f0'1: Slice64.slice UInt8.t)) = any
+  [ _k (f0'1: Slice64.slice UInt8.t) -> {Borrowed f0'1 = _x} (! return {f0'1})
+  | _chk -> (! {[@expl:elim Borrowed] match _x with
+      | Borrowed _ -> true
+      | _ -> false
+      end}
+    any) ]
+
+function cow_bytes [#"/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/utf8_models.rs" 317 0 317 56] (value: t_Cow_slice_u8) : Seq.seq UInt8.t
+ = [%#sutf8_models'13] match value with
+    | Borrowed bytes -> Slice64.view bytes
+    | Owned bytes -> view_Vec_u8_Global bytes
+    end
+
+meta "compute_max_steps" 1000000
+
+meta "select_lsinst" "all"
+
+let decode_utf8_lossy [#"/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/utf8_models.rs" 439 0 439 69]
+  (input: t_Cow_slice_u8) (return (x: t_Cow_str)) = (! bb0
+  [ bb0 = any
+    [ br0 (x0: Slice64.slice UInt8.t) -> {input = Borrowed x0} (! bb4)
+    | br1 (x0: t_Vec_u8_Global) -> {input = Owned x0} (! bb3) ]
+  | bb3 = s0
+    [ s0 = elim_Owned {input} (fun (r0: t_Vec_u8_Global) -> [ &bytes'0 <- r0 ] s1)
+    | s1 = [ &_13 <- bytes'0 ] s2
+    | s2 = deref_Vec_u8_Global [%#sutf8_models] {_13} (fun (_x: Slice64.slice UInt8.t) -> [ &_11 <- _x ] s3)
+    | s3 = [ &raw <- _11 ] s4
+    | s4 = [ &_18 <- bytes'0 ] s5
+    | s5 = deref_Vec_u8_Global [%#sutf8_models'0] {_18} (fun (_x: Slice64.slice UInt8.t) -> [ &_16 <- _x ] s6)
+    | s6 = from_utf8_lossy [%#sutf8_models'1] {_16} (fun (_x: t_Cow_str) -> [ &decoded <- _x ] s7)
+    | s7 = {[@expl:assertion] [%#sutf8_models'2] postcondition_from_utf8_lossy () raw decoded} s8
+    | s8 =
+      {[@expl:assertion] [%#sutf8_models'3] lossy_bytes_relation (view_Vec_u8_Global bytes'0) (cow_str_scalars decoded)}
+      s9
+    | s9 = any
+      [ br0 (x0: string) -> {decoded = Borrowed'0 x0} (! bb12)
+      | br1 (x0: t_String) -> {decoded = Owned'0 x0} (! bb11) ] ]
+  | bb11 = s0
+    [ s0 = elim_Owned'0 {decoded} (fun (r0: t_String) -> [ &string' <- r0 ] s1)
+    | s1 = [ &_ret <- Owned'0 string' ] s2
+    | s2 = return {_ret} ]
+  | bb12 = s0
+    [ s0 = elim_Borrowed {decoded} (fun (r0: string) -> [ &utf8 <- r0 ] s1)
+    | s1 = any [ br0 -> {false} (! bb20) | br1 -> (! bb13) ] ]
+  | bb13 = s0
+    [ s0 = as_bytes [%#sutf8_models'4] {utf8} (fun (_x: Slice64.slice UInt8.t) -> [ &_35 <- _x ] s1)
+    | s1 = deref_Vec_u8_Global [%#sutf8_models'5] {bytes'0} (fun (_x: Slice64.slice UInt8.t) -> [ &_39 <- _x ] s2)
+    | s2 = [ &_33 <- { f0'0 = _35; f1'0 = _39 } ] s3
+    | s3 = [ &left_val <- _33.f0'0 ] s4
+    | s4 = [ &right_val <- _33.f1'0 ] s5
+    | s5 = eq_ref_slice_u8 {left_val} {right_val} (fun (_x: bool) -> [ &_43 <- _x ] s6)
+    | s6 = any [ br0 -> {_43 = false} (! bb18) | br1 -> {_43} (! bb20) ] ]
+  | bb18 = s0
+    [ s0 = [ &kind <- Eq ] s1 | s1 = [ &_51 <- left_val ] s2 | s2 = [ &_53 <- right_val ] s3 | s3 = {false} any ]
+  | bb20 = s0
+    [ s0 = {[@expl:assertion] [%#sutf8_models'6] let _ = injective_to_bytes in true} s1
+    | s1 = from_utf8_unchecked [%#sutf8_models'7] {bytes'0} (fun (_x: t_String) -> [ &_57 <- _x ] s2)
+    | s2 = [ &_ret <- Owned'0 _57 ] s3
+    | s3 = return {_ret} ]
+  | bb4 = s0
+    [ s0 = elim_Borrowed'0 {input} (fun (r0: Slice64.slice UInt8.t) -> [ &bytes <- r0 ] s1)
+    | s1 = from_utf8_lossy [%#sutf8_models'8] {bytes} (fun (_x: t_Cow_str) -> [ &_ret <- _x ] s2)
+    | s2 = return {_ret} ] ]
+  [ & _ret: t_Cow_str = Any.any_l ()
+  | & input: t_Cow_slice_u8 = input
+  | & bytes: Slice64.slice UInt8.t = Any.any_l ()
+  | & bytes'0: t_Vec_u8_Global = Any.any_l ()
+  | & raw: Slice64.slice UInt8.t = Any.any_l ()
+  | & _11: Slice64.slice UInt8.t = Any.any_l ()
+  | & _13: t_Vec_u8_Global = Any.any_l ()
+  | & decoded: t_Cow_str = Any.any_l ()
+  | & _16: Slice64.slice UInt8.t = Any.any_l ()
+  | & _18: t_Vec_u8_Global = Any.any_l ()
+  | & utf8: string = Any.any_l ()
+  | & _33: tup2_ref_ref_slice_u8_ref_ref_slice_u8 = Any.any_l ()
+  | & _35: Slice64.slice UInt8.t = Any.any_l ()
+  | & _39: Slice64.slice UInt8.t = Any.any_l ()
+  | & left_val: Slice64.slice UInt8.t = Any.any_l ()
+  | & right_val: Slice64.slice UInt8.t = Any.any_l ()
+  | & _43: bool = Any.any_l ()
+  | & kind: t_AssertKind = Any.any_l ()
+  | & _51: Slice64.slice UInt8.t = Any.any_l ()
+  | & _53: Slice64.slice UInt8.t = Any.any_l ()
+  | & _57: t_String = Any.any_l ()
+  | & string': t_String = Any.any_l () ])
+  [ return (result: t_Cow_str) ->
+  {[@stop_split] [@expl:decode_utf8_lossy ensures] ([@stop_split] [@expl:decode_utf8_lossy result type invariant] [%#sutf8_models'9] inv_Cow_str result)
+    /\ ([@stop_split] [@expl:decode_utf8_lossy ensures #0] [%#sutf8_models'10] lossy_bytes_relation (cow_bytes input) (cow_str_scalars result))
+    /\ ([@stop_split] [@expl:decode_utf8_lossy ensures #1] [%#sutf8_models'11] match input with
+      | Borrowed bytes -> postcondition_from_utf8_lossy () bytes result
+      | Owned _ -> match result with
+        | Borrowed'0 _ -> false
+        | Owned'0 _ -> true
+        end
+      end)}
+    (! return {result}) ]

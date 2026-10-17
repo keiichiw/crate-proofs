@@ -1,0 +1,111 @@
+(* #"/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/ascii_set.rs" 220 0 220 29 *)
+
+let%span sascii_set = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/ascii_set.rs" 225 25 225 27
+let%span sascii_set'0 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/ascii_set.rs" 225 13 225 28
+let%span sascii_set'1 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/ascii_set.rs" 225 14 225 22
+let%span sascii_set'2 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/ascii_set.rs" 225 8 225 28
+let%span sascii_set'3 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/ascii_set.rs" 222 9 222 14
+let%span sascii_set'4 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/ascii_set.rs" 225 8 225 9
+let%span sascii_set'5 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/ascii_set.rs" 223 8 223 9
+let%span sascii_set'6 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/ascii_set.rs" 224 8 224 9
+let%span sascii_set'7 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/ascii_set.rs" 220 0 220 29
+let%span sascii_set'8 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/ascii_set.rs" 217 28 217 60
+let%span sascii_set'9 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/ascii_set.rs" 218 28 218 186
+let%span sascii_set'10 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/ascii_set.rs" 114 14 114 31
+let%span sascii_set'11 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/ascii_set.rs" 116 20 116 58
+let%span sinvariant = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/invariant.rs" 85 8 85 18
+let%span sarray = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/std/array.rs" 9 20 9 51
+
+use creusot.slice.Slice64BW
+use creusot.int.UInt32BW
+use seq.Seq
+use creusot.int.UInt64BW
+use creusot.prelude.Any
+
+type t_AsciiSet = { mask: Slice64BW.array UInt32BW.t }
+
+predicate inv_Seq_u32 [@inline:trivial] (_1: Seq.seq UInt32BW.t) = true
+
+meta "rewrite_def" predicate inv_Seq_u32
+
+predicate invariant_array_u32_4 (self: Slice64BW.array UInt32BW.t) =
+  [%#sarray] inv_Seq_u32 (Slice64BW.view self) /\ Seq.length (Slice64BW.view self) = UInt64BW.t'int (4: UInt64BW.t)
+
+predicate inv_array_u32_4 [@inline:trivial] (_1: Slice64BW.array UInt32BW.t) = invariant_array_u32_4 _1
+
+meta "rewrite_def" predicate inv_array_u32_4
+
+predicate inv_AsciiSet (_1: t_AsciiSet)
+
+axiom inv_axiom [@rewrite]: forall x: t_AsciiSet [inv_AsciiSet x]. inv_AsciiSet x = inv_array_u32_4 x.mask
+
+predicate invariant_ref_AsciiSet [@inline:trivial] (self: t_AsciiSet) = [%#sinvariant] inv_AsciiSet self
+
+meta "rewrite_def" predicate invariant_ref_AsciiSet
+
+predicate inv_ref_AsciiSet [@inline:trivial] (_1: t_AsciiSet) = invariant_ref_AsciiSet _1
+
+meta "rewrite_def" predicate inv_ref_AsciiSet
+
+constant const_CONTROLS [#"/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/ascii_set.rs" 220 0 220 29] : t_AsciiSet
+
+axiom const_CONTROLS_spec: [%#sascii_set'7] inv_ref_AsciiSet const_CONTROLS
+
+function mask_words [#"/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/ascii_set.rs" 115 4 115 40] (self: t_AsciiSet) : Seq.seq UInt32BW.t
+ = [%#sascii_set'11] Seq.create 4 (fun (i: int) -> Seq.get (Slice64BW.view self.mask) i)
+
+axiom mask_words_spec: forall self: t_AsciiSet [mask_words self]. [%#sascii_set'10] Seq.length (mask_words self) = 4
+
+meta "compute_max_steps" 1000000
+
+meta "select_lsinst" "all"
+
+let const_CONTROLS_def [#"/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/ascii_set.rs" 220 0 220 29]
+  (return (x: t_AsciiSet)) = (! bb0
+  [ bb0 = s0
+    [ s0 = [ &_9 <- ([%#sascii_set] (32: UInt32BW.t)) = ([%#sascii_set'0] (0: UInt32BW.t)) ] s1
+    | s1 = {[@expl:remainder by zero] [%#sascii_set'0] not _9} s2
+    | s2 = UInt32BW.rem [%#sascii_set'0] {[%#sascii_set'1] (127: UInt32BW.t)} {[%#sascii_set] (32: UInt32BW.t)}
+        (fun (_x: UInt32BW.t) -> [ &_8 <- _x ] s3)
+    | s3 = [ &_10 <- UInt32BW.lt _8 ([%#sascii_set'2] (32: UInt32BW.t)) ] s4
+    | s4 = {[@expl:Shl overflow] [%#sascii_set'2] _10} s5
+    | s5 = bb0'0
+      [ bb0'0 = s0'0
+        [ s0'0 = [ &_3'0 <- UInt32BW.bw_not ([%#sascii_set'3] (0: UInt32BW.t)) ] s1'0
+        | s1'0 = UInt32BW.rem [%#sascii_set'0] {[%#sascii_set'1] (127: UInt32BW.t)} {[%#sascii_set] (32: UInt32BW.t)}
+            (fun (_x: UInt32BW.t) -> [ &_5 <- _x ] s2'0)
+        | s2'0 = UInt32BW.shl [%#sascii_set'2] {[%#sascii_set'4] (1: UInt32BW.t)} {UInt32BW.to_BV256 _5}
+            (fun (_x: UInt32BW.t) -> [ &_4 <- _x ] s3'0)
+        | s3'0 = any
+          [ any_ (__arr_temp: Slice64BW.array UInt32BW.t) -> (! -{Seq.get __arr_temp.Slice64BW.elts 0 = _3'0
+            /\ Seq.get __arr_temp.Slice64BW.elts 1 = ([%#sascii_set'5] (0: UInt32BW.t))
+            /\ Seq.get __arr_temp.Slice64BW.elts 2 = ([%#sascii_set'6] (0: UInt32BW.t))
+            /\ Seq.get __arr_temp.Slice64BW.elts 3 = _4 /\ Seq.length __arr_temp.Slice64BW.elts = 4}-
+            [ &_2 <- __arr_temp ] s4'0) ]
+        | s4'0 = [ &_1 <- { mask = _2 } ] s5'0
+        | s5'0 = [ &_ret'0 <- _1 ] s6'0
+        | s6'0 = _const_ret {_ret'0} ] ]
+      [ & _ret'0: t_AsciiSet = Any.any_l ()
+      | & _1: t_AsciiSet = Any.any_l ()
+      | & _2: Slice64BW.array UInt32BW.t = Any.any_l ()
+      | & _3'0: UInt32BW.t = Any.any_l ()
+      | & _4: UInt32BW.t = Any.any_l ()
+      | & _5: UInt32BW.t = Any.any_l () ] [ _const_ret (_const: t_AsciiSet) -> [ &_11 <- _const ] s6 ]
+    | s6 = [ &_3 <- _11 ] s7
+    | s7 = [ &_ret <- _3 ] s8
+    | s8 = return {_ret} ] ]
+  [ & _ret: t_AsciiSet = Any.any_l ()
+  | & _3: t_AsciiSet = Any.any_l ()
+  | & _8: UInt32BW.t = Any.any_l ()
+  | & _9: bool = Any.any_l ()
+  | & _10: bool = Any.any_l ()
+  | & _11: t_AsciiSet = Any.any_l () ])
+  [ return (result: t_AsciiSet) -> -{const_CONTROLS = result}-
+    {[@stop_split] [@expl:const_CONTROLS_def ensures] ([@stop_split] [@expl:CONTROLS result type invariant] [%#sascii_set'7] inv_ref_AsciiSet result)
+    /\ ([@stop_split] [@expl:CONTROLS ensures #0] [%#sascii_set'8] Seq.length (mask_words const_CONTROLS) = 4)
+    /\ ([@stop_split] [@expl:CONTROLS ensures #1] [%#sascii_set'9] Seq.get (mask_words const_CONTROLS) 0
+      = (4294967295: UInt32BW.t)
+    /\ Seq.get (mask_words const_CONTROLS) 1 = (0: UInt32BW.t)
+    /\ Seq.get (mask_words const_CONTROLS) 2 = (0: UInt32BW.t)
+    /\ Seq.get (mask_words const_CONTROLS) 3 = (2147483648: UInt32BW.t))}
+    (! return {result}) ]

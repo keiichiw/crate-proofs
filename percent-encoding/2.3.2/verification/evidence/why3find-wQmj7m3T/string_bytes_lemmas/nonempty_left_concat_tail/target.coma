@@ -1,0 +1,63 @@
+(* #"/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/string_bytes_lemmas.rs" 49 0 49 68 *)
+
+let%span sord = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/logic/ord.rs" 22 8 22 20
+let%span sseq = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/logic/seq.rs" 160 8 160 39
+let%span sstring_bytes_lemmas = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/string_bytes_lemmas.rs" 46 11 46 25
+let%span sstring_bytes_lemmas'0 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/string_bytes_lemmas.rs" 47 10 47 16
+let%span sstring_bytes_lemmas'1 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/string_bytes_lemmas.rs" 48 10 48 69
+let%span sstring_bytes_lemmas'2 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/string_bytes_lemmas.rs" 10 11 10 25
+let%span sstring_bytes_lemmas'3 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/string_bytes_lemmas.rs" 11 11 11 56
+let%span sstring_bytes_lemmas'4 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/string_bytes_lemmas.rs" 12 10 12 16
+let%span sstring_bytes_lemmas'5 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/string_bytes_lemmas.rs" 13 10 13 70
+
+use seq.Seq
+use int.Int
+
+type t_T
+
+predicate gt_log_Int [@inline:trivial] (self: int) (other: int) = [%#sord] other < self
+
+meta "rewrite_def" predicate gt_log_Int
+
+function tail_T (self: Seq.seq t_T) : Seq.seq t_T = [%#sseq] Seq.([..]) self 1 (Seq.length self)
+
+predicate nonempty_tail_at_index_T [#"/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/string_bytes_lemmas.rs" 14 0 14 73] (left: Seq.seq t_T) (right: Seq.seq t_T) (i: int)
+
+axiom nonempty_tail_at_index_T_spec:
+  forall left: Seq.seq t_T, right: Seq.seq t_T, i: int [nonempty_tail_at_index_T left right i]. ([%#sstring_bytes_lemmas'2] gt_log_Int (Seq.length left) 0)
+    -> ([%#sstring_bytes_lemmas'3] 0 <= i /\ i < Seq.length (Seq.(++) (tail_T left) right))
+    -> ([%#sstring_bytes_lemmas'4] nonempty_tail_at_index_T left right i)
+
+axiom nonempty_tail_at_index_T_spec'0:
+  forall left: Seq.seq t_T, right: Seq.seq t_T, i: int. ([%#sstring_bytes_lemmas'2] gt_log_Int (Seq.length left) 0)
+    -> ([%#sstring_bytes_lemmas'3] 0 <= i /\ i < Seq.length (Seq.(++) (tail_T left) right))
+    -> ([%#sstring_bytes_lemmas'5] Seq.get (tail_T (Seq.(++) left right)) i = Seq.get (Seq.(++) (tail_T left) right) i)
+
+meta "compute_max_steps" 1000000
+
+meta "select_lsinst" "all"
+
+constant left : Seq.seq t_T
+
+constant right : Seq.seq t_T
+
+predicate nonempty_left_concat_tail_T [#"/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/string_bytes_lemmas.rs" 49 0 49 68] (left: Seq.seq t_T) (right: Seq.seq t_T)
+
+goal vc_nonempty_left_concat_tail_T: ([%#sstring_bytes_lemmas] gt_log_Int (Seq.length left) 0)
+  -> (let joined_tail = tail_T (Seq.(++) left right) in let tail_joined = Seq.(++) (tail_T left) right in Seq.length joined_tail
+    = Seq.length tail_joined
+  && (forall i: int. if 0 <= i then
+        if i < Seq.length joined_tail then
+          [@stop_split] [@expl:nonempty_tail_at_index requires] ([@stop_split] [@expl:nonempty_tail_at_index requires #0] [%#sstring_bytes_lemmas'2] gt_log_Int (Seq.length left) 0)
+          /\ ([@stop_split] [@expl:nonempty_tail_at_index requires #1] [%#sstring_bytes_lemmas'3] 0 <= i
+          /\ i < Seq.length (Seq.(++) (tail_T left) right))
+        else
+          true
+      
+      else
+        true
+    )
+  /\ (forall i: int. 0 <= i /\ i < Seq.length joined_tail -> nonempty_tail_at_index_T left right i)
+  && Seq.(==) joined_tail tail_joined
+  && ([@stop_split] [@expl:nonempty_left_concat_tail_T ensures] ([@stop_split] [@expl:nonempty_left_concat_tail ensures #0] [%#sstring_bytes_lemmas'0] true)
+  /\ ([@stop_split] [@expl:nonempty_left_concat_tail ensures #1] [%#sstring_bytes_lemmas'1] Seq.(==) (tail_T (Seq.(++) left right)) (Seq.(++) (tail_T left) right))))

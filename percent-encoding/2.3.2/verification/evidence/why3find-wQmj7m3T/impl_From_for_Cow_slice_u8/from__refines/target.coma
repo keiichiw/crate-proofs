@@ -1,0 +1,23 @@
+(* #"/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 1097 4 1097 44 *)
+
+(* <_::borrow::Cow<'a, [u8]> as core::convert::From<PercentDecode<'a>>> *)
+
+let%span slib = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 1097 12 1097 16
+let%span sconvert = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/std/convert.rs" 19 24 19 29
+
+type t_Iter_u8
+
+type t_PercentDecode = { bytes: t_Iter_u8 }
+
+predicate inv_Iter_u8 (_1: t_Iter_u8)
+
+predicate inv_PercentDecode (_1: t_PercentDecode)
+
+axiom inv_axiom [@rewrite]: forall x: t_PercentDecode [inv_PercentDecode x]. inv_PercentDecode x = inv_Iter_u8 x.bytes
+
+meta "compute_max_steps" 1000000
+
+meta "select_lsinst" "all"
+
+goal refines: forall value: t_PercentDecode. ([%#sconvert] inv_PercentDecode value)
+    -> ([%#slib] inv_PercentDecode value)

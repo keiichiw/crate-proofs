@@ -1,0 +1,166 @@
+(* #"/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/ascii_set.rs" 94 4 94 38 *)
+
+(* <ascii_set::AsciiSet as core::cmp::PartialEq> *)
+
+let%span sascii_set = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/ascii_set.rs" 95 18 95 19
+let%span sascii_set'0 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/ascii_set.rs" 95 8 95 20
+let%span sascii_set'1 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/ascii_set.rs" 95 35 95 36
+let%span sascii_set'2 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/ascii_set.rs" 95 24 95 37
+let%span sascii_set'3 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/ascii_set.rs" 96 25 96 26
+let%span sascii_set'4 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/ascii_set.rs" 96 15 96 27
+let%span sascii_set'5 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/ascii_set.rs" 96 42 96 43
+let%span sascii_set'6 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/ascii_set.rs" 96 31 96 44
+let%span sascii_set'7 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/ascii_set.rs" 97 25 97 26
+let%span sascii_set'8 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/ascii_set.rs" 97 15 97 27
+let%span sascii_set'9 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/ascii_set.rs" 97 42 97 43
+let%span sascii_set'10 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/ascii_set.rs" 97 31 97 44
+let%span sascii_set'11 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/ascii_set.rs" 98 25 98 26
+let%span sascii_set'12 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/ascii_set.rs" 98 15 98 27
+let%span sascii_set'13 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/ascii_set.rs" 98 42 98 43
+let%span sascii_set'14 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/ascii_set.rs" 98 31 98 44
+let%span sascii_set'15 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/ascii_set.rs" 95 8 98 44
+let%span sascii_set'16 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/ascii_set.rs" 94 11 94 15
+let%span sascii_set'17 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/ascii_set.rs" 94 17 94 22
+let%span sascii_set'18 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/ascii_set.rs" 93 32 93 83
+let%span sascii_set'19 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/ascii_set.rs" 86 32 86 59
+let%span sascii_set'20 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/ascii_set.rs" 88 8 88 25
+let%span sascii_set'21 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/ascii_set.rs" 114 14 114 31
+let%span sascii_set'22 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/ascii_set.rs" 116 20 116 58
+let%span sinvariant = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/invariant.rs" 85 8 85 18
+let%span sarray = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/std/array.rs" 9 20 9 51
+let%span smodel = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/model.rs" 37 8 37 28
+
+use creusot.int.UInt64
+use creusot.int.UInt32
+use creusot.slice.Slice64
+use creusot.prelude.Any
+use seq.Seq
+
+type t_AsciiSet = { mask: Slice64.array UInt32.t }
+
+predicate inv_Seq_u32 [@inline:trivial] (_1: Seq.seq UInt32.t) = true
+
+meta "rewrite_def" predicate inv_Seq_u32
+
+predicate invariant_array_u32_4 (self: Slice64.array UInt32.t) =
+  [%#sarray] inv_Seq_u32 (Slice64.view self) /\ Seq.length (Slice64.view self) = UInt64.t'int (4: UInt64.t)
+
+predicate inv_array_u32_4 [@inline:trivial] (_1: Slice64.array UInt32.t) = invariant_array_u32_4 _1
+
+meta "rewrite_def" predicate inv_array_u32_4
+
+predicate inv_AsciiSet (_1: t_AsciiSet)
+
+axiom inv_axiom [@rewrite]: forall x: t_AsciiSet [inv_AsciiSet x]. inv_AsciiSet x = inv_array_u32_4 x.mask
+
+predicate invariant_ref_AsciiSet [@inline:trivial] (self: t_AsciiSet) = [%#sinvariant] inv_AsciiSet self
+
+meta "rewrite_def" predicate invariant_ref_AsciiSet
+
+predicate inv_ref_AsciiSet [@inline:trivial] (_1: t_AsciiSet) = invariant_ref_AsciiSet _1
+
+meta "rewrite_def" predicate inv_ref_AsciiSet
+
+function mask_words [#"/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/ascii_set.rs" 115 4 115 40] (self: t_AsciiSet) : Seq.seq UInt32.t
+ = [%#sascii_set'22] Seq.create 4 (fun (i: int) -> Seq.get (Slice64.view self.mask) i)
+
+axiom mask_words_spec: forall self: t_AsciiSet [mask_words self]. [%#sascii_set'21] Seq.length (mask_words self) = 4
+
+function deep_model_AsciiSet [#"/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/ascii_set.rs" 87 4 87 35] (self: t_AsciiSet) : Seq.seq UInt32.t
+ = [%#sascii_set'20] mask_words self
+
+axiom deep_model_AsciiSet_spec:
+  forall self: t_AsciiSet [deep_model_AsciiSet self]. [%#sascii_set'19] deep_model_AsciiSet self = mask_words self
+
+function deep_model_ref_AsciiSet [@inline:trivial] (self: t_AsciiSet) : Seq.seq UInt32.t =
+  [%#smodel] deep_model_AsciiSet self
+
+meta "rewrite_def" function deep_model_ref_AsciiSet
+
+meta "compute_max_steps" 1000000
+
+meta "select_lsinst" "all"
+
+let eq_AsciiSet [#"/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/ascii_set.rs" 94 4 94 38]
+  (self: t_AsciiSet) (other: t_AsciiSet) (return (x: bool)) =
+{[@stop_split] [@expl:eq_AsciiSet requires] ([@stop_split] [@expl:eq 'self' type invariant] [%#sascii_set'16] inv_ref_AsciiSet self)
+  /\ ([@stop_split] [@expl:eq 'other' type invariant] [%#sascii_set'17] inv_ref_AsciiSet other)}
+  (! bb0
+  [ bb0 = s0
+    [ s0 = [ &_8 <- [%#sascii_set] (0: UInt64.t) ] s1
+    | s1 = [ &_9 <- UInt64.lt _8 ([%#sascii_set'0] (4: UInt64.t)) ] s2
+    | s2 = {[@expl:index in bounds] [%#sascii_set'0] _9} s3
+    | s3 = Slice64.get [%#sascii_set'0] <UInt32.t> {self.mask} {_8} (fun (r: UInt32.t) -> [ &_7 <- r ] s4)
+    | s4 = [ &_11 <- [%#sascii_set'1] (0: UInt64.t) ] s5
+    | s5 = [ &_12 <- UInt64.lt _11 ([%#sascii_set'2] (4: UInt64.t)) ] s6
+    | s6 = {[@expl:index in bounds] [%#sascii_set'2] _12} s7
+    | s7 = Slice64.get [%#sascii_set'2] <UInt32.t> {other.mask} {_11} (fun (r: UInt32.t) -> [ &_10 <- r ] s8)
+    | s8 = [ &_6 <- _7 = _10 ] s9
+    | s9 = any [ br0 -> {_6 = false} (! bb13) | br1 -> {_6} (! bb3) ] ]
+  | bb3 = s0
+    [ s0 = [ &_15 <- [%#sascii_set'3] (1: UInt64.t) ] s1
+    | s1 = [ &_16 <- UInt64.lt _15 ([%#sascii_set'4] (4: UInt64.t)) ] s2
+    | s2 = {[@expl:index in bounds] [%#sascii_set'4] _16} s3
+    | s3 = Slice64.get [%#sascii_set'4] <UInt32.t> {self.mask} {_15} (fun (r: UInt32.t) -> [ &_14 <- r ] s4)
+    | s4 = [ &_18 <- [%#sascii_set'5] (1: UInt64.t) ] s5
+    | s5 = [ &_19 <- UInt64.lt _18 ([%#sascii_set'6] (4: UInt64.t)) ] s6
+    | s6 = {[@expl:index in bounds] [%#sascii_set'6] _19} s7
+    | s7 = Slice64.get [%#sascii_set'6] <UInt32.t> {other.mask} {_18} (fun (r: UInt32.t) -> [ &_17 <- r ] s8)
+    | s8 = [ &_13 <- _14 = _17 ] s9
+    | s9 = any [ br0 -> {_13 = false} (! bb13) | br1 -> {_13} (! bb6) ] ]
+  | bb6 = s0
+    [ s0 = [ &_22 <- [%#sascii_set'7] (2: UInt64.t) ] s1
+    | s1 = [ &_23 <- UInt64.lt _22 ([%#sascii_set'8] (4: UInt64.t)) ] s2
+    | s2 = {[@expl:index in bounds] [%#sascii_set'8] _23} s3
+    | s3 = Slice64.get [%#sascii_set'8] <UInt32.t> {self.mask} {_22} (fun (r: UInt32.t) -> [ &_21 <- r ] s4)
+    | s4 = [ &_25 <- [%#sascii_set'9] (2: UInt64.t) ] s5
+    | s5 = [ &_26 <- UInt64.lt _25 ([%#sascii_set'10] (4: UInt64.t)) ] s6
+    | s6 = {[@expl:index in bounds] [%#sascii_set'10] _26} s7
+    | s7 = Slice64.get [%#sascii_set'10] <UInt32.t> {other.mask} {_25} (fun (r: UInt32.t) -> [ &_24 <- r ] s8)
+    | s8 = [ &_20 <- _21 = _24 ] s9
+    | s9 = any [ br0 -> {_20 = false} (! bb13) | br1 -> {_20} (! bb9) ] ]
+  | bb9 = s0
+    [ s0 = [ &_28 <- [%#sascii_set'11] (3: UInt64.t) ] s1
+    | s1 = [ &_29 <- UInt64.lt _28 ([%#sascii_set'12] (4: UInt64.t)) ] s2
+    | s2 = {[@expl:index in bounds] [%#sascii_set'12] _29} s3
+    | s3 = Slice64.get [%#sascii_set'12] <UInt32.t> {self.mask} {_28} (fun (r: UInt32.t) -> [ &_27 <- r ] s4)
+    | s4 = [ &_31 <- [%#sascii_set'13] (3: UInt64.t) ] s5
+    | s5 = [ &_32 <- UInt64.lt _31 ([%#sascii_set'14] (4: UInt64.t)) ] s6
+    | s6 = {[@expl:index in bounds] [%#sascii_set'14] _32} s7
+    | s7 = Slice64.get [%#sascii_set'14] <UInt32.t> {other.mask} {_31} (fun (r: UInt32.t) -> [ &_30 <- r ] s8)
+    | s8 = [ &_ret <- _27 = _30 ] s9
+    | s9 = return {_ret} ]
+  | bb13 = s0 [ s0 = [ &_ret <- [%#sascii_set'15] false ] s1 | s1 = return {_ret} ] ]
+  [ & _ret: bool = Any.any_l ()
+  | & self: t_AsciiSet = self
+  | & other: t_AsciiSet = other
+  | & _6: bool = Any.any_l ()
+  | & _7: UInt32.t = Any.any_l ()
+  | & _8: UInt64.t = Any.any_l ()
+  | & _9: bool = Any.any_l ()
+  | & _10: UInt32.t = Any.any_l ()
+  | & _11: UInt64.t = Any.any_l ()
+  | & _12: bool = Any.any_l ()
+  | & _13: bool = Any.any_l ()
+  | & _14: UInt32.t = Any.any_l ()
+  | & _15: UInt64.t = Any.any_l ()
+  | & _16: bool = Any.any_l ()
+  | & _17: UInt32.t = Any.any_l ()
+  | & _18: UInt64.t = Any.any_l ()
+  | & _19: bool = Any.any_l ()
+  | & _20: bool = Any.any_l ()
+  | & _21: UInt32.t = Any.any_l ()
+  | & _22: UInt64.t = Any.any_l ()
+  | & _23: bool = Any.any_l ()
+  | & _24: UInt32.t = Any.any_l ()
+  | & _25: UInt64.t = Any.any_l ()
+  | & _26: bool = Any.any_l ()
+  | & _27: UInt32.t = Any.any_l ()
+  | & _28: UInt64.t = Any.any_l ()
+  | & _29: bool = Any.any_l ()
+  | & _30: UInt32.t = Any.any_l ()
+  | & _31: UInt64.t = Any.any_l ()
+  | & _32: bool = Any.any_l () ])
+  [ return (result: bool) -> {[@stop_split] [@expl:eq ensures] [%#sascii_set'18] result
+    = (deep_model_ref_AsciiSet self = deep_model_ref_AsciiSet other)}
+    (! return {result}) ]

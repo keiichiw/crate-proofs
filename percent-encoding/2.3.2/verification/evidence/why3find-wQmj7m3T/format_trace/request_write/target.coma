@@ -1,0 +1,140 @@
+(* #"/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/format_trace.rs" 129 0 133 16 *)
+
+let%span sghost = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/ghost.rs" 92 14 92 35
+let%span sghost'0 = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/ghost.rs" 177 14 177 26
+let%span sghost'1 = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/ghost.rs" 120 8 120 22
+let%span sinvariant = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/invariant.rs" 93 20 93 44
+let%span sseq = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/logic/seq.rs" 650 14 650 40
+let%span sformat_trace = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/format_trace.rs" 134 17 134 43
+let%span sformat_trace'0 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/format_trace.rs" 140 22 140 27
+let%span sformat_trace'1 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/format_trace.rs" 139 22 139 26
+let%span sformat_trace'2 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/format_trace.rs" 144 14 144 20
+let%span sformat_trace'3 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/format_trace.rs" 144 12 144 44
+let%span sformat_trace'4 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/format_trace.rs" 142 8 145 9
+let%span sformat_trace'5 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/format_trace.rs" 130 4 130 13
+let%span sformat_trace'6 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/format_trace.rs" 124 12 127 7
+let%span sfmt = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/std/fmt.rs" 7 26 7 30
+
+use creusot.prelude.MutBorrow
+use seq.Seq
+use creusot.prelude.Any
+
+type t_Formatter
+
+predicate inv_Formatter (_1: t_Formatter)
+
+type t_Result_unit_Error = Ok () | Err ()
+
+predicate invariant_refmut_Formatter [@inline:trivial] (self: MutBorrow.t t_Formatter) =
+  [%#sinvariant] inv_Formatter self.current /\ inv_Formatter self.final
+
+meta "rewrite_def" predicate invariant_refmut_Formatter
+
+predicate inv_refmut_Formatter [@inline:trivial] (_1: MutBorrow.t t_Formatter) = invariant_refmut_Formatter _1
+
+meta "rewrite_def" predicate inv_refmut_Formatter
+
+let write_str (self_: MutBorrow.t t_Formatter) (data: string) (return (x: t_Result_unit_Error)) =
+{[@stop_split] [@expl:write_str 'self_' type invariant] [%#sfmt] inv_refmut_Formatter self_}
+  any [ return (result: t_Result_unit_Error) -> (! return {result}) ]
+
+predicate resolve_refmut_Formatter [@inline:trivial] (_1: MutBorrow.t t_Formatter) = _1.final = _1.current
+
+meta "rewrite_def" predicate resolve_refmut_Formatter
+
+type tup2_ref_str_bool = { f0: string; f1: bool }
+
+let deref_mut_Ghost_refmut_Seq_tup2_ref_str_bool (self: MutBorrow.t (MutBorrow.t (Seq.seq tup2_ref_str_bool)))
+  (return (x: MutBorrow.t (MutBorrow.t (Seq.seq tup2_ref_str_bool)))) = any
+  [ return (result: MutBorrow.t (MutBorrow.t (Seq.seq tup2_ref_str_bool))) ->
+  {[@stop_split] [@expl:deref_mut ensures] [%#sghost] result = self}
+    (! return {result}) ]
+
+let push_back_ghost_tup2_ref_str_bool (self: MutBorrow.t (Seq.seq tup2_ref_str_bool)) (x: tup2_ref_str_bool)
+  (return (x'0: ())) = any
+  [ return (result: ()) -> {[@stop_split] [@expl:push_back_ghost ensures] [%#sseq] self.final = Seq.snoc self.current x}
+    (! return {result}) ]
+
+predicate resolve_refmut_refmut_Seq_tup2_ref_str_bool [@inline:trivial] (_1: MutBorrow.t (MutBorrow.t (Seq.seq tup2_ref_str_bool))) =
+  _1.final = _1.current
+
+meta "rewrite_def" predicate resolve_refmut_refmut_Seq_tup2_ref_str_bool
+
+predicate resolve_refmut_Seq_tup2_ref_str_bool [@inline:trivial] (_1: MutBorrow.t (Seq.seq tup2_ref_str_bool)) =
+  _1.final = _1.current
+
+meta "rewrite_def" predicate resolve_refmut_Seq_tup2_ref_str_bool
+
+predicate resolve_Ghost_refmut_Seq_tup2_ref_str_bool [@inline:trivial] (self: MutBorrow.t (Seq.seq tup2_ref_str_bool)) =
+  [%#sghost'1] resolve_refmut_Seq_tup2_ref_str_bool self
+
+meta "rewrite_def" predicate resolve_Ghost_refmut_Seq_tup2_ref_str_bool
+
+predicate resolve_Ghost_refmut_Seq_tup2_ref_str_bool'0 [@inline:trivial] (_1: MutBorrow.t (Seq.seq tup2_ref_str_bool)) =
+  resolve_Ghost_refmut_Seq_tup2_ref_str_bool _1
+
+meta "rewrite_def" predicate resolve_Ghost_refmut_Seq_tup2_ref_str_bool'0
+
+let new_unit (x: ()) (return (x'0: ())) = any
+  [ return (result: ()) -> {[@stop_split] [@expl:new ensures] [%#sghost'0] result = x} (! return {result}) ]
+
+meta "compute_max_steps" 1000000
+
+meta "select_lsinst" "all"
+
+let request_write [#"/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/format_trace.rs" 129 0 133 16]
+  (formatter: MutBorrow.t t_Formatter) (chunk: string) (trace: MutBorrow.t (Seq.seq tup2_ref_str_bool))
+  (return (x: t_Result_unit_Error)) =
+{[@stop_split] [@expl:request_write 'formatter' type invariant] [%#sformat_trace'5] inv_refmut_Formatter formatter}
+  (! bb0
+  [ bb0 = s0
+    [ s0 = MutBorrow.borrow_final <t_Formatter> {formatter.current} {MutBorrow.get_id formatter}
+        (fun (_bor: MutBorrow.t t_Formatter) ->
+          [ &_8 <- _bor ] -{inv_Formatter _bor.final}-
+          [ &formatter <- { formatter with current = _bor.final } ] s1)
+      [ _ck -> (! {[@expl:type invariant] inv_Formatter formatter.current} any) ]
+    | s1 = write_str [%#sformat_trace] {_8} {chunk} (fun (_x: t_Result_unit_Error) -> [ &result <- _x ] s2)
+    | s2 = s3 [ _ck -> (! {[@expl:type invariant] inv_refmut_Formatter formatter} any) ]
+    | s3 = -{resolve_refmut_Formatter formatter}- s4
+    | s4 = [ &_12 <- result ] s5
+    | s5 = any [ br0 (x0: ()) -> {_12 = Ok x0} (! bb5) | br1 (x0: ()) -> {_12 = Err x0} (! bb4) ] ]
+  | bb4 = s0 [ s0 = [ &succeeded <- [%#sformat_trace'0] false ] s1 | s1 = bb6 ]
+  | bb5 = s0 [ s0 = [ &succeeded <- [%#sformat_trace'1] true ] s1 | s1 = bb6 ]
+  | bb6 = s0
+    [ s0 = [ &event <- { f0 = chunk; f1 = succeeded } ] s1
+    | s1 = MutBorrow.borrow_mut <MutBorrow.t (Seq.seq tup2_ref_str_bool)> {trace}
+        (fun (_bor: MutBorrow.t (MutBorrow.t (Seq.seq tup2_ref_str_bool))) ->
+          [ &_22 <- _bor ] [ &trace <- _bor.final ] s2)
+    | s2 = deref_mut_Ghost_refmut_Seq_tup2_ref_str_bool [%#sformat_trace'2] {_22}
+        (fun (_x: MutBorrow.t (MutBorrow.t (Seq.seq tup2_ref_str_bool))) -> [ &_21 <- _x ] s3)
+    | s3 = MutBorrow.borrow_mut <Seq.seq tup2_ref_str_bool> {_21.current.current}
+        (fun (_bor: MutBorrow.t (Seq.seq tup2_ref_str_bool)) ->
+          [ &_20 <- _bor ] [ &_21 <- { _21 with current = { _21.current with current = _bor.final } } ] s4)
+    | s4 = push_back_ghost_tup2_ref_str_bool [%#sformat_trace'3] {_20} {event} (fun (_x: ()) -> [ &_19 <- _x ] s5)
+    | s5 = -{resolve_refmut_refmut_Seq_tup2_ref_str_bool _21}- s6
+    | s6 = -{resolve_Ghost_refmut_Seq_tup2_ref_str_bool'0 trace}- s7
+    | s7 = new_unit [%#sformat_trace'4] {_15} (fun (_x: ()) -> [ &_14 <- _x ] s8)
+    | s8 = [ &_ret <- result ] s9
+    | s9 = return {_ret} ] ]
+  [ & _ret: t_Result_unit_Error = Any.any_l ()
+  | & formatter: MutBorrow.t t_Formatter = formatter
+  | & chunk: string = chunk
+  | & trace: MutBorrow.t (Seq.seq tup2_ref_str_bool) = trace
+  | & result: t_Result_unit_Error = Any.any_l ()
+  | & _8: MutBorrow.t t_Formatter = Any.any_l ()
+  | & succeeded: bool = Any.any_l ()
+  | & _12: t_Result_unit_Error = Any.any_l ()
+  | & _14: () = Any.any_l ()
+  | & _15: () = Any.any_l ()
+  | & event: tup2_ref_str_bool = Any.any_l ()
+  | & _19: () = Any.any_l ()
+  | & _20: MutBorrow.t (Seq.seq tup2_ref_str_bool) = Any.any_l ()
+  | & _21: MutBorrow.t (MutBorrow.t (Seq.seq tup2_ref_str_bool)) = Any.any_l ()
+  | & _22: MutBorrow.t (MutBorrow.t (Seq.seq tup2_ref_str_bool)) = Any.any_l () ])
+  [ return (result: t_Result_unit_Error) -> {[@stop_split] [@expl:request_write ensures] [%#sformat_trace'6] trace.final
+    = Seq.snoc trace.current { f0 = chunk;
+                               f1 = match result with
+                                 | Ok () -> true
+                                 | Err _ -> false
+                                 end }}
+    (! return {result}) ]

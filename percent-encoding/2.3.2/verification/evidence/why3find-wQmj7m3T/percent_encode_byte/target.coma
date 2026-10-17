@@ -1,0 +1,222 @@
+(* #"/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 157 0 157 52 *)
+
+let%span sinvariant = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/invariant.rs" 85 8 85 18
+let%span sarray = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/std/array.rs" 56 20 56 29
+let%span sarray'0 = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/std/array.rs" 9 20 9 51
+let%span slib = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 158 18 158 45
+let%span slib'0 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 161 22 161 55
+let%span slib'1 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 162 19 162 23
+let%span slib'2 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 163 26 163 74
+let%span slib'3 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 164 26 165 56
+let%span slib'4 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 167 26 168 91
+let%span slib'5 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 170 22 170 94
+let%span slib'6 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 173 13 173 46
+let%span slib'7 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 155 28 156 32
+let%span slib'8 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 177 38 177 54
+let%span slib'9 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 176 28 176 212
+let%span slib'10 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 871 11 871 27
+let%span slib'11 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 872 11 872 64
+let%span slib'12 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 873 10 873 16
+let%span slib'13 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 874 10 874 70
+let%span slib'14 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 881 11 881 41
+let%span slib'15 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 882 11 882 26
+let%span slib'16 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 883 11 883 48
+let%span slib'17 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 884 11 884 48
+let%span slib'18 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 885 10 885 16
+let%span slib'19 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 886 10 886 66
+let%span slib'20 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 90 4 92 57
+let%span slib'21 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 1206 4 1212 5
+let%span slib'22 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 375 16 375 43
+let%span slib'23 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 84 4 84 36
+let%span slib'24 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 1182 10 1182 68
+let%span slib'25 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 1184 4 1184 52
+let%span sseq = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/logic/seq.rs" 301 14 301 24
+let%span sseq'0 = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/logic/seq.rs" 299 14 299 40
+let%span sseq'1 = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/logic/seq.rs" 300 14 300 76
+let%span sseq'2 = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/logic/seq.rs" 311 14 311 24
+let%span sseq'3 = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/logic/seq.rs" 313 8 317 9
+let%span sseq'4 = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/logic/seq.rs" 160 8 160 39
+let%span smapping = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/logic/mapping.rs" 66 8 66 19
+let%span sstring = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/std/string.rs" 190 20 190 56
+let%span schar = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/std/char.rs" 47 14 47 52
+let%span sstdlib_models = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/stdlib_models.rs" 207 23 209 62
+let%span sstdlib_models'0 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/stdlib_models.rs" 210 22 210 50
+
+use creusot.int.UInt8
+use creusot.slice.Slice64
+use seq.Seq
+use creusot.int.UInt64
+use int.ComputerDivision
+use map.Map
+use creusot.prelude.Char
+use creusot.prelude.Any
+use int.Int
+
+predicate inv_Seq_u8 [@inline:trivial] (_1: Seq.seq UInt8.t) = true
+
+meta "rewrite_def" predicate inv_Seq_u8
+
+predicate invariant_array_u8_3 (self: Slice64.array UInt8.t) =
+  [%#sarray'0] inv_Seq_u8 (Slice64.view self) /\ Seq.length (Slice64.view self) = UInt64.t'int (3: UInt64.t)
+
+predicate inv_array_u8_3 [@inline:trivial] (_1: Slice64.array UInt8.t) = invariant_array_u8_3 _1
+
+meta "rewrite_def" predicate inv_array_u8_3
+
+predicate invariant_ref_array_u8_3 [@inline:trivial] (self: Slice64.array UInt8.t) = [%#sinvariant] inv_array_u8_3 self
+
+meta "rewrite_def" predicate invariant_ref_array_u8_3
+
+predicate inv_ref_array_u8_3 [@inline:trivial] (_1: Slice64.array UInt8.t) = invariant_ref_array_u8_3 _1
+
+meta "rewrite_def" predicate inv_ref_array_u8_3
+
+function index_array_u8_3 [@inline:trivial] (self: Slice64.array UInt8.t) (ix: int) : UInt8.t =
+  [%#sarray] Seq.get (Slice64.view self) ix
+
+meta "rewrite_def" function index_array_u8_3
+
+function uppercase_hex (digit: int) : int = [%#slib'25] if digit < 10 then 48 + digit else 55 + digit
+
+axiom uppercase_hex_spec: forall digit: int [uppercase_hex digit]. [%#slib'24] uppercase_hex digit
+    = (if digit < 10 then 48 + digit else 55 + digit)
+
+function uppercase_hex'0 [#"/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 83 0 83 39] (digit: int) : int
+ = [%#slib'23] uppercase_hex digit
+
+let percent_encoded_bytes (byte: UInt8.t) (return (x: Slice64.array UInt8.t)) = any
+  [ return (result: Slice64.array UInt8.t) ->
+  {[@stop_split] [@expl:percent_encoded_bytes ensures] ([@stop_split] [@expl:percent_encoded_bytes result type invariant] [%#slib'8] inv_ref_array_u8_3 result)
+    /\ ([@stop_split] [@expl:percent_encoded_bytes ensures] [%#slib'9] Seq.length (Slice64.view result) = 3
+    /\ UInt8.t'int (index_array_u8_3 result 0) = 37
+    /\ UInt8.t'int (index_array_u8_3 result 1) = uppercase_hex'0 (ComputerDivision.div (UInt8.t'int byte) 16)
+    /\ UInt8.t'int (index_array_u8_3 result 2) = uppercase_hex'0 (ComputerDivision.mod (UInt8.t'int byte) 16)
+    /\ UInt8.t'int (index_array_u8_3 result 0) < 128
+    /\ UInt8.t'int (index_array_u8_3 result 1) < 128 /\ UInt8.t'int (index_array_u8_3 result 2) < 128)}
+    (! return {result}) ]
+
+predicate ascii_three (bytes: Seq.seq UInt8.t)
+
+axiom ascii_three_spec: forall bytes: Seq.seq UInt8.t [ascii_three bytes]. ([%#slib'10] Seq.length bytes = 3)
+    -> ([%#slib'11] UInt8.t'int (Seq.get bytes 0) < 128
+      /\ UInt8.t'int (Seq.get bytes 1) < 128 /\ UInt8.t'int (Seq.get bytes 2) < 128) -> ([%#slib'12] ascii_three bytes)
+
+axiom ascii_three_spec'0: forall bytes: Seq.seq UInt8.t. ([%#slib'10] Seq.length bytes = 3)
+    -> ([%#slib'11] UInt8.t'int (Seq.get bytes 0) < 128
+      /\ UInt8.t'int (Seq.get bytes 1) < 128 /\ UInt8.t'int (Seq.get bytes 2) < 128)
+    -> ([%#slib'13] forall i: int. 0 <= i /\ i < Seq.length bytes -> UInt8.t'int (Seq.get bytes i) < 128)
+
+function index_Mapping_u8_Int [@inline:trivial] (self: Map.map UInt8.t int) (a: UInt8.t) : int =
+  [%#smapping] Map.get self a
+
+meta "rewrite_def" function index_Mapping_u8_Int
+
+function map_u8 (self: Seq.seq UInt8.t) (m: Map.map UInt8.t int) : Seq.seq int
+
+axiom map_u8_spec:
+  forall self: Seq.seq UInt8.t, m: Map.map UInt8.t int [map_u8 self m]. [%#sseq'0] Seq.length (map_u8 self m)
+    = Seq.length self
+
+axiom map_u8_spec'0: forall self: Seq.seq UInt8.t, m: Map.map UInt8.t int [map_u8 self m]. [%#sseq'1] forall i: int. 0
+          <= i
+        /\ i < Seq.length self -> Seq.get (map_u8 self m) i = index_Mapping_u8_Int m (Seq.get self i)
+
+function byte_sequence_as_ints (bytes: Seq.seq UInt8.t) : Seq.seq int =
+  [%#slib'22] map_u8 bytes (fun (byte: UInt8.t) -> UInt8.t'int byte)
+
+function escaped_byte_chunk (byte: int) : Seq.seq int = [%#slib'21] if byte = 32 then
+    Seq.singleton 43
+  else
+    Seq.(++) (Seq.(++) (Seq.singleton 37) (Seq.singleton (uppercase_hex (ComputerDivision.div byte 16)))) (Seq.singleton (uppercase_hex (ComputerDivision.mod byte 16)))
+
+
+predicate encoded_array_model (bytes: Seq.seq UInt8.t) (byte: int)
+
+axiom encoded_array_model_spec:
+  forall bytes: Seq.seq UInt8.t, byte: int [encoded_array_model bytes byte]. ([%#slib'14] byte <> 32
+      /\ Seq.length bytes = 3)
+    -> ([%#slib'15] UInt8.t'int (Seq.get bytes 0) = 37)
+    -> ([%#slib'16] UInt8.t'int (Seq.get bytes 1) = uppercase_hex (ComputerDivision.div byte 16))
+    -> ([%#slib'17] UInt8.t'int (Seq.get bytes 2) = uppercase_hex (ComputerDivision.mod byte 16))
+    -> ([%#slib'18] encoded_array_model bytes byte)
+
+axiom encoded_array_model_spec'0: forall bytes: Seq.seq UInt8.t, byte: int. ([%#slib'14] byte <> 32
+      /\ Seq.length bytes = 3)
+    -> ([%#slib'15] UInt8.t'int (Seq.get bytes 0) = 37)
+    -> ([%#slib'16] UInt8.t'int (Seq.get bytes 1) = uppercase_hex (ComputerDivision.div byte 16))
+    -> ([%#slib'17] UInt8.t'int (Seq.get bytes 2) = uppercase_hex (ComputerDivision.mod byte 16))
+    -> ([%#slib'19] byte_sequence_as_ints bytes = escaped_byte_chunk byte)
+
+function encoded_byte_model [#"/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 89 0 89 48] (byte: int) : Seq.seq int
+ =
+  [%#slib'20] Seq.(++) (Seq.(++) (Seq.singleton 37) (Seq.singleton (uppercase_hex'0 (ComputerDivision.div byte 16)))) (Seq.singleton (uppercase_hex'0 (ComputerDivision.mod byte 16)))
+
+function tail_char (self: Seq.seq Char.t) : Seq.seq Char.t = [%#sseq'4] Seq.([..]) self 1 (Seq.length self)
+
+function flat_map_char (self: Seq.seq Char.t) (other: Map.map Char.t (Seq.seq UInt8.t)) : Seq.seq UInt8.t
+
+axiom flat_map_char_def:
+  forall self: Seq.seq Char.t, other: Map.map Char.t (Seq.seq UInt8.t) [flat_map_char self other]. flat_map_char self other
+    = ([%#sseq'3] if Seq.length self = 0 then
+      Seq.empty: Seq.seq UInt8.t
+    else
+      Seq.(++) (Map.get other (Seq.get self 0)) (flat_map_char (tail_char self) other)
+    )
+
+function to_utf8_char (self: Char.t) : Seq.seq UInt8.t
+
+axiom to_utf8_char_spec: forall self: Char.t [to_utf8_char self]. [%#schar] 1 <= Seq.length (to_utf8_char self)
+    /\ Seq.length (to_utf8_char self) <= 4
+
+function to_bytes (self: Seq.seq Char.t) : Seq.seq UInt8.t =
+  [%#sstring] flat_map_char self (fun (c: Char.t) -> to_utf8_char c)
+
+function view_str (self: string) : Seq.seq Char.t
+
+let from_utf8_unchecked (bytes: Slice64.slice UInt8.t) (return (x: string)) =
+{[@stop_split] [@expl:from_utf8_unchecked requires] [%#sstdlib_models] (forall i: int. 0 <= i
+        /\ i < Seq.length (Slice64.view bytes) -> UInt8.t'int (Seq.get (Slice64.view bytes) i) < 128)
+  \/ (exists s: Seq.seq Char.t. to_bytes s = Slice64.view bytes)}
+  any
+  [ return (result: string) ->
+  {[@stop_split] [@expl:from_utf8_unchecked ensures] [%#sstdlib_models'0] to_bytes (view_str result)
+    = Slice64.view bytes}
+    (! return {result}) ]
+
+meta "compute_max_steps" 1000000
+
+meta "select_lsinst" "all"
+
+let percent_encode_byte [#"/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 157 0 157 52]
+  (byte: UInt8.t) (return (x: string)) = (! bb0
+  [ bb0 = s0
+    [ s0 = percent_encoded_bytes [%#slib] {byte} (fun (_x: Slice64.array UInt8.t) -> [ &encoded <- _x ] s1)
+    | s1 = {[@expl:assertion] [%#slib'0] ascii_three (Slice64.view encoded)} s2
+    | s2 = [ &_11 <- byte <> ([%#slib'1] (32: UInt8.t)) ] s3
+    | s3 = any [ br0 -> {_11 = false} (! bb3) | br1 -> {_11} (! bb2) ] ]
+  | bb2 = s0
+    [ s0 = {[@expl:assertion] [%#slib'2] encoded_array_model (Slice64.view encoded) (UInt8.t'int byte)} s1
+    | s1 = {[@expl:assertion] [%#slib'3] encoded_byte_model (UInt8.t'int byte) = escaped_byte_chunk (UInt8.t'int byte)}
+      s2
+    | s2 = bb4 ]
+  | bb3 = s0
+    [ s0 = {[@expl:assertion] [%#slib'4] encoded_byte_model (UInt8.t'int byte)
+      = Seq.(++) (Seq.(++) (Seq.singleton 37) (Seq.singleton 50)) (Seq.singleton 48)}
+      s1
+    | s1 = bb4 ]
+  | bb4 = s0
+    [ s0 = {[@expl:assertion] [%#slib'5] byte_sequence_as_ints (Slice64.view encoded)
+      = encoded_byte_model (UInt8.t'int byte)}
+      s1
+    | s1 = from_utf8_unchecked [%#slib'6] {encoded} (fun (_x: string) -> [ &_27 <- _x ] s2)
+    | s2 = [ &_ret <- _27 ] s3
+    | s3 = return {_ret} ] ]
+  [ & _ret: string = Any.any_l ()
+  | & byte: UInt8.t = byte
+  | & encoded: Slice64.array UInt8.t = Any.any_l ()
+  | & _11: bool = Any.any_l ()
+  | & _27: string = Any.any_l () ])
+  [ return (result: string) ->
+  {[@stop_split] [@expl:percent_encode_byte ensures] [%#slib'7] byte_sequence_as_ints (to_bytes (view_str result))
+    = encoded_byte_model (UInt8.t'int byte)}
+    (! return {result}) ]

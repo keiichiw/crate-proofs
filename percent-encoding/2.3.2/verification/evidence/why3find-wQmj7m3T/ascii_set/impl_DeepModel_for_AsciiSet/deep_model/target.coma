@@ -1,0 +1,29 @@
+(* #"/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/ascii_set.rs" 87 4 87 35 *)
+
+(* <ascii_set::AsciiSet as creusot_std::model::DeepModel> *)
+
+let%span sascii_set = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/ascii_set.rs" 86 32 86 59
+let%span sascii_set'0 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/ascii_set.rs" 114 14 114 31
+let%span sascii_set'1 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/ascii_set.rs" 116 20 116 58
+
+use creusot.slice.Slice64
+use creusot.int.UInt32
+use seq.Seq
+
+type t_AsciiSet = { mask: Slice64.array UInt32.t }
+
+function mask_words [#"/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/ascii_set.rs" 115 4 115 40] (self: t_AsciiSet) : Seq.seq UInt32.t
+ = [%#sascii_set'1] Seq.create 4 (fun (i: int) -> Seq.get (Slice64.view self.mask) i)
+
+axiom mask_words_spec: forall self: t_AsciiSet [mask_words self]. [%#sascii_set'0] Seq.length (mask_words self) = 4
+
+meta "compute_max_steps" 1000000
+
+meta "select_lsinst" "all"
+
+constant self : t_AsciiSet
+
+function deep_model_AsciiSet [#"/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/ascii_set.rs" 87 4 87 35] (self: t_AsciiSet) : Seq.seq UInt32.t
+
+goal vc_deep_model_AsciiSet: ([@stop_split] [@expl:mask_words ensures] [%#sascii_set'0] Seq.length (mask_words self)
+    = 4) -> ([@stop_split] [@expl:deep_model ensures] [%#sascii_set] mask_words self = mask_words self)

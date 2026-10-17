@@ -1,0 +1,61 @@
+(* #"/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/decoder_lemmas.rs" 67 0 67 66 *)
+
+let%span slib = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 375 16 375 43
+let%span sseq = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/logic/seq.rs" 301 14 301 24
+let%span sseq'0 = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/logic/seq.rs" 299 14 299 40
+let%span sseq'1 = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/logic/seq.rs" 300 14 300 76
+let%span smapping = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/logic/mapping.rs" 66 8 66 19
+let%span sdecoder_lemmas = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/decoder_lemmas.rs" 64 10 64 16
+let%span sdecoder_lemmas'0 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/decoder_lemmas.rs" 65 10 66 77
+let%span sdecoder_lemmas'1 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/decoder_lemmas.rs" 11 10 11 16
+let%span sdecoder_lemmas'2 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/decoder_lemmas.rs" 12 10 14 57
+
+use creusot.int.UInt8
+use seq.Seq
+use map.Map
+use int.Int
+
+function index_Mapping_u8_Int [@inline:trivial] (self: Map.map UInt8.t int) (a: UInt8.t) : int =
+  [%#smapping] Map.get self a
+
+meta "rewrite_def" function index_Mapping_u8_Int
+
+function map_u8 (self: Seq.seq UInt8.t) (m: Map.map UInt8.t int) : Seq.seq int
+
+axiom map_u8_spec:
+  forall self: Seq.seq UInt8.t, m: Map.map UInt8.t int [map_u8 self m]. [%#sseq'0] Seq.length (map_u8 self m)
+    = Seq.length self
+
+axiom map_u8_spec'0: forall self: Seq.seq UInt8.t, m: Map.map UInt8.t int [map_u8 self m]. [%#sseq'1] forall i: int. 0
+          <= i
+        /\ i < Seq.length self -> Seq.get (map_u8 self m) i = index_Mapping_u8_Int m (Seq.get self i)
+
+function byte_sequence_as_ints (bytes: Seq.seq UInt8.t) : Seq.seq int =
+  [%#slib] map_u8 bytes (fun (byte: UInt8.t) -> UInt8.t'int byte)
+
+predicate byte_map_concat [#"/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/decoder_lemmas.rs" 15 0 15 68] (left: Seq.seq UInt8.t) (right: Seq.seq UInt8.t)
+
+axiom byte_map_concat_spec:
+  forall left: Seq.seq UInt8.t, right: Seq.seq UInt8.t [byte_map_concat left right]. [%#sdecoder_lemmas'1] byte_map_concat left right
+
+axiom byte_map_concat_spec'0:
+  forall left: Seq.seq UInt8.t, right: Seq.seq UInt8.t. [%#sdecoder_lemmas'2] byte_sequence_as_ints (Seq.(++) left right)
+    = Seq.(++) (byte_sequence_as_ints left) (byte_sequence_as_ints right)
+
+meta "compute_max_steps" 1000000
+
+meta "select_lsinst" "all"
+
+constant bytes : Seq.seq UInt8.t
+
+constant byte : UInt8.t
+
+predicate byte_map_push_back [#"/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/decoder_lemmas.rs" 67 0 67 66] (bytes: Seq.seq UInt8.t) (byte: UInt8.t)
+
+goal vc_byte_map_push_back:
+  ([@stop_split] [@expl:byte_map_concat ensures] ([@stop_split] [@expl:byte_map_concat ensures #0] [%#sdecoder_lemmas'1] byte_map_concat bytes (Seq.singleton byte))
+    /\ ([@stop_split] [@expl:byte_map_concat ensures #1] [%#sdecoder_lemmas'2] byte_sequence_as_ints (Seq.(++) bytes (Seq.singleton byte))
+    = Seq.(++) (byte_sequence_as_ints bytes) (byte_sequence_as_ints (Seq.singleton byte))))
+  -> (let _ = byte_map_concat bytes (Seq.singleton byte) in [@stop_split] [@expl:byte_map_push_back ensures] ([@stop_split] [@expl:byte_map_push_back ensures #0] [%#sdecoder_lemmas] true)
+  /\ ([@stop_split] [@expl:byte_map_push_back ensures #1] [%#sdecoder_lemmas'0] byte_sequence_as_ints (Seq.snoc bytes byte)
+  = Seq.(++) (byte_sequence_as_ints bytes) (Seq.singleton (UInt8.t'int byte))))

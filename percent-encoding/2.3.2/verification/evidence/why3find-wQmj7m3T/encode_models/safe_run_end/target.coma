@@ -1,0 +1,104 @@
+(* #"/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/encode_models.rs" 32 0 32 70 *)
+
+let%span sord = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/logic/ord.rs" 34 8 34 21
+let%span sord'0 = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/logic/ord.rs" 22 8 22 20
+let%span sencode_models = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/encode_models.rs" 24 10 24 29
+let%span sencode_models'0 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/encode_models.rs" 25 11 25 45
+let%span sencode_models'1 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/encode_models.rs" 26 11 26 26
+let%span sencode_models'2 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/encode_models.rs" 27 10 27 50
+let%span sencode_models'3 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/encode_models.rs" 28 22 29 44
+let%span sencode_models'4 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/encode_models.rs" 30 10 30 75
+let%span sencode_models'5 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/encode_models.rs" 31 10 31 92
+let%span sencode_models'6 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/encode_models.rs" 16 8 16 74
+let%span swell_founded = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/logic/well_founded.rs" 43 8 43 33
+
+use creusot.int.UInt8
+use seq.Seq
+use creusot.int.UInt32
+use int.ComputerDivision
+use int.Int
+
+predicate ge_log_Int [@inline:trivial] (self: int) (other: int) = [%#sord] other <= self
+
+meta "rewrite_def" predicate ge_log_Int
+
+predicate should_encode_model [#"/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/encode_models.rs" 14 0 14 60] (mask: Seq.seq UInt32.t) (byte: UInt8.t) =
+  [%#sencode_models'6] ge_log_Int (UInt8.t'int byte) 128
+  \/ UInt32.bw_and (Seq.get mask (ComputerDivision.div (UInt8.t'int byte) 32)) (UInt32.shl (1: UInt32.t) (UInt32.of_int (UInt8.t'int (UInt8.bw_and byte (31: UInt8.t)))))
+  <> (0: UInt32.t)
+
+predicate gt_log_Int [@inline:trivial] (self: int) (other: int) = [%#sord'0] other < self
+
+meta "rewrite_def" predicate gt_log_Int
+
+predicate well_founded_relation_Int [@inline:trivial] (self: int) (other: int) =
+  [%#swell_founded] ge_log_Int self 0 /\ gt_log_Int self other
+
+meta "rewrite_def" predicate well_founded_relation_Int
+
+meta "compute_max_steps" 1000000
+
+meta "select_lsinst" "all"
+
+constant input : Seq.seq UInt8.t
+
+constant start : int
+
+constant mask : Seq.seq UInt32.t
+
+function safe_run_end [#"/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/encode_models.rs" 32 0 32 70] (input: Seq.seq UInt8.t) (start: int) (mask: Seq.seq UInt32.t) : int
+
+goal vc_safe_run_end: ([%#sencode_models'0] 0 <= start /\ start <= Seq.length input)
+  -> ([%#sencode_models'1] Seq.length mask = 4)
+  -> (if ge_log_Int start (Seq.length input) then
+    let result = start in [@stop_split] [@expl:safe_run_end ensures] ([@stop_split] [@expl:safe_run_end ensures #0] [%#sencode_models'2] start
+        <= result
+      /\ result <= Seq.length input)
+    /\ ([@stop_split] [@expl:safe_run_end ensures #1] [%#sencode_models'3] forall i: int. start <= i /\ i < result
+        -> not should_encode_model mask (Seq.get input i))
+    /\ ([@stop_split] [@expl:safe_run_end ensures #2] [%#sencode_models'4] result = Seq.length input
+      \/ should_encode_model mask (Seq.get input result))
+    /\ ([@stop_split] [@expl:safe_run_end ensures #3] [%#sencode_models'5] start < Seq.length input
+      /\ not should_encode_model mask (Seq.get input start) -> start < result)
+  else
+    if should_encode_model mask (Seq.get input start) then
+      let result = start in [@stop_split] [@expl:safe_run_end ensures] ([@stop_split] [@expl:safe_run_end ensures #0] [%#sencode_models'2] start
+          <= result
+        /\ result <= Seq.length input)
+      /\ ([@stop_split] [@expl:safe_run_end ensures #1] [%#sencode_models'3] forall i: int. start <= i /\ i < result
+          -> not should_encode_model mask (Seq.get input i))
+      /\ ([@stop_split] [@expl:safe_run_end ensures #2] [%#sencode_models'4] result = Seq.length input
+        \/ should_encode_model mask (Seq.get input result))
+      /\ ([@stop_split] [@expl:safe_run_end ensures #3] [%#sencode_models'5] start < Seq.length input
+        /\ not should_encode_model mask (Seq.get input start) -> start < result)
+    else
+      (([@stop_split] [@expl:safe_run_end requires] ([@stop_split] [@expl:safe_run_end requires #0] [%#sencode_models'0] 0
+              <= start + 1
+            /\ start + 1 <= Seq.length input)
+          /\ ([@stop_split] [@expl:safe_run_end requires #1] [%#sencode_models'1] Seq.length mask = 4))
+        /\ ([@expl:variant decreases] well_founded_relation_Int ([%#sencode_models] Seq.length input
+        - start) ([%#sencode_models] Seq.length input - (start + 1))))
+      /\ (([@stop_split] [@expl:safe_run_end ensures] ([@stop_split] [@expl:safe_run_end ensures #0] [%#sencode_models'2] start
+              + 1
+            <= safe_run_end input (start + 1) mask
+          /\ safe_run_end input (start + 1) mask <= Seq.length input)
+        /\ ([@stop_split] [@expl:safe_run_end ensures #1] [%#sencode_models'3] forall i: int. start + 1 <= i
+              /\ i < safe_run_end input (start + 1) mask -> not should_encode_model mask (Seq.get input i))
+        /\ ([@stop_split] [@expl:safe_run_end ensures #2] [%#sencode_models'4] safe_run_end input (start + 1) mask
+            = Seq.length input
+          \/ should_encode_model mask (Seq.get input (safe_run_end input (start + 1) mask)))
+        /\ ([@stop_split] [@expl:safe_run_end ensures #3] [%#sencode_models'5] start + 1 < Seq.length input
+          /\ not should_encode_model mask (Seq.get input (start + 1))
+        -> start + 1 < safe_run_end input (start + 1) mask))
+      -> (let result = safe_run_end input (start
+      + 1) mask in [@stop_split] [@expl:safe_run_end ensures] ([@stop_split] [@expl:safe_run_end ensures #0] [%#sencode_models'2] start
+          <= result
+        /\ result <= Seq.length input)
+      /\ ([@stop_split] [@expl:safe_run_end ensures #1] [%#sencode_models'3] forall i: int. start <= i /\ i < result
+          -> not should_encode_model mask (Seq.get input i))
+      /\ ([@stop_split] [@expl:safe_run_end ensures #2] [%#sencode_models'4] result = Seq.length input
+        \/ should_encode_model mask (Seq.get input result))
+      /\ ([@stop_split] [@expl:safe_run_end ensures #3] [%#sencode_models'5] start < Seq.length input
+        /\ not should_encode_model mask (Seq.get input start) -> start < result)))
+  
+  )

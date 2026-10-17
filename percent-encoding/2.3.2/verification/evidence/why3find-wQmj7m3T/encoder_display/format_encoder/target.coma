@@ -1,0 +1,662 @@
+(* #"/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/encoder_display.rs" 68 0 71 16 *)
+
+let%span sascii_set = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/ascii_set.rs" 114 14 114 31
+let%span sghost = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/ghost.rs" 92 14 92 35
+let%span sghost'0 = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/ghost.rs" 177 14 177 26
+let%span sghost'1 = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/ghost.rs" 144 14 144 36
+let%span sinvariant = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/invariant.rs" 93 20 93 44
+let%span sinvariant'0 = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/invariant.rs" 85 8 85 18
+let%span sord = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/logic/ord.rs" 22 8 22 20
+let%span sord'0 = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/logic/ord.rs" 34 8 34 21
+let%span sencode_models = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/encode_models.rs" 104 10 104 21
+let%span sencode_models'0 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/encode_models.rs" 105 11 105 26
+let%span sencode_models'1 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/encode_models.rs" 107 4 121 5
+let%span sencode_models'2 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/encode_models.rs" 125 8 135 9
+let%span sencode_models'3 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/encode_models.rs" 16 8 16 74
+let%span sencode_models'4 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/encode_models.rs" 24 10 24 29
+let%span sencode_models'5 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/encode_models.rs" 25 11 25 45
+let%span sencode_models'6 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/encode_models.rs" 26 11 26 26
+let%span sencode_models'7 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/encode_models.rs" 27 10 27 50
+let%span sencode_models'8 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/encode_models.rs" 28 22 29 44
+let%span sencode_models'9 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/encode_models.rs" 30 10 30 75
+let%span sencode_models'10 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/encode_models.rs" 31 10 31 92
+let%span swell_founded = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/logic/well_founded.rs" 43 8 43 33
+let%span slib = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 574 14 574 18
+let%span slib'0 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 574 23 574 27
+let%span slib'1 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 572 32 572 82
+let%span slib'2 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 573 32 573 80
+let%span slib'3 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 592 20 592 47
+let%span slib'4 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 586 20 586 31
+let%span slib'5 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 678 17 678 21
+let%span slib'6 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 669 32 672 5
+let%span slib'7 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 673 32 673 81
+let%span slib'8 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 674 32 677 5
+let%span slib'9 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 720 12 722 99
+let%span slib'10 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 90 4 92 57
+let%span slib'11 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 375 16 375 43
+let%span slib'12 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 714 20 714 70
+let%span slib'13 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 1262 16 1262 45
+let%span slib'14 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 727 14 727 47
+let%span slib'15 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 729 8 731 10
+let%span slib'16 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 741 15 741 32
+let%span slib'17 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 742 15 742 32
+let%span slib'18 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 743 14 743 42
+let%span slib'19 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 745 8 745 66
+let%span slib'20 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 84 4 84 36
+let%span slib'21 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 1182 10 1182 68
+let%span slib'22 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 1184 4 1184 52
+let%span sseq = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/logic/seq.rs" 558 14 558 38
+let%span sseq'0 = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/logic/seq.rs" 650 14 650 40
+let%span sseq'1 = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/logic/seq.rs" 301 14 301 24
+let%span sseq'2 = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/logic/seq.rs" 299 14 299 40
+let%span sseq'3 = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/logic/seq.rs" 300 14 300 76
+let%span sseq'4 = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/logic/seq.rs" 447 14 447 47
+let%span sseq'5 = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/logic/seq.rs" 448 14 448 47
+let%span sseq'6 = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/logic/seq.rs" 311 14 311 24
+let%span sseq'7 = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/logic/seq.rs" 313 8 317 9
+let%span sseq'8 = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/logic/seq.rs" 160 8 160 39
+let%span smapping = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/logic/mapping.rs" 66 8 66 19
+let%span sstring = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/std/string.rs" 190 20 190 56
+let%span schar = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/std/char.rs" 47 14 47 52
+let%span sformat_trace = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/format_trace.rs" 54 8 58 33
+let%span sformat_trace'0 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/format_trace.rs" 130 4 130 13
+let%span sformat_trace'1 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/format_trace.rs" 124 12 127 7
+let%span sformat_trace'2 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/format_trace.rs" 85 11 85 58
+let%span sformat_trace'3 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/format_trace.rs" 86 11 86 33
+let%span sformat_trace'4 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/format_trace.rs" 87 11 87 67
+let%span sformat_trace'5 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/format_trace.rs" 88 10 88 16
+let%span sformat_trace'6 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/format_trace.rs" 89 10 91 1
+let%span sformat_trace'7 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/format_trace.rs" 104 11 104 58
+let%span sformat_trace'8 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/format_trace.rs" 105 11 105 33
+let%span sformat_trace'9 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/format_trace.rs" 106 11 106 67
+let%span sformat_trace'10 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/format_trace.rs" 107 10 107 16
+let%span sformat_trace'11 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/format_trace.rs" 108 10 110 1
+let%span sformat_trace'12 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/format_trace.rs" 72 8 78 30
+let%span sencoder_display = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/encoder_display.rs" 72 19 72 34
+let%span sencoder_display'0 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/encoder_display.rs" 74 29 77 5
+let%span sencoder_display'1 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/encoder_display.rs" 79 22 79 32
+let%span sencoder_display'2 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/encoder_display.rs" 81 20 81 30
+let%span sencoder_display'3 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/encoder_display.rs" 84 28 84 32
+let%span sencoder_display'4 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/encoder_display.rs" 91 32 91 60
+let%span sencoder_display'5 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/encoder_display.rs" 94 31 94 35
+let%span sencoder_display'6 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/encoder_display.rs" 95 14 95 25
+let%span sencoder_display'7 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/encoder_display.rs" 88 34 90 5
+let%span sencoder_display'8 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/encoder_display.rs" 87 34 87 66
+let%span sencoder_display'9 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/encoder_display.rs" 86 34 86 68
+let%span sencoder_display'10 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/encoder_display.rs" 99 39 99 47
+let%span sencoder_display'11 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/encoder_display.rs" 101 38 101 42
+let%span sencoder_display'12 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/encoder_display.rs" 105 24 105 54
+let%span sencoder_display'13 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/encoder_display.rs" 104 20 106 21
+let%span sencoder_display'14 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/encoder_display.rs" 107 34 113 21
+let%span sencoder_display'15 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/encoder_display.rs" 117 45 117 51
+let%span sencoder_display'16 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/encoder_display.rs" 121 36 121 54
+let%span sencoder_display'17 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/encoder_display.rs" 118 29 122 17
+let%span sencoder_display'18 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/encoder_display.rs" 139 42 141 29
+let%span sencoder_display'19 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/encoder_display.rs" 142 42 144 29
+let%span sencoder_display'20 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/encoder_display.rs" 127 42 129 29
+let%span sencoder_display'21 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/encoder_display.rs" 130 42 132 29
+let%span sencoder_display'22 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/encoder_display.rs" 154 22 156 9
+let%span sencoder_display'23 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/encoder_display.rs" 157 22 157 59
+let%span sencoder_display'24 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/encoder_display.rs" 69 4 69 11
+let%span sencoder_display'25 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/encoder_display.rs" 70 4 70 13
+let%span sencoder_display'26 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/encoder_display.rs" 20 11 20 43
+let%span sencoder_display'27 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/encoder_display.rs" 21 11 21 56
+let%span sencoder_display'28 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/encoder_display.rs" 22 10 22 16
+let%span sencoder_display'29 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/encoder_display.rs" 23 10 23 58
+let%span sencoder_display'30 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/encoder_display.rs" 47 11 49 1
+let%span sencoder_display'31 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/encoder_display.rs" 50 11 50 59
+let%span sencoder_display'32 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/encoder_display.rs" 51 10 51 16
+let%span sencoder_display'33 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/encoder_display.rs" 52 10 52 39
+let%span sencoder_display'34 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/encoder_display.rs" 53 10 53 73
+
+use creusot.slice.Slice64
+use creusot.int.UInt8
+use seq.Seq
+use creusot.int.UInt32
+use int.ComputerDivision
+use map.Map
+use creusot.prelude.MutBorrow
+use creusot.prelude.Char
+use creusot.prelude.Any
+use int.Int
+
+type t_AsciiSet
+
+type t_PercentEncode = { bytes: Slice64.slice UInt8.t; ascii_set: t_AsciiSet }
+
+predicate inv_AsciiSet (_1: t_AsciiSet)
+
+predicate invariant_ref_AsciiSet [@inline:trivial] (self: t_AsciiSet) = [%#sinvariant'0] inv_AsciiSet self
+
+meta "rewrite_def" predicate invariant_ref_AsciiSet
+
+predicate inv_ref_AsciiSet [@inline:trivial] (_1: t_AsciiSet) = invariant_ref_AsciiSet _1
+
+meta "rewrite_def" predicate inv_ref_AsciiSet
+
+predicate inv_PercentEncode (_1: t_PercentEncode)
+
+axiom inv_axiom [@rewrite]: forall x: t_PercentEncode [inv_PercentEncode x]. inv_PercentEncode x
+    = inv_ref_AsciiSet x.ascii_set
+
+predicate invariant_ref_PercentEncode [@inline:trivial] (self: t_PercentEncode) =
+  [%#sinvariant'0] inv_PercentEncode self
+
+meta "rewrite_def" predicate invariant_ref_PercentEncode
+
+predicate inv_ref_PercentEncode [@inline:trivial] (_1: t_PercentEncode) = invariant_ref_PercentEncode _1
+
+meta "rewrite_def" predicate inv_ref_PercentEncode
+
+function remaining_input [#"/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 585 4 585 43] [@inline:trivial] (self: t_PercentEncode) : Seq.seq UInt8.t
+ = [%#slib'4] Slice64.view self.bytes
+
+meta "rewrite_def" function remaining_input
+
+function mask_words [#"/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/ascii_set.rs" 115 4 115 40] (self: t_AsciiSet) : Seq.seq UInt32.t
+
+axiom mask_words_spec: forall self: t_AsciiSet [mask_words self]. [%#sascii_set] Seq.length (mask_words self) = 4
+
+function configured_set [#"/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 591 4 591 43] [@inline:trivial] (self: t_PercentEncode) : Seq.seq UInt32.t
+ = [%#slib'3] mask_words self.ascii_set
+
+meta "rewrite_def" function configured_set
+
+let clone_PercentEncode (self: t_PercentEncode) (return (x: t_PercentEncode)) =
+{[@stop_split] [@expl:clone 'self' type invariant] [%#slib] inv_ref_PercentEncode self}
+  any
+  [ return (result: t_PercentEncode) ->
+  {[@stop_split] [@expl:clone_PercentEncode ensures] ([@stop_split] [@expl:clone result type invariant] [%#slib'0] inv_PercentEncode result)
+    /\ ([@stop_split] [@expl:clone ensures #0] [%#slib'1] remaining_input result = remaining_input self)
+    /\ ([@stop_split] [@expl:clone ensures #1] [%#slib'2] configured_set result = configured_set self)}
+    (! return {result}) ]
+
+predicate gt_log_Int [@inline:trivial] (self: int) (other: int) = [%#sord] other < self
+
+meta "rewrite_def" predicate gt_log_Int
+
+predicate ge_log_Int [@inline:trivial] (self: int) (other: int) = [%#sord'0] other <= self
+
+meta "rewrite_def" predicate ge_log_Int
+
+predicate should_encode_model [#"/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/encode_models.rs" 14 0 14 60] (mask: Seq.seq UInt32.t) (byte: UInt8.t) =
+  [%#sencode_models'3] ge_log_Int (UInt8.t'int byte) 128
+  \/ UInt32.bw_and (Seq.get mask (ComputerDivision.div (UInt8.t'int byte) 32)) (UInt32.shl (1: UInt32.t) (UInt32.of_int (UInt8.t'int (UInt8.bw_and byte (31: UInt8.t)))))
+  <> (0: UInt32.t)
+
+function uppercase_hex (digit: int) : int = [%#slib'22] if digit < 10 then 48 + digit else 55 + digit
+
+axiom uppercase_hex_spec: forall digit: int [uppercase_hex digit]. [%#slib'21] uppercase_hex digit
+    = (if digit < 10 then 48 + digit else 55 + digit)
+
+function uppercase_hex'0 [#"/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 83 0 83 39] (digit: int) : int
+ = [%#slib'20] uppercase_hex digit
+
+function encoded_byte_model [#"/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 89 0 89 48] (byte: int) : Seq.seq int
+ =
+  [%#slib'10] Seq.(++) (Seq.(++) (Seq.singleton 37) (Seq.singleton (uppercase_hex'0 (ComputerDivision.div byte 16)))) (Seq.singleton (uppercase_hex'0 (ComputerDivision.mod byte 16)))
+
+function safe_run_end [#"/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/encode_models.rs" 32 0 32 70] (input: Seq.seq UInt8.t) (start: int) (mask: Seq.seq UInt32.t) : int
+
+axiom safe_run_end_spec:
+  forall input: Seq.seq UInt8.t, start: int, mask: Seq.seq UInt32.t [safe_run_end input start mask]. ([%#sencode_models'5] 0
+        <= start
+      /\ start <= Seq.length input)
+    -> ([%#sencode_models'6] Seq.length mask = 4)
+    -> ([%#sencode_models'7] start <= safe_run_end input start mask
+    /\ safe_run_end input start mask <= Seq.length input)
+
+axiom safe_run_end_spec'0:
+  forall input: Seq.seq UInt8.t, start: int, mask: Seq.seq UInt32.t [safe_run_end input start mask]. ([%#sencode_models'5] 0
+        <= start
+      /\ start <= Seq.length input)
+    -> ([%#sencode_models'6] Seq.length mask = 4)
+    -> ([%#sencode_models'8] forall i: int. start <= i /\ i < safe_run_end input start mask
+      -> not should_encode_model mask (Seq.get input i))
+
+axiom safe_run_end_spec'1:
+  forall input: Seq.seq UInt8.t, start: int, mask: Seq.seq UInt32.t [safe_run_end input start mask]. ([%#sencode_models'5] 0
+        <= start
+      /\ start <= Seq.length input)
+    -> ([%#sencode_models'6] Seq.length mask = 4)
+    -> ([%#sencode_models'9] safe_run_end input start mask = Seq.length input
+    \/ should_encode_model mask (Seq.get input (safe_run_end input start mask)))
+
+axiom safe_run_end_spec'2:
+  forall input: Seq.seq UInt8.t, start: int, mask: Seq.seq UInt32.t [safe_run_end input start mask]. ([%#sencode_models'5] 0
+        <= start
+      /\ start <= Seq.length input)
+    -> ([%#sencode_models'6] Seq.length mask = 4)
+    -> ([%#sencode_models'10] start < Seq.length input /\ not should_encode_model mask (Seq.get input start)
+    -> start < safe_run_end input start mask)
+
+function index_Mapping_u8_Int [@inline:trivial] (self: Map.map UInt8.t int) (a: UInt8.t) : int =
+  [%#smapping] Map.get self a
+
+meta "rewrite_def" function index_Mapping_u8_Int
+
+function map_u8 (self: Seq.seq UInt8.t) (m: Map.map UInt8.t int) : Seq.seq int
+
+axiom map_u8_spec:
+  forall self: Seq.seq UInt8.t, m: Map.map UInt8.t int [map_u8 self m]. [%#sseq'2] Seq.length (map_u8 self m)
+    = Seq.length self
+
+axiom map_u8_spec'0: forall self: Seq.seq UInt8.t, m: Map.map UInt8.t int [map_u8 self m]. [%#sseq'3] forall i: int. 0
+          <= i
+        /\ i < Seq.length self -> Seq.get (map_u8 self m) i = index_Mapping_u8_Int m (Seq.get self i)
+
+function byte_sequence_as_ints (bytes'0: Seq.seq UInt8.t) : Seq.seq int =
+  [%#slib'11] map_u8 bytes'0 (fun (byte: UInt8.t) -> UInt8.t'int byte)
+
+function encoded_chunks [#"/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/encode_models.rs" 123 0 123 70] (mask: Seq.seq UInt32.t) (input: Seq.seq UInt8.t) : Seq.seq (Seq.seq int)
+
+axiom encoded_chunks_def:
+  forall mask: Seq.seq UInt32.t, input: Seq.seq UInt8.t [encoded_chunks mask input]. ([%#sencode_models'0] Seq.length mask
+      = 4)
+    -> encoded_chunks mask input
+    = ([%#sencode_models'2] if Seq.length input = 0 then
+      Seq.empty: Seq.seq (Seq.seq int)
+    else
+      if should_encode_model mask (Seq.get input 0) then
+        Seq.(++) (Seq.singleton (encoded_byte_model (UInt8.t'int (Seq.get input 0)))) (encoded_chunks mask (Seq.([..]) input 1 (Seq.length input)))
+      else
+        let end' = safe_run_end input 0 mask in Seq.(++) (Seq.singleton (byte_sequence_as_ints (Seq.([..]) input 0 end'))) (encoded_chunks mask (Seq.([..]) input end' (Seq.length input)))
+    
+    )
+
+axiom encoded_chunks_spec:
+  forall mask: Seq.seq UInt32.t, input: Seq.seq UInt8.t [encoded_chunks mask input]. ([%#sencode_models'0] Seq.length mask
+      = 4)
+    -> ([%#sencode_models'1] if Seq.length input = 0 then
+      Seq.length (encoded_chunks mask input) = 0
+    else
+      gt_log_Int (Seq.length (encoded_chunks mask input)) 0
+      /\ (if should_encode_model mask (Seq.get input 0) then
+        Seq.get (encoded_chunks mask input) 0 = encoded_byte_model (UInt8.t'int (Seq.get input 0))
+        /\ Seq.([..]) (encoded_chunks mask input) 1 (Seq.length (encoded_chunks mask input))
+        = encoded_chunks mask (Seq.([..]) input 1 (Seq.length input))
+      else
+        let end' = safe_run_end input 0 mask in Seq.get (encoded_chunks mask input) 0
+          = byte_sequence_as_ints (Seq.([..]) input 0 end')
+        /\ Seq.([..]) (encoded_chunks mask input) 1 (Seq.length (encoded_chunks mask input))
+        = encoded_chunks mask (Seq.([..]) input end' (Seq.length input))
+      )
+    )
+
+let new_ref_str (return (x: Seq.seq string)) = any
+  [ return (result: Seq.seq string) -> {[@stop_split] [@expl:new ensures] [%#sseq] result = (Seq.empty: Seq.seq string)}
+    (! return {result}) ]
+
+type tup2_ref_str_bool = { f0: string; f1: bool }
+
+let new_tup2_ref_str_bool (return (x: Seq.seq tup2_ref_str_bool)) = any
+  [ return (result: Seq.seq tup2_ref_str_bool) -> {[@stop_split] [@expl:new ensures] [%#sseq] result
+    = (Seq.empty: Seq.seq tup2_ref_str_bool)}
+    (! return {result}) ]
+
+predicate well_founded_relation_Int [@inline:trivial] (self: int) (other: int) =
+  [%#swell_founded] ge_log_Int self 0 /\ gt_log_Int self other
+
+meta "rewrite_def" predicate well_founded_relation_Int
+
+type t_Option_ref_str = None | Some string
+
+predicate invariant_refmut_PercentEncode [@inline:trivial] (self: MutBorrow.t t_PercentEncode) =
+  [%#sinvariant] inv_PercentEncode self.current /\ inv_PercentEncode self.final
+
+meta "rewrite_def" predicate invariant_refmut_PercentEncode
+
+predicate inv_refmut_PercentEncode [@inline:trivial] (_1: MutBorrow.t t_PercentEncode) =
+  invariant_refmut_PercentEncode _1
+
+meta "rewrite_def" predicate inv_refmut_PercentEncode
+
+function index_Mapping_ref_str_Seq_Int [@inline:trivial] (self: Map.map string (Seq.seq int)) (a: string) : Seq.seq int
+ = [%#smapping] Map.get self a
+
+meta "rewrite_def" function index_Mapping_ref_str_Seq_Int
+
+function map_ref_str (self: Seq.seq string) (m: Map.map string (Seq.seq int)) : Seq.seq (Seq.seq int)
+
+axiom map_ref_str_spec:
+  forall self: Seq.seq string, m: Map.map string (Seq.seq int) [map_ref_str self m]. [%#sseq'2] Seq.length (map_ref_str self m)
+    = Seq.length self
+
+axiom map_ref_str_spec'0:
+  forall self: Seq.seq string, m: Map.map string (Seq.seq int) [map_ref_str self m]. [%#sseq'3] forall i: int. 0 <= i
+        /\ i < Seq.length self -> Seq.get (map_ref_str self m) i = index_Mapping_ref_str_Seq_Int m (Seq.get self i)
+
+function tail_char (self: Seq.seq Char.t) : Seq.seq Char.t = [%#sseq'8] Seq.([..]) self 1 (Seq.length self)
+
+function flat_map_char (self: Seq.seq Char.t) (other: Map.map Char.t (Seq.seq UInt8.t)) : Seq.seq UInt8.t
+
+axiom flat_map_char_def:
+  forall self: Seq.seq Char.t, other: Map.map Char.t (Seq.seq UInt8.t) [flat_map_char self other]. flat_map_char self other
+    = ([%#sseq'7] if Seq.length self = 0 then
+      Seq.empty: Seq.seq UInt8.t
+    else
+      Seq.(++) (Map.get other (Seq.get self 0)) (flat_map_char (tail_char self) other)
+    )
+
+function to_utf8_char (self: Char.t) : Seq.seq UInt8.t
+
+axiom to_utf8_char_spec: forall self: Char.t [to_utf8_char self]. [%#schar] 1 <= Seq.length (to_utf8_char self)
+    /\ Seq.length (to_utf8_char self) <= 4
+
+function to_bytes (self: Seq.seq Char.t) : Seq.seq UInt8.t =
+  [%#sstring] flat_map_char self (fun (c: Char.t) -> to_utf8_char c)
+
+function view_str (self: string) : Seq.seq Char.t
+
+function string_chunk_bytes (s: string) : Seq.seq int =
+  [%#slib'13] map_u8 (to_bytes (view_str s)) (fun (b: UInt8.t) -> UInt8.t'int b)
+
+function concat_empty_Seq_Int (self: Seq.seq (Seq.seq int)) : ()
+
+axiom concat_empty_Seq_Int_spec:
+  forall self: Seq.seq (Seq.seq int). [%#sseq'4] Seq.(++) self (Seq.empty: Seq.seq (Seq.seq int)) = self
+
+axiom concat_empty_Seq_Int_spec'0:
+  forall self: Seq.seq (Seq.seq int). [%#sseq'5] Seq.(++) (Seq.empty: Seq.seq (Seq.seq int)) self = self
+
+predicate produces_PercentEncode [#"/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 718 4 718 64] (self: t_PercentEncode) (visited: Seq.seq string) (o: t_PercentEncode) =
+  [%#slib'9] encoded_chunks (configured_set self) (remaining_input self)
+  = Seq.(++) (map_ref_str visited (fun (chunk: string) -> string_chunk_bytes chunk)) (encoded_chunks (configured_set o) (remaining_input o))
+
+function produces_trans_PercentEncode [#"/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 744 4 744 90] (a: t_PercentEncode) (ab: Seq.seq string) (b: t_PercentEncode) (bc: Seq.seq string) (c: t_PercentEncode) : ()
+ = [%#slib'19] ()
+
+axiom produces_trans_PercentEncode_spec:
+  forall a: t_PercentEncode, ab: Seq.seq string, b: t_PercentEncode, bc: Seq.seq string, c: t_PercentEncode. ([%#slib'16] produces_PercentEncode a ab b)
+    -> ([%#slib'17] produces_PercentEncode b bc c) -> ([%#slib'18] produces_PercentEncode a (Seq.(++) ab bc) c)
+
+function produces_refl_PercentEncode [#"/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 728 4 728 26] (self: t_PercentEncode) : ()
+ =
+  [%#slib'15] let empty_chunks = map_ref_str (Seq.empty: Seq.seq string) (fun (chunk: string) -> string_chunk_bytes chunk) in let encoded = encoded_chunks (configured_set self) (remaining_input self) in let _ = concat_empty_Seq_Int encoded in ()
+
+axiom produces_refl_PercentEncode_spec:
+  forall self: t_PercentEncode. [%#slib'14] produces_PercentEncode self (Seq.empty: Seq.seq string) self
+
+predicate resolve_refmut_PercentEncode [@inline:trivial] (_1: MutBorrow.t t_PercentEncode) = _1.final = _1.current
+
+meta "rewrite_def" predicate resolve_refmut_PercentEncode
+
+predicate completed_PercentEncode [#"/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/lib.rs" 713 4 713 35] (self: MutBorrow.t t_PercentEncode) =
+  [%#slib'12] Seq.length (remaining_input self.current) = 0 /\ resolve_refmut_PercentEncode self
+
+let next_PercentEncode (self: MutBorrow.t t_PercentEncode) (return (x: t_Option_ref_str)) =
+{[@stop_split] [@expl:next 'self' type invariant] [%#slib'5] inv_refmut_PercentEncode self}
+  any
+  [ return (result: t_Option_ref_str) ->
+  {[@stop_split] [@expl:next_PercentEncode ensures] ([@stop_split] [@expl:next ensures #0] [%#slib'6] match result with
+        | Some item -> produces_PercentEncode self.current (Seq.singleton item) self.final
+        | None -> completed_PercentEncode self
+        end)
+    /\ ([@stop_split] [@expl:next ensures #1] [%#slib'7] configured_set self.final = configured_set self.current)
+    /\ ([@stop_split] [@expl:next ensures #2] [%#slib'8] match result with
+      | Some _ -> Seq.length (remaining_input self.final) < Seq.length (remaining_input self.current)
+      | None -> self.final = self.current
+      end)}
+    (! return {result}) ]
+
+predicate successful_model_prefix [#"/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/format_trace.rs" 48 0 52 9] (expected: Seq.seq (Seq.seq int)) (trace: Seq.seq tup2_ref_str_bool) (count: int) =
+  [%#sformat_trace] 0 <= count
+  /\ count <= Seq.length expected
+  /\ Seq.length trace = count
+  /\ (forall j: int. 0 <= j /\ j < count
+    -> string_chunk_bytes (Seq.get trace j).f0 = Seq.get expected j /\ (Seq.get trace j).f1)
+
+type t_Formatter
+
+predicate inv_Formatter (_1: t_Formatter)
+
+predicate invariant_refmut_Formatter [@inline:trivial] (self: MutBorrow.t t_Formatter) =
+  [%#sinvariant] inv_Formatter self.current /\ inv_Formatter self.final
+
+meta "rewrite_def" predicate invariant_refmut_Formatter
+
+predicate inv_refmut_Formatter [@inline:trivial] (_1: MutBorrow.t t_Formatter) = invariant_refmut_Formatter _1
+
+meta "rewrite_def" predicate inv_refmut_Formatter
+
+let elim_Some (_x: t_Option_ref_str) (return (f0'0: string)) = any
+  [ _k (f0'0: string) -> {Some f0'0 = _x} (! return {f0'0})
+  | _chk -> (! {[@expl:elim Some] match _x with
+      | Some _ -> true
+      | _ -> false
+      end}
+    any) ]
+
+let deref_mut_Ghost_Seq_ref_str (self: MutBorrow.t (Seq.seq string)) (return (x: MutBorrow.t (Seq.seq string))) = any
+  [ return (result: MutBorrow.t (Seq.seq string)) -> {[@stop_split] [@expl:deref_mut ensures] [%#sghost] result = self}
+    (! return {result}) ]
+
+let push_back_ghost_ref_str (self: MutBorrow.t (Seq.seq string)) (x: string) (return (x'0: ())) = any
+  [ return (result: ()) -> {[@stop_split] [@expl:push_back_ghost ensures] [%#sseq'0] self.final
+    = Seq.snoc self.current x}
+    (! return {result}) ]
+
+predicate resolve_refmut_Seq_ref_str [@inline:trivial] (_1: MutBorrow.t (Seq.seq string)) = _1.final = _1.current
+
+meta "rewrite_def" predicate resolve_refmut_Seq_ref_str
+
+let new_unit (x: ()) (return (x'0: ())) = any
+  [ return (result: ()) -> {[@stop_split] [@expl:new ensures] [%#sghost'0] result = x} (! return {result}) ]
+
+predicate produces_append [#"/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/encoder_display.rs" 24 0 30 9] (initial: t_PercentEncode) (prefix: Seq.seq string) (before: t_PercentEncode) (chunk: string) (after: t_PercentEncode)
+
+axiom produces_append_spec:
+  forall initial: t_PercentEncode, prefix: Seq.seq string, before: t_PercentEncode, chunk: string, after: t_PercentEncode [produces_append initial prefix before chunk after]. ([%#sencoder_display'26] produces_PercentEncode initial prefix before)
+    -> ([%#sencoder_display'27] produces_PercentEncode before (Seq.singleton chunk) after)
+    -> ([%#sencoder_display'28] produces_append initial prefix before chunk after)
+
+axiom produces_append_spec'0:
+  forall initial: t_PercentEncode, prefix: Seq.seq string, before: t_PercentEncode, chunk: string, after: t_PercentEncode. ([%#sencoder_display'26] produces_PercentEncode initial prefix before)
+    -> ([%#sencoder_display'27] produces_PercentEncode before (Seq.singleton chunk) after)
+    -> ([%#sencoder_display'29] produces_PercentEncode initial (Seq.snoc prefix chunk) after)
+
+let borrow_mut_Seq_tup2_ref_str_bool (self: MutBorrow.t (Seq.seq tup2_ref_str_bool))
+  (return (x: MutBorrow.t (Seq.seq tup2_ref_str_bool))) = any
+  [ return (result: MutBorrow.t (Seq.seq tup2_ref_str_bool)) ->
+  {[@stop_split] [@expl:borrow_mut ensures] [%#sghost'1] result = self}
+    (! return {result}) ]
+
+type t_Result_unit_Error = Ok () | Err ()
+
+let request_write (formatter: MutBorrow.t t_Formatter) (chunk: string) (trace: MutBorrow.t (Seq.seq tup2_ref_str_bool))
+  (return (x: t_Result_unit_Error)) =
+{[@stop_split] [@expl:request_write 'formatter' type invariant] [%#sformat_trace'0] inv_refmut_Formatter formatter}
+  any
+  [ return (result: t_Result_unit_Error) -> {[@stop_split] [@expl:request_write ensures] [%#sformat_trace'1] trace.final
+    = Seq.snoc trace.current { f0 = chunk;
+                               f1 = match result with
+                                 | Ok () -> true
+                                 | Err _ -> false
+                                 end }}
+    (! return {result}) ]
+
+predicate produced_chunk_matches [#"/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/encoder_display.rs" 54 0 60 9] (expected: Seq.seq (Seq.seq int)) (initial: t_PercentEncode) (prefix: Seq.seq string) (chunk: string) (after: t_PercentEncode)
+
+axiom produced_chunk_matches_spec:
+  forall expected: Seq.seq (Seq.seq int), initial: t_PercentEncode, prefix: Seq.seq string, chunk: string, after: t_PercentEncode [produced_chunk_matches expected initial prefix chunk after]. ([%#sencoder_display'30] expected
+      = encoded_chunks (configured_set initial) (remaining_input initial))
+    -> ([%#sencoder_display'31] produces_PercentEncode initial (Seq.snoc prefix chunk) after)
+    -> ([%#sencoder_display'32] produced_chunk_matches expected initial prefix chunk after)
+
+axiom produced_chunk_matches_spec'0:
+  forall expected: Seq.seq (Seq.seq int), initial: t_PercentEncode, prefix: Seq.seq string, chunk: string, after: t_PercentEncode. ([%#sencoder_display'30] expected
+      = encoded_chunks (configured_set initial) (remaining_input initial))
+    -> ([%#sencoder_display'31] produces_PercentEncode initial (Seq.snoc prefix chunk) after)
+    -> ([%#sencoder_display'33] Seq.length prefix < Seq.length expected)
+
+axiom produced_chunk_matches_spec'1:
+  forall expected: Seq.seq (Seq.seq int), initial: t_PercentEncode, prefix: Seq.seq string, chunk: string, after: t_PercentEncode. ([%#sencoder_display'30] expected
+      = encoded_chunks (configured_set initial) (remaining_input initial))
+    -> ([%#sencoder_display'31] produces_PercentEncode initial (Seq.snoc prefix chunk) after)
+    -> ([%#sencoder_display'34] string_chunk_bytes chunk = Seq.get expected (Seq.length prefix))
+
+predicate successful_model_prefix_push [#"/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/format_trace.rs" 92 0 97 9] (expected: Seq.seq (Seq.seq int)) (trace: Seq.seq tup2_ref_str_bool) (count: int) (chunk: string)
+
+axiom successful_model_prefix_push_spec:
+  forall expected: Seq.seq (Seq.seq int), trace: Seq.seq tup2_ref_str_bool, count: int, chunk: string [successful_model_prefix_push expected trace count chunk]. ([%#sformat_trace'2] successful_model_prefix expected trace count)
+    -> ([%#sformat_trace'3] count < Seq.length expected)
+    -> ([%#sformat_trace'4] string_chunk_bytes chunk = Seq.get expected count)
+    -> ([%#sformat_trace'5] successful_model_prefix_push expected trace count chunk)
+
+axiom successful_model_prefix_push_spec'0:
+  forall expected: Seq.seq (Seq.seq int), trace: Seq.seq tup2_ref_str_bool, count: int, chunk: string. ([%#sformat_trace'2] successful_model_prefix expected trace count)
+    -> ([%#sformat_trace'3] count < Seq.length expected)
+    -> ([%#sformat_trace'4] string_chunk_bytes chunk = Seq.get expected count)
+    -> ([%#sformat_trace'6] successful_model_prefix expected (Seq.snoc trace { f0 = chunk; f1 = true }) (count + 1))
+
+predicate resolve_refmut_Formatter [@inline:trivial] (_1: MutBorrow.t t_Formatter) = _1.final = _1.current
+
+meta "rewrite_def" predicate resolve_refmut_Formatter
+
+let elim_Err (_x: t_Result_unit_Error) (return (f0'0: ())) = any
+  [ _k (f0'0: ()) -> {Err f0'0 = _x} (! return {f0'0})
+  | _chk -> (! {[@expl:elim Err] match _x with
+      | Err _ -> true
+      | _ -> false
+      end}
+    any) ]
+
+predicate failed_model_prefix [#"/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/format_trace.rs" 66 0 70 9] (expected: Seq.seq (Seq.seq int)) (trace: Seq.seq tup2_ref_str_bool) (count: int) =
+  [%#sformat_trace'12] 0 <= count
+  /\ count < Seq.length expected
+  /\ Seq.length trace = count + 1
+  /\ (forall j: int. 0 <= j /\ j < count
+      -> string_chunk_bytes (Seq.get trace j).f0 = Seq.get expected j /\ (Seq.get trace j).f1)
+  /\ string_chunk_bytes (Seq.get trace count).f0 = Seq.get expected count /\ not (Seq.get trace count).f1
+
+predicate failed_model_prefix_push [#"/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/format_trace.rs" 111 0 116 9] (expected: Seq.seq (Seq.seq int)) (trace: Seq.seq tup2_ref_str_bool) (count: int) (chunk: string)
+
+axiom failed_model_prefix_push_spec:
+  forall expected: Seq.seq (Seq.seq int), trace: Seq.seq tup2_ref_str_bool, count: int, chunk: string [failed_model_prefix_push expected trace count chunk]. ([%#sformat_trace'7] successful_model_prefix expected trace count)
+    -> ([%#sformat_trace'8] count < Seq.length expected)
+    -> ([%#sformat_trace'9] string_chunk_bytes chunk = Seq.get expected count)
+    -> ([%#sformat_trace'10] failed_model_prefix_push expected trace count chunk)
+
+axiom failed_model_prefix_push_spec'0:
+  forall expected: Seq.seq (Seq.seq int), trace: Seq.seq tup2_ref_str_bool, count: int, chunk: string. ([%#sformat_trace'7] successful_model_prefix expected trace count)
+    -> ([%#sformat_trace'8] count < Seq.length expected)
+    -> ([%#sformat_trace'9] string_chunk_bytes chunk = Seq.get expected count)
+    -> ([%#sformat_trace'11] failed_model_prefix expected (Seq.snoc trace { f0 = chunk; f1 = false }) count)
+
+meta "compute_max_steps" 1000000
+
+meta "select_lsinst" "all"
+
+let format_encoder [#"/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/encoder_display.rs" 68 0 71 16]
+  (encoder: t_PercentEncode) (formatter: MutBorrow.t t_Formatter) (return (x: t_Result_unit_Error)) =
+{[@stop_split] [@expl:format_encoder requires] ([@stop_split] [@expl:format_encoder 'encoder' type invariant] [%#sencoder_display'24] inv_ref_PercentEncode encoder)
+  /\ ([@stop_split] [@expl:format_encoder 'formatter' type invariant] [%#sencoder_display'25] inv_refmut_Formatter formatter)}
+  (! bb0
+  [ bb0 = s0
+    [ s0 = clone_PercentEncode [%#sencoder_display] {encoder} (fun (_x: t_PercentEncode) -> [ &iter <- _x ] s1)
+    | s1 = [ &expected <- [%#sencoder_display'0] encoded_chunks (configured_set encoder) (remaining_input encoder) ] s2
+    | s2 = new_ref_str [%#sencoder_display'1] (fun (_x: Seq.seq string) -> [ &visited <- _x ] s3)
+    | s3 = new_tup2_ref_str_bool [%#sencoder_display'2] (fun (_x: Seq.seq tup2_ref_str_bool) -> [ &trace <- _x ] s4)
+    | s4 = [ &initial <- [%#sencoder_display'3] iter ] s5
+    | s5 = [ &_old <- formatter.final ] s6
+    | s6 = bb6 ]
+  | bb6 = bb6invariant
+    [ bb6 =
+      {[@expl:loop variant] well_founded_relation_Int variant_old_bb6 ([%#sencoder_display'4] Seq.length (remaining_input iter))}
+      bb6invariant
+    | bb6invariant = {[@expl:inferred invariant: type invariant] inv_PercentEncode iter}
+      {[@expl:inferred invariant: type invariant] inv_refmut_Formatter formatter}
+      {[@expl:inferred invariant: unchanged value] _old = formatter.final}
+      {[@expl:loop invariant #0] [%#sencoder_display'9] Seq.length visited = Seq.length trace}
+      {[@expl:loop invariant #1] [%#sencoder_display'8] produces_PercentEncode initial visited iter}
+      {[@expl:loop invariant #2] [%#sencoder_display'7] successful_model_prefix expected trace (Seq.length trace)}
+      (! [ &variant_old_bb6 <- [%#sencoder_display'4] Seq.length (remaining_input iter) ] s0)
+      [ s0 = [ &before <- [%#sencoder_display'5] iter ] s1
+      | s1 = MutBorrow.borrow_mut <t_PercentEncode> {iter}
+          (fun (_bor: MutBorrow.t t_PercentEncode) ->
+            [ &_32 <- _bor ] -{inv_PercentEncode _bor.final}-
+            [ &iter <- _bor.final ] s2) [ _ck -> (! {[@expl:type invariant] inv_PercentEncode iter} any) ]
+      | s2 = next_PercentEncode [%#sencoder_display'6] {_32} (fun (_x: t_Option_ref_str) -> [ &_31 <- _x ] s3)
+      | s3 = any [ br0 -> {_31 = None} (! bb11) | br1 (x0: string) -> {_31 = Some x0} (! bb12) ] ]
+      [ bb12 = s0
+        [ s0 = elim_Some {_31} (fun (r0: string) -> [ &chunk <- r0 ] s1)
+        | s1 = [ &prefix <- [%#sencoder_display'10] visited ] s2
+        | s2 = [ &after <- [%#sencoder_display'11] iter ] s3
+        | s3 = MutBorrow.borrow_mut <Seq.seq string> {visited}
+            (fun (_bor: MutBorrow.t (Seq.seq string)) -> [ &_48 <- _bor ] [ &visited <- _bor.final ] s4)
+        | s4 = deref_mut_Ghost_Seq_ref_str [%#sencoder_display'12] {_48}
+            (fun (_x: MutBorrow.t (Seq.seq string)) -> [ &_47 <- _x ] s5)
+        | s5 = MutBorrow.borrow_final <Seq.seq string> {_47.current} {MutBorrow.get_id _47}
+            (fun (_bor: MutBorrow.t (Seq.seq string)) ->
+              [ &_46 <- _bor ] [ &_47 <- { _47 with current = _bor.final } ] s6)
+        | s6 = push_back_ghost_ref_str [%#sencoder_display'12] {_46} {chunk} (fun (_x: ()) -> [ &_45 <- _x ] s7)
+        | s7 = -{resolve_refmut_Seq_ref_str _47}- s8
+        | s8 = new_unit [%#sencoder_display'13] {_44} (fun (_x: ()) -> [ &_43 <- _x ] s9)
+        | s9 = {[@expl:assertion] [%#sencoder_display'14] produces_append initial prefix before chunk after} s10
+        | s10 = [ &trace_before <- [%#sencoder_display'15] trace ] s11
+        | s11 = MutBorrow.borrow_mut <Seq.seq tup2_ref_str_bool> {trace}
+            (fun (_bor: MutBorrow.t (Seq.seq tup2_ref_str_bool)) -> [ &_64 <- _bor ] [ &trace <- _bor.final ] s12)
+        | s12 = borrow_mut_Seq_tup2_ref_str_bool [%#sencoder_display'16] {_64}
+            (fun (_x: MutBorrow.t (Seq.seq tup2_ref_str_bool)) -> [ &_63 <- _x ] s13)
+        | s13 = MutBorrow.borrow_mut <t_Formatter> {formatter.current}
+            (fun (_bor: MutBorrow.t t_Formatter) ->
+              [ &_61 <- _bor ] -{inv_Formatter _bor.final}-
+              [ &formatter <- { formatter with current = _bor.final } ] s14)
+          [ _ck -> (! {[@expl:type invariant] inv_Formatter formatter.current} any) ]
+        | s14 = request_write [%#sencoder_display'17] {_61} {chunk} {_63}
+            (fun (_x: t_Result_unit_Error) -> [ &result <- _x ] s15)
+        | s15 = any [ br0 (x0: ()) -> {result = Ok x0} (! bb24) | br1 (x0: ()) -> {result = Err x0} (! bb23) ] ]
+      | bb24 = s0
+        [ s0 = {[@expl:assertion] [%#sencoder_display'18] produced_chunk_matches expected initial prefix chunk after} s1
+        | s1 =
+          {[@expl:assertion] [%#sencoder_display'19] successful_model_prefix_push expected trace_before (Seq.length trace_before) chunk}
+          s2
+        | s2 = bb6 ] ] ]
+  | bb23 = s0
+    [ s0 = s1 [ _ck -> (! {[@expl:type invariant] inv_PercentEncode iter} any) ]
+    | s1 = s2 [ _ck -> (! {[@expl:type invariant] inv_refmut_Formatter formatter} any) ]
+    | s2 = -{resolve_refmut_Formatter formatter}- s3
+    | s3 = elim_Err {result} (fun (r0: ()) -> [ &error <- r0 ] s4)
+    | s4 = {[@expl:assertion] [%#sencoder_display'20] produced_chunk_matches expected initial prefix chunk after} s5
+    | s5 =
+      {[@expl:assertion] [%#sencoder_display'21] failed_model_prefix_push expected trace_before (Seq.length trace_before) chunk}
+      s6
+    | s6 = [ &_ret <- Err error ] s7
+    | s7 = return {_ret} ]
+  | bb11 = s0
+    [ s0 = s1 [ _ck -> (! {[@expl:type invariant] inv_PercentEncode iter} any) ]
+    | s1 = s2 [ _ck -> (! {[@expl:type invariant] inv_refmut_Formatter formatter} any) ]
+    | s2 = -{resolve_refmut_Formatter formatter}- s3
+    | s3 = {[@expl:assertion] [%#sencoder_display'22] successful_model_prefix expected trace (Seq.length trace)} s4
+    | s4 = {[@expl:assertion] [%#sencoder_display'23] Seq.length visited = Seq.length expected} s5
+    | s5 = [ &_ret <- Ok _103 ] s6
+    | s6 = return {_ret} ] ]
+  [ & _ret: t_Result_unit_Error = Any.any_l ()
+  | & encoder: t_PercentEncode = encoder
+  | & formatter: MutBorrow.t t_Formatter = formatter
+  | & iter: t_PercentEncode = Any.any_l ()
+  | & expected: Seq.seq (Seq.seq int) = Any.any_l ()
+  | & visited: Seq.seq string = Any.any_l ()
+  | & trace: Seq.seq tup2_ref_str_bool = Any.any_l ()
+  | & initial: t_PercentEncode = Any.any_l ()
+  | & before: t_PercentEncode = Any.any_l ()
+  | & _31: t_Option_ref_str = Any.any_l ()
+  | & _32: MutBorrow.t t_PercentEncode = Any.any_l ()
+  | & chunk: string = Any.any_l ()
+  | & prefix: Seq.seq string = Any.any_l ()
+  | & after: t_PercentEncode = Any.any_l ()
+  | & _43: () = Any.any_l ()
+  | & _44: () = Any.any_l ()
+  | & _45: () = Any.any_l ()
+  | & _46: MutBorrow.t (Seq.seq string) = Any.any_l ()
+  | & _47: MutBorrow.t (Seq.seq string) = Any.any_l ()
+  | & _48: MutBorrow.t (Seq.seq string) = Any.any_l ()
+  | & trace_before: Seq.seq tup2_ref_str_bool = Any.any_l ()
+  | & result: t_Result_unit_Error = Any.any_l ()
+  | & _61: MutBorrow.t t_Formatter = Any.any_l ()
+  | & _63: MutBorrow.t (Seq.seq tup2_ref_str_bool) = Any.any_l ()
+  | & _64: MutBorrow.t (Seq.seq tup2_ref_str_bool) = Any.any_l ()
+  | & error: () = Any.any_l ()
+  | & _103: () = Any.any_l ()
+  | & _old: t_Formatter = Any.any_l ()
+  | & variant_old_bb6: int = Any.any_l () ]) [ return (result: t_Result_unit_Error) -> (! return {result}) ]

@@ -1,0 +1,55 @@
+(* #"/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/encoder_cow.rs" 63 0 63 56 *)
+
+let%span sord = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/logic/ord.rs" 34 8 34 21
+let%span sord'0 = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/logic/ord.rs" 22 8 22 20
+let%span swell_founded = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/logic/well_founded.rs" 43 8 43 33
+let%span sencoder_cow = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/encoder_cow.rs" 55 10 55 22
+let%span sencoder_cow'0 = "/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/encoder_cow.rs" 57 4 61 5
+
+use seq.Seq
+use int.Int
+
+predicate ge_log_Int [@inline:trivial] (self: int) (other: int) = [%#sord] other <= self
+
+meta "rewrite_def" predicate ge_log_Int
+
+predicate gt_log_Int [@inline:trivial] (self: int) (other: int) = [%#sord'0] other < self
+
+meta "rewrite_def" predicate gt_log_Int
+
+predicate well_founded_relation_Int [@inline:trivial] (self: int) (other: int) =
+  [%#swell_founded] ge_log_Int self 0 /\ gt_log_Int self other
+
+meta "rewrite_def" predicate well_founded_relation_Int
+
+meta "compute_max_steps" 1000000
+
+meta "select_lsinst" "all"
+
+constant chunks : Seq.seq (Seq.seq int)
+
+function flatten_chunks [#"/Users/keiichiw/workspace/crate-proofs/percent-encoding/2.3.2/crate/src/encoder_cow.rs" 63 0 63 56] (chunks: Seq.seq (Seq.seq int)) : Seq.seq int
+
+goal vc_flatten_chunks: if Seq.length chunks = 0 then
+    let result = Seq.empty: Seq.seq int in [@stop_split] [@expl:flatten_chunks ensures] [%#sencoder_cow'0] if Seq.length chunks
+    = 0 then
+      Seq.length result = 0
+    else
+      result = Seq.(++) (Seq.get chunks 0) (flatten_chunks (Seq.([..]) chunks 1 (Seq.length chunks)))
+  
+  else
+    ([@expl:variant decreases] well_founded_relation_Int ([%#sencoder_cow] Seq.length chunks) ([%#sencoder_cow] Seq.length (Seq.([..]) chunks 1 (Seq.length chunks))))
+    /\ (([@stop_split] [@expl:flatten_chunks ensures] [%#sencoder_cow'0] if Seq.length (Seq.([..]) chunks 1 (Seq.length chunks))
+      = 0 then
+        Seq.length (flatten_chunks (Seq.([..]) chunks 1 (Seq.length chunks))) = 0
+      else
+        flatten_chunks (Seq.([..]) chunks 1 (Seq.length chunks))
+        = Seq.(++) (Seq.get (Seq.([..]) chunks 1 (Seq.length chunks)) 0) (flatten_chunks (Seq.([..]) (Seq.([..]) chunks 1 (Seq.length chunks)) 1 (Seq.length (Seq.([..]) chunks 1 (Seq.length chunks)))))
+      )
+    -> (let result = Seq.(++) (Seq.get chunks 0) (flatten_chunks (Seq.([..]) chunks 1 (Seq.length chunks))) in [@stop_split] [@expl:flatten_chunks ensures] [%#sencoder_cow'0] if Seq.length chunks
+    = 0 then
+      Seq.length result = 0
+    else
+      result = Seq.(++) (Seq.get chunks 0) (flatten_chunks (Seq.([..]) chunks 1 (Seq.length chunks)))
+    ))
+  

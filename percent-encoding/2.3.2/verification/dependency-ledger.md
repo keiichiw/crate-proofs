@@ -8,15 +8,15 @@ package. The new local percent-encoding package is not globally patched into
 that dependency, so the Cargo and logical dependency graphs are acyclic.
 
 The reusable evidence is
-`../../../form_urlencoded/1.2.2/verification/evidence/direct-s8YxnYN7/manifest.json`.
+`../../../form_urlencoded/1.2.2/verification/evidence/form-urlencoded-etJOlOat/manifest.json`.
 The manifest SHA-256 is
-`d21f6c897107588209849a03f887bf2beff597be648160272c756c5d5ad0c9e8`.
+`7e9efe7807c704fe2bdbc18da585051dcf479c112dc6ffe682f771168ae2a153`.
 The dependency's `crate/src/lib.rs` SHA-256 is
 `8e4d6fd4011272b2bc4ef01281f859f270edd0814a1e21c3a5c7cd89406e92fd`.
 The dependency's `crate/Cargo.toml` SHA-256 is
 `9f09b794f81c87031b19a40f4399f7ac7fee35920d324ad1372ba64c30bff77e`.
 
-A fresh read-only archive audit on 2026-10-15 UTC passed. Exact goal and input counts are recorded in the dependency manifest and its `audit.log`. This is the selected first-order scope of form_urlencoded, not its entire
+A fresh standard Why3find proof with Z3/CVC5 and a read-only root-reconstructing archive audit on 2026-10-17 UTC passed. Exact goal and input counts are recorded in the dependency manifest and its `audit.log`. This is the selected first-order scope of form_urlencoded, not its entire
 public API. Its standard-library assumptions and upstream correspondence limits
 remain part of the dependency chain.
 
