@@ -1,0 +1,71 @@
+(* #"/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 887 0 887 61 *)
+
+let%span sseq = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/logic/seq.rs" 301 14 301 24
+let%span sseq'0 = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/logic/seq.rs" 299 14 299 40
+let%span sseq'1 = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/logic/seq.rs" 300 14 300 76
+let%span smapping = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/logic/mapping.rs" 66 8 66 19
+let%span slib = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 881 11 881 41
+let%span slib'0 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 882 11 882 26
+let%span slib'1 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 883 11 883 48
+let%span slib'2 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 884 11 884 48
+let%span slib'3 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 885 10 885 16
+let%span slib'4 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 886 10 886 66
+let%span slib'5 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 1182 10 1182 68
+let%span slib'6 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 1184 4 1184 52
+let%span slib'7 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 375 16 375 43
+let%span slib'8 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 1206 4 1212 5
+
+use creusot.int.UInt8
+use seq.Seq
+use int.ComputerDivision
+use map.Map
+use int.Int
+
+function uppercase_hex [#"/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 1183 0 1183 39] (digit: int) : int
+ = [%#slib'6] if digit < 10 then 48 + digit else 55 + digit
+
+axiom uppercase_hex_spec: forall digit: int [uppercase_hex digit]. [%#slib'5] uppercase_hex digit
+    = (if digit < 10 then 48 + digit else 55 + digit)
+
+function index_Mapping_u8_Int [@inline:trivial] (self: Map.map UInt8.t int) (a: UInt8.t) : int =
+  [%#smapping] Map.get self a
+
+meta "rewrite_def" function index_Mapping_u8_Int
+
+function map_u8 (self: Seq.seq UInt8.t) (m: Map.map UInt8.t int) : Seq.seq int
+
+axiom map_u8_spec:
+  forall self: Seq.seq UInt8.t, m: Map.map UInt8.t int [map_u8 self m]. [%#sseq'0] Seq.length (map_u8 self m)
+    = Seq.length self
+
+axiom map_u8_spec'0: forall self: Seq.seq UInt8.t, m: Map.map UInt8.t int [map_u8 self m]. [%#sseq'1] forall i: int. 0
+          <= i
+        /\ i < Seq.length self -> Seq.get (map_u8 self m) i = index_Mapping_u8_Int m (Seq.get self i)
+
+function byte_sequence_as_ints [#"/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 374 0 374 56] (bytes: Seq.seq UInt8.t) : Seq.seq int
+ = [%#slib'7] map_u8 bytes (fun (byte: UInt8.t) -> UInt8.t'int byte)
+
+function escaped_byte_chunk [#"/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 1205 0 1205 48] (byte: int) : Seq.seq int
+ = [%#slib'8] if byte = 32 then
+    Seq.singleton 43
+  else
+    Seq.(++) (Seq.(++) (Seq.singleton 37) (Seq.singleton (uppercase_hex (ComputerDivision.div byte 16)))) (Seq.singleton (uppercase_hex (ComputerDivision.mod byte 16)))
+
+
+meta "compute_max_steps" 1000000
+
+meta "select_lsinst" "all"
+
+constant bytes : Seq.seq UInt8.t
+
+constant byte : int
+
+predicate encoded_array_model [#"/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 887 0 887 61] (bytes: Seq.seq UInt8.t) (byte: int)
+
+goal vc_encoded_array_model: ([%#slib] byte <> 32 /\ Seq.length bytes = 3)
+  -> ([%#slib'0] UInt8.t'int (Seq.get bytes 0) = 37)
+  -> ([%#slib'1] UInt8.t'int (Seq.get bytes 1) = uppercase_hex (ComputerDivision.div byte 16))
+  -> ([%#slib'2] UInt8.t'int (Seq.get bytes 2) = uppercase_hex (ComputerDivision.mod byte 16))
+  -> ([@stop_split] [@expl:encoded_array_model ensures] ([@stop_split] [@expl:encoded_array_model ensures #0] [%#slib'3] Seq.(==) (byte_sequence_as_ints bytes) (escaped_byte_chunk byte))
+  /\ ([@stop_split] [@expl:encoded_array_model ensures #1] [%#slib'4] byte_sequence_as_ints bytes
+  = escaped_byte_chunk byte))

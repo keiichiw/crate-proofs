@@ -1,0 +1,38 @@
+(* #"/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 982 4 982 49 *)
+
+(* Parse<'a> *)
+
+let%span slib = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 981 32 981 88
+let%span slib'0 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 996 20 996 48
+let%span slib'1 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 65 20 65 31
+
+use creusot.slice.Slice64
+use creusot.int.UInt8
+use creusot.prelude.Any
+use seq.Seq
+
+type t_Parse = { input: Slice64.slice UInt8.t }
+
+type t_ParseIntoOwned = { inner: t_Parse }
+
+function remaining_input [#"/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 64 4 64 43] [@inline:trivial] (self: t_Parse) : Seq.seq UInt8.t
+ = [%#slib'1] Slice64.view self.input
+
+meta "rewrite_def" function remaining_input
+
+function remaining_owned_input [#"/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 995 4 995 49] [@inline:trivial] (self: t_ParseIntoOwned) : Seq.seq UInt8.t
+ = [%#slib'0] remaining_input self.inner
+
+meta "rewrite_def" function remaining_owned_input
+
+meta "compute_max_steps" 1000000
+
+meta "select_lsinst" "all"
+
+let into_owned [#"/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 982 4 982 49]
+  (self: t_Parse) (return (x: t_ParseIntoOwned)) = (! bb0
+  [ bb0 = s0 [ s0 = [ &_ret <- { inner = self } ] s1 | s1 = return {_ret} ] ]
+  [ & _ret: t_ParseIntoOwned = Any.any_l () | & self: t_Parse = self ])
+  [ return (result: t_ParseIntoOwned) -> {[@stop_split] [@expl:into_owned ensures] [%#slib] remaining_owned_input result
+    = remaining_input self}
+    (! return {result}) ]

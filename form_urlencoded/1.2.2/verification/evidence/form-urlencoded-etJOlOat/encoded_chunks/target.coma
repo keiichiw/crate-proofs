@@ -1,0 +1,177 @@
+(* #"/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 1220 0 1220 54 *)
+
+let%span sseq = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/logic/seq.rs" 299 14 299 40
+let%span sseq'0 = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/logic/seq.rs" 300 14 300 76
+let%span sseq'1 = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/logic/seq.rs" 301 14 301 24
+let%span smapping = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/logic/mapping.rs" 66 8 66 19
+let%span swell_founded = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/logic/well_founded.rs" 43 8 43 33
+let%span sord = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/logic/ord.rs" 22 8 22 20
+let%span sord'0 = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/logic/ord.rs" 34 8 34 21
+let%span slib = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 1217 10 1217 21
+let%span slib'0 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 1218 10 1218 51
+let%span slib'1 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 1219 10 1219 78
+let%span slib'2 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 1171 10 1173 33
+let%span slib'3 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 1189 11 1189 45
+let%span slib'4 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 1191 10 1191 50
+let%span slib'5 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 1192 10 1192 79
+let%span slib'6 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 1193 10 1193 66
+let%span slib'7 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 1194 10 1194 81
+let%span slib'8 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 1175 4 1177 36
+let%span slib'9 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 1190 10 1190 29
+let%span slib'10 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 1196 4 1200 5
+let%span slib'11 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 1206 4 1212 5
+let%span slib'12 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 1182 10 1182 68
+let%span slib'13 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 1184 4 1184 52
+
+use creusot.int.UInt8
+use seq.Seq
+use map.Map
+use int.ComputerDivision
+use int.Int
+
+predicate gt_log_Int [@inline:trivial] (self: int) (other: int) = [%#sord] other < self
+
+meta "rewrite_def" predicate gt_log_Int
+
+predicate unchanged_byte [#"/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 1174 0 1174 40] (byte: int) =
+  [%#slib'8] byte = 42
+  \/ byte = 45
+  \/ byte = 46 \/ 48 <= byte /\ byte <= 57 \/ 65 <= byte /\ byte <= 90 \/ byte = 95 \/ 97 <= byte /\ byte <= 122
+
+axiom unchanged_byte_spec: forall byte: int [unchanged_byte byte]. [%#slib'2] unchanged_byte byte
+    = (byte = 42
+    \/ byte = 45
+    \/ byte = 46 \/ 48 <= byte /\ byte <= 57 \/ 65 <= byte /\ byte <= 90 \/ byte = 95 \/ 97 <= byte /\ byte <= 122)
+
+function safe_run_end [#"/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 1195 0 1195 54] (bytes: Seq.seq UInt8.t) (start: int) : int
+
+axiom safe_run_end_def: forall bytes: Seq.seq UInt8.t, start: int [safe_run_end bytes start]. ([%#slib'3] 0 <= start
+      /\ start <= Seq.length bytes)
+    -> safe_run_end bytes start
+    = ([%#slib'10] if start < Seq.length bytes /\ unchanged_byte (UInt8.t'int (Seq.get bytes start)) then
+      safe_run_end bytes (start + 1)
+    else
+      start
+    )
+
+axiom safe_run_end_spec: forall bytes: Seq.seq UInt8.t, start: int [safe_run_end bytes start]. ([%#slib'3] 0 <= start
+      /\ start <= Seq.length bytes)
+    -> ([%#slib'4] start <= safe_run_end bytes start /\ safe_run_end bytes start <= Seq.length bytes)
+
+axiom safe_run_end_spec'0: forall bytes: Seq.seq UInt8.t, start: int [safe_run_end bytes start]. ([%#slib'3] 0 <= start
+      /\ start <= Seq.length bytes)
+    -> ([%#slib'5] forall i: int. start <= i /\ i < safe_run_end bytes start
+      -> unchanged_byte (UInt8.t'int (Seq.get bytes i)))
+
+axiom safe_run_end_spec'1: forall bytes: Seq.seq UInt8.t, start: int [safe_run_end bytes start]. ([%#slib'3] 0 <= start
+      /\ start <= Seq.length bytes)
+    -> ([%#slib'6] safe_run_end bytes start = Seq.length bytes
+    \/ not unchanged_byte (UInt8.t'int (Seq.get bytes (safe_run_end bytes start))))
+
+axiom safe_run_end_spec'2: forall bytes: Seq.seq UInt8.t, start: int [safe_run_end bytes start]. ([%#slib'3] 0 <= start
+      /\ start <= Seq.length bytes)
+    -> ([%#slib'7] start < Seq.length bytes /\ unchanged_byte (UInt8.t'int (Seq.get bytes start))
+    -> start < safe_run_end bytes start)
+
+function index_Mapping_u8_Int [@inline:trivial] (self: Map.map UInt8.t int) (a: UInt8.t) : int =
+  [%#smapping] Map.get self a
+
+meta "rewrite_def" function index_Mapping_u8_Int
+
+function map_u8 (self: Seq.seq UInt8.t) (m: Map.map UInt8.t int) : Seq.seq int
+
+axiom map_u8_spec:
+  forall self: Seq.seq UInt8.t, m: Map.map UInt8.t int [map_u8 self m]. [%#sseq] Seq.length (map_u8 self m)
+    = Seq.length self
+
+axiom map_u8_spec'0: forall self: Seq.seq UInt8.t, m: Map.map UInt8.t int [map_u8 self m]. [%#sseq'0] forall i: int. 0
+          <= i
+        /\ i < Seq.length self -> Seq.get (map_u8 self m) i = index_Mapping_u8_Int m (Seq.get self i)
+
+predicate ge_log_Int [@inline:trivial] (self: int) (other: int) = [%#sord'0] other <= self
+
+meta "rewrite_def" predicate ge_log_Int
+
+predicate well_founded_relation_Int [@inline:trivial] (self: int) (other: int) =
+  [%#swell_founded] ge_log_Int self 0 /\ gt_log_Int self other
+
+meta "rewrite_def" predicate well_founded_relation_Int
+
+function uppercase_hex [#"/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 1183 0 1183 39] (digit: int) : int
+ = [%#slib'13] if digit < 10 then 48 + digit else 55 + digit
+
+axiom uppercase_hex_spec: forall digit: int [uppercase_hex digit]. [%#slib'12] uppercase_hex digit
+    = (if digit < 10 then 48 + digit else 55 + digit)
+
+function escaped_byte_chunk [#"/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 1205 0 1205 48] (byte: int) : Seq.seq int
+ = [%#slib'11] if byte = 32 then
+    Seq.singleton 43
+  else
+    Seq.(++) (Seq.(++) (Seq.singleton 37) (Seq.singleton (uppercase_hex (ComputerDivision.div byte 16)))) (Seq.singleton (uppercase_hex (ComputerDivision.mod byte 16)))
+
+
+meta "compute_max_steps" 1000000
+
+meta "select_lsinst" "all"
+
+constant bytes : Seq.seq UInt8.t
+
+function encoded_chunks [#"/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 1220 0 1220 54] (bytes: Seq.seq UInt8.t) : Seq.seq (Seq.seq int)
+
+goal vc_encoded_chunks: if Seq.length bytes = 0 then
+    let result = Seq.empty: Seq.seq (Seq.seq int) in [@stop_split] [@expl:encoded_chunks ensures] ([@stop_split] [@expl:encoded_chunks ensures #0] [%#slib'0] (Seq.length bytes
+        = 0)
+      = (Seq.length result = 0))
+    /\ ([@stop_split] [@expl:encoded_chunks ensures #1] [%#slib'1] gt_log_Int (Seq.length bytes) 0
+    -> 1 <= Seq.length result /\ Seq.length result <= Seq.length bytes)
+  else
+    let byte = UInt8.t'int (Seq.get bytes 0) in ([@stop_split] [@expl:unchanged_byte ensures] [%#slib'2] unchanged_byte byte
+      = (byte = 42
+      \/ byte = 45
+      \/ byte = 46 \/ 48 <= byte /\ byte <= 57 \/ 65 <= byte /\ byte <= 90 \/ byte = 95 \/ 97 <= byte /\ byte <= 122))
+    -> (if unchanged_byte byte then
+      ([@stop_split] [@expl:safe_run_end requires] [%#slib'3] 0 <= 0 /\ 0 <= Seq.length bytes)
+      /\ (([@stop_split] [@expl:safe_run_end ensures] ([@stop_split] [@expl:safe_run_end ensures #0] [%#slib'4] 0
+            <= safe_run_end bytes 0
+          /\ safe_run_end bytes 0 <= Seq.length bytes)
+        /\ ([@stop_split] [@expl:safe_run_end ensures #1] [%#slib'5] forall i: int. 0 <= i /\ i < safe_run_end bytes 0
+            -> unchanged_byte (UInt8.t'int (Seq.get bytes i)))
+        /\ ([@stop_split] [@expl:safe_run_end ensures #2] [%#slib'6] safe_run_end bytes 0 = Seq.length bytes
+          \/ not unchanged_byte (UInt8.t'int (Seq.get bytes (safe_run_end bytes 0))))
+        /\ ([@stop_split] [@expl:safe_run_end ensures #3] [%#slib'7] 0 < Seq.length bytes
+          /\ unchanged_byte (UInt8.t'int (Seq.get bytes 0)) -> 0 < safe_run_end bytes 0))
+      -> (let end' = safe_run_end bytes 0 in ([@stop_split] [@expl:map ensures] ([@stop_split] [@expl:map ensures #0] [%#sseq] Seq.length (map_u8 (Seq.([..]) bytes 0 end') (fun (b: UInt8.t) -> UInt8.t'int b))
+          = Seq.length (Seq.([..]) bytes 0 end'))
+        /\ ([@stop_split] [@expl:map ensures #1] [%#sseq'0] forall i: int. 0 <= i
+            /\ i < Seq.length (Seq.([..]) bytes 0 end')
+          -> Seq.get (map_u8 (Seq.([..]) bytes 0 end') (fun (b: UInt8.t) -> UInt8.t'int b)) i
+          = index_Mapping_u8_Int (fun (b: UInt8.t) -> UInt8.t'int b) (Seq.get (Seq.([..]) bytes 0 end') i)))
+      -> ([@expl:variant decreases] well_founded_relation_Int ([%#slib] Seq.length bytes) ([%#slib] Seq.length (Seq.([..]) bytes end' (Seq.length bytes))))
+      /\ (([@stop_split] [@expl:encoded_chunks ensures] ([@stop_split] [@expl:encoded_chunks ensures #0] [%#slib'0] (Seq.length (Seq.([..]) bytes end' (Seq.length bytes))
+            = 0)
+          = (Seq.length (encoded_chunks (Seq.([..]) bytes end' (Seq.length bytes))) = 0))
+        /\ ([@stop_split] [@expl:encoded_chunks ensures #1] [%#slib'1] gt_log_Int (Seq.length (Seq.([..]) bytes end' (Seq.length bytes))) 0
+        -> 1 <= Seq.length (encoded_chunks (Seq.([..]) bytes end' (Seq.length bytes)))
+        /\ Seq.length (encoded_chunks (Seq.([..]) bytes end' (Seq.length bytes)))
+        <= Seq.length (Seq.([..]) bytes end' (Seq.length bytes))))
+      -> (let result = Seq.(++) (Seq.singleton (map_u8 (Seq.([..]) bytes 0 end') (fun (b: UInt8.t) -> UInt8.t'int b))) (encoded_chunks (Seq.([..]) bytes end' (Seq.length bytes))) in [@stop_split] [@expl:encoded_chunks ensures] ([@stop_split] [@expl:encoded_chunks ensures #0] [%#slib'0] (Seq.length bytes
+          = 0)
+        = (Seq.length result = 0))
+      /\ ([@stop_split] [@expl:encoded_chunks ensures #1] [%#slib'1] gt_log_Int (Seq.length bytes) 0
+      -> 1 <= Seq.length result /\ Seq.length result <= Seq.length bytes)))))
+    else
+      ([@expl:variant decreases] well_founded_relation_Int ([%#slib] Seq.length bytes) ([%#slib] Seq.length (Seq.([..]) bytes 1 (Seq.length bytes))))
+      /\ (([@stop_split] [@expl:encoded_chunks ensures] ([@stop_split] [@expl:encoded_chunks ensures #0] [%#slib'0] (Seq.length (Seq.([..]) bytes 1 (Seq.length bytes))
+            = 0)
+          = (Seq.length (encoded_chunks (Seq.([..]) bytes 1 (Seq.length bytes))) = 0))
+        /\ ([@stop_split] [@expl:encoded_chunks ensures #1] [%#slib'1] gt_log_Int (Seq.length (Seq.([..]) bytes 1 (Seq.length bytes))) 0
+        -> 1 <= Seq.length (encoded_chunks (Seq.([..]) bytes 1 (Seq.length bytes)))
+        /\ Seq.length (encoded_chunks (Seq.([..]) bytes 1 (Seq.length bytes)))
+        <= Seq.length (Seq.([..]) bytes 1 (Seq.length bytes))))
+      -> (let result = Seq.(++) (Seq.singleton (escaped_byte_chunk byte)) (encoded_chunks (Seq.([..]) bytes 1 (Seq.length bytes))) in [@stop_split] [@expl:encoded_chunks ensures] ([@stop_split] [@expl:encoded_chunks ensures #0] [%#slib'0] (Seq.length bytes
+          = 0)
+        = (Seq.length result = 0))
+      /\ ([@stop_split] [@expl:encoded_chunks ensures #1] [%#slib'1] gt_log_Int (Seq.length bytes) 0
+      -> 1 <= Seq.length result /\ Seq.length result <= Seq.length bytes)))
+    )
+  

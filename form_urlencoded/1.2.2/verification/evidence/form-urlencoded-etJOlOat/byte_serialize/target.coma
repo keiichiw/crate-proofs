@@ -1,0 +1,28 @@
+(* #"/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 1131 0 1131 56 *)
+
+let%span slib = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 1130 28 1130 62
+let%span slib'0 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 1145 20 1145 31
+
+use creusot.slice.Slice64
+use creusot.int.UInt8
+use creusot.prelude.Any
+use seq.Seq
+
+type t_ByteSerialize = { bytes: Slice64.slice UInt8.t }
+
+function remaining_bytes [#"/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 1144 4 1144 43] [@inline:trivial] (self: t_ByteSerialize) : Seq.seq UInt8.t
+ = [%#slib'0] Slice64.view self.bytes
+
+meta "rewrite_def" function remaining_bytes
+
+meta "compute_max_steps" 1000000
+
+meta "select_lsinst" "all"
+
+let byte_serialize [#"/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 1131 0 1131 56]
+  (input: Slice64.slice UInt8.t) (return (x: t_ByteSerialize)) = (! bb0
+  [ bb0 = s0 [ s0 = [ &_ret <- { bytes = input } ] s1 | s1 = return {_ret} ] ]
+  [ & _ret: t_ByteSerialize = Any.any_l () | & input: Slice64.slice UInt8.t = input ])
+  [ return (result: t_ByteSerialize) -> {[@stop_split] [@expl:byte_serialize ensures] [%#slib] remaining_bytes result
+    = Slice64.view input}
+    (! return {result}) ]

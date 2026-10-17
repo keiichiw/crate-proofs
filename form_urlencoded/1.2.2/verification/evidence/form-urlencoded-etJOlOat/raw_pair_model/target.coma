@@ -1,0 +1,150 @@
+(* #"/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 528 0 528 81 *)
+
+let%span slib = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 517 11 517 45
+let%span slib'0 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 518 11 518 30
+let%span slib'1 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 519 10 527 1
+let%span slib'2 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 464 11 464 59
+let%span slib'3 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 466 10 466 42
+let%span slib'4 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 467 10 467 71
+let%span slib'5 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 468 10 468 49
+let%span slib'6 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 450 10 450 29
+let%span slib'7 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 449 11 449 45
+let%span slib'8 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 451 10 451 50
+let%span slib'9 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 452 10 452 69
+let%span slib'10 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 453 10 453 55
+let%span slib'11 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 455 4 459 5
+let%span slib'12 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 465 10 465 21
+let%span slib'13 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 470 4 474 5
+
+use creusot.int.UInt8
+use seq.Seq
+use int.Int
+
+type tup4_Int_Int_Int_Int = { f0: int; f1: int; f2: int; f3: int }
+
+type t_Option_tup4_Int_Int_Int_Int = None | Some tup4_Int_Int_Int_Int
+
+function skip_ampersands [#"/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 454 0 454 57] (input: Seq.seq UInt8.t) (start: int) : int
+
+axiom skip_ampersands_def: forall input: Seq.seq UInt8.t, start: int [skip_ampersands input start]. ([%#slib'7] 0
+        <= start
+      /\ start <= Seq.length input)
+    -> skip_ampersands input start
+    = ([%#slib'11] if start < Seq.length input /\ UInt8.t'int (Seq.get input start) = 38 then
+      skip_ampersands input (start + 1)
+    else
+      start
+    )
+
+axiom skip_ampersands_spec: forall input: Seq.seq UInt8.t, start: int [skip_ampersands input start]. ([%#slib'7] 0
+        <= start
+      /\ start <= Seq.length input)
+    -> ([%#slib'8] start <= skip_ampersands input start /\ skip_ampersands input start <= Seq.length input)
+
+axiom skip_ampersands_spec'0: forall input: Seq.seq UInt8.t, start: int [skip_ampersands input start]. ([%#slib'7] 0
+        <= start
+      /\ start <= Seq.length input)
+    -> ([%#slib'9] forall i: int. start <= i /\ i < skip_ampersands input start -> UInt8.t'int (Seq.get input i) = 38)
+
+axiom skip_ampersands_spec'1: forall input: Seq.seq UInt8.t, start: int [skip_ampersands input start]. ([%#slib'7] 0
+        <= start
+      /\ start <= Seq.length input)
+    -> ([%#slib'10] skip_ampersands input start = Seq.length input
+    \/ UInt8.t'int (Seq.get input (skip_ampersands input start)) <> 38)
+
+function find_byte_before [#"/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 469 0 469 79] (input: Seq.seq UInt8.t) (start: int) (end': int) (byte: int) : int
+
+axiom find_byte_before_def:
+  forall input: Seq.seq UInt8.t, start: int, end': int, byte: int [find_byte_before input start end' byte]. ([%#slib'2] 0
+        <= start
+      /\ start <= end' /\ end' <= Seq.length input)
+    -> find_byte_before input start end' byte
+    = ([%#slib'13] if start < end' /\ UInt8.t'int (Seq.get input start) <> byte then
+      find_byte_before input (start + 1) end' byte
+    else
+      start
+    )
+
+axiom find_byte_before_spec:
+  forall input: Seq.seq UInt8.t, start: int, end': int, byte: int [find_byte_before input start end' byte]. ([%#slib'2] 0
+        <= start
+      /\ start <= end' /\ end' <= Seq.length input)
+    -> ([%#slib'3] start <= find_byte_before input start end' byte /\ find_byte_before input start end' byte <= end')
+
+axiom find_byte_before_spec'0:
+  forall input: Seq.seq UInt8.t, start: int, end': int, byte: int [find_byte_before input start end' byte]. ([%#slib'2] 0
+        <= start
+      /\ start <= end' /\ end' <= Seq.length input)
+    -> ([%#slib'4] forall i: int. start <= i /\ i < find_byte_before input start end' byte
+      -> UInt8.t'int (Seq.get input i) <> byte)
+
+axiom find_byte_before_spec'1:
+  forall input: Seq.seq UInt8.t, start: int, end': int, byte: int [find_byte_before input start end' byte]. ([%#slib'2] 0
+        <= start
+      /\ start <= end' /\ end' <= Seq.length input)
+    -> ([%#slib'5] find_byte_before input start end' byte = end'
+    \/ UInt8.t'int (Seq.get input (find_byte_before input start end' byte)) = byte)
+
+meta "compute_max_steps" 1000000
+
+meta "select_lsinst" "all"
+
+constant input : Seq.seq UInt8.t
+
+constant start : int
+
+function raw_pair_model [#"/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 528 0 528 81] (input: Seq.seq UInt8.t) (start: int) : t_Option_tup4_Int_Int_Int_Int
+
+goal vc_raw_pair_model: ([%#slib] start = skip_ampersands input 0)
+  -> ([%#slib'0] start < Seq.length input)
+  -> ([@stop_split] [@expl:find_byte_before requires] [%#slib'2] 0 <= start
+    /\ start <= Seq.length input /\ Seq.length input <= Seq.length input)
+  /\ (([@stop_split] [@expl:find_byte_before ensures] ([@stop_split] [@expl:find_byte_before ensures #0] [%#slib'3] start
+        <= find_byte_before input start (Seq.length input) 38
+      /\ find_byte_before input start (Seq.length input) 38 <= Seq.length input)
+    /\ ([@stop_split] [@expl:find_byte_before ensures #1] [%#slib'4] forall i: int. start <= i
+          /\ i < find_byte_before input start (Seq.length input) 38 -> UInt8.t'int (Seq.get input i) <> 38)
+    /\ ([@stop_split] [@expl:find_byte_before ensures #2] [%#slib'5] find_byte_before input start (Seq.length input) 38
+      = Seq.length input
+    \/ UInt8.t'int (Seq.get input (find_byte_before input start (Seq.length input) 38)) = 38))
+  -> (let end' = find_byte_before input start (Seq.length input) 38 in ([@stop_split] [@expl:find_byte_before requires] [%#slib'2] 0
+      <= start
+    /\ start <= end' /\ end' <= Seq.length input)
+  /\ (([@stop_split] [@expl:find_byte_before ensures] ([@stop_split] [@expl:find_byte_before ensures #0] [%#slib'3] start
+        <= find_byte_before input start end' 61
+      /\ find_byte_before input start end' 61 <= end')
+    /\ ([@stop_split] [@expl:find_byte_before ensures #1] [%#slib'4] forall i: int. start <= i
+          /\ i < find_byte_before input start end' 61 -> UInt8.t'int (Seq.get input i) <> 61)
+    /\ ([@stop_split] [@expl:find_byte_before ensures #2] [%#slib'5] find_byte_before input start end' 61 = end'
+    \/ UInt8.t'int (Seq.get input (find_byte_before input start end' 61)) = 61))
+  -> (let eq = find_byte_before input start end' 61 in if end' < Seq.length input then
+    let next = end' + 1 in [@stop_split] [@expl:raw_pair_model ensures] [%#slib'1] match Some { f0 = start;
+                                                                                                f1 = eq;
+                                                                                                f2 = end';
+                                                                                                f3 = next } with
+      | Some {f0 = pair_start; f1 = eq'0; f2 = end''0; f3 = next'0} -> pair_start = start
+      /\ pair_start < end''0
+      /\ end''0 <= Seq.length input
+      /\ pair_start <= eq'0
+      /\ eq'0 <= end''0
+      /\ (eq'0 < end''0 -> UInt8.t'int (Seq.get input eq'0) = 61)
+      /\ (end''0 = Seq.length input \/ UInt8.t'int (Seq.get input end''0) = 38)
+      /\ next'0 = (if end''0 < Seq.length input then end''0 + 1 else end''0)
+      | None -> false
+      end
+  else
+    let next = end' in [@stop_split] [@expl:raw_pair_model ensures] [%#slib'1] match Some { f0 = start;
+                                                                                            f1 = eq;
+                                                                                            f2 = end';
+                                                                                            f3 = next } with
+      | Some {f0 = pair_start; f1 = eq'0; f2 = end''0; f3 = next'0} -> pair_start = start
+      /\ pair_start < end''0
+      /\ end''0 <= Seq.length input
+      /\ pair_start <= eq'0
+      /\ eq'0 <= end''0
+      /\ (eq'0 < end''0 -> UInt8.t'int (Seq.get input eq'0) = 61)
+      /\ (end''0 = Seq.length input \/ UInt8.t'int (Seq.get input end''0) = 38)
+      /\ next'0 = (if end''0 < Seq.length input then end''0 + 1 else end''0)
+      | None -> false
+      end
+  ))))

@@ -1,0 +1,533 @@
+(* #"/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 661 0 661 54 *)
+
+let%span sseq = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/logic/seq.rs" 443 14 443 86
+let%span sseq'0 = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/logic/seq.rs" 301 14 301 24
+let%span sseq'1 = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/logic/seq.rs" 299 14 299 40
+let%span sseq'2 = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/logic/seq.rs" 300 14 300 76
+let%span smapping = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/logic/mapping.rs" 66 8 66 19
+let%span sord = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/logic/ord.rs" 34 8 34 21
+let%span slib = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 667 20 667 21
+let%span slib'0 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 678 18 678 29
+let%span slib'1 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 674 34 677 9
+let%span slib'2 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 668 34 673 82
+let%span slib'3 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 679 25 679 37
+let%span slib'4 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 679 41 679 45
+let%span slib'5 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 679 49 679 60
+let%span slib'6 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 679 49 679 68
+let%span slib'7 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 679 72 679 73
+let%span slib'8 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 680 51 680 52
+let%span slib'9 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 680 43 680 52
+let%span slib'10 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 680 37 680 53
+let%span slib'11 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 680 19 680 54
+let%span slib'12 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 680 88 680 89
+let%span slib'13 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 680 80 680 89
+let%span slib'14 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 680 74 680 90
+let%span slib'15 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 680 56 680 91
+let%span slib'16 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 681 55 681 57
+let%span slib'17 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 681 48 681 57
+let%span slib'18 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 681 48 681 63
+let%span slib'19 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 690 77 693 17
+let%span slib'20 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 695 30 697 17
+let%span slib'21 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 699 30 703 18
+let%span slib'22 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 705 30 705 71
+let%span slib'23 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 707 16 716 18
+let%span slib'24 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 717 16 717 68
+let%span slib'25 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 719 30 723 17
+let%span slib'26 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 724 25 724 26
+let%span slib'27 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 724 16 724 26
+let%span slib'28 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 728 77 731 17
+let%span slib'29 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 733 30 735 17
+let%span slib'30 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 737 30 741 18
+let%span slib'31 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 743 30 743 66
+let%span slib'32 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 746 20 746 60
+let%span slib'33 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 752 16 752 62
+let%span slib'34 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 754 30 759 17
+let%span slib'35 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 760 25 760 26
+let%span slib'36 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 760 16 760 26
+let%span slib'37 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 653 28 660 1
+let%span slib'38 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 380 10 380 21
+let%span slib'39 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 382 4 382 34
+let%span slib'40 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 375 16 375 43
+let%span slib'41 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 388 10 388 29
+let%span slib'42 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 387 11 387 45
+let%span slib'43 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 390 4 408 5
+let%span slib'44 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 344 28 348 1
+let%span slib'45 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 413 11 413 44
+let%span slib'46 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 414 10 414 16
+let%span slib'47 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 415 10 424 5
+let%span slib'48 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 431 11 431 59
+let%span slib'49 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 432 10 432 16
+let%span slib'50 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 433 10 434 59
+let%span slib'51 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 786 29 786 55
+let%span slib'52 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 787 29 790 1
+let%span slib'53 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 791 28 797 1
+let%span slib'54 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 798 28 805 1
+let%span slib'55 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 806 28 812 1
+let%span slib'56 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 813 28 816 1
+let%span slib'57 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 893 11 893 44
+let%span slib'58 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 894 10 894 16
+let%span slib'59 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 895 10 897 46
+let%span slib'60 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 892 0 892 8
+let%span slib'61 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 827 29 827 50
+let%span slib'62 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 828 29 831 1
+let%span slib'63 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 832 28 839 1
+let%span slib'64 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 840 28 845 1
+let%span slib'65 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 846 28 850 1
+let%span slib'66 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 361 4 369 5
+let%span slib'67 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 861 11 861 44
+let%span slib'68 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 862 10 862 16
+let%span slib'69 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 863 10 864 71
+let%span sslice = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/std/slice.rs" 331 18 331 22
+let%span sslice'0 = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/std/slice.rs" 76 20 76 30
+let%span svec = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/std/vec.rs" 18 14 18 41
+
+use creusot.int.UInt64
+use creusot.slice.Slice64
+use creusot.int.UInt8
+use seq.Seq
+use map.Map
+use creusot.prelude.MutBorrow
+use creusot.prelude.Any
+use int.Int
+
+type t_Vec_u8_Global
+
+type t_Option_Vec_u8_Global = None | Some t_Vec_u8_Global
+
+let len_u8 (self_: Slice64.slice UInt8.t) (return (x: UInt64.t)) = any
+  [ return (result: UInt64.t) -> {[@stop_split] [@expl:len ensures] [%#sslice] Seq.length (Slice64.view self_)
+    = UInt64.t'int result}
+    (! return {result}) ]
+
+constant const_MAX: UInt64.t = (18446744073709551615: UInt64.t)
+
+function view_Vec_u8_Global (self: t_Vec_u8_Global) : Seq.seq UInt8.t
+
+axiom view_Vec_u8_Global_spec:
+  forall self: t_Vec_u8_Global [view_Vec_u8_Global self]. [%#svec] Seq.length (view_Vec_u8_Global self)
+    <= UInt64.t'int const_MAX
+
+function percent_hex_value_model [#"/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 360 0 360 48] (byte: int) : int
+ = [%#slib'66] if 48 <= byte /\ byte <= 57 then
+    byte - 48
+  else
+    if 65 <= byte /\ byte <= 70 then byte - 55 else if 97 <= byte /\ byte <= 102 then byte - 87 else - 1
+
+
+predicate ge_log_Int [@inline:trivial] (self: int) (other: int) = [%#sord] other <= self
+
+meta "rewrite_def" predicate ge_log_Int
+
+function percent_decoded_from [#"/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 389 0 389 68] (bytes: Seq.seq int) (index: int) : Seq.seq int
+
+axiom percent_decoded_from_def: forall bytes: Seq.seq int, index: int [percent_decoded_from bytes index]. ([%#slib'42] 0
+        <= index
+      /\ index <= Seq.length bytes)
+    -> percent_decoded_from bytes index
+    = ([%#slib'43] if index = Seq.length bytes then
+      Seq.empty: Seq.seq int
+    else
+      let first = Seq.get bytes index in if first = 37 /\ index + 3 <= Seq.length bytes then
+        let high = percent_hex_value_model (Seq.get bytes (index
+        + 1)) in let low = percent_hex_value_model (Seq.get bytes (index + 2)) in if ge_log_Int high 0
+        /\ ge_log_Int low 0 then
+          Seq.(++) (Seq.singleton (high * 16 + low)) (percent_decoded_from bytes (index + 3))
+        else
+          Seq.(++) (Seq.singleton first) (percent_decoded_from bytes (index + 1))
+      
+      else
+        Seq.(++) (Seq.singleton first) (percent_decoded_from bytes (index + 1))
+    
+    )
+
+function percent_decoded_model [#"/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 381 0 381 57] (bytes: Seq.seq int) : Seq.seq int
+
+axiom percent_decoded_model_def: forall bytes: Seq.seq int [percent_decoded_model bytes]. percent_decoded_model bytes
+    = ([%#slib'39] percent_decoded_from bytes 0)
+
+function index_Mapping_u8_Int [@inline:trivial] (self: Map.map UInt8.t int) (a: UInt8.t) : int =
+  [%#smapping] Map.get self a
+
+meta "rewrite_def" function index_Mapping_u8_Int
+
+function map_u8 (self: Seq.seq UInt8.t) (m: Map.map UInt8.t int) : Seq.seq int
+
+axiom map_u8_spec:
+  forall self: Seq.seq UInt8.t, m: Map.map UInt8.t int [map_u8 self m]. [%#sseq'1] Seq.length (map_u8 self m)
+    = Seq.length self
+
+axiom map_u8_spec'0: forall self: Seq.seq UInt8.t, m: Map.map UInt8.t int [map_u8 self m]. [%#sseq'2] forall i: int. 0
+          <= i
+        /\ i < Seq.length self -> Seq.get (map_u8 self m) i = index_Mapping_u8_Int m (Seq.get self i)
+
+function byte_sequence_as_ints [#"/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 374 0 374 56] (bytes: Seq.seq UInt8.t) : Seq.seq int
+ = [%#slib'40] map_u8 bytes (fun (byte: UInt8.t) -> UInt8.t'int byte)
+
+type t_Option_u8 = None'0 | Some'0 UInt8.t
+
+let percent_hex_value (byte: UInt8.t) (return (x: t_Option_u8)) = any
+  [ return (result: t_Option_u8) -> {[@stop_split] [@expl:percent_hex_value ensures] [%#slib'44] match result with
+      | Some'0 value -> percent_hex_value_model (UInt8.t'int byte) = UInt8.t'int value
+      /\ 0 <= UInt8.t'int value /\ UInt8.t'int value <= 15
+      | None'0 -> percent_hex_value_model (UInt8.t'int byte) = - 1
+      end}
+    (! return {result}) ]
+
+type tup2_Option_u8_Option_u8 = { f0: t_Option_u8; f1: t_Option_u8 }
+
+let elim_Some (_x: t_Option_u8) (return (f0'0: UInt8.t)) = any
+  [ _k (f0'0: UInt8.t) -> {Some'0 f0'0 = _x} (! return {f0'0})
+  | _chk -> (! {[@expl:elim Some] match _x with
+      | Some'0 _ -> true
+      | _ -> false
+      end}
+    any) ]
+
+predicate percent_decoded_from_step [#"/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 425 0 425 69] (bytes: Seq.seq int) (index: int)
+
+axiom percent_decoded_from_step_spec:
+  forall bytes: Seq.seq int, index: int [percent_decoded_from_step bytes index]. ([%#slib'45] 0 <= index
+      /\ index < Seq.length bytes) -> ([%#slib'46] percent_decoded_from_step bytes index)
+
+axiom percent_decoded_from_step_spec'0: forall bytes: Seq.seq int, index: int. ([%#slib'45] 0 <= index
+      /\ index < Seq.length bytes)
+    -> ([%#slib'47] percent_decoded_from bytes index
+    = (if Seq.get bytes index = 37
+    /\ index + 3 <= Seq.length bytes
+    /\ ge_log_Int (percent_hex_value_model (Seq.get bytes (index + 1))) 0
+    /\ ge_log_Int (percent_hex_value_model (Seq.get bytes (index + 2))) 0 then
+      Seq.(++) (Seq.singleton (percent_hex_value_model (Seq.get bytes (index + 1)) * 16
+      + percent_hex_value_model (Seq.get bytes (index + 2)))) (percent_decoded_from bytes (index + 3))
+    else
+      Seq.(++) (Seq.singleton (Seq.get bytes index)) (percent_decoded_from bytes (index + 1))
+    ))
+
+predicate byte_model_subsequence [#"/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 435 0 435 75] (bytes: Seq.seq UInt8.t) (start: int) (end': int)
+
+axiom byte_model_subsequence_spec:
+  forall bytes: Seq.seq UInt8.t, start: int, end': int [byte_model_subsequence bytes start end']. ([%#slib'48] 0
+        <= start
+      /\ start <= end' /\ end' <= Seq.length bytes) -> ([%#slib'49] byte_model_subsequence bytes start end')
+
+axiom byte_model_subsequence_spec'0: forall bytes: Seq.seq UInt8.t, start: int, end': int. ([%#slib'48] 0 <= start
+      /\ start <= end' /\ end' <= Seq.length bytes)
+    -> ([%#slib'50] byte_sequence_as_ints (Seq.([..]) bytes start end')
+    = Seq.([..]) (byte_sequence_as_ints bytes) start end')
+
+function concat_assoc_Int (self: Seq.seq int) (other1: Seq.seq int) (other2: Seq.seq int) : ()
+
+axiom concat_assoc_Int_spec:
+  forall self: Seq.seq int, other1: Seq.seq int, other2: Seq.seq int. [%#sseq] Seq.(++) (Seq.(++) self other1) other2
+    = Seq.(++) self (Seq.(++) other1 other2)
+
+let append_decoded_byte (output: MutBorrow.t t_Option_Vec_u8_Global) (input: Slice64.slice UInt8.t) (index: UInt64.t)
+  (byte: UInt8.t) (return (x: ())) =
+{[@stop_split] [@expl:append_decoded_byte requires] ([@stop_split] [@expl:append_decoded_byte requires #0] [%#slib'51] UInt64.t'int index
+      + 3
+    <= Seq.length (Slice64.view input))
+  /\ ([@stop_split] [@expl:append_decoded_byte requires #1] [%#slib'52] match output.current with
+    | Some before -> Seq.length (view_Vec_u8_Global before) < UInt64.t'int index
+    | None -> true
+    end)}
+  any
+  [ return (result: ()) ->
+  {[@stop_split] [@expl:append_decoded_byte ensures] ([@stop_split] [@expl:append_decoded_byte ensures #0] [%#slib'53] match output.final with
+        | Some after -> view_Vec_u8_Global after
+        = Seq.snoc (match output.current with
+          | Some before -> view_Vec_u8_Global before
+          | None -> Seq.([..]) (Slice64.view input) 0 (UInt64.t'int index)
+          end) byte
+        | None -> false
+        end)
+    /\ ([@stop_split] [@expl:append_decoded_byte ensures #1] [%#slib'54] match output.final with
+        | Some after -> byte_sequence_as_ints (view_Vec_u8_Global after)
+        = Seq.(++) (match output.current with
+          | Some before -> byte_sequence_as_ints (view_Vec_u8_Global before)
+          | None -> Seq.([..]) (byte_sequence_as_ints (Slice64.view input)) 0 (UInt64.t'int index)
+          end) (Seq.singleton (UInt8.t'int byte))
+        | None -> false
+        end)
+    /\ ([@stop_split] [@expl:append_decoded_byte ensures #2] [%#slib'55] match output.final with
+        | Some after -> Seq.length (view_Vec_u8_Global after)
+        = match output.current with
+          | Some before -> Seq.length (view_Vec_u8_Global before) + 1
+          | None -> UInt64.t'int index + 1
+          end
+        | None -> false
+        end)
+    /\ ([@stop_split] [@expl:append_decoded_byte ensures #3] [%#slib'56] match output.final with
+      | Some after -> Seq.length (view_Vec_u8_Global after) < UInt64.t'int index + 3
+      | None -> false
+      end)}
+    (! return {result}) ]
+
+predicate resolve_refmut_Option_Vec_u8_Global [@inline:trivial] (_1: MutBorrow.t t_Option_Vec_u8_Global) =
+  _1.final = _1.current
+
+meta "rewrite_def" predicate resolve_refmut_Option_Vec_u8_Global
+
+function index_slice_u8 [@inline:trivial] (self: Slice64.slice UInt8.t) (ix: UInt64.t) : UInt8.t =
+  [%#sslice'0] Seq.get (Slice64.view self) (UInt64.t'int ix)
+
+meta "rewrite_def" function index_slice_u8
+
+predicate int_prefix_push [#"/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 865 0 865 59] (bytes: Seq.seq int) (index: int)
+
+axiom int_prefix_push_spec: forall bytes: Seq.seq int, index: int [int_prefix_push bytes index]. ([%#slib'67] 0 <= index
+      /\ index < Seq.length bytes) -> ([%#slib'68] int_prefix_push bytes index)
+
+axiom int_prefix_push_spec'0: forall bytes: Seq.seq int, index: int. ([%#slib'67] 0 <= index
+      /\ index < Seq.length bytes)
+    -> ([%#slib'69] Seq.([..]) bytes 0 (index + 1)
+    = Seq.(++) (Seq.([..]) bytes 0 index) (Seq.singleton (Seq.get bytes index)))
+
+predicate byte_int_prefix_push [#"/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 898 0 898 63] (bytes: Seq.seq UInt8.t) (index: int) =
+  [%#slib'60] int_prefix_push (byte_sequence_as_ints bytes) index
+  /\ Seq.get (byte_sequence_as_ints bytes) index = UInt8.t'int (Seq.get bytes index)
+
+axiom byte_int_prefix_push_spec:
+  forall bytes: Seq.seq UInt8.t, index: int [byte_int_prefix_push bytes index]. ([%#slib'57] 0 <= index
+      /\ index < Seq.length bytes) -> ([%#slib'58] byte_int_prefix_push bytes index)
+
+axiom byte_int_prefix_push_spec'0: forall bytes: Seq.seq UInt8.t, index: int. ([%#slib'57] 0 <= index
+      /\ index < Seq.length bytes)
+    -> ([%#slib'59] Seq.([..]) (byte_sequence_as_ints bytes) 0 (index + 1)
+    = Seq.(++) (Seq.([..]) (byte_sequence_as_ints bytes) 0 index) (Seq.singleton (UInt8.t'int (Seq.get bytes index))))
+
+type tup2_Option_Vec_u8_Global_Option_Vec_u8_Global = { f0'0: t_Option_Vec_u8_Global; f1'0: t_Option_Vec_u8_Global }
+
+let append_literal_byte (output: MutBorrow.t t_Option_Vec_u8_Global) (input: Slice64.slice UInt8.t) (index: UInt64.t)
+  (return (x: ())) =
+{[@stop_split] [@expl:append_literal_byte requires] ([@stop_split] [@expl:append_literal_byte requires #0] [%#slib'61] UInt64.t'int index
+    < Seq.length (Slice64.view input))
+  /\ ([@stop_split] [@expl:append_literal_byte requires #1] [%#slib'62] match output.current with
+    | Some before -> Seq.length (view_Vec_u8_Global before) < UInt64.t'int index
+    | None -> true
+    end)}
+  any
+  [ return (result: ()) ->
+  {[@stop_split] [@expl:append_literal_byte ensures] ([@stop_split] [@expl:append_literal_byte ensures #0] [%#slib'63] match { f0'0 = output.current;
+                                                                                                                               f1'0 = output.final } with
+        | {f0'0 = None; f1'0 = None} -> true
+        | {f0'0 = Some before; f1'0 = Some after} -> view_Vec_u8_Global after
+          = Seq.snoc (view_Vec_u8_Global before) (index_slice_u8 input index)
+        /\ byte_sequence_as_ints (view_Vec_u8_Global after)
+        = Seq.(++) (byte_sequence_as_ints (view_Vec_u8_Global before)) (Seq.singleton (UInt8.t'int (index_slice_u8 input index)))
+        | _ -> false
+        end)
+    /\ ([@stop_split] [@expl:append_literal_byte ensures #1] [%#slib'64] match output.final with
+        | None -> Seq.([..]) (byte_sequence_as_ints (Slice64.view input)) 0 (UInt64.t'int index + 1)
+        = Seq.(++) (Seq.([..]) (byte_sequence_as_ints (Slice64.view input)) 0 (UInt64.t'int index)) (Seq.singleton (UInt8.t'int (index_slice_u8 input index)))
+        | Some after -> Seq.length (view_Vec_u8_Global after) < UInt64.t'int index + 1
+        end)
+    /\ ([@stop_split] [@expl:append_literal_byte ensures #2] [%#slib'65] match { f0'0 = output.current;
+                                                                                 f1'0 = output.final } with
+      | {f0'0 = None; f1'0 = None} -> true
+      | {f0'0 = Some before; f1'0 = Some after} -> Seq.length (view_Vec_u8_Global after)
+      = Seq.length (view_Vec_u8_Global before) + 1
+      | _ -> false
+      end)}
+    (! return {result}) ]
+
+let elim_Some'0 (_x: t_Option_Vec_u8_Global) (return (f0'1: t_Vec_u8_Global)) = any
+  [ _k (f0'1: t_Vec_u8_Global) -> {Some f0'1 = _x} (! return {f0'1})
+  | _chk -> (! {[@expl:elim Some] match _x with
+      | Some _ -> true
+      | _ -> false
+      end}
+    any) ]
+
+type t_Cow_slice_u8 = Borrowed (Slice64.slice UInt8.t) | Owned t_Vec_u8_Global
+
+meta "compute_max_steps" 1000000
+
+meta "select_lsinst" "all"
+
+let percent_decode_local [#"/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 661 0 661 54]
+  (input: Slice64.slice UInt8.t) (return (x: t_Cow_slice_u8)) = (! bb0
+  [ bb0 = s0 [ s0 = [ &output <- None ] s1 | s1 = [ &index <- [%#slib] (0: UInt64.t) ] s2 | s2 = bb1 ]
+  | bb1 = bb1
+    [ bb1 = {[@expl:loop invariant #0] [%#slib'2] 0 <= UInt64.t'int index
+      /\ UInt64.t'int index <= Seq.length (Slice64.view input)
+      /\ percent_decoded_model (byte_sequence_as_ints (Slice64.view input))
+      = Seq.(++) (match output with
+        | Some bytes'0 -> byte_sequence_as_ints (view_Vec_u8_Global bytes'0)
+        | None -> Seq.([..]) (byte_sequence_as_ints (Slice64.view input)) 0 (UInt64.t'int index)
+        end) (percent_decoded_from (byte_sequence_as_ints (Slice64.view input)) (UInt64.t'int index))}
+      {[@expl:loop invariant #1] [%#slib'1] match output with
+        | Some bytes'0 -> Seq.length (view_Vec_u8_Global bytes'0) < UInt64.t'int index
+        | None -> true
+        end}
+      (! s0)
+      [ s0 = len_u8 [%#slib'0] {input} (fun (_x: UInt64.t) -> [ &_20 <- _x ] s1)
+      | s1 = [ &_18 <- UInt64.lt index _20 ] s2
+      | s2 = any [ br0 -> {_18 = false} (! bb31) | br1 -> {_18} (! bb4) ] ]
+      [ bb4 = s0
+        [ s0 = [ &_25 <- index ] s1
+        | s1 = [ &_26 <- Slice64.length input ] s2
+        | s2 = [ &_27 <- UInt64.lt _25 _26 ] s3
+        | s3 = {[@expl:index in bounds] [%#slib'3] _27} s4
+        | s4 = Slice64.get [%#slib'3] <UInt8.t> {input} {_25} (fun (r: UInt8.t) -> [ &_24 <- r ] s5)
+        | s5 = [ &_23 <- _24 = ([%#slib'4] (37: UInt8.t)) ] s6
+        | s6 = any [ br0 -> {_23 = false} (! bb20) | br1 -> {_23} (! bb6) ] ]
+      | bb6 = s0
+        [ s0 = len_u8 [%#slib'5] {input} (fun (_x: UInt64.t) -> [ &_30 <- _x ] s1)
+        | s1 = UInt64.sub [%#slib'6] {_30} {index} (fun (_x: UInt64.t) -> [ &_29 <- _x ] s2)
+        | s2 = [ &_28 <- UInt64.ge _29 ([%#slib'7] (3: UInt64.t)) ] s3
+        | s3 = any [ br0 -> {_28 = false} (! bb20) | br1 -> {_28} (! bb8) ] ]
+      | bb8 = s0
+        [ s0 = UInt64.add [%#slib'9] {index} {[%#slib'8] (1: UInt64.t)} (fun (_x: UInt64.t) -> [ &_36 <- _x ] s1)
+        | s1 = [ &_38 <- Slice64.length input ] s2
+        | s2 = [ &_39 <- UInt64.lt _36 _38 ] s3
+        | s3 = {[@expl:index in bounds] [%#slib'10] _39} s4
+        | s4 = Slice64.get [%#slib'10] <UInt8.t> {input} {_36} (fun (r: UInt8.t) -> [ &_35 <- r ] s5)
+        | s5 = percent_hex_value [%#slib'11] {_35} (fun (_x: t_Option_u8) -> [ &_34 <- _x ] s6)
+        | s6 = UInt64.add [%#slib'13] {index} {[%#slib'12] (2: UInt64.t)} (fun (_x: UInt64.t) -> [ &_42 <- _x ] s7)
+        | s7 = [ &_44 <- Slice64.length input ] s8
+        | s8 = [ &_45 <- UInt64.lt _42 _44 ] s9
+        | s9 = {[@expl:index in bounds] [%#slib'14] _45} s10
+        | s10 = Slice64.get [%#slib'14] <UInt8.t> {input} {_42} (fun (r: UInt8.t) -> [ &_41 <- r ] s11)
+        | s11 = percent_hex_value [%#slib'15] {_41} (fun (_x: t_Option_u8) -> [ &_40 <- _x ] s12)
+        | s12 = [ &_33 <- { f0 = _34; f1 = _40 } ] s13
+        | s13 = any [ br0 -> {_33.f0 = None'0} (! bb13) | br1 (x0: UInt8.t) -> {_33.f0 = Some'0 x0} (! bb14) ] ]
+      | bb14 = any [ br0 -> {_33.f1 = None'0} (! bb13) | br1 (x0: UInt8.t) -> {_33.f1 = Some'0 x0} (! bb16) ]
+      | bb13 = s0 [ s0 = [ &decoded <- None'0 ] s1 | s1 = bb21 ]
+      | bb16 = s0
+        [ s0 = elim_Some {_33.f0} (fun (r0: UInt8.t) -> [ &high <- r0 ] s1)
+        | s1 = elim_Some {_33.f1} (fun (r0: UInt8.t) -> [ &low <- r0 ] s2)
+        | s2 = UInt8.mul [%#slib'17] {high} {[%#slib'16] (16: UInt8.t)} (fun (_x: UInt8.t) -> [ &_51 <- _x ] s3)
+        | s3 = UInt8.add [%#slib'18] {_51} {low} (fun (_x: UInt8.t) -> [ &_50 <- _x ] s4)
+        | s4 = [ &decoded <- Some'0 _50 ] s5
+        | s5 = bb21 ]
+      | bb20 = s0 [ s0 = [ &decoded <- None'0 ] s1 | s1 = bb21 ]
+      | bb21 = any [ br0 -> {decoded = None'0} (! bb24) | br1 (x0: UInt8.t) -> {decoded = Some'0 x0} (! bb25) ]
+      | bb25 = s0
+        [ s0 = elim_Some {decoded} (fun (r0: UInt8.t) -> [ &byte <- r0 ] s1)
+        | s1 = [ &old_prefix <- [%#slib'19] match output with
+            | Some bytes'0 -> byte_sequence_as_ints (view_Vec_u8_Global bytes'0)
+            | None -> Seq.([..]) (byte_sequence_as_ints (Slice64.view input)) 0 (UInt64.t'int index)
+            end ] s2
+        | s2 =
+          {[@expl:assertion] [%#slib'20] percent_decoded_from_step (byte_sequence_as_ints (Slice64.view input)) (UInt64.t'int index)}
+          s3
+        | s3 =
+          {[@expl:assertion] [%#slib'21] percent_decoded_from (byte_sequence_as_ints (Slice64.view input)) (UInt64.t'int index)
+          = Seq.(++) (Seq.singleton (UInt8.t'int byte)) (percent_decoded_from (byte_sequence_as_ints (Slice64.view input)) (UInt64.t'int index
+          + 3))}
+          s4
+        | s4 = {[@expl:assertion] [%#slib'22] byte_model_subsequence (Slice64.view input) 0 (UInt64.t'int index)} s5
+        | s5 = {[@expl:assertion] [%#slib'23] let prefix = match output with
+            | Some bytes'0 -> byte_sequence_as_ints (view_Vec_u8_Global bytes'0)
+            | None -> Seq.([..]) (byte_sequence_as_ints (Slice64.view input)) 0 (UInt64.t'int index)
+            end in let one = Seq.singleton (UInt8.t'int byte) in let rest = percent_decoded_from (byte_sequence_as_ints (Slice64.view input)) (UInt64.t'int index
+          + 3) in concat_assoc_Int prefix one rest = ()
+          /\ Seq.(++) (Seq.(++) prefix one) rest = Seq.(++) prefix (Seq.(++) one rest)}
+          s6
+        | s6 = MutBorrow.borrow_mut <t_Option_Vec_u8_Global> {output}
+            (fun (_bor: MutBorrow.t t_Option_Vec_u8_Global) -> [ &_82 <- _bor ] [ &output <- _bor.final ] s7)
+        | s7 = MutBorrow.borrow_final <t_Option_Vec_u8_Global> {_82.current} {MutBorrow.get_id _82}
+            (fun (_bor: MutBorrow.t t_Option_Vec_u8_Global) ->
+              [ &_81 <- _bor ] [ &_82 <- { _82 with current = _bor.final } ] s8)
+        | s8 = append_decoded_byte [%#slib'24] {_81} {input} {index} {byte} (fun (_x: ()) -> [ &_80 <- _x ] s9)
+        | s9 = -{resolve_refmut_Option_Vec_u8_Global _82}- s10
+        | s10 = {[@expl:assertion] [%#slib'25] match output with
+            | Some bytes'0 -> byte_sequence_as_ints (view_Vec_u8_Global bytes'0)
+            = Seq.(++) old_prefix (Seq.singleton (UInt8.t'int byte))
+            | None -> false
+            end}
+          s11
+        | s11 = UInt64.add [%#slib'27] {index} {[%#slib'26] (3: UInt64.t)} (fun (_x: UInt64.t) -> [ &index <- _x ] s12)
+        | s12 = bb1 ]
+      | bb24 = s0
+        [ s0 = [ &old_prefix'0 <- [%#slib'28] match output with
+            | Some bytes'0 -> byte_sequence_as_ints (view_Vec_u8_Global bytes'0)
+            | None -> Seq.([..]) (byte_sequence_as_ints (Slice64.view input)) 0 (UInt64.t'int index)
+            end ] s1
+        | s1 =
+          {[@expl:assertion] [%#slib'29] percent_decoded_from_step (byte_sequence_as_ints (Slice64.view input)) (UInt64.t'int index)}
+          s2
+        | s2 =
+          {[@expl:assertion] [%#slib'30] percent_decoded_from (byte_sequence_as_ints (Slice64.view input)) (UInt64.t'int index)
+          = Seq.(++) (Seq.singleton (UInt8.t'int (index_slice_u8 input index))) (percent_decoded_from (byte_sequence_as_ints (Slice64.view input)) (UInt64.t'int index
+          + 1))}
+          s3
+        | s3 = {[@expl:assertion] [%#slib'31] byte_int_prefix_push (Slice64.view input) (UInt64.t'int index)} s4
+        | s4 =
+          {[@expl:assertion] [%#slib'32] let one = Seq.singleton (UInt8.t'int (index_slice_u8 input index)) in let rest = percent_decoded_from (byte_sequence_as_ints (Slice64.view input)) (UInt64.t'int index
+          + 1) in concat_assoc_Int old_prefix'0 one rest = ()
+          /\ Seq.(++) (Seq.(++) old_prefix'0 one) rest = Seq.(++) old_prefix'0 (Seq.(++) one rest)}
+          s5
+        | s5 = MutBorrow.borrow_mut <t_Option_Vec_u8_Global> {output}
+            (fun (_bor: MutBorrow.t t_Option_Vec_u8_Global) -> [ &_115 <- _bor ] [ &output <- _bor.final ] s6)
+        | s6 = MutBorrow.borrow_final <t_Option_Vec_u8_Global> {_115.current} {MutBorrow.get_id _115}
+            (fun (_bor: MutBorrow.t t_Option_Vec_u8_Global) ->
+              [ &_114 <- _bor ] [ &_115 <- { _115 with current = _bor.final } ] s7)
+        | s7 = append_literal_byte [%#slib'33] {_114} {input} {index} (fun (_x: ()) -> [ &_113 <- _x ] s8)
+        | s8 = -{resolve_refmut_Option_Vec_u8_Global _115}- s9
+        | s9 = {[@expl:assertion] [%#slib'34] match output with
+            | Some bytes'0 -> byte_sequence_as_ints (view_Vec_u8_Global bytes'0)
+            = Seq.(++) old_prefix'0 (Seq.singleton (UInt8.t'int (index_slice_u8 input index)))
+            | None -> Seq.([..]) (byte_sequence_as_ints (Slice64.view input)) 0 (UInt64.t'int index + 1)
+            = Seq.(++) old_prefix'0 (Seq.singleton (UInt8.t'int (index_slice_u8 input index)))
+            end}
+          s10
+        | s10 = UInt64.add [%#slib'36] {index} {[%#slib'35] (1: UInt64.t)} (fun (_x: UInt64.t) -> [ &index <- _x ] s11)
+        | s11 = bb1 ] ] ]
+  | bb31 = any [ br0 -> {output = None} (! bb34) | br1 (x0: t_Vec_u8_Global) -> {output = Some x0} (! bb35) ]
+  | bb35 = s0
+    [ s0 = elim_Some'0 {output} (fun (r0: t_Vec_u8_Global) -> [ &bytes <- r0 ] s1)
+    | s1 = [ &_ret <- Owned bytes ] s2
+    | s2 = return {_ret} ]
+  | bb34 = s0 [ s0 = [ &_ret <- Borrowed input ] s1 | s1 = return {_ret} ] ]
+  [ & _ret: t_Cow_slice_u8 = Any.any_l ()
+  | & input: Slice64.slice UInt8.t = input
+  | & output: t_Option_Vec_u8_Global = Any.any_l ()
+  | & index: UInt64.t = Any.any_l ()
+  | & _18: bool = Any.any_l ()
+  | & _20: UInt64.t = Any.any_l ()
+  | & decoded: t_Option_u8 = Any.any_l ()
+  | & _23: bool = Any.any_l ()
+  | & _24: UInt8.t = Any.any_l ()
+  | & _25: UInt64.t = Any.any_l ()
+  | & _26: UInt64.t = Any.any_l ()
+  | & _27: bool = Any.any_l ()
+  | & _28: bool = Any.any_l ()
+  | & _29: UInt64.t = Any.any_l ()
+  | & _30: UInt64.t = Any.any_l ()
+  | & _33: tup2_Option_u8_Option_u8 = Any.any_l ()
+  | & _34: t_Option_u8 = Any.any_l ()
+  | & _35: UInt8.t = Any.any_l ()
+  | & _36: UInt64.t = Any.any_l ()
+  | & _38: UInt64.t = Any.any_l ()
+  | & _39: bool = Any.any_l ()
+  | & _40: t_Option_u8 = Any.any_l ()
+  | & _41: UInt8.t = Any.any_l ()
+  | & _42: UInt64.t = Any.any_l ()
+  | & _44: UInt64.t = Any.any_l ()
+  | & _45: bool = Any.any_l ()
+  | & high: UInt8.t = Any.any_l ()
+  | & low: UInt8.t = Any.any_l ()
+  | & _50: UInt8.t = Any.any_l ()
+  | & _51: UInt8.t = Any.any_l ()
+  | & byte: UInt8.t = Any.any_l ()
+  | & old_prefix: Seq.seq int = Any.any_l ()
+  | & _80: () = Any.any_l ()
+  | & _81: MutBorrow.t t_Option_Vec_u8_Global = Any.any_l ()
+  | & _82: MutBorrow.t t_Option_Vec_u8_Global = Any.any_l ()
+  | & old_prefix'0: Seq.seq int = Any.any_l ()
+  | & _113: () = Any.any_l ()
+  | & _114: MutBorrow.t t_Option_Vec_u8_Global = Any.any_l ()
+  | & _115: MutBorrow.t t_Option_Vec_u8_Global = Any.any_l ()
+  | & bytes: t_Vec_u8_Global = Any.any_l () ])
+  [ return (result: t_Cow_slice_u8) -> {[@stop_split] [@expl:percent_decode_local ensures] [%#slib'37] match result with
+      | Borrowed bytes -> percent_decoded_model (byte_sequence_as_ints (Slice64.view input))
+        = byte_sequence_as_ints (Slice64.view bytes)
+      /\ Slice64.view bytes = Slice64.view input
+      /\ Seq.length (percent_decoded_model (byte_sequence_as_ints (Slice64.view input)))
+      = Seq.length (Slice64.view input)
+      | Owned bytes -> percent_decoded_model (byte_sequence_as_ints (Slice64.view input))
+        = byte_sequence_as_ints (view_Vec_u8_Global bytes)
+      /\ Seq.length (percent_decoded_model (byte_sequence_as_ints (Slice64.view input)))
+      < Seq.length (Slice64.view input)
+      end}
+    (! return {result}) ]

@@ -1,0 +1,30 @@
+(* #"/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 71 4 71 27 *)
+
+(* <Parse<'_> as core::clone::Clone> *)
+
+let%span slib = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 70 32 70 82
+let%span slib'0 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 65 20 65 31
+
+use creusot.slice.Slice64
+use creusot.int.UInt8
+use creusot.prelude.Any
+use seq.Seq
+
+type t_Parse = { input: Slice64.slice UInt8.t }
+
+function remaining_input [#"/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 64 4 64 43] [@inline:trivial] (self: t_Parse) : Seq.seq UInt8.t
+ = [%#slib'0] Slice64.view self.input
+
+meta "rewrite_def" function remaining_input
+
+meta "compute_max_steps" 1000000
+
+meta "select_lsinst" "all"
+
+let clone_Parse [#"/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 71 4 71 27]
+  (self: t_Parse) (return (x: t_Parse)) = (! bb0
+  [ bb0 = s0 [ s0 = [ &_ret <- { input = self.input } ] s1 | s1 = return {_ret} ] ]
+  [ & _ret: t_Parse = Any.any_l () | & self: t_Parse = self ])
+  [ return (result: t_Parse) -> {[@stop_split] [@expl:clone ensures] [%#slib] remaining_input result
+    = remaining_input self}
+    (! return {result}) ]

@@ -1,0 +1,152 @@
+(* #"/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 1174 0 1174 40 *)
+
+let%span slib = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 1171 10 1173 33
+
+use int.Int
+
+meta "compute_max_steps" 1000000
+
+meta "select_lsinst" "all"
+
+constant byte : int
+
+predicate unchanged_byte [#"/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 1174 0 1174 40] (byte: int)
+
+goal vc_unchanged_byte: if byte = 42 then
+    [@stop_split] [@expl:unchanged_byte ensures] [%#slib] true
+    = (byte = 42
+    \/ byte = 45
+    \/ byte = 46 \/ 48 <= byte /\ byte <= 57 \/ 65 <= byte /\ byte <= 90 \/ byte = 95 \/ 97 <= byte /\ byte <= 122)
+  else
+    if byte = 45 then
+      [@stop_split] [@expl:unchanged_byte ensures] [%#slib] true
+      = (byte = 42
+      \/ byte = 45
+      \/ byte = 46 \/ 48 <= byte /\ byte <= 57 \/ 65 <= byte /\ byte <= 90 \/ byte = 95 \/ 97 <= byte /\ byte <= 122)
+    else
+      if byte = 46 then
+        [@stop_split] [@expl:unchanged_byte ensures] [%#slib] true
+        = (byte = 42
+        \/ byte = 45
+        \/ byte = 46 \/ 48 <= byte /\ byte <= 57 \/ 65 <= byte /\ byte <= 90 \/ byte = 95 \/ 97 <= byte /\ byte <= 122)
+      else
+        if 48 <= byte then
+          if byte <= 57 then
+            [@stop_split] [@expl:unchanged_byte ensures] [%#slib] true
+            = (byte = 42
+            \/ byte = 45
+            \/ byte = 46
+            \/ 48 <= byte /\ byte <= 57 \/ 65 <= byte /\ byte <= 90 \/ byte = 95 \/ 97 <= byte /\ byte <= 122)
+          else
+            if 65 <= byte then
+              if byte <= 90 then
+                [@stop_split] [@expl:unchanged_byte ensures] [%#slib] true
+                = (byte = 42
+                \/ byte = 45
+                \/ byte = 46
+                \/ 48 <= byte /\ byte <= 57 \/ 65 <= byte /\ byte <= 90 \/ byte = 95 \/ 97 <= byte /\ byte <= 122)
+              else
+                if byte = 95 then
+                  [@stop_split] [@expl:unchanged_byte ensures] [%#slib] true
+                  = (byte = 42
+                  \/ byte = 45
+                  \/ byte = 46
+                  \/ 48 <= byte /\ byte <= 57 \/ 65 <= byte /\ byte <= 90 \/ byte = 95 \/ 97 <= byte /\ byte <= 122)
+                else
+                  if 97 <= byte then
+                    [@stop_split] [@expl:unchanged_byte ensures] [%#slib] (byte <= 122)
+                    = (byte = 42
+                    \/ byte = 45
+                    \/ byte = 46
+                    \/ 48 <= byte /\ byte <= 57 \/ 65 <= byte /\ byte <= 90 \/ byte = 95 \/ 97 <= byte /\ byte <= 122)
+                  else
+                    [@stop_split] [@expl:unchanged_byte ensures] [%#slib] false
+                    = (byte = 42
+                    \/ byte = 45
+                    \/ byte = 46
+                    \/ 48 <= byte /\ byte <= 57 \/ 65 <= byte /\ byte <= 90 \/ byte = 95 \/ 97 <= byte /\ byte <= 122)
+                
+              
+            
+            else
+              if byte = 95 then
+                [@stop_split] [@expl:unchanged_byte ensures] [%#slib] true
+                = (byte = 42
+                \/ byte = 45
+                \/ byte = 46
+                \/ 48 <= byte /\ byte <= 57 \/ 65 <= byte /\ byte <= 90 \/ byte = 95 \/ 97 <= byte /\ byte <= 122)
+              else
+                if 97 <= byte then
+                  [@stop_split] [@expl:unchanged_byte ensures] [%#slib] (byte <= 122)
+                  = (byte = 42
+                  \/ byte = 45
+                  \/ byte = 46
+                  \/ 48 <= byte /\ byte <= 57 \/ 65 <= byte /\ byte <= 90 \/ byte = 95 \/ 97 <= byte /\ byte <= 122)
+                else
+                  [@stop_split] [@expl:unchanged_byte ensures] [%#slib] false
+                  = (byte = 42
+                  \/ byte = 45
+                  \/ byte = 46
+                  \/ 48 <= byte /\ byte <= 57 \/ 65 <= byte /\ byte <= 90 \/ byte = 95 \/ 97 <= byte /\ byte <= 122)
+              
+            
+          
+        
+        else
+          if 65 <= byte then
+            if byte <= 90 then
+              [@stop_split] [@expl:unchanged_byte ensures] [%#slib] true
+              = (byte = 42
+              \/ byte = 45
+              \/ byte = 46
+              \/ 48 <= byte /\ byte <= 57 \/ 65 <= byte /\ byte <= 90 \/ byte = 95 \/ 97 <= byte /\ byte <= 122)
+            else
+              if byte = 95 then
+                [@stop_split] [@expl:unchanged_byte ensures] [%#slib] true
+                = (byte = 42
+                \/ byte = 45
+                \/ byte = 46
+                \/ 48 <= byte /\ byte <= 57 \/ 65 <= byte /\ byte <= 90 \/ byte = 95 \/ 97 <= byte /\ byte <= 122)
+              else
+                if 97 <= byte then
+                  [@stop_split] [@expl:unchanged_byte ensures] [%#slib] (byte <= 122)
+                  = (byte = 42
+                  \/ byte = 45
+                  \/ byte = 46
+                  \/ 48 <= byte /\ byte <= 57 \/ 65 <= byte /\ byte <= 90 \/ byte = 95 \/ 97 <= byte /\ byte <= 122)
+                else
+                  [@stop_split] [@expl:unchanged_byte ensures] [%#slib] false
+                  = (byte = 42
+                  \/ byte = 45
+                  \/ byte = 46
+                  \/ 48 <= byte /\ byte <= 57 \/ 65 <= byte /\ byte <= 90 \/ byte = 95 \/ 97 <= byte /\ byte <= 122)
+              
+            
+          
+          else
+            if byte = 95 then
+              [@stop_split] [@expl:unchanged_byte ensures] [%#slib] true
+              = (byte = 42
+              \/ byte = 45
+              \/ byte = 46
+              \/ 48 <= byte /\ byte <= 57 \/ 65 <= byte /\ byte <= 90 \/ byte = 95 \/ 97 <= byte /\ byte <= 122)
+            else
+              if 97 <= byte then
+                [@stop_split] [@expl:unchanged_byte ensures] [%#slib] (byte <= 122)
+                = (byte = 42
+                \/ byte = 45
+                \/ byte = 46
+                \/ 48 <= byte /\ byte <= 57 \/ 65 <= byte /\ byte <= 90 \/ byte = 95 \/ 97 <= byte /\ byte <= 122)
+              else
+                [@stop_split] [@expl:unchanged_byte ensures] [%#slib] false
+                = (byte = 42
+                \/ byte = 45
+                \/ byte = 46
+                \/ 48 <= byte /\ byte <= 57 \/ 65 <= byte /\ byte <= 90 \/ byte = 95 \/ 97 <= byte /\ byte <= 122)
+            
+          
+        
+      
+    
+  
+  

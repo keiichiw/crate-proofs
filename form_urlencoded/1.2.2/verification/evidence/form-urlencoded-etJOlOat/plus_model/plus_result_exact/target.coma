@@ -1,0 +1,51 @@
+(* #"/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/plus_model.rs" 27 0 27 74 *)
+
+let%span splus_model = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/plus_model.rs" 22 11 22 47
+let%span splus_model'0 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/plus_model.rs" 23 11 24 74
+let%span splus_model'1 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/plus_model.rs" 25 10 25 16
+let%span splus_model'2 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/plus_model.rs" 26 10 26 54
+let%span splus_model'3 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/plus_model.rs" 8 16 8 75
+let%span sseq = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/logic/seq.rs" 301 14 301 24
+let%span sseq'0 = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/logic/seq.rs" 299 14 299 40
+let%span sseq'1 = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/logic/seq.rs" 300 14 300 76
+let%span smapping = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/logic/mapping.rs" 66 8 66 19
+
+use creusot.int.UInt8
+use seq.Seq
+use map.Map
+use int.Int
+
+function index_Mapping_u8_u8 [@inline:trivial] (self: Map.map UInt8.t UInt8.t) (a: UInt8.t) : UInt8.t =
+  [%#smapping] Map.get self a
+
+meta "rewrite_def" function index_Mapping_u8_u8
+
+function map_u8 (self: Seq.seq UInt8.t) (m: Map.map UInt8.t UInt8.t) : Seq.seq UInt8.t
+
+axiom map_u8_spec:
+  forall self: Seq.seq UInt8.t, m: Map.map UInt8.t UInt8.t [map_u8 self m]. [%#sseq'0] Seq.length (map_u8 self m)
+    = Seq.length self
+
+axiom map_u8_spec'0:
+  forall self: Seq.seq UInt8.t, m: Map.map UInt8.t UInt8.t [map_u8 self m]. [%#sseq'1] forall i: int. 0 <= i
+        /\ i < Seq.length self -> Seq.get (map_u8 self m) i = index_Mapping_u8_u8 m (Seq.get self i)
+
+function replace_plus_model [#"/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/plus_model.rs" 7 0 7 52] (bytes: Seq.seq UInt8.t) : Seq.seq UInt8.t
+ = [%#splus_model'3] map_u8 bytes (fun (byte: UInt8.t) -> if UInt8.t'int byte = 43 then (32: UInt8.t) else byte)
+
+meta "compute_max_steps" 1000000
+
+meta "select_lsinst" "all"
+
+constant original : Seq.seq UInt8.t
+
+constant result_bytes : Seq.seq UInt8.t
+
+predicate plus_result_exact [#"/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/plus_model.rs" 27 0 27 74] (original: Seq.seq UInt8.t) (result_bytes: Seq.seq UInt8.t)
+
+goal vc_plus_result_exact: ([%#splus_model] Seq.length result_bytes = Seq.length original)
+  -> ([%#splus_model'0] forall i: int. 0 <= i /\ i < Seq.length original
+      -> UInt8.t'int (Seq.get result_bytes i)
+      = (if UInt8.t'int (Seq.get original i) = 43 then 32 else UInt8.t'int (Seq.get original i)))
+  -> ([@stop_split] [@expl:plus_result_exact ensures] ([@stop_split] [@expl:plus_result_exact ensures #0] [%#splus_model'1] true)
+  /\ ([@stop_split] [@expl:plus_result_exact ensures #1] [%#splus_model'2] result_bytes = replace_plus_model original))

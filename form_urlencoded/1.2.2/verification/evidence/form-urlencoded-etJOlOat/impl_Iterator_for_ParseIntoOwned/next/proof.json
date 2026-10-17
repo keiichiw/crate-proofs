@@ -1,0 +1,46 @@
+{
+  "profile": [],
+  "proofs": {
+    "Coma": {
+      "vc_cow_str_into_owned": { "prover": "z3", "time": 0.003 },
+      "vc_decode": { "prover": "z3", "time": 0.003 },
+      "vc_elim_Some": { "prover": "z3", "time": 0.002 },
+      "vc_empty_slice_at": { "prover": "z3", "time": 0.004 },
+      "vc_len_u8": { "prover": "z3", "time": 0.004 },
+      "vc_next_ParseIntoOwned": {
+        "tactic": "compute_specified",
+        "children": [
+          {
+            "tactic": "split_vc",
+            "children": [
+              { "prover": "z3", "time": 0.009 },
+              { "prover": "z3", "time": 0.025 },
+              { "prover": "z3", "time": 0.007 },
+              { "prover": "z3", "time": 0.021 },
+              { "prover": "cvc5", "time": 0.195 },
+              { "prover": "z3", "time": 0.329 },
+              { "prover": "z3", "time": 0.401 },
+              { "prover": "z3", "time": 0.017 },
+              { "prover": "z3", "time": 0.014 },
+              { "prover": "z3", "time": 0.007 },
+              { "prover": "z3", "time": 0.007 },
+              { "prover": "z3", "time": 0.006 },
+              { "prover": "z3", "time": 0.006 },
+              { "prover": "z3", "time": 0.006 },
+              { "prover": "z3", "time": 0.006 },
+              { "prover": "z3", "time": 0.449 },
+              { "prover": "z3", "time": 0.005 },
+              { "prover": "z3", "time": 0.006 },
+              { "prover": "z3", "time": 0.017 },
+              { "prover": "cvc5", "time": 0.08 }
+            ]
+          }
+        ]
+      },
+      "vc_raw_pair_bounds": { "prover": "z3", "time": 0.002 },
+      "vc_slice_after_equals": { "prover": "z3", "time": 0.003 },
+      "vc_slice_range": { "prover": "z3", "time": 0.003 },
+      "vc_split_at_u8": { "prover": "z3", "time": 0.003 }
+    }
+  }
+}

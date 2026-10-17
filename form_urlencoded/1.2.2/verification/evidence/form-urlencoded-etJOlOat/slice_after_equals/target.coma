@@ -1,0 +1,49 @@
+(* #"/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 137 0 137 67 *)
+
+let%span slib = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 138 28 138 29
+let%span slib'0 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 138 23 138 29
+let%span slib'1 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 138 4 138 35
+let%span slib'2 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 135 29 135 63
+let%span slib'3 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 136 28 136 72
+let%span slib'4 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 126 29 126 67
+let%span slib'5 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 127 28 127 71
+
+use creusot.int.UInt64
+use creusot.slice.Slice64
+use creusot.int.UInt8
+use seq.Seq
+use creusot.prelude.Any
+use int.Int
+
+let slice_range (input: Slice64.slice UInt8.t) (start: UInt64.t) (end': UInt64.t) (return (x: Slice64.slice UInt8.t)) =
+{[@stop_split] [@expl:slice_range requires] [%#slib'4] UInt64.t'int start <= UInt64.t'int end'
+  /\ UInt64.t'int end' <= Seq.length (Slice64.view input)}
+  any
+  [ return (result: Slice64.slice UInt8.t) -> {[@stop_split] [@expl:slice_range ensures] [%#slib'5] Slice64.view result
+    = Seq.([..]) (Slice64.view input) (UInt64.t'int start) (UInt64.t'int end')}
+    (! return {result}) ]
+
+meta "compute_max_steps" 1000000
+
+meta "select_lsinst" "all"
+
+let slice_after_equals [#"/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 137 0 137 67]
+  (input: Slice64.slice UInt8.t) (eq: UInt64.t) (end': UInt64.t) (return (x: Slice64.slice UInt8.t)) =
+{[@stop_split] [@expl:slice_after_equals requires] [%#slib'2] UInt64.t'int eq < UInt64.t'int end'
+  /\ UInt64.t'int end' <= Seq.length (Slice64.view input)}
+  (! bb0
+  [ bb0 = s0
+    [ s0 = UInt64.add [%#slib'0] {eq} {[%#slib] (1: UInt64.t)} (fun (_x: UInt64.t) -> [ &_14 <- _x ] s1)
+    | s1 = slice_range [%#slib'1] {input} {_14} {end'} (fun (_x: Slice64.slice UInt8.t) -> [ &_12 <- _x ] s2)
+    | s2 = [ &_ret <- _12 ] s3
+    | s3 = return {_ret} ] ]
+  [ & _ret: Slice64.slice UInt8.t = Any.any_l ()
+  | & input: Slice64.slice UInt8.t = input
+  | & eq: UInt64.t = eq
+  | & end': UInt64.t = end'
+  | & _12: Slice64.slice UInt8.t = Any.any_l ()
+  | & _14: UInt64.t = Any.any_l () ])
+  [ return (result: Slice64.slice UInt8.t) ->
+  {[@stop_split] [@expl:slice_after_equals ensures] [%#slib'3] Slice64.view result
+    = Seq.([..]) (Slice64.view input) (UInt64.t'int eq + 1) (UInt64.t'int end')}
+    (! return {result}) ]

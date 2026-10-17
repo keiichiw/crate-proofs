@@ -1,0 +1,55 @@
+(* #"/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 381 0 381 57 *)
+
+let%span sord = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/logic/ord.rs" 34 8 34 21
+let%span slib = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 380 10 380 21
+let%span slib'0 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 387 11 387 45
+let%span slib'1 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 388 10 388 29
+let%span slib'2 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 390 4 408 5
+let%span slib'3 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 361 4 369 5
+
+use seq.Seq
+use int.Int
+
+function percent_hex_value_model [#"/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 360 0 360 48] (byte: int) : int
+ = [%#slib'3] if 48 <= byte /\ byte <= 57 then
+    byte - 48
+  else
+    if 65 <= byte /\ byte <= 70 then byte - 55 else if 97 <= byte /\ byte <= 102 then byte - 87 else - 1
+
+
+predicate ge_log_Int [@inline:trivial] (self: int) (other: int) = [%#sord] other <= self
+
+meta "rewrite_def" predicate ge_log_Int
+
+function percent_decoded_from [#"/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 389 0 389 68] (bytes: Seq.seq int) (index: int) : Seq.seq int
+
+axiom percent_decoded_from_def: forall bytes: Seq.seq int, index: int [percent_decoded_from bytes index]. ([%#slib'0] 0
+        <= index
+      /\ index <= Seq.length bytes)
+    -> percent_decoded_from bytes index
+    = ([%#slib'2] if index = Seq.length bytes then
+      Seq.empty: Seq.seq int
+    else
+      let first = Seq.get bytes index in if first = 37 /\ index + 3 <= Seq.length bytes then
+        let high = percent_hex_value_model (Seq.get bytes (index
+        + 1)) in let low = percent_hex_value_model (Seq.get bytes (index + 2)) in if ge_log_Int high 0
+        /\ ge_log_Int low 0 then
+          Seq.(++) (Seq.singleton (high * 16 + low)) (percent_decoded_from bytes (index + 3))
+        else
+          Seq.(++) (Seq.singleton first) (percent_decoded_from bytes (index + 1))
+      
+      else
+        Seq.(++) (Seq.singleton first) (percent_decoded_from bytes (index + 1))
+    
+    )
+
+meta "compute_max_steps" 1000000
+
+meta "select_lsinst" "all"
+
+constant bytes : Seq.seq int
+
+function percent_decoded_model [#"/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 381 0 381 57] (bytes: Seq.seq int) : Seq.seq int
+
+goal vc_percent_decoded_model: [@stop_split] [@expl:percent_decoded_from requires] [%#slib'0] 0 <= 0
+  /\ 0 <= Seq.length bytes

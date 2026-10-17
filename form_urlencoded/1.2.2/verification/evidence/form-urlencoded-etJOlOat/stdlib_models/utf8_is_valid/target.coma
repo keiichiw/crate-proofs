@@ -1,0 +1,139 @@
+(* #"/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/stdlib_models.rs" 122 0 122 45 *)
+
+let%span sstdlib_models = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/stdlib_models.rs" 121 10 121 21
+let%span sstdlib_models'0 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/stdlib_models.rs" 22 11 22 40
+let%span sstdlib_models'1 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/stdlib_models.rs" 23 10 23 56
+let%span sstdlib_models'2 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/stdlib_models.rs" 24 10 25 49
+let%span sstdlib_models'3 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/stdlib_models.rs" 27 4 27 24
+let%span swell_founded = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/logic/well_founded.rs" 43 8 43 33
+let%span sord = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/logic/ord.rs" 34 8 34 21
+let%span sord'0 = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/logic/ord.rs" 22 8 22 20
+
+use seq.Seq
+use int.Int
+
+type tup3_Int_Int_bool = { f0: int; f1: int; f2: bool }
+
+function utf8_step [#"/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/stdlib_models.rs" 26 0 26 63] (bytes: Seq.seq int) (pos: int) : tup3_Int_Int_bool
+ = [%#sstdlib_models'3] let b0 = Seq.get bytes pos in let remaining = Seq.length bytes - pos in if 0 <= b0
+  /\ b0 <= 127 then
+    { f0 = b0; f1 = 1; f2 = true }
+  else
+    if 194 <= b0 /\ b0 <= 223 then
+      if remaining < 2 then
+        { f0 = 65533; f1 = remaining; f2 = false }
+      else
+        let b1 = Seq.get bytes (pos + 1) in if 128 <= b1 /\ b1 <= 191 then
+          { f0 = (b0 - 192) * 64 + (b1 - 128); f1 = 2; f2 = true }
+        else
+          { f0 = 65533; f1 = 1; f2 = false }
+      
+    
+    else
+      if 224 <= b0 /\ b0 <= 239 then
+        if remaining < 2 then
+          { f0 = 65533; f1 = remaining; f2 = false }
+        else
+          let b1 = Seq.get bytes (pos + 1) in let second_ok = if b0 = 224 then
+            160 <= b1 /\ b1 <= 191
+          else
+            if b0 = 237 then 128 <= b1 /\ b1 <= 159 else 128 <= b1 /\ b1 <= 191
+           in if not second_ok then
+            { f0 = 65533; f1 = 1; f2 = false }
+          else
+            if remaining < 3 then
+              { f0 = 65533; f1 = remaining; f2 = false }
+            else
+              let b2 = Seq.get bytes (pos + 2) in if 128 <= b2 /\ b2 <= 191 then
+                { f0 = (b0 - 224) * 4096 + (b1 - 128) * 64 + (b2 - 128); f1 = 3; f2 = true }
+              else
+                { f0 = 65533; f1 = 2; f2 = false }
+            
+          
+        
+      
+      else
+        if 240 <= b0 /\ b0 <= 244 then
+          if remaining < 2 then
+            { f0 = 65533; f1 = remaining; f2 = false }
+          else
+            let b1 = Seq.get bytes (pos + 1) in let second_ok = if b0 = 240 then
+              144 <= b1 /\ b1 <= 191
+            else
+              if b0 = 244 then 128 <= b1 /\ b1 <= 143 else 128 <= b1 /\ b1 <= 191
+             in if not second_ok then
+              { f0 = 65533; f1 = 1; f2 = false }
+            else
+              if remaining < 3 then
+                { f0 = 65533; f1 = remaining; f2 = false }
+              else
+                let b2 = Seq.get bytes (pos + 2) in if not (128 <= b2 /\ b2 <= 191) then
+                  { f0 = 65533; f1 = 2; f2 = false }
+                else
+                  if remaining < 4 then
+                    { f0 = 65533; f1 = remaining; f2 = false }
+                  else
+                    let b3 = Seq.get bytes (pos + 3) in if 128 <= b3 /\ b3 <= 191 then
+                      { f0 = (b0 - 240) * 262144 + (b1 - 128) * 4096 + (b2 - 128) * 64 + (b3 - 128); f1 = 4; f2 = true }
+                    else
+                      { f0 = 65533; f1 = 3; f2 = false }
+                  
+                
+              
+            
+          
+        
+        else
+          { f0 = 65533; f1 = 1; f2 = false }
+      
+    
+  
+
+
+axiom utf8_step_spec: forall bytes: Seq.seq int, pos: int [utf8_step bytes pos]. ([%#sstdlib_models'0] 0 <= pos
+      /\ pos < Seq.length bytes)
+    -> ([%#sstdlib_models'1] 1 <= (utf8_step bytes pos).f1 /\ (utf8_step bytes pos).f1 <= Seq.length bytes - pos)
+
+axiom utf8_step_spec'0: forall bytes: Seq.seq int, pos: int [utf8_step bytes pos]. ([%#sstdlib_models'0] 0 <= pos
+      /\ pos < Seq.length bytes)
+    -> ([%#sstdlib_models'2] (utf8_step bytes pos).f0 = 65533
+    \/ 0 <= (utf8_step bytes pos).f0 /\ (utf8_step bytes pos).f0 <= 55295
+    \/ 57344 <= (utf8_step bytes pos).f0 /\ (utf8_step bytes pos).f0 <= 1114111)
+
+predicate ge_log_Int [@inline:trivial] (self: int) (other: int) = [%#sord] other <= self
+
+meta "rewrite_def" predicate ge_log_Int
+
+predicate gt_log_Int [@inline:trivial] (self: int) (other: int) = [%#sord'0] other < self
+
+meta "rewrite_def" predicate gt_log_Int
+
+predicate well_founded_relation_Int [@inline:trivial] (self: int) (other: int) =
+  [%#swell_founded] ge_log_Int self 0 /\ gt_log_Int self other
+
+meta "rewrite_def" predicate well_founded_relation_Int
+
+meta "compute_max_steps" 1000000
+
+meta "select_lsinst" "all"
+
+constant bytes : Seq.seq int
+
+predicate utf8_is_valid [#"/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/stdlib_models.rs" 122 0 122 45] (bytes: Seq.seq int)
+
+goal vc_utf8_is_valid: if Seq.length bytes = 0 then
+    true
+  else
+    ([@stop_split] [@expl:utf8_step requires] [%#sstdlib_models'0] 0 <= 0 /\ 0 < Seq.length bytes)
+    /\ (([@stop_split] [@expl:utf8_step ensures] ([@stop_split] [@expl:utf8_step ensures #0] [%#sstdlib_models'1] 1
+          <= (utf8_step bytes 0).f1
+        /\ (utf8_step bytes 0).f1 <= Seq.length bytes - 0)
+      /\ ([@stop_split] [@expl:utf8_step ensures #1] [%#sstdlib_models'2] (utf8_step bytes 0).f0 = 65533
+      \/ 0 <= (utf8_step bytes 0).f0 /\ (utf8_step bytes 0).f0 <= 55295
+      \/ 57344 <= (utf8_step bytes 0).f0 /\ (utf8_step bytes 0).f0 <= 1114111))
+    -> (let {f1 = consumed; f2 = valid} = utf8_step bytes 0 in if valid then
+      [@expl:variant decreases] well_founded_relation_Int ([%#sstdlib_models] Seq.length bytes) ([%#sstdlib_models] Seq.length (Seq.([..]) bytes consumed (Seq.length bytes)))
+    else
+      true
+    ))
+  

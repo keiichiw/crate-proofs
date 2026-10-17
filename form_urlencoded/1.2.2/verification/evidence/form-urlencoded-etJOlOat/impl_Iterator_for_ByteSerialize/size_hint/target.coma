@@ -1,0 +1,55 @@
+(* #"/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 1704 4 1704 49 *)
+
+(* <ByteSerialize<'a> as core::iter::Iterator> *)
+
+let%span slib = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 1705 8 1705 44
+let%span slib'0 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 1697 32 1703 9
+let%span slib'1 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 1149 28 1153 5
+let%span slib'2 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 1145 20 1145 31
+
+use creusot.slice.Slice64
+use creusot.int.UInt8
+use creusot.int.UInt64
+use seq.Seq
+use creusot.prelude.Any
+
+type t_ByteSerialize = { bytes: Slice64.slice UInt8.t }
+
+type t_Option_usize = None | Some UInt64.t
+
+type tup2_usize_Option_usize = { f0: UInt64.t; f1: t_Option_usize }
+
+let byte_serialize_size_hint (bytes'0: Slice64.slice UInt8.t) (return (x: tup2_usize_Option_usize)) = any
+  [ return (result: tup2_usize_Option_usize) ->
+  {[@stop_split] [@expl:byte_serialize_size_hint ensures] [%#slib'1] UInt64.t'int result.f0
+      = (if Seq.length (Slice64.view bytes'0) = 0 then 0 else 1)
+    /\ match result.f1 with
+      | Some n -> UInt64.t'int n
+      = (if Seq.length (Slice64.view bytes'0) = 0 then 0 else Seq.length (Slice64.view bytes'0))
+      | None -> false
+      end}
+    (! return {result}) ]
+
+function remaining_bytes [#"/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 1144 4 1144 43] [@inline:trivial] (self: t_ByteSerialize) : Seq.seq UInt8.t
+ = [%#slib'2] Slice64.view self.bytes
+
+meta "rewrite_def" function remaining_bytes
+
+meta "compute_max_steps" 1000000
+
+meta "select_lsinst" "all"
+
+let size_hint_ByteSerialize [#"/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 1704 4 1704 49]
+  (self: t_ByteSerialize) (return (x: tup2_usize_Option_usize)) = (! bb0
+  [ bb0 = s0
+    [ s0 = byte_serialize_size_hint [%#slib] {self.bytes} (fun (_x: tup2_usize_Option_usize) -> [ &_ret <- _x ] s1)
+    | s1 = return {_ret} ] ] [ & _ret: tup2_usize_Option_usize = Any.any_l () | & self: t_ByteSerialize = self ])
+  [ return (result: tup2_usize_Option_usize) ->
+  {[@stop_split] [@expl:size_hint ensures] [%#slib'0] UInt64.t'int result.f0
+      = (if Seq.length (remaining_bytes self) = 0 then 0 else 1)
+    /\ match result.f1 with
+      | Some n -> UInt64.t'int n
+      = (if Seq.length (remaining_bytes self) = 0 then 0 else Seq.length (remaining_bytes self))
+      | None -> false
+      end}
+    (! return {result}) ]

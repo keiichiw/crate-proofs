@@ -1,0 +1,27 @@
+(* #"/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 875 0 875 42 *)
+
+let%span slib = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 871 11 871 27
+let%span slib'0 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 872 11 872 64
+let%span slib'1 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 873 10 873 16
+let%span slib'2 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 874 10 874 70
+
+use creusot.int.UInt8
+use seq.Seq
+use int.Int
+
+meta "compute_max_steps" 1000000
+
+meta "select_lsinst" "all"
+
+constant bytes : Seq.seq UInt8.t
+
+predicate ascii_three [#"/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 875 0 875 42] (bytes: Seq.seq UInt8.t)
+
+goal vc_ascii_three: ([%#slib] Seq.length bytes = 3)
+  -> ([%#slib'0] UInt8.t'int (Seq.get bytes 0) < 128
+    /\ UInt8.t'int (Seq.get bytes 1) < 128 /\ UInt8.t'int (Seq.get bytes 2) < 128)
+  -> ([@stop_split] [@expl:ascii_three ensures] ([@stop_split] [@expl:ascii_three ensures #0] [%#slib'1] forall i: int. 0
+          <= i
+        /\ i < Seq.length bytes -> UInt8.t'int (Seq.get bytes i) < 128)
+  /\ ([@stop_split] [@expl:ascii_three ensures #1] [%#slib'2] forall i: int. 0 <= i /\ i < Seq.length bytes
+    -> UInt8.t'int (Seq.get bytes i) < 128))

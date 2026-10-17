@@ -1,0 +1,87 @@
+(* #"/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 1291 0 1294 9 *)
+
+let%span sseq = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/logic/seq.rs" 301 14 301 24
+let%span sseq'0 = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/logic/seq.rs" 299 14 299 40
+let%span sseq'1 = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/logic/seq.rs" 300 14 300 76
+let%span smapping = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/logic/mapping.rs" 66 8 66 19
+let%span slib = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 1286 10 1286 16
+let%span slib'0 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 1287 10 1290 86
+let%span slib'1 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 338 4 341 5
+let%span slib'2 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 332 16 332 35
+
+use seq.Seq
+use map.Map
+use creusot.prelude.Char
+use int.Int
+
+type t_String
+
+type t_Cow_str = Borrowed string | Owned t_String
+
+type tup2_Cow_str_Cow_str = { f0: t_Cow_str; f1: t_Cow_str }
+
+type tup2_Seq_Int_Seq_Int = { f0'0: Seq.seq int; f1'0: Seq.seq int }
+
+function index_Mapping_tup2_Cow_str_Cow_str_tup2_Seq_Int_Seq_Int [@inline:trivial] (self: Map.map tup2_Cow_str_Cow_str tup2_Seq_Int_Seq_Int) (a: tup2_Cow_str_Cow_str) : tup2_Seq_Int_Seq_Int
+ = [%#smapping] Map.get self a
+
+meta "rewrite_def" function index_Mapping_tup2_Cow_str_Cow_str_tup2_Seq_Int_Seq_Int
+
+function map_tup2_Cow_str_Cow_str (self: Seq.seq tup2_Cow_str_Cow_str) (m: Map.map tup2_Cow_str_Cow_str tup2_Seq_Int_Seq_Int) : Seq.seq tup2_Seq_Int_Seq_Int
+
+axiom map_tup2_Cow_str_Cow_str_spec:
+  forall self: Seq.seq tup2_Cow_str_Cow_str, m: Map.map tup2_Cow_str_Cow_str tup2_Seq_Int_Seq_Int [map_tup2_Cow_str_Cow_str self m]. [%#sseq'0] Seq.length (map_tup2_Cow_str_Cow_str self m)
+    = Seq.length self
+
+axiom map_tup2_Cow_str_Cow_str_spec'0:
+  forall self: Seq.seq tup2_Cow_str_Cow_str, m: Map.map tup2_Cow_str_Cow_str tup2_Seq_Int_Seq_Int [map_tup2_Cow_str_Cow_str self m]. [%#sseq'1] forall i: int. 0
+          <= i
+        /\ i < Seq.length self
+      -> Seq.get (map_tup2_Cow_str_Cow_str self m) i
+      = index_Mapping_tup2_Cow_str_Cow_str_tup2_Seq_Int_Seq_Int m (Seq.get self i)
+
+function index_Mapping_char_Int [@inline:trivial] (self: Map.map Char.t int) (a: Char.t) : int =
+  [%#smapping] Map.get self a
+
+meta "rewrite_def" function index_Mapping_char_Int
+
+function map_char (self: Seq.seq Char.t) (m: Map.map Char.t int) : Seq.seq int
+
+axiom map_char_spec:
+  forall self: Seq.seq Char.t, m: Map.map Char.t int [map_char self m]. [%#sseq'0] Seq.length (map_char self m)
+    = Seq.length self
+
+axiom map_char_spec'0: forall self: Seq.seq Char.t, m: Map.map Char.t int [map_char self m]. [%#sseq'1] forall i: int. 0
+          <= i
+        /\ i < Seq.length self -> Seq.get (map_char self m) i = index_Mapping_char_Int m (Seq.get self i)
+
+function string_scalars [#"/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 331 0 331 47] (s: Seq.seq Char.t) : Seq.seq int
+ = [%#slib'2] map_char s (fun (c: Char.t) -> Char.to_int c)
+
+function view_str (self: string) : Seq.seq Char.t
+
+function view_String (self: t_String) : Seq.seq Char.t
+
+function cow_str_scalars [#"/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 337 0 337 55] (value: t_Cow_str) : Seq.seq int
+ = [%#slib'1] match value with
+    | Borrowed s -> string_scalars (view_str s)
+    | Owned s -> string_scalars (view_String s)
+    end
+
+meta "compute_max_steps" 1000000
+
+meta "select_lsinst" "all"
+
+constant ab : Seq.seq tup2_Cow_str_Cow_str
+
+constant bc : Seq.seq tup2_Cow_str_Cow_str
+
+predicate cow_pair_map_concat [#"/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 1291 0 1294 9] (ab: Seq.seq tup2_Cow_str_Cow_str) (bc: Seq.seq tup2_Cow_str_Cow_str)
+
+goal vc_cow_pair_map_concat:
+  [@stop_split] [@expl:cow_pair_map_concat ensures] ([@stop_split] [@expl:cow_pair_map_concat ensures #0] [%#slib] true)
+  /\ ([@stop_split] [@expl:cow_pair_map_concat ensures #1] [%#slib'0] map_tup2_Cow_str_Cow_str (Seq.(++) ab bc) (fun (__0: tup2_Cow_str_Cow_str) -> let {f0 = key; f1 = value} = __0 in { f0'0 = cow_str_scalars key;
+                                                                                                                                                                                          f1'0 = cow_str_scalars value })
+  = Seq.(++) (map_tup2_Cow_str_Cow_str ab (fun (__0: tup2_Cow_str_Cow_str) -> let {f0 = key; f1 = value} = __0 in { f0'0 = cow_str_scalars key;
+                                                                                                                    f1'0 = cow_str_scalars value })) (map_tup2_Cow_str_Cow_str bc (fun (__0: tup2_Cow_str_Cow_str) -> let {f0 = key; f1 = value} = __0 in { f0'0 = cow_str_scalars key;
+                                                                                                                                                                                                                                                            f1'0 = cow_str_scalars value })))

@@ -1,0 +1,60 @@
+(* #"/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 1789 4 1789 27 *)
+
+(* <&mut _::string::String as Target> *)
+
+let%span slib = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 1789 14 1789 18
+let%span slib'0 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 1789 23 1789 27
+let%span slib'1 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 1788 32 1788 46
+let%span sinvariant = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/invariant.rs" 93 20 93 44
+
+use creusot.prelude.MutBorrow
+use creusot.prelude.Any
+
+type t_String
+
+predicate inv_String (_1: t_String)
+
+predicate invariant_refmut_String [@inline:trivial] (self: MutBorrow.t t_String) =
+  [%#sinvariant] inv_String self.current /\ inv_String self.final
+
+meta "rewrite_def" predicate invariant_refmut_String
+
+predicate inv_refmut_String [@inline:trivial] (_1: MutBorrow.t t_String) = invariant_refmut_String _1
+
+meta "rewrite_def" predicate inv_refmut_String
+
+predicate resolve_refmut_String [@inline:trivial] (_1: MutBorrow.t t_String) = _1.final = _1.current
+
+meta "rewrite_def" predicate resolve_refmut_String
+
+meta "compute_max_steps" 1000000
+
+meta "select_lsinst" "all"
+
+let finish_refmut_String [#"/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 1789 4 1789 27]
+  (self: MutBorrow.t t_String) (return (x: MutBorrow.t t_String)) =
+{[@stop_split] [@expl:finish 'self' type invariant] [%#slib] inv_refmut_String self}
+  (! bb0
+  [ bb0 = s0
+    [ s0 = MutBorrow.borrow_final <t_String> {self.current} {MutBorrow.get_id self}
+        (fun (_bor: MutBorrow.t t_String) ->
+          [ &_2 <- _bor ] -{inv_String _bor.final}-
+          [ &self <- { self with current = _bor.final } ] s1)
+      [ _ck -> (! {[@expl:type invariant] inv_String self.current} any) ]
+    | s1 = MutBorrow.borrow_final <t_String> {_2.current} {MutBorrow.get_id _2}
+        (fun (_bor: MutBorrow.t t_String) ->
+          [ &_ret <- _bor ] -{inv_String _bor.final}-
+          [ &_2 <- { _2 with current = _bor.final } ] s2)
+      [ _ck -> (! {[@expl:type invariant] inv_String _2.current} any) ]
+    | s2 = s3 [ _ck -> (! {[@expl:type invariant] inv_refmut_String _2} any) ]
+    | s3 = -{resolve_refmut_String _2}- s4
+    | s4 = s5 [ _ck -> (! {[@expl:type invariant] inv_refmut_String self} any) ]
+    | s5 = -{resolve_refmut_String self}- s6
+    | s6 = return {_ret} ] ]
+  [ & _ret: MutBorrow.t t_String = Any.any_l ()
+  | & self: MutBorrow.t t_String = self
+  | & _2: MutBorrow.t t_String = Any.any_l () ])
+  [ return (result: MutBorrow.t t_String) ->
+  {[@stop_split] [@expl:finish_refmut_String ensures] ([@stop_split] [@expl:finish result type invariant] [%#slib'0] inv_refmut_String result)
+    /\ ([@stop_split] [@expl:finish ensures] [%#slib'1] result = self)}
+    (! return {result}) ]

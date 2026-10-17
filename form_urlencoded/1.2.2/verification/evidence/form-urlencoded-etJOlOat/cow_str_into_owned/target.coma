@@ -1,0 +1,80 @@
+(* #"/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 1119 0 1119 52 *)
+
+let%span slib = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 1121 28 1121 40
+let%span slib'0 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 1119 22 1119 27
+let%span slib'1 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 1119 46 1119 52
+let%span slib'2 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 1115 28 1118 1
+let%span sstring = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/std/string.rs" 70 18 70 34
+
+use creusot.prelude.Char
+use seq.Seq
+use creusot.prelude.Any
+
+type t_String
+
+type t_Cow_str = Borrowed string | Owned t_String
+
+let elim_Owned (_x: t_Cow_str) (return (f0: t_String)) = any
+  [ _k (f0: t_String) -> {Owned f0 = _x} (! return {f0})
+  | _chk -> (! {[@expl:elim Owned] match _x with
+      | Owned _ -> true
+      | _ -> false
+      end}
+    any) ]
+
+let elim_Borrowed (_x: t_Cow_str) (return (f0: string)) = any
+  [ _k (f0: string) -> {Borrowed f0 = _x} (! return {f0})
+  | _chk -> (! {[@expl:elim Borrowed] match _x with
+      | Borrowed _ -> true
+      | _ -> false
+      end}
+    any) ]
+
+predicate inv_String (_1: t_String)
+
+function view_String (self: t_String) : Seq.seq Char.t
+
+function view_str (self: string) : Seq.seq Char.t
+
+let to_owned_str (self_: string) (return (x: t_String)) = any
+  [ return (result: t_String) ->
+  {[@stop_split] [@expl:to_owned_str ensures] ([@stop_split] [@expl:to_owned result type invariant] inv_String result)
+    /\ ([@stop_split] [@expl:to_owned ensures] [%#sstring] view_String result = view_str self_)}
+    (! return {result}) ]
+
+predicate inv_Cow_str (_1: t_Cow_str)
+
+axiom inv_axiom [@rewrite]: forall x: t_Cow_str [inv_Cow_str x]. inv_Cow_str x
+    = match x with
+      | Borrowed f0 -> true
+      | Owned f0 -> inv_String f0
+      end
+
+meta "compute_max_steps" 1000000
+
+meta "select_lsinst" "all"
+
+let cow_str_into_owned [#"/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 1119 0 1119 52]
+  (value: t_Cow_str) (return (x: t_String)) =
+{[@stop_split] [@expl:cow_str_into_owned 'value' type invariant] [%#slib'0] inv_Cow_str value}
+  (! bb0
+  [ bb0 = any [ br0 (x0: string) -> {value = Borrowed x0} (! bb4) | br1 (x0: t_String) -> {value = Owned x0} (! bb3) ]
+  | bb3 = s0
+    [ s0 = elim_Owned {value} (fun (r0: t_String) -> [ &s'0 <- r0 ] s1)
+    | s1 = [ &_ret <- s'0 ] s2
+    | s2 = return {_ret} ]
+  | bb4 = s0
+    [ s0 = elim_Borrowed {value} (fun (r0: string) -> [ &s <- r0 ] s1)
+    | s1 = to_owned_str [%#slib] {s} (fun (_x: t_String) -> [ &_ret <- _x ] s2)
+    | s2 = return {_ret} ] ]
+  [ & _ret: t_String = Any.any_l ()
+  | & value: t_Cow_str = value
+  | & s: string = Any.any_l ()
+  | & s'0: t_String = Any.any_l () ])
+  [ return (result: t_String) ->
+  {[@stop_split] [@expl:cow_str_into_owned ensures] ([@stop_split] [@expl:cow_str_into_owned result type invariant] [%#slib'1] inv_String result)
+    /\ ([@stop_split] [@expl:cow_str_into_owned ensures] [%#slib'2] match value with
+      | Borrowed s -> view_String result = view_str s
+      | Owned s -> view_String result = view_String s
+      end)}
+    (! return {result}) ]

@@ -1,0 +1,73 @@
+(* #"/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 128 0 128 63 *)
+
+let%span sstdlib_models = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/stdlib_models.rs" 155 19 155 38
+let%span sstdlib_models'0 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/stdlib_models.rs" 157 12 157 39
+let%span slib = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 129 17 129 38
+let%span slib'0 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 131 18 131 51
+let%span slib'1 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 132 20 132 31
+let%span slib'2 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 132 4 132 32
+let%span slib'3 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 126 29 126 67
+let%span slib'4 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 127 28 127 71
+let%span slib'5 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 905 11 905 59
+let%span slib'6 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 906 10 906 16
+let%span slib'7 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 907 10 908 36
+let%span slib'8 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 910 4 911 40
+
+use creusot.slice.Slice64
+use creusot.int.UInt8
+use creusot.int.UInt64
+use seq.Seq
+use creusot.prelude.Any
+use int.Int
+
+type tup2_ref_slice_u8_ref_slice_u8 = { f0: Slice64.slice UInt8.t; f1: Slice64.slice UInt8.t }
+
+let split_at_u8 (self_: Slice64.slice UInt8.t) (mid: UInt64.t) (return (x: tup2_ref_slice_u8_ref_slice_u8)) =
+{[@stop_split] [@expl:split_at requires] [%#sstdlib_models] UInt64.t'int mid <= Seq.length (Slice64.view self_)}
+  any
+  [ return (result: tup2_ref_slice_u8_ref_slice_u8) ->
+  {[@stop_split] [@expl:split_at ensures] [%#sstdlib_models'0] let {f0 = left; f1 = right} = result in Slice64.view left
+      = Seq.([..]) (Slice64.view self_) 0 (UInt64.t'int mid)
+    /\ Slice64.view right = Seq.([..]) (Slice64.view self_) (UInt64.t'int mid) (Seq.length (Slice64.view self_))}
+    (! return {result}) ]
+
+predicate tail_prefix [#"/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 909 0 909 64] (bytes: Seq.seq UInt8.t) (start: int) (end': int) =
+  [%#slib'8] Seq.([..]) (Seq.([..]) bytes start (Seq.length bytes)) 0 (end' - start) = Seq.([..]) bytes start end'
+
+axiom tail_prefix_spec:
+  forall bytes: Seq.seq UInt8.t, start: int, end': int [tail_prefix bytes start end']. ([%#slib'5] 0 <= start
+      /\ start <= end' /\ end' <= Seq.length bytes) -> ([%#slib'6] tail_prefix bytes start end')
+
+axiom tail_prefix_spec'0: forall bytes: Seq.seq UInt8.t, start: int, end': int. ([%#slib'5] 0 <= start
+      /\ start <= end' /\ end' <= Seq.length bytes)
+    -> ([%#slib'7] Seq.([..]) (Seq.([..]) bytes start (Seq.length bytes)) 0 (end' - start)
+    = Seq.([..]) bytes start end')
+
+meta "compute_max_steps" 1000000
+
+meta "select_lsinst" "all"
+
+let slice_range [#"/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 128 0 128 63]
+  (input: Slice64.slice UInt8.t) (start: UInt64.t) (end': UInt64.t) (return (x: Slice64.slice UInt8.t)) =
+{[@stop_split] [@expl:slice_range requires] [%#slib'3] UInt64.t'int start <= UInt64.t'int end'
+  /\ UInt64.t'int end' <= Seq.length (Slice64.view input)}
+  (! bb0
+  [ bb0 = s0
+    [ s0 = split_at_u8 [%#slib] {input} {start} (fun (_x: tup2_ref_slice_u8_ref_slice_u8) -> [ &_13 <- _x ] s1)
+    | s1 = [ &suffix <- _13.f1 ] s2
+    | s2 = {[@expl:assertion] [%#slib'0] tail_prefix (Slice64.view input) (UInt64.t'int start) (UInt64.t'int end')} s3
+    | s3 = UInt64.sub [%#slib'1] {end'} {start} (fun (_x: UInt64.t) -> [ &_23 <- _x ] s4)
+    | s4 = split_at_u8 [%#slib'2] {suffix} {_23} (fun (_x: tup2_ref_slice_u8_ref_slice_u8) -> [ &_21 <- _x ] s5)
+    | s5 = [ &_ret <- _21.f0 ] s6
+    | s6 = return {_ret} ] ]
+  [ & _ret: Slice64.slice UInt8.t = Any.any_l ()
+  | & input: Slice64.slice UInt8.t = input
+  | & start: UInt64.t = start
+  | & end': UInt64.t = end'
+  | & suffix: Slice64.slice UInt8.t = Any.any_l ()
+  | & _13: tup2_ref_slice_u8_ref_slice_u8 = Any.any_l ()
+  | & _21: tup2_ref_slice_u8_ref_slice_u8 = Any.any_l ()
+  | & _23: UInt64.t = Any.any_l () ])
+  [ return (result: Slice64.slice UInt8.t) -> {[@stop_split] [@expl:slice_range ensures] [%#slib'4] Slice64.view result
+    = Seq.([..]) (Slice64.view input) (UInt64.t'int start) (UInt64.t'int end')}
+    (! return {result}) ]

@@ -1,0 +1,83 @@
+(* #"/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 469 0 469 79 *)
+
+let%span swell_founded = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/logic/well_founded.rs" 43 8 43 33
+let%span sord = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/logic/ord.rs" 34 8 34 21
+let%span sord'0 = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/logic/ord.rs" 22 8 22 20
+let%span slib = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 465 10 465 21
+let%span slib'0 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 464 11 464 59
+let%span slib'1 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 466 10 466 42
+let%span slib'2 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 467 10 467 71
+let%span slib'3 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 468 10 468 49
+
+use creusot.int.UInt8
+use seq.Seq
+use int.Int
+
+predicate ge_log_Int [@inline:trivial] (self: int) (other: int) = [%#sord] other <= self
+
+meta "rewrite_def" predicate ge_log_Int
+
+predicate gt_log_Int [@inline:trivial] (self: int) (other: int) = [%#sord'0] other < self
+
+meta "rewrite_def" predicate gt_log_Int
+
+predicate well_founded_relation_Int [@inline:trivial] (self: int) (other: int) =
+  [%#swell_founded] ge_log_Int self 0 /\ gt_log_Int self other
+
+meta "rewrite_def" predicate well_founded_relation_Int
+
+meta "compute_max_steps" 1000000
+
+meta "select_lsinst" "all"
+
+constant input : Seq.seq UInt8.t
+
+constant start : int
+
+constant end' : int
+
+constant byte : int
+
+function find_byte_before [#"/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 469 0 469 79] (input: Seq.seq UInt8.t) (start: int) (end': int) (byte: int) : int
+
+goal vc_find_byte_before: ([%#slib'0] 0 <= start /\ start <= end' /\ end' <= Seq.length input)
+  -> (if start < end' then
+    if UInt8.t'int (Seq.get input start) <> byte then
+      (([@stop_split] [@expl:find_byte_before requires] [%#slib'0] 0 <= start + 1
+          /\ start + 1 <= end' /\ end' <= Seq.length input)
+        /\ ([@expl:variant decreases] well_founded_relation_Int ([%#slib] end' - start) ([%#slib] end' - (start + 1))))
+      /\ (([@stop_split] [@expl:find_byte_before ensures] ([@stop_split] [@expl:find_byte_before ensures #0] [%#slib'1] start
+              + 1
+            <= find_byte_before input (start + 1) end' byte
+          /\ find_byte_before input (start + 1) end' byte <= end')
+        /\ ([@stop_split] [@expl:find_byte_before ensures #1] [%#slib'2] forall i: int. start + 1 <= i
+              /\ i < find_byte_before input (start + 1) end' byte -> UInt8.t'int (Seq.get input i) <> byte)
+        /\ ([@stop_split] [@expl:find_byte_before ensures #2] [%#slib'3] find_byte_before input (start + 1) end' byte
+          = end'
+        \/ UInt8.t'int (Seq.get input (find_byte_before input (start + 1) end' byte)) = byte))
+      -> (let result = find_byte_before input (start
+      + 1) end' byte in [@stop_split] [@expl:find_byte_before ensures] ([@stop_split] [@expl:find_byte_before ensures #0] [%#slib'1] start
+          <= result
+        /\ result <= end')
+      /\ ([@stop_split] [@expl:find_byte_before ensures #1] [%#slib'2] forall i: int. start <= i /\ i < result
+          -> UInt8.t'int (Seq.get input i) <> byte)
+      /\ ([@stop_split] [@expl:find_byte_before ensures #2] [%#slib'3] result = end'
+      \/ UInt8.t'int (Seq.get input result) = byte)))
+    else
+      let result = start in [@stop_split] [@expl:find_byte_before ensures] ([@stop_split] [@expl:find_byte_before ensures #0] [%#slib'1] start
+          <= result
+        /\ result <= end')
+      /\ ([@stop_split] [@expl:find_byte_before ensures #1] [%#slib'2] forall i: int. start <= i /\ i < result
+          -> UInt8.t'int (Seq.get input i) <> byte)
+      /\ ([@stop_split] [@expl:find_byte_before ensures #2] [%#slib'3] result = end'
+      \/ UInt8.t'int (Seq.get input result) = byte)
+  
+  else
+    let result = start in [@stop_split] [@expl:find_byte_before ensures] ([@stop_split] [@expl:find_byte_before ensures #0] [%#slib'1] start
+        <= result
+      /\ result <= end')
+    /\ ([@stop_split] [@expl:find_byte_before ensures #1] [%#slib'2] forall i: int. start <= i /\ i < result
+        -> UInt8.t'int (Seq.get input i) <> byte)
+    /\ ([@stop_split] [@expl:find_byte_before ensures #2] [%#slib'3] result = end'
+    \/ UInt8.t'int (Seq.get input result) = byte)
+  )

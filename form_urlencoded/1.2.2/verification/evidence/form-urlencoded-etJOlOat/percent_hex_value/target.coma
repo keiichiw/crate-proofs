@@ -1,0 +1,89 @@
+(* #"/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 349 0 349 44 *)
+
+let%span slib = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 351 8 351 19
+let%span slib'0 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 351 35 351 39
+let%span slib'1 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 351 28 351 39
+let%span slib'2 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 352 8 352 19
+let%span slib'3 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 352 35 352 39
+let%span slib'4 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 352 28 352 39
+let%span slib'5 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 352 42 352 44
+let%span slib'6 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 352 28 352 44
+let%span slib'7 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 353 8 353 19
+let%span slib'8 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 353 35 353 39
+let%span slib'9 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 353 28 353 39
+let%span slib'10 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 353 42 353 44
+let%span slib'11 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 353 28 353 44
+let%span slib'12 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 344 28 348 1
+let%span slib'13 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 361 4 369 5
+
+use creusot.int.UInt8
+use creusot.prelude.Any
+use int.Int
+
+type t_Option_u8 = None | Some UInt8.t
+
+function percent_hex_value_model [#"/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 360 0 360 48] (byte: int) : int
+ = [%#slib'13] if 48 <= byte /\ byte <= 57 then
+    byte - 48
+  else
+    if 65 <= byte /\ byte <= 70 then byte - 55 else if 97 <= byte /\ byte <= 102 then byte - 87 else - 1
+
+
+meta "compute_max_steps" 1000000
+
+meta "select_lsinst" "all"
+
+let percent_hex_value [#"/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 349 0 349 44]
+  (byte: UInt8.t) (return (x: t_Option_u8)) = (! bb0
+  [ bb0 = s0
+    [ s0 = [ &_8 <- UInt8.le ([%#slib] (48: UInt8.t)) byte ] s1
+    | s1 = any [ br0 -> {_8 = false} (! bb3) | br1 -> {_8} (! bb9) ] ]
+  | bb9 = s0
+    [ s0 = [ &_9 <- UInt8.le byte ([%#slib] (57: UInt8.t)) ] s1
+    | s1 = any [ br0 -> {_9 = false} (! bb3) | br1 -> {_9} (! bb12) ] ]
+  | bb12 = s0
+    [ s0 = UInt8.sub [%#slib'1] {byte} {[%#slib'0] (48: UInt8.t)} (fun (_x: UInt8.t) -> [ &_10 <- _x ] s1)
+    | s1 = [ &_ret <- Some _10 ] s2
+    | s2 = return {_ret} ]
+  | bb3 = s0
+    [ s0 = [ &_6 <- UInt8.le ([%#slib'2] (65: UInt8.t)) byte ] s1
+    | s1 = any [ br0 -> {_6 = false} (! bb5) | br1 -> {_6} (! bb8) ] ]
+  | bb8 = s0
+    [ s0 = [ &_7 <- UInt8.le byte ([%#slib'2] (70: UInt8.t)) ] s1
+    | s1 = any [ br0 -> {_7 = false} (! bb5) | br1 -> {_7} (! bb11) ] ]
+  | bb11 = s0
+    [ s0 = UInt8.sub [%#slib'4] {byte} {[%#slib'3] (65: UInt8.t)} (fun (_x: UInt8.t) -> [ &_13 <- _x ] s1)
+    | s1 = UInt8.add [%#slib'6] {_13} {[%#slib'5] (10: UInt8.t)} (fun (_x: UInt8.t) -> [ &_12 <- _x ] s2)
+    | s2 = [ &_ret <- Some _12 ] s3
+    | s3 = return {_ret} ]
+  | bb5 = s0
+    [ s0 = [ &_4 <- UInt8.le ([%#slib'7] (97: UInt8.t)) byte ] s1
+    | s1 = any [ br0 -> {_4 = false} (! bb1) | br1 -> {_4} (! bb7) ] ]
+  | bb7 = s0
+    [ s0 = [ &_5 <- UInt8.le byte ([%#slib'7] (102: UInt8.t)) ] s1
+    | s1 = any [ br0 -> {_5 = false} (! bb1) | br1 -> {_5} (! bb10) ] ]
+  | bb10 = s0
+    [ s0 = UInt8.sub [%#slib'9] {byte} {[%#slib'8] (97: UInt8.t)} (fun (_x: UInt8.t) -> [ &_16 <- _x ] s1)
+    | s1 = UInt8.add [%#slib'11] {_16} {[%#slib'10] (10: UInt8.t)} (fun (_x: UInt8.t) -> [ &_15 <- _x ] s2)
+    | s2 = [ &_ret <- Some _15 ] s3
+    | s3 = return {_ret} ]
+  | bb1 = s0 [ s0 = [ &_ret <- None ] s1 | s1 = return {_ret} ] ]
+  [ & _ret: t_Option_u8 = Any.any_l ()
+  | & byte: UInt8.t = byte
+  | & _4: bool = Any.any_l ()
+  | & _5: bool = Any.any_l ()
+  | & _6: bool = Any.any_l ()
+  | & _7: bool = Any.any_l ()
+  | & _8: bool = Any.any_l ()
+  | & _9: bool = Any.any_l ()
+  | & _10: UInt8.t = Any.any_l ()
+  | & _12: UInt8.t = Any.any_l ()
+  | & _13: UInt8.t = Any.any_l ()
+  | & _15: UInt8.t = Any.any_l ()
+  | & _16: UInt8.t = Any.any_l () ])
+  [ return (result: t_Option_u8) -> {[@stop_split] [@expl:percent_hex_value ensures] [%#slib'12] match result with
+      | Some value -> percent_hex_value_model (UInt8.t'int byte) = UInt8.t'int value
+      /\ 0 <= UInt8.t'int value /\ UInt8.t'int value <= 15
+      | None -> percent_hex_value_model (UInt8.t'int byte) = - 1
+      end}
+    (! return {result}) ]

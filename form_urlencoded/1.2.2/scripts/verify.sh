@@ -4,6 +4,8 @@ version_dir=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)
 repo_dir=$(cd -- "$version_dir/../.." && pwd)
 cd "$version_dir"
 source "$repo_dir/scripts/activate.sh"
+export WHY3CONFIG="$version_dir/scripts/why3.conf"
+export DUNE_DIR_LOCATIONS="why3find:lib:$XDG_DATA_HOME/creusot/share/why3find"
 if [[ $# -ne 0 ]]; then
   echo "usage: $0" >&2
   exit 2
@@ -28,12 +30,10 @@ printf 'Fresh evidence run: %s\n' "$run_dir"
 } >"$run_dir/versions.txt" 2>&1
 
 python3 scripts/check-proofs.py --snapshot "$run_dir/inputs-before.json"
-bash scripts/run-differential.sh "$run_dir/differential"
+CARGO_TARGET_DIR="$run_dir/native-target" bash scripts/run-differential.sh "$run_dir/differential"
 
-# Ensure this run cannot silently reuse an old translated Rust artifact.
-cargo +nightly-2026-06-22 clean --target-dir target/creusot -p form_urlencoded \
-  >"$run_dir/clean.log" 2>&1
-cargo creusot --only=coma --span-mode off --output-dir "$run_dir/coma" -- --locked --offline \
+# A unique target directory also prevents replay of cached dependency diagnostics.
+cargo creusot --only=coma --span-mode absolute --output-dir "$run_dir/coma" -- --locked --offline --target-dir "$run_dir/target" \
   2>&1 | tee "$run_dir/compile.log"
 
 mapfile -t targets < <(python3 scripts/check-proofs.py --selected-files "$run_dir")
@@ -41,9 +41,13 @@ if [[ ${#targets[@]} -eq 0 ]]; then
   echo "No selected generated targets were found." >&2
   exit 1
 fi
-cargo creusot --only=prove --no-cache \
-  --why3find-arg=-j --why3find-arg=3 --why3find-arg=-d --why3find-arg=2 \
-  "${targets[@]}" 2>&1 | tee "$run_dir/prove.log"
+set +e
+why3find prove --no-cache -f --summary --no-autodetect-provers \
+  -P z3,cvc5 -j 2 --fast 1 --time 10 -d 6 "${targets[@]}" 2>&1 | tee "$run_dir/prove.log"
+proof_status=${PIPESTATUS[0]}
+set -e
+printf '%s\n' "$proof_status" >"$run_dir/prove.exit"
+[[ "$proof_status" == 0 ]] || exit "$proof_status"
 
 python3 scripts/check-proofs.py --package "$run_dir"
 python3 "$repo_dir/scripts/audit-proof-evidence.py" "$version_dir" \

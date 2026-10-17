@@ -1,0 +1,107 @@
+(* #"/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 1195 0 1195 54 *)
+
+let%span swell_founded = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/logic/well_founded.rs" 43 8 43 33
+let%span sord = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/logic/ord.rs" 34 8 34 21
+let%span sord'0 = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/logic/ord.rs" 22 8 22 20
+let%span slib = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 1190 10 1190 29
+let%span slib'0 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 1189 11 1189 45
+let%span slib'1 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 1191 10 1191 50
+let%span slib'2 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 1192 10 1192 79
+let%span slib'3 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 1193 10 1193 66
+let%span slib'4 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 1194 10 1194 81
+let%span slib'5 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 1171 10 1173 33
+let%span slib'6 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 1175 4 1177 36
+
+use creusot.int.UInt8
+use seq.Seq
+use int.Int
+
+predicate unchanged_byte [#"/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 1174 0 1174 40] (byte: int) =
+  [%#slib'6] byte = 42
+  \/ byte = 45
+  \/ byte = 46 \/ 48 <= byte /\ byte <= 57 \/ 65 <= byte /\ byte <= 90 \/ byte = 95 \/ 97 <= byte /\ byte <= 122
+
+axiom unchanged_byte_spec: forall byte: int [unchanged_byte byte]. [%#slib'5] unchanged_byte byte
+    = (byte = 42
+    \/ byte = 45
+    \/ byte = 46 \/ 48 <= byte /\ byte <= 57 \/ 65 <= byte /\ byte <= 90 \/ byte = 95 \/ 97 <= byte /\ byte <= 122)
+
+predicate ge_log_Int [@inline:trivial] (self: int) (other: int) = [%#sord] other <= self
+
+meta "rewrite_def" predicate ge_log_Int
+
+predicate gt_log_Int [@inline:trivial] (self: int) (other: int) = [%#sord'0] other < self
+
+meta "rewrite_def" predicate gt_log_Int
+
+predicate well_founded_relation_Int [@inline:trivial] (self: int) (other: int) =
+  [%#swell_founded] ge_log_Int self 0 /\ gt_log_Int self other
+
+meta "rewrite_def" predicate well_founded_relation_Int
+
+meta "compute_max_steps" 1000000
+
+meta "select_lsinst" "all"
+
+constant bytes : Seq.seq UInt8.t
+
+constant start : int
+
+function safe_run_end [#"/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 1195 0 1195 54] (bytes: Seq.seq UInt8.t) (start: int) : int
+
+goal vc_safe_run_end: ([%#slib'0] 0 <= start /\ start <= Seq.length bytes)
+  -> (if start < Seq.length bytes then
+    ([@stop_split] [@expl:unchanged_byte ensures] [%#slib'5] unchanged_byte (UInt8.t'int (Seq.get bytes start))
+      = (UInt8.t'int (Seq.get bytes start) = 42
+      \/ UInt8.t'int (Seq.get bytes start) = 45
+      \/ UInt8.t'int (Seq.get bytes start) = 46
+      \/ 48 <= UInt8.t'int (Seq.get bytes start) /\ UInt8.t'int (Seq.get bytes start) <= 57
+      \/ 65 <= UInt8.t'int (Seq.get bytes start) /\ UInt8.t'int (Seq.get bytes start) <= 90
+      \/ UInt8.t'int (Seq.get bytes start) = 95
+      \/ 97 <= UInt8.t'int (Seq.get bytes start) /\ UInt8.t'int (Seq.get bytes start) <= 122))
+    -> (if unchanged_byte (UInt8.t'int (Seq.get bytes start)) then
+      (([@stop_split] [@expl:safe_run_end requires] [%#slib'0] 0 <= start + 1 /\ start + 1 <= Seq.length bytes)
+        /\ ([@expl:variant decreases] well_founded_relation_Int ([%#slib] Seq.length bytes
+        - start) ([%#slib] Seq.length bytes - (start + 1))))
+      /\ (([@stop_split] [@expl:safe_run_end ensures] ([@stop_split] [@expl:safe_run_end ensures #0] [%#slib'1] start
+              + 1
+            <= safe_run_end bytes (start + 1)
+          /\ safe_run_end bytes (start + 1) <= Seq.length bytes)
+        /\ ([@stop_split] [@expl:safe_run_end ensures #1] [%#slib'2] forall i: int. start + 1 <= i
+              /\ i < safe_run_end bytes (start + 1) -> unchanged_byte (UInt8.t'int (Seq.get bytes i)))
+        /\ ([@stop_split] [@expl:safe_run_end ensures #2] [%#slib'3] safe_run_end bytes (start + 1) = Seq.length bytes
+          \/ not unchanged_byte (UInt8.t'int (Seq.get bytes (safe_run_end bytes (start + 1)))))
+        /\ ([@stop_split] [@expl:safe_run_end ensures #3] [%#slib'4] start + 1 < Seq.length bytes
+          /\ unchanged_byte (UInt8.t'int (Seq.get bytes (start + 1))) -> start + 1 < safe_run_end bytes (start + 1)))
+      -> (let result = safe_run_end bytes (start
+      + 1) in [@stop_split] [@expl:safe_run_end ensures] ([@stop_split] [@expl:safe_run_end ensures #0] [%#slib'1] start
+          <= result
+        /\ result <= Seq.length bytes)
+      /\ ([@stop_split] [@expl:safe_run_end ensures #1] [%#slib'2] forall i: int. start <= i /\ i < result
+          -> unchanged_byte (UInt8.t'int (Seq.get bytes i)))
+      /\ ([@stop_split] [@expl:safe_run_end ensures #2] [%#slib'3] result = Seq.length bytes
+        \/ not unchanged_byte (UInt8.t'int (Seq.get bytes result)))
+      /\ ([@stop_split] [@expl:safe_run_end ensures #3] [%#slib'4] start < Seq.length bytes
+        /\ unchanged_byte (UInt8.t'int (Seq.get bytes start)) -> start < result)))
+    else
+      let result = start in [@stop_split] [@expl:safe_run_end ensures] ([@stop_split] [@expl:safe_run_end ensures #0] [%#slib'1] start
+          <= result
+        /\ result <= Seq.length bytes)
+      /\ ([@stop_split] [@expl:safe_run_end ensures #1] [%#slib'2] forall i: int. start <= i /\ i < result
+          -> unchanged_byte (UInt8.t'int (Seq.get bytes i)))
+      /\ ([@stop_split] [@expl:safe_run_end ensures #2] [%#slib'3] result = Seq.length bytes
+        \/ not unchanged_byte (UInt8.t'int (Seq.get bytes result)))
+      /\ ([@stop_split] [@expl:safe_run_end ensures #3] [%#slib'4] start < Seq.length bytes
+        /\ unchanged_byte (UInt8.t'int (Seq.get bytes start)) -> start < result)
+    )
+  else
+    let result = start in [@stop_split] [@expl:safe_run_end ensures] ([@stop_split] [@expl:safe_run_end ensures #0] [%#slib'1] start
+        <= result
+      /\ result <= Seq.length bytes)
+    /\ ([@stop_split] [@expl:safe_run_end ensures #1] [%#slib'2] forall i: int. start <= i /\ i < result
+        -> unchanged_byte (UInt8.t'int (Seq.get bytes i)))
+    /\ ([@stop_split] [@expl:safe_run_end ensures #2] [%#slib'3] result = Seq.length bytes
+      \/ not unchanged_byte (UInt8.t'int (Seq.get bytes result)))
+    /\ ([@stop_split] [@expl:safe_run_end ensures #3] [%#slib'4] start < Seq.length bytes
+      /\ unchanged_byte (UInt8.t'int (Seq.get bytes start)) -> start < result)
+  )

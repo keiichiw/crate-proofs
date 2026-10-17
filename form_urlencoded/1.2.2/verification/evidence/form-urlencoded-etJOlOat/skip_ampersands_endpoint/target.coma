@@ -1,0 +1,98 @@
+(* #"/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 485 0 485 77 *)
+
+let%span swell_founded = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/logic/well_founded.rs" 43 8 43 33
+let%span sord = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/logic/ord.rs" 34 8 34 21
+let%span sord'0 = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/logic/ord.rs" 22 8 22 20
+let%span slib = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 482 10 482 21
+let%span slib'0 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 479 11 479 59
+let%span slib'1 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 480 11 480 67
+let%span slib'2 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 481 11 481 50
+let%span slib'3 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 483 10 483 16
+let%span slib'4 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 484 10 484 46
+let%span slib'5 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 450 10 450 29
+let%span slib'6 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 449 11 449 45
+let%span slib'7 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 451 10 451 50
+let%span slib'8 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 452 10 452 69
+let%span slib'9 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 453 10 453 55
+let%span slib'10 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 455 4 459 5
+
+use creusot.int.UInt8
+use seq.Seq
+use int.Int
+
+function skip_ampersands [#"/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 454 0 454 57] (input: Seq.seq UInt8.t) (start: int) : int
+
+axiom skip_ampersands_def: forall input: Seq.seq UInt8.t, start: int [skip_ampersands input start]. ([%#slib'6] 0
+        <= start
+      /\ start <= Seq.length input)
+    -> skip_ampersands input start
+    = ([%#slib'10] if start < Seq.length input /\ UInt8.t'int (Seq.get input start) = 38 then
+      skip_ampersands input (start + 1)
+    else
+      start
+    )
+
+axiom skip_ampersands_spec: forall input: Seq.seq UInt8.t, start: int [skip_ampersands input start]. ([%#slib'6] 0
+        <= start
+      /\ start <= Seq.length input)
+    -> ([%#slib'7] start <= skip_ampersands input start /\ skip_ampersands input start <= Seq.length input)
+
+axiom skip_ampersands_spec'0: forall input: Seq.seq UInt8.t, start: int [skip_ampersands input start]. ([%#slib'6] 0
+        <= start
+      /\ start <= Seq.length input)
+    -> ([%#slib'8] forall i: int. start <= i /\ i < skip_ampersands input start -> UInt8.t'int (Seq.get input i) = 38)
+
+axiom skip_ampersands_spec'1: forall input: Seq.seq UInt8.t, start: int [skip_ampersands input start]. ([%#slib'6] 0
+        <= start
+      /\ start <= Seq.length input)
+    -> ([%#slib'9] skip_ampersands input start = Seq.length input
+    \/ UInt8.t'int (Seq.get input (skip_ampersands input start)) <> 38)
+
+predicate ge_log_Int [@inline:trivial] (self: int) (other: int) = [%#sord] other <= self
+
+meta "rewrite_def" predicate ge_log_Int
+
+predicate gt_log_Int [@inline:trivial] (self: int) (other: int) = [%#sord'0] other < self
+
+meta "rewrite_def" predicate gt_log_Int
+
+predicate well_founded_relation_Int [@inline:trivial] (self: int) (other: int) =
+  [%#swell_founded] ge_log_Int self 0 /\ gt_log_Int self other
+
+meta "rewrite_def" predicate well_founded_relation_Int
+
+meta "compute_max_steps" 1000000
+
+meta "select_lsinst" "all"
+
+constant input : Seq.seq UInt8.t
+
+constant start : int
+
+constant end' : int
+
+predicate skip_ampersands_endpoint [#"/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 485 0 485 77] (input: Seq.seq UInt8.t) (start: int) (end': int)
+
+goal vc_skip_ampersands_endpoint: ([%#slib'0] 0 <= start /\ start <= end' /\ end' <= Seq.length input)
+  -> ([%#slib'1] forall i: int. start <= i /\ i < end' -> UInt8.t'int (Seq.get input i) = 38)
+  -> ([%#slib'2] end' = Seq.length input \/ UInt8.t'int (Seq.get input end') <> 38)
+  -> (if start < end' then
+    (([@stop_split] [@expl:skip_ampersands_endpoint requires] ([@stop_split] [@expl:skip_ampersands_endpoint requires #0] [%#slib'0] 0
+            <= start + 1
+          /\ start + 1 <= end' /\ end' <= Seq.length input)
+        /\ ([@stop_split] [@expl:skip_ampersands_endpoint requires #1] [%#slib'1] forall i: int. start + 1 <= i
+              /\ i < end' -> UInt8.t'int (Seq.get input i) = 38)
+        /\ ([@stop_split] [@expl:skip_ampersands_endpoint requires #2] [%#slib'2] end' = Seq.length input
+        \/ UInt8.t'int (Seq.get input end') <> 38))
+      /\ ([@expl:variant decreases] well_founded_relation_Int ([%#slib] end' - start) ([%#slib] end' - (start + 1))))
+    /\ (([@stop_split] [@expl:skip_ampersands_endpoint ensures] ([@stop_split] [@expl:skip_ampersands_endpoint ensures #0] [%#slib'3] skip_ampersands_endpoint input (start
+        + 1) end')
+      /\ ([@stop_split] [@expl:skip_ampersands_endpoint ensures #1] [%#slib'4] skip_ampersands input (start + 1)
+      = end'))
+    -> ([@stop_split] [@expl:skip_ampersands_endpoint ensures] ([@stop_split] [@expl:skip_ampersands_endpoint ensures #0] [%#slib'3] skip_ampersands_endpoint input (start
+      + 1) end')
+    /\ ([@stop_split] [@expl:skip_ampersands_endpoint ensures #1] [%#slib'4] skip_ampersands input start = end')))
+  else
+    [@stop_split] [@expl:skip_ampersands_endpoint ensures] ([@stop_split] [@expl:skip_ampersands_endpoint ensures #0] [%#slib'3] true)
+    /\ ([@stop_split] [@expl:skip_ampersands_endpoint ensures #1] [%#slib'4] skip_ampersands input start = end')
+  )

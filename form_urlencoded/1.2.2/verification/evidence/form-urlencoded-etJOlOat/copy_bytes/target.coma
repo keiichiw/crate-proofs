@@ -1,0 +1,60 @@
+(* #"/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 779 0 779 38 *)
+
+let%span slib = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 780 17 780 31
+let%span slib'0 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 782 18 782 40
+let%span slib'1 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 778 28 778 50
+let%span sslice = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/std/slice.rs" 524 18 524 46
+let%span sslice'0 = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/std/slice.rs" 525 18 525 117
+let%span svec = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/std/vec.rs" 18 14 18 41
+let%span snum = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/std/num.rs" 50 26 50 32
+
+use creusot.slice.Slice64
+use creusot.int.UInt8
+use seq.Seq
+use creusot.int.UInt64
+use creusot.prelude.Any
+use int.Int
+
+type t_Vec_u8_Global
+
+constant const_MAX: UInt64.t = (18446744073709551615: UInt64.t)
+
+function view_Vec_u8_Global (self: t_Vec_u8_Global) : Seq.seq UInt8.t
+
+axiom view_Vec_u8_Global_spec:
+  forall self: t_Vec_u8_Global [view_Vec_u8_Global self]. [%#svec] Seq.length (view_Vec_u8_Global self)
+    <= UInt64.t'int const_MAX
+
+predicate postcondition_clone (self: ()) (args: UInt8.t) (result: UInt8.t) = let self_ = args in [%#snum] result = self_
+
+meta "rewrite_def" predicate postcondition_clone
+
+let clone_u8 (self_: UInt8.t) (return (x: UInt8.t)) = any
+  [ return (result: UInt8.t) -> {[@stop_split] [@expl:clone ensures] [%#snum] result = self_} (! return {result}) ]
+
+let to_vec_u8 (self_: Slice64.slice UInt8.t) (return (x: t_Vec_u8_Global)) = any
+  [ return (result: t_Vec_u8_Global) ->
+  {[@stop_split] [@expl:to_vec_u8 ensures] ([@stop_split] [@expl:to_vec ensures #0] [%#sslice] Seq.length (view_Vec_u8_Global result)
+      = Seq.length (Slice64.view self_))
+    /\ ([@stop_split] [@expl:to_vec ensures #1] [%#sslice'0] forall i: int. 0 <= i
+        /\ i < Seq.length (Slice64.view self_)
+      -> postcondition_clone () (Seq.get (Slice64.view self_) i) (Seq.get (view_Vec_u8_Global result) i))}
+    (! return {result}) ]
+
+meta "compute_max_steps" 1000000
+
+meta "select_lsinst" "all"
+
+let copy_bytes [#"/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 779 0 779 38]
+  (input: Slice64.slice UInt8.t) (return (x: t_Vec_u8_Global)) = (! bb0
+  [ bb0 = s0
+    [ s0 = to_vec_u8 [%#slib] {input} (fun (_x: t_Vec_u8_Global) -> [ &copied <- _x ] s1)
+    | s1 = {[@expl:assertion] [%#slib'0] Seq.(==) (view_Vec_u8_Global copied) (Slice64.view input)} s2
+    | s2 = [ &_ret <- copied ] s3
+    | s3 = return {_ret} ] ]
+  [ & _ret: t_Vec_u8_Global = Any.any_l ()
+  | & input: Slice64.slice UInt8.t = input
+  | & copied: t_Vec_u8_Global = Any.any_l () ])
+  [ return (result: t_Vec_u8_Global) ->
+  {[@stop_split] [@expl:copy_bytes ensures] [%#slib'1] Seq.(==) (view_Vec_u8_Global result) (Slice64.view input)}
+    (! return {result}) ]

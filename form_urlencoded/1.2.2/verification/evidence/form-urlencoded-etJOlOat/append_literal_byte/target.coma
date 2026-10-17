@@ -1,0 +1,194 @@
+(* #"/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 851 0 851 80 *)
+
+let%span sseq = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/logic/seq.rs" 301 14 301 24
+let%span sseq'0 = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/logic/seq.rs" 299 14 299 40
+let%span sseq'1 = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/logic/seq.rs" 300 14 300 76
+let%span smapping = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/logic/mapping.rs" 66 8 66 19
+let%span slib = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 853 18 853 54
+let%span slib'0 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 855 40 855 52
+let%span slib'1 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 855 8 855 53
+let%span slib'2 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 827 29 827 50
+let%span slib'3 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 828 29 831 1
+let%span slib'4 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 832 28 839 1
+let%span slib'5 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 840 28 845 1
+let%span slib'6 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 846 28 850 1
+let%span slib'7 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 893 11 893 44
+let%span slib'8 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 894 10 894 16
+let%span slib'9 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 895 10 897 46
+let%span slib'10 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 892 0 892 8
+let%span slib'11 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 770 28 770 63
+let%span slib'12 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 771 28 772 66
+let%span slib'13 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 773 28 773 63
+let%span slib'14 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 375 16 375 43
+let%span slib'15 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 861 11 861 44
+let%span slib'16 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 862 10 862 16
+let%span slib'17 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 863 10 864 71
+let%span sslice = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/std/slice.rs" 76 20 76 30
+let%span svec = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/std/vec.rs" 18 14 18 41
+
+use creusot.int.UInt8
+use seq.Seq
+use map.Map
+use creusot.slice.Slice64
+use creusot.int.UInt64
+use creusot.prelude.MutBorrow
+use creusot.prelude.Any
+use int.Int
+
+function index_Mapping_u8_Int [@inline:trivial] (self: Map.map UInt8.t int) (a: UInt8.t) : int =
+  [%#smapping] Map.get self a
+
+meta "rewrite_def" function index_Mapping_u8_Int
+
+function map_u8 (self: Seq.seq UInt8.t) (m: Map.map UInt8.t int) : Seq.seq int
+
+axiom map_u8_spec:
+  forall self: Seq.seq UInt8.t, m: Map.map UInt8.t int [map_u8 self m]. [%#sseq'0] Seq.length (map_u8 self m)
+    = Seq.length self
+
+axiom map_u8_spec'0: forall self: Seq.seq UInt8.t, m: Map.map UInt8.t int [map_u8 self m]. [%#sseq'1] forall i: int. 0
+          <= i
+        /\ i < Seq.length self -> Seq.get (map_u8 self m) i = index_Mapping_u8_Int m (Seq.get self i)
+
+function byte_sequence_as_ints [#"/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 374 0 374 56] (bytes: Seq.seq UInt8.t) : Seq.seq int
+ = [%#slib'14] map_u8 bytes (fun (byte: UInt8.t) -> UInt8.t'int byte)
+
+predicate int_prefix_push [#"/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 865 0 865 59] (bytes: Seq.seq int) (index: int)
+
+axiom int_prefix_push_spec: forall bytes: Seq.seq int, index: int [int_prefix_push bytes index]. ([%#slib'15] 0 <= index
+      /\ index < Seq.length bytes) -> ([%#slib'16] int_prefix_push bytes index)
+
+axiom int_prefix_push_spec'0: forall bytes: Seq.seq int, index: int. ([%#slib'15] 0 <= index
+      /\ index < Seq.length bytes)
+    -> ([%#slib'17] Seq.([..]) bytes 0 (index + 1)
+    = Seq.(++) (Seq.([..]) bytes 0 index) (Seq.singleton (Seq.get bytes index)))
+
+predicate byte_int_prefix_push [#"/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 898 0 898 63] (bytes: Seq.seq UInt8.t) (index: int) =
+  [%#slib'10] int_prefix_push (byte_sequence_as_ints bytes) index
+  /\ Seq.get (byte_sequence_as_ints bytes) index = UInt8.t'int (Seq.get bytes index)
+
+axiom byte_int_prefix_push_spec:
+  forall bytes: Seq.seq UInt8.t, index: int [byte_int_prefix_push bytes index]. ([%#slib'7] 0 <= index
+      /\ index < Seq.length bytes) -> ([%#slib'8] byte_int_prefix_push bytes index)
+
+axiom byte_int_prefix_push_spec'0: forall bytes: Seq.seq UInt8.t, index: int. ([%#slib'7] 0 <= index
+      /\ index < Seq.length bytes)
+    -> ([%#slib'9] Seq.([..]) (byte_sequence_as_ints bytes) 0 (index + 1)
+    = Seq.(++) (Seq.([..]) (byte_sequence_as_ints bytes) 0 index) (Seq.singleton (UInt8.t'int (Seq.get bytes index))))
+
+type t_Vec_u8_Global
+
+type t_Option_Vec_u8_Global = None | Some t_Vec_u8_Global
+
+predicate resolve_refmut_Option_Vec_u8_Global [@inline:trivial] (_1: MutBorrow.t t_Option_Vec_u8_Global) =
+  _1.final = _1.current
+
+meta "rewrite_def" predicate resolve_refmut_Option_Vec_u8_Global
+
+let elim_Some (_x: t_Option_Vec_u8_Global) (return (f0: t_Vec_u8_Global)) = any
+  [ _k (f0: t_Vec_u8_Global) -> {Some f0 = _x} (! return {f0})
+  | _chk -> (! {[@expl:elim Some] match _x with
+      | Some _ -> true
+      | _ -> false
+      end}
+    any) ]
+
+constant const_MAX: UInt64.t = (18446744073709551615: UInt64.t)
+
+function view_Vec_u8_Global (self: t_Vec_u8_Global) : Seq.seq UInt8.t
+
+axiom view_Vec_u8_Global_spec:
+  forall self: t_Vec_u8_Global [view_Vec_u8_Global self]. [%#svec] Seq.length (view_Vec_u8_Global self)
+    <= UInt64.t'int const_MAX
+
+let push_byte_preserving_map (bytes: MutBorrow.t t_Vec_u8_Global) (byte: UInt8.t) (return (x: ())) = any
+  [ return (result: ()) ->
+  {[@stop_split] [@expl:push_byte_preserving_map ensures] ([@stop_split] [@expl:push_byte_preserving_map ensures #0] [%#slib'11] view_Vec_u8_Global bytes.final
+      = Seq.snoc (view_Vec_u8_Global bytes.current) byte)
+    /\ ([@stop_split] [@expl:push_byte_preserving_map ensures #1] [%#slib'12] byte_sequence_as_ints (view_Vec_u8_Global bytes.final)
+      = Seq.(++) (byte_sequence_as_ints (view_Vec_u8_Global bytes.current)) (Seq.singleton (UInt8.t'int byte)))
+    /\ ([@stop_split] [@expl:push_byte_preserving_map ensures #2] [%#slib'13] Seq.length (view_Vec_u8_Global bytes.final)
+    = Seq.length (view_Vec_u8_Global bytes.current) + 1)}
+    (! return {result}) ]
+
+predicate resolve_refmut_Vec_u8_Global [@inline:trivial] (_1: MutBorrow.t t_Vec_u8_Global) = _1.final = _1.current
+
+meta "rewrite_def" predicate resolve_refmut_Vec_u8_Global
+
+type tup2_Option_Vec_u8_Global_Option_Vec_u8_Global = { f0: t_Option_Vec_u8_Global; f1: t_Option_Vec_u8_Global }
+
+function index_slice_u8 [@inline:trivial] (self: Slice64.slice UInt8.t) (ix: UInt64.t) : UInt8.t =
+  [%#sslice] Seq.get (Slice64.view self) (UInt64.t'int ix)
+
+meta "rewrite_def" function index_slice_u8
+
+meta "compute_max_steps" 1000000
+
+meta "select_lsinst" "all"
+
+let append_literal_byte [#"/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 851 0 851 80]
+  (output: MutBorrow.t t_Option_Vec_u8_Global) (input: Slice64.slice UInt8.t) (index: UInt64.t) (return (x: ())) =
+{[@stop_split] [@expl:append_literal_byte requires] ([@stop_split] [@expl:append_literal_byte requires #0] [%#slib'2] UInt64.t'int index
+    < Seq.length (Slice64.view input))
+  /\ ([@stop_split] [@expl:append_literal_byte requires #1] [%#slib'3] match output.current with
+    | Some before -> Seq.length (view_Vec_u8_Global before) < UInt64.t'int index
+    | None -> true
+    end)}
+  (! bb0
+  [ bb0 = s0
+    [ s0 = {[@expl:assertion] [%#slib] byte_int_prefix_push (Slice64.view input) (UInt64.t'int index)} s1
+    | s1 = any
+      [ br0 -> {output.current = None} (! bb5) | br1 (x0: t_Vec_u8_Global) -> {output.current = Some x0} (! bb2) ] ]
+  | bb5 = s0 [ s0 = -{resolve_refmut_Option_Vec_u8_Global output}- s1 | s1 = return {_ret} ]
+  | bb2 = s0
+    [ s0 = elim_Some {output.current}
+        (fun (r0: t_Vec_u8_Global) ->
+          MutBorrow.borrow_final <t_Vec_u8_Global> {r0} {MutBorrow.inherit_id (MutBorrow.get_id output) 0}
+            (fun (_bor: MutBorrow.t t_Vec_u8_Global) ->
+              [ &bytes <- _bor ] [ &output <- { output with current = Some _bor.final } ] s1))
+    | s1 = [ &_29 <- index ] s2
+    | s2 = [ &_30 <- Slice64.length input ] s3
+    | s3 = [ &_31 <- UInt64.lt _29 _30 ] s4
+    | s4 = {[@expl:index in bounds] [%#slib'0] _31} s5
+    | s5 = Slice64.get [%#slib'0] <UInt8.t> {input} {_29} (fun (r: UInt8.t) -> [ &_28 <- r ] s6)
+    | s6 = MutBorrow.borrow_final <t_Vec_u8_Global> {bytes.current} {MutBorrow.get_id bytes}
+        (fun (_bor: MutBorrow.t t_Vec_u8_Global) ->
+          [ &_27 <- _bor ] [ &bytes <- { bytes with current = _bor.final } ] s7)
+    | s7 = push_byte_preserving_map [%#slib'1] {_27} {_28} (fun (_x: ()) -> [ &_26 <- _x ] s8)
+    | s8 = -{resolve_refmut_Vec_u8_Global bytes}- s9
+    | s9 = -{resolve_refmut_Option_Vec_u8_Global output}- s10
+    | s10 = return {_ret} ] ]
+  [ & _ret: () = Any.any_l ()
+  | & output: MutBorrow.t t_Option_Vec_u8_Global = output
+  | & input: Slice64.slice UInt8.t = input
+  | & index: UInt64.t = index
+  | & bytes: MutBorrow.t t_Vec_u8_Global = Any.any_l ()
+  | & _26: () = Any.any_l ()
+  | & _27: MutBorrow.t t_Vec_u8_Global = Any.any_l ()
+  | & _28: UInt8.t = Any.any_l ()
+  | & _29: UInt64.t = Any.any_l ()
+  | & _30: UInt64.t = Any.any_l ()
+  | & _31: bool = Any.any_l () ])
+  [ return (result: ()) ->
+  {[@stop_split] [@expl:append_literal_byte ensures] ([@stop_split] [@expl:append_literal_byte ensures #0] [%#slib'4] match { f0 = output.current;
+                                                                                                                              f1 = output.final } with
+        | {f0 = None; f1 = None} -> true
+        | {f0 = Some before; f1 = Some after} -> view_Vec_u8_Global after
+          = Seq.snoc (view_Vec_u8_Global before) (index_slice_u8 input index)
+        /\ byte_sequence_as_ints (view_Vec_u8_Global after)
+        = Seq.(++) (byte_sequence_as_ints (view_Vec_u8_Global before)) (Seq.singleton (UInt8.t'int (index_slice_u8 input index)))
+        | _ -> false
+        end)
+    /\ ([@stop_split] [@expl:append_literal_byte ensures #1] [%#slib'5] match output.final with
+        | None -> Seq.([..]) (byte_sequence_as_ints (Slice64.view input)) 0 (UInt64.t'int index + 1)
+        = Seq.(++) (Seq.([..]) (byte_sequence_as_ints (Slice64.view input)) 0 (UInt64.t'int index)) (Seq.singleton (UInt8.t'int (index_slice_u8 input index)))
+        | Some after -> Seq.length (view_Vec_u8_Global after) < UInt64.t'int index + 1
+        end)
+    /\ ([@stop_split] [@expl:append_literal_byte ensures #2] [%#slib'6] match { f0 = output.current;
+                                                                                f1 = output.final } with
+      | {f0 = None; f1 = None} -> true
+      | {f0 = Some before; f1 = Some after} -> Seq.length (view_Vec_u8_Global after)
+      = Seq.length (view_Vec_u8_Global before) + 1
+      | _ -> false
+      end)}
+    (! return {result}) ]

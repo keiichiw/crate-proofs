@@ -1,0 +1,29 @@
+(* #"/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 909 0 909 64 *)
+
+let%span slib = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 905 11 905 59
+let%span slib'0 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 906 10 906 16
+let%span slib'1 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 907 10 908 36
+
+use creusot.int.UInt8
+use seq.Seq
+use int.Int
+
+meta "compute_max_steps" 1000000
+
+meta "select_lsinst" "all"
+
+constant bytes : Seq.seq UInt8.t
+
+constant start : int
+
+constant end' : int
+
+predicate tail_prefix [#"/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 909 0 909 64] (bytes: Seq.seq UInt8.t) (start: int) (end': int)
+
+goal vc_tail_prefix: ([%#slib] 0 <= start /\ start <= end' /\ end' <= Seq.length bytes)
+  -> ([@stop_split] [@expl:tail_prefix ensures] ([@stop_split] [@expl:tail_prefix ensures #0] [%#slib'0] Seq.([..]) (Seq.([..]) bytes start (Seq.length bytes)) 0 (end'
+      - start)
+    = Seq.([..]) bytes start end')
+  /\ ([@stop_split] [@expl:tail_prefix ensures #1] [%#slib'1] Seq.([..]) (Seq.([..]) bytes start (Seq.length bytes)) 0 (end'
+    - start)
+  = Seq.([..]) bytes start end'))

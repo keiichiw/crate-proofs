@@ -1,0 +1,19 @@
+(* #"/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 1183 0 1183 39 *)
+
+let%span slib = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 1182 10 1182 68
+
+use int.Int
+
+meta "compute_max_steps" 1000000
+
+meta "select_lsinst" "all"
+
+constant digit : int
+
+function uppercase_hex [#"/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 1183 0 1183 39] (digit: int) : int
+
+goal vc_uppercase_hex: if digit < 10 then
+    [@stop_split] [@expl:uppercase_hex ensures] [%#slib] 48 + digit = (if digit < 10 then 48 + digit else 55 + digit)
+  else
+    [@stop_split] [@expl:uppercase_hex ensures] [%#slib] 55 + digit = (if digit < 10 then 48 + digit else 55 + digit)
+  

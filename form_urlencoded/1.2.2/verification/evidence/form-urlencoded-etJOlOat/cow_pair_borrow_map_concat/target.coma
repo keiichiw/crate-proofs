@@ -1,0 +1,63 @@
+(* #"/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 1351 0 1354 9 *)
+
+let%span sseq = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/logic/seq.rs" 301 14 301 24
+let%span sseq'0 = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/logic/seq.rs" 299 14 299 40
+let%span sseq'1 = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/logic/seq.rs" 300 14 300 76
+let%span smapping = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/logic/mapping.rs" 66 8 66 19
+let%span slib = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 1340 10 1340 16
+let%span slib'0 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 1341 10 1350 3
+let%span sownership_model = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/ownership_model.rs" 21 4 24 5
+
+use seq.Seq
+use map.Map
+use int.Int
+
+type t_String
+
+type t_Cow_str = Borrowed string | Owned t_String
+
+type tup2_Cow_str_Cow_str = { f0: t_Cow_str; f1: t_Cow_str }
+
+type tup2_bool_bool = { f0'0: bool; f1'0: bool }
+
+function index_Mapping_tup2_Cow_str_Cow_str_tup2_bool_bool [@inline:trivial] (self: Map.map tup2_Cow_str_Cow_str tup2_bool_bool) (a: tup2_Cow_str_Cow_str) : tup2_bool_bool
+ = [%#smapping] Map.get self a
+
+meta "rewrite_def" function index_Mapping_tup2_Cow_str_Cow_str_tup2_bool_bool
+
+function map_tup2_Cow_str_Cow_str (self: Seq.seq tup2_Cow_str_Cow_str) (m: Map.map tup2_Cow_str_Cow_str tup2_bool_bool) : Seq.seq tup2_bool_bool
+
+axiom map_tup2_Cow_str_Cow_str_spec:
+  forall self: Seq.seq tup2_Cow_str_Cow_str, m: Map.map tup2_Cow_str_Cow_str tup2_bool_bool [map_tup2_Cow_str_Cow_str self m]. [%#sseq'0] Seq.length (map_tup2_Cow_str_Cow_str self m)
+    = Seq.length self
+
+axiom map_tup2_Cow_str_Cow_str_spec'0:
+  forall self: Seq.seq tup2_Cow_str_Cow_str, m: Map.map tup2_Cow_str_Cow_str tup2_bool_bool [map_tup2_Cow_str_Cow_str self m]. [%#sseq'1] forall i: int. 0
+          <= i
+        /\ i < Seq.length self
+      -> Seq.get (map_tup2_Cow_str_Cow_str self m) i
+      = index_Mapping_tup2_Cow_str_Cow_str_tup2_bool_bool m (Seq.get self i)
+
+predicate cow_str_borrowed [#"/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/ownership_model.rs" 20 0 20 52] (value: t_Cow_str) =
+  [%#sownership_model] match value with
+    | Borrowed _ -> true
+    | Owned _ -> false
+    end
+
+meta "compute_max_steps" 1000000
+
+meta "select_lsinst" "all"
+
+constant ab : Seq.seq tup2_Cow_str_Cow_str
+
+constant bc : Seq.seq tup2_Cow_str_Cow_str
+
+predicate cow_pair_borrow_map_concat [#"/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 1351 0 1354 9] (ab: Seq.seq tup2_Cow_str_Cow_str) (bc: Seq.seq tup2_Cow_str_Cow_str)
+
+goal vc_cow_pair_borrow_map_concat:
+  [@stop_split] [@expl:cow_pair_borrow_map_concat ensures] ([@stop_split] [@expl:cow_pair_borrow_map_concat ensures #0] [%#slib] true)
+  /\ ([@stop_split] [@expl:cow_pair_borrow_map_concat ensures #1] [%#slib'0] map_tup2_Cow_str_Cow_str (Seq.(++) ab bc) (fun (__0: tup2_Cow_str_Cow_str) -> let {f0 = key; f1 = value} = __0 in { f0'0 = cow_str_borrowed key;
+                                                                                                                                                                                                 f1'0 = cow_str_borrowed value })
+  = Seq.(++) (map_tup2_Cow_str_Cow_str ab (fun (__0: tup2_Cow_str_Cow_str) -> let {f0 = key; f1 = value} = __0 in { f0'0 = cow_str_borrowed key;
+                                                                                                                    f1'0 = cow_str_borrowed value })) (map_tup2_Cow_str_Cow_str bc (fun (__0: tup2_Cow_str_Cow_str) -> let {f0 = key; f1 = value} = __0 in { f0'0 = cow_str_borrowed key;
+                                                                                                                                                                                                                                                             f1'0 = cow_str_borrowed value })))

@@ -1,0 +1,28 @@
+(* #"/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 1774 4 1774 27 *)
+
+(* <_::string::String as Target> *)
+
+let%span slib = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 1774 14 1774 18
+let%span slib'0 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 1774 23 1774 27
+let%span slib'1 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 1773 32 1773 46
+
+use creusot.prelude.Any
+
+type t_String
+
+predicate inv_String (_1: t_String)
+
+meta "compute_max_steps" 1000000
+
+meta "select_lsinst" "all"
+
+let finish_String [#"/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 1774 4 1774 27]
+  (self: t_String) (return (x: t_String)) =
+{[@stop_split] [@expl:finish 'self' type invariant] [%#slib] inv_String self}
+  (! bb0
+  [ bb0 = s0 [ s0 = [ &_ret <- self ] s1 | s1 = return {_ret} ] ]
+  [ & _ret: t_String = Any.any_l () | & self: t_String = self ])
+  [ return (result: t_String) ->
+  {[@stop_split] [@expl:finish_String ensures] ([@stop_split] [@expl:finish result type invariant] [%#slib'0] inv_String result)
+    /\ ([@stop_split] [@expl:finish ensures] [%#slib'1] result = self)}
+    (! return {result}) ]

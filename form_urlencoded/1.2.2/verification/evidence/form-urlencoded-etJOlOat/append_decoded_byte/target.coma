@@ -1,0 +1,196 @@
+(* #"/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 817 0 817 90 *)
+
+let%span sseq = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/logic/seq.rs" 301 14 301 24
+let%span sseq'0 = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/logic/seq.rs" 299 14 299 40
+let%span sseq'1 = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/logic/seq.rs" 300 14 300 76
+let%span smapping = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/logic/mapping.rs" 66 8 66 19
+let%span sstdlib_models = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/stdlib_models.rs" 155 19 155 38
+let%span sstdlib_models'0 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/stdlib_models.rs" 157 12 157 39
+let%span slib = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 818 7 818 23
+let%span slib'0 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 819 21 819 42
+let%span slib'1 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 820 23 820 41
+let%span slib'2 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 823 8 823 45
+let%span slib'3 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 786 29 786 55
+let%span slib'4 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 787 29 790 1
+let%span slib'5 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 791 28 797 1
+let%span slib'6 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 798 28 805 1
+let%span slib'7 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 806 28 812 1
+let%span slib'8 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 813 28 816 1
+let%span slib'9 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 778 28 778 50
+let%span slib'10 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 770 28 770 63
+let%span slib'11 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 771 28 772 66
+let%span slib'12 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 773 28 773 63
+let%span slib'13 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 375 16 375 43
+let%span svec = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/std/vec.rs" 18 14 18 41
+let%span soption = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/std/option.rs" 63 18 63 43
+
+use creusot.slice.Slice64
+use creusot.int.UInt8
+use creusot.int.UInt64
+use seq.Seq
+use creusot.prelude.MutBorrow
+use map.Map
+use creusot.prelude.Any
+use int.Int
+
+type t_Vec_u8_Global
+
+type t_Option_Vec_u8_Global = None | Some t_Vec_u8_Global
+
+let is_none_Vec_u8_Global (self_: t_Option_Vec_u8_Global) (return (x: bool)) = any
+  [ return (result: bool) -> {[@stop_split] [@expl:is_none ensures] [%#soption] result = (self_ = None)}
+    (! return {result}) ]
+
+type tup2_ref_slice_u8_ref_slice_u8 = { f0: Slice64.slice UInt8.t; f1: Slice64.slice UInt8.t }
+
+let split_at_u8 (self_: Slice64.slice UInt8.t) (mid: UInt64.t) (return (x: tup2_ref_slice_u8_ref_slice_u8)) =
+{[@stop_split] [@expl:split_at requires] [%#sstdlib_models] UInt64.t'int mid <= Seq.length (Slice64.view self_)}
+  any
+  [ return (result: tup2_ref_slice_u8_ref_slice_u8) ->
+  {[@stop_split] [@expl:split_at ensures] [%#sstdlib_models'0] let {f0 = left; f1 = right} = result in Slice64.view left
+      = Seq.([..]) (Slice64.view self_) 0 (UInt64.t'int mid)
+    /\ Slice64.view right = Seq.([..]) (Slice64.view self_) (UInt64.t'int mid) (Seq.length (Slice64.view self_))}
+    (! return {result}) ]
+
+constant const_MAX: UInt64.t = (18446744073709551615: UInt64.t)
+
+function view_Vec_u8_Global (self: t_Vec_u8_Global) : Seq.seq UInt8.t
+
+axiom view_Vec_u8_Global_spec:
+  forall self: t_Vec_u8_Global [view_Vec_u8_Global self]. [%#svec] Seq.length (view_Vec_u8_Global self)
+    <= UInt64.t'int const_MAX
+
+let copy_bytes (input: Slice64.slice UInt8.t) (return (x: t_Vec_u8_Global)) = any
+  [ return (result: t_Vec_u8_Global) ->
+  {[@stop_split] [@expl:copy_bytes ensures] [%#slib'9] Seq.(==) (view_Vec_u8_Global result) (Slice64.view input)}
+    (! return {result}) ]
+
+predicate resolve_refmut_Option_Vec_u8_Global [@inline:trivial] (_1: MutBorrow.t t_Option_Vec_u8_Global) =
+  _1.final = _1.current
+
+meta "rewrite_def" predicate resolve_refmut_Option_Vec_u8_Global
+
+let elim_Some (_x: t_Option_Vec_u8_Global) (return (f0'0: t_Vec_u8_Global)) = any
+  [ _k (f0'0: t_Vec_u8_Global) -> {Some f0'0 = _x} (! return {f0'0})
+  | _chk -> (! {[@expl:elim Some] match _x with
+      | Some _ -> true
+      | _ -> false
+      end}
+    any) ]
+
+function index_Mapping_u8_Int [@inline:trivial] (self: Map.map UInt8.t int) (a: UInt8.t) : int =
+  [%#smapping] Map.get self a
+
+meta "rewrite_def" function index_Mapping_u8_Int
+
+function map_u8 (self: Seq.seq UInt8.t) (m: Map.map UInt8.t int) : Seq.seq int
+
+axiom map_u8_spec:
+  forall self: Seq.seq UInt8.t, m: Map.map UInt8.t int [map_u8 self m]. [%#sseq'0] Seq.length (map_u8 self m)
+    = Seq.length self
+
+axiom map_u8_spec'0: forall self: Seq.seq UInt8.t, m: Map.map UInt8.t int [map_u8 self m]. [%#sseq'1] forall i: int. 0
+          <= i
+        /\ i < Seq.length self -> Seq.get (map_u8 self m) i = index_Mapping_u8_Int m (Seq.get self i)
+
+function byte_sequence_as_ints [#"/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 374 0 374 56] (bytes: Seq.seq UInt8.t) : Seq.seq int
+ = [%#slib'13] map_u8 bytes (fun (byte: UInt8.t) -> UInt8.t'int byte)
+
+let push_byte_preserving_map (bytes: MutBorrow.t t_Vec_u8_Global) (byte: UInt8.t) (return (x: ())) = any
+  [ return (result: ()) ->
+  {[@stop_split] [@expl:push_byte_preserving_map ensures] ([@stop_split] [@expl:push_byte_preserving_map ensures #0] [%#slib'10] view_Vec_u8_Global bytes.final
+      = Seq.snoc (view_Vec_u8_Global bytes.current) byte)
+    /\ ([@stop_split] [@expl:push_byte_preserving_map ensures #1] [%#slib'11] byte_sequence_as_ints (view_Vec_u8_Global bytes.final)
+      = Seq.(++) (byte_sequence_as_ints (view_Vec_u8_Global bytes.current)) (Seq.singleton (UInt8.t'int byte)))
+    /\ ([@stop_split] [@expl:push_byte_preserving_map ensures #2] [%#slib'12] Seq.length (view_Vec_u8_Global bytes.final)
+    = Seq.length (view_Vec_u8_Global bytes.current) + 1)}
+    (! return {result}) ]
+
+predicate resolve_refmut_Vec_u8_Global [@inline:trivial] (_1: MutBorrow.t t_Vec_u8_Global) = _1.final = _1.current
+
+meta "rewrite_def" predicate resolve_refmut_Vec_u8_Global
+
+meta "compute_max_steps" 1000000
+
+meta "select_lsinst" "all"
+
+let append_decoded_byte [#"/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 817 0 817 90]
+  (output: MutBorrow.t t_Option_Vec_u8_Global) (input: Slice64.slice UInt8.t) (index: UInt64.t) (byte: UInt8.t)
+  (return (x: ())) =
+{[@stop_split] [@expl:append_decoded_byte requires] ([@stop_split] [@expl:append_decoded_byte requires #0] [%#slib'3] UInt64.t'int index
+      + 3
+    <= Seq.length (Slice64.view input))
+  /\ ([@stop_split] [@expl:append_decoded_byte requires #1] [%#slib'4] match output.current with
+    | Some before -> Seq.length (view_Vec_u8_Global before) < UInt64.t'int index
+    | None -> true
+    end)}
+  (! bb0
+  [ bb0 = s0
+    [ s0 = is_none_Vec_u8_Global [%#slib] {output.current} (fun (_x: bool) -> [ &_28 <- _x ] s1)
+    | s1 = any [ br0 -> {_28 = false} (! bb10) | br1 -> {_28} (! bb2) ] ]
+  | bb2 = s0
+    [ s0 = split_at_u8 [%#slib'0] {input} {index} (fun (_x: tup2_ref_slice_u8_ref_slice_u8) -> [ &_31 <- _x ] s1)
+    | s1 = [ &prefix <- _31.f0 ] s2
+    | s2 = copy_bytes [%#slib'1] {prefix} (fun (_x: t_Vec_u8_Global) -> [ &_35 <- _x ] s3)
+    | s3 = [ &_34 <- Some _35 ] s4
+    | s4 = [ &output <- { output with current = _34 } ] s5
+    | s5 = bb10 ]
+  | bb10 = any
+    [ br0 -> {output.current = None} (! bb14) | br1 (x0: t_Vec_u8_Global) -> {output.current = Some x0} (! bb12) ]
+  | bb14 = s0 [ s0 = -{resolve_refmut_Option_Vec_u8_Global output}- s1 | s1 = return {_ret} ]
+  | bb12 = s0
+    [ s0 = elim_Some {output.current}
+        (fun (r0: t_Vec_u8_Global) ->
+          MutBorrow.borrow_final <t_Vec_u8_Global> {r0} {MutBorrow.inherit_id (MutBorrow.get_id output) 0}
+            (fun (_bor: MutBorrow.t t_Vec_u8_Global) ->
+              [ &bytes <- _bor ] [ &output <- { output with current = Some _bor.final } ] s1))
+    | s1 = MutBorrow.borrow_final <t_Vec_u8_Global> {bytes.current} {MutBorrow.get_id bytes}
+        (fun (_bor: MutBorrow.t t_Vec_u8_Global) ->
+          [ &_40 <- _bor ] [ &bytes <- { bytes with current = _bor.final } ] s2)
+    | s2 = push_byte_preserving_map [%#slib'2] {_40} {byte} (fun (_x: ()) -> [ &_39 <- _x ] s3)
+    | s3 = -{resolve_refmut_Vec_u8_Global bytes}- s4
+    | s4 = -{resolve_refmut_Option_Vec_u8_Global output}- s5
+    | s5 = return {_ret} ] ]
+  [ & _ret: () = Any.any_l ()
+  | & output: MutBorrow.t t_Option_Vec_u8_Global = output
+  | & input: Slice64.slice UInt8.t = input
+  | & index: UInt64.t = index
+  | & byte: UInt8.t = byte
+  | & _28: bool = Any.any_l ()
+  | & prefix: Slice64.slice UInt8.t = Any.any_l ()
+  | & _31: tup2_ref_slice_u8_ref_slice_u8 = Any.any_l ()
+  | & _34: t_Option_Vec_u8_Global = Any.any_l ()
+  | & _35: t_Vec_u8_Global = Any.any_l ()
+  | & bytes: MutBorrow.t t_Vec_u8_Global = Any.any_l ()
+  | & _39: () = Any.any_l ()
+  | & _40: MutBorrow.t t_Vec_u8_Global = Any.any_l () ])
+  [ return (result: ()) ->
+  {[@stop_split] [@expl:append_decoded_byte ensures] ([@stop_split] [@expl:append_decoded_byte ensures #0] [%#slib'5] match output.final with
+        | Some after -> view_Vec_u8_Global after
+        = Seq.snoc (match output.current with
+          | Some before -> view_Vec_u8_Global before
+          | None -> Seq.([..]) (Slice64.view input) 0 (UInt64.t'int index)
+          end) byte
+        | None -> false
+        end)
+    /\ ([@stop_split] [@expl:append_decoded_byte ensures #1] [%#slib'6] match output.final with
+        | Some after -> byte_sequence_as_ints (view_Vec_u8_Global after)
+        = Seq.(++) (match output.current with
+          | Some before -> byte_sequence_as_ints (view_Vec_u8_Global before)
+          | None -> Seq.([..]) (byte_sequence_as_ints (Slice64.view input)) 0 (UInt64.t'int index)
+          end) (Seq.singleton (UInt8.t'int byte))
+        | None -> false
+        end)
+    /\ ([@stop_split] [@expl:append_decoded_byte ensures #2] [%#slib'7] match output.final with
+        | Some after -> Seq.length (view_Vec_u8_Global after)
+        = match output.current with
+          | Some before -> Seq.length (view_Vec_u8_Global before) + 1
+          | None -> UInt64.t'int index + 1
+          end
+        | None -> false
+        end)
+    /\ ([@stop_split] [@expl:append_decoded_byte ensures #3] [%#slib'8] match output.final with
+      | Some after -> Seq.length (view_Vec_u8_Global after) < UInt64.t'int index + 3
+      | None -> false
+      end)}
+    (! return {result}) ]

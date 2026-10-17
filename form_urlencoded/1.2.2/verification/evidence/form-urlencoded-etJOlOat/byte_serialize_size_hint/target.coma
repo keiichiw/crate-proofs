@@ -1,0 +1,60 @@
+(* #"/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 1154 0 1154 67 *)
+
+let%span slib = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 1155 7 1155 18
+let%span slib'0 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 1155 22 1155 23
+let%span slib'1 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 1156 17 1156 18
+let%span slib'2 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 1156 9 1156 10
+let%span slib'3 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 1158 17 1158 28
+let%span slib'4 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 1158 9 1158 10
+let%span slib'5 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 1149 28 1153 5
+let%span sslice = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/std/slice.rs" 331 18 331 22
+
+use creusot.slice.Slice64
+use creusot.int.UInt8
+use creusot.int.UInt64
+use seq.Seq
+use creusot.prelude.Any
+
+let len_u8 (self_: Slice64.slice UInt8.t) (return (x: UInt64.t)) = any
+  [ return (result: UInt64.t) -> {[@stop_split] [@expl:len ensures] [%#sslice] Seq.length (Slice64.view self_)
+    = UInt64.t'int result}
+    (! return {result}) ]
+
+type t_Option_usize = None | Some UInt64.t
+
+type tup2_usize_Option_usize = { f0: UInt64.t; f1: t_Option_usize }
+
+meta "compute_max_steps" 1000000
+
+meta "select_lsinst" "all"
+
+let byte_serialize_size_hint [#"/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 1154 0 1154 67]
+  (bytes: Slice64.slice UInt8.t) (return (x: tup2_usize_Option_usize)) = (! bb0
+  [ bb0 = s0
+    [ s0 = len_u8 [%#slib] {bytes} (fun (_x: UInt64.t) -> [ &_5 <- _x ] s1)
+    | s1 = [ &_4 <- _5 = ([%#slib'0] (0: UInt64.t)) ] s2
+    | s2 = any [ br0 -> {_4 = false} (! bb3) | br1 -> {_4} (! bb2) ] ]
+  | bb2 = s0
+    [ s0 = [ &_7 <- Some ([%#slib'1] (0: UInt64.t)) ] s1
+    | s1 = [ &_ret <- { f0 = ([%#slib'2] (0: UInt64.t)); f1 = _7 } ] s2
+    | s2 = return {_ret} ]
+  | bb3 = s0
+    [ s0 = len_u8 [%#slib'3] {bytes} (fun (_x: UInt64.t) -> [ &_9 <- _x ] s1)
+    | s1 = [ &_8 <- Some _9 ] s2
+    | s2 = [ &_ret <- { f0 = ([%#slib'4] (1: UInt64.t)); f1 = _8 } ] s3
+    | s3 = return {_ret} ] ]
+  [ & _ret: tup2_usize_Option_usize = Any.any_l ()
+  | & bytes: Slice64.slice UInt8.t = bytes
+  | & _4: bool = Any.any_l ()
+  | & _5: UInt64.t = Any.any_l ()
+  | & _7: t_Option_usize = Any.any_l ()
+  | & _8: t_Option_usize = Any.any_l ()
+  | & _9: UInt64.t = Any.any_l () ])
+  [ return (result: tup2_usize_Option_usize) ->
+  {[@stop_split] [@expl:byte_serialize_size_hint ensures] [%#slib'5] UInt64.t'int result.f0
+      = (if Seq.length (Slice64.view bytes) = 0 then 0 else 1)
+    /\ match result.f1 with
+      | Some n -> UInt64.t'int n = (if Seq.length (Slice64.view bytes) = 0 then 0 else Seq.length (Slice64.view bytes))
+      | None -> false
+      end}
+    (! return {result}) ]

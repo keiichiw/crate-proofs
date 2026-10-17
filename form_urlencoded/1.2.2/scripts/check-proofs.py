@@ -45,7 +45,7 @@ def input_paths(version):
     for relative in (
         "Cargo.toml", "Cargo.lock", "why3find.json", "AGENTS.md", "crate/Cargo.toml",
         "crate/Cargo.toml.orig", "crate/.cargo_vcs_info.json",
-        "scripts/verify.sh", "scripts/check-proofs.py", "scripts/run-differential.sh",
+        "scripts/verify.sh", "scripts/why3.conf", "scripts/check-proofs.py", "scripts/run-differential.sh",
         "verification/plan.md", "verification/specification.md",
         "verification/coverage.md", "verification/correspondence.md",
         "verification/public-api-inventory.md",
@@ -103,6 +103,7 @@ def input_paths(version):
     require(package_root.is_dir() and any(package_root.rglob("*.coma")),
             f"Configured Creusot Why3 model package missing/empty: {package_root}")
     add_tree(paths, package_root)
+    add_tree(paths, xdg / "creusot/_opam/share/why3/drivers")
     return sorted(paths)
 
 
@@ -193,6 +194,7 @@ def package(run):
         "tools_sha256": current_tools,
     }
     (run / "inputs-after.json").write_text(json.dumps(after, indent=2) + "\n")
+    require((run / "prove.exit").read_text().strip() == "0", "Why3find did not exit successfully")
     inventory = target_inventory(version)
     selected = inventory["selected"]
     opened = inventory.get("expected_open", {})
@@ -287,6 +289,10 @@ def package(run):
         "identity": "crates.io form_urlencoded 1.2.2 archive SHA-256 cb4cb245038516f5f85277875cdaa4f7d2c9a0fa0468de06ed190163b1581fcf; see verification/plan.md and provenance inputs.",
         "command": "bash scripts/verify.sh",
         "cache": False,
+        "proof_command": "why3find prove --no-cache -f --summary --no-autodetect-provers -P z3,cvc5 -j 2 --fast 1 --time 10 -d 6 SELECTED_COMA_FILES",
+        "why3_config": "scripts/why3.conf",
+        "native_checks_sha256": {name: digest(run / "differential" / name) for name in ("tests.log", "check-alloc.log")},
+        "log_sha256": {name: digest(run / name) for name in ("compile.log", "prove.log", "prove.exit")},
         "versions": versions.read_text().splitlines(),
         "versions_sha256": digest(versions),
         "tools_sha256": before["tools_sha256"],
@@ -302,7 +308,7 @@ def package(run):
         "application_trusted_assumptions": [],
         "standard_library_assumptions": [
             "Creusot/creusot-std 0.13 integer, u8, slice and mutable-slice models.",
-            "core::str::from_utf8_unchecked is used only by the excluded iterator wrapper after the checked byte classifier establishes ASCII.",
+            "Reviewed standard-library content, ownership, and UTF-8 contracts in verification/assumptions.md.",
         ],
         "assumption_ledger": "verification/assumptions.md",
         "expected_open": {},
@@ -310,15 +316,17 @@ def package(run):
         "generated_target_count": len(generated),
         "goal_inventory_validation": "Fresh proof.json roots are recorded per target; audit reconstructs each complete root inventory from saved Coma with Why3.",
         "limitations": [
-            "Custom Iterator implementations are omitted under cfg(creusot) because IteratorSpec refinements are not supplied; native builds retain the release API implementations.",
-            "Public decoded parse semantics, percent decoding, lossy UTF-8, Cow ownership/allocation, Serializer, Target, encoding override callbacks, and whole-crate behavior are not formally verified.",
+            "Serializer and EncodingOverride are excluded because the exact dynamic callback type cannot translate.",
+            "Derived ByteSerialize Debug, individual standard-library default bodies, allocation/pointer identity, OOM, and all-platform behavior remain excluded.",
             "Finite differential observations do not prove upstream equivalence for all inputs.",
         ],
     }
-    for filename in ("compile.log", "prove.log", "versions.txt", "inputs-before.json", "inputs-after.json"):
+    for filename in ("compile.log", "prove.log", "prove.exit", "versions.txt", "inputs-before.json", "inputs-after.json"):
         source = run / filename
         if source.is_file():
             shutil.copyfile(source, bundle / filename)
+    for name in ("tests.log", "check-alloc.log"):
+        shutil.copyfile(run / "differential" / name, bundle / name)
     shutil.copyfile(differential_log, bundle / "differential.log")
     (bundle / "manifest.json").write_text(json.dumps(record, indent=2) + "\n")
     print(json.dumps({"bundle": str(bundle), "selected_targets": len(sessions),

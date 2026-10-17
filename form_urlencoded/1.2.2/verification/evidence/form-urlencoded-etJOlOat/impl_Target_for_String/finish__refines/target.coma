@@ -1,0 +1,22 @@
+(* #"/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 1774 4 1774 27 *)
+
+(* <_::string::String as Target> *)
+
+let%span slib = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 1763 14 1763 18
+let%span slib'0 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 1774 14 1774 18
+let%span slib'1 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 1774 23 1774 27
+let%span slib'2 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 1773 32 1773 46
+let%span slib'3 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 1763 23 1763 37
+
+type t_String
+
+predicate inv_String (_1: t_String)
+
+meta "compute_max_steps" 1000000
+
+meta "select_lsinst" "all"
+
+goal refines: forall self: t_String. ([%#slib] inv_String self)
+    -> ([%#slib'0] inv_String self)
+    /\ (forall result: t_String. ([%#slib'1] inv_String result) /\ ([%#slib'2] result = self)
+      -> ([%#slib'3] inv_String result))

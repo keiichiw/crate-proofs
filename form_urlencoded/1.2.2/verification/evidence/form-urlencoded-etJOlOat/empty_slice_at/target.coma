@@ -1,0 +1,46 @@
+(* #"/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 143 0 143 54 *)
+
+let%span slib = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 144 16 144 48
+let%span slib'0 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 146 18 146 74
+let%span slib'1 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 141 29 141 51
+let%span slib'2 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 142 28 142 57
+let%span slib'3 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 126 29 126 67
+let%span slib'4 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 127 28 127 71
+
+use creusot.slice.Slice64
+use creusot.int.UInt8
+use creusot.int.UInt64
+use seq.Seq
+use creusot.prelude.Any
+use int.Int
+
+let slice_range (input: Slice64.slice UInt8.t) (start: UInt64.t) (end': UInt64.t) (return (x: Slice64.slice UInt8.t)) =
+{[@stop_split] [@expl:slice_range requires] [%#slib'3] UInt64.t'int start <= UInt64.t'int end'
+  /\ UInt64.t'int end' <= Seq.length (Slice64.view input)}
+  any
+  [ return (result: Slice64.slice UInt8.t) -> {[@stop_split] [@expl:slice_range ensures] [%#slib'4] Slice64.view result
+    = Seq.([..]) (Slice64.view input) (UInt64.t'int start) (UInt64.t'int end')}
+    (! return {result}) ]
+
+meta "compute_max_steps" 1000000
+
+meta "select_lsinst" "all"
+
+let empty_slice_at [#"/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 143 0 143 54]
+  (input: Slice64.slice UInt8.t) (index: UInt64.t) (return (x: Slice64.slice UInt8.t)) =
+{[@stop_split] [@expl:empty_slice_at requires] [%#slib'1] UInt64.t'int index <= Seq.length (Slice64.view input)}
+  (! bb0
+  [ bb0 = s0
+    [ s0 = slice_range [%#slib] {input} {index} {index} (fun (_x: Slice64.slice UInt8.t) -> [ &empty <- _x ] s1)
+    | s1 = {[@expl:assertion] [%#slib'0] Seq.([..]) (Slice64.view input) (UInt64.t'int index) (UInt64.t'int index)
+      = (Seq.empty: Seq.seq UInt8.t)}
+      s2
+    | s2 = [ &_ret <- empty ] s3
+    | s3 = return {_ret} ] ]
+  [ & _ret: Slice64.slice UInt8.t = Any.any_l ()
+  | & input: Slice64.slice UInt8.t = input
+  | & index: UInt64.t = index
+  | & empty: Slice64.slice UInt8.t = Any.any_l () ])
+  [ return (result: Slice64.slice UInt8.t) ->
+  {[@stop_split] [@expl:empty_slice_at ensures] [%#slib'2] Slice64.view result = (Seq.empty: Seq.seq UInt8.t)}
+    (! return {result}) ]

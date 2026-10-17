@@ -1,0 +1,480 @@
+(* #"/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 1071 4 1071 44 *)
+
+(* <ParseIntoOwned<'_> as core::iter::Iterator> *)
+
+let%span splus_model = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/plus_model.rs" 8 16 8 75
+let%span sseq = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/logic/seq.rs" 301 14 301 24
+let%span sseq'0 = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/logic/seq.rs" 299 14 299 40
+let%span sseq'1 = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/logic/seq.rs" 300 14 300 76
+let%span smapping = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/logic/mapping.rs" 66 8 66 19
+let%span sstdlib_models = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/stdlib_models.rs" 107 10 107 21
+let%span sstdlib_models'0 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/stdlib_models.rs" 109 4 116 5
+let%span sstdlib_models'1 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/stdlib_models.rs" 22 11 22 40
+let%span sstdlib_models'2 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/stdlib_models.rs" 23 10 23 56
+let%span sstdlib_models'3 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/stdlib_models.rs" 24 10 25 49
+let%span sstdlib_models'4 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/stdlib_models.rs" 27 4 27 24
+let%span sord = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/logic/ord.rs" 34 8 34 21
+let%span slib = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 1071 26 1071 44
+let%span slib'0 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 1060 32 1070 5
+let%span slib'1 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 996 20 996 48
+let%span slib'2 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 450 10 450 29
+let%span slib'3 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 449 11 449 45
+let%span slib'4 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 451 10 451 50
+let%span slib'5 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 452 10 452 69
+let%span slib'6 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 453 10 453 55
+let%span slib'7 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 455 4 459 5
+let%span slib'8 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 588 4 588 42
+let%span slib'9 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 537 10 537 21
+let%span slib'10 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 539 4 539 42
+let%span slib'11 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 332 16 332 35
+let%span slib'12 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 1005 12 1008 72
+let%span slib'13 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 1015 12 1017 66
+let%span slib'14 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 65 20 65 31
+let%span slib'15 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 517 11 517 45
+let%span slib'16 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 518 11 518 30
+let%span slib'17 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 519 10 527 1
+let%span slib'18 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 529 4 529 62
+let%span slib'19 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 442 4 444 6
+let%span slib'20 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 1022 14 1022 47
+let%span slib'21 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 1024 8 1027 58
+let%span slib'22 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 1035 15 1035 32
+let%span slib'23 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 1036 15 1036 32
+let%span slib'24 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 1037 14 1037 42
+let%span slib'25 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 1045 8 1053 10
+let%span slib'26 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 465 10 465 21
+let%span slib'27 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 464 11 464 59
+let%span slib'28 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 466 10 466 42
+let%span slib'29 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 467 10 467 71
+let%span slib'30 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 468 10 468 49
+let%span slib'31 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 470 4 474 5
+let%span slib'32 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 380 10 380 21
+let%span slib'33 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 382 4 382 34
+let%span slib'34 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 375 16 375 43
+let%span slib'35 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 388 10 388 29
+let%span slib'36 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 387 11 387 45
+let%span slib'37 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 390 4 408 5
+let%span slib'38 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 361 4 369 5
+let%span siter = "/Users/keiichiw/workspace/crate-proofs/.local-verification/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-std-0.13.0/src/std/iter.rs" 120 26 123 17
+
+use creusot.prelude.MutBorrow
+use creusot.slice.Slice64
+use creusot.int.UInt8
+use seq.Seq
+use map.Map
+use creusot.prelude.Char
+use int.Int
+
+type t_Parse = { input: Slice64.slice UInt8.t }
+
+type t_ParseIntoOwned = { inner: t_Parse }
+
+type t_String
+
+type tup2_String_String = { f0: t_String; f1: t_String }
+
+type t_Option_tup2_String_String = None | Some tup2_String_String
+
+predicate inv_String (_1: t_String)
+
+predicate inv_tup2_String_String [@inline:trivial] (_1: tup2_String_String) = inv_String _1.f0 /\ inv_String _1.f1
+
+meta "rewrite_def" predicate inv_tup2_String_String
+
+predicate inv_Option_tup2_String_String (_1: t_Option_tup2_String_String)
+
+axiom inv_axiom [@rewrite]:
+  forall x: t_Option_tup2_String_String [inv_Option_tup2_String_String x]. inv_Option_tup2_String_String x
+    = match x with
+      | None -> true
+      | Some f0'0 -> inv_tup2_String_String f0'0
+      end
+
+function remaining_input [#"/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 64 4 64 43] [@inline:trivial] (self: t_Parse) : Seq.seq UInt8.t
+ = [%#slib'14] Slice64.view self.input
+
+meta "rewrite_def" function remaining_input
+
+function remaining_owned_input [#"/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 995 4 995 49] [@inline:trivial] (self: t_ParseIntoOwned) : Seq.seq UInt8.t
+ = [%#slib'1] remaining_input self.inner
+
+meta "rewrite_def" function remaining_owned_input
+
+function skip_ampersands [#"/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 454 0 454 57] (input'0: Seq.seq UInt8.t) (start: int) : int
+
+axiom skip_ampersands_def: forall input'0: Seq.seq UInt8.t, start: int [skip_ampersands input'0 start]. ([%#slib'3] 0
+        <= start
+      /\ start <= Seq.length input'0)
+    -> skip_ampersands input'0 start
+    = ([%#slib'7] if start < Seq.length input'0 /\ UInt8.t'int (Seq.get input'0 start) = 38 then
+      skip_ampersands input'0 (start + 1)
+    else
+      start
+    )
+
+axiom skip_ampersands_spec: forall input'0: Seq.seq UInt8.t, start: int [skip_ampersands input'0 start]. ([%#slib'3] 0
+        <= start
+      /\ start <= Seq.length input'0)
+    -> ([%#slib'4] start <= skip_ampersands input'0 start /\ skip_ampersands input'0 start <= Seq.length input'0)
+
+axiom skip_ampersands_spec'0: forall input'0: Seq.seq UInt8.t, start: int [skip_ampersands input'0 start]. ([%#slib'3] 0
+        <= start
+      /\ start <= Seq.length input'0)
+    -> ([%#slib'5] forall i: int. start <= i /\ i < skip_ampersands input'0 start
+      -> UInt8.t'int (Seq.get input'0 i) = 38)
+
+axiom skip_ampersands_spec'1: forall input'0: Seq.seq UInt8.t, start: int [skip_ampersands input'0 start]. ([%#slib'3] 0
+        <= start
+      /\ start <= Seq.length input'0)
+    -> ([%#slib'6] skip_ampersands input'0 start = Seq.length input'0
+    \/ UInt8.t'int (Seq.get input'0 (skip_ampersands input'0 start)) <> 38)
+
+type tup4_Int_Int_Int_Int = { f0'0: int; f1'0: int; f2'0: int; f3'0: int }
+
+type t_Option_tup4_Int_Int_Int_Int = None'0 | Some'0 tup4_Int_Int_Int_Int
+
+function find_byte_before [#"/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 469 0 469 79] (input'0: Seq.seq UInt8.t) (start: int) (end': int) (byte: int) : int
+
+axiom find_byte_before_def:
+  forall input'0: Seq.seq UInt8.t, start: int, end': int, byte: int [find_byte_before input'0 start end' byte]. ([%#slib'27] 0
+        <= start
+      /\ start <= end' /\ end' <= Seq.length input'0)
+    -> find_byte_before input'0 start end' byte
+    = ([%#slib'31] if start < end' /\ UInt8.t'int (Seq.get input'0 start) <> byte then
+      find_byte_before input'0 (start + 1) end' byte
+    else
+      start
+    )
+
+axiom find_byte_before_spec:
+  forall input'0: Seq.seq UInt8.t, start: int, end': int, byte: int [find_byte_before input'0 start end' byte]. ([%#slib'27] 0
+        <= start
+      /\ start <= end' /\ end' <= Seq.length input'0)
+    -> ([%#slib'28] start <= find_byte_before input'0 start end' byte
+    /\ find_byte_before input'0 start end' byte <= end')
+
+axiom find_byte_before_spec'0:
+  forall input'0: Seq.seq UInt8.t, start: int, end': int, byte: int [find_byte_before input'0 start end' byte]. ([%#slib'27] 0
+        <= start
+      /\ start <= end' /\ end' <= Seq.length input'0)
+    -> ([%#slib'29] forall i: int. start <= i /\ i < find_byte_before input'0 start end' byte
+      -> UInt8.t'int (Seq.get input'0 i) <> byte)
+
+axiom find_byte_before_spec'1:
+  forall input'0: Seq.seq UInt8.t, start: int, end': int, byte: int [find_byte_before input'0 start end' byte]. ([%#slib'27] 0
+        <= start
+      /\ start <= end' /\ end' <= Seq.length input'0)
+    -> ([%#slib'30] find_byte_before input'0 start end' byte = end'
+    \/ UInt8.t'int (Seq.get input'0 (find_byte_before input'0 start end' byte)) = byte)
+
+function raw_pair_model [#"/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 528 0 528 81] (input'0: Seq.seq UInt8.t) (start: int) : t_Option_tup4_Int_Int_Int_Int
+ =
+  [%#slib'18] let end' = find_byte_before input'0 start (Seq.length input'0) 38 in let eq = find_byte_before input'0 start end' 61 in let next = if end'
+  < Seq.length input'0 then
+    end' + 1
+  else
+    end'
+   in Some'0 { f0'0 = start; f1'0 = eq; f2'0 = end'; f3'0 = next }
+
+axiom raw_pair_model_spec:
+  forall input'0: Seq.seq UInt8.t, start: int [raw_pair_model input'0 start]. ([%#slib'15] start
+      = skip_ampersands input'0 0)
+    -> ([%#slib'16] start < Seq.length input'0)
+    -> ([%#slib'17] match raw_pair_model input'0 start with
+      | Some'0 {f0'0 = pair_start; f1'0 = eq; f2'0 = end'; f3'0 = next} -> pair_start = start
+      /\ pair_start < end'
+      /\ end' <= Seq.length input'0
+      /\ pair_start <= eq
+      /\ eq <= end'
+      /\ (eq < end' -> UInt8.t'int (Seq.get input'0 eq) = 61)
+      /\ (end' = Seq.length input'0 \/ UInt8.t'int (Seq.get input'0 end') = 38)
+      /\ next = (if end' < Seq.length input'0 then end' + 1 else end')
+      | None'0 -> false
+      end)
+
+function parse_suffix_after_next [#"/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 587 0 587 57] (input'0: Seq.seq UInt8.t) : Seq.seq UInt8.t
+ = [%#slib'8] let start = skip_ampersands input'0 0 in if start = Seq.length input'0 then
+    Seq.empty: Seq.seq UInt8.t
+  else
+    match raw_pair_model input'0 start with
+      | Some'0 {f3'0 = next} -> Seq.([..]) input'0 next (Seq.length input'0)
+      | None'0 -> Seq.empty: Seq.seq UInt8.t
+      end
+
+
+type tup2_Seq_Int_Seq_Int = { f0'1: Seq.seq int; f1'1: Seq.seq int }
+
+type tup3_Int_Int_bool = { f0'2: int; f1'2: int; f2'2: bool }
+
+function utf8_step [#"/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/stdlib_models.rs" 26 0 26 63] (bytes: Seq.seq int) (pos: int) : tup3_Int_Int_bool
+ = [%#sstdlib_models'4] let b0 = Seq.get bytes pos in let remaining = Seq.length bytes - pos in if 0 <= b0
+  /\ b0 <= 127 then
+    { f0'2 = b0; f1'2 = 1; f2'2 = true }
+  else
+    if 194 <= b0 /\ b0 <= 223 then
+      if remaining < 2 then
+        { f0'2 = 65533; f1'2 = remaining; f2'2 = false }
+      else
+        let b1 = Seq.get bytes (pos + 1) in if 128 <= b1 /\ b1 <= 191 then
+          { f0'2 = (b0 - 192) * 64 + (b1 - 128); f1'2 = 2; f2'2 = true }
+        else
+          { f0'2 = 65533; f1'2 = 1; f2'2 = false }
+      
+    
+    else
+      if 224 <= b0 /\ b0 <= 239 then
+        if remaining < 2 then
+          { f0'2 = 65533; f1'2 = remaining; f2'2 = false }
+        else
+          let b1 = Seq.get bytes (pos + 1) in let second_ok = if b0 = 224 then
+            160 <= b1 /\ b1 <= 191
+          else
+            if b0 = 237 then 128 <= b1 /\ b1 <= 159 else 128 <= b1 /\ b1 <= 191
+           in if not second_ok then
+            { f0'2 = 65533; f1'2 = 1; f2'2 = false }
+          else
+            if remaining < 3 then
+              { f0'2 = 65533; f1'2 = remaining; f2'2 = false }
+            else
+              let b2 = Seq.get bytes (pos + 2) in if 128 <= b2 /\ b2 <= 191 then
+                { f0'2 = (b0 - 224) * 4096 + (b1 - 128) * 64 + (b2 - 128); f1'2 = 3; f2'2 = true }
+              else
+                { f0'2 = 65533; f1'2 = 2; f2'2 = false }
+            
+          
+        
+      
+      else
+        if 240 <= b0 /\ b0 <= 244 then
+          if remaining < 2 then
+            { f0'2 = 65533; f1'2 = remaining; f2'2 = false }
+          else
+            let b1 = Seq.get bytes (pos + 1) in let second_ok = if b0 = 240 then
+              144 <= b1 /\ b1 <= 191
+            else
+              if b0 = 244 then 128 <= b1 /\ b1 <= 143 else 128 <= b1 /\ b1 <= 191
+             in if not second_ok then
+              { f0'2 = 65533; f1'2 = 1; f2'2 = false }
+            else
+              if remaining < 3 then
+                { f0'2 = 65533; f1'2 = remaining; f2'2 = false }
+              else
+                let b2 = Seq.get bytes (pos + 2) in if not (128 <= b2 /\ b2 <= 191) then
+                  { f0'2 = 65533; f1'2 = 2; f2'2 = false }
+                else
+                  if remaining < 4 then
+                    { f0'2 = 65533; f1'2 = remaining; f2'2 = false }
+                  else
+                    let b3 = Seq.get bytes (pos + 3) in if 128 <= b3 /\ b3 <= 191 then
+                      { f0'2 = (b0 - 240) * 262144 + (b1 - 128) * 4096 + (b2 - 128) * 64 + (b3 - 128);
+                        f1'2 = 4;
+                        f2'2 = true }
+                    else
+                      { f0'2 = 65533; f1'2 = 3; f2'2 = false }
+                  
+                
+              
+            
+          
+        
+        else
+          { f0'2 = 65533; f1'2 = 1; f2'2 = false }
+      
+    
+  
+
+
+axiom utf8_step_spec: forall bytes: Seq.seq int, pos: int [utf8_step bytes pos]. ([%#sstdlib_models'1] 0 <= pos
+      /\ pos < Seq.length bytes)
+    -> ([%#sstdlib_models'2] 1 <= (utf8_step bytes pos).f1'2 /\ (utf8_step bytes pos).f1'2 <= Seq.length bytes - pos)
+
+axiom utf8_step_spec'0: forall bytes: Seq.seq int, pos: int [utf8_step bytes pos]. ([%#sstdlib_models'1] 0 <= pos
+      /\ pos < Seq.length bytes)
+    -> ([%#sstdlib_models'3] (utf8_step bytes pos).f0'2 = 65533
+    \/ 0 <= (utf8_step bytes pos).f0'2 /\ (utf8_step bytes pos).f0'2 <= 55295
+    \/ 57344 <= (utf8_step bytes pos).f0'2 /\ (utf8_step bytes pos).f0'2 <= 1114111)
+
+function utf8_lossy_model [#"/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/stdlib_models.rs" 108 0 108 52] (bytes: Seq.seq int) : Seq.seq int
+
+axiom utf8_lossy_model_def: forall bytes: Seq.seq int [utf8_lossy_model bytes]. utf8_lossy_model bytes
+    = ([%#sstdlib_models'0] if Seq.length bytes = 0 then
+      Seq.empty: Seq.seq int
+    else
+      let {f0'2 = scalar; f1'2 = consumed} = utf8_step bytes 0 in Seq.(++) (Seq.singleton scalar) (utf8_lossy_model (Seq.([..]) bytes consumed (Seq.length bytes)))
+    )
+
+function percent_hex_value_model [#"/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 360 0 360 48] (byte: int) : int
+ = [%#slib'38] if 48 <= byte /\ byte <= 57 then
+    byte - 48
+  else
+    if 65 <= byte /\ byte <= 70 then byte - 55 else if 97 <= byte /\ byte <= 102 then byte - 87 else - 1
+
+
+predicate ge_log_Int [@inline:trivial] (self: int) (other: int) = [%#sord] other <= self
+
+meta "rewrite_def" predicate ge_log_Int
+
+function percent_decoded_from [#"/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 389 0 389 68] (bytes: Seq.seq int) (index: int) : Seq.seq int
+
+axiom percent_decoded_from_def: forall bytes: Seq.seq int, index: int [percent_decoded_from bytes index]. ([%#slib'36] 0
+        <= index
+      /\ index <= Seq.length bytes)
+    -> percent_decoded_from bytes index
+    = ([%#slib'37] if index = Seq.length bytes then
+      Seq.empty: Seq.seq int
+    else
+      let first = Seq.get bytes index in if first = 37 /\ index + 3 <= Seq.length bytes then
+        let high = percent_hex_value_model (Seq.get bytes (index
+        + 1)) in let low = percent_hex_value_model (Seq.get bytes (index + 2)) in if ge_log_Int high 0
+        /\ ge_log_Int low 0 then
+          Seq.(++) (Seq.singleton (high * 16 + low)) (percent_decoded_from bytes (index + 3))
+        else
+          Seq.(++) (Seq.singleton first) (percent_decoded_from bytes (index + 1))
+      
+      else
+        Seq.(++) (Seq.singleton first) (percent_decoded_from bytes (index + 1))
+    
+    )
+
+function percent_decoded_model [#"/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 381 0 381 57] (bytes: Seq.seq int) : Seq.seq int
+
+axiom percent_decoded_model_def: forall bytes: Seq.seq int [percent_decoded_model bytes]. percent_decoded_model bytes
+    = ([%#slib'33] percent_decoded_from bytes 0)
+
+function index_Mapping_u8_Int [@inline:trivial] (self: Map.map UInt8.t int) (a: UInt8.t) : int =
+  [%#smapping] Map.get self a
+
+meta "rewrite_def" function index_Mapping_u8_Int
+
+function map_u8 (self: Seq.seq UInt8.t) (m: Map.map UInt8.t int) : Seq.seq int
+
+axiom map_u8_spec:
+  forall self: Seq.seq UInt8.t, m: Map.map UInt8.t int [map_u8 self m]. [%#sseq'0] Seq.length (map_u8 self m)
+    = Seq.length self
+
+axiom map_u8_spec'0: forall self: Seq.seq UInt8.t, m: Map.map UInt8.t int [map_u8 self m]. [%#sseq'1] forall i: int. 0
+          <= i
+        /\ i < Seq.length self -> Seq.get (map_u8 self m) i = index_Mapping_u8_Int m (Seq.get self i)
+
+function byte_sequence_as_ints [#"/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 374 0 374 56] (bytes: Seq.seq UInt8.t) : Seq.seq int
+ = [%#slib'34] map_u8 bytes (fun (byte: UInt8.t) -> UInt8.t'int byte)
+
+function index_Mapping_u8_u8 [@inline:trivial] (self: Map.map UInt8.t UInt8.t) (a: UInt8.t) : UInt8.t =
+  [%#smapping] Map.get self a
+
+meta "rewrite_def" function index_Mapping_u8_u8
+
+function map_u8'0 (self: Seq.seq UInt8.t) (m: Map.map UInt8.t UInt8.t) : Seq.seq UInt8.t
+
+axiom map_u8_spec'1:
+  forall self: Seq.seq UInt8.t, m: Map.map UInt8.t UInt8.t [map_u8'0 self m]. [%#sseq'0] Seq.length (map_u8'0 self m)
+    = Seq.length self
+
+axiom map_u8_spec'2:
+  forall self: Seq.seq UInt8.t, m: Map.map UInt8.t UInt8.t [map_u8'0 self m]. [%#sseq'1] forall i: int. 0 <= i
+        /\ i < Seq.length self -> Seq.get (map_u8'0 self m) i = index_Mapping_u8_u8 m (Seq.get self i)
+
+function replace_plus_model [#"/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/plus_model.rs" 7 0 7 52] (bytes: Seq.seq UInt8.t) : Seq.seq UInt8.t
+ = [%#splus_model] map_u8'0 bytes (fun (byte: UInt8.t) -> if UInt8.t'int byte = 43 then (32: UInt8.t) else byte)
+
+function decoded_string_model [#"/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 441 0 441 55] (bytes: Seq.seq UInt8.t) : Seq.seq int
+ = [%#slib'19] utf8_lossy_model (percent_decoded_model (byte_sequence_as_ints (replace_plus_model bytes)))
+
+function parsed_trace [#"/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 538 0 538 64] (input'0: Seq.seq UInt8.t) : Seq.seq tup2_Seq_Int_Seq_Int
+
+axiom parsed_trace_def: forall input'0: Seq.seq UInt8.t [parsed_trace input'0]. parsed_trace input'0
+    = ([%#slib'10] let start = skip_ampersands input'0 0 in if start = Seq.length input'0 then
+      Seq.empty: Seq.seq tup2_Seq_Int_Seq_Int
+    else
+      match raw_pair_model input'0 start with
+        | Some'0 {f0'0 = pair_start; f1'0 = eq; f2'0 = end'; f3'0 = next} -> let name = Seq.([..]) input'0 pair_start eq in let value = if eq
+        < end' then
+          Seq.([..]) input'0 (eq + 1) end'
+        else
+          Seq.empty: Seq.seq UInt8.t
+         in Seq.(++) (Seq.singleton { f0'1 = decoded_string_model name;
+                                      f1'1 = decoded_string_model value }) (parsed_trace (Seq.([..]) input'0 next (Seq.length input'0)))
+        | None'0 -> Seq.empty: Seq.seq tup2_Seq_Int_Seq_Int
+        end
+    )
+
+function index_Mapping_char_Int [@inline:trivial] (self: Map.map Char.t int) (a: Char.t) : int =
+  [%#smapping] Map.get self a
+
+meta "rewrite_def" function index_Mapping_char_Int
+
+function map_char (self: Seq.seq Char.t) (m: Map.map Char.t int) : Seq.seq int
+
+axiom map_char_spec:
+  forall self: Seq.seq Char.t, m: Map.map Char.t int [map_char self m]. [%#sseq'0] Seq.length (map_char self m)
+    = Seq.length self
+
+axiom map_char_spec'0: forall self: Seq.seq Char.t, m: Map.map Char.t int [map_char self m]. [%#sseq'1] forall i: int. 0
+          <= i
+        /\ i < Seq.length self -> Seq.get (map_char self m) i = index_Mapping_char_Int m (Seq.get self i)
+
+function string_scalars [#"/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 331 0 331 47] (s: Seq.seq Char.t) : Seq.seq int
+ = [%#slib'11] map_char s (fun (c: Char.t) -> Char.to_int c)
+
+function view_String (self: t_String) : Seq.seq Char.t
+
+function index_Mapping_tup2_String_String_tup2_Seq_Int_Seq_Int [@inline:trivial] (self: Map.map tup2_String_String tup2_Seq_Int_Seq_Int) (a: tup2_String_String) : tup2_Seq_Int_Seq_Int
+ = [%#smapping] Map.get self a
+
+meta "rewrite_def" function index_Mapping_tup2_String_String_tup2_Seq_Int_Seq_Int
+
+function map_tup2_String_String (self: Seq.seq tup2_String_String) (m: Map.map tup2_String_String tup2_Seq_Int_Seq_Int) : Seq.seq tup2_Seq_Int_Seq_Int
+
+axiom map_tup2_String_String_spec:
+  forall self: Seq.seq tup2_String_String, m: Map.map tup2_String_String tup2_Seq_Int_Seq_Int [map_tup2_String_String self m]. [%#sseq'0] Seq.length (map_tup2_String_String self m)
+    = Seq.length self
+
+axiom map_tup2_String_String_spec'0:
+  forall self: Seq.seq tup2_String_String, m: Map.map tup2_String_String tup2_Seq_Int_Seq_Int [map_tup2_String_String self m]. [%#sseq'1] forall i: int. 0
+          <= i
+        /\ i < Seq.length self
+      -> Seq.get (map_tup2_String_String self m) i
+      = index_Mapping_tup2_String_String_tup2_Seq_Int_Seq_Int m (Seq.get self i)
+
+predicate produces_ParseIntoOwned [#"/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 1003 4 1003 68] (self: t_ParseIntoOwned) (visited: Seq.seq tup2_String_String) (other: t_ParseIntoOwned) =
+  [%#slib'12] parsed_trace (remaining_owned_input self)
+  = Seq.(++) (map_tup2_String_String visited (fun (__0: tup2_String_String) -> let {f0 = key; f1 = value} = __0 in { f0'1 = string_scalars (view_String key);
+                                                                                                                     f1'1 = string_scalars (view_String value) })) (parsed_trace (remaining_owned_input other))
+
+function produces_trans_ParseIntoOwned [#"/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 1038 4 1044 5] (a: t_ParseIntoOwned) (ab: Seq.seq tup2_String_String) (b: t_ParseIntoOwned) (bc: Seq.seq tup2_String_String) (c: t_ParseIntoOwned) : ()
+ = [%#slib'25] ()
+
+axiom produces_trans_ParseIntoOwned_spec:
+  forall a: t_ParseIntoOwned, ab: Seq.seq tup2_String_String, b: t_ParseIntoOwned, bc: Seq.seq tup2_String_String, c: t_ParseIntoOwned. ([%#slib'22] produces_ParseIntoOwned a ab b)
+    -> ([%#slib'23] produces_ParseIntoOwned b bc c) -> ([%#slib'24] produces_ParseIntoOwned a (Seq.(++) ab bc) c)
+
+function produces_refl_ParseIntoOwned [#"/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 1023 4 1023 26] (self: t_ParseIntoOwned) : ()
+ = [%#slib'21] ()
+
+axiom produces_refl_ParseIntoOwned_spec:
+  forall self: t_ParseIntoOwned. [%#slib'20] produces_ParseIntoOwned self (Seq.empty: Seq.seq tup2_String_String) self
+
+predicate completed_ParseIntoOwned [#"/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 1013 4 1013 35] (self: MutBorrow.t t_ParseIntoOwned) =
+  [%#slib'13] Seq.length (remaining_owned_input self.current) = skip_ampersands (remaining_owned_input self.current) 0
+  /\ remaining_owned_input self.final = (Seq.empty: Seq.seq UInt8.t)
+
+meta "compute_max_steps" 1000000
+
+meta "select_lsinst" "all"
+
+goal refines:
+  forall self_: MutBorrow.t t_ParseIntoOwned. forall result: t_Option_tup2_String_String. ([%#slib] inv_Option_tup2_String_String result)
+        /\ ([%#slib'0] match result with
+          | None -> remaining_owned_input self_.final = (Seq.empty: Seq.seq UInt8.t)
+          /\ Seq.length (remaining_owned_input self_.current) = skip_ampersands (remaining_owned_input self_.current) 0
+          | Some {f0 = key; f1 = value} -> remaining_owned_input self_.final
+            = parse_suffix_after_next (remaining_owned_input self_.current)
+          /\ parsed_trace (remaining_owned_input self_.current)
+            = Seq.(++) (Seq.singleton { f0'1 = string_scalars (view_String key);
+                                        f1'1 = string_scalars (view_String value) }) (parsed_trace (remaining_owned_input self_.final))
+          /\ produces_ParseIntoOwned self_.current (Seq.singleton { f0 = key; f1 = value }) self_.final
+          end)
+      -> inv_Option_tup2_String_String result
+      /\ ([%#siter] match result with
+        | None -> completed_ParseIntoOwned self_
+        | Some v -> produces_ParseIntoOwned self_.current (Seq.singleton v) self_.final
+        end)

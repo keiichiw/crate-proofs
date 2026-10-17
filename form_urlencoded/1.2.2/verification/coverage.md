@@ -8,4 +8,4 @@ The public serializer API is outside this translated proof scope. Creusot 0.13 r
 
 The exact generated-target inventory is [target-inventory.json](target-inventory.json); public-item scope and exclusions are in [public-api-inventory.md](public-api-inventory.md). Standard-library conditions are in [assumptions.md](assumptions.md). Native differential comparisons provide finite correspondence evidence, separately from formal proof.
 
-Use `bash form_urlencoded/1.2.2/scripts/verify-direct.sh --ground-fallback` from the repository root for a fresh integrated direct run. Its passing evidence pointer is `evidence/latest-direct`; `evidence/latest` belongs to the historical byte-core workflow.
+Use `bash form_urlencoded/1.2.2/scripts/verify.sh` from the repository root for a fresh standard Why3find run with Z3/CVC5 and source spans. Its passing evidence pointer is `evidence/latest`. The historical direct-SMT workflow and its `evidence/latest-direct` pointer remain available for their recorded inputs.

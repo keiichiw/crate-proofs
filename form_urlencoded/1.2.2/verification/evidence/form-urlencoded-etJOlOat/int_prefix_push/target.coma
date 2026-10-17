@@ -1,0 +1,23 @@
+(* #"/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 865 0 865 59 *)
+
+let%span slib = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 861 11 861 44
+let%span slib'0 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 862 10 862 16
+let%span slib'1 = "/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 863 10 864 71
+
+use seq.Seq
+use int.Int
+
+meta "compute_max_steps" 1000000
+
+meta "select_lsinst" "all"
+
+constant bytes : Seq.seq int
+
+constant index : int
+
+predicate int_prefix_push [#"/Users/keiichiw/workspace/crate-proofs/form_urlencoded/1.2.2/crate/src/lib.rs" 865 0 865 59] (bytes: Seq.seq int) (index: int)
+
+goal vc_int_prefix_push: ([%#slib] 0 <= index /\ index < Seq.length bytes)
+  -> ([@stop_split] [@expl:int_prefix_push ensures] ([@stop_split] [@expl:int_prefix_push ensures #0] [%#slib'0] true)
+  /\ ([@stop_split] [@expl:int_prefix_push ensures #1] [%#slib'1] Seq.([..]) bytes 0 (index + 1)
+  = Seq.(++) (Seq.([..]) bytes 0 index) (Seq.singleton (Seq.get bytes index))))
