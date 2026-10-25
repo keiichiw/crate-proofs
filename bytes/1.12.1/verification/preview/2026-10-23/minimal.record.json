@@ -1,0 +1,24 @@
+{
+  "command": [
+    "cargo",
+    "run",
+    "--offline",
+    "--quiet",
+    "--manifest-path",
+    "/Users/keiichiw/workspace/crate-proofs/bytes/1.12.1/verification/preview/2026-10-23/minimal/Cargo.toml"
+  ],
+  "cwd": "/Users/keiichiw/workspace/crate-proofs/bytes/1.12.1",
+  "rustup_toolchain": "1.91.1",
+  "started_at": "2026-10-23T09:23:58.156486+00:00",
+  "finished_at": "2026-10-23T09:24:08.045575+00:00",
+  "exit_code": 101,
+  "expected_exit_code": 101,
+  "classification": "native counterexample: assertion of the desired signed-return contract fails",
+  "inputs_sha256": {
+    "verification/preview/2026-10-23/minimal/Cargo.toml": "683e00a2d3588df5daef2084f2ec0bae457be4aaca4d0fac7201e60af2fe8fd1",
+    "verification/preview/2026-10-23/minimal/Cargo.lock": "e5ef72aa87b3a7ae2e37730b2e8f576e29e33e8bc2d3602f15bd2e68eff80fb0",
+    "verification/preview/2026-10-23/minimal/src/main.rs": "a578d5917d79403474f05ca364541aaf4c65375281965ede7d0c7085e9380371",
+    ".work/source/src/buf/buf_impl.rs": "f1095872bba7c9d5170207750f4ebe4fa61c4e35a282569491c2ee8ea2dc6714"
+  },
+  "stderr_sha256": "f23a73efa692e20630f6d80297bcdb28b5cca232d04eeef9f774a7543460a04f"
+}

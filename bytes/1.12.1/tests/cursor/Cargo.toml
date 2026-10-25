@@ -1,0 +1,9 @@
+[package]
+name = "bytes_cursor_slice"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+bytes = { path = "../../.work/source", default-features = true, features = ["std"] }
+
+[workspace]

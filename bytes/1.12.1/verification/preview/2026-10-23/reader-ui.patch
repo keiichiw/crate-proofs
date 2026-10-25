@@ -1,0 +1,408 @@
+diff --git a/preview/render.ts b/preview/render.ts
+index 90cd7c3..f304984 100644
+--- a/preview/render.ts
++++ b/preview/render.ts
+@@ -1,3 +1,4 @@
++import { findingInput, z } from "../src/schemas";
+ import {
+   resolveContract,
+   checkAnchor,
+@@ -38,6 +39,11 @@ export function renderPreview(
+ ): { status: number; html: string } {
+   // Enrich a copy: a later request must not inherit changes to a prior snapshot.
+   const report = structuredClone(snapshot.report);
++  const localOnly = snapshot.sarif.runs[0].properties.proofs.localOnly === true;
++  if (localOnly) {
++    report.evidence_url = "";
++    for (const claim of report.claims) claim.evidence_url = "";
++  }
+   // Publication trims editorial strings before persisting them.
+   const trimFields = (value: any, fields: string[]) => {
+     for (const field of fields)
+@@ -69,6 +75,21 @@ export function renderPreview(
+     shared_trusted_assumptions: report.trusted_assumptions,
+     shared_limitations: report.limitations,
+   }));
++  if (report.finding_drafts !== undefined) {
++    const drafts = z.array(findingInput).max(20).parse(report.finding_drafts);
++    report.findings = drafts.map((f, index) => ({
++      ...f,
++      id: `draft-${index + 1}`,
++      draft: true,
++      report_id: report.id,
++      validity: "reported",
++      upstream_status: "not_reported",
++      duplicate_of: null,
++      apis: [],
++      links: [],
++    }));
++    report.finding_count = report.findings.length;
++  }
+   const claimHref = (id: string) => `/claim/${encodeURIComponent(id)}`;
+   const views = createViews(
+     { user: null },
+@@ -105,7 +126,7 @@ export function renderPreview(
+       report.id == null
+         ? "New report"
+         : `Draft revision of report #${esc(report.id)} (based on v${esc(report.base_revision)})`;
+-    body = `${views.reportContent(report)}<p class="meta">${esc(report.crate)} ${esc(report.version)} · ${revision}</p>${views.reportBody(report, run(true))}<p><a href="/runs/${encodeURIComponent(runId)}#logs">Open recorded run</a></p>${views.reportAPIs(report)}`;
++    body = `${views.reportContent(report)}<p class="meta">${esc(report.crate)} ${esc(report.version)} · ${revision}</p>${views.reportBody(report, run(true), report.findings ? `<section id="findings" class="report-section"><h2>Findings (${report.finding_count})</h2>${report.findings.map((f: any) => views.findingItem(f)).join("")}</section>` : "")}<p><a href="/runs/${encodeURIComponent(runId)}#logs">Open recorded run</a></p>${views.reportAPIs(report)}`;
+   } else if (path.startsWith("/claim/")) {
+     const claim = report.claims.find((c: any) => claimHref(c.id) === path);
+     if (claim) {
+@@ -121,6 +142,11 @@ export function renderPreview(
+             ),
+             check_url: `/runs/${encodeURIComponent(runId)}#${checkAnchor(contract.harness)}`,
+           };
++          if (localOnly) {
++            claim.formal_evidence.source_url = null;
++            for (const d of claim.formal_evidence.definitions)
++              d.source_url = null;
++          }
+         }
+       }
+       title = claim.title;
+diff --git a/public/style.css b/public/style.css
+index d7c17d3..bdc334b 100644
+--- a/public/style.css
++++ b/public/style.css
+@@ -834,3 +834,42 @@ textarea {
+   text-decoration-style: dotted;
+   text-underline-offset: 3px;
+ }
++
++.finding {
++  border: 1px solid var(--border, #8886);
++  border-radius: 0.4rem;
++  padding: 1rem;
++  margin: 1rem 0;
++  scroll-margin-top: 1rem;
++}
++.finding h3 {
++  margin-top: 0;
++}
++.finding details {
++  margin-top: 0.75rem;
++}
++.finding pre {
++  overflow-x: auto;
++  white-space: pre-wrap;
++  overflow-wrap: anywhere;
++}
++.finding-form label {
++  display: block;
++  margin: 0.75rem 0;
++}
++.finding-form input,
++.finding-form textarea,
++.finding-form select {
++  display: block;
++  width: 100%;
++  box-sizing: border-box;
++}
++.finding-form textarea {
++  min-height: 6rem;
++}
++.finding-links .inline-action {
++  margin-left: 0.75rem;
++}
++.report-outcome {
++  font-weight: 600;
++}
+diff --git a/src/schemas.ts b/src/schemas.ts
+index e079ab8..945a2e9 100644
+--- a/src/schemas.ts
++++ b/src/schemas.ts
+@@ -376,6 +376,117 @@ const claimFields = {
+   evidence_url: optional(1000),
+   limitations: optional(),
+ };
++export const findingValidity = z.enum([
++  "reported",
++  "confirmed",
++  "disputed",
++  "invalid",
++  "duplicate",
++]);
++export const findingUpstream = z.enum([
++  "not_reported",
++  "reported_upstream",
++  "fix_proposed",
++  "fix_merged",
++  "released",
++  "wont_fix",
++]);
++export const findingLinkKind = z.enum([
++  "issue",
++  "pr",
++  "commit",
++  "release",
++  "report",
++]);
++export const httpsURL = string
++  .trim()
++  .max(2000)
++  .url()
++  .refine((value) => {
++    try {
++      const u = new URL(value);
++      return u.protocol === "https:" && !u.username && !u.password;
++    } catch {
++      return false;
++    }
++  }, "Use an HTTPS URL without credentials");
++export const findingFields = {
++  title: required(1000),
++  expected_behavior: required(),
++  actual_behavior: required(),
++  reproduction_steps: required(),
++  evidence_url: httpsURL.nullable().optional(),
++  api_item_ids: z
++    .array(required(200))
++    .max(50)
++    .refine((a) => new Set(a).size === a.length)
++    .optional(),
++};
++export const findingInput = z.strictObject(findingFields);
++export const editFinding = z.strictObject({
++  title: findingFields.title.optional(),
++  expected_behavior: findingFields.expected_behavior.optional(),
++  actual_behavior: findingFields.actual_behavior.optional(),
++  reproduction_steps: findingFields.reproduction_steps.optional(),
++  evidence_url: findingFields.evidence_url,
++  api_item_ids: findingFields.api_item_ids,
++  validity: findingValidity.optional(),
++  upstream_status: findingUpstream.optional(),
++  duplicate_of: required(100).nullable().optional(),
++  edit_version: integer.positive(),
++});
++export const findingLinkInput = z.strictObject({
++  kind: findingLinkKind,
++  url: httpsURL,
++  version: required(100).nullable().optional(),
++  target_report_id: integer.positive().nullable().optional(),
++  target_revision_no: integer.positive().nullable().optional(),
++  edit_version: integer.positive(),
++});
++export const findingLink = z.object({
++  id: string,
++  finding_id: string,
++  kind: findingLinkKind,
++  url: string,
++  version: nullableString,
++  target_report_id: integer.nullable(),
++  target_revision_no: integer.nullable(),
++  created_at: string,
++  deleted_at: nullableString,
++});
++export const findingEvent = z.object({
++  id: string,
++  finding_id: string,
++  edit_version: integer,
++  actor_id: nullableString,
++  action: string,
++  payload: string,
++  created_at: string,
++});
++export const finding = z
++  .object({
++    id: string,
++    report_id: integer,
++    origin_revision_no: integer,
++    title: string,
++    expected_behavior: string,
++    actual_behavior: string,
++    reproduction_steps: string,
++    evidence_url: nullableString,
++    validity: findingValidity,
++    upstream_status: findingUpstream,
++    duplicate_of: nullableString,
++    edit_version: integer,
++    created_at: string,
++    updated_at: string,
++    crate: string,
++    version: string,
++    withdrawn_at: nullableString,
++    apis: z.array(z.object({ id: string, display_path: string })),
++    links: z.array(findingLink),
++  })
++  .meta({ id: "Finding" });
++export const findingDetail = finding.extend({ events: z.array(findingEvent) });
+ export const reportInput = z
+   .object({
+     crate: required(100),
+@@ -393,6 +504,7 @@ export const reportInput = z
+       .max(MAX_REPORT_CLAIMS),
+     run_ids: z.array(string).min(1).max(10),
+     dependencies: z.array(dependencyInput).max(100).optional(),
++    findings: z.array(findingInput).max(20).optional(),
+   })
+   .meta({ id: "ReportInput" });
+ export const validatedClaim = z.object({
+@@ -420,6 +532,7 @@ export const validatedReport = z.object({
+   claims: z.array(validatedClaim),
+   run_ids: z.array(string),
+   dependencies: z.array(dependency),
++  findings: z.array(findingInput).optional(),
+   changes: z.object({
+     added: integer,
+     retained: z.array(string),
+diff --git a/src/site-views.ts b/src/site-views.ts
+index 2401c1f..ac46702 100644
+--- a/src/site-views.ts
++++ b/src/site-views.ts
+@@ -124,8 +124,47 @@ export function createViews(
+     if (!c.tool_limitations) return "";
+     return `<details class="tool-limitations"><summary>Tool limitations</summary><div class="tool-limitations-body"><p class="plain-text">${esc(c.tool_limitations)}</p>${c.tool_limitations_updated_at ? `<p class="meta">Updated ${date(c.tool_limitations_updated_at)}</p>` : ""}<p><a href="${esc(external(`/tool-version/${enc(c.tool_version_id)}`))}">${esc(c.tool)} ${esc(c.tool_version)} — version details</a></p></div></details>`;
+   }
++  function findingItem(f: any, editable = false, apis: any[] = []) {
++    const permalink = options.preview
++      ? `/report#finding-${enc(f.id)}`
++      : `/report/${f.report_id}#finding-${enc(f.id)}`;
++    return `<article class="finding" id="finding-${esc(f.id)}"><h3><a href="${permalink}">${esc(f.title)}</a></h3>
++      <p class="meta">${esc(f.validity)} · ${esc(f.upstream_status)} (author reported)${f.withdrawn_at ? " · Report withdrawn" : ""}</p>
++      ${f.apis.length ? `<p>${f.apis.map((a: any) => `<a href="/api/${enc(a.id)}"><code>${esc(a.display_path)}</code></a>`).join(", ")}</p>` : ""}
++      ${f.draft ? '<p class="meta">Local Finding draft · Not submitted</p>' : `<p class="meta">Found in <a href="/report/${f.report_id}?v=${f.origin_revision_no}">Report #${f.report_id} v${f.origin_revision_no}</a> · Updated ${date(f.updated_at)}</p>`}
++      ${f.duplicate_of ? `<p>Duplicate of <a href="/finding/${enc(f.duplicate_of)}">${esc(f.duplicate_of)}</a></p>` : ""}
++      <ul class="finding-links">${f.links.map((l: any) => `<li><a href="${esc(l.url)}" target="_blank" rel="noopener noreferrer">${esc(l.kind)}${l.version ? ` · ${esc(l.version)}` : ""}</a>${editable ? action("delete-finding-link", { id: f.id, link_id: l.id, edit_version: f.edit_version, _back: permalink }, "Remove link") : ""}</li>`).join("")}</ul>
++      <details><summary>Reproduction and evidence</summary><h4>Expected behavior</h4><p class="plain-text">${esc(f.expected_behavior)}</p><h4>Actual behavior</h4><p class="plain-text">${esc(f.actual_behavior)}</p><h4>Reproduction steps</h4><p class="plain-text">${esc(f.reproduction_steps)}</p>${f.evidence_url ? `<p><a href="${esc(f.evidence_url)}" target="_blank" rel="noopener noreferrer">Evidence</a></p>` : ""}</details>
++      ${f.draft ? "" : `<details><summary>Change history</summary>${f.events ? `<ol>${f.events.map((e: any) => `<li>v${e.edit_version} · ${esc(e.action)} · ${date(e.created_at)}<pre>${esc(JSON.stringify(JSON.parse(e.payload), null, 2))}</pre></li>`).join("")}</ol>` : `<p><a href="/finding/${enc(f.id)}">View full history</a></p>`}</details>`}
++      ${editable ? `<details><summary>Edit</summary>${findingForm(f.report_id, f, apis)}</details><details><summary>Add issue or PR link</summary>${findingLinkForm(f)}</details>` : ""}</article>`;
++  }
++  function findingForm(reportID: number, f?: any, apis: any[] = []) {
++    const hidden = (name: string, value: unknown) =>
++      `<input type="hidden" name="${name}" value="${esc(value)}">`;
++    const select = (name: string, values: string[], current: string) =>
++      `<label>${name === "validity" ? "Validity" : "Upstream status"}<select name="${name}">${values.map((value) => `<option${value === current ? " selected" : ""}>${value}</option>`).join("")}</select></label>`;
++    return `<form method="post" action="/_actions/${f ? "edit-finding" : "finding"}" class="finding-form">${hidden("_csrf", me.csrf)}${hidden("_key", crypto.randomUUID())}${hidden("id", f?.id ?? reportID)}${hidden("_back", `/report/${reportID}#${f ? `finding-${f.id}` : "findings"}`)}${f ? hidden("edit_version", f.edit_version) : ""}
++      <p>Describe a reproducible bug. Failure to prove a property alone is not evidence of a bug.</p>
++      <label>Title<input name="title" required maxlength="1000" value="${esc(f?.title)}"></label>
++      ${[
++        ["expected_behavior", "Expected behavior"],
++        ["actual_behavior", "Actual behavior"],
++        ["reproduction_steps", "Reproduction steps"],
++      ]
++        .map(
++          ([name, label]) =>
++            `<label>${label}<textarea name="${name}" required maxlength="10000">${esc(f?.[name])}</textarea></label>`,
++        )
++        .join("")}
++      <label>Evidence URL (optional)<input name="evidence_url" type="url" maxlength="2000" value="${esc(f?.evidence_url)}" placeholder="https://"></label>
++      <label>APIs (optional; multiple allowed)<select multiple name="api_item_ids">${apis.map((a) => `<option value="${esc(a.id)}"${f?.apis.some((x: any) => x.id === a.id) ? " selected" : ""}>${esc(a.display_path)}</option>`).join("")}</select></label>
++      ${f ? `${select("validity", ["reported", "confirmed", "disputed", "invalid", "duplicate"], f.validity)}${select("upstream_status", ["not_reported", "reported_upstream", "fix_proposed", "fix_merged", "released", "wont_fix"], f.upstream_status)}<label>Duplicate Finding ID<input name="duplicate_of" value="${esc(f.duplicate_of)}"></label><p>Statuses are author reported. Add a supporting link before selecting an upstream status. A release link needs a version.</p>` : ""}<button>${f ? "Save finding" : "Add finding"}</button></form>`;
++  }
++  function findingLinkForm(f: any) {
++    return `<form method="post" action="/_actions/finding-link" class="finding-form"><input type="hidden" name="_csrf" value="${esc(me.csrf)}"><input type="hidden" name="_key" value="${crypto.randomUUID()}"><input type="hidden" name="id" value="${esc(f.id)}"><input type="hidden" name="edit_version" value="${f.edit_version}"><input type="hidden" name="_back" value="/report/${f.report_id}#finding-${esc(f.id)}"><label>Kind<select name="kind">${["issue", "pr", "commit", "release", "report"].map((k) => `<option>${k}</option>`).join("")}</select></label><label>HTTPS URL<input name="url" type="url" required maxlength="2000"></label><label>Fixed version (required for release)<input name="version" maxlength="100"></label><label>Revalidation Report ID (report links only)<input name="target_report_id" type="number" min="1"></label><label>Report revision (report links only)<input name="target_revision_no" type="number" min="1"></label><button>Add link</button></form>`;
++  }
+   function reportContent(c: any, stars = false) {
+-    return `${stars ? titleWithStars("report", c) : `<h1>${esc(c.title)}</h1>`}<p class="report-tool">${toolLink(c)}</p>`;
++    return `${stars ? titleWithStars("report", c) : `<h1>${esc(c.title)}</h1>`}<p class="report-tool">${toolLink(c)}</p>${c.findings ? `<p class="report-outcome">${c.claim_count ?? c.claims?.length ?? 0} verified claims · ${c.finding_count ?? 0} findings reported</p>` : ""}`;
+   }
+   function reproduceSection(
+     runIds: string[],
+@@ -136,8 +175,9 @@ export function createViews(
+       ? `<details class="reproduce" id="reproduce"><summary>Reproduce</summary><div class="reproduce-body">${recorded}</div>${environment ? `<details class="report-environment"><summary>Environment</summary><div class="markdown-body">${renderMarkdown(environment, 2)}</div></details>` : ""}</details>`
+       : "";
+   }
+-  function reportBody(c: any, recorded = "") {
++  function reportBody(c: any, recorded = "", findingsHTML = "") {
+     return `${c.explanation ? `<section class="report-section report-explanation"><h2>Overview</h2><div class="markdown-body">${renderMarkdown(c.explanation, 2)}</div></section>` : ""}
++    ${findingsHTML}
+     ${c.evidence_url || c.run_ids?.length || c.environment ? `<section class="report-section report-evidence"><h2>Evidence</h2>${c.evidence_url ? `<p><a href="${esc(c.evidence_url)}" target="_blank" rel="noopener noreferrer">${esc(c.evidence_url)}</a></p>` : ""}${reproduceSection(c.run_ids, c.environment, recorded)}</section>` : ""}
+     ${c.trusted_assumptions ? `<section class="report-section"><h2>What is trusted</h2><div class="markdown-body">${renderMarkdown(c.trusted_assumptions, 2)}</div></section>` : ""}
+     ${c.limitations || c.tool_limitations ? `<section class="report-section report-limitations"><h2>Technical limitations</h2>${c.limitations ? `<div class="markdown-body">${renderMarkdown(c.limitations, 2)}</div>` : ""}${toolLimitations(c)}</section>` : ""}
+@@ -243,7 +283,7 @@ export function createViews(
+       ${[f.conclusion, ...f.binders.map((b: any) => b.type)].some((s: string) => s.includes("↑")) ? '<p class="meta">In Lean notation, ↑ denotes an implicit type conversion (coercion).</p>' : ""}
+       ${f.program ? `<h3>Target program</h3><pre><code>${esc(f.program)}</code></pre>` : ""}
+       <details><summary>Complete Lean proposition</summary><button type="button" data-copy-formal>Copy proposition</button><span role="status" data-copy-status></span><pre tabindex="0"><code>${esc(f.statement)}</code></pre></details>
+-      <p><a href="${esc(f.source_url)}">Theorem source at recorded commit</a> · <a href="${esc(f.check_url)}">Recorded check</a></p>
++      <p>${f.source_url ? `<a href="${esc(f.source_url)}">Theorem source at recorded commit</a>` : "Theorem source is in the local snapshot"} · <a href="${esc(f.check_url)}">Recorded check</a></p>
+       <details><summary>Referenced definitions (up to 100 direct references)</summary><ul>${f.definitions.map((d: any) => `<li>${d.source_url ? `<a href="${esc(d.source_url)}"><code>${esc(d.name)}</code></a>` : `<code>${esc(d.name)}</code> · ${esc(d.module)}`}</li>`).join("")}</ul>${f.definitions_truncated ? "<p>Reference limit reached; consult the full theorem source.</p>" : ""}</details>
+       <p class="meta">Mapping: ${esc(f.mapping)}. Translation was not rerun by this recording.</p></section>`;
+   }
+@@ -266,6 +306,8 @@ export function createViews(
+     crateCrumbs,
+     claimCrumbs,
+     claimItem,
++    findingItem,
++    findingForm,
+     reportSummary,
+     reportContent,
+     reportBody,
+diff --git a/tests/preview.test.ts b/tests/preview.test.ts
+index afe9b4e..e8551f7 100644
+--- a/tests/preview.test.ts
++++ b/tests/preview.test.ts
+@@ -275,3 +275,59 @@ test("preview resolves inline definition links at the same recorded revision as
+   );
+   assert.equal(href(preview), href(live));
+ });
++
++test("Finding drafts appear after Overview, remain separate from successful checks, and have local anchors", () => {
++  const snapshot = fixture();
++  snapshot.report.finding_drafts = [
++    {
++      title: "Signed read <bug>",
++      expected_behavior: "Return -1",
++      actual_behavior: "Returns 255",
++      reproduction_steps: "Read [255] at width 1",
++      evidence_url: "https://example.test/evidence",
++      api_item_ids: [],
++    },
++  ];
++  snapshot.sarif.runs[0].properties.proofs.localOnly = true;
++  snapshot.sarif.runs[0].versionControlProvenance[0].repositoryUri =
++    "file:///local/source";
++  const result = renderPreview(snapshot, "/report");
++  const dom = new JSDOM(result.html),
++    d = dom.window.document;
++  assert.equal(
++    d.querySelector(".report-explanation")!.nextElementSibling!.id,
++    "findings",
++  );
++  assert.match(
++    d.querySelector(".report-outcome")!.textContent!,
++    /1 verified claims · 1 findings reported/,
++  );
++  assert.match(
++    d.querySelector("#findings")!.textContent!,
++    /Local Finding draft · Not submitted/,
++  );
++  assert.equal(
++    d.querySelector("#finding-draft-1 h3 a")!.getAttribute("href"),
++    "/report#finding-draft-1",
++  );
++  assert.equal(
++    d.querySelector("#finding-draft-1 h3")!.textContent,
++    "Signed read <bug>",
++  );
++  assert.equal(d.querySelectorAll("#findings form").length, 0);
++  assert.match(
++    d.querySelector(".recorded-run")!.textContent!,
++    /cannot be uploaded or published/,
++  );
++  assert.equal(
++    [...d.querySelectorAll("a")].filter(
++      (a) => a.textContent === "Source on GitHub",
++    ).length,
++    0,
++  );
++  assert.equal(snapshot.sarif.runs[0].results.length, 1);
++  assert.equal(snapshot.report.findings, undefined);
++  dom.window.close();
++  snapshot.report.finding_drafts[0].reproduction_steps = "";
++  assert.throws(() => renderPreview(snapshot, "/report"));
++});
+diff --git a/web/recorded-run.ts b/web/recorded-run.ts
+index fa51b65..62b9f80 100644
+--- a/web/recorded-run.ts
++++ b/web/recorded-run.ts
+@@ -116,7 +116,7 @@ export function renderRecordedRun(
+     .join("");
+   const item = (label: string, value: any) =>
+     `<dt>${esc(label)}</dt><dd class="plain-text">${esc(value)}</dd>`;
+-  return `<article class="recorded-run">${report.run_ids.length > 1 ? `<h3>Run ${index + 1}</h3>` : ""}<h3>Run locally</h3><pre><code>${esc(script)}</code></pre><p class="meta">Checks out the recorded source commit from GitHub. Install the report’s tool version before running.</p><p class="run-downloads"><a href="${esc(sourceURL)}">Source on GitHub</a> · <a href="${esc(links.sarif ?? `${base}/sarif`)}">SARIF with logs (.json)</a></p><h3>Recorded run</h3><p>${run.execution_successful ? "Completed" : "Unsuccessful"} · ${passed} checks passed · ${failed} failed${other ? ` · ${other} other` : ""}</p><p class="meta">${esc(run.started_at)} · ${(run.duration_ms / 1000).toFixed(1)} seconds · Exit code ${esc(run.exit_code ?? "unavailable")}</p><p class="meta">Recorded on the author’s machine.</p><table><thead><tr><th>Check</th><th>Result</th><th>Claim</th></tr></thead><tbody>${rows}</tbody></table><details><summary>Execution details</summary><dl>${item("Started", run.started_at)}${item("Finished", run.finished_at)}${item("Platform", run.platform)}${item("Rust compiler", run.rustc)}${item("Working directory", run.working_directory)}${item(
++  return `<article class="recorded-run">${report.run_ids.length > 1 ? `<h3>Run ${index + 1}</h3>` : ""}<h3>Run locally</h3><pre><code>${esc(script)}</code></pre><p class="meta">${proofs.localOnly ? "Uses an unpublished local source commit. This Run cannot be uploaded or published. Install the pinned tool version and run the package setup before verification." : "Checks out the recorded source commit from GitHub. Install the report’s tool version before running."}</p><p class="run-downloads">${proofs.localOnly ? "" : `<a href="${esc(sourceURL)}">Source on GitHub</a> · `}<a href="${esc(links.sarif ?? `${base}/sarif`)}">SARIF with logs (.json)</a></p><h3>Recorded run</h3><p>${run.execution_successful ? "Completed" : "Unsuccessful"} · ${passed} checks passed · ${failed} failed${other ? ` · ${other} other` : ""}</p><p class="meta">${esc(run.started_at)} · ${(run.duration_ms / 1000).toFixed(1)} seconds · Exit code ${esc(run.exit_code ?? "unavailable")}</p><p class="meta">Recorded on the author’s machine.</p><table><thead><tr><th>Check</th><th>Result</th><th>Claim</th></tr></thead><tbody>${rows}</tbody></table><details><summary>Execution details</summary><dl>${item("Started", run.started_at)}${item("Finished", run.finished_at)}${item("Platform", run.platform)}${item("Rust compiler", run.rustc)}${item("Working directory", run.working_directory)}${item(
+     "Environment overrides",
+     Object.entries(run.environment || {})
+       .map(([k, v]) => k + "=" + v)

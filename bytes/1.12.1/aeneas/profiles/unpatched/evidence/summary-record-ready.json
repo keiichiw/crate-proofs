@@ -1,0 +1,79 @@
+{
+  "acceptance_basis": "Original archived inputs; packaging does not rerun verification.",
+  "archive_sha256": "82a77f18ad3899f3cd53dc699af66cc55fb5bce238d86f8d7f0413bb543ace99",
+  "audit": {
+    "allowed_axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "checked": [
+      {
+        "module": "Proofs.Take",
+        "name": "bytes.take_into_inner_spec",
+        "precondition": "true",
+        "scope": "public-model"
+      },
+      {
+        "module": "Proofs.Take",
+        "name": "bytes.take_get_ref_spec",
+        "precondition": "true",
+        "scope": "public-model"
+      },
+      {
+        "module": "Proofs.Take",
+        "name": "bytes.take_get_mut_spec",
+        "precondition": "true",
+        "scope": "public-model"
+      },
+      {
+        "module": "Proofs.Take",
+        "name": "bytes.take_limit_spec",
+        "precondition": "true",
+        "scope": "public-model"
+      },
+      {
+        "module": "Proofs.Take",
+        "name": "bytes.take_set_limit_spec",
+        "precondition": "true",
+        "scope": "public-model"
+      }
+    ],
+    "mapping_metadata_checked": true,
+    "scope": "named Lean theorem and transitive axiom audit only",
+    "status": "passed"
+  },
+  "host": "aarch64-apple-darwin",
+  "input_fingerprints": {
+    "after": {
+      "member": "payload/inputs-after.json",
+      "sha256": "deebfac532f07717d40b062b26ee7ba974b270d259a6f55038538ad61570af9b"
+    },
+    "before": {
+      "member": "payload/inputs-before.json",
+      "sha256": "deebfac532f07717d40b062b26ee7ba974b270d259a6f55038538ad61570af9b"
+    },
+    "equal": true
+  },
+  "kind": "archived-managed-run-summary",
+  "original_audit": {
+    "member": "payload/audit/result.json",
+    "sha256": "154d9a60ed9736b37bb1cc1590dba66537914bc44d1c54db2842e39927d17d14"
+  },
+  "original_result": {
+    "member": "payload/result.json",
+    "sha256": "f8e4241e7e3ad0f7e9aed077579b7fd2663ae8cc2e59a201c70d9cb3ddd3778a"
+  },
+  "profile": "unpatched",
+  "reported_status": "passed",
+  "sarif": "Not a cargo-proofs recording result.",
+  "schema_version": 1,
+  "scope": "Configured extraction comparisons and named theorem audit; native observations are separate",
+  "stages": {
+    "before_after_fingerprints": "equal",
+    "extraction_and_profile_checks": "See original pipeline receipt and profile configuration.",
+    "lean_build_and_axiom_audit": "passed",
+    "native_tests": "Separate observations in original run; not formal proof."
+  },
+  "target": "aarch64-apple-darwin"
+}

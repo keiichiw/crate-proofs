@@ -1,0 +1,953 @@
+{
+  "acceptance_basis": "Original archived inputs; packaging does not rerun verification.",
+  "archive_descriptor": "archive.json",
+  "archive_sha256": "b45f9b233091403a4ec49790bb961b00ed1fcec7f04808f4a2d0051ad8c7cec0",
+  "audit": {
+    "allowed_axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "checked": [
+      {
+        "module": "Proofs.Take",
+        "name": "bytes.take_new_spec",
+        "scope": "helper-model"
+      },
+      {
+        "module": "Proofs.Take",
+        "name": "bytes.take_into_inner_spec",
+        "precondition": "true",
+        "scope": "public-model"
+      },
+      {
+        "module": "Proofs.Take",
+        "name": "bytes.take_get_ref_spec",
+        "precondition": "true",
+        "scope": "public-model"
+      },
+      {
+        "module": "Proofs.Take",
+        "name": "bytes.take_get_mut_spec",
+        "precondition": "true",
+        "scope": "public-model"
+      },
+      {
+        "module": "Proofs.Take",
+        "name": "bytes.take_limit_spec",
+        "precondition": "true",
+        "scope": "public-model"
+      },
+      {
+        "module": "Proofs.Take",
+        "name": "bytes.take_set_limit_spec",
+        "precondition": "true",
+        "scope": "public-model"
+      },
+      {
+        "module": "Proofs.CursorHelpers",
+        "name": "bytes.min_u64_usize_spec",
+        "precondition": "System.Platform.numBits = 64",
+        "scope": "helper-model"
+      },
+      {
+        "module": "Proofs.CursorHelpers",
+        "name": "bytes.saturating_sub_usize_u64_spec",
+        "precondition": "System.Platform.numBits = 64",
+        "scope": "helper-model"
+      },
+      {
+        "module": "Proofs.Chain",
+        "name": "bytes.chain_new_spec",
+        "scope": "helper-model"
+      },
+      {
+        "module": "Proofs.Chain",
+        "name": "bytes.chain_first_ref_spec",
+        "precondition": "true",
+        "scope": "public-model"
+      },
+      {
+        "module": "Proofs.Chain",
+        "name": "bytes.chain_first_mut_spec",
+        "precondition": "true",
+        "scope": "public-model"
+      },
+      {
+        "module": "Proofs.Chain",
+        "name": "bytes.chain_last_ref_spec",
+        "precondition": "true",
+        "scope": "public-model"
+      },
+      {
+        "module": "Proofs.Chain",
+        "name": "bytes.chain_last_mut_spec",
+        "precondition": "true",
+        "scope": "public-model"
+      },
+      {
+        "module": "Proofs.Chain",
+        "name": "bytes.chain_into_inner_spec",
+        "precondition": "true",
+        "scope": "public-model"
+      },
+      {
+        "module": "Proofs.Limit",
+        "name": "bytes.limit_new_spec",
+        "scope": "helper-model"
+      },
+      {
+        "module": "Proofs.Limit",
+        "name": "bytes.limit_into_inner_spec",
+        "precondition": "true",
+        "scope": "public-model"
+      },
+      {
+        "module": "Proofs.Limit",
+        "name": "bytes.limit_get_ref_spec",
+        "precondition": "true",
+        "scope": "public-model"
+      },
+      {
+        "module": "Proofs.Limit",
+        "name": "bytes.limit_get_mut_spec",
+        "precondition": "true",
+        "scope": "public-model"
+      },
+      {
+        "module": "Proofs.Limit",
+        "name": "bytes.limit_limit_spec",
+        "precondition": "true",
+        "scope": "public-model"
+      },
+      {
+        "module": "Proofs.Limit",
+        "name": "bytes.limit_set_limit_spec",
+        "precondition": "true",
+        "scope": "public-model"
+      },
+      {
+        "module": "Proofs.IntoIter",
+        "name": "bytes.intoiter_new_spec",
+        "precondition": "true",
+        "scope": "public-model"
+      },
+      {
+        "module": "Proofs.IntoIter",
+        "name": "bytes.intoiter_into_inner_spec",
+        "precondition": "true",
+        "scope": "public-model"
+      },
+      {
+        "module": "Proofs.IntoIter",
+        "name": "bytes.intoiter_get_ref_spec",
+        "precondition": "true",
+        "scope": "public-model"
+      },
+      {
+        "module": "Proofs.IntoIter",
+        "name": "bytes.intoiter_get_mut_spec",
+        "precondition": "true",
+        "scope": "public-model"
+      },
+      {
+        "module": "Proofs.SignExtend",
+        "name": "bytes.sign_extend_spec",
+        "precondition": "nbytes.val <= 8",
+        "scope": "helper-model"
+      },
+      {
+        "module": "Proofs.Consumption",
+        "name": "bytes_consumption.slice_advance_spec",
+        "precondition": "n.val <= s.val.length",
+        "scope": "public-model"
+      },
+      {
+        "module": "Proofs.Consumption",
+        "name": "bytes_consumption.slice_copy_spec",
+        "precondition": "destination.val.length <= source.val.length",
+        "scope": "public-model"
+      },
+      {
+        "module": "Proofs.Consumption",
+        "name": "bytes_consumption.slice_advance_invalid",
+        "precondition": "s.val.length < n.val",
+        "scope": "helper-model"
+      },
+      {
+        "module": "Proofs.Consumption",
+        "name": "bytes_consumption.slice_copy_invalid",
+        "precondition": "source.val.length < destination.val.length",
+        "scope": "helper-model"
+      },
+      {
+        "module": "Proofs.Consumption",
+        "name": "bytes_consumption.slice_advance_sequence",
+        "precondition": "n.val + m.val <= s.val.length",
+        "scope": "helper-model"
+      },
+      {
+        "module": "Proofs.ToolCorrespondence",
+        "name": "bytes_tool.never_continuation_exact",
+        "scope": "helper-model"
+      },
+      {
+        "module": "Proofs.AdapterConsumption",
+        "name": "bytes_buffers.slice_laws",
+        "scope": "helper-model"
+      },
+      {
+        "module": "Proofs.AdapterConsumption",
+        "name": "bytes_buffers.take_remaining_spec",
+        "scope": "helper-model"
+      },
+      {
+        "module": "Proofs.AdapterConsumption",
+        "name": "bytes_buffers.take_advance_spec",
+        "scope": "helper-model"
+      },
+      {
+        "module": "Proofs.AdapterConsumption",
+        "name": "bytes_buffers.take_chunk_exact",
+        "scope": "helper-model"
+      },
+      {
+        "module": "Proofs.AdapterConsumption",
+        "name": "bytes_buffers.concrete_take_remaining",
+        "precondition": "inner is an actual byte slice",
+        "scope": "public-model"
+      },
+      {
+        "module": "Proofs.AdapterConsumption",
+        "name": "bytes_buffers.concrete_take_advance",
+        "precondition": "inner is an actual byte slice; count <= visible length",
+        "scope": "public-model"
+      },
+      {
+        "module": "Proofs.AdapterConsumption",
+        "name": "bytes_buffers.concrete_take_chunk",
+        "precondition": "inner is an actual byte slice",
+        "scope": "public-model"
+      },
+      {
+        "module": "Proofs.IteratorConsumption",
+        "name": "bytes_buffers.iterator_size_hint_spec",
+        "scope": "helper-model"
+      },
+      {
+        "module": "Proofs.IteratorConsumption",
+        "name": "bytes_buffers.iterator_next_empty",
+        "scope": "helper-model"
+      },
+      {
+        "module": "Proofs.IteratorConsumption",
+        "name": "bytes_buffers.iterator_next_cons",
+        "scope": "helper-model"
+      },
+      {
+        "module": "Proofs.IteratorConsumption",
+        "name": "bytes_buffers.iterator_next_spec",
+        "scope": "helper-model"
+      },
+      {
+        "module": "Proofs.IteratorConsumption",
+        "name": "bytes_buffers.iterator_exhaustion_stable",
+        "scope": "helper-model"
+      },
+      {
+        "module": "Proofs.IteratorConsumption",
+        "name": "bytes_buffers.iterator_size_hint_exact",
+        "scope": "helper-model"
+      },
+      {
+        "module": "Proofs.IteratorConsumption",
+        "name": "bytes_buffers.slice_iterator_next_spec",
+        "precondition": "inner is an actual byte slice",
+        "scope": "public-model"
+      },
+      {
+        "module": "Proofs.IteratorConsumption",
+        "name": "bytes_buffers.slice_iterator_size_hint_spec",
+        "precondition": "inner is an actual byte slice",
+        "scope": "public-model"
+      },
+      {
+        "module": "Proofs.IteratorConsumption",
+        "name": "bytes_buffers.slice_iterator_exhaustion_stable",
+        "scope": "helper-model"
+      },
+      {
+        "module": "Proofs.IoWrappers",
+        "name": "bytes.reader_new_spec",
+        "scope": "helper-model"
+      },
+      {
+        "module": "Proofs.IoWrappers",
+        "name": "bytes.reader_get_ref_spec",
+        "precondition": "true",
+        "scope": "public-model"
+      },
+      {
+        "module": "Proofs.IoWrappers",
+        "name": "bytes.reader_get_mut_spec",
+        "precondition": "true",
+        "scope": "public-model"
+      },
+      {
+        "module": "Proofs.IoWrappers",
+        "name": "bytes.reader_into_inner_spec",
+        "precondition": "true",
+        "scope": "public-model"
+      },
+      {
+        "module": "Proofs.IoWrappers",
+        "name": "bytes.writer_new_spec",
+        "scope": "helper-model"
+      },
+      {
+        "module": "Proofs.IoWrappers",
+        "name": "bytes.writer_get_ref_spec",
+        "precondition": "true",
+        "scope": "public-model"
+      },
+      {
+        "module": "Proofs.IoWrappers",
+        "name": "bytes.writer_get_mut_spec",
+        "precondition": "true",
+        "scope": "public-model"
+      },
+      {
+        "module": "Proofs.IoWrappers",
+        "name": "bytes.writer_into_inner_spec",
+        "precondition": "true",
+        "scope": "public-model"
+      },
+      {
+        "module": "Proofs.PublicConstructors",
+        "name": "bytes.buf_take_constructor_spec",
+        "precondition": "true",
+        "scope": "public-model"
+      },
+      {
+        "module": "Proofs.PublicConstructors",
+        "name": "bytes.buf_chain_constructor_spec",
+        "precondition": "true",
+        "scope": "public-model"
+      },
+      {
+        "module": "Proofs.PublicConstructors",
+        "name": "bytes.buf_reader_constructor_spec",
+        "precondition": "true",
+        "scope": "public-model"
+      },
+      {
+        "module": "Proofs.PublicConstructors",
+        "name": "bytes.bufmut_limit_constructor_spec",
+        "precondition": "true",
+        "scope": "public-model"
+      },
+      {
+        "module": "Proofs.PublicConstructors",
+        "name": "bytes.bufmut_writer_constructor_spec",
+        "precondition": "true",
+        "scope": "public-model"
+      },
+      {
+        "module": "Proofs.PublicConstructors",
+        "name": "bytes.bufmut_chain_mut_constructor_spec",
+        "precondition": "true",
+        "scope": "public-model"
+      },
+      {
+        "module": "Proofs.PublicConstructors",
+        "name": "bytes.chain_into_iter_constructor_spec",
+        "precondition": "true",
+        "scope": "public-model"
+      },
+      {
+        "module": "Proofs.AdapterConsumption",
+        "name": "bytes_buffers.slice_remaining_spec",
+        "precondition": "true",
+        "scope": "public-model"
+      },
+      {
+        "module": "Proofs.AdapterConsumption",
+        "name": "bytes_buffers.slice_chunk_spec",
+        "precondition": "true",
+        "scope": "public-model"
+      },
+      {
+        "module": "Proofs.AdapterConsumption",
+        "name": "bytes_buffers.slice_has_remaining_spec",
+        "precondition": "true",
+        "scope": "public-model"
+      },
+      {
+        "module": "Proofs.AdapterConsumption",
+        "name": "bytes_buffers.take_has_remaining_spec",
+        "scope": "helper-model"
+      },
+      {
+        "module": "Proofs.AdapterConsumption",
+        "name": "bytes_buffers.concrete_take_has_remaining",
+        "precondition": "inner is an actual byte slice",
+        "scope": "public-model"
+      },
+      {
+        "module": "Proofs.AdapterConsumption",
+        "name": "bytes_buffers.take_laws",
+        "scope": "helper-model"
+      },
+      {
+        "module": "Proofs.AdapterConsumption",
+        "name": "bytes_buffers.take_advance_over_limit",
+        "scope": "helper-model"
+      },
+      {
+        "module": "Proofs.AdapterConsumption",
+        "name": "bytes_buffers.take_advance_sequence",
+        "scope": "helper-model"
+      },
+      {
+        "module": "Proofs.ChainConsumption",
+        "name": "bytes_buffers.chain_remaining_spec",
+        "scope": "helper-model"
+      },
+      {
+        "module": "Proofs.ChainConsumption",
+        "name": "bytes_buffers.chain_chunk_exact",
+        "scope": "helper-model"
+      },
+      {
+        "module": "Proofs.ChainConsumption",
+        "name": "bytes_buffers.chain_advance_spec",
+        "scope": "helper-model"
+      },
+      {
+        "module": "Proofs.ChainConsumption",
+        "name": "bytes_buffers.chain_has_remaining_spec",
+        "scope": "helper-model"
+      },
+      {
+        "module": "Proofs.ChainConsumption",
+        "name": "bytes_buffers.chain_laws",
+        "scope": "helper-model"
+      },
+      {
+        "module": "Proofs.ChainConsumption",
+        "name": "bytes_buffers.concrete_chain_remaining",
+        "precondition": "both underlying buffers are actual byte slices",
+        "scope": "public-model"
+      },
+      {
+        "module": "Proofs.ChainConsumption",
+        "name": "bytes_buffers.concrete_chain_chunk",
+        "precondition": "both underlying buffers are actual byte slices",
+        "scope": "public-model"
+      },
+      {
+        "module": "Proofs.ChainConsumption",
+        "name": "bytes_buffers.concrete_chain_advance",
+        "precondition": "both underlying buffers are actual byte slices; count <= concatenated logical length",
+        "scope": "public-model"
+      },
+      {
+        "module": "Proofs.ChainConsumption",
+        "name": "bytes_buffers.concrete_chain_has_remaining",
+        "precondition": "both underlying buffers are actual byte slices",
+        "scope": "public-model"
+      },
+      {
+        "module": "Proofs.ChainConsumption",
+        "name": "bytes_buffers.chain_advance_sequence",
+        "scope": "helper-model"
+      },
+      {
+        "module": "Proofs.ChainConsumption",
+        "name": "bytes_buffers.take_chain_laws",
+        "scope": "helper-model"
+      },
+      {
+        "module": "Proofs.NumericConsumption",
+        "name": "bytes_numeric.slice_get_i8_spec",
+        "precondition": "source is nonempty",
+        "scope": "public-model"
+      },
+      {
+        "module": "Proofs.NumericConsumption",
+        "name": "bytes_numeric.slice_try_get_i8_success",
+        "scope": "helper-model"
+      },
+      {
+        "module": "Proofs.NumericConsumption",
+        "name": "bytes_numeric.slice_try_get_i8_empty",
+        "scope": "helper-model"
+      },
+      {
+        "module": "Proofs.NumericConsumption",
+        "name": "bytes_numeric.slice_get_u8_spec",
+        "precondition": "source is nonempty",
+        "scope": "public-model"
+      },
+      {
+        "module": "Proofs.NumericConsumption",
+        "name": "bytes_numeric.slice_try_get_u8_success",
+        "scope": "helper-model"
+      },
+      {
+        "module": "Proofs.NumericConsumption",
+        "name": "bytes_numeric.slice_try_get_u8_empty",
+        "scope": "helper-model"
+      },
+      {
+        "module": "Proofs.NumericConsumption",
+        "name": "bytes_numeric.slice_get_i8_empty",
+        "scope": "helper-model"
+      },
+      {
+        "module": "Proofs.NumericConsumption",
+        "name": "bytes_numeric.slice_get_u8_empty",
+        "scope": "helper-model"
+      },
+      {
+        "module": "Proofs.NumericConsumption",
+        "name": "bytes_numeric.slice_try_get_i8_spec",
+        "precondition": "true",
+        "scope": "public-model"
+      },
+      {
+        "module": "Proofs.NumericConsumption",
+        "name": "bytes_numeric.slice_try_get_u8_spec",
+        "precondition": "true",
+        "scope": "public-model"
+      },
+      {
+        "module": "Proofs.CopyConsumption",
+        "name": "bytes_buffers.try_copy_to_slice_insufficient",
+        "scope": "helper-model"
+      },
+      {
+        "module": "Proofs.CopyConsumption",
+        "name": "bytes_buffers.try_copy_to_slice_empty",
+        "scope": "helper-model"
+      },
+      {
+        "module": "Proofs.CopyConsumption",
+        "name": "bytes_buffers.try_copy_to_slice_one_chunk",
+        "scope": "helper-model"
+      },
+      {
+        "module": "Proofs.CopyConsumption",
+        "name": "bytes_buffers.slice_try_copy_to_slice_success",
+        "scope": "helper-model"
+      },
+      {
+        "module": "Proofs.CopyConsumption",
+        "name": "bytes_buffers.slice_try_copy_to_slice_total",
+        "precondition": "actual byte slice; unchanged default implementation",
+        "scope": "helper-model"
+      },
+      {
+        "module": "Proofs.CopyLoop",
+        "name": "bytes_buffers.copy_loop_general",
+        "scope": "helper-model"
+      },
+      {
+        "module": "Proofs.CopyLoop",
+        "name": "bytes_buffers.try_copy_to_slice_success",
+        "scope": "helper-model"
+      },
+      {
+        "module": "Proofs.CopyLoop",
+        "name": "bytes_buffers.try_copy_to_slice_total",
+        "precondition": "explicit proved Buf laws; arbitrary finite chunks; concrete slices grounded by slice_laws and adapter closures",
+        "scope": "public-model"
+      },
+      {
+        "module": "Proofs.CopyApplications",
+        "name": "bytes_buffers.take_slice_copy_success",
+        "scope": "helper-model"
+      },
+      {
+        "module": "Proofs.CopyApplications",
+        "name": "bytes_buffers.chain_slice_copy_success",
+        "scope": "helper-model"
+      },
+      {
+        "module": "Proofs.CopyApplications",
+        "name": "bytes_buffers.take_chain_slice_copy_success",
+        "scope": "helper-model"
+      },
+      {
+        "module": "Proofs.AdapterConsumption",
+        "name": "bytes_buffers.take_dictionary_exact",
+        "scope": "helper-model"
+      },
+      {
+        "module": "Proofs.ChainConsumption",
+        "name": "bytes_buffers.chain_dictionary_exact",
+        "scope": "helper-model"
+      },
+      {
+        "module": "Proofs.ChainConsumption",
+        "name": "bytes_buffers.nested_take_chain_dispatch_exact",
+        "scope": "helper-model"
+      },
+      {
+        "module": "Proofs.CursorConsumption",
+        "name": "bytes_cursor_proofs.min_bridge",
+        "scope": "helper-model"
+      },
+      {
+        "module": "Proofs.CursorConsumption",
+        "name": "bytes_cursor_proofs.sub_bridge",
+        "scope": "helper-model"
+      },
+      {
+        "module": "Proofs.CursorConsumption",
+        "name": "bytes_cursor_proofs.cursor_remaining_spec",
+        "scope": "helper-model"
+      },
+      {
+        "module": "Proofs.CursorConsumption",
+        "name": "bytes_cursor_proofs.cursor_chunk_spec",
+        "scope": "helper-model"
+      },
+      {
+        "module": "Proofs.CursorConsumption",
+        "name": "bytes_cursor_proofs.cursor_advance_spec",
+        "scope": "helper-model"
+      },
+      {
+        "module": "Proofs.CursorConsumption",
+        "name": "bytes_cursor_proofs.array_remaining_spec",
+        "scope": "helper-model"
+      },
+      {
+        "module": "Proofs.CursorConsumption",
+        "name": "bytes_cursor_proofs.array_chunk_spec",
+        "scope": "helper-model"
+      },
+      {
+        "module": "Proofs.CursorConsumption",
+        "name": "bytes_cursor_proofs.array_advance_spec",
+        "scope": "helper-model"
+      },
+      {
+        "module": "Proofs.CursorConsumption",
+        "name": "bytes_cursor_proofs.cursor_advance_zero",
+        "scope": "helper-model"
+      },
+      {
+        "module": "Proofs.CursorConsumption",
+        "name": "bytes_cursor_proofs.panic_advance_eq_fail",
+        "scope": "helper-model"
+      },
+      {
+        "module": "Proofs.CursorConsumption",
+        "name": "bytes_cursor_proofs.cursor_advance_invalid",
+        "scope": "helper-model"
+      },
+      {
+        "module": "Proofs.CursorConsumption",
+        "name": "bytes_cursor_proofs.actual_slice_as_ref",
+        "scope": "helper-model"
+      },
+      {
+        "module": "Proofs.CursorConsumption",
+        "name": "bytes_cursor_proofs.slice_remaining_spec",
+        "precondition": "64-bit target",
+        "scope": "public-model"
+      },
+      {
+        "module": "Proofs.CursorConsumption",
+        "name": "bytes_cursor_proofs.slice_chunk_spec",
+        "precondition": "64-bit target",
+        "scope": "public-model"
+      },
+      {
+        "module": "Proofs.CursorConsumption",
+        "name": "bytes_cursor_proofs.slice_advance_spec",
+        "precondition": "64-bit target; count <= max(source length - position, 0)",
+        "scope": "public-model"
+      },
+      {
+        "module": "Proofs.CursorConsumption",
+        "name": "bytes_cursor_proofs.slice_advance_zero",
+        "scope": "helper-model"
+      },
+      {
+        "module": "Proofs.CursorConsumption",
+        "name": "bytes_cursor_proofs.slice_advance_invalid",
+        "scope": "helper-model"
+      },
+      {
+        "module": "Proofs.CursorConsumption",
+        "name": "bytes_cursor_proofs.slice_advance_view",
+        "scope": "helper-model"
+      },
+      {
+        "module": "Proofs.CursorConsumption",
+        "name": "bytes_cursor_proofs.slice_advance_sequence",
+        "scope": "helper-model"
+      },
+      {
+        "module": "Proofs.ReaderConsumption",
+        "name": "bytes_buffers.reader_consume_spec",
+        "scope": "helper-model"
+      },
+      {
+        "module": "Proofs.ReaderConsumption",
+        "name": "bytes_buffers.concrete_reader_consume",
+        "precondition": "actual byte slice; count <= remaining source length",
+        "scope": "public-model"
+      },
+      {
+        "module": "Proofs.Range",
+        "name": "range_proofs.range_fragments_eq",
+        "scope": "helper-model"
+      },
+      {
+        "module": "Proofs.Range",
+        "name": "range_proofs.range_success",
+        "scope": "helper-model"
+      },
+      {
+        "module": "Proofs.Range",
+        "name": "range_proofs.range_invalid",
+        "scope": "helper-model"
+      },
+      {
+        "module": "Proofs.Range",
+        "name": "range_proofs.range_success_iff",
+        "scope": "helper-model"
+      },
+      {
+        "module": "Proofs.ExtendedCopy",
+        "name": "bytes_extended.error_roundtrip_old",
+        "scope": "helper-model"
+      },
+      {
+        "module": "Proofs.ExtendedCopy",
+        "name": "bytes_extended.error_roundtrip_new",
+        "scope": "helper-model"
+      },
+      {
+        "module": "Proofs.ExtendedCopy",
+        "name": "bytes_extended.error_fields",
+        "scope": "helper-model"
+      },
+      {
+        "module": "Proofs.ExtendedCopy",
+        "name": "bytes_extended.error_constructor",
+        "scope": "helper-model"
+      },
+      {
+        "module": "Proofs.ExtendedCopy",
+        "name": "bytes_extended.error_injective",
+        "scope": "helper-model"
+      },
+      {
+        "module": "Proofs.ExtendedCopy",
+        "name": "bytes_extended.loop_body_projection",
+        "scope": "helper-model"
+      },
+      {
+        "module": "Proofs.ExtendedCopy",
+        "name": "bytes_extended.loop_projection",
+        "scope": "helper-model"
+      },
+      {
+        "module": "Proofs.ExtendedCopy",
+        "name": "bytes_extended.checked_projection",
+        "scope": "helper-model"
+      },
+      {
+        "module": "Proofs.ExtendedCopy",
+        "name": "bytes_extended.project_extend",
+        "scope": "helper-model"
+      },
+      {
+        "module": "Proofs.ExtendedCopy",
+        "name": "bytes_extended.extended_checked_exact",
+        "scope": "helper-model"
+      },
+      {
+        "module": "Proofs.ExtendedCopy",
+        "name": "bytes_extended.default_checked_success",
+        "scope": "helper-model"
+      },
+      {
+        "module": "Proofs.ExtendedCopy",
+        "name": "bytes_extended.default_checked_insufficient",
+        "scope": "helper-model"
+      },
+      {
+        "module": "Proofs.ExtendedCopy",
+        "name": "bytes_extended.default_checked_total",
+        "scope": "helper-model"
+      },
+      {
+        "module": "Proofs.ExtendedCopy",
+        "name": "bytes_extended.extend_checked_laws",
+        "scope": "helper-model"
+      },
+      {
+        "module": "Proofs.ExtendedCopy",
+        "name": "bytes_extended.slice_checked_laws",
+        "scope": "helper-model"
+      },
+      {
+        "module": "Proofs.ExtendedCopy",
+        "name": "bytes_extended.take_checked_laws",
+        "scope": "helper-model"
+      },
+      {
+        "module": "Proofs.ExtendedCopy",
+        "name": "bytes_extended.chain_checked_laws",
+        "scope": "helper-model"
+      },
+      {
+        "module": "Proofs.VariableMath",
+        "name": "bytes_numeric.setSlice_zeros_prefix",
+        "scope": "arithmetic-helper"
+      },
+      {
+        "module": "Proofs.VariableMath",
+        "name": "bytes_numeric.setSlice_zeros_suffix",
+        "scope": "arithmetic-helper"
+      },
+      {
+        "module": "Proofs.VariableMath",
+        "name": "bytes_numeric.leValue_fill_zeros",
+        "scope": "arithmetic-helper"
+      },
+      {
+        "module": "Proofs.VariableMath",
+        "name": "bytes_numeric.beValue_fill_zeros",
+        "scope": "arithmetic-helper"
+      },
+      {
+        "module": "Proofs.VariableMath",
+        "name": "bytes_numeric.leValue_weighted_sum_aux",
+        "scope": "arithmetic-helper"
+      },
+      {
+        "module": "Proofs.VariableMath",
+        "name": "bytes_numeric.leValue_weighted_sum",
+        "scope": "arithmetic-helper"
+      },
+      {
+        "module": "Proofs.VariableMath",
+        "name": "bytes_numeric.beValue_cons",
+        "scope": "arithmetic-helper"
+      },
+      {
+        "module": "Proofs.VariableMath",
+        "name": "bytes_numeric.beValue_weighted_sum",
+        "scope": "arithmetic-helper"
+      },
+      {
+        "module": "Proofs.VariableMath",
+        "name": "bytes_numeric.signedByteValue_beValue",
+        "scope": "arithmetic-helper"
+      },
+      {
+        "module": "Proofs.VariableMath",
+        "name": "bytes_numeric.signed64_full_leValue",
+        "scope": "arithmetic-helper"
+      },
+      {
+        "module": "Proofs.VariableMath",
+        "name": "bytes_numeric.signed64_full_beValue",
+        "scope": "arithmetic-helper"
+      },
+      {
+        "module": "Proofs.VariableMath",
+        "name": "bytes_numeric.signed_short_math_discrepancy",
+        "scope": "arithmetic-helper"
+      },
+      {
+        "module": "Proofs.VariableMath",
+        "name": "bytes_numeric.signed64_short_leValue_disagrees",
+        "scope": "arithmetic-helper"
+      },
+      {
+        "module": "Proofs.VariableMath",
+        "name": "bytes_numeric.signed64_short_beValue_disagrees",
+        "scope": "arithmetic-helper"
+      }
+    ],
+    "mapping_metadata_checked": true,
+    "scope": "named Lean theorem and transitive axiom audit only",
+    "status": "passed"
+  },
+  "configuration": {
+    "source_lock": {
+      "path": "bytes/1.12.1/source.lock.json",
+      "sha256": "7d8d183818dbcabbee344f6e7fdb3b34117af5518cb81726a70fa87db1e6ba53"
+    },
+    "tool_lock": {
+      "path": "bytes/1.12.1/aeneas/profiles/default/toolchain.lock.json",
+      "sha256": "266a979e416528d5c59685f0e5bed921a2e0ab4f6b441b5683b19a3aceb86933"
+    },
+    "verification": {
+      "path": "bytes/1.12.1/aeneas/profiles/default/verification.json",
+      "sha256": "ab6b1ebd5d28946e90cff06857345607b6c67339d852afa676f1fd3c318de3e4"
+    }
+  },
+  "configured_extractions": [],
+  "configured_native_commands": [
+    [
+      "cargo",
+      "test",
+      "--locked",
+      "--manifest-path",
+      ".work/source/Cargo.toml"
+    ],
+    [
+      "cargo",
+      "test",
+      "--locked",
+      "--manifest-path",
+      ".work/source/Cargo.toml",
+      "--no-default-features"
+    ]
+  ],
+  "host": "aarch64-apple-darwin",
+  "input_fingerprints": {
+    "after": {
+      "member": "payload/aarch64-apple-darwin-accepted/inputs-after.json",
+      "sha256": "4be3bb2ec3afebc77850fab1ef515385cab9c4f3948016abdbd29de5ad667334"
+    },
+    "before": {
+      "member": "payload/aarch64-apple-darwin-accepted/inputs-before.json",
+      "sha256": "4be3bb2ec3afebc77850fab1ef515385cab9c4f3948016abdbd29de5ad667334"
+    },
+    "equal": true
+  },
+  "kind": "archived-managed-run-summary",
+  "original_audit": {
+    "member": "payload/aarch64-apple-darwin-accepted/audit/result.json",
+    "sha256": "665b52d52e2872eabd507550a52ec78e7fc1000f56189339527e3ac62b96970c"
+  },
+  "original_input_archive_members": [
+    "aarch64-apple-darwin-accepted/accepted-inputs.tar.gz"
+  ],
+  "original_result": {
+    "member": "payload/aarch64-apple-darwin-accepted/result.json",
+    "sha256": "8adb0739c83198cad80ee658a7d51d9fc4f0415799c00801388a2d08e9fb7307"
+  },
+  "profile": "default",
+  "reported_status": "passed",
+  "sarif": "Not a cargo-proofs recording result.",
+  "schema_version": 1,
+  "scope": "Configured extraction comparisons and named theorem audit; native observations are separate",
+  "stages": {
+    "before_after_fingerprints": "equal",
+    "extraction_and_profile_checks": "See original pipeline receipt and profile configuration.",
+    "lean_build_and_axiom_audit": "passed",
+    "native_tests": "Separate observations in original run; not formal proof."
+  },
+  "target": "aarch64-apple-darwin"
+}

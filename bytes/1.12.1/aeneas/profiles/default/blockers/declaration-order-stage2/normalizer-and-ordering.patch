@@ -1,0 +1,155 @@
+diff --git a/src/Config.ml b/src/Config.ml
+index ed89603c..754cfcbf 100644
+--- a/src/Config.ml
++++ b/src/Config.ml
+@@ -628,3 +628,9 @@ let drop_as_no_op = ref true
+ 
+ (** Restrict declarations to the dependency closure of explicit Charon roots. *)
+ let rooted_declarations = ref false
++
++(** Normalize the strictly guarded adjacent shared reborrow temporary pattern. *)
++let normalize_shared_reborrow = ref false
++
++(** Reorder retained groups after interface projection, rejecting new cycles. *)
++let order_projected_declarations = ref false
+diff --git a/src/Main.ml b/src/Main.ml
+index 729849cc..f8221b84 100644
+--- a/src/Main.ml
++++ b/src/Main.ml
+@@ -216,6 +216,12 @@ let () =
+          collisions with field projectors. Example: the `len` method in `impl \
+          Struct { fn len(&self) -> usize { ... } }` would be named \
+          `Struct.impl.len`." );
++      ( "-order-projected-declarations",
++        Arg.Set order_projected_declarations,
++        " Reorder retained declaration groups after interface projection" );
++      ( "-normalize-shared-reborrow",
++        Arg.Set normalize_shared_reborrow,
++        " Normalize sole-use adjacent mutable-reference copy/shared-reborrow temporaries" );
+       ( "-rooted-declarations",
+         Arg.Set rooted_declarations,
+         " Restrict extraction to explicit Charon function roots and their dependencies" );
+diff --git a/src/PrePasses.ml b/src/PrePasses.ml
+index b99543e0..521d863b 100644
+--- a/src/PrePasses.ml
++++ b/src/PrePasses.ml
+@@ -2348,6 +2348,103 @@ let terminate_never_calls (_crate : crate) (f : fun_decl) : fun_decl =
+       { f with body = StructuredBody { body with body = visitor#visit_block () body.body } }
+   | _ -> f
+ 
++(** Stable topological ordering after backend-interface projection. Preserve
++    each original recursive group intact; reject new cross-group cycles rather
++    than inventing mixed recursive declarations. *)
++let order_projected_declarations (crate : crate) : crate =
++  let groups = Array.of_list (Option.get crate.declarations) in
++  let owner = ref AnyDeclIdMap.empty in
++  Array.iteri (fun i g -> List.iter (fun id ->
++    owner := AnyDeclIdMap.add id i !owner) (declaration_group_to_list g)) groups;
++  let dependencies = Array.make (Array.length groups) [] in
++  (* GlobalInitializerFun points back to its global as provenance; the global
++     already points to the initializer. Keep executable global references, but
++     exclude this metadata-only back edge from emission ordering. *)
++  let dependency_crate = { crate with fun_decls = FunDeclId.Map.map
++    (fun (f : fun_decl) -> { f with src = NormalFun }) crate.fun_decls } in
++  let uses = Deps.compute_graph_of_uses dependency_crate in
++  let mctx = Charon.NameMatcher.ctx_from_crate crate in
++  let backend_trait = function
++    | IdTraitDecl id ->
++        let td = TraitDeclId.Map.find id crate.trait_decls in
++        ExtractName.NameMatcherMap.mem mctx td.item_meta.name
++          (ExtractBuiltin.builtin_trait_decls_map ())
++    | _ -> false
++  in
++  AnyDeclIdMap.iter (fun dependency users ->
++    match AnyDeclIdMap.find_opt dependency !owner with
++    | None -> () (* Backend/lookup-only declaration, not emitted. *)
++    | Some target -> Deps.ItemInfoSet.iter (fun (user : Deps.item_info) ->
++        match AnyDeclIdMap.find_opt user.id !owner with
++        | Some source when source <> target && not (backend_trait user.id) ->
++            if not (List.mem target dependencies.(source)) then
++              dependencies.(source) <- target :: dependencies.(source)
++        | _ -> ()) users) uses.graph;
++  let state = Array.make (Array.length groups) 0 in
++  let ordered = ref [] in
++  let rec visit i =
++    if state.(i) = 1 then
++      failwith ("Projected declaration ordering encountered a cross-group dependency cycle at " ^ show_declaration_group groups.(i) ^ " edges " ^ String.concat ";" (List.map (fun j -> show_declaration_group groups.(j)) dependencies.(i)))
++    else if state.(i) = 0 then begin
++      state.(i) <- 1;
++      List.iter visit (List.sort compare dependencies.(i));
++      state.(i) <- 2;
++      ordered := groups.(i) :: !ordered
++    end
++  in
++  Array.iteri (fun i _ -> visit i) groups;
++  { crate with declarations = Some (List.rev !ordered) }
++
++(** Normalize one optimized-MIR temporary reborrow shape, without changing
++    calls or evaluating a mutable reference copy. The temporary must occur only
++    as the assignment destination and immediately following shared reborrow.
++    Storage markers are the sole excluded occurrences; drops are counted. *)
++let normalize_shared_reborrow (_crate : crate) (f : fun_decl) : fun_decl =
++  match f.body with
++  | StructuredBody body ->
++      let arguments = body.locals.locals |> List.tl
++        |> Collections.List.prefix body.locals.arg_count
++        |> List.map (fun (v : local) -> v.index) |> LocalId.Set.of_list in
++      let occurrences id =
++        let n = ref 0 in
++        let v = object
++          inherit [_] iter_statement as super
++          method! visit_local_id _ i = if i = id then incr n
++          method! visit_statement env st = match st.kind with
++            | StorageLive _ | StorageDead _ -> ()
++            | _ -> super#visit_statement env st
++        end in
++        v#visit_block () body.body; !n
++      in
++      let v = object
++        inherit [_] map_statement_base as super
++        method! visit_block env block =
++          let block = super#visit_block env block in
++          let rec rewrite = function
++            | first :: second :: rest ->
++                (match first.kind, second.kind with
++                | Assign (({ kind = PlaceLocal temp; ty = TRef (_, target, RMut) } as dest),
++                    Use (Copy ({ kind = PlaceProjection
++                      ({ kind = PlaceLocal source_id; ty = TRef (_, inner, RShared) }, Deref); _ } as source), NoRetag)),
++                  Assign (({ ty = TRef (_, borrowed, RShared); _ } as out),
++                    RvRef ({ kind = PlaceProjection
++                      ({ kind = PlaceLocal temp2; ty = temp_ty }, Deref); ty = deref_ty }, BShared, metadata))
++                  when temp = temp2 && temp <> source_id
++                    && not (LocalId.Set.mem temp arguments)
++                    && occurrences temp = 2
++                    && dest.ty = source.ty && inner = source.ty
++                    && temp_ty = source.ty && target = borrowed && target = deref_ty ->
++                    let reborrowed = { kind = PlaceProjection (source, Deref); ty = target } in
++                    { second with kind = Assign (out, RvRef (reborrowed, BShared, metadata)) }
++                      :: rewrite rest
++                | _ -> first :: rewrite (second :: rest))
++            | tail -> tail
++          in
++          { block with statements = rewrite block.statements }
++      end in
++      { f with body = StructuredBody { body with body = v#visit_block () body.body } }
++  | _ -> f
++
+ (** Opt-in declaration slicing. Only dependency edges of backend-provided trait
+     dictionaries are projected; executable function bodies are never rewritten. *)
+ let rooted_declarations (crate : crate) : crate =
+@@ -2464,6 +2561,8 @@ let apply_passes (crate : crate) : crate =
+       ("fix_closure_signature_regions", fix_closure_signature_regions);
+       ("fix_anon_const_initializers", fix_anon_const_initializers);
+       ("erase_body_regions", erase_body_regions);
++      ("normalize_shared_reborrow", (fun crate f ->
++        if !Config.normalize_shared_reborrow then normalize_shared_reborrow crate f else f));
+       ("remove_unreachable", remove_unreachable);
+       ("update_loop", update_loops);
+       ("remove_useless_joins", remove_useless_joins);
+@@ -2524,5 +2623,6 @@ let apply_passes (crate : crate) : crate =
+   let crate = rename_type_vars crate in
+   let crate = simplify_trait_calls crate in
+   let crate = if !Config.rooted_declarations then rooted_declarations crate else crate in
++  let crate = if !Config.order_projected_declarations then order_projected_declarations crate else crate in
+   [%ltrace "After pre-passes:\n" ^ Print.crate_to_string crate ^ "\n"];
+   crate

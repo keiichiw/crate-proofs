@@ -1,0 +1,45 @@
+{
+  "recorded_at": "2026-10-23T16:24:15.149220+00:00",
+  "preview_url": "http://127.0.0.1:60816/report#findings",
+  "run_id": "29ae1f77-352a-486c-a5ce-4818ca5d2a72",
+  "run_reused": true,
+  "local_only": true,
+  "new_verification_performed": false,
+  "sarif_sha256": "52f9e47acc32297d24d93ab29e7dab68f68450de8792ad1280477602a83e9e62",
+  "claims": 56,
+  "findings": 2,
+  "profile": "/Users/keiichiw/workspace/crate-proofs/bytes/1.12.1/aeneas/profiles/default/proofs.toml",
+  "profile_sha256": "26ad7e7ba9d1b995e2517e3c38b8f7423d0d1e13027354cf7f201a4b6ce52547",
+  "tool_configuration_unchanged": true,
+  "preview_executable": "/Users/keiichiw/workspace/crate-proofs/bytes/1.12.1/.work/report-findings-preview/bin/cargo-proofs",
+  "preview_executable_sha256": "fa3b9a913fd886482e5c1f084be0d40e9d59e21bd39d350d6fbb98123f521593",
+  "preview_bundle_sha256": "329b3ecbadda3c716bcf579c56f0a4245356a783eff99300dbfb5c09ce41f3d1",
+  "preview_cli_patch_sha256": "a359c1ebe37d89701d31b7248ca2f9eb3871030b2c4939ff672f3063ed0cd9c8",
+  "base_experimental_patch_sha256": "2a45840305b7d41026e44bdd35d2ad68af9acfd119ce5021069668f0d9a94622",
+  "reader_sources_sha256": {
+    "preview/render.ts": "b3aed6d12d910244b65c451d752e09b86513a3003530d8a3ae3d2ad6ed468128",
+    "src/site-views.ts": "6b0219b26c93af6e7180d645decd297552fda9af40eb0f078f78c7e6f8e00054",
+    "src/markdown.ts": "2785ac061632994a9e0486ef4a5c7c23384a0a3228139e68b94c30a88c21aa5e",
+    "src/schemas.ts": "99fec077cf2543799b7110a3cc64cead44c969a9ed6aa14481b8ad6e25474c37",
+    "package-lock.json": "b182860cb855650ff0c7e3f3205fe00036805212ab5d75e2733afb8077490026"
+  },
+  "validation": {
+    "service_tests_passed": 186,
+    "service_tests_skipped": 2,
+    "cli_unit_tests_passed": 60,
+    "cli_unit_tests_ignored": 3,
+    "cli_integration_tests_passed": 3,
+    "final_preview_tests_passed": 5,
+    "typecheck": "passed",
+    "web_and_book_build": "passed",
+    "preview_bundle_check": "passed",
+    "experimental_local_publication_guard": "passed"
+  },
+  "notes": [
+    "The stored SARIF was copied byte-for-byte into the configuration-specific local record directory; it was not regenerated or edited.",
+    "The source snapshot uses an ignored editorial config symlink to the maintained profile; tracked recorded sources are untouched.",
+    "The CLI retains previous experimental local-only and API alias compatibility; this is not an installed or released binary.",
+    "The previous preview session, its binary and evidence remain unchanged.",
+    "No push, login, upload, publication or deployment was performed."
+  ]
+}

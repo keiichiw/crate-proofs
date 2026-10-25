@@ -1,0 +1,1099 @@
+{
+  "checked": [
+    {
+      "name": "bytes.take_new_spec",
+      "module": "Proofs.Take",
+      "scope": "helper-model"
+    },
+    {
+      "name": "bytes.take_into_inner_spec",
+      "module": "Proofs.Take",
+      "scope": "public-model",
+      "precondition": "true"
+    },
+    {
+      "name": "bytes.take_get_ref_spec",
+      "module": "Proofs.Take",
+      "scope": "public-model",
+      "precondition": "true"
+    },
+    {
+      "name": "bytes.take_get_mut_spec",
+      "module": "Proofs.Take",
+      "scope": "public-model",
+      "precondition": "true"
+    },
+    {
+      "name": "bytes.take_limit_spec",
+      "module": "Proofs.Take",
+      "scope": "public-model",
+      "precondition": "true"
+    },
+    {
+      "name": "bytes.take_set_limit_spec",
+      "module": "Proofs.Take",
+      "scope": "public-model",
+      "precondition": "true"
+    },
+    {
+      "name": "bytes.min_u64_usize_spec",
+      "module": "Proofs.CursorHelpers",
+      "scope": "helper-model",
+      "precondition": "System.Platform.numBits = 64"
+    },
+    {
+      "name": "bytes.saturating_sub_usize_u64_spec",
+      "module": "Proofs.CursorHelpers",
+      "scope": "helper-model",
+      "precondition": "System.Platform.numBits = 64"
+    },
+    {
+      "name": "bytes.chain_new_spec",
+      "module": "Proofs.Chain",
+      "scope": "helper-model"
+    },
+    {
+      "name": "bytes.chain_first_ref_spec",
+      "module": "Proofs.Chain",
+      "scope": "public-model",
+      "precondition": "true"
+    },
+    {
+      "name": "bytes.chain_first_mut_spec",
+      "module": "Proofs.Chain",
+      "scope": "public-model",
+      "precondition": "true"
+    },
+    {
+      "name": "bytes.chain_last_ref_spec",
+      "module": "Proofs.Chain",
+      "scope": "public-model",
+      "precondition": "true"
+    },
+    {
+      "name": "bytes.chain_last_mut_spec",
+      "module": "Proofs.Chain",
+      "scope": "public-model",
+      "precondition": "true"
+    },
+    {
+      "name": "bytes.chain_into_inner_spec",
+      "module": "Proofs.Chain",
+      "scope": "public-model",
+      "precondition": "true"
+    },
+    {
+      "name": "bytes.limit_new_spec",
+      "module": "Proofs.Limit",
+      "scope": "helper-model"
+    },
+    {
+      "name": "bytes.limit_into_inner_spec",
+      "module": "Proofs.Limit",
+      "scope": "public-model",
+      "precondition": "true"
+    },
+    {
+      "name": "bytes.limit_get_ref_spec",
+      "module": "Proofs.Limit",
+      "scope": "public-model",
+      "precondition": "true"
+    },
+    {
+      "name": "bytes.limit_get_mut_spec",
+      "module": "Proofs.Limit",
+      "scope": "public-model",
+      "precondition": "true"
+    },
+    {
+      "name": "bytes.limit_limit_spec",
+      "module": "Proofs.Limit",
+      "scope": "public-model",
+      "precondition": "true"
+    },
+    {
+      "name": "bytes.limit_set_limit_spec",
+      "module": "Proofs.Limit",
+      "scope": "public-model",
+      "precondition": "true"
+    },
+    {
+      "name": "bytes.intoiter_new_spec",
+      "module": "Proofs.IntoIter",
+      "scope": "public-model",
+      "precondition": "true"
+    },
+    {
+      "name": "bytes.intoiter_into_inner_spec",
+      "module": "Proofs.IntoIter",
+      "scope": "public-model",
+      "precondition": "true"
+    },
+    {
+      "name": "bytes.intoiter_get_ref_spec",
+      "module": "Proofs.IntoIter",
+      "scope": "public-model",
+      "precondition": "true"
+    },
+    {
+      "name": "bytes.intoiter_get_mut_spec",
+      "module": "Proofs.IntoIter",
+      "scope": "public-model",
+      "precondition": "true"
+    },
+    {
+      "name": "bytes.sign_extend_spec",
+      "module": "Proofs.SignExtend",
+      "scope": "helper-model",
+      "precondition": "nbytes.val <= 8"
+    },
+    {
+      "name": "bytes_consumption.slice_advance_spec",
+      "module": "Proofs.Consumption",
+      "scope": "public-model",
+      "precondition": "n.val <= s.val.length"
+    },
+    {
+      "name": "bytes_consumption.slice_copy_spec",
+      "module": "Proofs.Consumption",
+      "scope": "public-model",
+      "precondition": "destination.val.length <= source.val.length"
+    },
+    {
+      "name": "bytes_consumption.slice_advance_invalid",
+      "module": "Proofs.Consumption",
+      "scope": "helper-model",
+      "precondition": "s.val.length < n.val"
+    },
+    {
+      "name": "bytes_consumption.slice_copy_invalid",
+      "module": "Proofs.Consumption",
+      "scope": "helper-model",
+      "precondition": "source.val.length < destination.val.length"
+    },
+    {
+      "name": "bytes_consumption.slice_advance_sequence",
+      "module": "Proofs.Consumption",
+      "scope": "helper-model",
+      "precondition": "n.val + m.val <= s.val.length"
+    },
+    {
+      "name": "bytes_tool.never_continuation_exact",
+      "module": "Proofs.ToolCorrespondence",
+      "scope": "helper-model"
+    },
+    {
+      "name": "bytes_buffers.slice_laws",
+      "module": "Proofs.AdapterConsumption",
+      "scope": "helper-model"
+    },
+    {
+      "name": "bytes_buffers.take_remaining_spec",
+      "module": "Proofs.AdapterConsumption",
+      "scope": "helper-model"
+    },
+    {
+      "name": "bytes_buffers.take_advance_spec",
+      "module": "Proofs.AdapterConsumption",
+      "scope": "helper-model"
+    },
+    {
+      "name": "bytes_buffers.take_chunk_exact",
+      "module": "Proofs.AdapterConsumption",
+      "scope": "helper-model"
+    },
+    {
+      "name": "bytes_buffers.concrete_take_remaining",
+      "module": "Proofs.AdapterConsumption",
+      "scope": "public-model",
+      "precondition": "inner is an actual byte slice"
+    },
+    {
+      "name": "bytes_buffers.concrete_take_advance",
+      "module": "Proofs.AdapterConsumption",
+      "scope": "public-model",
+      "precondition": "inner is an actual byte slice; count <= visible length"
+    },
+    {
+      "name": "bytes_buffers.concrete_take_chunk",
+      "module": "Proofs.AdapterConsumption",
+      "scope": "public-model",
+      "precondition": "inner is an actual byte slice"
+    },
+    {
+      "name": "bytes_buffers.iterator_size_hint_spec",
+      "module": "Proofs.IteratorConsumption",
+      "scope": "helper-model"
+    },
+    {
+      "name": "bytes_buffers.iterator_next_empty",
+      "module": "Proofs.IteratorConsumption",
+      "scope": "helper-model"
+    },
+    {
+      "name": "bytes_buffers.iterator_next_cons",
+      "module": "Proofs.IteratorConsumption",
+      "scope": "helper-model"
+    },
+    {
+      "name": "bytes_buffers.iterator_next_spec",
+      "module": "Proofs.IteratorConsumption",
+      "scope": "helper-model"
+    },
+    {
+      "name": "bytes_buffers.iterator_exhaustion_stable",
+      "module": "Proofs.IteratorConsumption",
+      "scope": "helper-model"
+    },
+    {
+      "name": "bytes_buffers.iterator_size_hint_exact",
+      "module": "Proofs.IteratorConsumption",
+      "scope": "helper-model"
+    },
+    {
+      "name": "bytes_buffers.slice_iterator_next_spec",
+      "module": "Proofs.IteratorConsumption",
+      "scope": "public-model",
+      "precondition": "inner is an actual byte slice"
+    },
+    {
+      "name": "bytes_buffers.slice_iterator_size_hint_spec",
+      "module": "Proofs.IteratorConsumption",
+      "scope": "public-model",
+      "precondition": "inner is an actual byte slice"
+    },
+    {
+      "name": "bytes_buffers.slice_iterator_exhaustion_stable",
+      "module": "Proofs.IteratorConsumption",
+      "scope": "helper-model"
+    },
+    {
+      "name": "bytes.reader_new_spec",
+      "module": "Proofs.IoWrappers",
+      "scope": "helper-model"
+    },
+    {
+      "name": "bytes.reader_get_ref_spec",
+      "module": "Proofs.IoWrappers",
+      "scope": "public-model",
+      "precondition": "true"
+    },
+    {
+      "name": "bytes.reader_get_mut_spec",
+      "module": "Proofs.IoWrappers",
+      "scope": "public-model",
+      "precondition": "true"
+    },
+    {
+      "name": "bytes.reader_into_inner_spec",
+      "module": "Proofs.IoWrappers",
+      "scope": "public-model",
+      "precondition": "true"
+    },
+    {
+      "name": "bytes.writer_new_spec",
+      "module": "Proofs.IoWrappers",
+      "scope": "helper-model"
+    },
+    {
+      "name": "bytes.writer_get_ref_spec",
+      "module": "Proofs.IoWrappers",
+      "scope": "public-model",
+      "precondition": "true"
+    },
+    {
+      "name": "bytes.writer_get_mut_spec",
+      "module": "Proofs.IoWrappers",
+      "scope": "public-model",
+      "precondition": "true"
+    },
+    {
+      "name": "bytes.writer_into_inner_spec",
+      "module": "Proofs.IoWrappers",
+      "scope": "public-model",
+      "precondition": "true"
+    },
+    {
+      "name": "bytes.buf_take_constructor_spec",
+      "module": "Proofs.PublicConstructors",
+      "scope": "public-model",
+      "precondition": "true"
+    },
+    {
+      "name": "bytes.buf_chain_constructor_spec",
+      "module": "Proofs.PublicConstructors",
+      "scope": "public-model",
+      "precondition": "true"
+    },
+    {
+      "name": "bytes.buf_reader_constructor_spec",
+      "module": "Proofs.PublicConstructors",
+      "scope": "public-model",
+      "precondition": "true"
+    },
+    {
+      "name": "bytes.bufmut_limit_constructor_spec",
+      "module": "Proofs.PublicConstructors",
+      "scope": "public-model",
+      "precondition": "true"
+    },
+    {
+      "name": "bytes.bufmut_writer_constructor_spec",
+      "module": "Proofs.PublicConstructors",
+      "scope": "public-model",
+      "precondition": "true"
+    },
+    {
+      "name": "bytes.bufmut_chain_mut_constructor_spec",
+      "module": "Proofs.PublicConstructors",
+      "scope": "public-model",
+      "precondition": "true"
+    },
+    {
+      "name": "bytes.chain_into_iter_constructor_spec",
+      "module": "Proofs.PublicConstructors",
+      "scope": "public-model",
+      "precondition": "true"
+    },
+    {
+      "name": "bytes_buffers.slice_remaining_spec",
+      "module": "Proofs.AdapterConsumption",
+      "scope": "public-model",
+      "precondition": "true"
+    },
+    {
+      "name": "bytes_buffers.slice_chunk_spec",
+      "module": "Proofs.AdapterConsumption",
+      "scope": "public-model",
+      "precondition": "true"
+    },
+    {
+      "name": "bytes_buffers.slice_has_remaining_spec",
+      "module": "Proofs.AdapterConsumption",
+      "scope": "public-model",
+      "precondition": "true"
+    },
+    {
+      "name": "bytes_buffers.take_has_remaining_spec",
+      "module": "Proofs.AdapterConsumption",
+      "scope": "helper-model"
+    },
+    {
+      "name": "bytes_buffers.concrete_take_has_remaining",
+      "module": "Proofs.AdapterConsumption",
+      "scope": "public-model",
+      "precondition": "inner is an actual byte slice"
+    },
+    {
+      "name": "bytes_buffers.take_laws",
+      "module": "Proofs.AdapterConsumption",
+      "scope": "helper-model"
+    },
+    {
+      "name": "bytes_buffers.take_advance_over_limit",
+      "module": "Proofs.AdapterConsumption",
+      "scope": "helper-model"
+    },
+    {
+      "name": "bytes_buffers.take_advance_sequence",
+      "module": "Proofs.AdapterConsumption",
+      "scope": "helper-model"
+    },
+    {
+      "name": "bytes_buffers.chain_remaining_spec",
+      "module": "Proofs.ChainConsumption",
+      "scope": "helper-model"
+    },
+    {
+      "name": "bytes_buffers.chain_chunk_exact",
+      "module": "Proofs.ChainConsumption",
+      "scope": "helper-model"
+    },
+    {
+      "name": "bytes_buffers.chain_advance_spec",
+      "module": "Proofs.ChainConsumption",
+      "scope": "helper-model"
+    },
+    {
+      "name": "bytes_buffers.chain_has_remaining_spec",
+      "module": "Proofs.ChainConsumption",
+      "scope": "helper-model"
+    },
+    {
+      "name": "bytes_buffers.chain_laws",
+      "module": "Proofs.ChainConsumption",
+      "scope": "helper-model"
+    },
+    {
+      "name": "bytes_buffers.concrete_chain_remaining",
+      "module": "Proofs.ChainConsumption",
+      "scope": "public-model",
+      "precondition": "both underlying buffers are actual byte slices"
+    },
+    {
+      "name": "bytes_buffers.concrete_chain_chunk",
+      "module": "Proofs.ChainConsumption",
+      "scope": "public-model",
+      "precondition": "both underlying buffers are actual byte slices"
+    },
+    {
+      "name": "bytes_buffers.concrete_chain_advance",
+      "module": "Proofs.ChainConsumption",
+      "scope": "public-model",
+      "precondition": "both underlying buffers are actual byte slices; count <= concatenated logical length"
+    },
+    {
+      "name": "bytes_buffers.concrete_chain_has_remaining",
+      "module": "Proofs.ChainConsumption",
+      "scope": "public-model",
+      "precondition": "both underlying buffers are actual byte slices"
+    },
+    {
+      "name": "bytes_buffers.chain_advance_sequence",
+      "module": "Proofs.ChainConsumption",
+      "scope": "helper-model"
+    },
+    {
+      "name": "bytes_buffers.take_chain_laws",
+      "module": "Proofs.ChainConsumption",
+      "scope": "helper-model"
+    },
+    {
+      "name": "bytes_numeric.slice_get_i8_spec",
+      "module": "Proofs.NumericConsumption",
+      "scope": "public-model",
+      "precondition": "source is nonempty"
+    },
+    {
+      "name": "bytes_numeric.slice_try_get_i8_success",
+      "module": "Proofs.NumericConsumption",
+      "scope": "helper-model"
+    },
+    {
+      "name": "bytes_numeric.slice_try_get_i8_empty",
+      "module": "Proofs.NumericConsumption",
+      "scope": "helper-model"
+    },
+    {
+      "name": "bytes_numeric.slice_get_u8_spec",
+      "module": "Proofs.NumericConsumption",
+      "scope": "public-model",
+      "precondition": "source is nonempty"
+    },
+    {
+      "name": "bytes_numeric.slice_try_get_u8_success",
+      "module": "Proofs.NumericConsumption",
+      "scope": "helper-model"
+    },
+    {
+      "name": "bytes_numeric.slice_try_get_u8_empty",
+      "module": "Proofs.NumericConsumption",
+      "scope": "helper-model"
+    },
+    {
+      "name": "bytes_numeric.slice_get_i8_empty",
+      "module": "Proofs.NumericConsumption",
+      "scope": "helper-model"
+    },
+    {
+      "name": "bytes_numeric.slice_get_u8_empty",
+      "module": "Proofs.NumericConsumption",
+      "scope": "helper-model"
+    },
+    {
+      "name": "bytes_numeric.slice_try_get_i8_spec",
+      "module": "Proofs.NumericConsumption",
+      "scope": "public-model",
+      "precondition": "true"
+    },
+    {
+      "name": "bytes_numeric.slice_try_get_u8_spec",
+      "module": "Proofs.NumericConsumption",
+      "scope": "public-model",
+      "precondition": "true"
+    },
+    {
+      "name": "bytes_buffers.try_copy_to_slice_insufficient",
+      "module": "Proofs.CopyConsumption",
+      "scope": "helper-model"
+    },
+    {
+      "name": "bytes_buffers.try_copy_to_slice_empty",
+      "module": "Proofs.CopyConsumption",
+      "scope": "helper-model"
+    },
+    {
+      "name": "bytes_buffers.try_copy_to_slice_one_chunk",
+      "module": "Proofs.CopyConsumption",
+      "scope": "helper-model"
+    },
+    {
+      "name": "bytes_buffers.slice_try_copy_to_slice_success",
+      "module": "Proofs.CopyConsumption",
+      "scope": "helper-model"
+    },
+    {
+      "name": "bytes_buffers.slice_try_copy_to_slice_total",
+      "module": "Proofs.CopyConsumption",
+      "scope": "helper-model",
+      "precondition": "actual byte slice; unchanged default implementation"
+    },
+    {
+      "name": "bytes_buffers.copy_loop_general",
+      "module": "Proofs.CopyLoop",
+      "scope": "helper-model"
+    },
+    {
+      "name": "bytes_buffers.try_copy_to_slice_success",
+      "module": "Proofs.CopyLoop",
+      "scope": "helper-model"
+    },
+    {
+      "name": "bytes_buffers.try_copy_to_slice_total",
+      "module": "Proofs.CopyLoop",
+      "scope": "public-model",
+      "precondition": "explicit proved Buf laws; arbitrary finite chunks; concrete slices grounded by slice_laws and adapter closures"
+    },
+    {
+      "name": "bytes_buffers.take_slice_copy_success",
+      "module": "Proofs.CopyApplications",
+      "scope": "helper-model"
+    },
+    {
+      "name": "bytes_buffers.chain_slice_copy_success",
+      "module": "Proofs.CopyApplications",
+      "scope": "helper-model"
+    },
+    {
+      "name": "bytes_buffers.take_chain_slice_copy_success",
+      "module": "Proofs.CopyApplications",
+      "scope": "helper-model"
+    },
+    {
+      "name": "bytes_buffers.take_dictionary_exact",
+      "module": "Proofs.AdapterConsumption",
+      "scope": "helper-model"
+    },
+    {
+      "name": "bytes_buffers.chain_dictionary_exact",
+      "module": "Proofs.ChainConsumption",
+      "scope": "helper-model"
+    },
+    {
+      "name": "bytes_buffers.nested_take_chain_dispatch_exact",
+      "module": "Proofs.ChainConsumption",
+      "scope": "helper-model"
+    },
+    {
+      "name": "bytes_cursor_proofs.min_bridge",
+      "module": "Proofs.CursorConsumption",
+      "scope": "helper-model"
+    },
+    {
+      "name": "bytes_cursor_proofs.sub_bridge",
+      "module": "Proofs.CursorConsumption",
+      "scope": "helper-model"
+    },
+    {
+      "name": "bytes_cursor_proofs.cursor_remaining_spec",
+      "module": "Proofs.CursorConsumption",
+      "scope": "helper-model"
+    },
+    {
+      "name": "bytes_cursor_proofs.cursor_chunk_spec",
+      "module": "Proofs.CursorConsumption",
+      "scope": "helper-model"
+    },
+    {
+      "name": "bytes_cursor_proofs.cursor_advance_spec",
+      "module": "Proofs.CursorConsumption",
+      "scope": "helper-model"
+    },
+    {
+      "name": "bytes_cursor_proofs.array_remaining_spec",
+      "module": "Proofs.CursorConsumption",
+      "scope": "helper-model"
+    },
+    {
+      "name": "bytes_cursor_proofs.array_chunk_spec",
+      "module": "Proofs.CursorConsumption",
+      "scope": "helper-model"
+    },
+    {
+      "name": "bytes_cursor_proofs.array_advance_spec",
+      "module": "Proofs.CursorConsumption",
+      "scope": "helper-model"
+    },
+    {
+      "name": "bytes_cursor_proofs.cursor_advance_zero",
+      "module": "Proofs.CursorConsumption",
+      "scope": "helper-model"
+    },
+    {
+      "name": "bytes_cursor_proofs.panic_advance_eq_fail",
+      "module": "Proofs.CursorConsumption",
+      "scope": "helper-model"
+    },
+    {
+      "name": "bytes_cursor_proofs.cursor_advance_invalid",
+      "module": "Proofs.CursorConsumption",
+      "scope": "helper-model"
+    },
+    {
+      "name": "bytes_cursor_proofs.actual_slice_as_ref",
+      "module": "Proofs.CursorConsumption",
+      "scope": "helper-model"
+    },
+    {
+      "name": "bytes_cursor_proofs.slice_remaining_spec",
+      "module": "Proofs.CursorConsumption",
+      "scope": "public-model",
+      "precondition": "64-bit target"
+    },
+    {
+      "name": "bytes_cursor_proofs.slice_chunk_spec",
+      "module": "Proofs.CursorConsumption",
+      "scope": "public-model",
+      "precondition": "64-bit target"
+    },
+    {
+      "name": "bytes_cursor_proofs.slice_advance_spec",
+      "module": "Proofs.CursorConsumption",
+      "scope": "public-model",
+      "precondition": "64-bit target; count <= max(source length - position, 0)"
+    },
+    {
+      "name": "bytes_cursor_proofs.slice_advance_zero",
+      "module": "Proofs.CursorConsumption",
+      "scope": "helper-model"
+    },
+    {
+      "name": "bytes_cursor_proofs.slice_advance_invalid",
+      "module": "Proofs.CursorConsumption",
+      "scope": "helper-model"
+    },
+    {
+      "name": "bytes_cursor_proofs.slice_advance_view",
+      "module": "Proofs.CursorConsumption",
+      "scope": "helper-model"
+    },
+    {
+      "name": "bytes_cursor_proofs.slice_advance_sequence",
+      "module": "Proofs.CursorConsumption",
+      "scope": "helper-model"
+    },
+    {
+      "name": "bytes_buffers.reader_consume_spec",
+      "module": "Proofs.ReaderConsumption",
+      "scope": "helper-model"
+    },
+    {
+      "name": "bytes_buffers.concrete_reader_consume",
+      "module": "Proofs.ReaderConsumption",
+      "scope": "public-model",
+      "precondition": "actual byte slice; count <= remaining source length"
+    },
+    {
+      "name": "range_proofs.range_fragments_eq",
+      "module": "Proofs.Range",
+      "scope": "helper-model"
+    },
+    {
+      "name": "range_proofs.range_success",
+      "module": "Proofs.Range",
+      "scope": "helper-model"
+    },
+    {
+      "name": "range_proofs.range_invalid",
+      "module": "Proofs.Range",
+      "scope": "helper-model"
+    },
+    {
+      "name": "range_proofs.range_success_iff",
+      "module": "Proofs.Range",
+      "scope": "helper-model"
+    },
+    {
+      "name": "bytes_extended.error_roundtrip_old",
+      "module": "Proofs.ExtendedCopy",
+      "scope": "helper-model"
+    },
+    {
+      "name": "bytes_extended.error_roundtrip_new",
+      "module": "Proofs.ExtendedCopy",
+      "scope": "helper-model"
+    },
+    {
+      "name": "bytes_extended.error_fields",
+      "module": "Proofs.ExtendedCopy",
+      "scope": "helper-model"
+    },
+    {
+      "name": "bytes_extended.error_constructor",
+      "module": "Proofs.ExtendedCopy",
+      "scope": "helper-model"
+    },
+    {
+      "name": "bytes_extended.error_injective",
+      "module": "Proofs.ExtendedCopy",
+      "scope": "helper-model"
+    },
+    {
+      "name": "bytes_extended.loop_body_projection",
+      "module": "Proofs.ExtendedCopy",
+      "scope": "helper-model"
+    },
+    {
+      "name": "bytes_extended.loop_projection",
+      "module": "Proofs.ExtendedCopy",
+      "scope": "helper-model"
+    },
+    {
+      "name": "bytes_extended.checked_projection",
+      "module": "Proofs.ExtendedCopy",
+      "scope": "helper-model"
+    },
+    {
+      "name": "bytes_extended.project_extend",
+      "module": "Proofs.ExtendedCopy",
+      "scope": "helper-model"
+    },
+    {
+      "name": "bytes_extended.extended_checked_exact",
+      "module": "Proofs.ExtendedCopy",
+      "scope": "helper-model"
+    },
+    {
+      "name": "bytes_extended.default_checked_success",
+      "module": "Proofs.ExtendedCopy",
+      "scope": "helper-model"
+    },
+    {
+      "name": "bytes_extended.default_checked_insufficient",
+      "module": "Proofs.ExtendedCopy",
+      "scope": "helper-model"
+    },
+    {
+      "name": "bytes_extended.default_checked_total",
+      "module": "Proofs.ExtendedCopy",
+      "scope": "helper-model"
+    },
+    {
+      "name": "bytes_extended.extend_checked_laws",
+      "module": "Proofs.ExtendedCopy",
+      "scope": "helper-model"
+    },
+    {
+      "name": "bytes_extended.slice_checked_laws",
+      "module": "Proofs.ExtendedCopy",
+      "scope": "helper-model"
+    },
+    {
+      "name": "bytes_extended.take_checked_laws",
+      "module": "Proofs.ExtendedCopy",
+      "scope": "helper-model"
+    },
+    {
+      "name": "bytes_extended.chain_checked_laws",
+      "module": "Proofs.ExtendedCopy",
+      "scope": "helper-model"
+    },
+    {
+      "name": "bytes_numeric.setSlice_zeros_prefix",
+      "module": "Proofs.VariableMath",
+      "scope": "arithmetic-helper"
+    },
+    {
+      "name": "bytes_numeric.setSlice_zeros_suffix",
+      "module": "Proofs.VariableMath",
+      "scope": "arithmetic-helper"
+    },
+    {
+      "name": "bytes_numeric.leValue_fill_zeros",
+      "module": "Proofs.VariableMath",
+      "scope": "arithmetic-helper"
+    },
+    {
+      "name": "bytes_numeric.beValue_fill_zeros",
+      "module": "Proofs.VariableMath",
+      "scope": "arithmetic-helper"
+    },
+    {
+      "name": "bytes_numeric.leValue_weighted_sum_aux",
+      "module": "Proofs.VariableMath",
+      "scope": "arithmetic-helper"
+    },
+    {
+      "name": "bytes_numeric.leValue_weighted_sum",
+      "module": "Proofs.VariableMath",
+      "scope": "arithmetic-helper"
+    },
+    {
+      "name": "bytes_numeric.beValue_cons",
+      "module": "Proofs.VariableMath",
+      "scope": "arithmetic-helper"
+    },
+    {
+      "name": "bytes_numeric.beValue_weighted_sum",
+      "module": "Proofs.VariableMath",
+      "scope": "arithmetic-helper"
+    },
+    {
+      "name": "bytes_numeric.signedByteValue_beValue",
+      "module": "Proofs.VariableMath",
+      "scope": "arithmetic-helper"
+    },
+    {
+      "name": "bytes_numeric.signed64_full_leValue",
+      "module": "Proofs.VariableMath",
+      "scope": "arithmetic-helper"
+    },
+    {
+      "name": "bytes_numeric.signed64_full_beValue",
+      "module": "Proofs.VariableMath",
+      "scope": "arithmetic-helper"
+    },
+    {
+      "name": "bytes_numeric.signed_short_math_discrepancy",
+      "module": "Proofs.VariableMath",
+      "scope": "arithmetic-helper"
+    },
+    {
+      "name": "bytes_numeric.signed64_short_leValue_disagrees",
+      "module": "Proofs.VariableMath",
+      "scope": "arithmetic-helper"
+    },
+    {
+      "name": "bytes_numeric.signed64_short_beValue_disagrees",
+      "module": "Proofs.VariableMath",
+      "scope": "arithmetic-helper"
+    }
+  ],
+  "recorder_mappings": [
+    {
+      "api": "buf::Take::into_inner",
+      "theorem": "bytes.take_into_inner_spec"
+    },
+    {
+      "api": "buf::Take::get_ref",
+      "theorem": "bytes.take_get_ref_spec"
+    },
+    {
+      "api": "buf::Take::get_mut",
+      "theorem": "bytes.take_get_mut_spec"
+    },
+    {
+      "api": "buf::Take::limit",
+      "theorem": "bytes.take_limit_spec"
+    },
+    {
+      "api": "buf::Take::set_limit",
+      "theorem": "bytes.take_set_limit_spec"
+    },
+    {
+      "api": "buf::Chain::first_ref",
+      "theorem": "bytes.chain_first_ref_spec"
+    },
+    {
+      "api": "buf::Chain::first_mut",
+      "theorem": "bytes.chain_first_mut_spec"
+    },
+    {
+      "api": "buf::Chain::last_ref",
+      "theorem": "bytes.chain_last_ref_spec"
+    },
+    {
+      "api": "buf::Chain::last_mut",
+      "theorem": "bytes.chain_last_mut_spec"
+    },
+    {
+      "api": "buf::Chain::into_inner",
+      "theorem": "bytes.chain_into_inner_spec"
+    },
+    {
+      "api": "buf::Limit::into_inner",
+      "theorem": "bytes.limit_into_inner_spec"
+    },
+    {
+      "api": "buf::Limit::get_ref",
+      "theorem": "bytes.limit_get_ref_spec"
+    },
+    {
+      "api": "buf::Limit::get_mut",
+      "theorem": "bytes.limit_get_mut_spec"
+    },
+    {
+      "api": "buf::Limit::limit",
+      "theorem": "bytes.limit_limit_spec"
+    },
+    {
+      "api": "buf::Limit::set_limit",
+      "theorem": "bytes.limit_set_limit_spec"
+    },
+    {
+      "api": "buf::IntoIter::new",
+      "theorem": "bytes.intoiter_new_spec"
+    },
+    {
+      "api": "buf::IntoIter::into_inner",
+      "theorem": "bytes.intoiter_into_inner_spec"
+    },
+    {
+      "api": "buf::IntoIter::get_ref",
+      "theorem": "bytes.intoiter_get_ref_spec"
+    },
+    {
+      "api": "buf::IntoIter::get_mut",
+      "theorem": "bytes.intoiter_get_mut_spec"
+    },
+    {
+      "api": "Buf for &[u8]::advance",
+      "theorem": "bytes_consumption.slice_advance_spec"
+    },
+    {
+      "api": "Buf for &[u8]::copy_to_slice",
+      "theorem": "bytes_consumption.slice_copy_spec"
+    },
+    {
+      "api": "buf::Take::remaining",
+      "theorem": "bytes_buffers.concrete_take_remaining"
+    },
+    {
+      "api": "buf::Take::chunk",
+      "theorem": "bytes_buffers.concrete_take_chunk"
+    },
+    {
+      "api": "buf::Take::advance",
+      "theorem": "bytes_buffers.concrete_take_advance"
+    },
+    {
+      "api": "buf::IntoIter::next",
+      "theorem": "bytes_buffers.slice_iterator_next_spec"
+    },
+    {
+      "api": "buf::IntoIter::size_hint",
+      "theorem": "bytes_buffers.slice_iterator_size_hint_spec"
+    },
+    {
+      "api": "buf::Reader::get_ref",
+      "theorem": "bytes.reader_get_ref_spec"
+    },
+    {
+      "api": "buf::Reader::get_mut",
+      "theorem": "bytes.reader_get_mut_spec"
+    },
+    {
+      "api": "buf::Reader::into_inner",
+      "theorem": "bytes.reader_into_inner_spec"
+    },
+    {
+      "api": "buf::Writer::get_ref",
+      "theorem": "bytes.writer_get_ref_spec"
+    },
+    {
+      "api": "buf::Writer::get_mut",
+      "theorem": "bytes.writer_get_mut_spec"
+    },
+    {
+      "api": "buf::Writer::into_inner",
+      "theorem": "bytes.writer_into_inner_spec"
+    },
+    {
+      "api": "Buf::take",
+      "theorem": "bytes.buf_take_constructor_spec"
+    },
+    {
+      "api": "Buf::chain",
+      "theorem": "bytes.buf_chain_constructor_spec"
+    },
+    {
+      "api": "Buf::reader",
+      "theorem": "bytes.buf_reader_constructor_spec"
+    },
+    {
+      "api": "BufMut::limit",
+      "theorem": "bytes.bufmut_limit_constructor_spec"
+    },
+    {
+      "api": "BufMut::writer",
+      "theorem": "bytes.bufmut_writer_constructor_spec"
+    },
+    {
+      "api": "BufMut::chain_mut",
+      "theorem": "bytes.bufmut_chain_mut_constructor_spec"
+    },
+    {
+      "api": "buf::Chain::into_iter",
+      "theorem": "bytes.chain_into_iter_constructor_spec"
+    },
+    {
+      "api": "Buf for &[u8]::remaining",
+      "theorem": "bytes_buffers.slice_remaining_spec"
+    },
+    {
+      "api": "Buf for &[u8]::chunk",
+      "theorem": "bytes_buffers.slice_chunk_spec"
+    },
+    {
+      "api": "Buf for &[u8]::has_remaining",
+      "theorem": "bytes_buffers.slice_has_remaining_spec"
+    },
+    {
+      "api": "buf::Take::has_remaining",
+      "theorem": "bytes_buffers.concrete_take_has_remaining"
+    },
+    {
+      "api": "buf::Chain::remaining",
+      "theorem": "bytes_buffers.concrete_chain_remaining"
+    },
+    {
+      "api": "buf::Chain::chunk",
+      "theorem": "bytes_buffers.concrete_chain_chunk"
+    },
+    {
+      "api": "buf::Chain::advance",
+      "theorem": "bytes_buffers.concrete_chain_advance"
+    },
+    {
+      "api": "buf::Chain::has_remaining",
+      "theorem": "bytes_buffers.concrete_chain_has_remaining"
+    },
+    {
+      "api": "Buf for &[u8]::get_u8",
+      "theorem": "bytes_numeric.slice_get_u8_spec"
+    },
+    {
+      "api": "Buf for &[u8]::try_get_u8",
+      "theorem": "bytes_numeric.slice_try_get_u8_spec"
+    },
+    {
+      "api": "Buf for &[u8]::get_i8",
+      "theorem": "bytes_numeric.slice_get_i8_spec"
+    },
+    {
+      "api": "Buf for &[u8]::try_get_i8",
+      "theorem": "bytes_numeric.slice_try_get_i8_spec"
+    },
+    {
+      "api": "Buf::try_copy_to_slice (default)",
+      "theorem": "bytes_buffers.try_copy_to_slice_total"
+    },
+    {
+      "api": "Buf for Cursor<&[u8]>::remaining",
+      "theorem": "bytes_cursor_proofs.slice_remaining_spec"
+    },
+    {
+      "api": "Buf for Cursor<&[u8]>::chunk",
+      "theorem": "bytes_cursor_proofs.slice_chunk_spec"
+    },
+    {
+      "api": "Buf for Cursor<&[u8]>::advance",
+      "theorem": "bytes_cursor_proofs.slice_advance_spec"
+    },
+    {
+      "api": "BufRead for Reader::consume",
+      "theorem": "bytes_buffers.concrete_reader_consume"
+    }
+  ],
+  "extracted_but_unproved": []
+}

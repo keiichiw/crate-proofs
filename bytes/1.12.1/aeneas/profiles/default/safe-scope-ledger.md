@@ -1,0 +1,37 @@
+# Safe-scope disposition at final oracle review
+
+The baseline scope is126 theorem roots/56 public API mappings. Stage3 adds35 helper/internal/correspondence audit roots (range4, numeric mathematics14, extended checked-copy17); expected combined scope161 roots, still56 public API mappings, pending the separate integrated audit. “Accepted” below means semantic acceptance subject to the separate integrated regeneration/build/axiom audit. Roots, API mappings and whole-family coverage are different counts. Priorities did not permit dropping feasible work; unresolved safe families have explicit translation/model boundaries and remain obligations.
+
+| Family | Disposition | Evidence / precise boundary |
+|---|---|---|
+| Actual slice remaining/chunk/advance/has_remaining | Accepted | Actual generated dictionary; four laws proved, exact suffix and count |
+| Actual slice overridden copy_to_slice | Accepted | Exact source suffix plus destination prefix; valid/invalid lengths |
+| Take remaining/chunk/advance/has_remaining | Accepted generic conditional + concrete slices | Arbitrary limits, exact inner suffix/limit, closure and sequence; no assumption limit<=inner length |
+| Chain remaining/chunk/advance/has_remaining | Accepted generic conditional + concrete slices | Saturated count, exact selected chunk and cross-boundary component drops; closure/composition |
+| IntoIter next/size_hint | Accepted generic conditional + concrete slices | Exact head/tail and stable exhaustion; exact size requires representability |
+| get_u8/try_get_u8/get_i8/try_get_i8 | Accepted actual concrete slices | Stage2 generated source, exact value/suffix, checked empty atomicity and unchecked modeled panic |
+| Default try_copy_to_slice | Accepted | Actual loop, arbitrary lawful chunk partitions and termination; exact prefix/suffix or unchanged error states; concrete nested adapter applications |
+| Default unchecked copy_to_slice wrapper | Not covered by checked-loop theorem | Baseline four-field rejection is historical. Stage3 widens the checked-copy field and verifies its correspondence, but actual unchecked unwrap_or_else selection still encounters a standard-library DropF/Destruct dangling-trait extraction boundary. No partial wrapper model is accepted. The proven overridden slice method and checked default loop remain separate. |
+| Twelve variable-width uint/int BE/LE/NE readers | Blocked translation / failed desired signed obligation | numeric-safe baseline records macro closure borrow failures; normalized all-family retry fails earlier on reachable omitted trait methods. This does not prove the closure errors would persist after widening the model. Scalar conversion lemmas are not API coverage. Checked signed widths1..7 have independently reproduced sign-extension discrepancy |
+| Cursor remaining/chunk/advance | Accepted, explicit64-bit and lawful AsRef conditions | Actual std Cursor representation/accessors and Slice/Shared AsRef included; concrete slice/array grounding. All raw positions, zero at beyond-end, exact inner/position preserved. Earlier opaque-Cursor probe is superseded |
+| Reader::consume | Accepted generic conditional + concrete slices | Direct actual body avoids unused io::Error. Earlier combined Reader probe does not block this selected method |
+| Reader/Writer structural methods and public construction wrappers | Accepted | Exact fields/writebacks; unused trait bounds imply no operational BufMut laws |
+| Reader read/fill_buf; Writer write/flush | Not accepted | Combined IO probes reach opaque io::Error or additional operational trait dependencies. consume and structural acceptance do not extend to these |
+| VecDeque Buf operations | Blocked representation/model boundary | safe-extensions probe reaches opaque representation/as_slices/len/is_empty/drain application axioms |
+| Chain/default vectored operations | Blocked interface/lifetime model boundary | safe-extensions probe requires IoSlice and faithful chunks_vectored dependency outside current projection |
+| Private range normalization | Stage3 semantic acceptance, pending integrated audit | Original body now extracted with opt-in branch-continuation fallback; exact normalized endpoints, success iff valid, and invalid modeled panic under explicit successful RangeBounds query hypotheses. Baseline join failure superseded; this is an internal helper, not new public API coverage |
+| Bytes/BytesMut apparently simple representation queries | Blocked representation boundary | Opaque source types fail field access; transparent probe reaches atomic/Vtable or NonNull/Shared axioms. Not replaced by synthetic safe layouts |
+| Fixed-width integer readers >=16bits and dependent floats | Unsafe dependency exclusion | Contiguous fast-path macro dereferences an unsafe cast |
+| Bytes ownership/splitting/copy_to_bytes | Unsafe representation/ownership boundary | Allocation, sharing/refcounts and underlying memory invariants remain open |
+| Operational BufMut/Limit writable operations | Unsafe caller/initialization boundary | UninitSlice and advance_mut contracts remain open; structural proofs do not discharge them |
+| Take chunks_vectored | Unsafe body exclusion | Explicit lifetime transmute |
+
+Reproducers and historical/current distinctions are documented in verification/blockers/{numeric-safe,default-copy-wrapper,safe-extensions,range,shared-reborrow-stage2,declaration-order-stage2}. The signed-read counterexample is in verification/findings/signed-read. Tool blockers describe the current pinned pipeline, not impossibility of future verification. Any broad “all safe bytes APIs verified” claim would be false; the accepted concrete scope is listed in the inventory/mappings, with unresolved obligations preserved in specification.md.
+
+## Stage3 additions and remaining limits
+
+The exact two-field TryGetError representation admits all raw pairs and has a proved field-preserving bijection with the prior generated record. Extended checked-copy loop bodies are definitionally equal through interface projection; the unrestricted default checked execution bridge preserves outcomes/states/failure/divergence while converting only the error record. Actual new checked success, shortage and totality follow without assuming their desired behavior. Constructed extended slice/Take/Chain dictionaries are grounded through proved earlier methods/default loop; no claim of original slice override dispatch or generic unchecked wrapper correctness follows.
+
+The14 promoted numeric results are mathematical helpers only: weighted endian sums, zero-padding, signed interpretation and mathematical discrepancy. The12 variable-width APIs are not newly proved; the checked signed desired contract remains false on the independently recorded short-width counterexamples. Exact range helper proof and35 additional audit roots do not increase the56 public API mappings. Stage3 tool fixes remain reviewed/tested translation boundaries; old core/numeric pins and baseline evidence remain preserved.
+
+The Debug dictionary-erasure rfl comparison quantifies over the preexisting Debug dictionary, whose type depends on the Formatter axiom. It is retained only as correspondence relative to that existing formatting abstraction, outside the strict application-root inventory (as with the earlier Display comparison). It is not one of the161 strict roots. The actual range/application proof graphs use the dictionary-free function; they must independently pass the unchanged strict axiom audit. No Formatter allowance is introduced.

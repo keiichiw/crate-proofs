@@ -34,10 +34,10 @@ validation. Tools are pinned by revisions, patches, resulting trees, OCaml packa
 and runtime identities. Shared installations live in ignored `.work/tools` at the
 repository root; build outputs and run logs remain version-local.
 
-The bytes profile requires core, numeric and stage3 extractors and the ordinary
-negative control. Their compiler patches are trust boundaries; setup/build success
-does not prove those transformations correct. Do not replace locks or generated
-Lean when editing report prose.
+Tool variants, permitted patches and negative controls are profile-specific; see
+the version-local README and specification for the selected profile. Any compiler
+patches are trust boundaries: setup/build success does not prove transformations
+correct. Do not replace locks or generated Lean when editing report prose.
 
 `AENEAS_TOOL_CACHE` and `AENEAS_ARCHIVE_CACHE` can select absolute cache paths.
 Interactive `scripts/env.sh` activation is version-local. Do not mix it with the

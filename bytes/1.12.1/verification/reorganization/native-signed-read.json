@@ -1,0 +1,28 @@
+{
+  "scope": "Native regression only; no formal verification or publication",
+  "command": [
+    "rustup",
+    "run",
+    "1.91.1",
+    "cargo",
+    "run",
+    "--offline",
+    "--locked",
+    "--quiet",
+    "--manifest-path",
+    "/Users/keiichiw/workspace/crate-proofs/bytes/1.12.1/aeneas/profiles/default/findings/signed-read/Cargo.toml"
+  ],
+  "cwd": "/Users/keiichiw/workspace/crate-proofs/bytes/1.12.1",
+  "exit_code": 0,
+  "stdout": "width=1: get_int{,_le,_ne}=-1; try_get_int{,_le,_ne}=Ok(255); all consumed=1\nwidth=2: get_int{,_le,_ne}=-1; try_get_int{,_le,_ne}=Ok(65535); all consumed=2\nwidth=3: get_int{,_le,_ne}=-1; try_get_int{,_le,_ne}=Ok(16777215); all consumed=3\nwidth=4: get_int{,_le,_ne}=-1; try_get_int{,_le,_ne}=Ok(4294967295); all consumed=4\nwidth=5: get_int{,_le,_ne}=-1; try_get_int{,_le,_ne}=Ok(1099511627775); all consumed=5\nwidth=6: get_int{,_le,_ne}=-1; try_get_int{,_le,_ne}=Ok(281474976710655); all consumed=6\nwidth=7: get_int{,_le,_ne}=-1; try_get_int{,_le,_ne}=Ok(72057594037927935); all consumed=7\nwidth=8: get_int{,_le,_ne}=-1; try_get_int{,_le,_ne}=Ok(-1); all consumed=8\n",
+  "stderr": "",
+  "rustc": "rustc 1.91.1 (ed61e7d7e 2025-11-07)\nbinary: rustc\ncommit-hash: ed61e7d7e242494fb7057f2657300d9e77bb4fcb\ncommit-date: 2025-11-07\nhost: aarch64-apple-darwin\nrelease: 1.91.1\nLLVM version: 21.1.2\n",
+  "source_lock_sha256": "7d8d183818dbcabbee344f6e7fdb3b34117af5518cb81726a70fa87db1e6ba53",
+  "recorded_at": "2026-10-25T05:55:50.447630+00:00",
+  "input_sha256": {
+    "aeneas/profiles/default/findings/signed-read/Cargo.toml": "a9c5e384b00e12ae01a4172e020002d4e5c12f28ed828fa1f52cd7abca01438e",
+    "aeneas/profiles/default/findings/signed-read/Cargo.lock": "7528319bddc99115c98e97c33c0ac210155858c09ff7ec25b95e0f8c58935e72",
+    "aeneas/profiles/default/findings/signed-read/src/main.rs": "190389cd4cb2d00db0632aaf83a24af8c4fec003294517a0c7e30fc025cdcbb2",
+    ".work/source/src/buf/buf_impl.rs": "f1095872bba7c9d5170207750f4ebe4fa61c4e35a282569491c2ee8ea2dc6714"
+  }
+}

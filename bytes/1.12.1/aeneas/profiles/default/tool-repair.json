@@ -1,0 +1,39 @@
+{
+  "base_revision": "be86ab0f1989d04944292b345b24c435be3ad10a",
+  "changed_files": [
+    "backends/lean/Aeneas/Std.lean",
+    "backends/lean/Aeneas/Std/BytesBuf.lean",
+    "backends/lean/Aeneas/Std/Core/Fmt.lean",
+    "src/Config.ml",
+    "src/Main.ml",
+    "src/PrePasses.ml",
+    "src/extract/Extract.ml",
+    "src/extract/ExtractBase.ml",
+    "src/extract/ExtractBuiltinLean.ml"
+  ],
+  "comparison_axioms_note": "Dictionary-model comparison quantifies over pre-existing Formatter-based Display; it is separate tool correspondence, not an application theorem root. All application roots remain strict axiom audited.",
+  "historical_binary_note": "Original Linux executable hash remains in evidence/legacy; actual native binary is checked against the managed receipt before/after every run.",
+  "lean_comparison_theorem": "core.fmt.rt.Argument.new_display_without_dictionary_eq (rfl)",
+  "never_correspondence_theorem": "bytes_tool.never_continuation_exact",
+  "patch": "aeneas/profiles/default/patches/aeneas-consumption.patch",
+  "patch_sha256": "4d1c6c54e0e9519b23ceffcd6624aea0c5915bc98421fd6d6a7db953bf2e9002",
+  "projection_model": "backends/lean/Aeneas/Std/BytesBuf.lean",
+  "registration_generation": "cd .tools/aeneas/backends/lean && lake exe extract",
+  "regression_note": "Rooted dependency regressions and concrete adapter grounding are required; compiler transformation remains reviewed/tested rather than kernel-verified.",
+  "rooted_boundary": "Registered trait dictionary method metadata is projected; all retained executable dependencies are traversed, with absent dependencies or calls to removed method fields rejected. Unselected source maps may remain solely as name/provenance metadata.",
+  "rooted_flag": "-rooted-declarations (used with -filter-trait-methods)",
+  "schema_version": 1,
+  "semantic_scope": "Prior Never/formatting/trait-filter repairs preserved. Added four-field Buf interface projection without behavioral axioms, opt-in rooted declaration slicing and builtin-dictionary field projection, plus Lean namespace-root binder hygiene. Retained application bodies are not rewritten by slicing; the shared-reborrow normalization is excluded and explored only in a separate rejected stage-2 tool.",
+  "source_files_sha256": {
+    "backends/lean/Aeneas/Std.lean": "dac834da021921c1500dc3312bd5226c9ab22920595dfd76b245baa084547003",
+    "backends/lean/Aeneas/Std/BytesBuf.lean": "fe7c7e8a5bd52cfbbe3f6db801dc8b9883fd40ca7d4b5d56a381cfa0bb5dda0f",
+    "backends/lean/Aeneas/Std/Core/Fmt.lean": "77db8cb3b7ad7abc575ab4d5779fe2d6e0e8b0b7775a748bd4e323f1fb1b7084",
+    "src/Config.ml": "19b9c784be79cf17fef33a1d2c5c763515181cb70e8ebafa7fcde407b725ff47",
+    "src/Main.ml": "a2ffedb1f5fa9978b7a1eb93c0dce76071b7da9d6ea0a35be704fce1764ab891",
+    "src/PrePasses.ml": "396adc4443fc64bd58114df25f4a96a47bb5dcd134d1edbf06258573507f8ee3",
+    "src/extract/Extract.ml": "b3020e40a36e824373f39b77313cbb1d3964fc1e6907b910dac3d80dc5ead3ea",
+    "src/extract/ExtractBase.ml": "34fe1bbcc8b44629d50714e97a2a300cdfda8ff2fe58260dd4c186e1f6372817",
+    "src/extract/ExtractBuiltinLean.ml": "ceba2d2f12e363fe829fa1d7e56fc6e4bd1c0014fbc7c21dce68487ba86da3d8"
+  },
+  "trust_boundary": "The OCaml compiler normalization is reviewed and regression-tested, not itself formally verified."
+}

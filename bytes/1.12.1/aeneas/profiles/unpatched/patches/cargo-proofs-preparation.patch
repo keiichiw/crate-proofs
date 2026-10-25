@@ -1,0 +1,1607 @@
+diff --git a/cli/Cargo.lock b/cli/Cargo.lock
+index a181bfb..2acfeee 100644
+--- a/cli/Cargo.lock
++++ b/cli/Cargo.lock
+@@ -2,6 +2,12 @@
+ # It is not intended for manual editing.
+ version = 4
+ 
++[[package]]
++name = "adler2"
++version = "2.0.1"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "320119579fcad9c21884f5c4861d16174d0e06250625266f50fe6898340abefa"
++
+ [[package]]
+ name = "aho-corasick"
+ version = "1.1.5"
+@@ -155,6 +161,7 @@ dependencies = [
+  "clap",
+  "ctrlc",
+  "dirs",
++ "flate2",
+  "fs2",
+  "ignore",
+  "proc-macro2",
+@@ -164,6 +171,7 @@ dependencies = [
+  "serde_json",
+  "sha2",
+  "syn 2.0.119",
++ "tar",
+  "tempfile",
+  "tiny_http",
+  "toml",
+@@ -290,6 +298,15 @@ dependencies = [
+  "libc",
+ ]
+ 
++[[package]]
++name = "crc32fast"
++version = "1.5.0"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "9481c1c90cbf2ac953f07c8d4a58aa3945c425b7185c9154d67a65e4230da511"
++dependencies = [
++ "cfg-if",
++]
++
+ [[package]]
+ name = "crossbeam-deque"
+ version = "0.8.8"
+@@ -412,12 +429,32 @@ version = "2.5.0"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+ checksum = "da7c62ceae207dd37ea5b845da6a0696c799f85e97da1ab5b7910be3c1c80223"
+ 
++[[package]]
++name = "filetime"
++version = "0.2.29"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "5c287a33c7f0a620c38e641e7f60827713987b3c0f26e8ddc9462cc69cf75759"
++dependencies = [
++ "cfg-if",
++ "libc",
++]
++
+ [[package]]
+ name = "find-msvc-tools"
+ version = "0.1.13"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+ checksum = "ef25905e51abafe4dcea6c15fec58c57b601cdbd0ee53d22ea1d3016c587d39b"
+ 
++[[package]]
++name = "flate2"
++version = "1.1.9"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "843fba2746e448b37e26a819579957415c8cef339bf08564fe8b7ddbd959573c"
++dependencies = [
++ "crc32fast",
++ "miniz_oxide",
++]
++
+ [[package]]
+ name = "form_urlencoded"
+ version = "1.2.2"
+@@ -880,6 +917,16 @@ version = "2.8.3"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+ checksum = "cf8baf1c55e62ffcace7a9f06f4bd9cd3f0c4beb022d3b367256b91b87513d98"
+ 
++[[package]]
++name = "miniz_oxide"
++version = "0.8.9"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "1fa76a2c86f704bdb222d66965fb3d63269ce38518b83cb0575fca855ebb6316"
++dependencies = [
++ "adler2",
++ "simd-adler32",
++]
++
+ [[package]]
+ name = "mio"
+ version = "1.2.3"
+@@ -1309,6 +1356,12 @@ version = "2.0.1"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+ checksum = "f8fadd59c855ef2080decdef8ff161eb6661b86933c9d82e5ba29dc602a55aba"
+ 
++[[package]]
++name = "simd-adler32"
++version = "0.3.10"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "3a219298ac11a56ea9a6d2120044824d6f01aeb034955e7af7bc16858527deea"
++
+ [[package]]
+ name = "slab"
+ version = "0.4.12"
+@@ -1391,6 +1444,17 @@ dependencies = [
+  "syn 3.0.6",
+ ]
+ 
++[[package]]
++name = "tar"
++version = "0.4.46"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "3f6221d9a6003c78398e3b239969f352578258df48c8eb051caadae0015bc840"
++dependencies = [
++ "filetime",
++ "libc",
++ "xattr",
++]
++
+ [[package]]
+ name = "tempfile"
+ version = "3.27.0"
+@@ -1942,6 +2006,16 @@ version = "0.6.4"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+ checksum = "3ad82d2a33cdc9674dc7465672f271e096168fcdbe0f799d9e6db8c5892679dc"
+ 
++[[package]]
++name = "xattr"
++version = "1.6.1"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "32e45ad4206f6d2479085147f02bc2ef834ac85886624a23575ae137c8aa8156"
++dependencies = [
++ "libc",
++ "rustix",
++]
++
+ [[package]]
+ name = "yoke"
+ version = "0.8.3"
+diff --git a/cli/Cargo.toml b/cli/Cargo.toml
+index ee7c5a6..1a799e6 100644
+--- a/cli/Cargo.toml
++++ b/cli/Cargo.toml
+@@ -14,6 +14,8 @@ publish = ["crates-io"]
+ include = ["src/**", "preview/**", "tests/**", "Cargo.toml", "Cargo.lock", "README.md", "LICENSE*"]
+ 
+ [dependencies]
++tar = "0.4"
++flate2 = "1"
+ anyhow = "1"
+ ctrlc = { version = "3.5", features = ["termination"] }
+ clap = { version = "4", features = ["derive", "env"] }
+diff --git a/cli/README.md b/cli/README.md
+index 485f3b1..64e3d3e 100644
+--- a/cli/README.md
++++ b/cli/README.md
+@@ -361,3 +361,40 @@ records. Translation itself is not rerun by the recorder.
+ 
+ See [the Aeneas guide](https://proofs.rs/book/aeneas.html) for setup, scope,
+ provenance, limits, and the tested Lean 4.35.0 / Aeneas be86ab0f adapter.
++
++### Prepared Aeneas sources and profiles
++
++A repository may provide `proofs-prepare.toml` beside its Cargo manifest. Explicit
++`run` reads this before Cargo metadata, executes its argv array without implicit
++shell evaluation, and repeats preparation in the isolated source checkout:
++
++```toml
++schema_version = 1
++command = ["bash", "scripts/setup.sh"]
++source_lock = "source.lock.json"
++source_dir = ".work/source"
++toolchain_lock = "aeneas/profiles/default/toolchain.lock.json"
++tool_dir = ".work/selected-tools"
++lean_source = "aeneas/profiles/default/proofs"
++lean_build = ".work/build/default/@HOST@/proofs"
++```
++
++Source locks pin the archive checksum/full inventory or exact Git commit/tree.
++Tool locks pin official base revisions, ordered patch files/checksums and resulting
++Git trees. The CLI independently checks source origin/inventory, replays patches
++and compares maintained Lean sources with the prepared build copy. Arbitrary local
++Aeneas paths are not accepted as pinned dependencies.
++
++Use `--proofs-config aeneas/profiles/stage3/reports/part-01.toml` to select a report.
++Optional `[profiles."aeneas/profiles/stage3"]` entries in the preparation file repeat
++the fields above with that profile's command, tool lock and Lean paths. The longest
++matching report-directory prefix selects preparation. Keep each profile's Lean build
++path distinct; `@HOST@` resolves to the supported native Linux x86_64 or macOS arm64
++target. Split mappings across report files at the CLI claim limit and verify their
++union separately. Configuration overrides have separate local recording state.
++
++Preparation logs remain under `.work/preparation`. Neither those logs nor repository
++script/patch bodies are embedded in SARIF. Standard Lake output, CLI audit code and
++results, input/configuration/tool hashes, source origins, Rust target/features/cfg
++and maintained Lean digests are recorded. Preparation success alone cannot establish
++proof success. Existing committed/pushed-source and publication conditions remain.
+diff --git a/cli/src/aeneas.rs b/cli/src/aeneas.rs
+index 4eb3b7a..4bbecdd 100644
+--- a/cli/src/aeneas.rs
++++ b/cli/src/aeneas.rs
+@@ -131,9 +131,9 @@ pub fn pinned_version(dir: &Path, version: &str) -> Result<()> {
+         "Expected one pinned Aeneas Lake dependency"
+     );
+     let p = aeneas[0];
+-    ensure!(p["type"] == "git" && p["rev"].as_str().is_some_and(|rev| rev.eq_ignore_ascii_case(version))
++    ensure!(crate::preparation::backend_allowed(dir, version)? || (p["type"] == "git" && p["rev"].as_str().is_some_and(|rev| rev.eq_ignore_ascii_case(version))
+         && matches!(p["url"].as_str(), Some("https://github.com/AeneasVerif/aeneas" | "https://github.com/AeneasVerif/aeneas.git"))
+-        && p["subDir"] == "backends/lean", "Aeneas Lake dependency must use the official repository, backends/lean, and [tool].version revision");
++        && p["subDir"] == "backends/lean"), "Aeneas Lake dependency must use the official repository, backends/lean, and [tool].version revision");
+     ensure!(
+         dir.join("lean-toolchain").is_file(),
+         "Commit lean-toolchain for reproducibility"
+@@ -287,31 +287,82 @@ fn safe_relative(path: &Path) -> bool {
+         })
+         && !path.to_string_lossy().contains(['\\', ':'])
+ }
++fn source_roots(dir: &Path) -> Result<Vec<PathBuf>> {
++    let mut roots = vec![dir.canonicalize()?];
++    let config = dir.join("lakefile.toml");
++    if config.is_file() {
++        let config: toml::Value = toml::from_str(&fs::read_to_string(config)?)?;
++        if let Some(libs) = config.get("lean_lib").and_then(|v| v.as_array()) {
++            for lib in libs {
++                if let Some(path) = lib.get("srcDir").and_then(|v| v.as_str()) {
++                    ensure!(
++                        safe_relative(Path::new(path)),
++                        "Invalid Lean source directory"
++                    );
++                    let root = dir.join(path).canonicalize()?;
++                    ensure!(
++                        root.starts_with(dir.canonicalize()?),
++                        "Lean source directory escapes package"
++                    );
++                    if !roots.contains(&root) {
++                        roots.push(root);
++                    }
++                }
++            }
++        }
++    }
++    Ok(roots)
++}
+ fn local_source(dir: &Path, relative: &Path) -> Result<PathBuf> {
+     ensure!(
+-        safe_relative(relative),
++        safe_relative(relative) && !relative.components().any(|p| p.as_os_str() == ".lake"),
+         "Invalid package-relative source path"
+     );
+-    let file = dir.join(relative).canonicalize()?;
++    let roots = if relative.extension().is_some_and(|s| s == "lean") {
++        source_roots(dir)?
++    } else {
++        vec![dir.canonicalize()?]
++    };
++    let mut matches = BTreeSet::new();
++    for root in roots {
++        if let Ok(file) = root.join(relative).canonicalize() {
++            ensure!(
++                file.starts_with(dir.canonicalize()?),
++                "Source escapes the Lake package"
++            );
++            if file.is_file() {
++                matches.insert(file);
++            }
++        }
++    }
+     ensure!(
+-        file.starts_with(dir.canonicalize()?)
+-            && !relative.components().any(|p| p.as_os_str() == ".lake"),
+-        "Source escapes the Lake package"
++        matches.len() == 1,
++        "Source must resolve to exactly one maintained file: {}",
++        relative.display()
+     );
+-    Ok(file)
++    Ok(matches.into_iter().next().unwrap())
+ }
+ fn local_modules(dir: &Path) -> Result<BTreeSet<String>> {
+     let mut modules = BTreeSet::new();
+-    for entry in ignore::WalkBuilder::new(dir).hidden(true).build() {
+-        let entry = entry?;
+-        if entry.path().extension().is_some_and(|x| x == "lean") {
+-            let relative = entry.path().strip_prefix(dir)?;
+-            let name = relative
+-                .with_extension("")
+-                .to_string_lossy()
+-                .replace('/', ".");
+-            if lean_name(&name) && local_source(dir, relative).is_ok() {
+-                modules.insert(name);
++    for root in source_roots(dir)? {
++        for entry in ignore::WalkBuilder::new(&root)
++            .hidden(true)
++            .git_ignore(false)
++            .git_global(false)
++            .git_exclude(false)
++            .filter_entry(|e| e.file_name() != ".lake" && e.file_name() != ".git")
++            .build()
++        {
++            let entry = entry?;
++            if entry.path().extension().is_some_and(|x| x == "lean") {
++                let relative = entry.path().strip_prefix(&root)?;
++                let name = relative
++                    .with_extension("")
++                    .to_string_lossy()
++                    .replace('/', ".");
++                if lean_name(&name) && local_source(dir, relative).is_ok() {
++                    modules.insert(name);
++                }
+             }
+         }
+     }
+@@ -544,10 +595,13 @@ pub fn extract(
+                     &dir,
+                     Path::new(&format!("{}.lean", module.replace('.', "/"))),
+                 )?;
+-                definition["source"]["file"] = json!(path
+-                    .strip_prefix(root.canonicalize()?)?
+-                    .to_string_lossy()
+-                    .replace('\\', "/"));
++                definition["source"]["file"] = json!(crate::preparation::maintained_path(
++                    project.manifest.parent().unwrap(),
++                    &path
++                )?
++                .strip_prefix(root.canonicalize()?)?
++                .to_string_lossy()
++                .replace('\\', "/"));
+             } else {
+                 definition["source"] = Value::Null;
+             }
+@@ -559,7 +613,7 @@ pub fn extract(
+             &dir,
+             Path::new(&format!("{}.lean", module.replace('.', "/"))),
+         )?;
+-        let file = file
++        let file = crate::preparation::maintained_path(project.manifest.parent().unwrap(), &file)?
+             .strip_prefix(root.canonicalize()?)?
+             .to_string_lossy()
+             .replace('\\', "/");
+@@ -654,6 +708,25 @@ pub fn extract(
+ #[cfg(test)]
+ mod tests {
+     use super::*;
++    #[test]
++    fn target_specific_generated_sources() {
++        let d = tempfile::tempdir().unwrap();
++        fs::create_dir_all(d.path().join("Generated/aarch64-apple-darwin")).unwrap();
++        fs::write(d.path().join("lakefile.toml"), "name='demo'\n[[lean_lib]]\nname='GeneratedModel'\nsrcDir='Generated/aarch64-apple-darwin'\n").unwrap();
++        fs::write(
++            d.path()
++                .join("Generated/aarch64-apple-darwin/GeneratedModel.lean"),
++            "def x := 1\n",
++        )
++        .unwrap();
++        assert!(local_modules(d.path()).unwrap().contains("GeneratedModel"));
++        assert!(local_source(d.path(), Path::new("GeneratedModel.lean"))
++            .unwrap()
++            .ends_with("Generated/aarch64-apple-darwin/GeneratedModel.lean"));
++        fs::write(d.path().join("GeneratedModel.lean"), "def x := 2\n").unwrap();
++        assert!(local_source(d.path(), Path::new("GeneratedModel.lean")).is_err());
++    }
++
+     fn tool() -> Tool {
+         toml::from_str(&format!("name='aeneas'\nversion='{}'\n[[proofs]]\napi='f'\nmodule='Proofs.F'\ntheorem='demo.f_spec'\nprecondition='x > 0'", "a".repeat(40))).unwrap()
+     }
+@@ -758,6 +831,7 @@ mod tests {
+         fs::write(d.path().join("lean-toolchain"), "leanprover/lean4:v4.35.0").unwrap();
+         fs::write(d.path().join("lake-manifest.json"), json!({"packages":[{"name":"aeneas","type":"git","url":"https://github.com/AeneasVerif/aeneas","rev":"a".repeat(40),"subDir":"backends/lean"}]}).to_string()).unwrap();
+         let project = Project {
++            config_override: None,
+             name: "demo".into(),
+             version: "1".into(),
+             lib_name: "demo".into(),
+@@ -814,6 +888,7 @@ mod tests {
+             }
+         }
+         let project = Project {
++            config_override: None,
+             name: "formal_fixture".into(),
+             version: "0.1.0".into(),
+             lib_name: "formal_fixture".into(),
+diff --git a/cli/src/config.rs b/cli/src/config.rs
+index 5381394..586b6fe 100644
+--- a/cli/src/config.rs
++++ b/cli/src/config.rs
+@@ -116,6 +116,7 @@ pub struct Config {
+     pub git: Option<Git>,
+ }
+ pub struct Project {
++    pub config_override: Option<PathBuf>,
+     pub name: String,
+     pub version: String,
+     pub lib_name: String,
+@@ -126,6 +127,15 @@ pub struct Project {
+ }
+ impl Project {
+     pub fn load(args: &ProjectArgs) -> Result<Self> {
++        if let Some(path) = &args.proofs_config {
++            ensure!(
++                !path.is_absolute()
++                    && path
++                        .components()
++                        .all(|c| matches!(c, std::path::Component::Normal(_))),
++                "--proofs-config must stay within the package"
++            );
++        }
+         let mut command = Command::new("cargo");
+         command.args(["metadata", "--format-version", "1", "--no-deps"]);
+         if let Some(path) = &args.manifest_path {
+@@ -229,6 +239,7 @@ impl Project {
+             .map(String::from)
+             .collect();
+         Ok(Self {
++            config_override: args.proofs_config.clone(),
+             name: p["name"].as_str().context("Missing crate name")?.into(),
+             version: p["version"].as_str().context("Missing version")?.into(),
+             lib_name: target["name"]
+@@ -248,7 +259,10 @@ impl Project {
+         })
+     }
+     pub fn config_path(&self) -> PathBuf {
+-        self.manifest.with_file_name("proofs.toml")
++        self.config_override
++            .as_ref()
++            .map(|p| self.manifest.parent().unwrap().join(p))
++            .unwrap_or_else(|| self.manifest.with_file_name("proofs.toml"))
+     }
+     pub fn config(&self) -> Result<Config> {
+         let config: Config = toml::from_str(
+diff --git a/cli/src/git.rs b/cli/src/git.rs
+index 740722d..1026ced 100644
+--- a/cli/src/git.rs
++++ b/cli/src/git.rs
+@@ -6,6 +6,7 @@ pub fn run(dir: &Path, args: &[&str]) -> Result<String> {
+         .current_dir(dir)
+         .args(args)
+         .env("GIT_TERMINAL_PROMPT", "0")
++        .env("GIT_OPTIONAL_LOCKS", "0")
+         .output()
+         .context("Run git")?;
+     ensure!(
+diff --git a/cli/src/main.rs b/cli/src/main.rs
+index c0a63b9..274305b 100644
+--- a/cli/src/main.rs
++++ b/cli/src/main.rs
+@@ -3,6 +3,7 @@ mod api;
+ mod config;
+ mod draft;
+ mod git;
++mod preparation;
+ mod preview;
+ mod publish;
+ mod record;
+@@ -36,6 +37,9 @@ struct Cli {
+ }
+ #[derive(Args, Clone, Default)]
+ pub struct ProjectArgs {
++    /// Profile-specific proofs.toml, relative to the selected package directory.
++    #[arg(long, global = true)]
++    proofs_config: Option<PathBuf>,
+     #[arg(long, global = true)]
+     manifest_path: Option<PathBuf>,
+     /// Select a workspace package.
+diff --git a/cli/src/preparation.rs b/cli/src/preparation.rs
+new file mode 100644
+index 0000000..c26e48f
+--- /dev/null
++++ b/cli/src/preparation.rs
+@@ -0,0 +1,1025 @@
++//! Optional repository preparation. Its code and logs never enter SARIF.
++use anyhow::{ensure, Context, Result};
++use serde::Deserialize;
++use serde_json::{json, Value};
++use sha2::{Digest, Sha256};
++use std::{
++    collections::BTreeMap,
++    fs,
++    io::Read,
++    path::{Component, Path, PathBuf},
++    process::{Command, Stdio},
++};
++
++#[derive(Deserialize)]
++#[serde(deny_unknown_fields)]
++pub struct Preparation {
++    pub schema_version: u32,
++    pub command: Vec<String>,
++    pub source_lock: PathBuf,
++    pub source_dir: PathBuf,
++    #[serde(default)]
++    pub toolchain_lock: Option<PathBuf>,
++    #[serde(default)]
++    pub tool_dir: Option<PathBuf>,
++    #[serde(default)]
++    pub lean_source: Option<PathBuf>,
++    #[serde(default)]
++    pub lean_build: Option<PathBuf>,
++    /// Package-relative report directory to preparation settings. Longest prefix wins.
++    #[serde(default)]
++    pub profiles: BTreeMap<PathBuf, Preparation>,
++}
++
++pub fn sha(path: &Path) -> Result<String> {
++    Ok(format!("{:x}", Sha256::digest(fs::read(path)?)))
++}
++
++fn native_host() -> Result<&'static str> {
++    match (std::env::consts::OS, std::env::consts::ARCH) {
++        ("macos", "aarch64") => Ok("aarch64-apple-darwin"),
++        ("linux", "x86_64") => Ok("x86_64-unknown-linux-gnu"),
++        _ => anyhow::bail!("Unsupported prepared native host"),
++    }
++}
++
++fn local(root: &Path, path: &Path) -> Result<PathBuf> {
++    ensure!(
++        !path.as_os_str().is_empty()
++            && !path.is_absolute()
++            && path.components().all(|c| matches!(c, Component::Normal(_))),
++        "Preparation path must stay within package"
++    );
++    let rendered = path.to_string_lossy().replace("@HOST@", native_host()?);
++    let joined = root.join(rendered);
++    ensure!(
++        joined.canonicalize()?.starts_with(root.canonicalize()?),
++        "Preparation path escapes package"
++    );
++    Ok(joined)
++}
++
++// Tool caches can be shared outside the package. Their Git trees and patches are
++// checked independently; this exception never applies to application sources.
++fn tool_directory(root: &Path, path: &Path) -> Result<PathBuf> {
++    ensure!(
++        !path.as_os_str().is_empty()
++            && !path.is_absolute()
++            && path.components().all(|c| matches!(c, Component::Normal(_))),
++        "Tool cache reference must be package-relative"
++    );
++    Ok(root.join(path).canonicalize()?)
++}
++
++pub fn manifest(args: &crate::ProjectArgs) -> Result<PathBuf> {
++    if let Some(path) = &args.manifest_path {
++        return Ok(path.canonicalize()?);
++    }
++    let mut dir = std::env::current_dir()?;
++    loop {
++        if dir.join("Cargo.toml").is_file() {
++            return Ok(dir.join("Cargo.toml"));
++        }
++        ensure!(dir.pop(), "Cannot find Cargo.toml before preparation");
++    }
++}
++
++pub fn read(root: &Path) -> Result<Option<Preparation>> {
++    let file = root.join("proofs-prepare.toml");
++    if !file.exists() {
++        return Ok(None);
++    }
++    let spec: Preparation = toml::from_str(&fs::read_to_string(file)?)?;
++    ensure!(spec.schema_version == 1, "Unsupported preparation schema");
++    ensure!(
++        !spec.command.is_empty() && spec.command.iter().all(|s| !s.contains('\0')),
++        "Empty/invalid preparation command"
++    );
++    ensure!(
++        spec.toolchain_lock.is_some() == spec.tool_dir.is_some(),
++        "Tool lock and directory must be specified together"
++    );
++    ensure!(
++        spec.lean_source.is_some() == spec.lean_build.is_some(),
++        "Lean source and build must be specified together"
++    );
++    Ok(Some(spec))
++}
++
++pub fn read_for(root: &Path, config: Option<&Path>) -> Result<Option<Preparation>> {
++    let Some(mut spec) = read(root)? else {
++        return Ok(None);
++    };
++    let selected = config.and_then(|path| {
++        spec.profiles
++            .keys()
++            .filter(|prefix| path.starts_with(prefix))
++            .max_by_key(|prefix| prefix.components().count())
++            .cloned()
++    });
++    if let Some(key) = selected {
++        let child = spec.profiles.remove(&key).unwrap();
++        ensure!(
++            child.profiles.is_empty(),
++            "Nested preparation profile maps are unsupported"
++        );
++        ensure!(
++            !child.command.is_empty() && child.command.iter().all(|s| !s.contains('\0')),
++            "Empty/invalid profile preparation command"
++        );
++        ensure!(
++            child.schema_version == 1
++                && child.toolchain_lock.is_some() == child.tool_dir.is_some()
++                && child.lean_source.is_some() == child.lean_build.is_some(),
++            "Invalid profile preparation settings"
++        );
++        return Ok(Some(child));
++    }
++    Ok(Some(spec))
++}
++
++/// Called only by explicit run, before Cargo discovery, and in its isolated checkout.
++#[cfg(test)]
++pub fn prepare(root: &Path) -> Result<Option<Value>> {
++    prepare_for(root, None)
++}
++
++pub fn prepare_for(root: &Path, config: Option<&Path>) -> Result<Option<Value>> {
++    let Some(spec) = read_for(root, config)? else {
++        return Ok(None);
++    };
++    let logs = root.join(".work/preparation");
++    fs::create_dir_all(&logs)?;
++    let name = uuid::Uuid::new_v4().to_string();
++    let out = fs::File::create(logs.join(format!("{name}.stdout.log")))?;
++    let err = fs::File::create(logs.join(format!("{name}.stderr.log")))?;
++    let status = Command::new(&spec.command[0])
++        .args(&spec.command[1..])
++        .current_dir(root)
++        .stdin(Stdio::null())
++        .stdout(out)
++        .stderr(err)
++        .status()
++        .context("Start repository preparation")?;
++    ensure!(
++        status.success(),
++        "Repository preparation failed; logs: {}",
++        logs.display()
++    );
++    verify(root, &spec).map(Some)
++}
++
++#[derive(Deserialize, PartialEq, Eq, Debug)]
++#[serde(deny_unknown_fields)]
++struct FileIdentity {
++    sha256: String,
++    executable: bool,
++}
++
++fn files(root: &Path, dir: &Path, result: &mut BTreeMap<String, FileIdentity>) -> Result<()> {
++    for entry in fs::read_dir(dir)? {
++        let entry = entry?;
++        let kind = entry.file_type()?;
++        ensure!(!kind.is_symlink(), "Symlink in prepared source");
++        let path = entry.path();
++        if kind.is_dir() {
++            files(root, &path, result)?;
++        } else {
++            ensure!(kind.is_file(), "Nonregular prepared source");
++            #[cfg(unix)]
++            let executable = {
++                use std::os::unix::fs::PermissionsExt;
++                entry.metadata()?.permissions().mode() & 0o111 != 0
++            };
++            #[cfg(not(unix))]
++            let executable = false;
++            result.insert(
++                path.strip_prefix(root)?
++                    .to_str()
++                    .context("Non UTF-8 source path")?
++                    .replace('\\', "/"),
++                FileIdentity {
++                    sha256: sha(&path)?,
++                    executable,
++                },
++            );
++        }
++    }
++    Ok(())
++}
++
++pub fn verify(root: &Path, spec: &Preparation) -> Result<Value> {
++    let path = local(root, &spec.source_lock)?;
++    let lock: Value = serde_json::from_slice(&fs::read(&path)?)?;
++    ensure!(lock["schema_version"] == 1, "Unsupported source lock");
++    let kind = lock["kind"].as_str().context("Missing source kind")?;
++    let origin = match kind {
++        "registry" => {
++            let name = lock["name"].as_str().context("Missing crate name")?;
++            let version = lock["version"].as_str().context("Missing crate version")?;
++            ensure!(
++                lock["url"]
++                    == format!("https://static.crates.io/crates/{name}/{name}-{version}.crate"),
++                "Noncanonical registry origin"
++            );
++            ensure!(
++                lock["sha256"].as_str().is_some_and(hex256),
++                "Invalid archive checksum"
++            );
++            json!({"kind":kind,"name":name,"version":version,"url":lock["url"],"sha256":lock["sha256"]})
++        }
++        "git" => {
++            ensure!(
++                lock["url"]
++                    .as_str()
++                    .is_some_and(|s| s.starts_with("https://"))
++                    && lock["commit"]
++                        .as_str()
++                        .is_some_and(|s| s.len() == 40 && s.bytes().all(|c| c.is_ascii_hexdigit())),
++                "Invalid Git origin"
++            );
++            json!({"kind":kind,"url":lock["url"],"commit":lock["commit"],"subdirectory":lock["subdirectory"]})
++        }
++        _ => anyhow::bail!("Unsupported source kind"),
++    };
++    let expected: BTreeMap<String, FileIdentity> = serde_json::from_value(lock["files"].clone())?;
++    ensure!(
++        !expected.is_empty() && expected.values().all(|x| hex256(&x.sha256)),
++        "Invalid source inventory"
++    );
++    verify_origin(root, &lock, &expected)?;
++    let source = local(root, &spec.source_dir)?;
++    let mut actual = BTreeMap::new();
++    files(&source, &source, &mut actual)?;
++    ensure!(
++        actual == expected,
++        "Prepared source differs from pinned inventory"
++    );
++    let mut provenance = json!({"source":origin,"source_lock":{"path":spec.source_lock,"sha256":sha(&path)?},
++            "configuration":{"path":"proofs-prepare.toml","sha256":sha(&root.join("proofs-prepare.toml"))?},
++            "host":native_host()?});
++    if let (Some(lock_path), Some(tool_dir)) = (&spec.toolchain_lock, &spec.tool_dir) {
++        let file = local(root, lock_path)?;
++        let tools: Value = serde_json::from_slice(&fs::read(&file)?)?;
++        let directory = tool_directory(root, tool_dir)?;
++        verify_tools(file.parent().unwrap(), &directory, &tools)?;
++        // Only references and identities; patch and script contents are deliberately omitted.
++        provenance["toolchain"] = json!({"lock":lock_path,"sha256":sha(&file)?,"repositories":tool_identities(&tools),
++            "native_rust":tools["native_rust"],"extraction_rust":tools["extraction_rust"],"lean":tools["lean"]});
++    }
++    if let (Some(authored), Some(built)) = (&spec.lean_source, &spec.lean_build) {
++        let authored = local(root, authored)?;
++        let built = local(root, built)?;
++        let mut originals = BTreeMap::new();
++        let mut copies = BTreeMap::new();
++        lean_files(&authored, &authored, &mut originals)?;
++        lean_files(&built, &built, &mut copies)?;
++        ensure!(
++            originals == copies,
++            "Build copy differs from maintained Lean sources"
++        );
++        provenance["lean_inputs"] = json!(originals);
++    }
++    Ok(provenance)
++}
++
++/// Only typed identity fields cross the SARIF boundary; lock extensions may contain local notes/logs.
++fn tool_identities(lock: &Value) -> Value {
++    let mut repositories = serde_json::Map::new();
++    if let Some(entries) = lock["repositories"].as_object() {
++        for (name, spec) in entries {
++            let patches: Vec<_> = spec["patches"]
++                .as_array()
++                .into_iter()
++                .flatten()
++                .map(|patch| json!({"file":patch["file"],"sha256":patch["sha256"]}))
++                .collect();
++            repositories.insert(name.clone(), json!({"url":spec["url"],"revision":spec["revision"],"tree":spec["tree"],"patches":patches}));
++        }
++    }
++    Value::Object(repositories)
++}
++
++fn lean_files(root: &Path, dir: &Path, result: &mut BTreeMap<String, String>) -> Result<()> {
++    for entry in fs::read_dir(dir)? {
++        let entry = entry?;
++        if entry.file_name() == ".lake" {
++            continue;
++        }
++        let path = entry.path();
++        ensure!(
++            !entry.file_type()?.is_symlink(),
++            "Symlink in maintained Lean sources"
++        );
++        if path.is_dir() {
++            lean_files(root, &path, result)?;
++        } else if path.extension().is_some_and(|ext| ext == "lean") {
++            result.insert(
++                path.strip_prefix(root)?.to_string_lossy().to_string(),
++                sha(&path)?,
++            );
++        }
++    }
++    Ok(())
++}
++
++pub fn maintained_path(package: &Path, path: &Path) -> Result<PathBuf> {
++    if let Some(spec) = read(package)? {
++        for candidate in std::iter::once(&spec).chain(spec.profiles.values()) {
++            if let (Some(authored), Some(built)) = (&candidate.lean_source, &candidate.lean_build) {
++                let Ok(build) = local(package, built) else {
++                    continue;
++                };
++                if let Ok(relative) = path.canonicalize()?.strip_prefix(build.canonicalize()?) {
++                    return Ok(local(package, authored)?.join(relative));
++                }
++            }
++        }
++    }
++    Ok(path.to_owned())
++}
++
++fn hex256(s: &str) -> bool {
++    s.len() == 64 && s.bytes().all(|c| c.is_ascii_hexdigit())
++}
++
++fn archive_inventory(reader: impl Read, prefix: &str) -> Result<BTreeMap<String, FileIdentity>> {
++    let mut archive = tar::Archive::new(reader);
++    let mut result = BTreeMap::new();
++    let mut total = 0u64;
++    for item in archive.entries()? {
++        let mut item = item?;
++        let path = item.path()?.into_owned();
++        ensure!(
++            path.components().all(|c| matches!(c, Component::Normal(_))),
++            "Unsafe archive path"
++        );
++        ensure!(path.starts_with(prefix), "Archive prefix mismatch");
++        if item.header().entry_type().is_dir() {
++            continue;
++        }
++        ensure!(
++            item.header().entry_type().is_file(),
++            "Unsupported archive member"
++        );
++        let name = path
++            .strip_prefix(prefix)?
++            .to_str()
++            .context("Non UTF-8 archive path")?
++            .to_owned();
++        ensure!(
++            !name.is_empty() && !result.contains_key(&name),
++            "Duplicate or empty archive member"
++        );
++        total = total
++            .checked_add(item.size())
++            .context("Archive size overflow")?;
++        ensure!(total <= 512 * 1024 * 1024, "Expanded archive too large");
++        let executable = item.header().mode()? & 0o111 != 0;
++        let mut hash = Sha256::new();
++        std::io::copy(&mut item, &mut hash)?;
++        result.insert(
++            name,
++            FileIdentity {
++                sha256: format!("{:x}", hash.finalize()),
++                executable,
++            },
++        );
++    }
++    Ok(result)
++}
++
++fn verify_origin(
++    root: &Path,
++    lock: &Value,
++    expected: &BTreeMap<String, FileIdentity>,
++) -> Result<()> {
++    let actual = if lock["kind"] == "registry" {
++        let checksum = lock["sha256"]
++            .as_str()
++            .context("Missing archive checksum")?;
++        let archive = root.join(".work/cache").join(format!("{checksum}.crate"));
++        ensure!(
++            sha(&archive)? == checksum,
++            "Cached source archive checksum mismatch"
++        );
++        let prefix = format!(
++            "{}-{}",
++            lock["name"].as_str().unwrap(),
++            lock["version"].as_str().unwrap()
++        );
++        archive_inventory(
++            flate2::read::GzDecoder::new(fs::File::open(archive)?),
++            &prefix,
++        )?
++    } else {
++        let url = lock["url"].as_str().unwrap();
++        let commit = lock["commit"].as_str().unwrap();
++        let key = format!("{:x}", Sha256::digest(format!("{url}{commit}").as_bytes()));
++        let cache = root.join(".work/cache").join(format!("{key}.git"));
++        ensure!(
++            git(&cache, &["rev-parse", &format!("{commit}^{{commit}}")])? == commit,
++            "Git source commit missing"
++        );
++        let sub = lock["subdirectory"].as_str().unwrap_or("");
++        ensure!(
++            sub.is_empty()
++                || Path::new(sub)
++                    .components()
++                    .all(|c| matches!(c, Component::Normal(_))),
++            "Unsafe Git subdirectory"
++        );
++        let tree = if sub.is_empty() {
++            commit.to_owned()
++        } else {
++            format!("{commit}:{sub}")
++        };
++        let temp = tempfile::tempfile()?;
++        let status = Command::new("git")
++            .arg("-C")
++            .arg(cache)
++            .args(["archive", "--prefix=source/", &tree])
++            .stdout(temp.try_clone()?)
++            .status()?;
++        ensure!(status.success(), "Cannot inspect pinned Git source");
++        use std::io::{Seek, SeekFrom};
++        let mut temp = temp;
++        temp.seek(SeekFrom::Start(0))?;
++        archive_inventory(temp, "source")?
++    };
++    ensure!(
++        &actual == expected,
++        "Source inventory is not the pinned upstream archive/tree"
++    );
++    Ok(())
++}
++
++fn git(dir: &Path, args: &[&str]) -> Result<String> {
++    crate::git::run(dir, args)
++}
++
++// Git's index flags can suppress working-tree diffs. Read every staged blob and
++// compare actual files as well, so assume-unchanged/skip-worktree cannot hide edits.
++fn verify_tracked_files(checkout: &Path) -> Result<()> {
++    use std::io::{BufRead, BufReader, Write};
++    let entries = git(checkout, &["ls-files", "--stage", "-z"])?;
++    let mut child = Command::new("git")
++        .arg("-C")
++        .arg(checkout)
++        .args(["cat-file", "--batch"])
++        .env("GIT_OPTIONAL_LOCKS", "0")
++        .stdin(Stdio::piped())
++        .stdout(Stdio::piped())
++        .spawn()?;
++    let mut input = child.stdin.take().context("Missing Git input")?;
++    let mut output = BufReader::new(child.stdout.take().context("Missing Git output")?);
++    for entry in entries.split('\0').filter(|s| !s.is_empty()) {
++        let (metadata, name) = entry.split_once('\t').context("Invalid Git index entry")?;
++        let fields: Vec<_> = metadata.split_whitespace().collect();
++        ensure!(fields.len() == 3 && fields[2] == "0", "Unmerged tool index");
++        // The Charon repository has its own full lock and may have reviewed patches.
++        if fields[0] == "160000" {
++            continue;
++        }
++        let relative = Path::new(name);
++        ensure!(
++            relative
++                .components()
++                .all(|c| matches!(c, Component::Normal(_))),
++            "Invalid tool source path"
++        );
++        let path = checkout.join(relative);
++        let mut parent = path.parent();
++        while let Some(dir) = parent {
++            if dir == checkout {
++                break;
++            }
++            ensure!(
++                !fs::symlink_metadata(dir)?.file_type().is_symlink(),
++                "Symlink tool source directory"
++            );
++            parent = dir.parent();
++        }
++        let stat = fs::symlink_metadata(&path)?;
++        let actual = match fields[0] {
++            "120000" => {
++                ensure!(stat.file_type().is_symlink(), "Tool symlink changed");
++                fs::read_link(&path)?
++                    .to_str()
++                    .context("Non UTF-8 tool symlink")?
++                    .as_bytes()
++                    .to_vec()
++            }
++            "100644" | "100755" => {
++                ensure!(
++                    stat.is_file() && !stat.file_type().is_symlink(),
++                    "Tool source is not a regular file"
++                );
++                #[cfg(unix)]
++                {
++                    use std::os::unix::fs::PermissionsExt;
++                    ensure!(
++                        (stat.permissions().mode() & 0o111 != 0) == (fields[0] == "100755"),
++                        "Tool executable mode changed"
++                    );
++                }
++                fs::read(&path)?
++            }
++            _ => anyhow::bail!("Unsupported tool source mode"),
++        };
++        writeln!(input, "{}", fields[1])?;
++        input.flush()?;
++        let mut header = String::new();
++        output.read_line(&mut header)?;
++        let parts: Vec<_> = header.split_whitespace().collect();
++        ensure!(
++            parts.len() == 3 && parts[0] == fields[1] && parts[1] == "blob",
++            "Missing staged tool blob"
++        );
++        let size: usize = parts[2].parse()?;
++        ensure!(size == actual.len(), "Tool tracked source changed: {name}");
++        let mut expected = vec![0; size];
++        output.read_exact(&mut expected)?;
++        let mut newline = [0];
++        output.read_exact(&mut newline)?;
++        ensure!(
++            newline == [b'\n'] && actual == expected,
++            "Tool tracked source changed: {name}"
++        );
++    }
++    drop(input);
++    ensure!(child.wait()?.success(), "Cannot read pinned tool blobs");
++    Ok(())
++}
++
++fn verify_tools(profile: &Path, root: &Path, lock: &Value) -> Result<()> {
++    ensure!(lock["schema_version"] == 1, "Unsupported tool lock");
++    let repos = lock["repositories"]
++        .as_object()
++        .context("Missing tool repositories")?;
++    ensure!(
++        repos.len() == 3
++            && ["aeneas", "charon", "proofs-rs"]
++                .iter()
++                .all(|name| repos.contains_key(*name)),
++        "Tool lock must include Aeneas, Charon and cargo-proofs"
++    );
++    ensure!(
++        sha(&profile.join("opam.locked"))? == lock["opam_sha256"],
++        "OCaml dependency lock changed"
++    );
++    for (name, spec) in repos {
++        ensure!(
++            ["aeneas", "charon", "proofs-rs"].contains(&name.as_str()),
++            "Unknown tool repository"
++        );
++        let checkout = root.join(if name == "charon" {
++            "aeneas/charon"
++        } else {
++            name
++        });
++        let revision = spec["revision"].as_str().context("Missing tool revision")?;
++        let tree = spec["tree"].as_str().context("Missing tool tree")?;
++        ensure!(
++            revision.len() == 40 && revision.bytes().all(|c| c.is_ascii_hexdigit()),
++            "Tool revision must be a full commit ID"
++        );
++        let origin = spec["url"].as_str().context("Missing tool origin")?;
++        ensure!(
++            git(&checkout, &["remote", "get-url", "origin"])? == origin,
++            "Tool repository origin changed"
++        );
++        ensure!(
++            git(&checkout, &["ls-files", "--others", "--exclude-standard"])?.is_empty(),
++            "Untracked tool source files"
++        );
++        ensure!(
++            git(&checkout, &["rev-parse", "HEAD"])? == revision,
++            "Tool base changed"
++        );
++        // Reconstruct the declared patch tree independently of the preparation receipt/index.
++        let temp = tempfile::tempdir()?;
++        let index = temp.path().join("index");
++        let replay = |args: &[&str]| -> Result<String> {
++            let out = Command::new("git")
++                .arg("-C")
++                .arg(&checkout)
++                .args(args)
++                .env("GIT_INDEX_FILE", &index)
++                .output()?;
++            ensure!(out.status.success(), "Cannot replay pinned tool patches");
++            Ok(String::from_utf8(out.stdout)?.trim().to_owned())
++        };
++        replay(&["read-tree", revision])?;
++        for patch in spec["patches"].as_array().context("Missing patch list")? {
++            let path = local(
++                profile,
++                Path::new(patch["file"].as_str().context("Missing patch path")?),
++            )?;
++            ensure!(sha(&path)? == patch["sha256"], "Tool patch changed");
++            replay(&[
++                "apply",
++                "--cached",
++                path.to_str().context("Non UTF-8 patch path")?,
++            ])?;
++        }
++        ensure!(
++            replay(&["write-tree"])? == tree,
++            "Declared patches do not produce tool tree"
++        );
++        // Read the shared index without locking or refreshing it. Patch replay above
++        // owns a private index and independently establishes the declared tree.
++        git(
++            &checkout,
++            &[
++                "diff",
++                "--cached",
++                "--ignore-submodules=none",
++                "--quiet",
++                tree,
++                "--",
++            ],
++        )
++        .context("Tool patched tree changed")?;
++        git(
++            &checkout,
++            &["diff", "--ignore-submodules=all", "--exit-code"],
++        )?;
++        verify_tracked_files(&checkout)?;
++    }
++    Ok(())
++}
++
++/// The local Lake dependency exception is limited to a fully replayed tool lock.
++pub fn backend_allowed(dir: &Path, version: &str) -> Result<bool> {
++    for root in dir.ancestors() {
++        if let Some(config) = read(root)? {
++            let candidates: Vec<_> = std::iter::once(&config)
++                .chain(config.profiles.values())
++                .filter(|spec| {
++                    spec.lean_build.as_ref().is_some_and(|path| {
++                        local(root, path)
++                            .ok()
++                            .is_some_and(|build| crate::config::same_path(&build, dir))
++                    })
++                })
++                .collect();
++            ensure!(
++                candidates.len() <= 1,
++                "Ambiguous preparation profile for Lean directory"
++            );
++            let Some(spec) = candidates.first() else {
++                return Ok(false);
++            };
++            verify(root, &spec)?;
++            if let (Some(lock_path), Some(tool_dir)) = (&spec.toolchain_lock, &spec.tool_dir) {
++                let lock: Value = serde_json::from_slice(&fs::read(local(root, lock_path)?)?)?;
++                ensure!(
++                    lock["repositories"]["aeneas"]["url"]
++                        == "https://github.com/AeneasVerif/aeneas.git"
++                        && lock["repositories"]["aeneas"]["revision"] == version,
++                    "Aeneas base differs from report"
++                );
++                let manifest: Value =
++                    serde_json::from_slice(&fs::read(dir.join("lake-manifest.json"))?)?;
++                let packages = manifest["packages"]
++                    .as_array()
++                    .context("Missing Lake packages")?;
++                let a: Vec<_> = packages.iter().filter(|p| p["name"] == "aeneas").collect();
++                if a.len() != 1 || a[0]["type"] != "path" {
++                    return Ok(false);
++                }
++                let path = a[0]["dir"].as_str().context("Missing backend path")?;
++                return Ok(crate::config::same_path(
++                    &dir.join(path),
++                    &tool_directory(root, tool_dir)?.join("aeneas/backends/lean"),
++                ));
++            }
++            return Ok(false);
++        }
++    }
++    Ok(false)
++}
++
++#[cfg(test)]
++mod tests {
++    use super::*;
++    #[test]
++    fn tool_provenance_excludes_local_notes_and_embedded_content() {
++        let lock = json!({"repositories":{"aeneas":{"url":"https://example.invalid/aeneas.git","revision":"base","tree":"tree",
++            "setup_script":"SECRET_SCRIPT_BODY", "preparation_log":"SECRET_PREPARATION_LOG",
++            "patches":[{"file":"patches/fix.patch","sha256":"checksum","body":"SECRET_PATCH_BODY","purpose":"SECRET_LOCAL_NOTE"}]}}});
++        let metadata = tool_identities(&lock);
++        let text = metadata.to_string();
++        assert!(!text.contains("SECRET"));
++        assert_eq!(
++            metadata["aeneas"]["patches"][0],
++            json!({"file":"patches/fix.patch","sha256":"checksum"})
++        );
++        assert_eq!(metadata["aeneas"]["revision"], "base");
++    }
++
++    #[test]
++    fn tool_lock_replays_patches_and_rejects_unbound_inputs() {
++        let temp = tempfile::tempdir().unwrap();
++        let root = temp.path();
++        let profile = root.join("profile");
++        fs::create_dir(&profile).unwrap();
++        fs::write(profile.join("opam.locked"), "fixed package set").unwrap();
++        let mut repositories = serde_json::Map::new();
++        for name in ["aeneas", "charon", "proofs-rs"] {
++            let dir = root.join(if name == "charon" {
++                "aeneas/charon"
++            } else {
++                name
++            });
++            fs::create_dir_all(&dir).unwrap();
++            git(&dir, &["init"]).unwrap();
++            git(&dir, &["config", "user.email", "fixture@example.invalid"]).unwrap();
++            git(&dir, &["config", "user.name", "Fixture"]).unwrap();
++            fs::write(dir.join(".gitignore"), "charon/\nbuild/\n").unwrap();
++            fs::write(dir.join("model.txt"), "original\n").unwrap();
++            git(&dir, &["add", "."]).unwrap();
++            git(&dir, &["commit", "-m", "fixture"]).unwrap();
++            let revision = git(&dir, &["rev-parse", "HEAD"]).unwrap();
++            let url = format!("https://example.invalid/{name}.git");
++            git(&dir, &["remote", "add", "origin", &url]).unwrap();
++            let mut patches = Vec::new();
++            if name == "aeneas" {
++                fs::write(dir.join("model.txt"), "reviewed patch\n").unwrap();
++                let patch = git(&dir, &["diff", "--binary"]).unwrap() + "\n";
++                fs::write(profile.join("model.patch"), patch).unwrap();
++                patches.push(json!({"file":"model.patch", "sha256":sha(&profile.join("model.patch")).unwrap()}));
++                git(&dir, &["add", "model.txt"]).unwrap();
++            }
++            repositories.insert(
++                name.into(),
++                json!({"url":url,"revision":revision,
++                "tree":git(&dir,&["write-tree"]).unwrap(),"patches":patches}),
++            );
++        }
++        let lock = json!({"schema_version":1,"opam_sha256":sha(&profile.join("opam.locked")).unwrap(),"repositories":repositories});
++        // A fresh git apply --index need not have materialized the tree object.
++        // The independent private-index replay must establish it before comparison.
++        let tree = lock["repositories"]["aeneas"]["tree"].as_str().unwrap();
++        let object = root
++            .join("aeneas/.git/objects")
++            .join(&tree[..2])
++            .join(&tree[2..]);
++        fs::remove_file(&object).unwrap();
++        verify_tools(&profile, root, &lock).unwrap();
++        assert!(object.is_file());
++        // Independent preparations may share tool sources. A legitimate lock held
++        // by another process must not prevent these read-only trust checks.
++        let indexes: Vec<_> = ["aeneas", "aeneas/charon", "proofs-rs"]
++            .iter()
++            .map(|name| {
++                let index = root.join(name).join(".git/index");
++                let before = fs::read(&index).unwrap();
++                let held = index.with_file_name("index.lock");
++                fs::write(&held, "sentinel").unwrap();
++                (index, before, held)
++            })
++            .collect();
++        std::thread::scope(|scope| {
++            for _ in 0..8 {
++                scope.spawn(|| verify_tools(&profile, root, &lock).unwrap());
++            }
++        });
++        for (index, before, held) in indexes {
++            assert_eq!(fs::read(index).unwrap(), before);
++            assert_eq!(fs::read_to_string(&held).unwrap(), "sentinel");
++            fs::remove_file(held).unwrap();
++        }
++        let dir = root.join("aeneas");
++        for flag in ["--assume-unchanged", "--skip-worktree"] {
++            git(&dir, &["update-index", flag, "model.txt"]).unwrap();
++            fs::write(dir.join("model.txt"), "hidden mutated body\n").unwrap();
++            assert!(verify_tools(&profile, root, &lock)
++                .unwrap_err()
++                .to_string()
++                .contains("tracked source changed"));
++            fs::write(dir.join("model.txt"), "reviewed patch\n").unwrap();
++            let reset = if flag == "--assume-unchanged" {
++                "--no-assume-unchanged"
++            } else {
++                "--no-skip-worktree"
++            };
++            git(&dir, &["update-index", reset, "model.txt"]).unwrap();
++        }
++        fs::create_dir(dir.join("build")).unwrap();
++        fs::write(dir.join("build/output"), "ignored build output").unwrap();
++        verify_tools(&profile, root, &lock).unwrap();
++        fs::write(dir.join("Extra.lean"), "unbound model").unwrap();
++        assert!(verify_tools(&profile, root, &lock)
++            .unwrap_err()
++            .to_string()
++            .contains("Untracked"));
++        fs::remove_file(dir.join("Extra.lean")).unwrap();
++        git(
++            &dir,
++            &[
++                "remote",
++                "set-url",
++                "origin",
++                "https://example.invalid/wrong.git",
++            ],
++        )
++        .unwrap();
++        assert!(verify_tools(&profile, root, &lock)
++            .unwrap_err()
++            .to_string()
++            .contains("origin"));
++        git(
++            &dir,
++            &[
++                "remote",
++                "set-url",
++                "origin",
++                "https://example.invalid/aeneas.git",
++            ],
++        )
++        .unwrap();
++        fs::write(profile.join("model.patch"), "tampered").unwrap();
++        assert!(verify_tools(&profile, root, &lock)
++            .unwrap_err()
++            .to_string()
++            .contains("patch changed"));
++        let mut missing = lock.clone();
++        missing["repositories"]
++            .as_object_mut()
++            .unwrap()
++            .remove("charon");
++        assert!(verify_tools(&profile, root, &missing)
++            .unwrap_err()
++            .to_string()
++            .contains("must include"));
++        fs::write(profile.join("opam.locked"), "different").unwrap();
++        assert!(verify_tools(&profile, root, &lock)
++            .unwrap_err()
++            .to_string()
++            .contains("OCaml"));
++    }
++
++    #[test]
++    fn source_and_sarif_boundary() {
++        let temp = tempfile::tempdir().unwrap();
++        let root = temp.path();
++        fs::create_dir(root.join("source")).unwrap();
++        fs::write(root.join("source/lib.rs"), "pub fn f() {}\n").unwrap();
++        let hash = sha(&root.join("source/lib.rs")).unwrap();
++        fs::create_dir_all(root.join(".work/cache")).unwrap();
++        let encoder = flate2::write::GzEncoder::new(Vec::new(), flate2::Compression::default());
++        let mut archive = tar::Builder::new(encoder);
++        let content = fs::read(root.join("source/lib.rs")).unwrap();
++        let mut header = tar::Header::new_gnu();
++        header.set_size(content.len() as u64);
++        header.set_mode(0o644);
++        header.set_cksum();
++        archive
++            .append_data(&mut header, "demo-1.0.0/lib.rs", content.as_slice())
++            .unwrap();
++        let bytes = archive.into_inner().unwrap().finish().unwrap();
++        let checksum = format!("{:x}", Sha256::digest(&bytes));
++        fs::write(
++            root.join(".work/cache").join(format!("{checksum}.crate")),
++            bytes,
++        )
++        .unwrap();
++        let lock = json!({"schema_version":1,"kind":"registry","name":"demo","version":"1.0.0",
++            "url":"https://static.crates.io/crates/demo/demo-1.0.0.crate","sha256":checksum,
++            "files":{"lib.rs":{"sha256":hash,"executable":false}}});
++        fs::write(root.join("source.lock.json"), lock.to_string()).unwrap();
++        let spec = Preparation {
++            schema_version: 1,
++            command: vec!["SECRET_SETUP_SCRIPT".into()],
++            source_lock: "source.lock.json".into(),
++            source_dir: "source".into(),
++            toolchain_lock: None,
++            tool_dir: None,
++            lean_source: None,
++            lean_build: None,
++            profiles: BTreeMap::new(),
++        };
++        fs::write(
++            root.join("proofs-prepare.toml"),
++            "test configuration identity",
++        )
++        .unwrap();
++        let provenance = verify(root, &spec).unwrap().to_string();
++        assert!(!provenance.contains("SECRET_SETUP_SCRIPT"));
++        fs::write(
++            root.join("proofs-prepare.toml"),
++            r#"
++schema_version = 1
++command = ["sh", "-c", "echo SECRET_SETUP_STDOUT; echo SECRET_SETUP_STDERR >&2"]
++source_lock = "source.lock.json"
++source_dir = "source"
++"#,
++        )
++        .unwrap();
++        let prepared = prepare(root).unwrap().unwrap().to_string();
++        assert!(!prepared.contains("SECRET_SETUP"));
++        let logs: String = fs::read_dir(root.join(".work/preparation"))
++            .unwrap()
++            .map(|p| fs::read_to_string(p.unwrap().path()).unwrap())
++            .collect();
++        assert!(logs.contains("SECRET_SETUP_STDOUT") && logs.contains("SECRET_SETUP_STDERR"));
++        let failed = fs::read_to_string(root.join("proofs-prepare.toml"))
++            .unwrap()
++            .replace(
++                "echo SECRET_SETUP_STDERR >&2",
++                "echo SECRET_SETUP_STDERR >&2; exit 1",
++            );
++        fs::write(root.join("proofs-prepare.toml"), failed).unwrap();
++        let failure = prepare(root).unwrap_err().to_string();
++        assert!(!failure.contains("SECRET_SETUP"));
++        assert!(!root.join("run.sarif.json").exists());
++        fs::write(root.join("source/extra.rs"), "extra").unwrap();
++        assert!(verify(root, &spec).is_err());
++        fs::remove_file(root.join("source/extra.rs")).unwrap();
++        fs::write(root.join("source/lib.rs"), "changed").unwrap();
++        assert!(verify(root, &spec).is_err());
++    }
++    #[test]
++    fn profile_selection_uses_longest_report_directory() {
++        let temp = tempfile::tempdir().unwrap();
++        let text = r#"
++schema_version = 1
++command = ["default"]
++source_lock = "source.lock.json"
++source_dir = ".work/source"
++[profiles."aeneas/profiles/stage3"]
++schema_version = 1
++command = ["stage3"]
++source_lock = "source.lock.json"
++source_dir = ".work/source"
++[profiles."aeneas/profiles/stage3/reports"]
++schema_version = 1
++command = ["stage3-report"]
++source_lock = "source.lock.json"
++source_dir = ".work/source"
++"#;
++        fs::write(temp.path().join("proofs-prepare.toml"), text).unwrap();
++        let selected = read_for(
++            temp.path(),
++            Some(Path::new("aeneas/profiles/stage3/reports/part-01.toml")),
++        )
++        .unwrap()
++        .unwrap();
++        assert_eq!(selected.command, ["stage3-report"]);
++        let selected = read_for(
++            temp.path(),
++            Some(Path::new("aeneas/profiles/stage3/proofs.toml")),
++        )
++        .unwrap()
++        .unwrap();
++        assert_eq!(selected.command, ["stage3"]);
++        assert_eq!(
++            read_for(temp.path(), None).unwrap().unwrap().command,
++            ["default"]
++        );
++    }
++
++    #[test]
++    fn target_build_copy_maps_to_maintained_profile() {
++        let temp = tempfile::tempdir().unwrap();
++        let root = temp.path();
++        let build = format!(".work/build/stage3/{}/proofs", native_host().unwrap());
++        fs::create_dir_all(root.join(&build)).unwrap();
++        fs::write(
++            root.join(&build).join("Proof.lean"),
++            "theorem p : True := True.intro",
++        )
++        .unwrap();
++        fs::create_dir_all(root.join("aeneas/profiles/stage3/proofs")).unwrap();
++        fs::write(
++            root.join("proofs-prepare.toml"),
++            r#"
++schema_version = 1
++command = ["default"]
++source_lock = "source.lock.json"
++source_dir = ".work/source"
++[profiles."aeneas/profiles/stage3"]
++schema_version = 1
++command = ["stage3"]
++source_lock = "source.lock.json"
++source_dir = ".work/source"
++lean_source = "aeneas/profiles/stage3/proofs"
++lean_build = ".work/build/stage3/@HOST@/proofs"
++"#,
++        )
++        .unwrap();
++        assert_eq!(
++            maintained_path(root, &root.join(build).join("Proof.lean")).unwrap(),
++            root.join("aeneas/profiles/stage3/proofs/Proof.lean")
++        );
++    }
++
++    #[test]
++    fn traversal_rejected() {
++        let temp = tempfile::tempdir().unwrap();
++        assert!(local(temp.path(), Path::new("../outside")).is_err());
++        assert!(local(temp.path(), Path::new("/tmp")).is_err());
++    }
++}
+diff --git a/cli/src/record.rs b/cli/src/record.rs
+index 2be7cbd..78ef0af 100644
+--- a/cli/src/record.rs
++++ b/cli/src/record.rs
+@@ -29,7 +29,16 @@ pub fn state_dir(project: &Project) -> Result<PathBuf> {
+     let base = dirs::data_local_dir()
+         .context("Cannot locate local data directory")?
+         .join("cargo-proofs");
+-    Ok(base.join(state::digest(&project.manifest.to_string_lossy())))
++    let key = if project.config_override.is_some() {
++        format!(
++            "{}:{}",
++            project.manifest.display(),
++            project.config_path().display()
++        )
++    } else {
++        project.manifest.to_string_lossy().into_owned()
++    };
++    Ok(base.join(state::digest(&key)))
+ }
+ pub fn load(project: &Project, selected: Option<&str>) -> Result<(PathBuf, Record)> {
+     let base = state_dir(project)?;
+@@ -107,6 +116,11 @@ pub fn run(args: &ProjectArgs, mut command: Vec<String>) -> Result<()> {
+             && args.target.is_none(),
+         "Pass compilation flags after -- as part of the verifier command"
+     );
++    let preparation_manifest = crate::preparation::manifest(args)?;
++    let prepared = crate::preparation::prepare_for(
++        preparation_manifest.parent().unwrap(),
++        args.proofs_config.as_deref(),
++    )?;
+     let project = Project::load(args)?;
+     let config = project.config()?;
+     if config.tool.is_aeneas() {
+@@ -197,6 +211,14 @@ pub fn run(args: &ProjectArgs, mut command: Vec<String>) -> Result<()> {
+                 .exists(),
+         "Snapshot is missing Cargo.toml or Cargo.lock"
+     );
++    let snapshot_prepared = crate::preparation::prepare_for(
++        source.join(&relative_manifest).parent().unwrap(),
++        args.proofs_config.as_deref(),
++    )?;
++    ensure!(
++        snapshot_prepared == prepared,
++        "Prepared inputs differ in isolated checkout"
++    );
+     let mut selected = args.clone();
+     selected.manifest_path = Some(source.join(&relative_manifest));
+     if !config.tool.is_aeneas() {
+@@ -413,7 +435,21 @@ pub fn run(args: &ProjectArgs, mut command: Vec<String>) -> Result<()> {
+         Err(e) => (vec![], vec![], Some(format!("{e:#}"))),
+     };
+     let finished = chrono::Utc::now();
+-    let unchanged = checkout.unchanged();
++    let unchanged = checkout.unchanged().and_then(|()| {
++        let package = source.join(&relative_manifest);
++        if let Some(spec) =
++            crate::preparation::read_for(package.parent().unwrap(), args.proofs_config.as_deref())?
++        {
++            ensure!(
++                Some(crate::preparation::verify(
++                    package.parent().unwrap(),
++                    &spec
++                )?) == prepared,
++                "Prepared inputs changed during verification"
++            );
++        }
++        Ok(())
++    });
+     let successful =
+         status.success() && diagnostic.is_none() && unchanged.is_ok() && !verified.is_empty();
+     let mut invocation = json!({"arguments":&command[1..],"workingDirectory":{"uri":format!("{}/",path_string(relative_cwd))},"startTimeUtc":started.to_rfc3339(),"endTimeUtc":finished.to_rfc3339(),"executionSuccessful":successful,"executableLocation":{"uri":command[0]},"environmentVariables":env});
+@@ -429,6 +465,12 @@ pub fn run(args: &ProjectArgs, mut command: Vec<String>) -> Result<()> {
+     invocation["stderr"] = json!({"index":artifacts.len()});
+     artifacts.push(json!({"contents":{"text":stderr}}));
+     let mut sarif = json!({"version":"2.1.0","$schema":"https://json.schemastore.org/sarif-2.1.0.json","runs":[{"tool":{"driver":{"name":config.tool.name,"version":config.tool.version}},"invocations":[invocation],"results":results,"artifacts":artifacts,"versionControlProvenance":[{"repositoryUri":source_ref["repository"],"revisionId":source_ref["commit"]}],"automationDetails":{"guid":rid},"properties":{"proofs":{"schemaVersion":2,"dependencies":dependencies,"crate":project.name,"version":project.version,"contracts":verified,"target":config.tool.target,"platform":format!("{} {}",std::env::consts::OS,std::env::consts::ARCH),"rustc":output(Command::new("rustc").arg("-vV").current_dir(source.join(relative_cwd))).unwrap_or_default(),"recorderVersion":env!("CARGO_PKG_VERSION")}}}]});
++    sarif["runs"][0]["properties"]["proofs"]["rustTarget"] = json!(platform);
++    sarif["runs"][0]["properties"]["proofs"]["features"] = json!(captured.features);
++    sarif["runs"][0]["properties"]["proofs"]["cfg"] = json!(captured.cfg);
++    if let Some(provenance) = prepared {
++        sarif["runs"][0]["properties"]["proofs"]["preparation"] = provenance;
++    }
+     if config.tool.is_aeneas() {
+         sarif["runs"][0]["properties"]["proofs"]["aeneas"] =
+             crate::aeneas::configuration(&config.tool)?;
+@@ -992,6 +1034,7 @@ mod tests {
+     }
+     fn empty_project_args() -> ProjectArgs {
+         ProjectArgs {
++            proofs_config: None,
+             manifest_path: None,
+             package: None,
+             features: vec![],
+diff --git a/cli/src/scan.rs b/cli/src/scan.rs
+index 9c4b269..b047302 100644
+--- a/cli/src/scan.rs
++++ b/cli/src/scan.rs
+@@ -1261,6 +1261,7 @@ mod tests {
+         let root = d.path().join("lib.rs");
+         fs::write(&root, source).unwrap();
+         let p = Project {
++            config_override: None,
+             name: "demo".into(),
+             lib_name: "demo".into(),
+             version: "1.0.0".into(),

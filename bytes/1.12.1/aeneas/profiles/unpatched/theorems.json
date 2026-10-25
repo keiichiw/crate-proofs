@@ -1,0 +1,57 @@
+{
+  "checked": [
+    {
+      "name": "bytes.take_into_inner_spec",
+      "module": "Proofs.Take",
+      "scope": "public-model",
+      "precondition": "true"
+    },
+    {
+      "name": "bytes.take_get_ref_spec",
+      "module": "Proofs.Take",
+      "scope": "public-model",
+      "precondition": "true"
+    },
+    {
+      "name": "bytes.take_get_mut_spec",
+      "module": "Proofs.Take",
+      "scope": "public-model",
+      "precondition": "true"
+    },
+    {
+      "name": "bytes.take_limit_spec",
+      "module": "Proofs.Take",
+      "scope": "public-model",
+      "precondition": "true"
+    },
+    {
+      "name": "bytes.take_set_limit_spec",
+      "module": "Proofs.Take",
+      "scope": "public-model",
+      "precondition": "true"
+    }
+  ],
+  "recorder_mappings": [
+    {
+      "api": "buf::Take::into_inner",
+      "theorem": "bytes.take_into_inner_spec"
+    },
+    {
+      "api": "buf::Take::get_ref",
+      "theorem": "bytes.take_get_ref_spec"
+    },
+    {
+      "api": "buf::Take::get_mut",
+      "theorem": "bytes.take_get_mut_spec"
+    },
+    {
+      "api": "buf::Take::limit",
+      "theorem": "bytes.take_limit_spec"
+    },
+    {
+      "api": "buf::Take::set_limit",
+      "theorem": "bytes.take_set_limit_spec"
+    }
+  ],
+  "extracted_but_unproved": []
+}

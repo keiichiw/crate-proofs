@@ -1,0 +1,42 @@
+{
+  "status": "experimental compiler normalization; not used by accepted core proofs",
+  "core_binary_sha256": "b65e9eb28e65b0e266249e8c6862ee68c622056b240fcff6980574dc34b2d21b",
+  "stage2_binary_sha256": "c09bee992d3593d1a54bc241706936ed454d5ad725ca5c5ad8102cbe9c404543",
+  "fixture_uncompressed_sha256": "b840359e163e63c81fd0ba41eafcd543e378aa3e19c7a7c6e27ddd2f374c8de1",
+  "source_sha256": {
+    "Config.ml": "fdb1fd9a7100e92cf8fceadf0bc1c7ceffeb1a7d92ab167a6931317016471b68",
+    "Main.ml": "1e73dddbe5b3874d6ade3b1e8b4b0a8d98702e707d56d4445bf6d7897596ac5e",
+    "PrePasses.ml": "ff8e29d60823080115a7dc6d5691f4a1d02686452047120c111152328477750c"
+  },
+  "patch_sha256": "9b9a8d18ed3cea93ed8a1f804c60a36218ab881038d112772acdea4bcda7bfcb",
+  "observed_results": {
+    "disabled": {
+      "exit": 1,
+      "borrow_copy_error": true
+    },
+    "enabled": {
+      "exit": 0,
+      "borrow_copy_error": false
+    },
+    "extra-use": {
+      "exit": 1,
+      "borrow_copy_error": true
+    },
+    "retag": {
+      "exit": 1,
+      "borrow_copy_error": true
+    },
+    "mutable-borrow": {
+      "exit": 1,
+      "borrow_copy_error": true
+    },
+    "argument-temp": {
+      "exit": 2,
+      "borrow_copy_error": false
+    },
+    "nonadjacent": {
+      "exit": 1,
+      "borrow_copy_error": true
+    }
+  }
+}

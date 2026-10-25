@@ -1,0 +1,43 @@
+{
+  "extraction_rust": "nightly-2026-09-17",
+  "lean": "leanprover/lean4:v4.35.0",
+  "native_rust": "1.91.1",
+  "opam_sha256": "ccd5b40e39461d88514aee8af0d0e64806d72e3bf3a86d9fc921a11c526691a8",
+  "recipe": "aeneas-opam-v1",
+  "repositories": {
+    "aeneas": {
+      "patches": [
+        {
+          "file": "patches/aeneas-stage3.patch",
+          "kind": "extractor-and-backend-model",
+          "purpose": "Numeric repair plus exact error/type/formatting models, validated imports and optional branch continuation fallback.",
+          "regressions": "Mandatory source-file inventories, shared-reborrow/order/rooted/Never/import/branch checks; all9freshmodels and strict theorem audit.",
+          "sha256": "a5dcefe68b944eefa839068756d8f9b445e60b85835b8c26556d77bd25a10ea2"
+        }
+      ],
+      "revision": "be86ab0f1989d04944292b345b24c435be3ad10a",
+      "tree": "4466d6ca37c0d121240f93c6544e98ab2f685e70",
+      "url": "https://github.com/AeneasVerif/aeneas.git"
+    },
+    "charon": {
+      "patches": [],
+      "revision": "08d7c9d50144bd84848212c24701253585e90d1f",
+      "tree": "39f618410c91093635be66d0697ce99616e6a111",
+      "url": "https://github.com/AeneasVerif/charon.git"
+    },
+    "proofs-rs": {
+      "patches": [
+        {
+          "file": "patches/cargo-proofs-preparation.patch",
+          "purpose": "Prepare pinned sources and patched tools before Cargo discovery; standard Lake/audit-only SARIF; named profile selection, target input provenance and maintained source references. Read-only independent tool-tree replay and actual tracked-file checks prevent shared-index races and index-flag bypass, including fresh checkouts.",
+          "regressions": "CLI unit/integration tests; source tampering/log separation/profile-selection tests; actual Lean/Aeneas extraction and rejection tests. Concurrent checks under held index locks; fresh missing-tree replay; assume-unchanged/skip-worktree tamper rejection.",
+          "sha256": "c6f12abf3e1e3b6f2ec910179612f3a71d51351826f7b3c7bdb97e9df700e5eb"
+        }
+      ],
+      "revision": "2446bcad7d492be2d2036629e5dc94d186a23213",
+      "tree": "e0a369bf354e14861a21819f366f2db0531d8d48",
+      "url": "https://github.com/proofs-rs/proofs-rs.git"
+    }
+  },
+  "schema_version": 1
+}

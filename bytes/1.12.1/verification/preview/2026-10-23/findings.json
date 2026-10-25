@@ -1,0 +1,10 @@
+[
+  {
+    "title": "Checked variable-width signed reads omit sign extension",
+    "expected_behavior": "For a signed n-byte integer (1 <= n <= 8), an all-0xff input denotes -1. Buf::try_get_int, try_get_int_le and try_get_int_ne should agree with get_int, get_int_le and get_int_ne on successful reads, and consume exactly n bytes.",
+    "actual_behavior": "Reproduced on bytes 1.12.1, aarch64-apple-darwin, Rust 1.91.1, default-features=false: widths 1..7 return Ok(2^(8*n)-1), e.g. try_get_int(1) returns Ok(255), while the corresponding unchecked APIs return -1. Width 8 returns -1 for both. All six APIs leave exactly the expected suffix. These are finite native counterexamples, not formal theorem claims.",
+    "reproduction_steps": "Minimal independent reproduction with bytes = { version = \"=1.12.1\", default-features = false } in Cargo.toml:\n\nuse bytes::Buf;\nfn main() {\n    let mut input = &[0xff_u8][..];\n    assert_eq!(input.try_get_int(1), Ok(-1));\n}\n\ncargo run fails with left: Ok(255), right: Ok(-1), exit code 101. This assertion failure is the expected bug reproduction. A fresh run against the checksum-verified release source, using the same code, is saved in verification/preview/2026-10-23/minimal.record.json and minimal.stderr.txt.\n\nBroader control run, from bytes/1.12.1 after bash scripts/setup.sh:\nRUSTUP_TOOLCHAIN=1.91.1 cargo run --offline --quiet --locked --manifest-path aeneas/profiles/default/findings/signed-read/Cargo.toml\n\nThis reproducer forbids unsafe code and checks BE/LE/NE for widths 1..8 using nine 0xff bytes. It asserts the observed discrepancy and exact consumption, so exit code 0 confirms that the bug and the controls were reproduced. Recorded on 2026-10-23 UTC; see verification/preview/2026-10-23/record.json and stdout.txt for invocation, input hashes, output and exit status.",
+    "evidence_url": "https://github.com/tokio-rs/bytes/blob/76c0fbb54ed4336caf9d2311658a2f4a5627c21d/src/buf/buf_impl.rs",
+    "api_item_ids": []
+  }
+]

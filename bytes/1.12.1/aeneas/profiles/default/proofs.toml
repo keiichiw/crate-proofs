@@ -1,0 +1,437 @@
+[report]
+title = "bytes 1.12.1: slice consumption and buffer adapter correctness"
+explanation = '''
+bytes provides cursor-like access to byte sequences and adapters that limit,
+concatenate or iterate over their unread contents. This report covers selected
+unchanged bytes 1.12.1 release bodies, not the entire crate.
+
+For byte slices, the selected proofs establish exact remaining content and
+consumption: advancing removes the requested prefix, copying writes that prefix
+to the destination, and single-byte reads return the corresponding unsigned or
+signed value. Checked single-byte reads on empty input return the specified error
+without consuming input. Success and absence of modeled runtime failure apply
+within each claim's stated preconditions.
+
+Take exposes at most its stored limit, including when the limit exceeds the inner
+length; advancing updates both the inner suffix and the limit. Chain selects and
+consumes its first buffer before its second, with a saturated remaining count.
+IntoIter returns successive bytes and remains exhausted after the last byte.
+The default checked copy loop handles arbitrary finite chunk partitions under
+explicit buffer laws, copies exactly the requested prefix, and preserves source
+and destination on insufficient input. Those laws are proved for concrete slices
+and the selected adapter compositions. Selected constructors and accessors preserve
+the stored values and mutable writebacks; Cursor and Reader::consume have the
+separate restrictions listed in their claims.
+
+The extractor needed isolated patches to retain the required trait operations,
+order declarations, handle guarded temporary shared reborrows and unreachable
+Never continuations, and represent TryGetError with its exact two fields. The
+maintained proof models are generated from the unchanged release. Saved acceptance
+records report regeneration of all nine models, exact backend/model correspondence
+checks, negative regression controls and Lean dependency audits. These checks
+support the selected translation; they are not a proof of the compiler itself.
+'''
+trusted_assumptions = '''
+The claims rely on the pinned Rust/Charon/Aeneas translation, the Lean kernel and
+the reviewed standard-library/backend models. Generic buffer theorems assume the
+explicit remaining/chunk/advance laws; arbitrary third-party Buf implementations
+are not assumed to satisfy them. Concrete slice and adapter proofs discharge the
+relevant laws. Compiler patches are reviewed and regression-tested, not formally
+verified. The preserved tool-repair manifests describe the exact boundaries;
+formatting uses an abstraction and does not establish actual diagnostic text.
+The recorded axiom audit permits only propext, Classical.choice and Quot.sound.
+'''
+limitations = '''
+This is a selected functional proof, not whole-crate or unsafe memory-safety
+verification. Bytes/BytesMut storage, pointer provenance, allocation, reference
+counting, concurrency, operational BufMut behavior, fixed-width unsafe read paths,
+variable-width reader APIs, generic unchecked copy dispatch, Reader read/fill_buf
+and VecDeque remain outside the accepted public-API coverage. Internal range and
+arithmetic lemmas do not verify their public consumers. Cursor and two arithmetic
+helpers require a 64-bit target; panic unwinding and formatting output are not
+covered. The signed variable-width read discrepancy is a separate native finding,
+not a successful theorem for those APIs.
+
+The accepted managed run is for aarch64-apple-darwin. Retained Linux models are not
+acceptance of this managed layout on Linux. Full historical logs are local-only;
+committed summaries identify their original inputs. This report reorganization
+has not rerun the full proof pipeline or produced a new publishable SARIF.
+'''
+environment = "Recorded managed acceptance: aarch64-apple-darwin, Lean 4.35.0, default-feature extraction; native default and no-default tests recorded separately. Exact core/numeric/stage3 tools, ordinary negative control, Rust pins and patches are in the profile toolchain locks. See results.md and evidence/summary.json for provenance."
+
+[[report.findings]]
+title = "Checked variable-width signed reads omit sign extension"
+api_paths = ["bytes::Buf::try_get_int", "bytes::Buf::try_get_int_le", "bytes::Buf::try_get_int_ne"]
+body = '''
+In bytes 1.12.1, the checked variable-width signed readers can return a positive
+number for a negative two's-complement input. For example, one byte 0xff denotes
+-1, but try_get_int(1) returns Ok(255):
+
+```rust
+use bytes::Buf;
+
+let mut input = &[0xff_u8, 0x42][..];
+let value = input.try_get_int(1);
+assert_eq!(input, &[0x42]); // The requested byte was consumed.
+assert_eq!(value, Ok(-1)); // Fails: actual result is Ok(255).
+```
+
+The retained native regression checks big-, little- and native-endian variants on
+all-0xff inputs at widths 1 through 8, including the exact residual slice. At widths
+1 through 7, checked reads return 2^(8*n)-1 while the corresponding get_int methods
+return -1. Width 8 is a passing control: both return -1. The 2026-10-23 minimal
+counterexample record uses Rust 1.91.1 on aarch64-apple-darwin with default features
+disabled. These observations are native counterexamples, not Lean verification
+of the public variable-width readers or evidence of a memory-safety failure.
+
+Source inspection explains the discrepancy: the checked implementations fill an
+eight-byte array initially containing zeroes and convert it to i64, whereas the
+unchecked counterparts apply sign extension. The expected signed contract remains
+an unmet obligation; it was not weakened to accept the observed result.
+
+See the [pinned Buf implementation](https://github.com/tokio-rs/bytes/blob/76c0fbb54ed4336caf9d2311658a2f4a5627c21d/src/buf/buf_impl.rs#L2086).
+This finding concerns the pinned 1.12.1 release. Upstream issue, PR and release
+status have not been checked for this reorganization; add those links separately
+when established.
+'''
+
+[tool]
+name = "aeneas"
+version = "be86ab0f1989d04944292b345b24c435be3ad10a"
+lean_dir = ".work/selected-proofs"
+
+[[tool.proofs]]
+api = "buf::Take::into_inner"
+module = "Proofs.Take"
+theorem = "bytes.take_into_inner_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "buf::Take::get_ref"
+module = "Proofs.Take"
+theorem = "bytes.take_get_ref_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "buf::Take::get_mut"
+module = "Proofs.Take"
+theorem = "bytes.take_get_mut_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "buf::Take::limit"
+module = "Proofs.Take"
+theorem = "bytes.take_limit_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "buf::Take::set_limit"
+module = "Proofs.Take"
+theorem = "bytes.take_set_limit_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "buf::Chain::first_ref"
+module = "Proofs.Chain"
+theorem = "bytes.chain_first_ref_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "buf::Chain::first_mut"
+module = "Proofs.Chain"
+theorem = "bytes.chain_first_mut_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "buf::Chain::last_ref"
+module = "Proofs.Chain"
+theorem = "bytes.chain_last_ref_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "buf::Chain::last_mut"
+module = "Proofs.Chain"
+theorem = "bytes.chain_last_mut_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "buf::Chain::into_inner"
+module = "Proofs.Chain"
+theorem = "bytes.chain_into_inner_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "buf::Limit::into_inner"
+module = "Proofs.Limit"
+theorem = "bytes.limit_into_inner_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "buf::Limit::get_ref"
+module = "Proofs.Limit"
+theorem = "bytes.limit_get_ref_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "buf::Limit::get_mut"
+module = "Proofs.Limit"
+theorem = "bytes.limit_get_mut_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "buf::Limit::limit"
+module = "Proofs.Limit"
+theorem = "bytes.limit_limit_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "buf::Limit::set_limit"
+module = "Proofs.Limit"
+theorem = "bytes.limit_set_limit_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "buf::IntoIter::new"
+module = "Proofs.IntoIter"
+theorem = "bytes.intoiter_new_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "buf::IntoIter::into_inner"
+module = "Proofs.IntoIter"
+theorem = "bytes.intoiter_into_inner_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "buf::IntoIter::get_ref"
+module = "Proofs.IntoIter"
+theorem = "bytes.intoiter_get_ref_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "buf::IntoIter::get_mut"
+module = "Proofs.IntoIter"
+theorem = "bytes.intoiter_get_mut_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "Buf for &[u8]::advance"
+module = "Proofs.Consumption"
+theorem = "bytes_consumption.slice_advance_spec"
+precondition = "n.val <= s.val.length"
+
+[[tool.proofs]]
+api = "Buf for &[u8]::copy_to_slice"
+module = "Proofs.Consumption"
+theorem = "bytes_consumption.slice_copy_spec"
+precondition = "destination.val.length <= source.val.length"
+
+[[tool.proofs]]
+api = "buf::Take::remaining"
+module = "Proofs.AdapterConsumption"
+theorem = "bytes_buffers.concrete_take_remaining"
+precondition = "inner is an actual byte slice"
+
+[[tool.proofs]]
+api = "buf::Take::chunk"
+module = "Proofs.AdapterConsumption"
+theorem = "bytes_buffers.concrete_take_chunk"
+precondition = "inner is an actual byte slice"
+
+[[tool.proofs]]
+api = "buf::Take::advance"
+module = "Proofs.AdapterConsumption"
+theorem = "bytes_buffers.concrete_take_advance"
+precondition = "inner is an actual byte slice; count <= visible length"
+
+[[tool.proofs]]
+api = "buf::IntoIter::next"
+module = "Proofs.IteratorConsumption"
+theorem = "bytes_buffers.slice_iterator_next_spec"
+precondition = "inner is an actual byte slice"
+
+[[tool.proofs]]
+api = "buf::IntoIter::size_hint"
+module = "Proofs.IteratorConsumption"
+theorem = "bytes_buffers.slice_iterator_size_hint_spec"
+precondition = "inner is an actual byte slice"
+
+[[tool.proofs]]
+api = "buf::Reader::get_ref"
+module = "Proofs.IoWrappers"
+theorem = "bytes.reader_get_ref_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "buf::Reader::get_mut"
+module = "Proofs.IoWrappers"
+theorem = "bytes.reader_get_mut_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "buf::Reader::into_inner"
+module = "Proofs.IoWrappers"
+theorem = "bytes.reader_into_inner_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "buf::Writer::get_ref"
+module = "Proofs.IoWrappers"
+theorem = "bytes.writer_get_ref_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "buf::Writer::get_mut"
+module = "Proofs.IoWrappers"
+theorem = "bytes.writer_get_mut_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "buf::Writer::into_inner"
+module = "Proofs.IoWrappers"
+theorem = "bytes.writer_into_inner_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "Buf::take"
+module = "Proofs.PublicConstructors"
+theorem = "bytes.buf_take_constructor_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "Buf::chain"
+module = "Proofs.PublicConstructors"
+theorem = "bytes.buf_chain_constructor_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "Buf::reader"
+module = "Proofs.PublicConstructors"
+theorem = "bytes.buf_reader_constructor_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "BufMut::limit"
+module = "Proofs.PublicConstructors"
+theorem = "bytes.bufmut_limit_constructor_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "BufMut::writer"
+module = "Proofs.PublicConstructors"
+theorem = "bytes.bufmut_writer_constructor_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "BufMut::chain_mut"
+module = "Proofs.PublicConstructors"
+theorem = "bytes.bufmut_chain_mut_constructor_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "buf::Chain::into_iter"
+module = "Proofs.PublicConstructors"
+theorem = "bytes.chain_into_iter_constructor_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "Buf for &[u8]::remaining"
+module = "Proofs.AdapterConsumption"
+theorem = "bytes_buffers.slice_remaining_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "Buf for &[u8]::chunk"
+module = "Proofs.AdapterConsumption"
+theorem = "bytes_buffers.slice_chunk_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "Buf for &[u8]::has_remaining"
+module = "Proofs.AdapterConsumption"
+theorem = "bytes_buffers.slice_has_remaining_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "buf::Take::has_remaining"
+module = "Proofs.AdapterConsumption"
+theorem = "bytes_buffers.concrete_take_has_remaining"
+precondition = "inner is an actual byte slice"
+
+[[tool.proofs]]
+api = "buf::Chain::remaining"
+module = "Proofs.ChainConsumption"
+theorem = "bytes_buffers.concrete_chain_remaining"
+precondition = "both underlying buffers are actual byte slices"
+
+[[tool.proofs]]
+api = "buf::Chain::chunk"
+module = "Proofs.ChainConsumption"
+theorem = "bytes_buffers.concrete_chain_chunk"
+precondition = "both underlying buffers are actual byte slices"
+
+[[tool.proofs]]
+api = "buf::Chain::advance"
+module = "Proofs.ChainConsumption"
+theorem = "bytes_buffers.concrete_chain_advance"
+precondition = "both underlying buffers are actual byte slices; count <= concatenated logical length"
+
+[[tool.proofs]]
+api = "buf::Chain::has_remaining"
+module = "Proofs.ChainConsumption"
+theorem = "bytes_buffers.concrete_chain_has_remaining"
+precondition = "both underlying buffers are actual byte slices"
+
+[[tool.proofs]]
+api = "Buf for &[u8]::get_u8"
+module = "Proofs.NumericConsumption"
+theorem = "bytes_numeric.slice_get_u8_spec"
+precondition = "source is nonempty"
+
+[[tool.proofs]]
+api = "Buf for &[u8]::try_get_u8"
+module = "Proofs.NumericConsumption"
+theorem = "bytes_numeric.slice_try_get_u8_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "Buf for &[u8]::get_i8"
+module = "Proofs.NumericConsumption"
+theorem = "bytes_numeric.slice_get_i8_spec"
+precondition = "source is nonempty"
+
+[[tool.proofs]]
+api = "Buf for &[u8]::try_get_i8"
+module = "Proofs.NumericConsumption"
+theorem = "bytes_numeric.slice_try_get_i8_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "Buf::try_copy_to_slice (default)"
+module = "Proofs.CopyLoop"
+theorem = "bytes_buffers.try_copy_to_slice_total"
+precondition = "explicit proved Buf laws; arbitrary finite chunks; concrete slices grounded by slice_laws and adapter closures"
+
+[[tool.proofs]]
+api = "Buf for Cursor<&[u8]>::remaining"
+module = "Proofs.CursorConsumption"
+theorem = "bytes_cursor_proofs.slice_remaining_spec"
+precondition = "64-bit target"
+
+[[tool.proofs]]
+api = "Buf for Cursor<&[u8]>::chunk"
+module = "Proofs.CursorConsumption"
+theorem = "bytes_cursor_proofs.slice_chunk_spec"
+precondition = "64-bit target"
+
+[[tool.proofs]]
+api = "Buf for Cursor<&[u8]>::advance"
+module = "Proofs.CursorConsumption"
+theorem = "bytes_cursor_proofs.slice_advance_spec"
+precondition = "64-bit target; count <= max(source length - position, 0)"
+
+[[tool.proofs]]
+api = "BufRead for Reader::consume"
+module = "Proofs.ReaderConsumption"
+theorem = "bytes_buffers.concrete_reader_consume"
+precondition = "actual byte slice; count <= remaining source length"

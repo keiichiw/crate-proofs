@@ -1,0 +1,34 @@
+{
+  "cargo_args": [
+    "--lib",
+    "--locked"
+  ],
+  "entries": [
+    "crate::buf::take::Take::limit",
+    "crate::buf::take::Take::set_limit",
+    "crate::buf::take::Take::into_inner",
+    "crate::buf::take::Take::get_ref",
+    "crate::buf::take::Take::get_mut"
+  ],
+  "llbc": "bytes.llbc",
+  "local_scope": {
+    "opaque_crate": true,
+    "include": [
+      "crate::buf::take::Take",
+      "crate::buf::take::_::limit",
+      "crate::buf::take::_::set_limit",
+      "crate::buf::take::_::into_inner",
+      "crate::buf::take::_::get_ref",
+      "crate::buf::take::_::get_mut"
+    ]
+  },
+  "models": {
+    "Bytes.lean": [
+      "buf.take.Take.impl.limit",
+      "buf.take.Take.set_limit",
+      "buf.take.Take.into_inner",
+      "buf.take.Take.get_ref",
+      "buf.take.Take.get_mut"
+    ]
+  }
+}

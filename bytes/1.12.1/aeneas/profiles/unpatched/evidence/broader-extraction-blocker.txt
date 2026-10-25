@@ -1,0 +1,16 @@
+Rejected broader extraction, not accepted proof evidence.
+Unmodified Aeneas be86ab0f1989d04944292b345b24c435be3ad10a; Lean 4.35.0.
+The historical default extraction configuration was tried with the ordinary tool.
+Generated Lean failed typechecking; no generated output was repaired or promoted.
+The active profile instead selects five Take methods and regenerates its own model.
+
+Generated/aarch64-apple-darwin/Bytes.lean:72:0: error: (kernel) invalid occurrence of datatype 'bytes.buf.buf_impl.Buf' being declared: it must be applied to the parameters and universe levels of the mutual declaration
+Generated/aarch64-apple-darwin/Bytes.lean:119:52: error(lean.invalidField): Invalid field notation: Field projection operates on types of the form `C ...` where C is a constant. The expression
+  buf
+has type `B` which does not have the necessary form.
+Generated/aarch64-apple-darwin/Bytes.lean:126:4: warning: declaration uses `sorry`
+Generated/aarch64-apple-darwin/Bytes.lean:164:52: error(lean.invalidField): Invalid field notation: Field projection operates on types of the form `C ...` where C is a constant. The expression
+  buf
+has type `B` which does not have the necessary form.
+Generated/aarch64-apple-darwin/Bytes.lean:171:4: warning: declaration uses `sorry`
+Generated/aarch64-apple-darwin/Bytes.lean:243:2: warning: declaration uses `sorry`

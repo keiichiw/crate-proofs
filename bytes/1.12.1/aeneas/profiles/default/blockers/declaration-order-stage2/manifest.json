@@ -1,0 +1,22 @@
+{
+  "status": "experimental compiler normalization and ordering, not accepted core proof dependency",
+  "binary_sha256": "11ca3d4b7490f0b13a106035fc2cd6b7ebfe9cf3e247d06a1a1c3969544aadc9",
+  "fixture_sha256": "7f0bc8c0d8a3af4407b5cc3a95b9494fb1efc2583e3e2ff7bb07aac5285b185d",
+  "source_sha256": {
+    "Config.ml": "f8261e0bc8c773bac27a443c7ce94195461cf54dc6131ad10cd2437b15bba0ab",
+    "Main.ml": "1fce8ddfcb37dead1058e4d925144452ac6b1d15b8090a227941f4e472ce49f3",
+    "PrePasses.ml": "9560ad317874618ac1f52711fda6a108d54a9c876412d4e117aec14c29180e2f"
+  },
+  "patch_sha256": "9bba6994c4b0a2512ec700e9e351e70ac9615825b9dae530fc700cc45b931271",
+  "ordering": "stable topological ordering of intact original declaration groups; cross-group cycles rejected",
+  "graph_exclusions": [
+    "outbound edges from registered backend trait declarations which emit no definition",
+    "GlobalInitializerFun provenance backedge only; executable global references retained"
+  ],
+  "limits": [
+    "No general aliasing theorem",
+    "No generated Lean edits",
+    "Lean check owned by numeric worker pending",
+    "Unselected lookup metadata never becomes accepted code"
+  ]
+}

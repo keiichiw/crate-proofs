@@ -1,0 +1,268 @@
+--- a/src/config.rs
++++ b/src/config.rs
+@@ -22,6 +22,8 @@
+ #[serde(deny_unknown_fields)]
+ pub struct Report {
+     pub title: String,
++    #[serde(default, skip_serializing_if = "Vec::is_empty")]
++    pub findings: Vec<Finding>,
+     #[serde(default, skip_serializing_if = "Option::is_none")]
+     pub explanation: Option<String>,
+     #[serde(default, skip_serializing_if = "Option::is_none")]
+@@ -30,6 +32,35 @@
+     pub limitations: Option<String>,
+     #[serde(default, skip_serializing_if = "Option::is_none")]
+     pub environment: Option<String>,
++}
++#[derive(Deserialize, Serialize, Clone)]
++#[serde(deny_unknown_fields)]
++pub struct Finding {
++    pub title: String,
++    pub body: String,
++}
++impl Report {
++    pub fn validate(&self) -> Result<()> {
++        ensure!(!self.title.trim().is_empty(), "[report].title is required");
++        ensure!(
++            self.findings.len() <= 20,
++            "At most 20 report.findings are allowed"
++        );
++        for (index, finding) in self.findings.iter().enumerate() {
++            for (name, value, limit) in [
++                ("title", &finding.title, 1000),
++                ("body", &finding.body, 10000),
++            ] {
++                // Match the service's JavaScript string-length limit.
++                ensure!(
++                    !value.trim().is_empty() && value.trim().encode_utf16().count() <= limit,
++                    "report.findings[{}].{name} must contain 1–{limit} characters",
++                    index + 1
++                );
++            }
++        }
++        Ok(())
++    }
+ }
+ #[derive(Default, Deserialize, Serialize)]
+ #[serde(deny_unknown_fields)]
+@@ -328,10 +359,7 @@
+             &fs::read_to_string(self.config_path())
+                 .context("Read proofs.toml; run cargo proofs init first")?,
+         )?;
+-        ensure!(
+-            !config.report.title.trim().is_empty(),
+-            "[report].title is required"
+-        );
++        config.report.validate()?;
+         config.tool.validate()?;
+         if let Some(path) = &self.alias_override {
+             #[derive(Deserialize, Serialize)]
+--- a/src/draft.rs
++++ b/src/draft.rs
+@@ -72,6 +72,7 @@
+     Ok(claims)
+ }
+ pub fn merge(config: &Config, mut generated: Value, existing: Option<&Value>) -> Result<Value> {
++    config.report.validate()?;
+     let mut body = if let Some(existing) = existing {
+         snapshot(existing)?
+     } else {
+@@ -147,6 +148,11 @@
+         claims.push(merged);
+     }
+     body["claims"] = Value::Array(claims);
++    // Findings have their own identity and history. Only create them with a new
++    // Report; revisions never repost the local authoring array.
++    if existing.is_none() && !config.report.findings.is_empty() {
++        body["findings"] = json!(config.report.findings);
++    }
+     Ok(body)
+ }
+ 
+@@ -180,6 +186,20 @@
+ mod tests {
+     use super::*;
+     #[test]
++    fn findings_are_created_once_and_never_added_to_revision_payloads() {
++        let cfg: Config = toml::from_str("[report]\ntitle='Report'\n[[report.findings]]\ntitle='Observation'\nbody='**Markdown**'\n[tool]\nname='kani'\nversion='1'\n").unwrap();
++        let generated = json!({"claims":[],"run_ids":["run"]});
++        let first = merge(&cfg, generated.clone(), None).unwrap();
++        assert_eq!(first["findings"][0]["body"], "**Markdown**");
++        let mut existing = first.clone();
++        existing["findings"][0]["body"] = json!("Web edit");
++        let revision = merge(&cfg, generated, Some(&existing)).unwrap();
++        assert!(revision.get("findings").is_none());
++        assert!(snapshot(&existing).unwrap().get("findings").is_none());
++        assert_eq!(existing["findings"][0]["body"], "Web edit");
++        assert_eq!(first["run_ids"], revision["run_ids"]);
++    }
++    #[test]
+     fn formal_reference_updates_without_overwriting_author_prose() {
+         let config: Config =
+             toml::from_str("[report]\ntitle='Local'\n[tool]\nname='aeneas'\nversion='1'\n")
+--- a/src/main.rs
++++ b/src/main.rs
+@@ -95,9 +95,6 @@
+     },
+     /// Preview a recorded report locally (requires Node.js 24+; never uploads).
+     Preview {
+-        /// Local array of Finding creation payloads; never uploaded.
+-        #[arg(long)]
+-        findings: Option<PathBuf>,
+         #[command(flatten)]
+         project: ProjectArgs,
+         /// Select a recorded run (defaults to the latest run at startup).
+@@ -160,7 +157,6 @@
+             local,
+         } => record::run(&project, command, local),
+         Commands::Preview {
+-            findings,
+             project,
+             run,
+             report,
+@@ -170,8 +166,7 @@
+             &server,
+             &project,
+             preview::Options {
+-                findings,
+-                run,
++                    run,
+                 report,
+                 port,
+                 no_browser,
+--- a/src/preview.rs
++++ b/src/preview.rs
+@@ -21,7 +21,6 @@
+ };
+ 
+ pub struct Options {
+-    pub findings: Option<std::path::PathBuf>,
+     pub run: Option<String>,
+     pub report: Option<u64>,
+     pub port: u16,
+@@ -29,7 +28,6 @@
+ }
+ 
+ struct Preview {
+-    findings: Option<std::path::PathBuf>,
+     project: Project,
+     server: String,
+     run_id: String,
+@@ -63,7 +61,6 @@
+             .flatten()
+             .unwrap_or_default();
+         Ok(Self {
+-            findings: options.findings.clone(),
+             project,
+             server: server.into(),
+             run_id,
+@@ -194,6 +191,17 @@
+         }
+         let generated = json!({"crate":self.project.name,"version":self.project.version,"tool_version_id":tool_id,"evidence_url":format!("{repository}/tree/{commit}"),"run_ids":[self.run_id],"claims":claims});
+         let mut report = draft::compose(&config, generated, &remote, &saved, self.report)?;
++        if let Some(id) = self.report {
++            if !config.report.findings.is_empty() {
++                warnings.push("report.findings applies only to new reports. This preview shows published findings; add or edit them using the report page or Findings API.".into());
++            }
++            match published_findings(id, |path| api.get(path)) {
++                Ok(items) => report["findings"] = json!(items),
++                Err(_) => warnings.push("Published findings could not be loaded; their contents and count are unavailable.".into()),
++            }
++        } else if let Some(findings) = report.as_object_mut().unwrap().remove("findings") {
++            report["finding_drafts"] = findings;
++        }
+         if let Some(r) = &remote {
+             let retained: BTreeSet<_> = report["claims"]
+                 .as_array()
+@@ -279,18 +287,36 @@
+             warnings.push("Local-only verification: the source commit has not been published. This Run cannot be uploaded or published.".into());
+             report["environment"] = json!(format!("Actual local Run platform: {}\n\nConfigured report environment text (historical): {}", entry["properties"]["proofs"]["platform"].as_str().unwrap_or("unknown"), report["environment"].as_str().unwrap_or("")));
+         }
+-        if let Some(path) = &self.findings {
+-            let bytes = fs::read(path).context("Read local findings JSON")?;
+-            ensure!(bytes.len() <= 131072, "Local findings exceed 128 KiB");
+-            let value: Value = serde_json::from_slice(&bytes)?;
+-            ensure!(
+-                value.as_array().is_some_and(|items| items.len() <= 20),
+-                "Expected an array of at most 20 findings"
+-            );
+-            report["finding_drafts"] = value;
+-        }
+         Ok(json!({"report":report,"sarif":recorded.sarif,"warnings":warnings,"server":self.server}))
+     }
++}
++
++fn published_findings(
++    report: u64,
++    mut get: impl FnMut(&str) -> Result<Value>,
++) -> Result<Vec<Value>> {
++    let base = format!("/api/v1/reports/{report}/findings");
++    let mut path = base.clone();
++    let mut seen = BTreeSet::new();
++    let mut findings = vec![];
++    loop {
++        let page = get(&path)?;
++        findings.extend(
++            page["items"]
++                .as_array()
++                .context("Missing findings")?
++                .clone(),
++        );
++        match page.get("next_cursor") {
++            Some(Value::Null) => break,
++            Some(Value::String(cursor)) => {
++                ensure!(seen.insert(cursor.clone()), "Repeated findings cursor");
++                path = format!("{base}?cursor={}", url_component(cursor));
++            }
++            _ => bail!("Invalid findings cursor"),
++        }
++    }
++    Ok(findings)
+ }
+ 
+ fn url_component(s: &str) -> String {
+@@ -422,3 +448,32 @@
+         eprintln!("Could not open the browser; open {url} manually.");
+     }
+ }
++
++#[cfg(test)]
++mod finding_tests {
++    use super::*;
++    #[test]
++    fn published_findings_load_all_pages_and_reject_incomplete_lists() {
++        let mut requests = vec![];
++        let found = published_findings(12, |path| {
++            requests.push(path.to_owned());
++            Ok(if requests.len() == 1 {
++                json!({"items":[{"id":"first"}],"next_cursor":"next-page"})
++            } else {
++                json!({"items":[{"id":"last"}],"next_cursor":null})
++            })
++        })
++        .unwrap();
++        assert_eq!(found.len(), 2);
++        assert_eq!(
++            requests,
++            [
++                "/api/v1/reports/12/findings",
++                "/api/v1/reports/12/findings?cursor=next-page"
++            ]
++        );
++        assert!(published_findings(12, |_| Ok(json!({"items":[],"next_cursor":"same"}))).is_err());
++        assert!(published_findings(12, |_| Ok(json!({"items":[]}))).is_err());
++        assert!(published_findings(12, |_| bail!("unavailable")).is_err());
++    }
++}
+--- a/src/publish.rs
++++ b/src/publish.rs
+@@ -304,6 +304,9 @@
+         claims.push(claim);
+     }
+     let selected = options.report.or(saved.report_id);
++    if selected.is_some() && !config.report.findings.is_empty() {
++        eprintln!("report.findings applies only to new reports. Existing findings are unchanged; add or edit them using the report page or Findings API.");
++    }
+     let remote = selected
+         .map(|id| api.get(&format!("/api/v1/reports/{id}")))
+         .transpose()?;

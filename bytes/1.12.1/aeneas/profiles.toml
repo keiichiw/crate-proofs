@@ -1,0 +1,10 @@
+default = "unpatched"
+
+[profiles.unpatched]
+path = "aeneas/profiles/unpatched"
+dependencies = []
+
+# Historical patched proof profile; not part of default coverage.
+[profiles.default]
+path = "aeneas/profiles/default"
+dependencies = []

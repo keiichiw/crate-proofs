@@ -1,0 +1,51 @@
+name = "bytes-proofs"
+defaultTargets = ["Proofs"]
+
+[[lean_lib]]
+name = "Proofs"
+
+[[lean_lib]]
+name = "Bytes"
+srcDir = "Generated/@TARGET@"
+
+[[require]]
+name = "aeneas"
+path = "@AENEAS_BACKEND@"
+
+[[lean_lib]]
+name = "BytesConsumption"
+srcDir = "Generated/@TARGET@"
+
+[[lean_lib]]
+name = "BytesAdapters"
+srcDir = "Generated/@TARGET@"
+
+[[lean_lib]]
+name = "BytesNumeric"
+srcDir = "Generated/@TARGET@"
+
+[[lean_lib]]
+name = "BytesCopy"
+srcDir = "Generated/@TARGET@"
+
+[[lean_lib]]
+name = "BytesCursorSlice"
+srcDir = "Generated/@TARGET@"
+
+[[lean_lib]]
+name = "BytesReader"
+srcDir = "Generated/@TARGET@"
+
+[[lean_lib]]
+name = "BytesStage3Types"
+
+[[lean_lib]]
+name = "BytesStage3Formatting"
+
+[[lean_lib]]
+name = "BytesRange"
+srcDir = "Generated/@TARGET@"
+
+[[lean_lib]]
+name = "BytesExtendedCopy"
+srcDir = "Generated/@TARGET@"

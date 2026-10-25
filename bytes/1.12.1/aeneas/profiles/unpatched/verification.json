@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "supported_targets": [
+    "aarch64-apple-darwin"
+  ],
+  "cargo_root": ".",
+  "extractions": [
+    {
+      "config": "extraction.json",
+      "models": {
+        "Bytes.lean": "proofs/Generated/@TARGET@/Bytes.lean"
+      }
+    }
+  ],
+  "inventory": "theorems.json",
+  "lean_dir": "proofs",
+  "report": "proofs.toml",
+  "native": [
+    [
+      "cargo",
+      "test",
+      "--locked",
+      "--manifest-path",
+      ".work/source/Cargo.toml"
+    ],
+    [
+      "cargo",
+      "test",
+      "--locked",
+      "--manifest-path",
+      ".work/source/Cargo.toml",
+      "--no-default-features"
+    ],
+    [
+      "cargo",
+      "run",
+      "--offline",
+      "--locked",
+      "--quiet",
+      "--manifest-path",
+      "aeneas/profiles/unpatched/findings/signed-read/Cargo.toml"
+    ]
+  ],
+  "additional_checks": [
+    [
+      "python3",
+      "scripts/check-unpatched-inputs.py"
+    ]
+  ],
+  "post_checks": [
+    [
+      "python3",
+      "scripts/check-unpatched-inputs.py"
+    ]
+  ]
+}

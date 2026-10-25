@@ -1,0 +1,54 @@
+{
+  "additional_checks": [
+    [
+      "python3",
+      "scripts/check-managed-inputs.py"
+    ],
+    [
+      "python3",
+      "scripts/extract-and-check.py"
+    ]
+  ],
+  "auxiliary_tools": {
+    "numeric": "numeric",
+    "ordinary": "ordinary",
+    "stage3": "stage3"
+  },
+  "cargo_root": ".",
+  "extractions": [],
+  "inventory": "theorems.json",
+  "lean_dir": "proofs",
+  "native": [
+    [
+      "cargo",
+      "test",
+      "--locked",
+      "--manifest-path",
+      ".work/source/Cargo.toml"
+    ],
+    [
+      "cargo",
+      "test",
+      "--locked",
+      "--manifest-path",
+      ".work/source/Cargo.toml",
+      "--no-default-features"
+    ]
+  ],
+  "post_checks": [
+    [
+      "python3",
+      "scripts/check-regressions.py"
+    ],
+    [
+      "python3",
+      "scripts/check-managed-inputs.py"
+    ]
+  ],
+  "report": "proofs.toml",
+  "schema_version": 1,
+  "supported_targets": [
+    "aarch64-apple-darwin",
+    "x86_64-unknown-linux-gnu"
+  ]
+}

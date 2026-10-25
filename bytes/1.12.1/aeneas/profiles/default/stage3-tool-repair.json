@@ -1,0 +1,43 @@
+{
+  "base_revision": "be86ab0f1989d04944292b345b24c435be3ad10a",
+  "changed_files": [
+    "backends/lean/Aeneas/Std.lean",
+    "backends/lean/Aeneas/Std/BytesBuf.lean",
+    "backends/lean/Aeneas/Std/BytesStage3Formatting.lean",
+    "backends/lean/Aeneas/Std/BytesStage3Registration.lean",
+    "backends/lean/Aeneas/Std/BytesStage3Types.lean",
+    "backends/lean/Aeneas/Std/Core/Fmt.lean",
+    "src/Config.ml",
+    "src/Main.ml",
+    "src/PrePasses.ml",
+    "src/Translate.ml",
+    "src/extract/Extract.ml",
+    "src/extract/ExtractBase.ml",
+    "src/extract/ExtractBuiltinLean.ml",
+    "src/interp/InterpStatements.ml"
+  ],
+  "historical_binary_note": "Original Linux executable hash remains in evidence/legacy; actual native binary is checked against the managed receipt before/after every run.",
+  "patch": "aeneas/profiles/default/stage3/patches/aeneas-stage3.patch",
+  "patch_sha256": "a5dcefe68b944eefa839068756d8f9b445e60b85835b8c26556d77bd25a10ea2",
+  "prelude_copies": {
+    "backends/lean/Aeneas/Std/BytesStage3Formatting.lean": "proofs/BytesStage3Formatting.lean",
+    "backends/lean/Aeneas/Std/BytesStage3Types.lean": "proofs/BytesStage3Types.lean"
+  },
+  "role": "isolated exact error/interface and ignored Debug registration; optional branch-specific continuation fallback and validated extra Lean imports; reviewed translation trust, not compiler correctness proof",
+  "source_files_sha256": {
+    "backends/lean/Aeneas/Std.lean": "9b3596eadfbb8d971f5d7396f7800e16e342ecfd07fa3051bf7ab37282abbe74",
+    "backends/lean/Aeneas/Std/BytesBuf.lean": "fe7c7e8a5bd52cfbbe3f6db801dc8b9883fd40ca7d4b5d56a381cfa0bb5dda0f",
+    "backends/lean/Aeneas/Std/BytesStage3Formatting.lean": "139a64c4ac80bd02340651a5483972b61cc9c4a739771986032d3ead4bcb2f17",
+    "backends/lean/Aeneas/Std/BytesStage3Registration.lean": "49afe92132cef1b43b98b1b0b7c88b481d893ba3e3bc444f2fc50d39095b4961",
+    "backends/lean/Aeneas/Std/BytesStage3Types.lean": "8239c18a1654f26a4d0118cd3c85e72f145c335aa864012cecfccf5ee06a882c",
+    "backends/lean/Aeneas/Std/Core/Fmt.lean": "68493783df58794fa0acda39b4198e1ed77cfd8344b2e61976f09828722c2d1e",
+    "src/Config.ml": "ef964b34ebfe98b11f4dd4845de0b30229a7ceae04b0708928483b9d29d2cd01",
+    "src/Main.ml": "9a675a366ca99996504929f1245e9bf85ed258a3dd196774aec9a3c0a19758fa",
+    "src/PrePasses.ml": "9560ad317874618ac1f52711fda6a108d54a9c876412d4e117aec14c29180e2f",
+    "src/Translate.ml": "b8c1be8ece2df522d4fbd8bed5e1c8907aeb83240fc7ed32fddb363792989edb",
+    "src/extract/Extract.ml": "b3020e40a36e824373f39b77313cbb1d3964fc1e6907b910dac3d80dc5ead3ea",
+    "src/extract/ExtractBase.ml": "34fe1bbcc8b44629d50714e97a2a300cdfda8ff2fe58260dd4c186e1f6372817",
+    "src/extract/ExtractBuiltinLean.ml": "ac0d7ac872b5a60638fbffdf77dfea985e59aca257f8621847a410721a2c2ea8",
+    "src/interp/InterpStatements.ml": "878d06a2f777587aaf005114e6dc9227d7375c6021af01486dc34bb4df00f1e1"
+  }
+}

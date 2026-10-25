@@ -1,0 +1,22 @@
+{
+  "status": "passed",
+  "target": "aarch64-apple-darwin",
+  "profile": "default",
+  "source_commit": "f576a7aefada20482271bbadf1dc1ee7be72c0c0",
+  "run_directory": "/Users/keiichiw/workspace/crate-proofs/bytes/1.12.1/.work/preview-session/source/bytes/1.12.1/.work/runs/default-_au88csr",
+  "result_sha256": "31fa1c3d12373ff4264b001f827ecf5c028c89c63e10960c8e3b477e7a57e313",
+  "audit_result_sha256": "b9015079ca67e6a007551a4bba7fb77af0049b115ecb6c2ba723f9dc06cda98c",
+  "notes": [
+    "All nine fresh model comparisons passed.",
+    "Native default/no-default suites are separate from Lean proof.",
+    "Shared-reborrow, declaration-order, rooted extraction, imports, branch-join, Never and signed-read controls passed.",
+    "This managed result is not used to fabricate a successful SARIF; the CLI records a separate standard Lake build and formal audit."
+  ],
+  "checked_theorem_roots": 161,
+  "allowed_axioms": [
+    "propext",
+    "Classical.choice",
+    "Quot.sound"
+  ],
+  "mapping_metadata_checked": true
+}

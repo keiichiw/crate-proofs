@@ -1,0 +1,10 @@
+
+$ ['cargo', 'run', '--offline', '--locked', '--quiet', '--manifest-path', 'aeneas/profiles/unpatched/findings/signed-read/Cargo.toml']
+width=1: get_int{,_le,_ne}=-1; try_get_int{,_le,_ne}=Ok(255); all consumed=1
+width=2: get_int{,_le,_ne}=-1; try_get_int{,_le,_ne}=Ok(65535); all consumed=2
+width=3: get_int{,_le,_ne}=-1; try_get_int{,_le,_ne}=Ok(16777215); all consumed=3
+width=4: get_int{,_le,_ne}=-1; try_get_int{,_le,_ne}=Ok(4294967295); all consumed=4
+width=5: get_int{,_le,_ne}=-1; try_get_int{,_le,_ne}=Ok(1099511627775); all consumed=5
+width=6: get_int{,_le,_ne}=-1; try_get_int{,_le,_ne}=Ok(281474976710655); all consumed=6
+width=7: get_int{,_le,_ne}=-1; try_get_int{,_le,_ne}=Ok(72057594037927935); all consumed=7
+width=8: get_int{,_le,_ne}=-1; try_get_int{,_le,_ne}=Ok(-1); all consumed=8

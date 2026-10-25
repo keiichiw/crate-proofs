@@ -1,0 +1,250 @@
+[
+  {
+    "legacy_api": "Buf for &[u8]::advance",
+    "canonical_api": "<&[u8] as bytes::buf::Buf>::advance",
+    "source_file": ".work/source/src/buf/buf_impl.rs",
+    "first_line": 2905,
+    "last_line": 2915,
+    "source_sha256": "f1095872bba7c9d5170207750f4ebe4fa61c4e35a282569491c2ee8ea2dc6714"
+  },
+  {
+    "legacy_api": "Buf for &[u8]::copy_to_slice",
+    "canonical_api": "<&[u8] as bytes::buf::Buf>::copy_to_slice",
+    "source_file": ".work/source/src/buf/buf_impl.rs",
+    "first_line": 2917,
+    "last_line": 2928,
+    "source_sha256": "f1095872bba7c9d5170207750f4ebe4fa61c4e35a282569491c2ee8ea2dc6714"
+  },
+  {
+    "legacy_api": "buf::Take::remaining",
+    "canonical_api": "<bytes::buf::Take as buf::Buf>::remaining",
+    "source_file": ".work/source/src/buf/take.rs",
+    "first_line": 136,
+    "last_line": 138,
+    "source_sha256": "443766677fae38b398271693ed6134c7cc14949cdb9fce299c44dd55ecf84fb3"
+  },
+  {
+    "legacy_api": "buf::Take::chunk",
+    "canonical_api": "<bytes::buf::Take as buf::Buf>::chunk",
+    "source_file": ".work/source/src/buf/take.rs",
+    "first_line": 140,
+    "last_line": 143,
+    "source_sha256": "443766677fae38b398271693ed6134c7cc14949cdb9fce299c44dd55ecf84fb3"
+  },
+  {
+    "legacy_api": "buf::Take::advance",
+    "canonical_api": "<bytes::buf::Take as buf::Buf>::advance",
+    "source_file": ".work/source/src/buf/take.rs",
+    "first_line": 145,
+    "last_line": 149,
+    "source_sha256": "443766677fae38b398271693ed6134c7cc14949cdb9fce299c44dd55ecf84fb3"
+  },
+  {
+    "legacy_api": "buf::IntoIter::next",
+    "canonical_api": "<bytes::buf::IntoIter as Iterator>::next",
+    "source_file": ".work/source/src/buf/iter.rs",
+    "first_line": 110,
+    "last_line": 119,
+    "source_sha256": "d4dca5b7f9b1cb441f22ac1862e28b10086721879163a810955aefb5cd7f3e58"
+  },
+  {
+    "legacy_api": "buf::IntoIter::size_hint",
+    "canonical_api": "<bytes::buf::IntoIter as Iterator>::size_hint",
+    "source_file": ".work/source/src/buf/iter.rs",
+    "first_line": 121,
+    "last_line": 124,
+    "source_sha256": "d4dca5b7f9b1cb441f22ac1862e28b10086721879163a810955aefb5cd7f3e58"
+  },
+  {
+    "legacy_api": "Buf::take",
+    "canonical_api": "buf::Buf::take",
+    "source_file": ".work/source/src/buf/buf_impl.rs",
+    "first_line": 2378,
+    "last_line": 2404,
+    "source_sha256": "f1095872bba7c9d5170207750f4ebe4fa61c4e35a282569491c2ee8ea2dc6714"
+  },
+  {
+    "legacy_api": "Buf::chain",
+    "canonical_api": "buf::Buf::chain",
+    "source_file": ".work/source/src/buf/buf_impl.rs",
+    "first_line": 2406,
+    "last_line": 2426,
+    "source_sha256": "f1095872bba7c9d5170207750f4ebe4fa61c4e35a282569491c2ee8ea2dc6714"
+  },
+  {
+    "legacy_api": "Buf::reader",
+    "canonical_api": "buf::Buf::reader",
+    "source_file": ".work/source/src/buf/buf_impl.rs",
+    "first_line": 2428,
+    "last_line": 2458,
+    "source_sha256": "f1095872bba7c9d5170207750f4ebe4fa61c4e35a282569491c2ee8ea2dc6714"
+  },
+  {
+    "legacy_api": "BufMut::limit",
+    "canonical_api": "buf::BufMut::limit",
+    "source_file": ".work/source/src/buf/buf_mut.rs",
+    "first_line": 1271,
+    "last_line": 1290,
+    "source_sha256": "c76d0a846cf6e2c42af7acf0bbedc49a30ce3b9185392835c6a6f8b06a128b9e"
+  },
+  {
+    "legacy_api": "BufMut::writer",
+    "canonical_api": "buf::BufMut::writer",
+    "source_file": ".work/source/src/buf/buf_mut.rs",
+    "first_line": 1292,
+    "last_line": 1322,
+    "source_sha256": "c76d0a846cf6e2c42af7acf0bbedc49a30ce3b9185392835c6a6f8b06a128b9e"
+  },
+  {
+    "legacy_api": "BufMut::chain_mut",
+    "canonical_api": "buf::BufMut::chain_mut",
+    "source_file": ".work/source/src/buf/buf_mut.rs",
+    "first_line": 1324,
+    "last_line": 1350,
+    "source_sha256": "c76d0a846cf6e2c42af7acf0bbedc49a30ce3b9185392835c6a6f8b06a128b9e"
+  },
+  {
+    "legacy_api": "buf::Chain::into_iter",
+    "canonical_api": "<bytes::buf::Chain as IntoIterator>::into_iter",
+    "source_file": ".work/source/src/buf/chain.rs",
+    "first_line": 237,
+    "last_line": 239,
+    "source_sha256": "27ff0a6fce049c51a24d45003b9741b655c28330b48af23ad1514587760b0c93"
+  },
+  {
+    "legacy_api": "Buf for &[u8]::remaining",
+    "canonical_api": "<&[u8] as bytes::buf::Buf>::remaining",
+    "source_file": ".work/source/src/buf/buf_impl.rs",
+    "first_line": 2895,
+    "last_line": 2898,
+    "source_sha256": "f1095872bba7c9d5170207750f4ebe4fa61c4e35a282569491c2ee8ea2dc6714"
+  },
+  {
+    "legacy_api": "Buf for &[u8]::chunk",
+    "canonical_api": "<&[u8] as bytes::buf::Buf>::chunk",
+    "source_file": ".work/source/src/buf/buf_impl.rs",
+    "first_line": 2900,
+    "last_line": 2903,
+    "source_sha256": "f1095872bba7c9d5170207750f4ebe4fa61c4e35a282569491c2ee8ea2dc6714"
+  },
+  {
+    "legacy_api": "Buf for &[u8]::has_remaining",
+    "canonical_api": "buf::Buf::has_remaining",
+    "source_file": ".work/source/src/buf/buf_impl.rs",
+    "first_line": 257,
+    "last_line": 276,
+    "source_sha256": "f1095872bba7c9d5170207750f4ebe4fa61c4e35a282569491c2ee8ea2dc6714"
+  },
+  {
+    "legacy_api": "buf::Take::has_remaining",
+    "canonical_api": "buf::Buf::has_remaining",
+    "source_file": ".work/source/src/buf/buf_impl.rs",
+    "first_line": 257,
+    "last_line": 276,
+    "source_sha256": "f1095872bba7c9d5170207750f4ebe4fa61c4e35a282569491c2ee8ea2dc6714"
+  },
+  {
+    "legacy_api": "buf::Chain::remaining",
+    "canonical_api": "<bytes::buf::Chain as buf::Buf>::remaining",
+    "source_file": ".work/source/src/buf/chain.rs",
+    "first_line": 135,
+    "last_line": 137,
+    "source_sha256": "27ff0a6fce049c51a24d45003b9741b655c28330b48af23ad1514587760b0c93"
+  },
+  {
+    "legacy_api": "buf::Chain::chunk",
+    "canonical_api": "<bytes::buf::Chain as buf::Buf>::chunk",
+    "source_file": ".work/source/src/buf/chain.rs",
+    "first_line": 139,
+    "last_line": 145,
+    "source_sha256": "27ff0a6fce049c51a24d45003b9741b655c28330b48af23ad1514587760b0c93"
+  },
+  {
+    "legacy_api": "buf::Chain::advance",
+    "canonical_api": "<bytes::buf::Chain as buf::Buf>::advance",
+    "source_file": ".work/source/src/buf/chain.rs",
+    "first_line": 147,
+    "last_line": 163,
+    "source_sha256": "27ff0a6fce049c51a24d45003b9741b655c28330b48af23ad1514587760b0c93"
+  },
+  {
+    "legacy_api": "buf::Chain::has_remaining",
+    "canonical_api": "buf::Buf::has_remaining",
+    "source_file": ".work/source/src/buf/buf_impl.rs",
+    "first_line": 257,
+    "last_line": 276,
+    "source_sha256": "f1095872bba7c9d5170207750f4ebe4fa61c4e35a282569491c2ee8ea2dc6714"
+  },
+  {
+    "legacy_api": "Buf for &[u8]::get_u8",
+    "canonical_api": "buf::Buf::get_u8",
+    "source_file": ".work/source/src/buf/buf_impl.rs",
+    "first_line": 304,
+    "last_line": 330,
+    "source_sha256": "f1095872bba7c9d5170207750f4ebe4fa61c4e35a282569491c2ee8ea2dc6714"
+  },
+  {
+    "legacy_api": "Buf for &[u8]::try_get_u8",
+    "canonical_api": "buf::Buf::try_get_u8",
+    "source_file": ".work/source/src/buf/buf_impl.rs",
+    "first_line": 1186,
+    "last_line": 1219,
+    "source_sha256": "f1095872bba7c9d5170207750f4ebe4fa61c4e35a282569491c2ee8ea2dc6714"
+  },
+  {
+    "legacy_api": "Buf for &[u8]::get_i8",
+    "canonical_api": "buf::Buf::get_i8",
+    "source_file": ".work/source/src/buf/buf_impl.rs",
+    "first_line": 332,
+    "last_line": 358,
+    "source_sha256": "f1095872bba7c9d5170207750f4ebe4fa61c4e35a282569491c2ee8ea2dc6714"
+  },
+  {
+    "legacy_api": "Buf for &[u8]::try_get_i8",
+    "canonical_api": "buf::Buf::try_get_i8",
+    "source_file": ".work/source/src/buf/buf_impl.rs",
+    "first_line": 1221,
+    "last_line": 1254,
+    "source_sha256": "f1095872bba7c9d5170207750f4ebe4fa61c4e35a282569491c2ee8ea2dc6714"
+  },
+  {
+    "legacy_api": "Buf::try_copy_to_slice (default)",
+    "canonical_api": "buf::Buf::try_copy_to_slice",
+    "source_file": ".work/source/src/buf/buf_impl.rs",
+    "first_line": 1136,
+    "last_line": 1184,
+    "source_sha256": "f1095872bba7c9d5170207750f4ebe4fa61c4e35a282569491c2ee8ea2dc6714"
+  },
+  {
+    "legacy_api": "Buf for Cursor<&[u8]>::remaining",
+    "canonical_api": "<std::io::Cursor<T> as bytes::buf::Buf>::remaining",
+    "source_file": ".work/source/src/buf/buf_impl.rs",
+    "first_line": 2933,
+    "last_line": 2936,
+    "source_sha256": "f1095872bba7c9d5170207750f4ebe4fa61c4e35a282569491c2ee8ea2dc6714"
+  },
+  {
+    "legacy_api": "Buf for Cursor<&[u8]>::chunk",
+    "canonical_api": "<std::io::Cursor<T> as bytes::buf::Buf>::chunk",
+    "source_file": ".work/source/src/buf/buf_impl.rs",
+    "first_line": 2938,
+    "last_line": 2943,
+    "source_sha256": "f1095872bba7c9d5170207750f4ebe4fa61c4e35a282569491c2ee8ea2dc6714"
+  },
+  {
+    "legacy_api": "Buf for Cursor<&[u8]>::advance",
+    "canonical_api": "<std::io::Cursor<T> as bytes::buf::Buf>::advance",
+    "source_file": ".work/source/src/buf/buf_impl.rs",
+    "first_line": 2945,
+    "last_line": 2962,
+    "source_sha256": "f1095872bba7c9d5170207750f4ebe4fa61c4e35a282569491c2ee8ea2dc6714"
+  },
+  {
+    "legacy_api": "BufRead for Reader::consume",
+    "canonical_api": "<bytes::buf::Reader as std::io::BufRead>::consume",
+    "source_file": ".work/source/src/buf/reader.rs",
+    "first_line": 78,
+    "last_line": 80,
+    "source_sha256": "cda8bc221a1de06c7395d5c6e80f8a5924198eafbc2decc0909082ce8781d789"
+  }
+]

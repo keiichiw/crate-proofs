@@ -1,0 +1,48 @@
+{
+  "additional_changed_files_from_core": [
+    "src/Config.ml",
+    "src/Main.ml",
+    "src/PrePasses.ml"
+  ],
+  "base_revision": "be86ab0f1989d04944292b345b24c435be3ad10a",
+  "changed_files": [
+    "backends/lean/Aeneas/Std.lean",
+    "backends/lean/Aeneas/Std/BytesBuf.lean",
+    "backends/lean/Aeneas/Std/Core/Fmt.lean",
+    "src/Config.ml",
+    "src/Main.ml",
+    "src/PrePasses.ml",
+    "src/extract/Extract.ml",
+    "src/extract/ExtractBase.ml",
+    "src/extract/ExtractBuiltinLean.ml"
+  ],
+  "core_repair_manifest": "verification/tool-repair.json",
+  "flags": [
+    "-rooted-declarations",
+    "-filter-trait-methods",
+    "-normalize-shared-reborrow",
+    "-order-projected-declarations"
+  ],
+  "historical_binary_note": "Original Linux executable hash remains in evidence/legacy; actual native binary is checked against the managed receipt before/after every run.",
+  "patch": "aeneas/profiles/default/numeric/patches/aeneas-numeric.patch",
+  "patch_sha256": "b5132af4be62d65a1be7454684ade3cde11a4100e0999788a9c273b0788d0049",
+  "regressions": [
+    "verification/blockers/shared-reborrow-stage2",
+    "verification/blockers/declaration-order-stage2"
+  ],
+  "schema_version": 1,
+  "semantics": "Strict temporary shared-reborrow normalization, with adjacent and unique-use/type guards, plus stable ordering of intact declaration groups. No application algorithm or generated Lean rewrite.",
+  "source_files_sha256": {
+    "backends/lean/Aeneas/Std.lean": "dac834da021921c1500dc3312bd5226c9ab22920595dfd76b245baa084547003",
+    "backends/lean/Aeneas/Std/BytesBuf.lean": "fe7c7e8a5bd52cfbbe3f6db801dc8b9883fd40ca7d4b5d56a381cfa0bb5dda0f",
+    "backends/lean/Aeneas/Std/Core/Fmt.lean": "77db8cb3b7ad7abc575ab4d5779fe2d6e0e8b0b7775a748bd4e323f1fb1b7084",
+    "src/Config.ml": "f8261e0bc8c773bac27a443c7ce94195461cf54dc6131ad10cd2437b15bba0ab",
+    "src/Main.ml": "1fce8ddfcb37dead1058e4d925144452ac6b1d15b8090a227941f4e472ce49f3",
+    "src/PrePasses.ml": "9560ad317874618ac1f52711fda6a108d54a9c876412d4e117aec14c29180e2f",
+    "src/extract/Extract.ml": "b3020e40a36e824373f39b77313cbb1d3964fc1e6907b910dac3d80dc5ead3ea",
+    "src/extract/ExtractBase.ml": "34fe1bbcc8b44629d50714e97a2a300cdfda8ff2fe58260dd4c186e1f6372817",
+    "src/extract/ExtractBuiltinLean.ml": "ceba2d2f12e363fe829fa1d7e56fc6e4bd1c0014fbc7c21dce68487ba86da3d8"
+  },
+  "status": "pinned additional byte-reader translation tool; proof acceptance tracked separately",
+  "trust_boundary": "Reviewed/tested compiler translation; no formal Rust aliasing or OCaml compiler correctness theorem. Normalization affects only the explicit numeric capture. Core proofs keep the separate frozen core compiler."
+}

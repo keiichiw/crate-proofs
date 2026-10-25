@@ -1,0 +1,95 @@
+diff --git a/src/Config.ml b/src/Config.ml
+index ed89603..7cb432c 100644
+--- a/src/Config.ml
++++ b/src/Config.ml
+@@ -628,3 +628,6 @@ let drop_as_no_op = ref true
+ 
+ (** Restrict declarations to the dependency closure of explicit Charon roots. *)
+ let rooted_declarations = ref false
++
++(** Normalize the strictly guarded adjacent shared reborrow temporary pattern. *)
++let normalize_shared_reborrow = ref false
+diff --git a/src/Main.ml b/src/Main.ml
+index 729849c..11345bb 100644
+--- a/src/Main.ml
++++ b/src/Main.ml
+@@ -216,6 +216,9 @@ let () =
+          collisions with field projectors. Example: the `len` method in `impl \
+          Struct { fn len(&self) -> usize { ... } }` would be named \
+          `Struct.impl.len`." );
++      ( "-normalize-shared-reborrow",
++        Arg.Set normalize_shared_reborrow,
++        " Normalize sole-use adjacent mutable-reference copy/shared-reborrow temporaries" );
+       ( "-rooted-declarations",
+         Arg.Set rooted_declarations,
+         " Restrict extraction to explicit Charon function roots and their dependencies" );
+diff --git a/src/PrePasses.ml b/src/PrePasses.ml
+index b99543e..3c4c834 100644
+--- a/src/PrePasses.ml
++++ b/src/PrePasses.ml
+@@ -2348,6 +2348,56 @@ let terminate_never_calls (_crate : crate) (f : fun_decl) : fun_decl =
+       { f with body = StructuredBody { body with body = visitor#visit_block () body.body } }
+   | _ -> f
+ 
++(** Normalize one optimized-MIR temporary reborrow shape, without changing
++    calls or evaluating a mutable reference copy. The temporary must occur only
++    as the assignment destination and immediately following shared reborrow.
++    Storage markers are the sole excluded occurrences; drops are counted. *)
++let normalize_shared_reborrow (_crate : crate) (f : fun_decl) : fun_decl =
++  match f.body with
++  | StructuredBody body ->
++      let arguments = body.locals.locals |> List.tl
++        |> Collections.List.prefix body.locals.arg_count
++        |> List.map (fun (v : local) -> v.index) |> LocalId.Set.of_list in
++      let occurrences id =
++        let n = ref 0 in
++        let v = object
++          inherit [_] iter_statement as super
++          method! visit_local_id _ i = if i = id then incr n
++          method! visit_statement env st = match st.kind with
++            | StorageLive _ | StorageDead _ -> ()
++            | _ -> super#visit_statement env st
++        end in
++        v#visit_block () body.body; !n
++      in
++      let v = object
++        inherit [_] map_statement_base as super
++        method! visit_block env block =
++          let block = super#visit_block env block in
++          let rec rewrite = function
++            | first :: second :: rest ->
++                (match first.kind, second.kind with
++                | Assign (({ kind = PlaceLocal temp; ty = TRef (_, target, RMut) } as dest),
++                    Use (Copy ({ kind = PlaceProjection
++                      ({ kind = PlaceLocal source_id; ty = TRef (_, inner, RShared) }, Deref); _ } as source), NoRetag)),
++                  Assign (({ ty = TRef (_, borrowed, RShared); _ } as out),
++                    RvRef ({ kind = PlaceProjection
++                      ({ kind = PlaceLocal temp2; ty = temp_ty }, Deref); ty = deref_ty }, BShared, metadata))
++                  when temp = temp2 && temp <> source_id
++                    && not (LocalId.Set.mem temp arguments)
++                    && occurrences temp = 2
++                    && dest.ty = source.ty && inner = source.ty
++                    && temp_ty = source.ty && target = borrowed && target = deref_ty ->
++                    let reborrowed = { kind = PlaceProjection (source, Deref); ty = target } in
++                    { second with kind = Assign (out, RvRef (reborrowed, BShared, metadata)) }
++                      :: rewrite rest
++                | _ -> first :: rewrite (second :: rest))
++            | tail -> tail
++          in
++          { block with statements = rewrite block.statements }
++      end in
++      { f with body = StructuredBody { body with body = v#visit_block () body.body } }
++  | _ -> f
++
+ (** Opt-in declaration slicing. Only dependency edges of backend-provided trait
+     dictionaries are projected; executable function bodies are never rewritten. *)
+ let rooted_declarations (crate : crate) : crate =
+@@ -2464,6 +2514,8 @@ let apply_passes (crate : crate) : crate =
+       ("fix_closure_signature_regions", fix_closure_signature_regions);
+       ("fix_anon_const_initializers", fix_anon_const_initializers);
+       ("erase_body_regions", erase_body_regions);
++      ("normalize_shared_reborrow", (fun crate f ->
++        if !Config.normalize_shared_reborrow then normalize_shared_reborrow crate f else f));
+       ("remove_unreachable", remove_unreachable);
+       ("update_loop", update_loops);
+       ("remove_useless_joins", remove_useless_joins);

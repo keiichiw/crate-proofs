@@ -61,6 +61,7 @@ Do not treat hyper or atoi as verified; first assess feasibility on an important
 
 | Crate | Version | Procedure and scope |
 | --- | --- | --- |
+| bytes | 1.12.1 | [Selected Aeneas/Lean proofs](bytes/1.12.1/README.md) / [recorded results](bytes/1.12.1/aeneas/profiles/default/results.md) / [signed-read finding](bytes/1.12.1/verification/findings/BYTES-001.md) |
 | adler2 | 2.0.1 | [Aeneas/Lean harness](adler2/2.0.1/README.md) / [results](adler2/2.0.1/verification/results.md) |
 | ipnet | 2.12.2 | [Aeneas/Lean harness](ipnet/2.12.2/README.md) / [scope and results](ipnet/2.12.2/verification/results.md) / [bug and tool reproductions](ipnet/2.12.2/verification/issue-repros/README.md) |
 | httpdate | 1.0.3 | [Procedure](httpdate/1.0.3/README.md) / [scope and recorded results](httpdate/1.0.3/verification/coverage.md) |

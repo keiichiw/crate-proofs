@@ -1,0 +1,85 @@
+[report]
+title = "bytes 1.12.1: Take contracts and signed-read findings"
+explanation = "Five structural Take contracts over unchanged bytes 1.12.1 release bodies: into_inner/get_ref return the stored inner value, limit returns the stored limit, set_limit preserves the inner value, and get_mut writeback preserves the limit for every replacement. All raw Take states are allowed. The signed-read Finding is a separate native counterexample encountered while working toward formal verification."
+trusted_assumptions = "Charon/Aeneas translation and Aeneas Lean standard library, Lean kernel and its permitted standard axioms. The compiler translation is trusted, not proved by this report."
+limitations = "Only the mapped contracts are verified. No whole-crate, unsafe memory-safety or signed variable-width reader correctness claim."
+environment = "aarch64-apple-darwin; Lean 4.35.0; extraction Rust nightly-2026-09-17; native Rust 1.91.1. Tool revisions and preparation details are recorded in toolchain.lock.json."
+
+[[report.findings]]
+title = "Checked variable-width signed reads omit sign extension"
+api_paths = ["bytes::Buf::try_get_int", "bytes::Buf::try_get_int_le", "bytes::Buf::try_get_int_ne"]
+body = '''
+While working toward Aeneas formal verification, we examined the expected signed-read
+contract. That obligation was not established; source review and native reproduction
+confirmed the discrepancy below. Failure to complete a proof alone is not evidence
+of a bug, and the retained records do not show Lean producing this counterexample.
+
+In bytes 1.12.1, the checked variable-width signed readers can return a positive
+number for a negative two's-complement input. For example, one byte 0xff denotes
+-1, but try_get_int(1) returns Ok(255):
+
+```rust
+use bytes::Buf;
+
+let mut input = &[0xff_u8, 0x42][..];
+let value = input.try_get_int(1);
+assert_eq!(input, &[0x42]); // The requested byte was consumed.
+assert_eq!(value, Ok(-1)); // Fails: actual result is Ok(255).
+```
+
+The retained native regression checks big-, little- and native-endian variants on
+all-0xff inputs at widths 1 through 8, including the exact residual slice. At widths
+1 through 7, checked reads return 2^(8*n)-1 while the corresponding get_int methods
+return -1. Width 8 is a passing control: both return -1. The 2026-10-23 minimal
+counterexample record uses Rust 1.91.1 on aarch64-apple-darwin with default features
+disabled. These observations are native counterexamples, not Lean verification
+of the public variable-width readers or evidence of a memory-safety failure.
+
+Source inspection explains the discrepancy: the checked implementations fill an
+eight-byte array initially containing zeroes and convert it to i64, whereas the
+unchecked counterparts apply sign extension. The expected signed contract remains
+an unmet obligation; it was not weakened to accept the observed result.
+
+See the [pinned Buf implementation](https://github.com/tokio-rs/bytes/blob/76c0fbb54ed4336caf9d2311658a2f4a5627c21d/src/buf/buf_impl.rs#L2086).
+This is a known issue reproduced in the pinned 1.12.1 release.
+[Upstream PR #839](https://github.com/tokio-rs/bytes/pull/839) was merged on
+2026-09-03 as [7930d93](https://github.com/tokio-rs/bytes/commit/7930d93d583757e922014312d4aa3e58a415131f).
+As checked on 2026-10-25, master contains the fix but the latest release remains
+1.12.1, which is affected. The native-endian reader is fixed through delegation.
+'''
+
+[tool]
+name = "aeneas"
+version = "be86ab0f1989d04944292b345b24c435be3ad10a"
+lean_dir = ".work/selected-proofs"
+
+[[tool.proofs]]
+api = "buf::Take::into_inner"
+module = "Proofs.Take"
+theorem = "bytes.take_into_inner_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "buf::Take::get_ref"
+module = "Proofs.Take"
+theorem = "bytes.take_get_ref_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "buf::Take::get_mut"
+module = "Proofs.Take"
+theorem = "bytes.take_get_mut_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "buf::Take::limit"
+module = "Proofs.Take"
+theorem = "bytes.take_limit_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "buf::Take::set_limit"
+module = "Proofs.Take"
+theorem = "bytes.take_set_limit_spec"
+precondition = "true"
+

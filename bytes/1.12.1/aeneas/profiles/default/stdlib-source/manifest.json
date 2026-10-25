@@ -1,0 +1,31 @@
+{
+  "rust_toolchain": "nightly-2026-09-17",
+  "rustc_version_verbose": "rustc 1.100.0-nightly (923c95cdf 2026-09-16)\nbinary: rustc\ncommit-hash: 923c95cdf5ba65cea505aa2ea829f578e1506ed8\ncommit-date: 2026-09-16\nhost: x86_64-unknown-linux-gnu\nrelease: 1.100.0-nightly\nLLVM version: 23.1.1\n",
+  "source_directory_relative_to_sysroot": "lib/rustlib/src/rust",
+  "files_sha256": {
+    "library/core/src/convert/num.rs": "8dbf6c64681e2dee556e0844eef3e53d62a40df0280d25f469352870a401e034",
+    "library/core/src/io/cursor.rs": "c6b8f2ebeaac728815a919bfb34af9d82c47665ecc81e26640042404287877d4",
+    "library/core/src/convert/mod.rs": "aaab13973fa234bb93098ae621f3d22dd1a052744f12cf3190cef77c90f1dc4c",
+    "library/core/src/ops/range.rs": "5d791bd2ee8997e93ac72c35db831815d9acbb7aed05cd1539799b7677a13d20"
+  },
+  "role": "source identity for transparently extracted numeric conversion, Cursor type/accessors, AsRef forwarding and Bound/RangeBounds declarations; other standard-library behavior remains modeled/trusted",
+  "selected_cursor_definitions": [
+    "Cursor<T>",
+    "Cursor<T>::get_ref",
+    "Cursor<T>::position",
+    "Cursor<T>::set_position"
+  ],
+  "selected_conversion_definitions": [
+    "<[T] as AsRef<[T]>>::as_ref",
+    "<&T as AsRef<U>>::as_ref",
+    "usize::try_from(u64)"
+  ],
+  "license_files_sha256": {
+    "Apache-2.0.txt": "074e6e32c86a4c0ef8b3ed25b721ca23aca83df277cd88106ef7177c354615ff",
+    "MIT.txt": "b85dcd3e453d05982552c52b5fc9e0bdd6d23c6f8e844b984a88af32570b0cc0"
+  },
+  "selected_range_definitions": [
+    "Bound<T>",
+    "RangeBounds<T>"
+  ]
+}
