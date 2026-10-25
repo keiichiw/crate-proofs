@@ -58,6 +58,17 @@ class ExtractionValidation(unittest.TestCase):
 
             def fake_run(argv, **kwargs):
                 if argv[0] == 'charon':
+                    for symbol in (options or {}).get('charon_exclude', []):
+                        self.assertEqual(argv[argv.index(symbol) - 1], '--exclude')
+                    self.assertEqual('--remove-unused-clauses' in argv,
+                                     bool(options and options.get('remove_unused_clauses')))
+                    if options and options.get('local_scope'):
+                        at = argv.index('crate')
+                        self.assertEqual(argv[at - 1], '--opaque')
+                        for symbol in options['local_scope']['include']:
+                            self.assertIn(('--include', symbol), list(zip(argv, argv[1:])))
+                    for symbol in (options or {}).get('dependency_include', []):
+                        self.assertIn(('--include', symbol), list(zip(argv, argv[1:])))
                     if options and options.get('charon_opaque'):
                         for symbol in options['charon_opaque']:
                             at = argv.index(symbol)
@@ -74,6 +85,10 @@ class ExtractionValidation(unittest.TestCase):
                         self.assertIn('--extract-opaque-bodies', argv)
                     (output / 'example.llbc').write_text('{}')
                 else:
+                    self.assertEqual('-rooted-declarations' in argv,
+                                     bool(options and options.get('rooted_declarations')))
+                    self.assertEqual('-filter-trait-methods' in argv,
+                                     bool(options and options.get('rooted_declarations')))
                     (output / 'Example.lean').write_text(content)
                     if extra:
                         (output / 'Unexpected.lean').write_text('def unexpected := 0')
@@ -103,6 +118,94 @@ class ExtractionValidation(unittest.TestCase):
     def test_reject_unexpected_model(self):
         with self.assertRaises(ValueError):
             self.run_extract('def update := 0\n', extra=True)
+
+    def test_local_scope_keeps_body_and_axiom_checks(self):
+        options = {'local_scope': {'opaque_crate': True, 'include': [
+            'crate::buf::take::Take', 'crate::buf::take::new',
+            'crate::buf::take::_::limit']}}
+        self.run_extract('def update := 0\n', options=options)
+        for content in ('axiom update : Nat\n', 'def other := 0\n',
+                        'def update := by sorry\n'):
+            with self.subTest(content=content), self.assertRaises(ValueError):
+                self.run_extract(content, options=options)
+
+    def test_local_scope_accepts_validated_trait_impl_methods(self):
+        symbol = '{impl crate::Integer for _}::div_floor'
+        options = {'impl_entries': [symbol], 'local_scope': {
+            'opaque_crate': True, 'include': [symbol]}}
+        self.run_extract('def update := 0\n', options=options)
+        for bad in ('{impl crate::* for _}::div_floor',
+                    '{impl other::Integer for _}::div_floor',
+                    '{impl crate::Integer for *}::div_floor',
+                    symbol + '\naxiom bad : False'):
+            with self.subTest(symbol=bad), self.assertRaises(ValueError):
+                self.run_extract('def update := 0\n', options={'local_scope': {
+                    'opaque_crate': True, 'include': [bad]}})
+
+    def test_impl_only_roots_and_empty_combined_selection(self):
+        self.run_extract('def update := 0\n', options={
+            'entries': [], 'impl_entries': ['{impl crate::Integer for _}::is_even']})
+        with self.assertRaises(ValueError):
+            self.run_extract('def update := 0\n', options={'entries': []})
+
+    def test_dependency_bodies_are_selected_and_still_checked(self):
+        options = {'dependency_include': [
+            '{impl num_traits::identities::Zero for _}::is_zero',
+            'num_traits::identities::Zero']}
+        self.run_extract('def update := 0\n', options=options)
+        with self.assertRaises(ValueError):
+            self.run_extract('axiom update : Nat\n', options=options)
+        for bad in ('num_traits::*', '{impl num_traits::* for _}::zero',
+                    '{impl crate::Integer for _}::div_floor',
+                    'num_traits::Zero\naxiom bad : False', 4):
+            with self.subTest(symbol=bad), self.assertRaises(ValueError):
+                self.run_extract('def update := 0\n', options={'dependency_include': [bad]})
+
+    def test_remove_unused_clauses_keeps_body_checks(self):
+        options = {'remove_unused_clauses': True}
+        self.run_extract('def update := 0\n', options=options)
+        self.run_extract('def update := 0\n', options={'remove_unused_clauses': False})
+        for content in ('axiom update : Nat\n', 'def other := 0\n',
+                        'def update := by sorry\n'):
+            with self.subTest(content=content), self.assertRaises(ValueError):
+                self.run_extract(content, options=options)
+        for value in ('true', 1, None, []):
+            with self.subTest(value=value), self.assertRaises(ValueError):
+                self.run_extract('def update := 0\n', options={'remove_unused_clauses': value})
+
+    def test_rooted_and_exact_exclusion_keep_body_checks(self):
+        options = {'rooted_declarations': True,
+                   'charon_exclude': ['crate::buf::buf_mut::BufMut']}
+        self.run_extract('def update := 0\n', options=options)
+        self.run_extract('def update := 0\n', options={'rooted_declarations': False})
+        for content in ('axiom update : Nat\n', 'def other := 0\n',
+                        'def update := by sorry\n'):
+            with self.subTest(content=content), self.assertRaises(ValueError):
+                self.run_extract(content, options=options)
+        for value in ('true', 1, None, []):
+            with self.subTest(value=value), self.assertRaises(ValueError):
+                self.run_extract('def update := 0\n', options={'rooted_declarations': value})
+        for value in ('crate::BufMut', ['crate::*'], ['crate::_::field'],
+                      ['--opaque'], ['crate::BufMut\n'], [1]):
+            with self.subTest(value=value), self.assertRaises(ValueError):
+                self.run_extract('def update := 0\n', options={'charon_exclude': value})
+
+    def test_reject_invalid_local_scope(self):
+        invalid = [False, [], {}, {'opaque_crate': False, 'include': ['crate::update']},
+                   {'opaque_crate': True, 'include': 'crate::update'},
+                   {'opaque_crate': True, 'include': []},
+                   {'opaque_crate': True, 'include': ['crate::update'], 'extra': True}]
+        invalid += [{'opaque_crate': True, 'include': [symbol]} for symbol in (
+            'core::update', 'crate', 'crate::*', 'crate::buf::_',
+            'crate::buf::take::**::limit', 'crate::update --include crate',
+            'crate::update\n', '--opaque', 1)]
+        for local_scope in invalid:
+            with self.subTest(local_scope=local_scope), self.assertRaises(ValueError):
+                self.run_extract('def update := 0\n', options={'local_scope': local_scope})
+        with self.assertRaises(ValueError):
+            self.run_extract('def update := 0\n', options={
+                'local_scope': {'opaque_crate': True, 'include': ['crate::update']},
+                'extract_opaque_bodies': True})
 
     def test_concrete_dependency_extraction_keeps_axiom_filter(self):
         options = {'charon_include': ['core::net::ip_addr::Ipv4Addr'],
