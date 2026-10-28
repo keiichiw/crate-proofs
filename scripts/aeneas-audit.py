@@ -21,8 +21,8 @@ def validate(inventory, report=None):
             raise ValueError('invalid Lean theorem or module name')
     mappings = inventory.get('recorder_mappings', [])
     by_name = {x['name']: x for x in checked}
-    if len({m['api'] for m in mappings}) != len(mappings):
-        raise ValueError('duplicate API mapping')
+    if len({(m['api'], m['theorem']) for m in mappings}) != len(mappings) or len({m['theorem'] for m in mappings}) != len(mappings):
+        raise ValueError('duplicate API/theorem mapping')
     for m in mappings:
         if m['theorem'] not in by_name:
             raise ValueError('mapped theorem is not audited')

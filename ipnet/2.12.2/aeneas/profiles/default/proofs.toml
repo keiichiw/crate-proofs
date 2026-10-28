@@ -158,6 +158,8 @@ ipnet 2.12.2, serde 1.0.229, heapless 0.9.2, Rust 1.91.1, macOS arm64.
 '''
 
 [tool]
+# Enumerate macro-generated public APIs with the pinned native Rust compiler.
+expand_api = true
 name = "aeneas"
 version = "8e62dc3dc765602833c86b68dceb18a475a50a8f"
 lean_dir = ".work/selected-proofs"
@@ -252,26 +254,26 @@ module = "Proofs.Core"
 theorem = "ipnet.ipnet.ip_max_prefix_len_spec"
 precondition = "true"
 [[tool.proofs]]
-api = "From<Ipv4Net> for IpNet"
+api = "<ipnet::IpNet as From<Ipv4Net>>::from"
 module = "Proofs.Core"
 theorem = "ipnet.ipnet.from_ipv4_spec"
 precondition = "true"
 
 [[tool.proofs]]
-api = "From<Ipv6Net> for IpNet"
+api = "<ipnet::IpNet as From<Ipv6Net>>::from"
 module = "Proofs.Core"
 theorem = "ipnet.ipnet.from_ipv6_spec"
 precondition = "true"
 
 
 [[tool.proofs]]
-api = "ipext::Ipv4AddrRange::new"
+api = "Ipv4AddrRange::new"
 module = "Proofs.Collections"
 theorem = "ipnet.ipv4_range_new_spec"
 precondition = "true"
 
 [[tool.proofs]]
-api = "ipext::Ipv6AddrRange::new"
+api = "Ipv6AddrRange::new"
 module = "Proofs.Collections"
 theorem = "ipnet.ipv6_range_new_spec"
 precondition = "true"
@@ -379,115 +381,115 @@ theorem = "ipnet.ip_trunc_nat_spec"
 precondition = "match n with | .V4 v => v.prefix_len.val ≤ 32 | .V6 v => v.prefix_len.val ≤ 128"
 
 [[tool.proofs]]
-api = "Ipv4Net::contains<&Ipv4Addr>"
+api = "Ipv4Net::contains"
 module = "Proofs.Contains"
 theorem = "ipnet.ipv4_public_contains_addr_spec"
 precondition = "n.prefix_len.val ≤ 32"
 
 [[tool.proofs]]
-api = "Ipv6Net::contains<&Ipv6Addr>"
+api = "Ipv6Net::contains"
 module = "Proofs.Contains"
 theorem = "ipnet.ipv6_public_contains_addr_spec"
 precondition = "n.prefix_len.val ≤ 128"
 
 [[tool.proofs]]
-api = "Ipv4Net::contains<&Ipv4Net>"
+api = "Ipv4Net::contains"
 module = "Proofs.Contains"
 theorem = "ipnet.ipv4_public_contains_net_spec"
 precondition = "n.prefix_len.val ≤ 32 and m.prefix_len.val ≤ 32"
 
 [[tool.proofs]]
-api = "Ipv6Net::contains<&Ipv6Net>"
+api = "Ipv6Net::contains"
 module = "Proofs.Contains"
 theorem = "ipnet.ipv6_public_contains_net_spec"
 precondition = "n.prefix_len.val ≤ 128 and m.prefix_len.val ≤ 128"
 
 [[tool.proofs]]
-api = "IpNet::contains<&IpAddr>"
+api = "IpNet::contains"
 module = "Proofs.Contains"
 theorem = "ipnet.ip_public_contains_addr_spec"
 precondition = "receiver prefix within its family width"
 
 [[tool.proofs]]
-api = "IpNet::contains<&IpNet>"
+api = "IpNet::contains"
 module = "Proofs.Contains"
 theorem = "ipnet.ip_public_contains_net_spec"
 precondition = "both prefixes within their respective family widths"
 
 [[tool.proofs]]
-api = "Ipv4AddrRange::next"
+api = "<ipnet::Ipv4AddrRange as Iterator>::next"
 module = "Proofs.RangeNext"
 theorem = "RangeNext.range_next_spec"
 precondition = "true"
 
 [[tool.proofs]]
-api = "Ipv4AddrRange::next_back"
+api = "<ipnet::Ipv4AddrRange as DoubleEndedIterator>::next_back"
 module = "Proofs.RangeMore"
 theorem = "RangeMore.range_next_back_spec"
 precondition = "true"
 
 [[tool.proofs]]
-api = "Ipv4AddrRange::nth"
+api = "<ipnet::Ipv4AddrRange as Iterator>::nth"
 module = "Proofs.RangeMore"
 theorem = "RangeMore.range_nth_spec"
 precondition = "System.Platform.numBits = 64"
 
 [[tool.proofs]]
-api = "Ipv4AddrRange::nth_back"
+api = "<ipnet::Ipv4AddrRange as DoubleEndedIterator>::nth_back"
 module = "Proofs.RangeMore"
 theorem = "RangeMore.range_nth_back_spec"
 precondition = "System.Platform.numBits = 64"
 
 [[tool.proofs]]
-api = "Ipv4AddrRange::count"
+api = "<ipnet::Ipv4AddrRange as Iterator>::count"
 module = "Proofs.RangeMore"
 theorem = "RangeMore.range_count_spec"
 precondition = "System.Platform.numBits = 64"
 
 [[tool.proofs]]
-api = "Ipv4AddrRange::size_hint"
+api = "<ipnet::Ipv4AddrRange as Iterator>::size_hint"
 module = "Proofs.RangeMore"
 theorem = "RangeMore.range_size_hint_spec"
 precondition = "System.Platform.numBits = 64"
 
 [[tool.proofs]]
-api = "Ipv4AddrRange::last"
+api = "<ipnet::Ipv4AddrRange as Iterator>::last"
 module = "Proofs.RangeMore"
 theorem = "RangeMore.range_last_spec"
 precondition = "true"
 
 [[tool.proofs]]
-api = "Ipv4AddrRange::min"
+api = "<ipnet::Ipv4AddrRange as Iterator>::min"
 module = "Proofs.RangeMore"
 theorem = "RangeMore.range_min_spec"
 precondition = "true"
 
 [[tool.proofs]]
-api = "Ipv4AddrRange::max"
+api = "<ipnet::Ipv4AddrRange as Iterator>::max"
 module = "Proofs.RangeMore"
 theorem = "RangeMore.range_max_spec"
 precondition = "true"
 
 [[tool.proofs]]
-api = "Ipv4Addr::IpSub<u32>::saturating_sub"
+api = "<core::net::ip_addr::Ipv4Addr as ipnet::IpSub<u32>>::saturating_sub"
 module = "Proofs.RangeMore"
 theorem = "RangeMore.ipv4_saturating_sub_spec"
 precondition = "true"
 
 [[tool.proofs]]
-api = "Ipv4Addr::IpSub<Ipv4Addr>::saturating_sub"
+api = "<core::net::ip_addr::Ipv4Addr as ipnet::IpSub>::saturating_sub"
 module = "Proofs.RangeMore"
 theorem = "RangeMore.ipv4_saturating_sub_addr_spec"
 precondition = "true"
 
 [[tool.proofs]]
-api = "Default for Ipv4Net"
+api = "<ipnet::Ipv4Net as Default>::default"
 module = "Proofs.IPv4NetOps"
 theorem = "IPv4NetOps.default_spec"
 precondition = "true"
 
 [[tool.proofs]]
-api = "From<Ipv4Addr> for Ipv4Net"
+api = "<ipnet::Ipv4Net as From<Ipv4Addr>>::from"
 module = "Proofs.IPv4NetOps"
 theorem = "IPv4NetOps.from_ipv4_spec"
 precondition = "true"
@@ -517,37 +519,37 @@ theorem = "IPv4NetOps.is_sibling_spec"
 precondition = "n.prefix_len.val ≤ 32 and m.prefix_len.val ≤ 32"
 
 [[tool.proofs]]
-api = "Ipv4Addr::IpBitAnd<Ipv4Addr>::bitand"
+api = "<core::net::ip_addr::Ipv4Addr as ipnet::IpBitAnd>::bitand"
 module = "Proofs.BitOps"
 theorem = "BitOps.ipv4_and_addr_spec"
 precondition = "true"
 
 [[tool.proofs]]
-api = "Ipv4Addr::IpBitAnd<u32>::bitand"
+api = "<core::net::ip_addr::Ipv4Addr as ipnet::IpBitAnd<u32>>::bitand"
 module = "Proofs.BitOps"
 theorem = "BitOps.ipv4_and_u32_spec"
 precondition = "true"
 
 [[tool.proofs]]
-api = "Ipv4Addr::IpBitOr<Ipv4Addr>::bitor"
+api = "<core::net::ip_addr::Ipv4Addr as ipnet::IpBitOr>::bitor"
 module = "Proofs.BitOps"
 theorem = "BitOps.ipv4_or_addr_spec"
 precondition = "true"
 
 [[tool.proofs]]
-api = "Ipv4Addr::IpBitOr<u32>::bitor"
+api = "<core::net::ip_addr::Ipv4Addr as ipnet::IpBitOr<u32>>::bitor"
 module = "Proofs.BitOps"
 theorem = "BitOps.ipv4_or_u32_spec"
 precondition = "true"
 
 [[tool.proofs]]
-api = "Ipv4Addr::IpAdd<u32>::saturating_add"
+api = "<core::net::ip_addr::Ipv4Addr as ipnet::IpAdd<u32>>::saturating_add"
 module = "Proofs.RangeNext"
 theorem = "RangeNext.ipv4_saturating_add_spec"
 precondition = "true"
 
 [[tool.proofs]]
-api = "mask::ipv4_mask_to_prefix"
+api = "ipv4_mask_to_prefix"
 module = "Proofs.IPv4MaskOps"
 theorem = "IPv4MaskOps.ipv4_mask_to_prefix_spec"
 precondition = "true"
@@ -559,157 +561,157 @@ theorem = "IPv4MaskOps.with_netmask_spec"
 precondition = "true"
 
 [[tool.proofs]]
-api = "Ipv4Subnets::next"
+api = "<ipnet::Ipv4Subnets as Iterator>::next"
 module = "Proofs.IPv4SubnetAll"
 theorem = "IPv4SubnetAll.next_raw_spec"
 precondition = "true"
 
 [[tool.proofs]]
-api = "Clone for Ipv4Net"
+api = "<ipnet::Ipv4Net as Clone>::clone"
 module = "Proofs.IPv4Derived"
 theorem = "IPv4Derived.clone_spec"
 precondition = "true"
 
 [[tool.proofs]]
-api = "PartialEq::eq for Ipv4Net"
+api = "<ipnet::Ipv4Net as PartialEq>::eq"
 module = "Proofs.IPv4Derived"
 theorem = "IPv4Derived.eq_spec"
 precondition = "true"
 
 [[tool.proofs]]
-api = "Ord::cmp for Ipv4Net"
+api = "<ipnet::Ipv4Net as Ord>::cmp"
 module = "Proofs.IPv4Derived"
 theorem = "IPv4Derived.cmp_spec"
 precondition = "true"
 
 [[tool.proofs]]
-api = "PartialOrd::partial_cmp for Ipv4Net"
+api = "<ipnet::Ipv4Net as PartialOrd>::partial_cmp"
 module = "Proofs.IPv4Derived"
 theorem = "IPv4Derived.partial_cmp_spec"
 precondition = "true"
 
 [[tool.proofs]]
-api = "Clone for Ipv4AddrRange"
+api = "<ipnet::Ipv4AddrRange as Clone>::clone"
 module = "Proofs.IPv4IteratorDerived"
 theorem = "IPv4IteratorDerived.range_clone_spec"
 precondition = "true"
 
 [[tool.proofs]]
-api = "PartialEq::eq for Ipv4AddrRange"
+api = "<ipnet::Ipv4AddrRange as PartialEq>::eq"
 module = "Proofs.IPv4IteratorDerived"
 theorem = "IPv4IteratorDerived.range_eq_spec"
 precondition = "true"
 
 [[tool.proofs]]
-api = "Ord::cmp for Ipv4AddrRange"
+api = "<ipnet::Ipv4AddrRange as Ord>::cmp"
 module = "Proofs.IPv4IteratorDerived"
 theorem = "IPv4IteratorDerived.range_cmp_spec"
 precondition = "true"
 
 [[tool.proofs]]
-api = "PartialOrd::partial_cmp for Ipv4AddrRange"
+api = "<ipnet::Ipv4AddrRange as PartialOrd>::partial_cmp"
 module = "Proofs.IPv4IteratorDerived"
 theorem = "IPv4IteratorDerived.range_partial_cmp_spec"
 precondition = "true"
 
 [[tool.proofs]]
-api = "Clone for Ipv4Subnets"
+api = "<ipnet::Ipv4Subnets as Clone>::clone"
 module = "Proofs.IPv4IteratorDerived"
 theorem = "IPv4IteratorDerived.subnets_clone_spec"
 precondition = "true"
 
 [[tool.proofs]]
-api = "PartialEq::eq for Ipv4Subnets"
+api = "<ipnet::Ipv4Subnets as PartialEq>::eq"
 module = "Proofs.IPv4IteratorDerived"
 theorem = "IPv4IteratorDerived.subnets_eq_spec"
 precondition = "true"
 
 [[tool.proofs]]
-api = "Ord::cmp for Ipv4Subnets"
+api = "<ipnet::Ipv4Subnets as Ord>::cmp"
 module = "Proofs.IPv4IteratorDerived"
 theorem = "IPv4IteratorDerived.subnets_cmp_spec"
 precondition = "true"
 
 [[tool.proofs]]
-api = "PartialOrd::partial_cmp for Ipv4Subnets"
+api = "<ipnet::Ipv4Subnets as PartialOrd>::partial_cmp"
 module = "Proofs.IPv4IteratorDerived"
 theorem = "IPv4IteratorDerived.subnets_partial_cmp_spec"
 precondition = "true"
 
 [[tool.proofs]]
-api = "From<Ipv4AddrRange> for IpAddrRange"
+api = "<ipnet::IpAddrRange as From<Ipv4AddrRange>>::from"
 module = "Proofs.TaggedIPv4"
 theorem = "TaggedIPv4.from_ipv4_range_spec"
 precondition = "true"
 
 [[tool.proofs]]
-api = "From<Ipv4Subnets> for IpSubnets"
+api = "<ipnet::IpSubnets as From<Ipv4Subnets>>::from"
 module = "Proofs.TaggedIPv4"
 theorem = "TaggedIPv4.from_ipv4_subnets_spec"
 precondition = "true"
 
 [[tool.proofs]]
-api = "From<Ipv6AddrRange> for IpAddrRange"
+api = "<ipnet::IpAddrRange as From<Ipv6AddrRange>>::from"
 module = "Proofs.TaggedIPv4"
 theorem = "TaggedIPv4.from_ipv6_range_spec"
 precondition = "true"
 
 [[tool.proofs]]
-api = "From<Ipv6Subnets> for IpSubnets"
+api = "<ipnet::IpSubnets as From<Ipv6Subnets>>::from"
 module = "Proofs.TaggedIPv4"
 theorem = "TaggedIPv4.from_ipv6_subnets_spec"
 precondition = "true"
 
 [[tool.proofs]]
-api = "IpNet::hosts(V4)"
+api = "IpNet::hosts"
 module = "Proofs.TaggedIPv4"
 theorem = "TaggedIPv4.hosts_v4_spec"
 precondition = "n.prefix_len.val ≤ 32"
 
 [[tool.proofs]]
-api = "IpNet::subnets(V4)"
+api = "IpNet::subnets"
 module = "Proofs.TaggedIPv4"
 theorem = "TaggedIPv4.subnets_v4_spec"
 precondition = "n.prefix_len.val ≤ 32"
 
 [[tool.proofs]]
-api = "IpNet::supernet(V4)"
+api = "IpNet::supernet"
 module = "Proofs.TaggedIPv4"
 theorem = "TaggedIPv4.supernet_v4_spec"
 precondition = "n.prefix_len.val ≤ 32"
 
 [[tool.proofs]]
-api = "IpNet::is_sibling(V4,V4)"
+api = "IpNet::is_sibling"
 module = "Proofs.TaggedIPv4"
 theorem = "TaggedIPv4.is_sibling_v4_spec"
 precondition = "n.prefix_len.val ≤ 32 and m.prefix_len.val ≤ 32"
 
 [[tool.proofs]]
-api = "IpNet::is_sibling(V4,V6)"
+api = "IpNet::is_sibling"
 module = "Proofs.TaggedIPv4"
 theorem = "TaggedIPv4.is_sibling_v4_v6_spec"
 precondition = "true"
 
 [[tool.proofs]]
-api = "IpNet::is_sibling(V6,V4)"
+api = "IpNet::is_sibling"
 module = "Proofs.TaggedIPv4"
 theorem = "TaggedIPv4.is_sibling_v6_v4_spec"
 precondition = "true"
 
 [[tool.proofs]]
-api = "Default for IpNet"
+api = "<ipnet::IpNet as Default>::default"
 module = "Proofs.TaggedDefaultFrom"
 theorem = "TaggedDefaultFrom.ipnet_default_spec"
 precondition = "true"
 
 [[tool.proofs]]
-api = "From<IpAddr> for IpNet"
+api = "<ipnet::IpNet as From<IpAddr>>::from"
 module = "Proofs.TaggedDefaultFrom"
 theorem = "TaggedDefaultFrom.ipnet_from_addr_spec"
 precondition = "true"
 
 [[tool.proofs]]
-api = "From<Ipv6Addr> for Ipv6Net"
+api = "<ipnet::Ipv6Net as From<Ipv6Addr>>::from"
 module = "Proofs.TaggedDefaultFrom"
 theorem = "TaggedDefaultFrom.ipv6_from_addr_spec"
 precondition = "true"
@@ -739,175 +741,175 @@ theorem = "IPv6NetOps.is_sibling_spec"
 precondition = "n.prefix_len.val ≤ 128 and m.prefix_len.val ≤ 128"
 
 [[tool.proofs]]
-api = "IpNet::hosts(V6)"
+api = "IpNet::hosts"
 module = "Proofs.TaggedIPv6"
 theorem = "TaggedIPv6.hosts_v6_spec"
 precondition = "n.prefix_len.val ≤ 128"
 
 [[tool.proofs]]
-api = "IpNet::subnets(V6)"
+api = "IpNet::subnets"
 module = "Proofs.TaggedIPv6"
 theorem = "TaggedIPv6.subnets_v6_spec"
 precondition = "n.prefix_len.val ≤ 128"
 
 [[tool.proofs]]
-api = "IpNet::supernet(V6)"
+api = "IpNet::supernet"
 module = "Proofs.TaggedIPv6"
 theorem = "TaggedIPv6.supernet_v6_spec"
 precondition = "n.prefix_len.val ≤ 128"
 
 [[tool.proofs]]
-api = "IpNet::is_sibling(V6,V6)"
+api = "IpNet::is_sibling"
 module = "Proofs.TaggedIPv6"
 theorem = "TaggedIPv6.is_sibling_v6_spec"
 precondition = "n.prefix_len.val ≤ 128 and m.prefix_len.val ≤ 128"
 
 [[tool.proofs]]
-api = "Clone for Ipv6Net"
+api = "<ipnet::Ipv6Net as Clone>::clone"
 module = "Proofs.IPv6Derived"
 theorem = "IPv6Derived.net_clone_spec"
 precondition = "true"
 
 [[tool.proofs]]
-api = "PartialEq::eq for Ipv6Net"
+api = "<ipnet::Ipv6Net as PartialEq>::eq"
 module = "Proofs.IPv6Derived"
 theorem = "IPv6Derived.net_eq_spec"
 precondition = "true"
 
 [[tool.proofs]]
-api = "Ord::cmp for Ipv6Net"
+api = "<ipnet::Ipv6Net as Ord>::cmp"
 module = "Proofs.IPv6Derived"
 theorem = "IPv6Derived.net_cmp_spec"
 precondition = "true"
 
 [[tool.proofs]]
-api = "PartialOrd::partial_cmp for Ipv6Net"
+api = "<ipnet::Ipv6Net as PartialOrd>::partial_cmp"
 module = "Proofs.IPv6Derived"
 theorem = "IPv6Derived.net_partial_cmp_spec"
 precondition = "true"
 
 [[tool.proofs]]
-api = "Clone for Ipv6AddrRange"
+api = "<ipnet::Ipv6AddrRange as Clone>::clone"
 module = "Proofs.IPv6Derived"
 theorem = "IPv6Derived.range_clone_spec"
 precondition = "true"
 
 [[tool.proofs]]
-api = "PartialEq::eq for Ipv6AddrRange"
+api = "<ipnet::Ipv6AddrRange as PartialEq>::eq"
 module = "Proofs.IPv6Derived"
 theorem = "IPv6Derived.range_eq_spec"
 precondition = "true"
 
 [[tool.proofs]]
-api = "Ord::cmp for Ipv6AddrRange"
+api = "<ipnet::Ipv6AddrRange as Ord>::cmp"
 module = "Proofs.IPv6Derived"
 theorem = "IPv6Derived.range_cmp_spec"
 precondition = "true"
 
 [[tool.proofs]]
-api = "PartialOrd::partial_cmp for Ipv6AddrRange"
+api = "<ipnet::Ipv6AddrRange as PartialOrd>::partial_cmp"
 module = "Proofs.IPv6Derived"
 theorem = "IPv6Derived.range_partial_cmp_spec"
 precondition = "true"
 
 [[tool.proofs]]
-api = "Clone for Ipv6Subnets"
+api = "<ipnet::Ipv6Subnets as Clone>::clone"
 module = "Proofs.IPv6Derived"
 theorem = "IPv6Derived.subnets_clone_spec"
 precondition = "true"
 
 [[tool.proofs]]
-api = "PartialEq::eq for Ipv6Subnets"
+api = "<ipnet::Ipv6Subnets as PartialEq>::eq"
 module = "Proofs.IPv6Derived"
 theorem = "IPv6Derived.subnets_eq_spec"
 precondition = "true"
 
 [[tool.proofs]]
-api = "Ord::cmp for Ipv6Subnets"
+api = "<ipnet::Ipv6Subnets as Ord>::cmp"
 module = "Proofs.IPv6Derived"
 theorem = "IPv6Derived.subnets_cmp_spec"
 precondition = "true"
 
 [[tool.proofs]]
-api = "PartialOrd::partial_cmp for Ipv6Subnets"
+api = "<ipnet::Ipv6Subnets as PartialOrd>::partial_cmp"
 module = "Proofs.IPv6Derived"
 theorem = "IPv6Derived.subnets_partial_cmp_spec"
 precondition = "true"
 
 [[tool.proofs]]
-api = "Ipv6AddrRange::last"
+api = "<ipnet::Ipv6AddrRange as Iterator>::last"
 module = "Proofs.IPv6RangeBasic"
 theorem = "IPv6RangeBasic.last_spec"
 precondition = "true"
 
 [[tool.proofs]]
-api = "Ipv6AddrRange::max"
+api = "<ipnet::Ipv6AddrRange as Iterator>::max"
 module = "Proofs.IPv6RangeBasic"
 theorem = "IPv6RangeBasic.max_spec"
 precondition = "true"
 
 [[tool.proofs]]
-api = "Ipv6AddrRange::min"
+api = "<ipnet::Ipv6AddrRange as Iterator>::min"
 module = "Proofs.IPv6RangeBasic"
 theorem = "IPv6RangeBasic.min_spec"
 precondition = "true"
 
 [[tool.proofs]]
-api = "Ipv6Addr::IpSub<Ipv6Addr>::saturating_sub"
+api = "<core::net::ip_addr::Ipv6Addr as ipnet::IpSub>::saturating_sub"
 module = "Proofs.IPv6RangeBasic"
 theorem = "IPv6RangeBasic.ipv6_saturating_sub_addr_spec"
 precondition = "true"
 
 [[tool.proofs]]
-api = "Ipv6AddrRange::count"
+api = "<ipnet::Ipv6AddrRange as Iterator>::count"
 module = "Proofs.IPv6RangeBasic"
 theorem = "IPv6RangeBasic.count_spec"
 precondition = "System.Platform.numBits = 64"
 
 [[tool.proofs]]
-api = "Ipv6Addr::IpAdd<u128>::saturating_add"
+api = "<core::net::ip_addr::Ipv6Addr as ipnet::IpAdd<u128>>::saturating_add"
 module = "Proofs.IPv6RangeSteps"
 theorem = "IPv6RangeSteps.ipv6_saturating_add_spec"
 precondition = "true"
 
 [[tool.proofs]]
-api = "Ipv6Addr::IpSub<u128>::saturating_sub"
+api = "<core::net::ip_addr::Ipv6Addr as ipnet::IpSub<u128>>::saturating_sub"
 module = "Proofs.IPv6RangeSteps"
 theorem = "IPv6RangeSteps.ipv6_saturating_sub_spec"
 precondition = "true"
 
 [[tool.proofs]]
-api = "Ipv6AddrRange::next"
+api = "<ipnet::Ipv6AddrRange as Iterator>::next"
 module = "Proofs.IPv6RangeSteps"
 theorem = "IPv6RangeSteps.range_next_spec"
 precondition = "true"
 
 [[tool.proofs]]
-api = "Ipv6AddrRange::next_back"
+api = "<ipnet::Ipv6AddrRange as DoubleEndedIterator>::next_back"
 module = "Proofs.IPv6RangeSteps"
 theorem = "IPv6RangeSteps.range_next_back_spec"
 precondition = "true"
 
 [[tool.proofs]]
-api = "Ipv6AddrRange::size_hint"
+api = "<ipnet::Ipv6AddrRange as Iterator>::size_hint"
 module = "Proofs.IPv6RangeSkips"
 theorem = "IPv6RangeSkips.size_hint_spec"
 precondition = "System.Platform.numBits = 64"
 
 [[tool.proofs]]
-api = "Ipv6AddrRange::nth"
+api = "<ipnet::Ipv6AddrRange as Iterator>::nth"
 module = "Proofs.IPv6RangeSkips"
 theorem = "IPv6RangeSkips.nth_remaining_spec"
 precondition = "System.Platform.numBits = 64"
 
 [[tool.proofs]]
-api = "Ipv6AddrRange::nth_back"
+api = "<ipnet::Ipv6AddrRange as DoubleEndedIterator>::nth_back"
 module = "Proofs.IPv6RangeSkips"
 theorem = "IPv6RangeSkips.nth_back_remaining_spec"
 precondition = "System.Platform.numBits = 64"
 
 [[tool.proofs]]
-api = "mask::ipv6_mask_to_prefix"
+api = "ipv6_mask_to_prefix"
 module = "Proofs.IPv6MaskOps"
 theorem = "IPv6MaskOps.ipv6_mask_to_prefix_spec"
 precondition = "true"
@@ -919,103 +921,103 @@ theorem = "IPv6MaskOps.with_netmask_spec"
 precondition = "true"
 
 [[tool.proofs]]
-api = "Ipv6Addr::IpBitAnd<Ipv6Addr>::bitand"
+api = "<core::net::ip_addr::Ipv6Addr as ipnet::IpBitAnd>::bitand"
 module = "Proofs.IPv6BitOps"
 theorem = "IPv6BitOps.ipv6_and_addr_spec"
 precondition = "true"
 
 [[tool.proofs]]
-api = "Ipv6Addr::IpBitAnd<u128>::bitand"
+api = "<core::net::ip_addr::Ipv6Addr as ipnet::IpBitAnd<u128>>::bitand"
 module = "Proofs.IPv6BitOps"
 theorem = "IPv6BitOps.ipv6_and_u128_spec"
 precondition = "true"
 
 [[tool.proofs]]
-api = "Ipv6Addr::IpBitOr<Ipv6Addr>::bitor"
+api = "<core::net::ip_addr::Ipv6Addr as ipnet::IpBitOr>::bitor"
 module = "Proofs.IPv6BitOps"
 theorem = "IPv6BitOps.ipv6_or_addr_spec"
 precondition = "true"
 
 [[tool.proofs]]
-api = "Ipv6Addr::IpBitOr<u128>::bitor"
+api = "<core::net::ip_addr::Ipv6Addr as ipnet::IpBitOr<u128>>::bitor"
 module = "Proofs.IPv6BitOps"
 theorem = "IPv6BitOps.ipv6_or_u128_spec"
 precondition = "true"
 
 [[tool.proofs]]
-api = "Default for Ipv6Net"
+api = "<ipnet::Ipv6Net as Default>::default"
 module = "Proofs.IPv6Default"
 theorem = "IPv6Default.default_spec"
 precondition = "true"
 
 [[tool.proofs]]
-api = "Ipv6Subnets::next"
+api = "<ipnet::Ipv6Subnets as Iterator>::next"
 module = "Proofs.IPv6SubnetAll"
 theorem = "IPv6SubnetAll.next_raw_spec"
 precondition = "true"
 
 [[tool.proofs]]
-api = "IpSubnets::next"
+api = "<ipnet::IpSubnets as Iterator>::next"
 module = "Proofs.TaggedSubnets"
 theorem = "TaggedSubnets.next_raw_spec"
 precondition = "true"
 
 [[tool.proofs]]
-api = "IpAddrRange::next"
+api = "<ipnet::IpAddrRange as Iterator>::next"
 module = "Proofs.TaggedRange"
 theorem = "TaggedRange.next_spec"
 precondition = "true"
 
 [[tool.proofs]]
-api = "IpAddrRange::next_back"
+api = "<ipnet::IpAddrRange as DoubleEndedIterator>::next_back"
 module = "Proofs.TaggedRange"
 theorem = "TaggedRange.next_back_spec"
 precondition = "true"
 
 [[tool.proofs]]
-api = "IpAddrRange::nth"
+api = "<ipnet::IpAddrRange as Iterator>::nth"
 module = "Proofs.TaggedRange"
 theorem = "TaggedRange.nth_spec"
 precondition = "System.Platform.numBits = 64"
 
 [[tool.proofs]]
-api = "IpAddrRange::nth_back"
+api = "<ipnet::IpAddrRange as DoubleEndedIterator>::nth_back"
 module = "Proofs.TaggedRange"
 theorem = "TaggedRange.nth_back_spec"
 precondition = "System.Platform.numBits = 64"
 
 [[tool.proofs]]
-api = "IpAddrRange::last"
+api = "<ipnet::IpAddrRange as Iterator>::last"
 module = "Proofs.TaggedRange"
 theorem = "TaggedRange.last_spec"
 precondition = "true"
 
 [[tool.proofs]]
-api = "IpAddrRange::max"
+api = "<ipnet::IpAddrRange as Iterator>::max"
 module = "Proofs.TaggedRange"
 theorem = "TaggedRange.max_spec"
 precondition = "true"
 
 [[tool.proofs]]
-api = "IpAddrRange::min"
+api = "<ipnet::IpAddrRange as Iterator>::min"
 module = "Proofs.TaggedRange"
 theorem = "TaggedRange.min_spec"
 precondition = "true"
 
 [[tool.proofs]]
-api = "IpAddrRange::size_hint"
+api = "<ipnet::IpAddrRange as Iterator>::size_hint"
 module = "Proofs.TaggedRange"
 theorem = "TaggedRange.size_hint_spec"
 precondition = "System.Platform.numBits = 64"
 
 [[tool.proofs]]
-api = "IpAddrRange::count"
+api = "<ipnet::IpAddrRange as Iterator>::count"
 module = "Proofs.TaggedRange"
 theorem = "TaggedRange.count_spec"
 precondition = "System.Platform.numBits = 64"
 
 [[tool.proofs]]
-api = "mask::ip_mask_to_prefix"
+api = "ip_mask_to_prefix"
 module = "Proofs.TaggedMask"
 theorem = "TaggedMask.ip_mask_to_prefix_spec"
 precondition = "true"
@@ -1027,97 +1029,97 @@ theorem = "TaggedMask.with_netmask_spec"
 precondition = "true"
 
 [[tool.proofs]]
-api = "Clone for IpNet"
+api = "<ipnet::IpNet as Clone>::clone"
 module = "Proofs.TaggedDerived"
 theorem = "TaggedDerived.net_clone_spec"
 precondition = "true"
 
 [[tool.proofs]]
-api = "PartialEq::eq for IpNet"
+api = "<ipnet::IpNet as PartialEq>::eq"
 module = "Proofs.TaggedDerived"
 theorem = "TaggedDerived.net_eq_spec"
 precondition = "true"
 
 [[tool.proofs]]
-api = "Ord::cmp for IpNet"
+api = "<ipnet::IpNet as Ord>::cmp"
 module = "Proofs.TaggedDerived"
 theorem = "TaggedDerived.net_cmp_spec"
 precondition = "true"
 
 [[tool.proofs]]
-api = "PartialOrd::partial_cmp for IpNet"
+api = "<ipnet::IpNet as PartialOrd>::partial_cmp"
 module = "Proofs.TaggedDerived"
 theorem = "TaggedDerived.net_partial_cmp_spec"
 precondition = "true"
 
 [[tool.proofs]]
-api = "Clone for IpAddrRange"
+api = "<ipnet::IpAddrRange as Clone>::clone"
 module = "Proofs.TaggedDerived"
 theorem = "TaggedDerived.range_clone_spec"
 precondition = "true"
 
 [[tool.proofs]]
-api = "PartialEq::eq for IpAddrRange"
+api = "<ipnet::IpAddrRange as PartialEq>::eq"
 module = "Proofs.TaggedDerived"
 theorem = "TaggedDerived.range_eq_spec"
 precondition = "true"
 
 [[tool.proofs]]
-api = "Ord::cmp for IpAddrRange"
+api = "<ipnet::IpAddrRange as Ord>::cmp"
 module = "Proofs.TaggedDerived"
 theorem = "TaggedDerived.range_cmp_spec"
 precondition = "true"
 
 [[tool.proofs]]
-api = "PartialOrd::partial_cmp for IpAddrRange"
+api = "<ipnet::IpAddrRange as PartialOrd>::partial_cmp"
 module = "Proofs.TaggedDerived"
 theorem = "TaggedDerived.range_partial_cmp_spec"
 precondition = "true"
 
 [[tool.proofs]]
-api = "Clone for IpSubnets"
+api = "<ipnet::IpSubnets as Clone>::clone"
 module = "Proofs.TaggedDerived"
 theorem = "TaggedDerived.subnets_clone_spec"
 precondition = "true"
 
 [[tool.proofs]]
-api = "PartialEq::eq for IpSubnets"
+api = "<ipnet::IpSubnets as PartialEq>::eq"
 module = "Proofs.TaggedDerived"
 theorem = "TaggedDerived.subnets_eq_spec"
 precondition = "true"
 
 [[tool.proofs]]
-api = "Ord::cmp for IpSubnets"
+api = "<ipnet::IpSubnets as Ord>::cmp"
 module = "Proofs.TaggedDerived"
 theorem = "TaggedDerived.subnets_cmp_spec"
 precondition = "true"
 
 [[tool.proofs]]
-api = "PartialOrd::partial_cmp for IpSubnets"
+api = "<ipnet::IpSubnets as PartialOrd>::partial_cmp"
 module = "Proofs.TaggedDerived"
 theorem = "TaggedDerived.subnets_partial_cmp_spec"
 precondition = "true"
 
 [[tool.proofs]]
-api = "Clone for PrefixLenError"
+api = "<ipnet::PrefixLenError as Clone>::clone"
 module = "Proofs.PrefixLenErrorValue"
 theorem = "PrefixLenErrorValue.clone_spec"
 precondition = "true"
 
 [[tool.proofs]]
-api = "PartialEq::eq for PrefixLenError"
+api = "<ipnet::PrefixLenError as PartialEq>::eq"
 module = "Proofs.PrefixLenErrorValue"
 theorem = "PrefixLenErrorValue.eq_spec"
 precondition = "true"
 
 [[tool.proofs]]
-api = "Clone for AddrParseError"
+api = "<ipnet::AddrParseError as Clone>::clone"
 module = "Proofs.AddrParseErrorValue"
 theorem = "AddrParseErrorValue.clone_spec"
 precondition = "true"
 
 [[tool.proofs]]
-api = "PartialEq::eq for AddrParseError"
+api = "<ipnet::AddrParseError as PartialEq>::eq"
 module = "Proofs.AddrParseErrorValue"
 theorem = "AddrParseErrorValue.eq_spec"
 precondition = "true"

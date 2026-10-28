@@ -32,6 +32,19 @@ class AuditValidation(unittest.TestCase):
         self.report['tool']['proofs'][0]['precondition'] = 'input length fits'
         audit.validate(self.inventory, self.report)
 
+    def test_multiple_theorems_for_one_api_are_distinct_mappings(self):
+        self.inventory['checked'].append({'name': 'example.other_spec', 'module': 'Proofs.Example'})
+        self.inventory['recorder_mappings'].append({'api': 'State::update', 'theorem': 'example.other_spec'})
+        self.report['tool']['proofs'].append({'api': 'State::update', 'theorem': 'example.other_spec',
+                                             'module': 'Proofs.Example', 'precondition': 'true'})
+        audit.validate(self.inventory, self.report)
+        self.inventory['recorder_mappings'].append(self.inventory['recorder_mappings'][0])
+        with self.assertRaises(ValueError):
+            audit.validate(self.inventory)
+        self.inventory['recorder_mappings'][-1] = {'api': 'Other::update', 'theorem': 'example.spec'}
+        with self.assertRaises(ValueError):
+            audit.validate(self.inventory)
+
     def test_reject_mapping_module_and_condition_drift(self):
         for key in ('module', 'precondition', 'theorem'):
             with self.subTest(key=key):

@@ -3334,19 +3334,19 @@
       "theorem": "ipnet.ipnet.ip_max_prefix_len_spec"
     },
     {
-      "api": "From<Ipv4Net> for IpNet",
+      "api": "<ipnet::IpNet as From<Ipv4Net>>::from",
       "theorem": "ipnet.ipnet.from_ipv4_spec"
     },
     {
-      "api": "From<Ipv6Net> for IpNet",
+      "api": "<ipnet::IpNet as From<Ipv6Net>>::from",
       "theorem": "ipnet.ipnet.from_ipv6_spec"
     },
     {
-      "api": "ipext::Ipv4AddrRange::new",
+      "api": "Ipv4AddrRange::new",
       "theorem": "ipnet.ipv4_range_new_spec"
     },
     {
-      "api": "ipext::Ipv6AddrRange::new",
+      "api": "Ipv6AddrRange::new",
       "theorem": "ipnet.ipv6_range_new_spec"
     },
     {
@@ -3418,79 +3418,79 @@
       "theorem": "ipnet.ip_trunc_nat_spec"
     },
     {
-      "api": "Ipv4Net::contains<&Ipv4Addr>",
+      "api": "Ipv4Net::contains",
       "theorem": "ipnet.ipv4_public_contains_addr_spec"
     },
     {
-      "api": "Ipv6Net::contains<&Ipv6Addr>",
+      "api": "Ipv6Net::contains",
       "theorem": "ipnet.ipv6_public_contains_addr_spec"
     },
     {
-      "api": "Ipv4Net::contains<&Ipv4Net>",
+      "api": "Ipv4Net::contains",
       "theorem": "ipnet.ipv4_public_contains_net_spec"
     },
     {
-      "api": "Ipv6Net::contains<&Ipv6Net>",
+      "api": "Ipv6Net::contains",
       "theorem": "ipnet.ipv6_public_contains_net_spec"
     },
     {
-      "api": "IpNet::contains<&IpAddr>",
+      "api": "IpNet::contains",
       "theorem": "ipnet.ip_public_contains_addr_spec"
     },
     {
-      "api": "IpNet::contains<&IpNet>",
+      "api": "IpNet::contains",
       "theorem": "ipnet.ip_public_contains_net_spec"
     },
     {
-      "api": "Ipv4AddrRange::next",
+      "api": "<ipnet::Ipv4AddrRange as Iterator>::next",
       "theorem": "RangeNext.range_next_spec"
     },
     {
-      "api": "Ipv4AddrRange::next_back",
+      "api": "<ipnet::Ipv4AddrRange as DoubleEndedIterator>::next_back",
       "theorem": "RangeMore.range_next_back_spec"
     },
     {
-      "api": "Ipv4AddrRange::nth",
+      "api": "<ipnet::Ipv4AddrRange as Iterator>::nth",
       "theorem": "RangeMore.range_nth_spec"
     },
     {
-      "api": "Ipv4AddrRange::nth_back",
+      "api": "<ipnet::Ipv4AddrRange as DoubleEndedIterator>::nth_back",
       "theorem": "RangeMore.range_nth_back_spec"
     },
     {
-      "api": "Ipv4AddrRange::count",
+      "api": "<ipnet::Ipv4AddrRange as Iterator>::count",
       "theorem": "RangeMore.range_count_spec"
     },
     {
-      "api": "Ipv4AddrRange::size_hint",
+      "api": "<ipnet::Ipv4AddrRange as Iterator>::size_hint",
       "theorem": "RangeMore.range_size_hint_spec"
     },
     {
-      "api": "Ipv4AddrRange::last",
+      "api": "<ipnet::Ipv4AddrRange as Iterator>::last",
       "theorem": "RangeMore.range_last_spec"
     },
     {
-      "api": "Ipv4AddrRange::min",
+      "api": "<ipnet::Ipv4AddrRange as Iterator>::min",
       "theorem": "RangeMore.range_min_spec"
     },
     {
-      "api": "Ipv4AddrRange::max",
+      "api": "<ipnet::Ipv4AddrRange as Iterator>::max",
       "theorem": "RangeMore.range_max_spec"
     },
     {
-      "api": "Ipv4Addr::IpSub<u32>::saturating_sub",
+      "api": "<core::net::ip_addr::Ipv4Addr as ipnet::IpSub<u32>>::saturating_sub",
       "theorem": "RangeMore.ipv4_saturating_sub_spec"
     },
     {
-      "api": "Ipv4Addr::IpSub<Ipv4Addr>::saturating_sub",
+      "api": "<core::net::ip_addr::Ipv4Addr as ipnet::IpSub>::saturating_sub",
       "theorem": "RangeMore.ipv4_saturating_sub_addr_spec"
     },
     {
-      "api": "Default for Ipv4Net",
+      "api": "<ipnet::Ipv4Net as Default>::default",
       "theorem": "IPv4NetOps.default_spec"
     },
     {
-      "api": "From<Ipv4Addr> for Ipv4Net",
+      "api": "<ipnet::Ipv4Net as From<Ipv4Addr>>::from",
       "theorem": "IPv4NetOps.from_ipv4_spec"
     },
     {
@@ -3510,27 +3510,27 @@
       "theorem": "IPv4NetOps.is_sibling_spec"
     },
     {
-      "api": "Ipv4Addr::IpBitAnd<Ipv4Addr>::bitand",
+      "api": "<core::net::ip_addr::Ipv4Addr as ipnet::IpBitAnd>::bitand",
       "theorem": "BitOps.ipv4_and_addr_spec"
     },
     {
-      "api": "Ipv4Addr::IpBitAnd<u32>::bitand",
+      "api": "<core::net::ip_addr::Ipv4Addr as ipnet::IpBitAnd<u32>>::bitand",
       "theorem": "BitOps.ipv4_and_u32_spec"
     },
     {
-      "api": "Ipv4Addr::IpBitOr<Ipv4Addr>::bitor",
+      "api": "<core::net::ip_addr::Ipv4Addr as ipnet::IpBitOr>::bitor",
       "theorem": "BitOps.ipv4_or_addr_spec"
     },
     {
-      "api": "Ipv4Addr::IpBitOr<u32>::bitor",
+      "api": "<core::net::ip_addr::Ipv4Addr as ipnet::IpBitOr<u32>>::bitor",
       "theorem": "BitOps.ipv4_or_u32_spec"
     },
     {
-      "api": "Ipv4Addr::IpAdd<u32>::saturating_add",
+      "api": "<core::net::ip_addr::Ipv4Addr as ipnet::IpAdd<u32>>::saturating_add",
       "theorem": "RangeNext.ipv4_saturating_add_spec"
     },
     {
-      "api": "mask::ipv4_mask_to_prefix",
+      "api": "ipv4_mask_to_prefix",
       "theorem": "IPv4MaskOps.ipv4_mask_to_prefix_spec"
     },
     {
@@ -3538,107 +3538,107 @@
       "theorem": "IPv4MaskOps.with_netmask_spec"
     },
     {
-      "api": "Ipv4Subnets::next",
+      "api": "<ipnet::Ipv4Subnets as Iterator>::next",
       "theorem": "IPv4SubnetAll.next_raw_spec"
     },
     {
-      "api": "Clone for Ipv4Net",
+      "api": "<ipnet::Ipv4Net as Clone>::clone",
       "theorem": "IPv4Derived.clone_spec"
     },
     {
-      "api": "PartialEq::eq for Ipv4Net",
+      "api": "<ipnet::Ipv4Net as PartialEq>::eq",
       "theorem": "IPv4Derived.eq_spec"
     },
     {
-      "api": "Ord::cmp for Ipv4Net",
+      "api": "<ipnet::Ipv4Net as Ord>::cmp",
       "theorem": "IPv4Derived.cmp_spec"
     },
     {
-      "api": "PartialOrd::partial_cmp for Ipv4Net",
+      "api": "<ipnet::Ipv4Net as PartialOrd>::partial_cmp",
       "theorem": "IPv4Derived.partial_cmp_spec"
     },
     {
-      "api": "Clone for Ipv4AddrRange",
+      "api": "<ipnet::Ipv4AddrRange as Clone>::clone",
       "theorem": "IPv4IteratorDerived.range_clone_spec"
     },
     {
-      "api": "PartialEq::eq for Ipv4AddrRange",
+      "api": "<ipnet::Ipv4AddrRange as PartialEq>::eq",
       "theorem": "IPv4IteratorDerived.range_eq_spec"
     },
     {
-      "api": "Ord::cmp for Ipv4AddrRange",
+      "api": "<ipnet::Ipv4AddrRange as Ord>::cmp",
       "theorem": "IPv4IteratorDerived.range_cmp_spec"
     },
     {
-      "api": "PartialOrd::partial_cmp for Ipv4AddrRange",
+      "api": "<ipnet::Ipv4AddrRange as PartialOrd>::partial_cmp",
       "theorem": "IPv4IteratorDerived.range_partial_cmp_spec"
     },
     {
-      "api": "Clone for Ipv4Subnets",
+      "api": "<ipnet::Ipv4Subnets as Clone>::clone",
       "theorem": "IPv4IteratorDerived.subnets_clone_spec"
     },
     {
-      "api": "PartialEq::eq for Ipv4Subnets",
+      "api": "<ipnet::Ipv4Subnets as PartialEq>::eq",
       "theorem": "IPv4IteratorDerived.subnets_eq_spec"
     },
     {
-      "api": "Ord::cmp for Ipv4Subnets",
+      "api": "<ipnet::Ipv4Subnets as Ord>::cmp",
       "theorem": "IPv4IteratorDerived.subnets_cmp_spec"
     },
     {
-      "api": "PartialOrd::partial_cmp for Ipv4Subnets",
+      "api": "<ipnet::Ipv4Subnets as PartialOrd>::partial_cmp",
       "theorem": "IPv4IteratorDerived.subnets_partial_cmp_spec"
     },
     {
-      "api": "From<Ipv4AddrRange> for IpAddrRange",
+      "api": "<ipnet::IpAddrRange as From<Ipv4AddrRange>>::from",
       "theorem": "TaggedIPv4.from_ipv4_range_spec"
     },
     {
-      "api": "From<Ipv4Subnets> for IpSubnets",
+      "api": "<ipnet::IpSubnets as From<Ipv4Subnets>>::from",
       "theorem": "TaggedIPv4.from_ipv4_subnets_spec"
     },
     {
-      "api": "From<Ipv6AddrRange> for IpAddrRange",
+      "api": "<ipnet::IpAddrRange as From<Ipv6AddrRange>>::from",
       "theorem": "TaggedIPv4.from_ipv6_range_spec"
     },
     {
-      "api": "From<Ipv6Subnets> for IpSubnets",
+      "api": "<ipnet::IpSubnets as From<Ipv6Subnets>>::from",
       "theorem": "TaggedIPv4.from_ipv6_subnets_spec"
     },
     {
-      "api": "IpNet::hosts(V4)",
+      "api": "IpNet::hosts",
       "theorem": "TaggedIPv4.hosts_v4_spec"
     },
     {
-      "api": "IpNet::subnets(V4)",
+      "api": "IpNet::subnets",
       "theorem": "TaggedIPv4.subnets_v4_spec"
     },
     {
-      "api": "IpNet::supernet(V4)",
+      "api": "IpNet::supernet",
       "theorem": "TaggedIPv4.supernet_v4_spec"
     },
     {
-      "api": "IpNet::is_sibling(V4,V4)",
+      "api": "IpNet::is_sibling",
       "theorem": "TaggedIPv4.is_sibling_v4_spec"
     },
     {
-      "api": "IpNet::is_sibling(V4,V6)",
+      "api": "IpNet::is_sibling",
       "theorem": "TaggedIPv4.is_sibling_v4_v6_spec"
     },
     {
-      "api": "IpNet::is_sibling(V6,V4)",
+      "api": "IpNet::is_sibling",
       "theorem": "TaggedIPv4.is_sibling_v6_v4_spec"
     },
     {
-      "api": "Default for IpNet",
+      "api": "<ipnet::IpNet as Default>::default",
       "theorem": "TaggedDefaultFrom.ipnet_default_spec"
     },
     {
-      "api": "From<IpAddr> for IpNet",
+      "api": "<ipnet::IpNet as From<IpAddr>>::from",
       "theorem": "TaggedDefaultFrom.ipnet_from_addr_spec"
     },
     {
-      "api": "From<Ipv6Addr> for Ipv6Net",
+      "api": "<ipnet::Ipv6Net as From<Ipv6Addr>>::from",
       "theorem": "TaggedDefaultFrom.ipv6_from_addr_spec"
     },
     {
@@ -3658,119 +3658,119 @@
       "theorem": "IPv6NetOps.is_sibling_spec"
     },
     {
-      "api": "IpNet::hosts(V6)",
+      "api": "IpNet::hosts",
       "theorem": "TaggedIPv6.hosts_v6_spec"
     },
     {
-      "api": "IpNet::subnets(V6)",
+      "api": "IpNet::subnets",
       "theorem": "TaggedIPv6.subnets_v6_spec"
     },
     {
-      "api": "IpNet::supernet(V6)",
+      "api": "IpNet::supernet",
       "theorem": "TaggedIPv6.supernet_v6_spec"
     },
     {
-      "api": "IpNet::is_sibling(V6,V6)",
+      "api": "IpNet::is_sibling",
       "theorem": "TaggedIPv6.is_sibling_v6_spec"
     },
     {
-      "api": "Clone for Ipv6Net",
+      "api": "<ipnet::Ipv6Net as Clone>::clone",
       "theorem": "IPv6Derived.net_clone_spec"
     },
     {
-      "api": "PartialEq::eq for Ipv6Net",
+      "api": "<ipnet::Ipv6Net as PartialEq>::eq",
       "theorem": "IPv6Derived.net_eq_spec"
     },
     {
-      "api": "Ord::cmp for Ipv6Net",
+      "api": "<ipnet::Ipv6Net as Ord>::cmp",
       "theorem": "IPv6Derived.net_cmp_spec"
     },
     {
-      "api": "PartialOrd::partial_cmp for Ipv6Net",
+      "api": "<ipnet::Ipv6Net as PartialOrd>::partial_cmp",
       "theorem": "IPv6Derived.net_partial_cmp_spec"
     },
     {
-      "api": "Clone for Ipv6AddrRange",
+      "api": "<ipnet::Ipv6AddrRange as Clone>::clone",
       "theorem": "IPv6Derived.range_clone_spec"
     },
     {
-      "api": "PartialEq::eq for Ipv6AddrRange",
+      "api": "<ipnet::Ipv6AddrRange as PartialEq>::eq",
       "theorem": "IPv6Derived.range_eq_spec"
     },
     {
-      "api": "Ord::cmp for Ipv6AddrRange",
+      "api": "<ipnet::Ipv6AddrRange as Ord>::cmp",
       "theorem": "IPv6Derived.range_cmp_spec"
     },
     {
-      "api": "PartialOrd::partial_cmp for Ipv6AddrRange",
+      "api": "<ipnet::Ipv6AddrRange as PartialOrd>::partial_cmp",
       "theorem": "IPv6Derived.range_partial_cmp_spec"
     },
     {
-      "api": "Clone for Ipv6Subnets",
+      "api": "<ipnet::Ipv6Subnets as Clone>::clone",
       "theorem": "IPv6Derived.subnets_clone_spec"
     },
     {
-      "api": "PartialEq::eq for Ipv6Subnets",
+      "api": "<ipnet::Ipv6Subnets as PartialEq>::eq",
       "theorem": "IPv6Derived.subnets_eq_spec"
     },
     {
-      "api": "Ord::cmp for Ipv6Subnets",
+      "api": "<ipnet::Ipv6Subnets as Ord>::cmp",
       "theorem": "IPv6Derived.subnets_cmp_spec"
     },
     {
-      "api": "PartialOrd::partial_cmp for Ipv6Subnets",
+      "api": "<ipnet::Ipv6Subnets as PartialOrd>::partial_cmp",
       "theorem": "IPv6Derived.subnets_partial_cmp_spec"
     },
     {
-      "api": "Ipv6AddrRange::last",
+      "api": "<ipnet::Ipv6AddrRange as Iterator>::last",
       "theorem": "IPv6RangeBasic.last_spec"
     },
     {
-      "api": "Ipv6AddrRange::max",
+      "api": "<ipnet::Ipv6AddrRange as Iterator>::max",
       "theorem": "IPv6RangeBasic.max_spec"
     },
     {
-      "api": "Ipv6AddrRange::min",
+      "api": "<ipnet::Ipv6AddrRange as Iterator>::min",
       "theorem": "IPv6RangeBasic.min_spec"
     },
     {
-      "api": "Ipv6Addr::IpSub<Ipv6Addr>::saturating_sub",
+      "api": "<core::net::ip_addr::Ipv6Addr as ipnet::IpSub>::saturating_sub",
       "theorem": "IPv6RangeBasic.ipv6_saturating_sub_addr_spec"
     },
     {
-      "api": "Ipv6AddrRange::count",
+      "api": "<ipnet::Ipv6AddrRange as Iterator>::count",
       "theorem": "IPv6RangeBasic.count_spec"
     },
     {
-      "api": "Ipv6Addr::IpAdd<u128>::saturating_add",
+      "api": "<core::net::ip_addr::Ipv6Addr as ipnet::IpAdd<u128>>::saturating_add",
       "theorem": "IPv6RangeSteps.ipv6_saturating_add_spec"
     },
     {
-      "api": "Ipv6Addr::IpSub<u128>::saturating_sub",
+      "api": "<core::net::ip_addr::Ipv6Addr as ipnet::IpSub<u128>>::saturating_sub",
       "theorem": "IPv6RangeSteps.ipv6_saturating_sub_spec"
     },
     {
-      "api": "Ipv6AddrRange::next",
+      "api": "<ipnet::Ipv6AddrRange as Iterator>::next",
       "theorem": "IPv6RangeSteps.range_next_spec"
     },
     {
-      "api": "Ipv6AddrRange::next_back",
+      "api": "<ipnet::Ipv6AddrRange as DoubleEndedIterator>::next_back",
       "theorem": "IPv6RangeSteps.range_next_back_spec"
     },
     {
-      "api": "Ipv6AddrRange::size_hint",
+      "api": "<ipnet::Ipv6AddrRange as Iterator>::size_hint",
       "theorem": "IPv6RangeSkips.size_hint_spec"
     },
     {
-      "api": "Ipv6AddrRange::nth",
+      "api": "<ipnet::Ipv6AddrRange as Iterator>::nth",
       "theorem": "IPv6RangeSkips.nth_remaining_spec"
     },
     {
-      "api": "Ipv6AddrRange::nth_back",
+      "api": "<ipnet::Ipv6AddrRange as DoubleEndedIterator>::nth_back",
       "theorem": "IPv6RangeSkips.nth_back_remaining_spec"
     },
     {
-      "api": "mask::ipv6_mask_to_prefix",
+      "api": "ipv6_mask_to_prefix",
       "theorem": "IPv6MaskOps.ipv6_mask_to_prefix_spec"
     },
     {
@@ -3778,71 +3778,71 @@
       "theorem": "IPv6MaskOps.with_netmask_spec"
     },
     {
-      "api": "Ipv6Addr::IpBitAnd<Ipv6Addr>::bitand",
+      "api": "<core::net::ip_addr::Ipv6Addr as ipnet::IpBitAnd>::bitand",
       "theorem": "IPv6BitOps.ipv6_and_addr_spec"
     },
     {
-      "api": "Ipv6Addr::IpBitAnd<u128>::bitand",
+      "api": "<core::net::ip_addr::Ipv6Addr as ipnet::IpBitAnd<u128>>::bitand",
       "theorem": "IPv6BitOps.ipv6_and_u128_spec"
     },
     {
-      "api": "Ipv6Addr::IpBitOr<Ipv6Addr>::bitor",
+      "api": "<core::net::ip_addr::Ipv6Addr as ipnet::IpBitOr>::bitor",
       "theorem": "IPv6BitOps.ipv6_or_addr_spec"
     },
     {
-      "api": "Ipv6Addr::IpBitOr<u128>::bitor",
+      "api": "<core::net::ip_addr::Ipv6Addr as ipnet::IpBitOr<u128>>::bitor",
       "theorem": "IPv6BitOps.ipv6_or_u128_spec"
     },
     {
-      "api": "Default for Ipv6Net",
+      "api": "<ipnet::Ipv6Net as Default>::default",
       "theorem": "IPv6Default.default_spec"
     },
     {
-      "api": "Ipv6Subnets::next",
+      "api": "<ipnet::Ipv6Subnets as Iterator>::next",
       "theorem": "IPv6SubnetAll.next_raw_spec"
     },
     {
-      "api": "IpSubnets::next",
+      "api": "<ipnet::IpSubnets as Iterator>::next",
       "theorem": "TaggedSubnets.next_raw_spec"
     },
     {
-      "api": "IpAddrRange::next",
+      "api": "<ipnet::IpAddrRange as Iterator>::next",
       "theorem": "TaggedRange.next_spec"
     },
     {
-      "api": "IpAddrRange::next_back",
+      "api": "<ipnet::IpAddrRange as DoubleEndedIterator>::next_back",
       "theorem": "TaggedRange.next_back_spec"
     },
     {
-      "api": "IpAddrRange::nth",
+      "api": "<ipnet::IpAddrRange as Iterator>::nth",
       "theorem": "TaggedRange.nth_spec"
     },
     {
-      "api": "IpAddrRange::nth_back",
+      "api": "<ipnet::IpAddrRange as DoubleEndedIterator>::nth_back",
       "theorem": "TaggedRange.nth_back_spec"
     },
     {
-      "api": "IpAddrRange::last",
+      "api": "<ipnet::IpAddrRange as Iterator>::last",
       "theorem": "TaggedRange.last_spec"
     },
     {
-      "api": "IpAddrRange::max",
+      "api": "<ipnet::IpAddrRange as Iterator>::max",
       "theorem": "TaggedRange.max_spec"
     },
     {
-      "api": "IpAddrRange::min",
+      "api": "<ipnet::IpAddrRange as Iterator>::min",
       "theorem": "TaggedRange.min_spec"
     },
     {
-      "api": "IpAddrRange::size_hint",
+      "api": "<ipnet::IpAddrRange as Iterator>::size_hint",
       "theorem": "TaggedRange.size_hint_spec"
     },
     {
-      "api": "IpAddrRange::count",
+      "api": "<ipnet::IpAddrRange as Iterator>::count",
       "theorem": "TaggedRange.count_spec"
     },
     {
-      "api": "mask::ip_mask_to_prefix",
+      "api": "ip_mask_to_prefix",
       "theorem": "TaggedMask.ip_mask_to_prefix_spec"
     },
     {
@@ -3850,67 +3850,67 @@
       "theorem": "TaggedMask.with_netmask_spec"
     },
     {
-      "api": "Clone for IpNet",
+      "api": "<ipnet::IpNet as Clone>::clone",
       "theorem": "TaggedDerived.net_clone_spec"
     },
     {
-      "api": "PartialEq::eq for IpNet",
+      "api": "<ipnet::IpNet as PartialEq>::eq",
       "theorem": "TaggedDerived.net_eq_spec"
     },
     {
-      "api": "Ord::cmp for IpNet",
+      "api": "<ipnet::IpNet as Ord>::cmp",
       "theorem": "TaggedDerived.net_cmp_spec"
     },
     {
-      "api": "PartialOrd::partial_cmp for IpNet",
+      "api": "<ipnet::IpNet as PartialOrd>::partial_cmp",
       "theorem": "TaggedDerived.net_partial_cmp_spec"
     },
     {
-      "api": "Clone for IpAddrRange",
+      "api": "<ipnet::IpAddrRange as Clone>::clone",
       "theorem": "TaggedDerived.range_clone_spec"
     },
     {
-      "api": "PartialEq::eq for IpAddrRange",
+      "api": "<ipnet::IpAddrRange as PartialEq>::eq",
       "theorem": "TaggedDerived.range_eq_spec"
     },
     {
-      "api": "Ord::cmp for IpAddrRange",
+      "api": "<ipnet::IpAddrRange as Ord>::cmp",
       "theorem": "TaggedDerived.range_cmp_spec"
     },
     {
-      "api": "PartialOrd::partial_cmp for IpAddrRange",
+      "api": "<ipnet::IpAddrRange as PartialOrd>::partial_cmp",
       "theorem": "TaggedDerived.range_partial_cmp_spec"
     },
     {
-      "api": "Clone for IpSubnets",
+      "api": "<ipnet::IpSubnets as Clone>::clone",
       "theorem": "TaggedDerived.subnets_clone_spec"
     },
     {
-      "api": "PartialEq::eq for IpSubnets",
+      "api": "<ipnet::IpSubnets as PartialEq>::eq",
       "theorem": "TaggedDerived.subnets_eq_spec"
     },
     {
-      "api": "Ord::cmp for IpSubnets",
+      "api": "<ipnet::IpSubnets as Ord>::cmp",
       "theorem": "TaggedDerived.subnets_cmp_spec"
     },
     {
-      "api": "PartialOrd::partial_cmp for IpSubnets",
+      "api": "<ipnet::IpSubnets as PartialOrd>::partial_cmp",
       "theorem": "TaggedDerived.subnets_partial_cmp_spec"
     },
     {
-      "api": "Clone for PrefixLenError",
+      "api": "<ipnet::PrefixLenError as Clone>::clone",
       "theorem": "PrefixLenErrorValue.clone_spec"
     },
     {
-      "api": "PartialEq::eq for PrefixLenError",
+      "api": "<ipnet::PrefixLenError as PartialEq>::eq",
       "theorem": "PrefixLenErrorValue.eq_spec"
     },
     {
-      "api": "Clone for AddrParseError",
+      "api": "<ipnet::AddrParseError as Clone>::clone",
       "theorem": "AddrParseErrorValue.clone_spec"
     },
     {
-      "api": "PartialEq::eq for AddrParseError",
+      "api": "<ipnet::AddrParseError as PartialEq>::eq",
       "theorem": "AddrParseErrorValue.eq_spec"
     }
   ],
