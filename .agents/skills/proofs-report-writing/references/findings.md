@@ -36,22 +36,41 @@ For ambiguity or a precondition, choose a question/documentation issue shape wit
 asserting a confirmed bug. Do not invent an issue for a purely internal observation
 that adds nothing beyond the report. Preparing this content never authorizes filing.
 
-## Reproduce entirely in Rust
+## Explain the property, then show a minimal Rust example
 
-For Rust crate findings, provide a self-contained Rust code snippet and the Cargo
-dependencies needed to run it. All steps that demonstrate the discrepancy must
-execute in Rust; do not require Python scripts, pip packages, another language's
-validator, intermediate exported data files or a separate checker. Ordinary Cargo
-commands to build and run the snippet are appropriate.
+Lead with the unmet property and the affected APIs, including the conditions under
+which they are affected. List related APIs supported by source review or execution,
+then illustrate one representative API and input. Do not reproduce every type,
+integration version or control in the body. Group symptoms with a common cause;
+keep exhaustive experiments in the internal investigation record.
 
-Exercise the actual crate API. For schema findings, generate the real schema and
-validate it with a Rust JSON Schema library rather than copied regular expressions
-or a hand-written evaluator. Pin relevant dependencies, use only needed features
-and keep the reproducer focused on the reported symptom. Make clear whether an
-assertion expresses expected correct behavior and fails, or asserts the observed
-discrepancy and succeeds. Remove unused future regression modes. Compile and run
-the exact published snippets when checking a new or modified reproduction; report
-an inability to execute them rather than claiming reproduction from source alone.
+Keep the example short enough to see the API call and discrepancy immediately.
+For a behavior violation, prefer asserting the expected correct behavior so the
+example fails at that assertion; show the actual value or diagnostic separately.
+If asserting the observed bug is clearer, explicitly say that success reproduces
+the discrepancy. For specification questions, keep the intended contract open
+rather than asserting an unsupported requirement.
+
+Usually state only the affected crate version and required features, with a short
+`[dependencies]` fragment when useful. Do not include a complete `Cargo.toml`,
+package name, workspace stanza, edition, lock-generation commands or exhaustive
+environment details unless needed for this failure or required by upstream's
+template. Pin helper versions only where their API or behavior matters; retain the
+exact tested lockfile, environment and full harness in internal evidence. Do not
+turn a finding into instructions for reconstructing the investigation environment.
+
+Use existing Rust helpers when they remove distracting allocator or serializer
+boilerplate without obscuring the failure. All discrepancy-demonstrating steps
+must execute in Rust: no Python, second-language validator, exported data file or
+separate checker. Exercise the actual crate API; for schema findings, validate the
+generated schema with a Rust JSON Schema library rather than copied regexes or a
+hand-written evaluator. Omit unused regression modes and diagnostic machinery.
+
+Compile and run the displayed snippet in a minimal temporary Cargo harness when
+checking a new or changed reproduction. Necessary test-only scaffolding need not
+appear in the finding, but must not change the snippet's semantics. Verify the
+claimed failure and keep test artifacts internally; disclose inability to execute
+instead of claiming reproduction from source alone.
 
 ## Keep verification details out of findings
 
@@ -82,17 +101,16 @@ self-contained Markdown body following the upstream template selected above.
 [[report.findings]]
 title = "One-byte signed reads return a positive value"
 body = '''
-Describe the affected version/API, concrete input and observed result here.
-Explain the expected behavior and its independent basis, the conditions of the
-ordinary reproduction, and the exact actual result.
+State the unmet property and affected APIs, with the relevant conditions.
+Show a short Rust example for one representative API, then its expected and
+actual results. Explain the expectation's independent basis.
 '''
 # Optional: use real, uniquely resolvable public paths for this crate/version.
 # api_paths = ["example::Reader::read"]
 ```
 
-The example is a writing scaffold, not evidence for an actual bug. When a bug is
-claimed, include a compact runnable reproducer, expected/actual result and relevant
-features/target/build conditions. For other observations, explain the supporting
+The example is a writing scaffold, not evidence for an actual bug. Apply the
+minimal-example guidance above. For other observations, explain the supporting
 contract or diagnostic without inventing a reproduction. Keep enough context in
 the finding itself; an upstream link can carry longer investigation and fix discussion.
 Replace the scaffold with the actual template sections. Reuse the approved

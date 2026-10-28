@@ -56,8 +56,10 @@ See [report guidance](references/proofs-toml.md) for formatting details.
   ambiguity or boundary can be a finding without being a bug. Keep finding prose
   about observable behavior and ordinary reproduction; omit verification tools,
   proof environments, audit results and proof-development details.
-  Reproduction must finish in Rust snippets with Cargo dependencies; do not require
-  Python or a second-language checker.
+  Lead with the unmet property and affected APIs, followed by a short Rust snippet
+  for one representative API. Usually list only necessary dependencies/features,
+  not a full Cargo manifest or exhaustive experiment. Do not require Python or a
+  second-language checker. Follow the minimal-example guidance in the reference.
 - For a retained investigation or counterexample, use the same finding guidance
   and the repository's [storage policy](../../../verification/findings.md) and
   [record template](../../../verification/templates/finding.md). This is a separate,
