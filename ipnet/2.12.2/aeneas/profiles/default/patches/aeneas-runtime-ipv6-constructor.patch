@@ -1,5 +1,5 @@
 diff --git a/backends/lean/Aeneas/Std.lean b/backends/lean/Aeneas/Std.lean
-index fc1ed397..17f9295b 100644
+index fc1ed39710d304cc6d426faf4ec6a1711148ef0d..17f9295bda50a46633b08d18cd014409e679e442 100644
 --- a/backends/lean/Aeneas/Std.lean
 +++ b/backends/lean/Aeneas/Std.lean
 @@ -14,5 +14,6 @@ public import Aeneas.Std.String
@@ -10,7 +10,7 @@ index fc1ed397..17f9295b 100644
  public import Aeneas.Data.Tuples
  public import Aeneas.Std.RangeIter
 diff --git a/backends/lean/Aeneas/Std/Core/Core.lean b/backends/lean/Aeneas/Std/Core/Core.lean
-index 999934ec..aa9a5895 100644
+index 999934ecde79a52bc1d6ae27c8d428bc83b1c633..aa9a5895e1795e1ddf6228e6e644371e841321f0 100644
 --- a/backends/lean/Aeneas/Std/Core/Core.lean
 +++ b/backends/lean/Aeneas/Std/Core/Core.lean
 @@ -63,10 +63,14 @@ def mem.swap {T : Type _} (a b : T): T × T := (b, a)
@@ -30,7 +30,7 @@ index 999934ec..aa9a5895 100644
  def BuiltinCopy (Self : Type _) : core.marker.Copy Self where
    cloneInst := BuiltinClone Self
 diff --git a/backends/lean/Aeneas/Std/Core/CoreResult.lean b/backends/lean/Aeneas/Std/Core/CoreResult.lean
-index efc09483..4f3aada3 100644
+index efc09483150fa3a28c158da43959e57a8042fbb6..4f3aada3a705e013f4ef9429fa048d3ad12ae178 100644
 --- a/backends/lean/Aeneas/Std/Core/CoreResult.lean
 +++ b/backends/lean/Aeneas/Std/Core/CoreResult.lean
 @@ -9,6 +9,14 @@ namespace Aeneas.Std
@@ -49,7 +49,7 @@ index efc09483..4f3aada3 100644
      of `Err` through `fnOnce`. -/
  @[expose, rust_fun "core::result::{core::result::Result<@T, @E>}::map_err"]
 diff --git a/backends/lean/Aeneas/Std/Core/Fmt.lean b/backends/lean/Aeneas/Std/Core/Fmt.lean
-index 2f17b5fc..678c15cc 100644
+index 2f17b5fcf1f8d66dedd52857c0d4428405961e47..678c15cc0beec5e87b9fe20bcf9402c277772e7f 100644
 --- a/backends/lean/Aeneas/Std/Core/Fmt.lean
 +++ b/backends/lean/Aeneas/Std/Core/Fmt.lean
 @@ -19,13 +19,30 @@ structure core.fmt.Debug (T : Type u) where
@@ -86,7 +86,7 @@ index 2f17b5fc..678c15cc 100644
      {T E : Type _} (inst : core.fmt.Debug E)
 diff --git a/backends/lean/Aeneas/Std/NetIpAddr.lean b/backends/lean/Aeneas/Std/NetIpAddr.lean
 new file mode 100644
-index 00000000..3d788d41
+index 0000000000000000000000000000000000000000..3d788d418cccbc8a8d3869ba0fd405b7ae834a64
 --- /dev/null
 +++ b/backends/lean/Aeneas/Std/NetIpAddr.lean
 @@ -0,0 +1,57 @@
@@ -148,7 +148,7 @@ index 00000000..3d788d41
 +
 +end ipnet
 diff --git a/backends/lean/Aeneas/Std/Scalar/Bitwise.lean b/backends/lean/Aeneas/Std/Scalar/Bitwise.lean
-index efde6d5a..d3708bd1 100644
+index efde6d5a77fb190dd3496e6b357aaaf94be4a566..d3708bd162f03c0744c7806834487951dd049816 100644
 --- a/backends/lean/Aeneas/Std/Scalar/Bitwise.lean
 +++ b/backends/lean/Aeneas/Std/Scalar/Bitwise.lean
 @@ -36,6 +36,21 @@ Bit shifts
@@ -174,7 +174,7 @@ index efde6d5a..d3708bd1 100644
    Result (UScalar ty) :=
    if s.val ≥ 0 then
 diff --git a/backends/lean/Aeneas/Std/Scalar/LeadingZeros.lean b/backends/lean/Aeneas/Std/Scalar/LeadingZeros.lean
-index e565fbe9..295155b8 100644
+index e565fbe9b93906d83fdb9250ee8fd266e5220f02..295155b8ef52d8a52472f065527f3de7f8914f7e 100644
 --- a/backends/lean/Aeneas/Std/Scalar/LeadingZeros.lean
 +++ b/backends/lean/Aeneas/Std/Scalar/LeadingZeros.lean
 @@ -26,4 +26,14 @@ def BitVec.leadingZeros {w : Nat} (x : BitVec w) : Nat :=
@@ -193,7 +193,7 @@ index e565fbe9..295155b8 100644
 +
  end Aeneas.Std
 diff --git a/backends/lean/Aeneas/Std/Scalar/Ops/Add.lean b/backends/lean/Aeneas/Std/Scalar/Ops/Add.lean
-index ba4fc07e..c6236a85 100644
+index ba4fc07e68d8db5d2ee5b466e4dedbff0740ddc0..c6236a858fe7c4b520012e529f2fbd78c8592342 100644
 --- a/backends/lean/Aeneas/Std/Scalar/Ops/Add.lean
 +++ b/backends/lean/Aeneas/Std/Scalar/Ops/Add.lean
 @@ -122,6 +122,26 @@ theorem UScalar.add_spec {ty} {x y : UScalar ty}
@@ -224,7 +224,7 @@ index ba4fc07e..c6236a85 100644
  @[step]
  theorem IScalar.add_spec {ty} {x y : IScalar ty}
 diff --git a/backends/lean/Aeneas/Std/Scalar/SaturatingOps.lean b/backends/lean/Aeneas/Std/Scalar/SaturatingOps.lean
-index fad4eed0..298fd345 100644
+index fad4eed08e31022d318cd7781cead4723b063655..298fd34556aa822579f90ec4993c63deb29f5e99 100644
 --- a/backends/lean/Aeneas/Std/Scalar/SaturatingOps.lean
 +++ b/backends/lean/Aeneas/Std/Scalar/SaturatingOps.lean
 @@ -20,6 +20,24 @@ def UScalar.saturating_add {ty : UScalarTy} (x y : UScalar ty) : UScalar ty :=
@@ -278,7 +278,7 @@ index fad4eed0..298fd345 100644
  Saturating sub: signed
  -/
 diff --git a/src/extract/Extract.ml b/src/extract/Extract.ml
-index dc667f43..5f005b8a 100644
+index dc667f431c62ff19cd192bfb24d141f3c781ff69..5f005b8af711ac7393c83ae052eea7b21efacb03 100644
 --- a/src/extract/Extract.ml
 +++ b/src/extract/Extract.ml
 @@ -282,7 +282,7 @@ let fun_builtin_filter_types_trait_clauses (ty_to_string : 'a -> string)
@@ -291,7 +291,7 @@ index dc667f43..5f005b8a 100644
              [%silent_unwrap_opt_span] None (ctx_lookup_fun_decl_info ctx id)
            in
 diff --git a/src/extract/ExtractBase.ml b/src/extract/ExtractBase.ml
-index 146416b8..d1af2cc6 100644
+index 146416b86af1a99572d9bf8a946e6ffb3c487783..d1af2cc6f19506189d5addef7c750a2cce692931 100644
 --- a/src/extract/ExtractBase.ml
 +++ b/src/extract/ExtractBase.ml
 @@ -2122,6 +2122,14 @@ let basename_to_unique (ctx : extraction_ctx) (name : string) =
@@ -310,7 +310,7 @@ index 146416b8..d1af2cc6 100644
    basename_to_unique_aux collision name_append_index name
  
 diff --git a/src/extract/ExtractBuiltinLean.ml b/src/extract/ExtractBuiltinLean.ml
-index 73bf0198..cfa9609f 100644
+index 73bf0198d062fd58fed024a300bd015798f3acc7..cfa9609fbf151177ab1fc4aa1fd217934e61a3f3 100644
 --- a/src/extract/ExtractBuiltinLean.ml
 +++ b/src/extract/ExtractBuiltinLean.ml
 @@ -1,1787 +1,1034 @@
@@ -3128,3 +3128,1814 @@ index 73bf0198..cfa9609f 100644
 -    mk_trait_impl "core::slice::index::SliceIndex<usize, [@T], @T>"
 -      "core.slice.index.SliceIndexUsizeSlice";
 -  ]
+diff --git a/src/interp/InterpExpressions.ml b/src/interp/InterpExpressions.ml
+index 8d86e53637973eb901af4a0bc5e45a9ca33449f8..132081a1a5615fd7475eca144bd0bbb0ce3b3043 100644
+--- a/src/interp/InterpExpressions.ml
++++ b/src/interp/InterpExpressions.ml
+@@ -49,8 +49,8 @@ let expand_if_borrows_at_place (span : Meta.span) (access : access_kind)
+ 
+     We check that the value *doesn't contain bottoms or reserved borrows*. *)
+ let read_place_check (span : Meta.span) (access : access_kind) (p : place)
+-    (ctx : eval_ctx) : loan_id option * tvalue =
+-  let lid, v = read_place span access p ctx in
++    (ctx : eval_ctx) : loan_id option * tvalue * path =
++  let lid, v, path = eval_place span access p ctx in
+   (* Check that there are no bottoms in the value *)
+   [%cassert] span
+     (not (bottom_in_value ctx.ended_regions v))
+@@ -60,12 +60,15 @@ let read_place_check (span : Meta.span) (access : access_kind) (p : place)
+     (not (reserved_in_value v))
+     "There should be no reserved borrows in the value";
+   (* Return *)
+-  (lid, v)
++  (lid, v, path)
+ 
+ let access_rplace_reorganize_and_read (config : config) (span : Meta.span)
+     (greedy_expand : bool) (access : access_kind) (p : place) (ctx : eval_ctx) :
+-    loan_id option * tvalue * eval_ctx * (SymbolicAst.expr -> SymbolicAst.expr)
+-    =
++    loan_id option
++    * tvalue
++    * path
++    * eval_ctx
++    * (SymbolicAst.expr -> SymbolicAst.expr) =
+   (* Make sure we can evaluate the path *)
+   let ctx, cc = update_ctx_along_read_place config span access p ctx in
+   (* End the proper loans at the place itself *)
+@@ -78,16 +81,16 @@ let access_rplace_reorganize_and_read (config : config) (span : Meta.span)
+        else (ctx, fun e -> e))
+   in
+   (* Read the place - note that this checks that the value doesn't contain bottoms *)
+-  let lid, value = read_place_check span access p ctx in
++  let lid, value, path = read_place_check span access p ctx in
+   (* Compose *)
+-  (lid, value, ctx, cc)
++  (lid, value, path, ctx, cc)
+ 
+ let access_rplace_reorganize (config : config) (span : Meta.span)
+     (greedy_expand : bool) (access : access_kind) (p : place) : cm_fun =
+  fun ctx ->
+   if ExpressionsUtils.place_accesses_global p then (ctx, fun x -> x)
+   else
+-    let _, _, ctx, f =
++    let _, _, _, ctx, f =
+       access_rplace_reorganize_and_read config span greedy_expand access p ctx
+     in
+     (ctx, f)
+@@ -547,7 +550,7 @@ let eval_operand_no_reorganize (config : config) (span : Meta.span)
+   | Copy p ->
+       (* Access the value *)
+       let access = Read in
+-      let _, v = read_place_check span access p ctx in
++      let _, v, path = read_place_check span access p ctx in
+       (* Sanity checks *)
+       [%cassert] span
+         (not (bottom_in_value ctx.ended_regions v))
+@@ -562,20 +565,20 @@ let eval_operand_no_reorganize (config : config) (span : Meta.span)
+         copy_value span allow_adt_copy config ctx v
+       in
+       (* Update the original value *)
+-      let ctx = write_place span access p updated_value ctx in
++      let ctx = write_path span path updated_value ctx in
+       (* *)
+       (copied_value, ctx, cc)
+   | Move p ->
+       (* Access the value *)
+       let access = Move in
+-      let _, v = read_place_check span access p ctx in
++      let _, v, path = read_place_check span access p ctx in
+       (* Check that there are no bottoms in the value we are about to move *)
+       [%cassert] span
+         (not (bottom_in_value ctx.ended_regions v))
+         "There should be no bottoms in the value we are about to move";
+       (* Move the value *)
+       let bottom : tvalue = { value = VBottom; ty = v.ty } in
+-      let ctx = write_place span access p bottom ctx in
++      let ctx = write_path span path bottom ctx in
+       (v, ctx, fun e -> e)
+ 
+ let eval_operand (config : config) (span : Meta.span) (op : operand)
+@@ -1218,7 +1221,7 @@ let eval_rvalue_ref (config : config) (span : Meta.span) (p : place)
+       in
+ 
+       let greedy_expand = false in
+-      let lid, v, ctx, cc =
++      let lid, v, path, ctx, cc =
+         access_rplace_reorganize_and_read config span greedy_expand access p ctx
+       in
+       (* Generate the fresh shared borrow id *)
+@@ -1236,7 +1239,7 @@ let eval_rvalue_ref (config : config) (span : Meta.span) (p : place)
+             (bid, { v with value = v' })
+       in
+       (* Update the value in the context to replace it with the loan *)
+-      let ctx = write_place span access p nv ctx in
++      let ctx = write_path span path nv ctx in
+       (* Compute the rvalue - simply a shared borrow with the fresh id.
+        * Note that the reference is *mutable* if we do a two-phase borrow *)
+       let ref_kind =
+@@ -1264,7 +1267,7 @@ let eval_rvalue_ref (config : config) (span : Meta.span) (p : place)
+       (* Access the value *)
+       let access = Write in
+       let greedy_expand = false in
+-      let _, v, ctx, cc =
++      let _, v, path, ctx, cc =
+         access_rplace_reorganize_and_read config span greedy_expand access p ctx
+       in
+       (* Compute the rvalue - wrap the value in a mutable borrow with a fresh id *)
+@@ -1274,7 +1277,7 @@ let eval_rvalue_ref (config : config) (span : Meta.span) (p : place)
+       (* Compute the loan value with which to replace the value at place p *)
+       let nv = { v with value = VLoan (VMutLoan bid) } in
+       (* Update the value in the context to replace it with the loan *)
+-      let ctx = write_place span access p nv ctx in
++      let ctx = write_path span path nv ctx in
+       (* Return *)
+       (rv, ctx, cc)
+ 
+@@ -1373,7 +1376,7 @@ let eval_discriminant (config : config) (span : Meta.span) (p : place)
+   (* Read the place *)
+   let access = Read in
+   let expand_prim_copy = false in
+-  let _, v, ctx, cf_read =
++  let _, v, _, ctx, cf_read =
+     access_rplace_reorganize_and_read config span expand_prim_copy access p ctx
+   in
+   let v = value_strip_shared_loans v in
+@@ -1486,7 +1489,7 @@ let eval_rvalue_not_global (config : config) (span : Meta.span)
+ let eval_fake_read (config : config) (span : Meta.span) (p : place) : cm_fun =
+  fun ctx ->
+   let greedy_expand = false in
+-  let _, v, ctx, cc =
++  let _, v, _, ctx, cc =
+     access_rplace_reorganize_and_read config span greedy_expand Read p ctx
+   in
+   [%cassert] span
+diff --git a/src/interp/InterpExpressions.mli b/src/interp/InterpExpressions.mli
+index 75a12e902c927a328ceee83e3ccba7a07b766151..a5337466d1cedc7d3e3df21888c8d461a74dc922 100644
+--- a/src/interp/InterpExpressions.mli
++++ b/src/interp/InterpExpressions.mli
+@@ -10,7 +10,8 @@ open InterpPaths
+     Prepare the access to a place in a right-value (typically an operand) by
+     reorganizing the environment to end outer loans, then read the value and
+     check that this value *doesn't contain any bottom nor reserved borrows*. We
+-    also return a loan id if the value is directly below a shared loan.
++    also return its resolved path and a loan id if the value is directly below a
++    shared loan.
+ 
+     We reorganize the environment so that:
+     - we can access the place (we prepare *along* the path)
+@@ -26,7 +27,11 @@ val access_rplace_reorganize_and_read :
+   access_kind ->
+   place ->
+   eval_ctx ->
+-  loan_id option * tvalue * eval_ctx * (SymbolicAst.expr -> SymbolicAst.expr)
++  loan_id option
++  * tvalue
++  * path
++  * eval_ctx
++  * (SymbolicAst.expr -> SymbolicAst.expr)
+ 
+ (** Evaluate an operand.
+ 
+diff --git a/src/interp/InterpPaths.ml b/src/interp/InterpPaths.ml
+index 3197a7b0367f2037611f20456d781b2ebb0739e0..13aff546ed9f8ea94910fe84ce452a03a41bc25e 100644
+--- a/src/interp/InterpPaths.ml
++++ b/src/interp/InterpPaths.ml
+@@ -59,46 +59,131 @@ type projection_access = {
+   lookup_shared_borrows : bool;
+ }
+ 
+-(* Projects a value with a `projection_elem`. Returns the projected value and a
+-   continuation that propagates any changes to the projected value back
+-   to the original one.
+-
+-   The optional loan id we output is the id of the shared loan immediately above
+-   the value, if there is one. We need this when creating shared references:
+-   we introduce a shared loan if and only if there is not already one (TODO:
+-   make this cleaner).
+-*)
++(** A path starts either at a local or at a shared loan (the latter case is
++    needed to manipulate shared loans inside abstractions). *)
++type path_root = LocalRoot of LocalId.id | SharedLoanRoot of loan_id
++
++type path_elem =
++  | PathField of VariantId.id option * FieldId.id
++  | PathDerefBox
++  | PathDerefMut
++
++type path = { root : path_root; projection : path_elem list }
++
++let path_exploration : exploration_kind =
++  { enter_shared_loans = true; enter_mut_borrows = true; enter_abs = true }
++
++let shared_loan_value (span : Meta.span) (lid : loan_id) (ctx : eval_ctx) :
++    tvalue =
++  match ctx_lookup_loan span path_exploration lid ctx with
++  | _, Concrete (VSharedLoan (_, v)) -> v
++  | _, Abstract (ASharedLoan (pm, _, v, _)) ->
++      [%sanity_check] span (pm = PNone);
++      v
++  | _ -> [%craise] span "Expected a shared loan at path root"
++
++let read_path_root (span : Meta.span) (root : path_root) (ctx : eval_ctx) :
++    tvalue =
++  match root with
++  | LocalRoot var_id -> ctx_lookup_var_value span ctx var_id
++  | SharedLoanRoot lid -> shared_loan_value span lid ctx
++
++let project_path_elem (span : Meta.span) (pe : path_elem) (v : tvalue) : tvalue
++    =
++  match (pe, v.value, v.ty) with
++  | PathField (variant_id, field_id), VAdt adt, TAdt _ ->
++      [%sanity_check] span (variant_id = adt.variant_id);
++      [%unwrap_with_span] span
++        (FieldId.nth_opt adt.fields field_id)
++        "Field index out of bounds"
++  | ( PathDerefBox,
++      VAdt { variant_id = None; fields = [ v ] },
++      TAdt { builtin = Some TBox; _ } ) -> v
++  | PathDerefMut, VBorrow (VMutBorrow (_, v)), _ -> v
++  | _ -> [%craise] span "Invalid path projection"
++
++(** Update the projected value and reconstruct its parent. *)
++let update_path_elem (span : Meta.span) (pe : path_elem) (v : tvalue)
++    (update : tvalue -> tvalue) : tvalue =
++  let value =
++    match (pe, v.value, v.ty) with
++    | PathField (variant_id, field_id), VAdt adt, TAdt _ ->
++        [%sanity_check] span (variant_id = adt.variant_id);
++        let fv =
++          [%unwrap_with_span] span
++            (FieldId.nth_opt adt.fields field_id)
++            "Field index out of bounds"
++        in
++        let updated = update fv in
++        VAdt
++          { adt with fields = FieldId.update_nth adt.fields field_id updated }
++    | ( PathDerefBox,
++        VAdt { variant_id = None; fields = [ bv ] },
++        TAdt { builtin = Some TBox; _ } ) ->
++        VAdt { variant_id = None; fields = [ update bv ] }
++    | PathDerefMut, VBorrow (VMutBorrow (bid, bv)), _ ->
++        VBorrow (VMutBorrow (bid, update bv))
++    | _ -> [%craise] span "Invalid path projection"
++  in
++  { v with value }
++
++let read_path (span : Meta.span) (path : path) (ctx : eval_ctx) : tvalue =
++  List.fold_left
++    (fun v pe -> project_path_elem span pe v)
++    (read_path_root span path.root ctx)
++    path.projection
++
++let write_path (span : Meta.span) (path : path) (nv : tvalue) (ctx : eval_ctx) :
++    eval_ctx =
++  let rec write (projection : path_elem list) (v : tvalue) : tvalue =
++    match projection with
++    | [] ->
++        [%cassert] span
++          (erase_regions nv.ty = erase_regions v.ty)
++          "New value doesn't have the same type as its destination";
++        nv
++    | pe :: projection -> update_path_elem span pe v (write projection)
++  in
++  let updated = write path.projection (read_path_root span path.root ctx) in
++  match path.root with
++  | LocalRoot var_id -> ctx_update_var_value span ctx var_id updated
++  | SharedLoanRoot lid -> (
++      match ctx_lookup_loan span path_exploration lid ctx with
++      | _, Concrete (VSharedLoan _) ->
++          update_loan span path_exploration lid (VSharedLoan (lid, updated)) ctx
++      | _, Abstract (ASharedLoan (pm, _, _, av)) ->
++          [%sanity_check] span (pm = PNone);
++          update_aloan span path_exploration lid
++            (ASharedLoan (pm, lid, updated, av))
++            ctx
++      | _ -> [%craise] span "Expected a shared loan at path root")
++
++let extend_path (path : path) (pe : path_elem) : path =
++  { path with projection = path.projection @ [ pe ] }
++
++(** Resolve a projection to its value and path. The optional loan identifier
++    indicates that the value is immediately beneath a shared loan. *)
+ let rec project_value (span : Meta.span) (access : projection_access)
+-    (ek : exploration_kind) (current_place : place) (ctx : eval_ctx)
+-    (pe : projection_elem) (v : tvalue) :
+-    (loan_id option * tvalue * (eval_ctx * tvalue -> eval_ctx * tvalue))
+-    path_access_result =
++    (current_place : place) (ctx : eval_ctx) (pe : projection_elem) (v : tvalue)
++    (path : path) : (loan_id option * tvalue * path) path_access_result =
+   match (pe, v.value, v.ty) with
+   | Field (opt_variant_id, field_id), VAdt adt, TAdt { builtin = None; _ } ->
+-  begin
+       (* Check consistency *)
+       [%sanity_check] span (opt_variant_id = adt.variant_id);
+-      (* Actually project *)
+-      let fv = FieldId.nth adt.fields field_id in
+-      let backward (ctx, updated) =
+-        (* Update the field value *)
+-        let nvalues = FieldId.update_nth adt.fields field_id updated in
+-        let value = VAdt { adt with fields = nvalues } in
+-        (ctx, { v with value })
++      let fv =
++        [%unwrap_with_span] span
++          (FieldId.nth_opt adt.fields field_id)
++          "Field index out of bounds"
+       in
+-      Ok (None, fv, backward)
+-    end
++      Ok (None, fv, extend_path path (PathField (opt_variant_id, field_id)))
+   (* Tuples *)
+-  | Field (None, field_id), VAdt adt, TAdt { builtin = Some TTuple; _ } -> begin
+-      let fv = FieldId.nth adt.fields field_id in
+-      let backward (ctx, updated) =
+-        (* Update the field value *)
+-        let nvalues = FieldId.update_nth adt.fields field_id updated in
+-        let value = VAdt { adt with fields = nvalues } in
+-        (ctx, { v with value })
++  | Field (None, field_id), VAdt adt, TAdt { builtin = Some TTuple; _ } ->
++      let fv =
++        [%unwrap_with_span] span
++          (FieldId.nth_opt adt.fields field_id)
++          "Field index out of bounds"
+       in
+-      Ok (None, fv, backward)
+-    end
++      Ok (None, fv, extend_path path (PathField (None, field_id)))
+   | Field _, VBottom, _ ->
+       (* If we reach Bottom, it may mean we need to expand an uninitialized
+        * enumeration value *)
+@@ -123,75 +208,23 @@ let rec project_value (span : Meta.span) (access : projection_access)
+        * it shouldn't happen due to user code, and we leverage it
+        * when implementing box dereferencement for the concrete
+        * interpreter *)
+-      let backward (ctx, updated) =
+-        let value = VAdt { variant_id = None; fields = [ updated ] } in
+-        (ctx, { v with value })
+-      in
+-      Ok (None, fv, backward)
++      Ok (None, fv, extend_path path PathDerefBox)
+     end
+   (* Borrows *)
+   | Deref, VBorrow bc, _ ->
+-      (* Compute the projected value to explore and a backward function to update the result *)
++      (* Resolve shared dereferences to the loan, not to the borrow's ancestors. *)
+       let res : _ path_access_result =
+         match bc with
+         | VSharedBorrow _ when not access.lookup_shared_borrows ->
+             Error (FailBorrow bc)
+-        | VSharedBorrow (bid, _) -> begin
+-            (* Lookup the loan content, and explore from there *)
+-            match ctx_lookup_loan span ek bid ctx with
+-            | _, Concrete (VMutLoan _) ->
+-                [%craise] span "Expected a shared loan"
+-            | _, Concrete (VSharedLoan (bid, sv)) ->
+-                (* Return the shared value *)
+-                Ok
+-                  ( Some bid,
+-                    sv,
+-                    fun (ctx, updated) ->
+-                      let ctx =
+-                        update_loan span ek bid (VSharedLoan (bid, updated)) ctx
+-                      in
+-                      (ctx, v) )
+-            | ( _,
+-                Abstract
+-                  ( AMutLoan _
+-                  | AEndedMutLoan _
+-                  | AEndedSharedLoan _
+-                  | AIgnoredMutLoan _
+-                  | AEndedIgnoredMutLoan _
+-                  | AIgnoredSharedLoan _ ) ) ->
+-                [%craise] span "Expected a shared (abstraction) loan"
+-            | _, Abstract (ASharedLoan (pm, bid, sv, _av)) -> begin
+-                (* Sanity check: projection markers can only appear when we're doing a join *)
+-                [%sanity_check] span (pm = PNone);
+-                (* Return the shared value *)
+-                Ok
+-                  ( Some bid,
+-                    sv,
+-                    fun (ctx, updated) ->
+-                      let av =
+-                        match ctx_lookup_loan span ek bid ctx with
+-                        | _, Abstract (ASharedLoan (_, _, _, av)) -> av
+-                        | _ -> [%craise] span "Unexpected"
+-                      in
+-                      let ctx =
+-                        update_aloan span ek bid
+-                          (ASharedLoan (pm, bid, updated, av))
+-                          ctx
+-                      in
+-                      (ctx, v) )
+-              end
+-          end
++        | VSharedBorrow (bid, _) ->
++            let sv = shared_loan_value span bid ctx in
++            Ok (Some bid, sv, { root = SharedLoanRoot bid; projection = [] })
+         | VReservedMutBorrow (bid, sid) ->
+             Error (FailReservedMutBorrow (bid, sid))
+         | VMutBorrow _ when not access.enter_mut_borrows ->
+             Error (FailBorrow bc)
+-        | VMutBorrow (bid, bv) ->
+-            Ok
+-              ( None,
+-                bv,
+-                fun (ctx, updated) ->
+-                  let value = VBorrow (VMutBorrow (bid, updated)) in
+-                  (ctx, { v with value }) )
++        | VMutBorrow (_, bv) -> Ok (None, bv, extend_path path PathDerefMut)
+       in
+       res
+   | _, VLoan lc, _ -> begin
+@@ -213,15 +246,8 @@ let rec project_value (span : Meta.span) (access : projection_access)
+              - we can also use it to expand bottom values, but bottom values
+                can not appear inside of shared loans
+           *)
+-          match project_value span access ek current_place ctx pe sv with
+-          | Error err -> Error err
+-          | Ok (lid, fv, backward) ->
+-              let backward (ctx, updated) =
+-                let ctx, updated = backward (ctx, updated) in
+-                let value = VLoan (VSharedLoan (bids, updated)) in
+-                (ctx, { v with value })
+-              in
+-              Ok (lid, fv, backward)
++          let path = { root = SharedLoanRoot bids; projection = [] } in
++          project_value span access current_place ctx pe sv path
+         end
+     end
+   | _, VBottom, _ -> [%craise] span "Can not apply a projection to the ⊥ value"
+@@ -235,71 +261,23 @@ let rec project_value (span : Meta.span) (access : projection_access)
+ (** Generic function to access (read/write) the value inside a place, provided
+     the place **does not refer to a global** (globals are handled elsewhere).
+ 
+-    We return the read value and a backward function that propagates any changes
+-    to the projected value back to the original local. *)
++    We always read the value, and return its path without updating the context.
++*)
+ let rec access_place (span : Meta.span) (access : projection_access)
+-    (ek : exploration_kind) (ctx : eval_ctx) (p : place) :
+-    (loan_id option * tvalue * (eval_ctx * tvalue -> eval_ctx * tvalue))
+-    path_access_result =
++    (ctx : eval_ctx) (p : place) :
++    (loan_id option * tvalue * path) path_access_result =
+   match p.kind with
+   | PlaceLocal var_id ->
+       (* Lookup the variable's value *)
+       let v = ctx_lookup_var_value span ctx var_id in
+-      let backward (ctx, updated) =
+-        let ctx = ctx_update_var_value span ctx var_id updated in
+-        (* TODO: we shouldn't have to erase the regions, but sometimes the
+-           'static regions are missing from the destination place *)
+-        let updated_ty = erase_regions updated.ty in
+-        let v_ty = erase_regions v.ty in
+-        (* Type checking *)
+-        if updated_ty <> v.ty then (
+-          [%ltrace
+-            "Not the same type:\n- nv.ty: "
+-            ^ ty_to_string ctx updated_ty
+-            ^ "\n- v.ty: " ^ ty_to_string ctx v_ty];
+-          [%craise] span
+-            "Assertion failed: new value doesn't have the same type as its \
+-             destination");
+-        (ctx, updated)
+-      in
+-      Ok (None, v, backward)
++      Ok (None, v, { root = LocalRoot var_id; projection = [] })
+   | PlaceProjection (p', pe) -> begin
+-      match access_place span access ek ctx p' with
++      match access_place span access ctx p' with
+       | Error err -> Error err
+-      | Ok (_, v, backward) -> begin
+-          match project_value span access ek p' ctx pe v with
+-          | Error err -> Error err
+-          | Ok (lid, pv, new_back) -> begin
+-              let backward = Core.Fn.compose backward new_back in
+-              Ok (lid, pv, backward)
+-            end
+-        end
++      | Ok (_, v, path) -> project_value span access p' ctx pe v path
+     end
+   | PlaceGlobal _ -> [%craise] span "Unexpected access to a global"
+ 
+-(** Generic function to access (read/write) the value at a given place, provided
+-    the place **does not refer to a global** (globals are handled elsewhere).
+-
+-    We return the value we read at the place and the (eventually) updated
+-    environment, if we managed to access the place, or the precise reason why we
+-    failed. *)
+-let access_update_place (span : Meta.span) (access : projection_access)
+-    (* Function to (eventually) update the value we find *)
+-      (update : tvalue -> tvalue) (p : place) (ctx : eval_ctx) :
+-    (eval_ctx * loan_id option * tvalue) path_access_result =
+-  (* For looking up/updating shared loans *)
+-  let ek : exploration_kind =
+-    { enter_shared_loans = true; enter_mut_borrows = true; enter_abs = true }
+-  in
+-  (* Apply the projection *)
+-  match access_place span access ek ctx p with
+-  | Error err -> Error err
+-  | Ok (lid, v, backward) ->
+-      let nv = update v in
+-      (* Update the ctx with the updated value *)
+-      let ctx, _ = backward (ctx, nv) in
+-      Ok (ctx, lid, v)
+-
+ type access_kind =
+   | Read  (** We can go inside borrows and loans *)
+   | Write  (** Don't enter shared borrows or shared loans *)
+@@ -335,33 +313,30 @@ let access_kind_to_projection_access (access : access_kind) : projection_access
+ let try_read_place (span : Meta.span) (access : access_kind) (p : place)
+     (ctx : eval_ctx) : (loan_id option * tvalue) path_access_result =
+   let access = access_kind_to_projection_access access in
+-  (* The update function is the identity *)
+-  let update v = v in
+-  match access_update_place span access update p ctx with
++  match access_place span access ctx p with
+   | Error err -> Error err
+-  | Ok (_ctx1, lid, read_value) ->
+-      (* Note that we ignore the new environment: it should be the same as the
+-         original one. *)
+-      Ok (lid, read_value)
++  | Ok (lid, read_value, _) -> Ok (lid, read_value)
++
++let eval_place (span : Meta.span) (access : access_kind) (p : place)
++    (ctx : eval_ctx) : loan_id option * tvalue * path =
++  let access = access_kind_to_projection_access access in
++  match access_place span access ctx p with
++  | Error e -> [%craise] span ("Unreachable: " ^ show_path_fail_kind e)
++  | Ok res -> res
+ 
+ let read_place (span : Meta.span) (access : access_kind) (p : place)
+     (ctx : eval_ctx) : loan_id option * tvalue =
+-  match try_read_place span access p ctx with
+-  | Error e -> [%craise] span ("Unreachable: " ^ show_path_fail_kind e)
+-  | Ok (lid, v) -> (lid, v)
++  let lid, v, _ = eval_place span access p ctx in
++  (lid, v)
+ 
+ (** Attempt to update the value at a given place, provided the place **does not
+     refer to a global** (globals are handled elsewhere). *)
+ let try_write_place (span : Meta.span) (access : access_kind) (p : place)
+     (nv : tvalue) (ctx : eval_ctx) : eval_ctx path_access_result =
+   let access = access_kind_to_projection_access access in
+-  (* The update function substitutes the value with the new value *)
+-  let update _ = nv in
+-  match access_update_place span access update p ctx with
++  match access_place span access ctx p with
+   | Error err -> Error err
+-  | Ok (ctx, _, _) ->
+-      (* We ignore the read value *)
+-      Ok ctx
++  | Ok (_, _, path) -> Ok (write_path span path nv ctx)
+ 
+ let write_place (span : Meta.span) (access : access_kind) (p : place)
+     (nv : tvalue) (ctx : eval_ctx) : eval_ctx =
+@@ -581,8 +556,8 @@ let drop_outer_loans_at_lplace (config : config) (span : Meta.span) (p : place)
+   (* Move the current value in the place outside of this place and into
+    * a temporary dummy variable *)
+   let access = Write in
+-  let _, v = read_place span access p ctx in
+-  let ctx = write_place span access p (mk_bottom span v.ty) ctx in
++  let _, v, path = eval_place span access p ctx in
++  let ctx = write_path span path (mk_bottom span v.ty) ctx in
+   let dummy_id = ctx.fresh_dummy_var_id () in
+   let ctx = ctx_push_dummy_var ctx dummy_id v in
+   (* Auxiliary function: while there are loans to end in the
+diff --git a/src/interp/InterpPaths.mli b/src/interp/InterpPaths.mli
+index 8ce6f9854d552f2dc8d2228b41d057ff92e94b44..cde52a4f1afd7ae03560804aed87d03badbe1551 100644
+--- a/src/interp/InterpPaths.mli
++++ b/src/interp/InterpPaths.mli
+@@ -6,6 +6,28 @@ open Cps
+ 
+ type access_kind = Read | Write | Move
+ 
++(** A resolved location: a local or shared loan payload followed by structural
++    projections (i.e., field projection, box dereference, or mutable borrow
++    dereference). *)
++type path
++
++(** Evaluate a non-global place. Return the loan immediately above the value (if
++    any), the value, and its resolved path. The context must first be prepared
++    for the requested access kind: the function raises an exception if it can't
++    evaluate the place. *)
++val eval_place :
++  Meta.span ->
++  access_kind ->
++  place ->
++  eval_ctx ->
++  loan_id option * tvalue * path
++
++(** Read a resolved path in the current context. *)
++val read_path : Meta.span -> path -> eval_ctx -> tvalue
++
++(** Update the value at a resolved path. *)
++val write_path : Meta.span -> path -> tvalue -> eval_ctx -> eval_ctx
++
+ (** Update the environment to be able to read a place.
+ 
+     When reading a place, we may be stuck along the way because some value is
+diff --git a/src/interp/InterpStatements.ml b/src/interp/InterpStatements.ml
+index 1f75159b23df8bee7ae2b613b4538c53f98420c4..7a28b18ba375b72bb07f831cb1f4d9183c07f0af 100644
+--- a/src/interp/InterpStatements.ml
++++ b/src/interp/InterpStatements.ml
+@@ -37,12 +37,12 @@ let drop_value (config : config) (span : Meta.span) (p : place) : cm_fun =
+   let ctx =
+     (* Move the value at destination (that we will overwrite) to a dummy variable
+      * to preserve the borrows it may contain *)
+-    let _, mv = InterpPaths.read_place span access p ctx in
++    let _, mv, path = eval_place span access p ctx in
+     let dummy_id = ctx.fresh_dummy_var_id () in
+     let ctx = ctx_push_dummy_var ctx dummy_id mv in
+     (* Update the destination to ⊥ *)
+     let nv = { v with value = VBottom } in
+-    let ctx = write_place span access p nv ctx in
++    let ctx = write_path span path nv ctx in
+     [%ltrace
+       "place: " ^ place_to_string ctx p ^ "\n- Final context:\n"
+       ^ eval_ctx_to_string ~span:(Some span) ctx];
+@@ -101,7 +101,7 @@ let assign_to_place (config : config) (span : Meta.span) (rv : tvalue)
+   let rv, ctx = remove_dummy_var span rvalue_vid ctx in
+   (* Move the value at destination (that we will overwrite) to a dummy variable
+      to preserve the borrows *)
+-  let _, mv = InterpPaths.read_place span Write p ctx in
++  let _, mv, path = eval_place span Write p ctx in
+   let dest_vid = ctx.fresh_dummy_var_id () in
+   let ctx = ctx_push_dummy_var ctx dest_vid mv in
+   (* Write to the destination *)
+@@ -110,7 +110,7 @@ let assign_to_place (config : config) (span : Meta.span) (rv : tvalue)
+     (not (bottom_in_value ctx.ended_regions rv))
+     "The value to move contains bottom";
+   (* Update the destination *)
+-  let ctx = write_place span Write p rv ctx in
++  let ctx = write_path span path rv ctx in
+   (* Debug *)
+   [%ltrace
+     "- rv: "
+@@ -980,7 +980,7 @@ and eval_switch_raw (config : config) (span : Meta.span) (data : switch_data)
+       (* Access the place *)
+       let access = Read in
+       let expand_prim_copy = false in
+-      let _, p_v, ctx, cf_read_p =
++      let _, p_v, _, ctx, cf_read_p =
+         access_rplace_reorganize_and_read config span expand_prim_copy access p
+           ctx
+       in
+diff --git a/src/interp/Invariants.ml b/src/interp/Invariants.ml
+index d7f75807d79eb7ba5aaacf2d6e1b37291f1c02a0..04944324ef066751c7fb4a59c7bb210e2929a46a 100644
+--- a/src/interp/Invariants.ml
++++ b/src/interp/Invariants.ml
+@@ -49,6 +49,7 @@ let borrows_infos_to_string (indent : string)
+ type borrow_kind = BMut | BShared | BReserved [@@deriving show]
+ 
+ (** Check that:
++    - loan ids are unique
+     - loans and borrows are correctly related
+     - a two-phase borrow can't point to a value inside an abstraction *)
+ let check_loans_borrows_relation_invariant (span : Meta.span) (ctx : eval_ctx) :
+@@ -78,6 +79,7 @@ let check_loans_borrows_relation_invariant (span : Meta.span) (ctx : eval_ctx) :
+ 
+   let register_shared_loan (loan_in_abs : bool) (bid : BorrowId.id) : unit =
+     let infos = !borrows_infos in
++    [%sanity_check] span (not (BorrowId.Map.mem bid infos));
+     (* Insert the loan info *)
+     let info =
+       {
+diff --git a/src/pure/PureUtils.ml b/src/pure/PureUtils.ml
+index 128d4fdc91d28d2b21073b71ca8664a86d39d2b3..b8b909a78f8489f998854eb050f660dd22a78793 100644
+--- a/src/pure/PureUtils.ml
++++ b/src/pure/PureUtils.ml
+@@ -2446,6 +2446,34 @@ let filter_generic_params_used_in_texpr (generic : generic_params) (e : texpr) :
+   in
+   visitor#visit_texpr () e;
+ 
++  (* Repeatedly explore the needed trait clauses to make sure we include
++     all their parameters in the set. We compute a fixed point as theoretically
++     trait clauses can depend on other trait clauses, though this can not
++     currently be the case with Charon's handling of traits. *)
++  let rec close_clauses (visited : TraitClauseId.Set.t) : unit =
++    let to_visit =
++      List.filter
++        (fun (clause : trait_param) ->
++          TraitClauseId.Set.mem clause.clause_id !clause_ids
++          && not (TraitClauseId.Set.mem clause.clause_id visited))
++        generic.trait_clauses
++    in
++    if to_visit <> [] then begin
++      List.iter
++        (fun (clause : trait_param) ->
++          visitor#visit_generic_args () clause.generics)
++        to_visit;
++      let visited =
++        List.fold_left
++          (fun visited (clause : trait_param) ->
++            TraitClauseId.Set.add clause.clause_id visited)
++          visited to_visit
++      in
++      close_clauses visited
++    end
++  in
++  close_clauses TraitClauseId.Set.empty;
++
+   (* Filter *)
+   let { types; const_generics; trait_clauses } : generic_params = generic in
+   let types =
+@@ -2480,13 +2508,10 @@ let filter_generic_params_used_in_texpr (generic : generic_params) (e : texpr) :
+   let const_generics =
+     List.filter_map (fun (b, x) -> if b then Some x else None) const_generics
+   in
+-  (* WARNING: the indices and generics inside the trait clause are not correct!
+-     We update them below. *)
+   let trait_clauses =
+     List.filter_map (fun (b, x) -> if b then Some x else None) trait_clauses
+   in
+ 
+-  (* Reindex the generic params *)
+   let generics : generic_params = { types; const_generics; trait_clauses } in
+   (generics, filter)
+ 
+diff --git a/tests/lean/Issue1436LoopGenerics.lean b/tests/lean/Issue1436LoopGenerics.lean
+new file mode 100644
+index 0000000000000000000000000000000000000000..e7c13fa7b78b63e2e5476d7a84c2c944977df6df
+--- /dev/null
++++ b/tests/lean/Issue1436LoopGenerics.lean
+@@ -0,0 +1,337 @@
++-- THIS FILE WAS AUTOMATICALLY GENERATED BY AENEAS
++-- [issue_1436_loop_generics]
++module
++public import Aeneas
++@[expose] public section
++open Aeneas Aeneas.Std Result ControlFlow Error
++set_option linter.dupNamespace false
++set_option linter.hashCommand false
++set_option linter.unusedVariables false
++set_option linter.style.whitespace false
++set_option linter.style.setOption false
++set_option linter.style.longLine false
++set_option linter.internalConstructors false
++
++/- You can set the `maxHeartbeats` value with the `-max-heartbeats` CLI option -/
++set_option maxHeartbeats 1000000
++
++/- You can set the `maxRecDepth` value with the `-max-recdepth` CLI option -/
++set_option maxRecDepth 2048
++
++namespace issue_1436_loop_generics
++
++/-- [issue_1436_loop_generics::sum]: loop body 0:
++    Source: 'tests/src/issue-1436-loop-generics.rs', lines 15:4-17:5
++    Visibility: public -/
++@[rust_loop_body]
++def sum_loop.body
++  {I : Type _} {Clause0_IntoIter : Type _}
++  (coreitertraitscollectIntoIteratorIU32Clause0_IntoIterInst :
++  core.iter.traits.collect.IntoIterator I Std.U32 Clause0_IntoIter)
++  (it : Clause0_IntoIter) (acc : Std.U32) :
++  Result (ControlFlow (Clause0_IntoIter × Std.U32) Std.U32)
++  := do
++  let (o, it1) ←
++    coreitertraitscollectIntoIteratorIU32Clause0_IntoIterInst.iteratorInst.next
++      it
++  match o with
++  | none => ok (done acc)
++  | some x =>
++    let acc1 ← lift (core.num.U32.wrapping_add acc x)
++    ok (cont (it1, acc1))
++
++/-- [issue_1436_loop_generics::sum]: loop 0:
++    Source: 'tests/src/issue-1436-loop-generics.rs', lines 15:4-17:5
++    Visibility: public -/
++@[rust_loop]
++def sum_loop
++  {I : Type _} {Clause0_IntoIter : Type _}
++  (coreitertraitscollectIntoIteratorIU32Clause0_IntoIterInst :
++  core.iter.traits.collect.IntoIterator I Std.U32 Clause0_IntoIter)
++  (it : Clause0_IntoIter) (acc : Std.U32) :
++  Result Std.U32
++  := do
++  loop
++    (fun (it1, acc1) => sum_loop.body
++      coreitertraitscollectIntoIteratorIU32Clause0_IntoIterInst it1 acc1)
++    (it, acc)
++
++/-- [issue_1436_loop_generics::sum]:
++    Source: 'tests/src/issue-1436-loop-generics.rs', lines 12:0-19:1
++    Visibility: public -/
++def sum
++  {I : Type _} {Clause0_IntoIter : Type _}
++  (coreitertraitscollectIntoIteratorIU32Clause0_IntoIterInst :
++  core.iter.traits.collect.IntoIterator I Std.U32 Clause0_IntoIter) (xs : I) :
++  Result Std.U32
++  := do
++  let it ←
++    coreitertraitscollectIntoIteratorIU32Clause0_IntoIterInst.into_iter xs
++  sum_loop coreitertraitscollectIntoIteratorIU32Clause0_IntoIterInst it 0#u32
++
++/-- [issue_1436_loop_generics::rle]: loop body 0:
++    Source: 'tests/src/issue-1436-loop-generics.rs', lines 29:4-44:5
++    Visibility: public -/
++@[rust_loop_body]
++def rle_loop.body
++  {T0 : Type _} {Clause0_IntoIter : Type _}
++  (coreitertraitscollectIntoIteratorT0U8Clause0_IntoIterInst :
++  core.iter.traits.collect.IntoIterator T0 Std.U8 Clause0_IntoIter)
++  (iter : Clause0_IntoIter) (v : alloc.vec.Vec Std.U8) (count1 : Std.U8)
++  (current : Std.U8) :
++  Result (ControlFlow (Clause0_IntoIter × (alloc.vec.Vec Std.U8) × Std.U8 ×
++    Std.U8) ((alloc.vec.Vec Std.U8) × Std.U8 × Std.U8))
++  := do
++  let (o, iter1) ←
++    coreitertraitscollectIntoIteratorT0U8Clause0_IntoIterInst.iteratorInst.next
++      iter
++  match o with
++  | none => ok (done (v, count1, current))
++  | some next =>
++    if next = current
++    then
++      if count1 = 255#u8
++      then
++        let v1 ← alloc.vec.Vec.push v count1
++        let v2 ← alloc.vec.Vec.push v1 current
++        ok (cont (iter1, v2, 1#u8, current))
++      else let count2 ← count1 + 1#u8
++           ok (cont (iter1, v, count2, current))
++    else
++      let v1 ← alloc.vec.Vec.push v count1
++      let v2 ← alloc.vec.Vec.push v1 current
++      ok (cont (iter1, v2, 1#u8, next))
++
++/-- [issue_1436_loop_generics::rle]: loop 0:
++    Source: 'tests/src/issue-1436-loop-generics.rs', lines 29:4-44:5
++    Visibility: public -/
++@[rust_loop]
++def rle_loop
++  {T0 : Type _} {Clause0_IntoIter : Type _}
++  (coreitertraitscollectIntoIteratorT0U8Clause0_IntoIterInst :
++  core.iter.traits.collect.IntoIterator T0 Std.U8 Clause0_IntoIter)
++  (iter : Clause0_IntoIter) (v : alloc.vec.Vec Std.U8) (count1 : Std.U8)
++  (current : Std.U8) :
++  Result ((alloc.vec.Vec Std.U8) × Std.U8 × Std.U8)
++  := do
++  loop
++    (fun (iter1, v1, count2, current1) => rle_loop.body
++      coreitertraitscollectIntoIteratorT0U8Clause0_IntoIterInst iter1 v1 count2
++      current1)
++    (iter, v, count1, current)
++
++/-- [issue_1436_loop_generics::rle]:
++    Source: 'tests/src/issue-1436-loop-generics.rs', lines 22:0-48:1
++    Visibility: public -/
++def rle
++  {T0 : Type _} {Clause0_IntoIter : Type _}
++  (coreitertraitscollectIntoIteratorT0U8Clause0_IntoIterInst :
++  core.iter.traits.collect.IntoIterator T0 Std.U8 Clause0_IntoIter)
++  (bytes : T0) :
++  Result (alloc.vec.Vec Std.U8)
++  := do
++  let iter ←
++    coreitertraitscollectIntoIteratorT0U8Clause0_IntoIterInst.into_iter bytes
++  let (o, iter1) ←
++    coreitertraitscollectIntoIteratorT0U8Clause0_IntoIterInst.iteratorInst.next
++      iter
++  match o with
++  | none => ok (alloc.vec.Vec.new Std.U8)
++  | some current =>
++    let (v, count1, current1) ←
++      rle_loop coreitertraitscollectIntoIteratorT0U8Clause0_IntoIterInst iter1
++        (alloc.vec.Vec.new Std.U8) 1#u8 current
++    let v1 ← alloc.vec.Vec.push v count1
++    alloc.vec.Vec.push v1 current1
++
++/-- [issue_1436_loop_generics::count]: loop body 0:
++    Source: 'tests/src/issue-1436-loop-generics.rs', lines 54:4-56:5
++    Visibility: public -/
++@[rust_loop_body]
++def count_loop.body
++  {T : Type _} {I : Type _} {Clause0_IntoIter : Type _}
++  (coreitertraitscollectIntoIteratorInst :
++  core.iter.traits.collect.IntoIterator I T Clause0_IntoIter)
++  (it : Clause0_IntoIter) (n : Std.U32) :
++  Result (ControlFlow (Clause0_IntoIter × Std.U32) Std.U32)
++  := do
++  let (o, it1) ← coreitertraitscollectIntoIteratorInst.iteratorInst.next it
++  match o with
++  | none => ok (done n)
++  | some _ =>
++    let n1 ← lift (core.num.U32.wrapping_add n 1#u32)
++    ok (cont (it1, n1))
++
++/-- [issue_1436_loop_generics::count]: loop 0:
++    Source: 'tests/src/issue-1436-loop-generics.rs', lines 54:4-56:5
++    Visibility: public -/
++@[rust_loop]
++def count_loop
++  {T : Type _} {I : Type _} {Clause0_IntoIter : Type _}
++  (coreitertraitscollectIntoIteratorInst :
++  core.iter.traits.collect.IntoIterator I T Clause0_IntoIter)
++  (it : Clause0_IntoIter) (n : Std.U32) :
++  Result Std.U32
++  := do
++  loop
++    (fun (it1, n1) => count_loop.body coreitertraitscollectIntoIteratorInst it1
++      n1)
++    (it, n)
++
++/-- [issue_1436_loop_generics::count]:
++    Source: 'tests/src/issue-1436-loop-generics.rs', lines 51:0-58:1
++    Visibility: public -/
++def count
++  {T : Type _} {I : Type _} {Clause0_IntoIter : Type _}
++  (coreitertraitscollectIntoIteratorInst :
++  core.iter.traits.collect.IntoIterator I T Clause0_IntoIter) (xs : I) :
++  Result Std.U32
++  := do
++  let it ← coreitertraitscollectIntoIteratorInst.into_iter xs
++  count_loop coreitertraitscollectIntoIteratorInst it 0#u32
++
++/-- Trait declaration: [issue_1436_loop_generics::Tr]
++    Source: 'tests/src/issue-1436-loop-generics.rs', lines 60:0-62:1
++    Visibility: public -/
++structure Tr (Self : Type _) where
++  f : Self → Result Std.U32
++
++/-- Trait declaration: [issue_1436_loop_generics::Wrap]
++    Source: 'tests/src/issue-1436-loop-generics.rs', lines 65:0-65:24
++    Visibility: public -/
++structure Wrap (Self : Type _) (T : Type _) where
++  TrInst : Tr Self
++
++/-- [issue_1436_loop_generics::loop_wrap]: loop body 0:
++    Source: 'tests/src/issue-1436-loop-generics.rs', lines 72:4-75:5
++    Visibility: public -/
++@[rust_loop_body]
++def loop_wrap_loop.body
++  {T : Type _} {W : Type _} (WrapInst : Wrap W T) (w : W) (n : Std.U32)
++  (acc : Std.U32) (i : Std.U32) :
++  Result (ControlFlow (Std.U32 × Std.U32) Std.U32)
++  := do
++  if i < n
++  then
++    let i1 ← WrapInst.TrInst.f w
++    let acc1 ← lift (core.num.U32.wrapping_add acc i1)
++    let i2 ← i + 1#u32
++    ok (cont (acc1, i2))
++  else ok (done acc)
++
++/-- [issue_1436_loop_generics::loop_wrap]: loop 0:
++    Source: 'tests/src/issue-1436-loop-generics.rs', lines 72:4-75:5
++    Visibility: public -/
++@[rust_loop]
++def loop_wrap_loop
++  {T : Type _} {W : Type _} (WrapInst : Wrap W T) (w : W) (n : Std.U32)
++  (acc : Std.U32) (i : Std.U32) :
++  Result Std.U32
++  := do
++  loop
++    (fun (acc1, i1) => loop_wrap_loop.body WrapInst w n acc1 i1)
++    (acc, i)
++
++/-- [issue_1436_loop_generics::loop_wrap]:
++    Source: 'tests/src/issue-1436-loop-generics.rs', lines 69:0-77:1
++    Visibility: public -/
++@[reducible]
++def loop_wrap
++  {T : Type _} {W : Type _} (WrapInst : Wrap W T) (w : W) (n : Std.U32) :
++  Result Std.U32
++  := do
++  loop_wrap_loop WrapInst w n 0#u32 0#u32
++
++/-- Trait declaration: [issue_1436_loop_generics::HasN]
++    Source: 'tests/src/issue-1436-loop-generics.rs', lines 79:0-79:37
++    Visibility: public -/
++structure HasN (Self : Type _) (N : Std.Usize) where
++  TrInst : Tr Self
++
++/-- [issue_1436_loop_generics::loop_const_generic]: loop body 0:
++    Source: 'tests/src/issue-1436-loop-generics.rs', lines 86:4-89:5
++    Visibility: public -/
++@[rust_loop_body]
++def loop_const_generic_loop.body
++  {X : Type _} {N : Std.Usize} (HasNInst : HasN X N) (x : X) (n : Std.U32)
++  (acc : Std.U32) (i : Std.U32) :
++  Result (ControlFlow (Std.U32 × Std.U32) Std.U32)
++  := do
++  if i < n
++  then
++    let i1 ← HasNInst.TrInst.f x
++    let acc1 ← lift (core.num.U32.wrapping_add acc i1)
++    let i2 ← i + 1#u32
++    ok (cont (acc1, i2))
++  else ok (done acc)
++
++/-- [issue_1436_loop_generics::loop_const_generic]: loop 0:
++    Source: 'tests/src/issue-1436-loop-generics.rs', lines 86:4-89:5
++    Visibility: public -/
++@[rust_loop]
++def loop_const_generic_loop
++  {X : Type _} {N : Std.Usize} (HasNInst : HasN X N) (x : X) (n : Std.U32)
++  (acc : Std.U32) (i : Std.U32) :
++  Result Std.U32
++  := do
++  loop
++    (fun (acc1, i1) => loop_const_generic_loop.body HasNInst x n acc1 i1)
++    (acc, i)
++
++/-- [issue_1436_loop_generics::loop_const_generic]:
++    Source: 'tests/src/issue-1436-loop-generics.rs', lines 83:0-91:1
++    Visibility: public -/
++@[reducible]
++def loop_const_generic
++  {X : Type _} {N : Std.Usize} (HasNInst : HasN X N) (x : X) (n : Std.U32) :
++  Result Std.U32
++  := do
++  loop_const_generic_loop HasNInst x n 0#u32 0#u32
++
++/-- Trait declaration: [issue_1436_loop_generics::Wrap2]
++    Source: 'tests/src/issue-1436-loop-generics.rs', lines 94:0-94:30
++    Visibility: public -/
++structure Wrap2 (Self : Type _) (T : Type _) where
++  WrapInst : Wrap Self T
++
++/-- [issue_1436_loop_generics::loop_wrap2]: loop body 0:
++    Source: 'tests/src/issue-1436-loop-generics.rs', lines 99:4-102:5
++    Visibility: public -/
++@[rust_loop_body]
++def loop_wrap2_loop.body
++  {T : Type _} {W : Type _} (Wrap2Inst : Wrap2 W T) (w : W) (n : Std.U32)
++  (acc : Std.U32) (i : Std.U32) :
++  Result (ControlFlow (Std.U32 × Std.U32) Std.U32)
++  := do
++  if i < n
++  then
++    let i1 ← Wrap2Inst.WrapInst.TrInst.f w
++    let acc1 ← lift (core.num.U32.wrapping_add acc i1)
++    let i2 ← i + 1#u32
++    ok (cont (acc1, i2))
++  else ok (done acc)
++
++/-- [issue_1436_loop_generics::loop_wrap2]: loop 0:
++    Source: 'tests/src/issue-1436-loop-generics.rs', lines 99:4-102:5
++    Visibility: public -/
++@[rust_loop]
++def loop_wrap2_loop
++  {T : Type _} {W : Type _} (Wrap2Inst : Wrap2 W T) (w : W) (n : Std.U32)
++  (acc : Std.U32) (i : Std.U32) :
++  Result Std.U32
++  := do
++  loop
++    (fun (acc1, i1) => loop_wrap2_loop.body Wrap2Inst w n acc1 i1)
++    (acc, i)
++
++/-- [issue_1436_loop_generics::loop_wrap2]:
++    Source: 'tests/src/issue-1436-loop-generics.rs', lines 96:0-104:1
++    Visibility: public -/
++@[reducible]
++def loop_wrap2
++  {T : Type _} {W : Type _} (Wrap2Inst : Wrap2 W T) (w : W) (n : Std.U32) :
++  Result Std.U32
++  := do
++  loop_wrap2_loop Wrap2Inst w n 0#u32 0#u32
++
++end issue_1436_loop_generics
+diff --git a/tests/lean/Issue1436LoopGenericsRec.lean b/tests/lean/Issue1436LoopGenericsRec.lean
+new file mode 100644
+index 0000000000000000000000000000000000000000..d4de636f5f173204d96133dd7120ddaa4438dae9
+--- /dev/null
++++ b/tests/lean/Issue1436LoopGenericsRec.lean
+@@ -0,0 +1,257 @@
++-- THIS FILE WAS AUTOMATICALLY GENERATED BY AENEAS
++-- [issue_1436_loop_generics_rec]
++module
++public import Aeneas
++@[expose] public section
++open Aeneas Aeneas.Std Result ControlFlow Error
++set_option linter.dupNamespace false
++set_option linter.hashCommand false
++set_option linter.unusedVariables false
++set_option linter.style.whitespace false
++set_option linter.style.setOption false
++set_option linter.style.longLine false
++set_option linter.internalConstructors false
++
++/- You can set the `maxHeartbeats` value with the `-max-heartbeats` CLI option -/
++set_option maxHeartbeats 1000000
++
++/- You can set the `maxRecDepth` value with the `-max-recdepth` CLI option -/
++set_option maxRecDepth 2048
++
++namespace issue_1436_loop_generics_rec
++
++/-- [issue_1436_loop_generics_rec::sum]: loop 0:
++    Source: 'tests/src/issue-1436-loop-generics-rec.rs', lines 16:4-18:5
++    Visibility: public -/
++@[rust_loop]
++def sum_loop
++  {I : Type _} {Clause0_IntoIter : Type _}
++  (coreitertraitscollectIntoIteratorIU32Clause0_IntoIterInst :
++  core.iter.traits.collect.IntoIterator I Std.U32 Clause0_IntoIter)
++  (it : Clause0_IntoIter) (acc : Std.U32) :
++  Result Std.U32
++  := do
++  let (o, it1) ←
++    coreitertraitscollectIntoIteratorIU32Clause0_IntoIterInst.iteratorInst.next
++      it
++  match o with
++  | none => ok acc
++  | some x =>
++    let acc1 ← lift (core.num.U32.wrapping_add acc x)
++    sum_loop coreitertraitscollectIntoIteratorIU32Clause0_IntoIterInst it1 acc1
++partial_fixpoint
++
++/-- [issue_1436_loop_generics_rec::sum]:
++    Source: 'tests/src/issue-1436-loop-generics-rec.rs', lines 13:0-20:1
++    Visibility: public -/
++def sum
++  {I : Type _} {Clause0_IntoIter : Type _}
++  (coreitertraitscollectIntoIteratorIU32Clause0_IntoIterInst :
++  core.iter.traits.collect.IntoIterator I Std.U32 Clause0_IntoIter) (xs : I) :
++  Result Std.U32
++  := do
++  let it ←
++    coreitertraitscollectIntoIteratorIU32Clause0_IntoIterInst.into_iter xs
++  sum_loop coreitertraitscollectIntoIteratorIU32Clause0_IntoIterInst it 0#u32
++
++/-- [issue_1436_loop_generics_rec::rle]: loop 0:
++    Source: 'tests/src/issue-1436-loop-generics-rec.rs', lines 30:4-45:5
++    Visibility: public -/
++@[rust_loop]
++def rle_loop
++  {T0 : Type _} {Clause0_IntoIter : Type _}
++  (coreitertraitscollectIntoIteratorT0U8Clause0_IntoIterInst :
++  core.iter.traits.collect.IntoIterator T0 Std.U8 Clause0_IntoIter)
++  (iter : Clause0_IntoIter) (v : alloc.vec.Vec Std.U8) (count1 : Std.U8)
++  (current : Std.U8) :
++  Result ((alloc.vec.Vec Std.U8) × Std.U8 × Std.U8)
++  := do
++  let (o, iter1) ←
++    coreitertraitscollectIntoIteratorT0U8Clause0_IntoIterInst.iteratorInst.next
++      iter
++  match o with
++  | none => ok (v, count1, current)
++  | some next =>
++    if next = current
++    then
++      if count1 = 255#u8
++      then
++        let v1 ← alloc.vec.Vec.push v count1
++        let v2 ← alloc.vec.Vec.push v1 current
++        rle_loop coreitertraitscollectIntoIteratorT0U8Clause0_IntoIterInst
++          iter1 v2 1#u8 current
++      else
++        let count2 ← count1 + 1#u8
++        rle_loop coreitertraitscollectIntoIteratorT0U8Clause0_IntoIterInst
++          iter1 v count2 current
++    else
++      let v1 ← alloc.vec.Vec.push v count1
++      let v2 ← alloc.vec.Vec.push v1 current
++      rle_loop coreitertraitscollectIntoIteratorT0U8Clause0_IntoIterInst iter1
++        v2 1#u8 next
++partial_fixpoint
++
++/-- [issue_1436_loop_generics_rec::rle]:
++    Source: 'tests/src/issue-1436-loop-generics-rec.rs', lines 23:0-49:1
++    Visibility: public -/
++def rle
++  {T0 : Type _} {Clause0_IntoIter : Type _}
++  (coreitertraitscollectIntoIteratorT0U8Clause0_IntoIterInst :
++  core.iter.traits.collect.IntoIterator T0 Std.U8 Clause0_IntoIter)
++  (bytes : T0) :
++  Result (alloc.vec.Vec Std.U8)
++  := do
++  let iter ←
++    coreitertraitscollectIntoIteratorT0U8Clause0_IntoIterInst.into_iter bytes
++  let (o, iter1) ←
++    coreitertraitscollectIntoIteratorT0U8Clause0_IntoIterInst.iteratorInst.next
++      iter
++  match o with
++  | none => ok (alloc.vec.Vec.new Std.U8)
++  | some current =>
++    let (v, count1, current1) ←
++      rle_loop coreitertraitscollectIntoIteratorT0U8Clause0_IntoIterInst iter1
++        (alloc.vec.Vec.new Std.U8) 1#u8 current
++    let v1 ← alloc.vec.Vec.push v count1
++    alloc.vec.Vec.push v1 current1
++
++/-- [issue_1436_loop_generics_rec::count]: loop 0:
++    Source: 'tests/src/issue-1436-loop-generics-rec.rs', lines 55:4-57:5
++    Visibility: public -/
++@[rust_loop]
++def count_loop
++  {T : Type _} {I : Type _} {Clause0_IntoIter : Type _}
++  (coreitertraitscollectIntoIteratorInst :
++  core.iter.traits.collect.IntoIterator I T Clause0_IntoIter)
++  (it : Clause0_IntoIter) (n : Std.U32) :
++  Result Std.U32
++  := do
++  let (o, it1) ← coreitertraitscollectIntoIteratorInst.iteratorInst.next it
++  match o with
++  | none => ok n
++  | some _ =>
++    let n1 ← lift (core.num.U32.wrapping_add n 1#u32)
++    count_loop coreitertraitscollectIntoIteratorInst it1 n1
++partial_fixpoint
++
++/-- [issue_1436_loop_generics_rec::count]:
++    Source: 'tests/src/issue-1436-loop-generics-rec.rs', lines 52:0-59:1
++    Visibility: public -/
++def count
++  {T : Type _} {I : Type _} {Clause0_IntoIter : Type _}
++  (coreitertraitscollectIntoIteratorInst :
++  core.iter.traits.collect.IntoIterator I T Clause0_IntoIter) (xs : I) :
++  Result Std.U32
++  := do
++  let it ← coreitertraitscollectIntoIteratorInst.into_iter xs
++  count_loop coreitertraitscollectIntoIteratorInst it 0#u32
++
++/-- Trait declaration: [issue_1436_loop_generics_rec::Tr]
++    Source: 'tests/src/issue-1436-loop-generics-rec.rs', lines 61:0-63:1
++    Visibility: public -/
++structure Tr (Self : Type _) where
++  f : Self → Result Std.U32
++
++/-- Trait declaration: [issue_1436_loop_generics_rec::Wrap]
++    Source: 'tests/src/issue-1436-loop-generics-rec.rs', lines 66:0-66:24
++    Visibility: public -/
++structure Wrap (Self : Type _) (T : Type _) where
++  TrInst : Tr Self
++
++/-- [issue_1436_loop_generics_rec::loop_wrap]: loop 0:
++    Source: 'tests/src/issue-1436-loop-generics-rec.rs', lines 73:4-76:5
++    Visibility: public -/
++@[rust_loop]
++def loop_wrap_loop
++  {T : Type _} {W : Type _} (WrapInst : Wrap W T) (w : W) (n : Std.U32)
++  (acc : Std.U32) (i : Std.U32) :
++  Result Std.U32
++  := do
++  if i < n
++  then
++    let i1 ← WrapInst.TrInst.f w
++    let acc1 ← lift (core.num.U32.wrapping_add acc i1)
++    let i2 ← i + 1#u32
++    loop_wrap_loop WrapInst w n acc1 i2
++  else ok acc
++partial_fixpoint
++
++/-- [issue_1436_loop_generics_rec::loop_wrap]:
++    Source: 'tests/src/issue-1436-loop-generics-rec.rs', lines 70:0-78:1
++    Visibility: public -/
++@[reducible]
++def loop_wrap
++  {T : Type _} {W : Type _} (WrapInst : Wrap W T) (w : W) (n : Std.U32) :
++  Result Std.U32
++  := do
++  loop_wrap_loop WrapInst w n 0#u32 0#u32
++
++/-- Trait declaration: [issue_1436_loop_generics_rec::HasN]
++    Source: 'tests/src/issue-1436-loop-generics-rec.rs', lines 80:0-80:37
++    Visibility: public -/
++structure HasN (Self : Type _) (N : Std.Usize) where
++  TrInst : Tr Self
++
++/-- [issue_1436_loop_generics_rec::loop_const_generic]: loop 0:
++    Source: 'tests/src/issue-1436-loop-generics-rec.rs', lines 87:4-90:5
++    Visibility: public -/
++@[rust_loop]
++def loop_const_generic_loop
++  {X : Type _} {N : Std.Usize} (HasNInst : HasN X N) (x : X) (n : Std.U32)
++  (acc : Std.U32) (i : Std.U32) :
++  Result Std.U32
++  := do
++  if i < n
++  then
++    let i1 ← HasNInst.TrInst.f x
++    let acc1 ← lift (core.num.U32.wrapping_add acc i1)
++    let i2 ← i + 1#u32
++    loop_const_generic_loop HasNInst x n acc1 i2
++  else ok acc
++partial_fixpoint
++
++/-- [issue_1436_loop_generics_rec::loop_const_generic]:
++    Source: 'tests/src/issue-1436-loop-generics-rec.rs', lines 84:0-92:1
++    Visibility: public -/
++@[reducible]
++def loop_const_generic
++  {X : Type _} {N : Std.Usize} (HasNInst : HasN X N) (x : X) (n : Std.U32) :
++  Result Std.U32
++  := do
++  loop_const_generic_loop HasNInst x n 0#u32 0#u32
++
++/-- Trait declaration: [issue_1436_loop_generics_rec::Wrap2]
++    Source: 'tests/src/issue-1436-loop-generics-rec.rs', lines 95:0-95:30
++    Visibility: public -/
++structure Wrap2 (Self : Type _) (T : Type _) where
++  WrapInst : Wrap Self T
++
++/-- [issue_1436_loop_generics_rec::loop_wrap2]: loop 0:
++    Source: 'tests/src/issue-1436-loop-generics-rec.rs', lines 100:4-103:5
++    Visibility: public -/
++@[rust_loop]
++def loop_wrap2_loop
++  {T : Type _} {W : Type _} (Wrap2Inst : Wrap2 W T) (w : W) (n : Std.U32)
++  (acc : Std.U32) (i : Std.U32) :
++  Result Std.U32
++  := do
++  if i < n
++  then
++    let i1 ← Wrap2Inst.WrapInst.TrInst.f w
++    let acc1 ← lift (core.num.U32.wrapping_add acc i1)
++    let i2 ← i + 1#u32
++    loop_wrap2_loop Wrap2Inst w n acc1 i2
++  else ok acc
++partial_fixpoint
++
++/-- [issue_1436_loop_generics_rec::loop_wrap2]:
++    Source: 'tests/src/issue-1436-loop-generics-rec.rs', lines 97:0-105:1
++    Visibility: public -/
++@[reducible]
++def loop_wrap2
++  {T : Type _} {W : Type _} (Wrap2Inst : Wrap2 W T) (w : W) (n : Std.U32) :
++  Result Std.U32
++  := do
++  loop_wrap2_loop Wrap2Inst w n 0#u32 0#u32
++
++end issue_1436_loop_generics_rec
+diff --git a/tests/lean/NestedSharedBorrows.lean b/tests/lean/NestedSharedBorrows.lean
+index c5b1464a1674c6b56465dd8a5c8adf131bd1f221..cdce29fd3e1aa072259148d2e1d246d0f3c334ef 100644
+--- a/tests/lean/NestedSharedBorrows.lean
++++ b/tests/lean/NestedSharedBorrows.lean
+@@ -44,12 +44,12 @@ axiom
+   (T : Type _) : Option Never → Result (Option T)
+ 
+ /-- [nested_shared_borrows::do_option]:
+-    Source: 'tests/src/nested-shared-borrows.rs', lines 12:0-14:1 -/
++    Source: 'tests/src/nested-shared-borrows.rs', lines 15:0-17:1 -/
+ def do_option : Result (Option Unit) := do
+   ok (some ())
+ 
+ /-- [nested_shared_borrows::double_ref_option]:
+-    Source: 'tests/src/nested-shared-borrows.rs', lines 17:0-20:1
++    Source: 'tests/src/nested-shared-borrows.rs', lines 20:0-23:1
+     Visibility: public -/
+ def double_ref_option (_arg : Std.U8) : Result (Option Unit) := do
+   let o ← do_option
+@@ -61,12 +61,12 @@ def double_ref_option (_arg : Std.U8) : Result (Option Unit) := do
+       Unit residual
+ 
+ /-- [nested_shared_borrows::do_result]:
+-    Source: 'tests/src/nested-shared-borrows.rs', lines 22:0-24:1 -/
++    Source: 'tests/src/nested-shared-borrows.rs', lines 25:0-27:1 -/
+ def do_result : Result (core.result.Result Unit Unit) := do
+   ok (core.result.Result.Ok ())
+ 
+ /-- [nested_shared_borrows::double_ref_result]:
+-    Source: 'tests/src/nested-shared-borrows.rs', lines 27:0-30:1
++    Source: 'tests/src/nested-shared-borrows.rs', lines 30:0-33:1
+     Visibility: public -/
+ def double_ref_result
+   (_arg : Std.U8) : Result (core.result.Result Unit Unit) := do
+@@ -80,18 +80,18 @@ def double_ref_result
+       Unit (core.convert.FromSame Unit) residual
+ 
+ /-- [nested_shared_borrows::S]
+-    Source: 'tests/src/nested-shared-borrows.rs', lines 36:0-38:1
++    Source: 'tests/src/nested-shared-borrows.rs', lines 39:0-41:1
+     Visibility: public -/
+ structure S where
+   r : Std.U8
+ 
+ /-- [nested_shared_borrows::f]:
+-    Source: 'tests/src/nested-shared-borrows.rs', lines 40:0-42:1 -/
++    Source: 'tests/src/nested-shared-borrows.rs', lines 43:0-45:1 -/
+ def f (x : Std.U8) : Result (core.result.Result Std.U8 Unit) := do
+   ok (core.result.Result.Ok x)
+ 
+ /-- [nested_shared_borrows::{nested_shared_borrows::S<'a>}::method_try]:
+-    Source: 'tests/src/nested-shared-borrows.rs', lines 47:4-50:5
++    Source: 'tests/src/nested-shared-borrows.rs', lines 50:4-53:5
+     Visibility: public -/
+ def S.method_try
+   (self : S) (x : Std.U8) : Result (core.result.Result Std.U8 Unit) := do
+@@ -104,4 +104,53 @@ def S.method_try
+     core.result.Result.Insts.CoreOpsTry_traitFromResidualResult.from_residual
+       Std.U8 (core.convert.FromSame Unit) residual
+ 
++/-- [nested_shared_borrows::shared_reborrow_same_tuple]:
++    Source: 'tests/src/nested-shared-borrows.rs', lines 57:0-66:1
++    Visibility: public -/
++def shared_reborrow_same_tuple : Result Unit := do
++  massert (2#i32 = 2#i32)
++  massert (1#i32 = 1#i32)
++  massert (1#i32 = 1#i32)
++
++/- Unit test for [nested_shared_borrows::shared_reborrow_same_tuple] -/
++#guard (shared_reborrow_same_tuple).reducesTo ()
++
++/-- [nested_shared_borrows::shared_reborrow_same_box]:
++    Source: 'tests/src/nested-shared-borrows.rs', lines 69:0-77:1
++    Visibility: public -/
++def shared_reborrow_same_box : Result Unit := do
++  massert (2#i32 = 2#i32)
++  massert (1#i32 = 1#i32)
++
++/- Unit test for [nested_shared_borrows::shared_reborrow_same_box] -/
++#guard (shared_reborrow_same_box).reducesTo ()
++
++/-- [nested_shared_borrows::shared_reborrow_inside_mut_borrow]:
++    Source: 'tests/src/nested-shared-borrows.rs', lines 80:0-91:1
++    Visibility: public -/
++def shared_reborrow_inside_mut_borrow : Result Unit := do
++  massert (2#i32 = 2#i32)
++  massert (1#i32 = 1#i32)
++
++/- Unit test for [nested_shared_borrows::shared_reborrow_inside_mut_borrow] -/
++#guard (shared_reborrow_inside_mut_borrow).reducesTo ()
++
++/-- [nested_shared_borrows::shared_reborrow_from_input]:
++    Source: 'tests/src/nested-shared-borrows.rs', lines 93:0-95:1
++    Visibility: public -/
++def shared_reborrow_from_input
++  (x : ((Std.U32 × Std.U32) × (Std.U32 × Std.U32))) : Result Std.U32 := do
++  let (_, (_, i)) := x
++  ok i
++
++/-- [nested_shared_borrows::shared_reborrow_from_input_test]:
++    Source: 'tests/src/nested-shared-borrows.rs', lines 98:0-104:1
++    Visibility: public -/
++def shared_reborrow_from_input_test : Result Unit := do
++  let r ← shared_reborrow_from_input ((1#u32, 2#u32), (1#u32, 2#u32))
++  massert (r = 2#u32)
++
++/- Unit test for [nested_shared_borrows::shared_reborrow_from_input_test] -/
++#guard (shared_reborrow_from_input_test).reducesTo ()
++
+ end nested_shared_borrows
+diff --git a/tests/lean/lakefile.lean b/tests/lean/lakefile.lean
+index 0f3d9fb4c9ce41f2248738ef6778779992185989..ceced102a13170a0f01912fe32f80c0772dad5f5 100644
+--- a/tests/lean/lakefile.lean
++++ b/tests/lean/lakefile.lean
+@@ -55,6 +55,8 @@ package «tests» {}
+ @[default_target] lean_lib Issue1250AnonymousConst
+ @[default_target] lean_lib Issue1260EliminateSharedLoans
+ @[default_target] lean_lib Issue134LoopSharedBorrows
++@[default_target] lean_lib Issue1436LoopGenerics
++@[default_target] lean_lib Issue1436LoopGenericsRec
+ @[default_target] lean_lib Issue194RecursiveStructProjector
+ @[default_target] lean_lib Issue270LoopList
+ @[default_target] lean_lib Issue440TypeError
+diff --git a/tests/src/borrow-check-negative.borrow-check.out b/tests/src/borrow-check-negative.borrow-check.out
+index a12c70ec90795ebfabab20a201d52fd258ac3d9c..e5d535c569931af6c42593c66ff1dcdd8689b9b8 100644
+--- a/tests/src/borrow-check-negative.borrow-check.out
++++ b/tests/src/borrow-check-negative.borrow-check.out
+@@ -1,6 +1,6 @@
+ [[91mError[39m] Can not apply a projection to the ⊥ value
+ Source: 'tests/src/borrow-check-negative.rs', lines 25:12-25:14
+-Compiler source: interp/InterpPaths.ml, line 227
++Compiler source: interp/InterpPaths.ml, line 253
+ [[93mWarn[39m ] Could not borrow-check the body of function 'borrow_check_negative::choose_test because of previous error
+ Name pattern: 'borrow_check_negative::choose_test'
+ Definition span: 'tests/src/borrow-check-negative.rs', lines 16:0-26:1
+@@ -18,7 +18,7 @@ Compiler source: interp/Interp.ml, line 629
+ 
+ [[91mError[39m] Can not apply a projection to the ⊥ value
+ Source: 'tests/src/borrow-check-negative.rs', lines 42:4-42:11
+-Compiler source: interp/InterpPaths.ml, line 227
++Compiler source: interp/InterpPaths.ml, line 253
+ [[93mWarn[39m ] Could not borrow-check the body of function 'borrow_check_negative::test_mut1 because of previous error
+ Name pattern: 'borrow_check_negative::test_mut1'
+ Definition span: 'tests/src/borrow-check-negative.rs', lines 36:0-43:1
+@@ -27,7 +27,7 @@ Compiler source: interp/Interp.ml, line 629
+ 
+ [[91mError[39m] Can not apply a projection to the ⊥ value
+ Source: 'tests/src/borrow-check-negative.rs', lines 51:12-51:14
+-Compiler source: interp/InterpPaths.ml, line 227
++Compiler source: interp/InterpPaths.ml, line 253
+ [[93mWarn[39m ] Could not borrow-check the body of function 'borrow_check_negative::test_mut2 because of previous error
+ Name pattern: 'borrow_check_negative::test_mut2'
+ Definition span: 'tests/src/borrow-check-negative.rs', lines 46:0-52:1
+@@ -36,7 +36,7 @@ Compiler source: interp/Interp.ml, line 629
+ 
+ [[91mError[39m] Can not apply a projection to the ⊥ value
+ Source: 'tests/src/borrow-check-negative.rs', lines 65:12-65:17
+-Compiler source: interp/InterpPaths.ml, line 227
++Compiler source: interp/InterpPaths.ml, line 253
+ [[93mWarn[39m ] Could not borrow-check the body of function 'borrow_check_negative::refs_test1 because of previous error
+ Name pattern: 'borrow_check_negative::refs_test1'
+ Definition span: 'tests/src/borrow-check-negative.rs', lines 59:0-66:1
+@@ -45,7 +45,7 @@ Compiler source: interp/Interp.ml, line 629
+ 
+ [[91mError[39m] Can not apply a projection to the ⊥ value
+ Source: 'tests/src/borrow-check-negative.rs', lines 80:12-80:17
+-Compiler source: interp/InterpPaths.ml, line 227
++Compiler source: interp/InterpPaths.ml, line 253
+ [[93mWarn[39m ] Could not borrow-check the body of function 'borrow_check_negative::refs_test2 because of previous error
+ Name pattern: 'borrow_check_negative::refs_test2'
+ Definition span: 'tests/src/borrow-check-negative.rs', lines 68:0-81:1
+@@ -54,7 +54,7 @@ Compiler source: interp/Interp.ml, line 629
+ 
+ [[91mError[39m] Can not apply a projection to the ⊥ value
+ Source: 'tests/src/borrow-check-negative.rs', lines 91:12-91:15
+-Compiler source: interp/InterpPaths.ml, line 227
++Compiler source: interp/InterpPaths.ml, line 253
+ [[93mWarn[39m ] Could not borrow-check the body of function 'borrow_check_negative::test_box1 because of previous error
+ Name pattern: 'borrow_check_negative::test_box1'
+ Definition span: 'tests/src/borrow-check-negative.rs', lines 83:0-92:1
+diff --git a/tests/src/issue-1436-loop-generics-rec.rs b/tests/src/issue-1436-loop-generics-rec.rs
+new file mode 100644
+index 0000000000000000000000000000000000000000..34fbc6a7abd6efeedfe47b6aaaa52d6b5026c23a
+--- /dev/null
++++ b/tests/src/issue-1436-loop-generics-rec.rs
+@@ -0,0 +1,105 @@
++//@ [!lean] skip
++//@ [lean] aeneas-args=-loops-to-rec
++//! Regression test for issue https://github.com/AeneasVerif/aeneas/issues/1436
++//!
++//! The functions introduced for loops are parameterized only by the generic
++//! parameters used in the loop. When a trait clause is used in a loop, the
++//! parameters appearing in that clause (e.g., the type `I` in the clause
++//! `I: IntoIterator<Item = u32>`, translated to
++//! `IntoIterator I u32 Clause0_IntoIter`) must be kept even if they are not
++//! otherwise used in the loop.
++
++/// `while let` loop over `I::IntoIter`: `I` only appears through the clause.
++pub fn sum<I: IntoIterator<Item = u32>>(xs: I) -> u32 {
++    let mut it = xs.into_iter();
++    let mut acc = 0u32;
++    while let Some(x) = it.next() {
++        acc = acc.wrapping_add(x);
++    }
++    acc
++}
++
++/// `for` loop over an `impl IntoIterator` (the example from the issue).
++pub fn rle(bytes: impl IntoIterator<Item = u8>) -> Vec<u8> {
++    let mut v = Vec::new();
++    let mut count = 1;
++    let mut iter = bytes.into_iter();
++    let Some(mut current) = iter.next() else {
++        return v;
++    };
++    for next in iter {
++        if next == current {
++            if count == 255 {
++                v.push(count);
++                v.push(current);
++                count = 1;
++            } else {
++                count += 1;
++            }
++        } else {
++            v.push(count);
++            v.push(current);
++            count = 1;
++            current = next;
++        }
++    }
++    v.push(count);
++    v.push(current);
++    v
++}
++
++/// The item type is itself a generic parameter.
++pub fn count<T, I: IntoIterator<Item = T>>(xs: I) -> u32 {
++    let mut it = xs.into_iter();
++    let mut n = 0u32;
++    while let Some(_) = it.next() {
++        n = n.wrapping_add(1);
++    }
++    n
++}
++
++pub trait Tr {
++    fn f(&self) -> u32;
++}
++
++/// A trait whose only use is to provide its parent clause `Self: Tr`.
++pub trait Wrap<T>: Tr {}
++
++/// `T` only appears through the clause `W: Wrap<T>`, and this clause is only
++/// used through its parent clause `W: Tr`.
++pub fn loop_wrap<T, W: Wrap<T>>(w: &W, n: u32) -> u32 {
++    let mut acc = 0u32;
++    let mut i = 0;
++    while i < n {
++        acc = acc.wrapping_add(w.f());
++        i += 1;
++    }
++    acc
++}
++
++pub trait HasN<const N: usize>: Tr {}
++
++/// The const generic `N` only appears through the clause `X: HasN<N>`, and
++/// this clause is only used through its parent clause `X: Tr`.
++pub fn loop_const_generic<const N: usize, X: HasN<N>>(x: &X, n: u32) -> u32 {
++    let mut acc = 0u32;
++    let mut i = 0;
++    while i < n {
++        acc = acc.wrapping_add(x.f());
++        i += 1;
++    }
++    acc
++}
++
++/// Same as [loop_wrap], but with nested parent clauses.
++pub trait Wrap2<T>: Wrap<T> {}
++
++pub fn loop_wrap2<T, W: Wrap2<T>>(w: &W, n: u32) -> u32 {
++    let mut acc = 0u32;
++    let mut i = 0;
++    while i < n {
++        acc = acc.wrapping_add(w.f());
++        i += 1;
++    }
++    acc
++}
+diff --git a/tests/src/issue-1436-loop-generics.rs b/tests/src/issue-1436-loop-generics.rs
+new file mode 100644
+index 0000000000000000000000000000000000000000..3133a3563d0ebdfe469e02456e6ce0f985ad233d
+--- /dev/null
++++ b/tests/src/issue-1436-loop-generics.rs
+@@ -0,0 +1,104 @@
++//@ [!lean] skip
++//! Regression test for issue https://github.com/AeneasVerif/aeneas/issues/1436
++//!
++//! The functions introduced for loops are parameterized only by the generic
++//! parameters used in the loop. When a trait clause is used in a loop, the
++//! parameters appearing in that clause (e.g., the type `I` in the clause
++//! `I: IntoIterator<Item = u32>`, translated to
++//! `IntoIterator I u32 Clause0_IntoIter`) must be kept even if they are not
++//! otherwise used in the loop.
++
++/// `while let` loop over `I::IntoIter`: `I` only appears through the clause.
++pub fn sum<I: IntoIterator<Item = u32>>(xs: I) -> u32 {
++    let mut it = xs.into_iter();
++    let mut acc = 0u32;
++    while let Some(x) = it.next() {
++        acc = acc.wrapping_add(x);
++    }
++    acc
++}
++
++/// `for` loop over an `impl IntoIterator` (the example from the issue).
++pub fn rle(bytes: impl IntoIterator<Item = u8>) -> Vec<u8> {
++    let mut v = Vec::new();
++    let mut count = 1;
++    let mut iter = bytes.into_iter();
++    let Some(mut current) = iter.next() else {
++        return v;
++    };
++    for next in iter {
++        if next == current {
++            if count == 255 {
++                v.push(count);
++                v.push(current);
++                count = 1;
++            } else {
++                count += 1;
++            }
++        } else {
++            v.push(count);
++            v.push(current);
++            count = 1;
++            current = next;
++        }
++    }
++    v.push(count);
++    v.push(current);
++    v
++}
++
++/// The item type is itself a generic parameter.
++pub fn count<T, I: IntoIterator<Item = T>>(xs: I) -> u32 {
++    let mut it = xs.into_iter();
++    let mut n = 0u32;
++    while let Some(_) = it.next() {
++        n = n.wrapping_add(1);
++    }
++    n
++}
++
++pub trait Tr {
++    fn f(&self) -> u32;
++}
++
++/// A trait whose only use is to provide its parent clause `Self: Tr`.
++pub trait Wrap<T>: Tr {}
++
++/// `T` only appears through the clause `W: Wrap<T>`, and this clause is only
++/// used through its parent clause `W: Tr`.
++pub fn loop_wrap<T, W: Wrap<T>>(w: &W, n: u32) -> u32 {
++    let mut acc = 0u32;
++    let mut i = 0;
++    while i < n {
++        acc = acc.wrapping_add(w.f());
++        i += 1;
++    }
++    acc
++}
++
++pub trait HasN<const N: usize>: Tr {}
++
++/// The const generic `N` only appears through the clause `X: HasN<N>`, and
++/// this clause is only used through its parent clause `X: Tr`.
++pub fn loop_const_generic<const N: usize, X: HasN<N>>(x: &X, n: u32) -> u32 {
++    let mut acc = 0u32;
++    let mut i = 0;
++    while i < n {
++        acc = acc.wrapping_add(x.f());
++        i += 1;
++    }
++    acc
++}
++
++/// Same as [loop_wrap], but with nested parent clauses.
++pub trait Wrap2<T>: Wrap<T> {}
++
++pub fn loop_wrap2<T, W: Wrap2<T>>(w: &W, n: u32) -> u32 {
++    let mut acc = 0u32;
++    let mut i = 0;
++    while i < n {
++        acc = acc.wrapping_add(w.f());
++        i += 1;
++    }
++    acc
++}
+diff --git a/tests/src/nested-shared-borrows.rs b/tests/src/nested-shared-borrows.rs
+index 90bfb04cb5333cf67ffd269ff95d5adc02f2a513..4e920d2dde4d97fca0b0ec9c94377c30dc68b1b1 100644
+--- a/tests/src/nested-shared-borrows.rs
++++ b/tests/src/nested-shared-borrows.rs
+@@ -4,6 +4,9 @@
+ //! Regression tests for:
+ //! - https://github.com/AeneasVerif/aeneas/issues/1099
+ //! - https://github.com/AeneasVerif/aeneas/issues/1170
++//! - https://github.com/AeneasVerif/aeneas/issues/1393
++#![feature(register_tool)]
++#![register_tool(verify)]
+ 
+ // ============================================================
+ // Issue #1099: `&&u8` (shared borrow of a shared borrow) + `?`
+@@ -49,3 +52,53 @@ impl<'a> S<'a> {
+         Ok(y)
+     }
+ }
++
++#[verify::test]
++pub fn shared_reborrow_same_tuple() {
++    let y = (0, 0);
++    let mut x = ((1, 2), &y);
++    x.1 = &x.0;
++    let xr = &x;
++    let x11r = &(*(*xr).1).1;
++    assert!(*x11r == 2);
++    assert!(xr.0 .0 == 1);
++    assert!(xr.1 .0 == 1);
++}
++
++#[verify::test]
++pub fn shared_reborrow_same_box() {
++    let y = (0, 0);
++    let mut x = Box::new(((1, 2), &y));
++    x.1 = &x.0;
++    let xr = &x;
++    let x11r = &(*(*xr).1).1;
++    assert!(*x11r == 2);
++    assert!(xr.0 .0 == 1);
++}
++
++#[verify::test]
++pub fn shared_reborrow_inside_mut_borrow() {
++    let y = (0, 0);
++    let mut x = ((1, 2), &y);
++    let xm = &mut x;
++    xm.1 = &xm.0;
++    let xr = &xm;
++    let x11r = &(*(**xr).1).1;
++    assert!(*x11r == 2);
++    assert!(xr.0 .0 == 1);
++    // Break the self-reference before ending the enclosing mutable borrow.
++    xm.1 = &y;
++}
++
++pub fn shared_reborrow_from_input<'a>(x: &'a ((u32, u32), &'a (u32, u32))) -> &'a u32 {
++    &(*x.1).1
++}
++
++#[verify::test]
++pub fn shared_reborrow_from_input_test() {
++    let y = (0, 0);
++    let mut x = ((1, 2), &y);
++    x.1 = &x.0;
++    let r = shared_reborrow_from_input(&x);
++    assert!(*r == 2);
++}
+diff --git a/tests/src/raw_pointers.lean.out b/tests/src/raw_pointers.lean.out
+index f02b6e2e192feaaccd77d64245b527bb208b49e9..ce61b7ab00b0be553b6c408048917d0d3d621882 100644
+--- a/tests/src/raw_pointers.lean.out
++++ b/tests/src/raw_pointers.lean.out
+@@ -1,5 +1,5 @@
+ [[92mInfo[39m ] Imported: tests/llbc/raw_pointers.llbc
+ [[91mError[39m] Aeneas does not yet support dereferencing raw pointers.
+ Source: 'tests/src/raw_pointers.rs', lines 7:8-7:19
+-Compiler source: interp/InterpPaths.ml, line 112
++Compiler source: interp/InterpPaths.ml, line 197
+ 

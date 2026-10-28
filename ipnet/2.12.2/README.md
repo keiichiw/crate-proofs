@@ -60,3 +60,8 @@ Use [proofs-rs PR #82](https://github.com/proofs-rs/proofs-rs/pull/82), commit
 `cargo build --locked --manifest-path cli/Cargo.toml`, then pass the absolute
 `cli/target/debug/cargo-proofs` path as `CARGO_PROOFS_BIN`.
 The globally installed CLI may not contain these features.
+
+The publication configuration uses registered Aeneas base
+`be86ab0f1989d04944292b345b24c435be3ad10a` plus a cumulative patch reconstructing
+the unchanged effective source tree. See the migration validation for this identity
+change; the Aeneas translator is not executed by recording.

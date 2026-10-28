@@ -22,3 +22,14 @@ Detailed logs, observed tool provenance and the receipt remain local under
 .work/standard-cli-migration/. Historical .work directories and unrelated untracked
 files were preserved. The upstream snapshot retains original whitespace and ignore
 rules; its Cargo.lock is included explicitly despite the upstream ignore rule.
+
+## Registered-base cumulative patch
+
+For publication preparation, the official base is now registered revision
+be86ab0f1989d04944292b345b24c435be3ad10a. The cumulative patch also preserves
+the official changes from that revision to the previously selected 8e62dc3 base.
+Independent application to a fresh official checkout reconstructs the exact same
+full Git tree, 818b384f6f3d2c82f3d39a2205d3f443add1fc84. The effective Aeneas sources,
+Lean models, contracts and proofs are unchanged. Charon's base and patch are unchanged.
+Earlier validation retains its original input identities; a new CLI recording is
+required for the new base/patch identity. No extraction rerun is claimed.
