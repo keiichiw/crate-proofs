@@ -1,0 +1,112 @@
+{
+  "status": "blocked under pinned unchanged compiler and source; no decoder correctness claim",
+  "apis": [
+    "VarInt::decode_var for u8",
+    "VarInt::decode_var for u16",
+    "VarInt::decode_var for u32",
+    "VarInt::decode_var for u64",
+    "VarInt::decode_var for usize",
+    "VarInt::decode_var for i8",
+    "VarInt::decode_var for i16",
+    "VarInt::decode_var for i32",
+    "VarInt::decode_var for i64",
+    "VarInt::decode_var for isize"
+  ],
+  "rust_span": "upstream/src/varint.rs:137-149",
+  "precise_failure": {
+    "emitter": "Aeneas src/llbc/ValuesUtils.ml:43 mk_aignored",
+    "caller": "src/interp/InterpMatchCtxs.ml:1255 match_mut_loans",
+    "cause": "joins mutable loans for Iter<erased,u8>; passes ety with erased region to rty-only ignored abstract value constructor"
+  },
+  "trials": [
+    {
+      "directory": "work/broad01",
+      "options": [],
+      "result": "u64 decode loop join fails; additional standard externals in broad output",
+      "accepted": false,
+      "logs_sha256": {
+        "work/broad01/aeneas.log": "7293787b9b978ba985148a5456d396403fd92a3eab164a05f5a5e79338f32131",
+        "work/broad01/charon.log": "4f3af5841b81a288f86df4b29a20229beac3263b8382a1b5412ece1245082765"
+      }
+    },
+    {
+      "directory": "work/decode-opt01",
+      "options": [
+        "--mir",
+        "optimized"
+      ],
+      "result": "mk_aignored region-type assertion in mutable iterator loan join",
+      "accepted": false,
+      "logs_sha256": {
+        "work/decode-opt01/aeneas-diagnostic.log": "e4a247ce4d0c13493cd1aec84c4e41343e548b04beef25acf649d0d5a00acabd",
+        "work/decode-opt01/aeneas-loop-debug.log": "d2a3c0d308ad56d80dd18c27d3a3c20045440b6073b0b0b28553bb6d4b6b9c7e",
+        "work/decode-opt01/aeneas-norec.log": "75f033b3ab6c0b74e29383b14316d9b6587d5b980e44cca0e49bf21e0e9f4bbc",
+        "work/decode-opt01/aeneas.log": "e71eecf6c943e0e6768775ebef0de169c13c8c47e35e458e95db4a1eb07d8f05",
+        "work/decode-opt01/charon.log": "8566f77607ff032a80d220494277b67773f8ded4535936e64f91ed11094bc4f2"
+      }
+    },
+    {
+      "directory": "work/decode-built01",
+      "options": [
+        "--mir",
+        "built"
+      ],
+      "result": "same region-type assertion",
+      "accepted": false,
+      "logs_sha256": {
+        "work/decode-built01/aeneas.log": "f386ca6bc2e9594170112abd992b368ecf5762bb5286fb439af7c0234946414e",
+        "work/decode-built01/charon.log": "7e02b057f72ae42d199c51ba601f5b8759c1ff40132d9b7f5e2ca2e661a2b240"
+      }
+    },
+    {
+      "directory": "work/decode-precise01",
+      "options": [
+        "--precise-drops"
+      ],
+      "result": "same region-type assertion",
+      "accepted": false,
+      "logs_sha256": {
+        "work/decode-precise01/aeneas.log": "6e55972e6d2d664952b7844bd4f6b6e29501b24dcf66d550b1d1892cd983a562",
+        "work/decode-precise01/charon.log": "6e049b0d61cfeec2b307ea768a555f026ea526850aceeae2f893b1c47444a5cd"
+      }
+    },
+    {
+      "directory": "work/decode-iter01",
+      "options": [
+        "--include",
+        "core::slice::iter",
+        "--include",
+        "core::slice::_::iter",
+        "--include",
+        "core::ops::bit",
+        "--include",
+        "core::iter::traits::collect"
+      ],
+      "result": "unsupported standard raw-pointer transmute/cast plus same region-type assertion",
+      "accepted": false,
+      "logs_sha256": {
+        "work/decode-iter01/aeneas.log": "7e71fde1706e1c193e12dd973d6cb46191d3e5f3c1a9bf98a1921d47e3928fb0",
+        "work/decode-iter01/charon.log": "c980ba8ed723c128c1f1a4ffcc67bb107b99b741b0202e901d607c893c948fbb"
+      }
+    },
+    {
+      "directory": "work/decode-nodup01",
+      "options": [
+        "--no-code-duplication"
+      ],
+      "result": "unsupported continue to outer loops",
+      "accepted": false,
+      "logs_sha256": {
+        "work/decode-nodup01/aeneas.log": "1936ac1121f8d6029bfd90e24b7c1a317a7ad6c71fa733517a7964f628c4f10b",
+        "work/decode-nodup01/charon.log": "4719c6ca3649fed4766b7a24e0fa48c5173d50fe8b86b705ee25788e49f45390"
+      }
+    }
+  ],
+  "additional_aeneas_options_tried": [
+    "-loops-no-rec",
+    "-print-error-emitters",
+    "-print-error-diagnostics",
+    "-log-debug InterpLoops,Errors -abort-on-error"
+  ],
+  "policy": "failed partial output retained in ignored work only; no generated bodies, upstream or compiler changed"
+}

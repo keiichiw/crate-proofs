@@ -1,0 +1,55 @@
+name = "integer-encoding-proofs"
+defaultTargets = ["IntegerProofs"]
+[[lean_lib]]
+name = "IntegerCore"
+srcDir = "Generated/aarch64-apple-darwin"
+[[lean_lib]]
+name = "IntegerProofs"
+[[require]]
+name = "aeneas"
+git = "https://github.com/AeneasVerif/aeneas"
+rev = "be86ab0f1989d04944292b345b24c435be3ad10a"
+subDir = "backends/lean"
+[[lean_lib]]
+name = "Zigzag"
+[[lean_lib]]
+name = "VarintSpec"
+[[lean_lib]]
+name = "RequiredSpace"
+[[lean_lib]]
+name = "EncodeVar"
+
+[[lean_lib]]
+name = "ZigzagDecode"
+
+[[lean_lib]]
+name = "IntegerFixedDirect"
+srcDir = "Generated/aarch64-apple-darwin"
+globs = ["IntegerFixedDirect.Types", "IntegerFixedDirect.Funs"]
+
+[[lean_lib]]
+name = "IntegerFixedDirectModels"
+globs = ["IntegerFixedDirect.FunsExternal"]
+
+[[lean_lib]]
+name = "FixedSpec"
+
+[[lean_lib]]
+name = "FixedProofs"
+[[lean_lib]]
+name = "ZigzagRoundtrip"
+[[lean_lib]]
+name = "IntegerVec"
+srcDir = "Generated/aarch64-apple-darwin"
+[[lean_lib]]
+name = "VarintVec"
+
+[[lean_lib]]
+name = "IntegerFixedVec"
+srcDir = "Generated/aarch64-apple-darwin"
+
+[[lean_lib]]
+name = "FixedVec"
+
+[[lean_lib]]
+name = "EncodeErrors"

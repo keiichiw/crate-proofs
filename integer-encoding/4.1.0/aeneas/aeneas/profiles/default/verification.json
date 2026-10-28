@@ -1,0 +1,65 @@
+{
+  "additional_checks": [
+    [
+      "python3",
+      "scripts/check-boundaries.py"
+    ],
+    [
+      "python3",
+      "scripts/inventory.py",
+      "--check"
+    ],
+    [
+      "python3",
+      "scripts/coverage.py",
+      "--check"
+    ],
+    [
+      "python3",
+      "scripts/extract-fixed-direct.py"
+    ]
+  ],
+  "cargo_root": ".",
+  "extractions": [
+    {
+      "config": "extraction.json",
+      "cwd": ".",
+      "models": {
+        "IntegerCore.lean": "proofs/Generated/@TARGET@/IntegerCore.lean"
+      }
+    },
+    {
+      "config": "aeneas-vec.json",
+      "cwd": ".",
+      "models": {
+        "IntegerVec.lean": "proofs/Generated/@TARGET@/IntegerVec.lean"
+      }
+    },
+    {
+      "config": "aeneas-fixed-vec.json",
+      "cwd": ".",
+      "models": {
+        "IntegerFixedVec.lean": "proofs/Generated/@TARGET@/IntegerFixedVec.lean"
+      }
+    }
+  ],
+  "inventory": "theorems.json",
+  "lean_dir": "proofs",
+  "native": [],
+  "post_checks": [
+    [
+      "python3",
+      "scripts/native-managed.py"
+    ],
+    [
+      "python3",
+      "scripts/check-boundaries.py"
+    ]
+  ],
+  "report": "proofs.toml",
+  "schema_version": 1,
+  "supported_targets": [
+    "aarch64-apple-darwin",
+    "x86_64-unknown-linux-gnu"
+  ]
+}

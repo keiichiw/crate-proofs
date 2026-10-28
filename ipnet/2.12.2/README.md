@@ -50,3 +50,13 @@ extraction and native verification workflow. Historical results retain their ori
 input identities; they are not acceptance evidence for this new layout.
 
 See [standard CLI migration validation](aeneas/profiles/default/standard-cli-migration.md) for the new layout checks and recording boundary.
+
+### CLI revision for recording
+
+Use [proofs-rs PR #82](https://github.com/proofs-rs/proofs-rs/pull/82), commit
+`8c98569c8be379007d0649816d35de260ca43822` from
+`https://github.com/keiichiw/proofs-rs.git` (branch
+`codex/aeneas-charon-api-mappings`). In a checkout of that commit, build with
+`cargo build --locked --manifest-path cli/Cargo.toml`, then pass the absolute
+`cli/target/debug/cargo-proofs` path as `CARGO_PROOFS_BIN`.
+The globally installed CLI may not contain these features.

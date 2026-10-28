@@ -1,0 +1,68 @@
+{
+  "entries": [
+    "{impl crate::fixed::FixedInt for _}::encode_fixed",
+    "{impl crate::fixed::FixedInt for _}::decode_fixed",
+    "{impl crate::fixed::FixedInt for _}::encode_fixed_light",
+    "{impl crate::fixed::FixedInt for _}::switch_endianness"
+  ],
+  "namespace": "IntegerFixedDirect",
+  "llbc": "integer_fixed_direct.llbc",
+  "model_files": {
+    "Types.lean": [],
+    "Funs.lean": [
+      "Usize.Insts.Integer_encodingFixedFixedIntArrayU88.encode_fixed",
+      "Usize.Insts.Integer_encodingFixedFixedIntArrayU88.decode_fixed",
+      "Usize.Insts.Integer_encodingFixedFixedIntArrayU88.encode_fixed_light",
+      "Usize.Insts.Integer_encodingFixedFixedIntArrayU88.switch_endianness",
+      "U64.Insts.Integer_encodingFixedFixedIntArrayU88.encode_fixed",
+      "U64.Insts.Integer_encodingFixedFixedIntArrayU88.decode_fixed",
+      "U64.Insts.Integer_encodingFixedFixedIntArrayU88.encode_fixed_light",
+      "U64.Insts.Integer_encodingFixedFixedIntArrayU88.switch_endianness",
+      "U32.Insts.Integer_encodingFixedFixedIntArrayU84.encode_fixed",
+      "U32.Insts.Integer_encodingFixedFixedIntArrayU84.decode_fixed",
+      "U32.Insts.Integer_encodingFixedFixedIntArrayU84.encode_fixed_light",
+      "U32.Insts.Integer_encodingFixedFixedIntArrayU84.switch_endianness",
+      "U16.Insts.Integer_encodingFixedFixedIntArrayU82.encode_fixed",
+      "U16.Insts.Integer_encodingFixedFixedIntArrayU82.decode_fixed",
+      "U16.Insts.Integer_encodingFixedFixedIntArrayU82.encode_fixed_light",
+      "U16.Insts.Integer_encodingFixedFixedIntArrayU82.switch_endianness",
+      "U8.Insts.Integer_encodingFixedFixedIntArrayU81.encode_fixed",
+      "U8.Insts.Integer_encodingFixedFixedIntArrayU81.decode_fixed",
+      "U8.Insts.Integer_encodingFixedFixedIntArrayU81.encode_fixed_light",
+      "U8.Insts.Integer_encodingFixedFixedIntArrayU81.switch_endianness",
+      "Isize.Insts.Integer_encodingFixedFixedIntArrayU88.encode_fixed",
+      "Isize.Insts.Integer_encodingFixedFixedIntArrayU88.decode_fixed",
+      "Isize.Insts.Integer_encodingFixedFixedIntArrayU88.encode_fixed_light",
+      "Isize.Insts.Integer_encodingFixedFixedIntArrayU88.switch_endianness",
+      "I64.Insts.Integer_encodingFixedFixedIntArrayU88.encode_fixed",
+      "I64.Insts.Integer_encodingFixedFixedIntArrayU88.decode_fixed",
+      "I64.Insts.Integer_encodingFixedFixedIntArrayU88.encode_fixed_light",
+      "I64.Insts.Integer_encodingFixedFixedIntArrayU88.switch_endianness",
+      "I32.Insts.Integer_encodingFixedFixedIntArrayU84.encode_fixed",
+      "I32.Insts.Integer_encodingFixedFixedIntArrayU84.decode_fixed",
+      "I32.Insts.Integer_encodingFixedFixedIntArrayU84.encode_fixed_light",
+      "I32.Insts.Integer_encodingFixedFixedIntArrayU84.switch_endianness",
+      "I16.Insts.Integer_encodingFixedFixedIntArrayU82.encode_fixed",
+      "I16.Insts.Integer_encodingFixedFixedIntArrayU82.decode_fixed",
+      "I16.Insts.Integer_encodingFixedFixedIntArrayU82.encode_fixed_light",
+      "I16.Insts.Integer_encodingFixedFixedIntArrayU82.switch_endianness",
+      "I8.Insts.Integer_encodingFixedFixedIntArrayU81.encode_fixed",
+      "I8.Insts.Integer_encodingFixedFixedIntArrayU81.decode_fixed",
+      "I8.Insts.Integer_encodingFixedFixedIntArrayU81.encode_fixed_light",
+      "I8.Insts.Integer_encodingFixedFixedIntArrayU81.switch_endianness"
+    ]
+  },
+  "external_standard_boundaries": [
+    "core.mem.size_of",
+    "core.slice.Slice.clone_from_slice"
+  ],
+  "pointer_standard_aliases": [
+    "core.num.Usize.to_le_bytes",
+    "core.num.Usize.to_be_bytes",
+    "core.num.Usize.from_le_bytes",
+    "core.num.Isize.to_le_bytes",
+    "core.num.Isize.to_be_bytes",
+    "core.num.Isize.from_le_bytes"
+  ],
+  "scope": "all ten builtin scalar FixedInt implementations; pointer-sized contracts require System.Platform.numBits=64; no custom-type layout or clone semantics claim"
+}

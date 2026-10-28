@@ -1,0 +1,1096 @@
+{
+  "acceptance_basis": "Original archived inputs; packaging does not rerun verification.",
+  "archive_descriptor": "archive.json",
+  "archive_sha256": "c86b20aad9594488618da496d01abecac9892c86c7606bf84fcc7bf5639bd5b0",
+  "audit": {
+    "allowed_axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "checked": [
+      {
+        "kind": "public-error-contract",
+        "module": "EncodeErrors",
+        "name": "IntegerEncodingEncodeErrors.u64_too_small",
+        "precondition": "destination length < canonical minimal varint length; extracted debug-assertion profile"
+      },
+      {
+        "kind": "public-error-contract",
+        "module": "EncodeErrors",
+        "name": "IntegerEncodingEncodeErrors.i64_too_small",
+        "precondition": "destination length < canonical minimal varint length; extracted debug-assertion profile"
+      },
+      {
+        "kind": "public-error-contract",
+        "module": "EncodeErrors",
+        "name": "IntegerEncodingEncodeErrors.u8_too_small",
+        "precondition": "destination length < canonical minimal varint length; extracted debug-assertion profile"
+      },
+      {
+        "kind": "public-error-contract",
+        "module": "EncodeErrors",
+        "name": "IntegerEncodingEncodeErrors.u16_too_small",
+        "precondition": "destination length < canonical minimal varint length; extracted debug-assertion profile"
+      },
+      {
+        "kind": "public-error-contract",
+        "module": "EncodeErrors",
+        "name": "IntegerEncodingEncodeErrors.u32_too_small",
+        "precondition": "destination length < canonical minimal varint length; extracted debug-assertion profile"
+      },
+      {
+        "kind": "public-error-contract",
+        "module": "EncodeErrors",
+        "name": "IntegerEncodingEncodeErrors.usize_too_small",
+        "precondition": "destination length < canonical minimal varint length; extracted debug-assertion profile"
+      },
+      {
+        "kind": "public-error-contract",
+        "module": "EncodeErrors",
+        "name": "IntegerEncodingEncodeErrors.i8_too_small",
+        "precondition": "destination length < canonical minimal varint length; extracted debug-assertion profile"
+      },
+      {
+        "kind": "public-error-contract",
+        "module": "EncodeErrors",
+        "name": "IntegerEncodingEncodeErrors.i16_too_small",
+        "precondition": "destination length < canonical minimal varint length; extracted debug-assertion profile"
+      },
+      {
+        "kind": "public-error-contract",
+        "module": "EncodeErrors",
+        "name": "IntegerEncodingEncodeErrors.i32_too_small",
+        "precondition": "destination length < canonical minimal varint length; extracted debug-assertion profile"
+      },
+      {
+        "kind": "public-error-contract",
+        "module": "EncodeErrors",
+        "name": "IntegerEncodingEncodeErrors.isize_too_small",
+        "precondition": "destination length < canonical minimal varint length; extracted debug-assertion profile"
+      },
+      {
+        "kind": "support",
+        "module": "EncodeVar",
+        "name": "IntegerEncodingEncode.contByte_val"
+      },
+      {
+        "kind": "support",
+        "module": "EncodeVar",
+        "name": "IntegerEncodingEncode.body_spec"
+      },
+      {
+        "kind": "support",
+        "module": "EncodeVar",
+        "name": "IntegerEncodingEncode.get_set"
+      },
+      {
+        "kind": "support",
+        "module": "EncodeVar",
+        "name": "IntegerEncodingEncode.loop_spec"
+      },
+      {
+        "kind": "public-contract",
+        "module": "EncodeVar",
+        "name": "IntegerEncodingEncode.u64_total",
+        "observable": "exact Result.ok count and canonical bytes, same buffer length, entire unwritten suffix unchanged",
+        "precondition": "destination length >= canonical minimal varint length"
+      },
+      {
+        "kind": "public-contract",
+        "module": "EncodeVar",
+        "name": "IntegerEncodingEncode.i64_total",
+        "observable": "exact Result.ok count and canonical bytes, same buffer length, entire unwritten suffix unchanged",
+        "precondition": "destination length >= canonical minimal varint length"
+      },
+      {
+        "kind": "public-contract",
+        "module": "EncodeVar",
+        "name": "IntegerEncodingEncode.u8_total",
+        "observable": "exact Result.ok count and canonical bytes, same buffer length, entire unwritten suffix unchanged",
+        "precondition": "destination length >= canonical minimal varint length"
+      },
+      {
+        "kind": "public-contract",
+        "module": "EncodeVar",
+        "name": "IntegerEncodingEncode.u16_total",
+        "observable": "exact Result.ok count and canonical bytes, same buffer length, entire unwritten suffix unchanged",
+        "precondition": "destination length >= canonical minimal varint length"
+      },
+      {
+        "kind": "public-contract",
+        "module": "EncodeVar",
+        "name": "IntegerEncodingEncode.u32_total",
+        "observable": "exact Result.ok count and canonical bytes, same buffer length, entire unwritten suffix unchanged",
+        "precondition": "destination length >= canonical minimal varint length"
+      },
+      {
+        "kind": "public-contract",
+        "module": "EncodeVar",
+        "name": "IntegerEncodingEncode.usize_total",
+        "observable": "exact Result.ok count and canonical bytes, same buffer length, entire unwritten suffix unchanged",
+        "precondition": "destination length >= canonical minimal varint length"
+      },
+      {
+        "kind": "public-contract",
+        "module": "EncodeVar",
+        "name": "IntegerEncodingEncode.i8_total",
+        "observable": "exact Result.ok count and canonical bytes, same buffer length, entire unwritten suffix unchanged",
+        "precondition": "destination length >= canonical minimal varint length"
+      },
+      {
+        "kind": "public-contract",
+        "module": "EncodeVar",
+        "name": "IntegerEncodingEncode.i16_total",
+        "observable": "exact Result.ok count and canonical bytes, same buffer length, entire unwritten suffix unchanged",
+        "precondition": "destination length >= canonical minimal varint length"
+      },
+      {
+        "kind": "public-contract",
+        "module": "EncodeVar",
+        "name": "IntegerEncodingEncode.i32_total",
+        "observable": "exact Result.ok count and canonical bytes, same buffer length, entire unwritten suffix unchanged",
+        "precondition": "destination length >= canonical minimal varint length"
+      },
+      {
+        "kind": "public-contract",
+        "module": "EncodeVar",
+        "name": "IntegerEncodingEncode.isize_total",
+        "observable": "exact Result.ok count and canonical bytes, same buffer length, entire unwritten suffix unchanged",
+        "precondition": "destination length >= canonical minimal varint length"
+      },
+      {
+        "kind": "public-contract",
+        "module": "FixedProofs",
+        "name": "IntegerFixedProofs.u8_light",
+        "observable": "successful exact-length array of canonical arithmetic little-endian bytes, including signed two's-complement residue",
+        "precondition": "true"
+      },
+      {
+        "kind": "public-contract",
+        "module": "FixedProofs",
+        "name": "IntegerFixedProofs.u16_light",
+        "observable": "successful exact-length array of canonical arithmetic little-endian bytes, including signed two's-complement residue",
+        "precondition": "true"
+      },
+      {
+        "kind": "public-contract",
+        "module": "FixedProofs",
+        "name": "IntegerFixedProofs.u32_light",
+        "observable": "successful exact-length array of canonical arithmetic little-endian bytes, including signed two's-complement residue",
+        "precondition": "true"
+      },
+      {
+        "kind": "public-contract",
+        "module": "FixedProofs",
+        "name": "IntegerFixedProofs.u64_light",
+        "observable": "successful exact-length array of canonical arithmetic little-endian bytes, including signed two's-complement residue",
+        "precondition": "true"
+      },
+      {
+        "kind": "public-contract",
+        "module": "FixedProofs",
+        "name": "IntegerFixedProofs.i8_light",
+        "observable": "successful exact-length array of canonical arithmetic little-endian bytes, including signed two's-complement residue",
+        "precondition": "true"
+      },
+      {
+        "kind": "public-contract",
+        "module": "FixedProofs",
+        "name": "IntegerFixedProofs.i16_light",
+        "observable": "successful exact-length array of canonical arithmetic little-endian bytes, including signed two's-complement residue",
+        "precondition": "true"
+      },
+      {
+        "kind": "public-contract",
+        "module": "FixedProofs",
+        "name": "IntegerFixedProofs.i32_light",
+        "observable": "successful exact-length array of canonical arithmetic little-endian bytes, including signed two's-complement residue",
+        "precondition": "true"
+      },
+      {
+        "kind": "public-contract",
+        "module": "FixedProofs",
+        "name": "IntegerFixedProofs.i64_light",
+        "observable": "successful exact-length array of canonical arithmetic little-endian bytes, including signed two's-complement residue",
+        "precondition": "true"
+      },
+      {
+        "kind": "support",
+        "module": "FixedProofs",
+        "name": "IntegerFixedProofs.uscalar_card"
+      },
+      {
+        "kind": "support",
+        "module": "FixedProofs",
+        "name": "IntegerFixedProofs.iscalar_card"
+      },
+      {
+        "kind": "support",
+        "module": "FixedProofs",
+        "name": "IntegerFixedProofs.size_u8"
+      },
+      {
+        "kind": "public-contract",
+        "module": "FixedProofs",
+        "name": "IntegerFixedProofs.u8_encode",
+        "observable": "successful Option result: Some iff exact destination length, canonical little-endian bytes on success, entire destination unchanged on None",
+        "precondition": "true"
+      },
+      {
+        "kind": "support",
+        "module": "FixedProofs",
+        "name": "IntegerFixedProofs.size_u16"
+      },
+      {
+        "kind": "public-contract",
+        "module": "FixedProofs",
+        "name": "IntegerFixedProofs.u16_encode",
+        "observable": "successful Option result: Some iff exact destination length, canonical little-endian bytes on success, entire destination unchanged on None",
+        "precondition": "true"
+      },
+      {
+        "kind": "support",
+        "module": "FixedProofs",
+        "name": "IntegerFixedProofs.size_u32"
+      },
+      {
+        "kind": "public-contract",
+        "module": "FixedProofs",
+        "name": "IntegerFixedProofs.u32_encode",
+        "observable": "successful Option result: Some iff exact destination length, canonical little-endian bytes on success, entire destination unchanged on None",
+        "precondition": "true"
+      },
+      {
+        "kind": "support",
+        "module": "FixedProofs",
+        "name": "IntegerFixedProofs.size_u64"
+      },
+      {
+        "kind": "public-contract",
+        "module": "FixedProofs",
+        "name": "IntegerFixedProofs.u64_encode",
+        "observable": "successful Option result: Some iff exact destination length, canonical little-endian bytes on success, entire destination unchanged on None",
+        "precondition": "true"
+      },
+      {
+        "kind": "support",
+        "module": "FixedProofs",
+        "name": "IntegerFixedProofs.size_i8"
+      },
+      {
+        "kind": "public-contract",
+        "module": "FixedProofs",
+        "name": "IntegerFixedProofs.i8_encode",
+        "observable": "successful Option result: Some iff exact destination length, canonical little-endian bytes on success, entire destination unchanged on None",
+        "precondition": "true"
+      },
+      {
+        "kind": "support",
+        "module": "FixedProofs",
+        "name": "IntegerFixedProofs.size_i16"
+      },
+      {
+        "kind": "public-contract",
+        "module": "FixedProofs",
+        "name": "IntegerFixedProofs.i16_encode",
+        "observable": "successful Option result: Some iff exact destination length, canonical little-endian bytes on success, entire destination unchanged on None",
+        "precondition": "true"
+      },
+      {
+        "kind": "support",
+        "module": "FixedProofs",
+        "name": "IntegerFixedProofs.size_i32"
+      },
+      {
+        "kind": "public-contract",
+        "module": "FixedProofs",
+        "name": "IntegerFixedProofs.i32_encode",
+        "observable": "successful Option result: Some iff exact destination length, canonical little-endian bytes on success, entire destination unchanged on None",
+        "precondition": "true"
+      },
+      {
+        "kind": "support",
+        "module": "FixedProofs",
+        "name": "IntegerFixedProofs.size_i64"
+      },
+      {
+        "kind": "public-contract",
+        "module": "FixedProofs",
+        "name": "IntegerFixedProofs.i64_encode",
+        "observable": "successful Option result: Some iff exact destination length, canonical little-endian bytes on success, entire destination unchanged on None",
+        "precondition": "true"
+      },
+      {
+        "kind": "support",
+        "module": "FixedProofs",
+        "name": "IntegerFixedProofs.from_u8"
+      },
+      {
+        "kind": "public-contract",
+        "module": "FixedProofs",
+        "name": "IntegerFixedProofs.u8_decode",
+        "observable": "successful Option result: Some iff exact source length, exact unsigned value or signed two's-complement arithmetic interpretation; None otherwise",
+        "precondition": "true"
+      },
+      {
+        "kind": "public-contract",
+        "module": "FixedProofs",
+        "name": "IntegerFixedProofs.u8_switch",
+        "observable": "successful scalar whose arithmetic little-endian representation is reversed, interpreted with original signedness",
+        "precondition": "true"
+      },
+      {
+        "kind": "support",
+        "module": "FixedProofs",
+        "name": "IntegerFixedProofs.from_u16"
+      },
+      {
+        "kind": "public-contract",
+        "module": "FixedProofs",
+        "name": "IntegerFixedProofs.u16_decode",
+        "observable": "successful Option result: Some iff exact source length, exact unsigned value or signed two's-complement arithmetic interpretation; None otherwise",
+        "precondition": "true"
+      },
+      {
+        "kind": "public-contract",
+        "module": "FixedProofs",
+        "name": "IntegerFixedProofs.u16_switch",
+        "observable": "successful scalar whose arithmetic little-endian representation is reversed, interpreted with original signedness",
+        "precondition": "true"
+      },
+      {
+        "kind": "support",
+        "module": "FixedProofs",
+        "name": "IntegerFixedProofs.from_u32"
+      },
+      {
+        "kind": "public-contract",
+        "module": "FixedProofs",
+        "name": "IntegerFixedProofs.u32_decode",
+        "observable": "successful Option result: Some iff exact source length, exact unsigned value or signed two's-complement arithmetic interpretation; None otherwise",
+        "precondition": "true"
+      },
+      {
+        "kind": "public-contract",
+        "module": "FixedProofs",
+        "name": "IntegerFixedProofs.u32_switch",
+        "observable": "successful scalar whose arithmetic little-endian representation is reversed, interpreted with original signedness",
+        "precondition": "true"
+      },
+      {
+        "kind": "support",
+        "module": "FixedProofs",
+        "name": "IntegerFixedProofs.from_u64"
+      },
+      {
+        "kind": "public-contract",
+        "module": "FixedProofs",
+        "name": "IntegerFixedProofs.u64_decode",
+        "observable": "successful Option result: Some iff exact source length, exact unsigned value or signed two's-complement arithmetic interpretation; None otherwise",
+        "precondition": "true"
+      },
+      {
+        "kind": "public-contract",
+        "module": "FixedProofs",
+        "name": "IntegerFixedProofs.u64_switch",
+        "observable": "successful scalar whose arithmetic little-endian representation is reversed, interpreted with original signedness",
+        "precondition": "true"
+      },
+      {
+        "kind": "support",
+        "module": "FixedProofs",
+        "name": "IntegerFixedProofs.from_i8"
+      },
+      {
+        "kind": "support",
+        "module": "FixedProofs",
+        "name": "IntegerFixedProofs.i8_decode"
+      },
+      {
+        "kind": "support",
+        "module": "FixedProofs",
+        "name": "IntegerFixedProofs.i8_switch"
+      },
+      {
+        "kind": "support",
+        "module": "FixedProofs",
+        "name": "IntegerFixedProofs.from_i16"
+      },
+      {
+        "kind": "support",
+        "module": "FixedProofs",
+        "name": "IntegerFixedProofs.i16_decode"
+      },
+      {
+        "kind": "support",
+        "module": "FixedProofs",
+        "name": "IntegerFixedProofs.i16_switch"
+      },
+      {
+        "kind": "support",
+        "module": "FixedProofs",
+        "name": "IntegerFixedProofs.from_i32"
+      },
+      {
+        "kind": "support",
+        "module": "FixedProofs",
+        "name": "IntegerFixedProofs.i32_decode"
+      },
+      {
+        "kind": "support",
+        "module": "FixedProofs",
+        "name": "IntegerFixedProofs.i32_switch"
+      },
+      {
+        "kind": "support",
+        "module": "FixedProofs",
+        "name": "IntegerFixedProofs.from_i64"
+      },
+      {
+        "kind": "support",
+        "module": "FixedProofs",
+        "name": "IntegerFixedProofs.i64_decode"
+      },
+      {
+        "kind": "support",
+        "module": "FixedProofs",
+        "name": "IntegerFixedProofs.i64_switch"
+      },
+      {
+        "kind": "public-contract",
+        "module": "FixedProofs",
+        "name": "IntegerFixedProofs.usize_light",
+        "observable": "successful exact-length array of canonical arithmetic little-endian bytes, including signed two's-complement residue",
+        "precondition": "Platform.numBits = 64"
+      },
+      {
+        "kind": "support",
+        "module": "FixedProofs",
+        "name": "IntegerFixedProofs.size_usize"
+      },
+      {
+        "kind": "support",
+        "module": "FixedProofs",
+        "name": "IntegerFixedProofs.from_usize"
+      },
+      {
+        "kind": "public-contract",
+        "module": "FixedProofs",
+        "name": "IntegerFixedProofs.usize_encode",
+        "observable": "successful Option result: Some iff exact destination length, canonical little-endian bytes on success, entire destination unchanged on None",
+        "precondition": "Platform.numBits = 64"
+      },
+      {
+        "kind": "public-contract",
+        "module": "FixedProofs",
+        "name": "IntegerFixedProofs.usize_decode",
+        "observable": "successful Option result: Some iff exact source length, exact unsigned value or signed two's-complement arithmetic interpretation; None otherwise",
+        "precondition": "Platform.numBits = 64"
+      },
+      {
+        "kind": "public-contract",
+        "module": "FixedProofs",
+        "name": "IntegerFixedProofs.usize_switch",
+        "observable": "successful scalar whose arithmetic little-endian representation is reversed, interpreted with original signedness",
+        "precondition": "Platform.numBits = 64"
+      },
+      {
+        "kind": "public-contract",
+        "module": "FixedProofs",
+        "name": "IntegerFixedProofs.isize_light",
+        "observable": "successful exact-length array of canonical arithmetic little-endian bytes, including signed two's-complement residue",
+        "precondition": "Platform.numBits = 64"
+      },
+      {
+        "kind": "support",
+        "module": "FixedProofs",
+        "name": "IntegerFixedProofs.size_isize"
+      },
+      {
+        "kind": "support",
+        "module": "FixedProofs",
+        "name": "IntegerFixedProofs.from_isize"
+      },
+      {
+        "kind": "public-contract",
+        "module": "FixedProofs",
+        "name": "IntegerFixedProofs.isize_encode",
+        "observable": "successful Option result: Some iff exact destination length, canonical little-endian bytes on success, entire destination unchanged on None",
+        "precondition": "Platform.numBits = 64"
+      },
+      {
+        "kind": "support",
+        "module": "FixedProofs",
+        "name": "IntegerFixedProofs.isize_decode"
+      },
+      {
+        "kind": "support",
+        "module": "FixedProofs",
+        "name": "IntegerFixedProofs.isize_switch"
+      },
+      {
+        "kind": "public-contract",
+        "module": "FixedProofs",
+        "name": "IntegerFixedProofs.i8_decode_signed",
+        "observable": "successful Option result: Some iff exact source length, exact unsigned value or signed two's-complement arithmetic interpretation; None otherwise",
+        "precondition": "true"
+      },
+      {
+        "kind": "public-contract",
+        "module": "FixedProofs",
+        "name": "IntegerFixedProofs.i8_switch_signed",
+        "observable": "successful scalar whose arithmetic little-endian representation is reversed, interpreted with original signedness",
+        "precondition": "true"
+      },
+      {
+        "kind": "public-contract",
+        "module": "FixedProofs",
+        "name": "IntegerFixedProofs.i16_decode_signed",
+        "observable": "successful Option result: Some iff exact source length, exact unsigned value or signed two's-complement arithmetic interpretation; None otherwise",
+        "precondition": "true"
+      },
+      {
+        "kind": "public-contract",
+        "module": "FixedProofs",
+        "name": "IntegerFixedProofs.i16_switch_signed",
+        "observable": "successful scalar whose arithmetic little-endian representation is reversed, interpreted with original signedness",
+        "precondition": "true"
+      },
+      {
+        "kind": "public-contract",
+        "module": "FixedProofs",
+        "name": "IntegerFixedProofs.i32_decode_signed",
+        "observable": "successful Option result: Some iff exact source length, exact unsigned value or signed two's-complement arithmetic interpretation; None otherwise",
+        "precondition": "true"
+      },
+      {
+        "kind": "public-contract",
+        "module": "FixedProofs",
+        "name": "IntegerFixedProofs.i32_switch_signed",
+        "observable": "successful scalar whose arithmetic little-endian representation is reversed, interpreted with original signedness",
+        "precondition": "true"
+      },
+      {
+        "kind": "public-contract",
+        "module": "FixedProofs",
+        "name": "IntegerFixedProofs.i64_decode_signed",
+        "observable": "successful Option result: Some iff exact source length, exact unsigned value or signed two's-complement arithmetic interpretation; None otherwise",
+        "precondition": "true"
+      },
+      {
+        "kind": "public-contract",
+        "module": "FixedProofs",
+        "name": "IntegerFixedProofs.i64_switch_signed",
+        "observable": "successful scalar whose arithmetic little-endian representation is reversed, interpreted with original signedness",
+        "precondition": "true"
+      },
+      {
+        "kind": "public-contract",
+        "module": "FixedProofs",
+        "name": "IntegerFixedProofs.isize_decode_signed",
+        "observable": "successful Option result: Some iff exact source length, exact unsigned value or signed two's-complement arithmetic interpretation; None otherwise",
+        "precondition": "Platform.numBits = 64"
+      },
+      {
+        "kind": "public-contract",
+        "module": "FixedProofs",
+        "name": "IntegerFixedProofs.isize_switch_signed",
+        "observable": "successful scalar whose arithmetic little-endian representation is reversed, interpreted with original signedness",
+        "precondition": "Platform.numBits = 64"
+      },
+      {
+        "kind": "support",
+        "module": "FixedSpec",
+        "name": "IntegerEncodingSpec.toLEBytes_arithmetic"
+      },
+      {
+        "kind": "support",
+        "module": "FixedSpec",
+        "name": "IntegerEncodingSpec.fromLEBytes_arithmetic"
+      },
+      {
+        "kind": "support",
+        "module": "FixedSpec",
+        "name": "IntegerEncodingSpec.toInt_arithmetic"
+      },
+      {
+        "kind": "support",
+        "module": "FixedSpec",
+        "name": "IntegerEncodingSpec.fromLEBytes_signed"
+      },
+      {
+        "kind": "support",
+        "module": "FixedVec",
+        "name": "IntegerFixedVecProofs.generic_total"
+      },
+      {
+        "kind": "public-contract",
+        "module": "FixedVec",
+        "name": "IntegerFixedVecProofs.u8_total",
+        "observable": "actual generic source default; exact canonical little-endian bytes",
+        "precondition": "true",
+        "structural_boundary": "used dictionary fields actual extracted encode_fixed_light and standard array AsRef; unused fields universally quantified"
+      },
+      {
+        "kind": "public-contract",
+        "module": "FixedVec",
+        "name": "IntegerFixedVecProofs.u16_total",
+        "observable": "actual generic source default; exact canonical little-endian bytes",
+        "precondition": "true",
+        "structural_boundary": "used dictionary fields actual extracted encode_fixed_light and standard array AsRef; unused fields universally quantified"
+      },
+      {
+        "kind": "public-contract",
+        "module": "FixedVec",
+        "name": "IntegerFixedVecProofs.u32_total",
+        "observable": "actual generic source default; exact canonical little-endian bytes",
+        "precondition": "true",
+        "structural_boundary": "used dictionary fields actual extracted encode_fixed_light and standard array AsRef; unused fields universally quantified"
+      },
+      {
+        "kind": "public-contract",
+        "module": "FixedVec",
+        "name": "IntegerFixedVecProofs.u64_total",
+        "observable": "actual generic source default; exact canonical little-endian bytes",
+        "precondition": "true",
+        "structural_boundary": "used dictionary fields actual extracted encode_fixed_light and standard array AsRef; unused fields universally quantified"
+      },
+      {
+        "kind": "public-contract",
+        "module": "FixedVec",
+        "name": "IntegerFixedVecProofs.i8_total",
+        "observable": "actual generic source default; exact canonical little-endian bytes",
+        "precondition": "true",
+        "structural_boundary": "used dictionary fields actual extracted encode_fixed_light and standard array AsRef; unused fields universally quantified"
+      },
+      {
+        "kind": "public-contract",
+        "module": "FixedVec",
+        "name": "IntegerFixedVecProofs.i16_total",
+        "observable": "actual generic source default; exact canonical little-endian bytes",
+        "precondition": "true",
+        "structural_boundary": "used dictionary fields actual extracted encode_fixed_light and standard array AsRef; unused fields universally quantified"
+      },
+      {
+        "kind": "public-contract",
+        "module": "FixedVec",
+        "name": "IntegerFixedVecProofs.i32_total",
+        "observable": "actual generic source default; exact canonical little-endian bytes",
+        "precondition": "true",
+        "structural_boundary": "used dictionary fields actual extracted encode_fixed_light and standard array AsRef; unused fields universally quantified"
+      },
+      {
+        "kind": "public-contract",
+        "module": "FixedVec",
+        "name": "IntegerFixedVecProofs.i64_total",
+        "observable": "actual generic source default; exact canonical little-endian bytes",
+        "precondition": "true",
+        "structural_boundary": "used dictionary fields actual extracted encode_fixed_light and standard array AsRef; unused fields universally quantified"
+      },
+      {
+        "kind": "public-contract",
+        "module": "FixedVec",
+        "name": "IntegerFixedVecProofs.usize_total",
+        "observable": "actual generic source default; exact canonical little-endian bytes",
+        "precondition": "Platform.numBits = 64",
+        "structural_boundary": "used dictionary fields actual extracted encode_fixed_light and standard array AsRef; unused fields universally quantified"
+      },
+      {
+        "kind": "public-contract",
+        "module": "FixedVec",
+        "name": "IntegerFixedVecProofs.isize_total",
+        "observable": "actual generic source default; exact canonical little-endian bytes",
+        "precondition": "Platform.numBits = 64",
+        "structural_boundary": "used dictionary fields actual extracted encode_fixed_light and standard array AsRef; unused fields universally quantified"
+      },
+      {
+        "kind": "support",
+        "module": "RequiredSpace",
+        "name": "IntegerRequiredSpace.remaining_pos"
+      },
+      {
+        "kind": "support",
+        "module": "RequiredSpace",
+        "name": "IntegerRequiredSpace.remaining_step"
+      },
+      {
+        "kind": "support",
+        "module": "RequiredSpace",
+        "name": "IntegerRequiredSpace.total_result"
+      },
+      {
+        "kind": "support",
+        "module": "RequiredSpace",
+        "name": "IntegerRequiredSpace.loop_spec"
+      },
+      {
+        "kind": "support",
+        "module": "RequiredSpace",
+        "name": "IntegerRequiredSpace.unsigned_total"
+      },
+      {
+        "kind": "support",
+        "module": "RequiredSpace",
+        "name": "IntegerRequiredSpace.signed_total"
+      },
+      {
+        "kind": "public-contract",
+        "module": "RequiredSpace",
+        "name": "IntegerRequiredSpace.u8_required_space",
+        "observable": "exact Result.ok count, canonical minimal positive base128 length; signed arithmetic zigzag",
+        "precondition": "true"
+      },
+      {
+        "kind": "public-contract",
+        "module": "RequiredSpace",
+        "name": "IntegerRequiredSpace.u16_required_space",
+        "observable": "exact Result.ok count, canonical minimal positive base128 length; signed arithmetic zigzag",
+        "precondition": "true"
+      },
+      {
+        "kind": "public-contract",
+        "module": "RequiredSpace",
+        "name": "IntegerRequiredSpace.u32_required_space",
+        "observable": "exact Result.ok count, canonical minimal positive base128 length; signed arithmetic zigzag",
+        "precondition": "true"
+      },
+      {
+        "kind": "public-contract",
+        "module": "RequiredSpace",
+        "name": "IntegerRequiredSpace.u64_required_space",
+        "observable": "exact Result.ok count, canonical minimal positive base128 length; signed arithmetic zigzag",
+        "precondition": "true"
+      },
+      {
+        "kind": "public-contract",
+        "module": "RequiredSpace",
+        "name": "IntegerRequiredSpace.usize_required_space",
+        "observable": "exact Result.ok count, canonical minimal positive base128 length; signed arithmetic zigzag",
+        "precondition": "true"
+      },
+      {
+        "kind": "public-contract",
+        "module": "RequiredSpace",
+        "name": "IntegerRequiredSpace.i8_required_space",
+        "observable": "exact Result.ok count, canonical minimal positive base128 length; signed arithmetic zigzag",
+        "precondition": "true"
+      },
+      {
+        "kind": "public-contract",
+        "module": "RequiredSpace",
+        "name": "IntegerRequiredSpace.i16_required_space",
+        "observable": "exact Result.ok count, canonical minimal positive base128 length; signed arithmetic zigzag",
+        "precondition": "true"
+      },
+      {
+        "kind": "public-contract",
+        "module": "RequiredSpace",
+        "name": "IntegerRequiredSpace.i32_required_space",
+        "observable": "exact Result.ok count, canonical minimal positive base128 length; signed arithmetic zigzag",
+        "precondition": "true"
+      },
+      {
+        "kind": "public-contract",
+        "module": "RequiredSpace",
+        "name": "IntegerRequiredSpace.i64_required_space",
+        "observable": "exact Result.ok count, canonical minimal positive base128 length; signed arithmetic zigzag",
+        "precondition": "true"
+      },
+      {
+        "kind": "public-contract",
+        "module": "RequiredSpace",
+        "name": "IntegerRequiredSpace.isize_required_space",
+        "observable": "exact Result.ok count, canonical minimal positive base128 length; signed arithmetic zigzag",
+        "precondition": "true"
+      },
+      {
+        "kind": "support",
+        "module": "VarintSpec",
+        "name": "IntegerEncodingSpec.uLen_pos"
+      },
+      {
+        "kind": "support",
+        "module": "VarintSpec",
+        "name": "IntegerEncodingSpec.uLen_small"
+      },
+      {
+        "kind": "support",
+        "module": "VarintSpec",
+        "name": "IntegerEncodingSpec.uLen_step"
+      },
+      {
+        "kind": "support",
+        "module": "VarintSpec",
+        "name": "IntegerEncodingSpec.uLen_bound"
+      },
+      {
+        "kind": "support",
+        "module": "VarintSpec",
+        "name": "IntegerEncodingSpec.uLen_minimal"
+      },
+      {
+        "kind": "support",
+        "module": "VarintSpec",
+        "name": "IntegerEncodingSpec.uLen_le10"
+      },
+      {
+        "kind": "support",
+        "module": "VarintVec",
+        "name": "IntegerEncodingVec.generic_total"
+      },
+      {
+        "kind": "public-contract",
+        "module": "VarintVec",
+        "name": "IntegerEncodingVec.u8_total",
+        "observable": "actual generic source default with actual scalar callbacks; exact minimal length and canonical bytes",
+        "precondition": "true",
+        "structural_boundary": "used dictionary fields actual extracted required_space/encode_var; unused fields universally quantified; source inheritance manually reviewed"
+      },
+      {
+        "kind": "public-contract",
+        "module": "VarintVec",
+        "name": "IntegerEncodingVec.u16_total",
+        "observable": "actual generic source default with actual scalar callbacks; exact minimal length and canonical bytes",
+        "precondition": "true",
+        "structural_boundary": "used dictionary fields actual extracted required_space/encode_var; unused fields universally quantified; source inheritance manually reviewed"
+      },
+      {
+        "kind": "public-contract",
+        "module": "VarintVec",
+        "name": "IntegerEncodingVec.u32_total",
+        "observable": "actual generic source default with actual scalar callbacks; exact minimal length and canonical bytes",
+        "precondition": "true",
+        "structural_boundary": "used dictionary fields actual extracted required_space/encode_var; unused fields universally quantified; source inheritance manually reviewed"
+      },
+      {
+        "kind": "public-contract",
+        "module": "VarintVec",
+        "name": "IntegerEncodingVec.u64_total",
+        "observable": "actual generic source default with actual scalar callbacks; exact minimal length and canonical bytes",
+        "precondition": "true",
+        "structural_boundary": "used dictionary fields actual extracted required_space/encode_var; unused fields universally quantified; source inheritance manually reviewed"
+      },
+      {
+        "kind": "public-contract",
+        "module": "VarintVec",
+        "name": "IntegerEncodingVec.usize_total",
+        "observable": "actual generic source default with actual scalar callbacks; exact minimal length and canonical bytes",
+        "precondition": "true",
+        "structural_boundary": "used dictionary fields actual extracted required_space/encode_var; unused fields universally quantified; source inheritance manually reviewed"
+      },
+      {
+        "kind": "public-contract",
+        "module": "VarintVec",
+        "name": "IntegerEncodingVec.i8_total",
+        "observable": "actual generic source default with actual scalar callbacks; exact minimal length and canonical bytes",
+        "precondition": "true",
+        "structural_boundary": "used dictionary fields actual extracted required_space/encode_var; unused fields universally quantified; source inheritance manually reviewed"
+      },
+      {
+        "kind": "public-contract",
+        "module": "VarintVec",
+        "name": "IntegerEncodingVec.i16_total",
+        "observable": "actual generic source default with actual scalar callbacks; exact minimal length and canonical bytes",
+        "precondition": "true",
+        "structural_boundary": "used dictionary fields actual extracted required_space/encode_var; unused fields universally quantified; source inheritance manually reviewed"
+      },
+      {
+        "kind": "public-contract",
+        "module": "VarintVec",
+        "name": "IntegerEncodingVec.i32_total",
+        "observable": "actual generic source default with actual scalar callbacks; exact minimal length and canonical bytes",
+        "precondition": "true",
+        "structural_boundary": "used dictionary fields actual extracted required_space/encode_var; unused fields universally quantified; source inheritance manually reviewed"
+      },
+      {
+        "kind": "public-contract",
+        "module": "VarintVec",
+        "name": "IntegerEncodingVec.i64_total",
+        "observable": "actual generic source default with actual scalar callbacks; exact minimal length and canonical bytes",
+        "precondition": "true",
+        "structural_boundary": "used dictionary fields actual extracted required_space/encode_var; unused fields universally quantified; source inheritance manually reviewed"
+      },
+      {
+        "kind": "public-contract",
+        "module": "VarintVec",
+        "name": "IntegerEncodingVec.isize_total",
+        "observable": "actual generic source default with actual scalar callbacks; exact minimal length and canonical bytes",
+        "precondition": "true",
+        "structural_boundary": "used dictionary fields actual extracted required_space/encode_var; unused fields universally quantified; source inheritance manually reviewed"
+      },
+      {
+        "kind": "support",
+        "module": "Zigzag",
+        "name": "integer_encoding.total_result"
+      },
+      {
+        "kind": "support",
+        "module": "Zigzag",
+        "name": "integer_encoding.zigzag_encode_bits"
+      },
+      {
+        "kind": "support",
+        "module": "Zigzag",
+        "name": "integer_encoding.sign_mask"
+      },
+      {
+        "kind": "support",
+        "module": "Zigzag",
+        "name": "integer_encoding.encode_bv_form"
+      },
+      {
+        "kind": "support",
+        "module": "Zigzag",
+        "name": "integer_encoding.encode_arithmetic"
+      },
+      {
+        "kind": "support",
+        "module": "Zigzag",
+        "name": "integer_encoding.zigzag_encode_spec"
+      },
+      {
+        "kind": "support",
+        "module": "ZigzagDecode",
+        "name": "integer_encoding.hcast_lowbit"
+      },
+      {
+        "kind": "support",
+        "module": "ZigzagDecode",
+        "name": "integer_encoding.zigzag_decode_spec"
+      },
+      {
+        "kind": "support",
+        "module": "ZigzagRoundtrip",
+        "name": "integer_encoding.decode_encode_math"
+      },
+      {
+        "kind": "support",
+        "module": "ZigzagRoundtrip",
+        "name": "integer_encoding.encode_decode_math"
+      },
+      {
+        "kind": "support",
+        "module": "ZigzagRoundtrip",
+        "name": "integer_encoding.zigzag_decode_encode"
+      },
+      {
+        "kind": "support",
+        "module": "ZigzagRoundtrip",
+        "name": "integer_encoding.zigzag_encode_decode"
+      },
+      {
+        "kind": "support",
+        "module": "ZigzagRoundtrip",
+        "name": "integer_encoding.zigzag_encode_min"
+      },
+      {
+        "kind": "support",
+        "module": "ZigzagRoundtrip",
+        "name": "integer_encoding.zigzag_encode_max"
+      },
+      {
+        "kind": "support",
+        "module": "ZigzagRoundtrip",
+        "name": "integer_encoding.zigzag_encode_zero"
+      },
+      {
+        "kind": "support",
+        "module": "ZigzagRoundtrip",
+        "name": "integer_encoding.zigzag_encode_neg_one"
+      },
+      {
+        "kind": "support",
+        "module": "ZigzagRoundtrip",
+        "name": "integer_encoding.zigzag_decode_max"
+      },
+      {
+        "kind": "support",
+        "module": "ZigzagRoundtrip",
+        "name": "integer_encoding.zigzag_decode_zero"
+      },
+      {
+        "kind": "support",
+        "module": "ZigzagRoundtrip",
+        "name": "integer_encoding.zigzag_decode_one"
+      }
+    ],
+    "mapping_metadata_checked": true,
+    "scope": "named Lean theorem and transitive axiom audit only",
+    "status": "passed"
+  },
+  "configuration": {
+    "source_lock": {
+      "path": "integer-encoding/4.1.0/source.lock.json",
+      "sha256": "cf254d85dd4e0016dbb95013f15de448f2a2415de98b7a07c5e104e11fd6d6f3"
+    },
+    "tool_lock": {
+      "path": "integer-encoding/4.1.0/aeneas/profiles/default/toolchain.lock.json",
+      "sha256": "cf25047795b186ffa19b95781f017b233e2a034318348f67125f5aa7a09a60ef"
+    },
+    "verification": {
+      "path": "integer-encoding/4.1.0/aeneas/profiles/default/verification.json",
+      "sha256": "a378796514c542d0ad458457e6ac156c552149f960fefb32215430c5d55be724"
+    }
+  },
+  "configured_extractions": [
+    {
+      "config": "extraction.json",
+      "cwd": ".",
+      "models": {
+        "IntegerCore.lean": "proofs/Generated/@TARGET@/IntegerCore.lean"
+      }
+    },
+    {
+      "config": "aeneas-vec.json",
+      "cwd": ".",
+      "models": {
+        "IntegerVec.lean": "proofs/Generated/@TARGET@/IntegerVec.lean"
+      }
+    },
+    {
+      "config": "aeneas-fixed-vec.json",
+      "cwd": ".",
+      "models": {
+        "IntegerFixedVec.lean": "proofs/Generated/@TARGET@/IntegerFixedVec.lean"
+      }
+    }
+  ],
+  "configured_native_commands": [],
+  "host": "aarch64-apple-darwin",
+  "input_fingerprints": {
+    "after": {
+      "member": "payload/aarch64-apple-darwin-accepted/inputs-after.json",
+      "sha256": "77ae7f9d163ff67f47acea20c5068e61535b8306644b6186c764fb37b9820ac3"
+    },
+    "before": {
+      "member": "payload/aarch64-apple-darwin-accepted/inputs-before.json",
+      "sha256": "77ae7f9d163ff67f47acea20c5068e61535b8306644b6186c764fb37b9820ac3"
+    },
+    "equal": true
+  },
+  "kind": "archived-managed-run-summary",
+  "original_audit": {
+    "member": "payload/aarch64-apple-darwin-accepted/audit/result.json",
+    "sha256": "5727c01de9c2fb794410408d142508e46022b91e07e694cdcaf82efeb3318db2"
+  },
+  "original_input_archive_members": [
+    "aarch64-apple-darwin-accepted/accepted-inputs.tar.gz"
+  ],
+  "original_result": {
+    "member": "payload/aarch64-apple-darwin-accepted/result.json",
+    "sha256": "8c56ef93e89406a541735d4c12cef3076ef6a0055a3778a9f9aac16b67943341"
+  },
+  "profile": "default",
+  "reported_status": "passed",
+  "sarif": "Not a cargo-proofs recording result.",
+  "schema_version": 1,
+  "scope": "Configured extraction comparisons and named theorem audit; native observations are separate",
+  "stages": {
+    "before_after_fingerprints": "equal",
+    "extraction_and_profile_checks": "See original pipeline receipt and profile configuration.",
+    "lean_build_and_axiom_audit": "passed",
+    "native_tests": "Separate observations in original run; not formal proof."
+  },
+  "target": "aarch64-apple-darwin"
+}

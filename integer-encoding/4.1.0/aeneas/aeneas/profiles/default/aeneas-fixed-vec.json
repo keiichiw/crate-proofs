@@ -1,0 +1,21 @@
+{
+  "entries": [
+    "crate::fixed::FixedInt::encode_fixed_vec"
+  ],
+  "llbc": "integer_fixed_vec.llbc",
+  "models": {
+    "IntegerFixedVec.lean": [
+      "fixed.FixedInt.encode_fixed_vec.default"
+    ]
+  },
+  "remove_unused_clauses": true,
+  "charon_exclude": [
+    "crate::fixed::FixedInt::ENCODED_SIZE"
+  ],
+  "local_scope": {
+    "opaque_crate": true,
+    "include": [
+      "crate::fixed::FixedInt::encode_fixed_vec"
+    ]
+  }
+}

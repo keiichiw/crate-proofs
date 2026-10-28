@@ -1,0 +1,205 @@
+mem/mod.rs:320-338
+320: /// ```
+321: /// #[repr(C)]
+322: /// struct FieldStruct {
+323: ///     first: u8,
+324: ///     second: u16,
+325: ///     third: u8
+326: /// }
+327: ///
+328: /// // The size of the first field is 1, so add 1 to the size. Size is 1.
+329: /// // The alignment of the second field is 2, so add 1 to the size for padding. Size is 2.
+330: /// // The size of the second field is 2, so add 2 to the size. Size is 4.
+331: /// // The alignment of the third field is 1, so add 0 to the size for padding. Size is 4.
+332: /// // The size of the third field is 1, so add 1 to the size. Size is 5.
+333: /// // Finally, the alignment of the struct is 2 (because the largest alignment amongst its
+334: /// // fields is 2), so add 1 to the size for padding. Size is 6.
+335: /// assert_eq!(6, size_of::<FieldStruct>());
+336: ///
+337: /// #[repr(C)]
+338: /// struct TupleStruct(u8, u16, u8);
+
+mem/mod.rs:367-379
+367: /// [`Option<&T>`]: crate::option::Option
+368: ///
+369: #[inline(always)]
+370: #[must_use]
+371: #[stable(feature = "rust1", since = "1.0.0")]
+372: #[rustc_promotable]
+373: #[rustc_const_stable(feature = "const_mem_size_of", since = "1.24.0")]
+374: #[rustc_diagnostic_item = "mem_size_of"]
+375: pub const fn size_of<T>() -> usize {
+376:     // By making this a constant, we also guarantee that the constant can be successfully evaluated
+377:     // in any program execution that actually executes `size_of`. Which is relevant because the
+378:     // constant can fail to evaluate if the type is too big. Someone might do something cursed where
+379:     // soundness relies on a certain type not being too big, and they check that by just invoking
+
+slice/mod.rs:4260-4278
+4260:     /// let mut slice = [1, 2, 3, 4, 5];
+4261:     ///
+4262:     /// {
+4263:     ///     let (left, right) = slice.split_at_mut(2);
+4264:     ///     left.clone_from_slice(&right[1..]);
+4265:     /// }
+4266:     ///
+4267:     /// assert_eq!(slice, [4, 5, 3, 4, 5]);
+4268:     /// ```
+4269:     ///
+4270:     /// [`copy_from_slice`]: slice::copy_from_slice
+4271:     /// [`split_at_mut`]: slice::split_at_mut
+4272:     #[stable(feature = "clone_from_slice", since = "1.7.0")]
+4273:     #[track_caller]
+4274:     #[rustc_const_unstable(feature = "const_clone", issue = "142757")]
+4275:     pub const fn clone_from_slice(&mut self, src: &[T])
+4276:     where
+4277:         T: [const] Clone + [const] Destruct,
+4278:     {
+
+slice/mod.rs:5622-5655
+5622: {
+5623:     #[track_caller]
+5624:     default fn spec_clone_from(&mut self, src: &[T]) {
+5625:         assert!(self.len() == src.len(), "destination and source slices have different lengths");
+5626:         // NOTE: We need to explicitly slice them to the same length
+5627:         // to make it easier for the optimizer to elide bounds checking.
+5628:         // But since it can't be relied on we also have an explicit specialization for T: Copy.
+5629:         let len = self.len();
+5630:         let src = &src[..len];
+5631:         for i in 0..len {
+5632:             self[i].clone_from(&src[i]);
+5633:         }
+5634:     }
+5635: }
+5636: 
+5637: #[rustc_const_unstable(feature = "const_clone", issue = "142757")]
+5638: const impl<T> CloneFromSpec<T> for [T]
+5639: where
+5640:     T: [const] TrivialClone + [const] Destruct,
+5641: {
+5642:     #[track_caller]
+5643:     fn spec_clone_from(&mut self, src: &[T]) {
+5644:         // SAFETY: `T` implements `TrivialClone`.
+5645:         unsafe {
+5646:             copy_from_slice_impl(self, src);
+5647:         }
+5648:     }
+5649: }
+5650: 
+5651: #[stable(feature = "rust1", since = "1.0.0")]
+5652: #[rustc_const_unstable(feature = "const_default", issue = "143894")]
+5653: const impl<T> Default for &[T] {
+5654:     /// Creates an empty slice.
+5655:     fn default() -> Self {
+
+num/uint_macros.rs:4031-4055
+4031:         ///
+4032:         /// ```
+4033:         #[doc = concat!("let bytes = ", $swap_op, stringify!($SelfT), ".to_le_bytes();")]
+4034:         #[doc = concat!("assert_eq!(bytes, ", $le_bytes, ");")]
+4035:         /// ```
+4036:         #[stable(feature = "int_to_from_bytes", since = "1.32.0")]
+4037:         #[rustc_const_stable(feature = "const_int_conversion", since = "1.44.0")]
+4038:         #[must_use = "this returns the result of the operation, \
+4039:                       without modifying the original"]
+4040:         #[inline]
+4041:         pub const fn to_le_bytes(self) -> [u8; size_of::<Self>()] {
+4042:             self.to_le().to_ne_bytes()
+4043:         }
+4044: 
+4045:         /// Returns the memory representation of this integer as a byte array in
+4046:         /// native byte order.
+4047:         ///
+4048:         /// As the target platform's native endianness is used, portable code
+4049:         /// should use [`to_be_bytes`] or [`to_le_bytes`], as appropriate,
+4050:         /// instead.
+4051:         ///
+4052:         #[doc = $to_xe_bytes_doc]
+4053:         ///
+4054:         /// [`to_be_bytes`]: Self::to_be_bytes
+4055:         /// [`to_le_bytes`]: Self::to_le_bytes
+
+num/uint_macros.rs:4125-4151
+4125:         /// When starting from a slice rather than an array, fallible conversion APIs can be used:
+4126:         ///
+4127:         /// ```
+4128:         #[doc = concat!("fn read_le_", stringify!($SelfT), "(input: &mut &[u8]) -> ", stringify!($SelfT), " {")]
+4129:         #[doc = concat!("    let (int_bytes, rest) = input.split_at(size_of::<", stringify!($SelfT), ">());")]
+4130:         ///     *input = rest;
+4131:         #[doc = concat!("    ", stringify!($SelfT), "::from_le_bytes(int_bytes.try_into().unwrap())")]
+4132:         /// }
+4133:         /// ```
+4134:         #[stable(feature = "int_to_from_bytes", since = "1.32.0")]
+4135:         #[rustc_const_stable(feature = "const_int_conversion", since = "1.44.0")]
+4136:         #[must_use]
+4137:         #[inline]
+4138:         pub const fn from_le_bytes(bytes: [u8; size_of::<Self>()]) -> Self {
+4139:             Self::from_le(Self::from_ne_bytes(bytes))
+4140:         }
+4141: 
+4142:         /// Creates a native endian integer value from its memory representation
+4143:         /// as a byte array in native endianness.
+4144:         ///
+4145:         /// As the target platform's native endianness is used, portable code
+4146:         /// likely wants to use [`from_be_bytes`] or [`from_le_bytes`], as
+4147:         /// appropriate instead.
+4148:         ///
+4149:         /// [`from_be_bytes`]: Self::from_be_bytes
+4150:         /// [`from_le_bytes`]: Self::from_le_bytes
+4151:         ///
+
+num/int_macros.rs:3772-3796
+3772:         ///
+3773:         /// ```
+3774:         #[doc = concat!("let bytes = ", $swap_op, stringify!($SelfT), ".to_le_bytes();")]
+3775:         #[doc = concat!("assert_eq!(bytes, ", $le_bytes, ");")]
+3776:         /// ```
+3777:         #[stable(feature = "int_to_from_bytes", since = "1.32.0")]
+3778:         #[rustc_const_stable(feature = "const_int_conversion", since = "1.44.0")]
+3779:         #[must_use = "this returns the result of the operation, \
+3780:                       without modifying the original"]
+3781:         #[inline]
+3782:         pub const fn to_le_bytes(self) -> [u8; size_of::<Self>()] {
+3783:             self.to_le().to_ne_bytes()
+3784:         }
+3785: 
+3786:         /// Returns the memory representation of this integer as a byte array in
+3787:         /// native byte order.
+3788:         ///
+3789:         /// As the target platform's native endianness is used, portable code
+3790:         /// should use [`to_be_bytes`] or [`to_le_bytes`], as appropriate,
+3791:         /// instead.
+3792:         ///
+3793:         #[doc = $to_xe_bytes_doc]
+3794:         ///
+3795:         /// [`to_be_bytes`]: Self::to_be_bytes
+3796:         /// [`to_le_bytes`]: Self::to_le_bytes
+
+num/int_macros.rs:3866-3892
+3866:         /// When starting from a slice rather than an array, fallible conversion APIs can be used:
+3867:         ///
+3868:         /// ```
+3869:         #[doc = concat!("fn read_le_", stringify!($SelfT), "(input: &mut &[u8]) -> ", stringify!($SelfT), " {")]
+3870:         #[doc = concat!("    let (int_bytes, rest) = input.split_at(size_of::<", stringify!($SelfT), ">());")]
+3871:         ///     *input = rest;
+3872:         #[doc = concat!("    ", stringify!($SelfT), "::from_le_bytes(int_bytes.try_into().unwrap())")]
+3873:         /// }
+3874:         /// ```
+3875:         #[stable(feature = "int_to_from_bytes", since = "1.32.0")]
+3876:         #[rustc_const_stable(feature = "const_int_conversion", since = "1.44.0")]
+3877:         #[must_use]
+3878:         #[inline]
+3879:         pub const fn from_le_bytes(bytes: [u8; size_of::<Self>()]) -> Self {
+3880:             Self::from_le(Self::from_ne_bytes(bytes))
+3881:         }
+3882: 
+3883:         /// Creates an integer value from its memory representation as a byte
+3884:         /// array in native endianness.
+3885:         ///
+3886:         /// As the target platform's native endianness is used, portable code
+3887:         /// likely wants to use [`from_be_bytes`] or [`from_le_bytes`], as
+3888:         /// appropriate instead.
+3889:         ///
+3890:         /// [`from_be_bytes`]: Self::from_be_bytes
+3891:         /// [`from_le_bytes`]: Self::from_le_bytes
+3892:         ///
+

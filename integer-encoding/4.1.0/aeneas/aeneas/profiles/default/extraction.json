@@ -1,0 +1,31 @@
+{
+  "entries": [
+    "crate::varint::zigzag_encode",
+    "crate::varint::zigzag_decode"
+  ],
+  "impl_entries": [
+    "{impl crate::varint::VarInt for _}::required_space",
+    "{impl crate::varint::VarInt for _}::encode_var"
+  ],
+  "llbc": "integer_core.llbc",
+  "local_scope": {
+    "include": [
+      "crate::varint::MSB",
+      "crate::varint::required_encoded_space_unsigned",
+      "crate::varint::required_encoded_space_signed",
+      "crate::varint::zigzag_encode",
+      "crate::varint::zigzag_decode",
+      "{impl crate::varint::VarInt for _}::required_space",
+      "{impl crate::varint::VarInt for _}::encode_var"
+    ],
+    "opaque_crate": true
+  },
+  "models": {
+    "IntegerCore.lean": [
+      "varint.zigzag_encode",
+      "varint.zigzag_decode",
+      "varint.required_encoded_space_unsigned"
+    ]
+  },
+  "remove_unused_clauses": true
+}

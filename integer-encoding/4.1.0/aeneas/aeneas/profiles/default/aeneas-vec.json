@@ -1,0 +1,10 @@
+{
+  "entries": ["crate::varint::VarInt::encode_var_vec"],
+  "llbc": "integer_vec.llbc",
+  "models": {"IntegerVec.lean": ["varint.VarInt.encode_var_vec.default"]},
+  "remove_unused_clauses": true,
+  "local_scope": {
+    "opaque_crate": true,
+    "include": ["crate::varint::VarInt::encode_var_vec"]
+  }
+}
