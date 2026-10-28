@@ -1,5 +1,7 @@
 # Managed verification — ipnet/2.12.2
 
+The current `cp` acceptance is recorded in [the cp acceptance section](#cp-acceptance--2026-10-27-macos-arm64). Earlier sections and `evidence/summary.json` retain their original input scope.
+
 > Evidence storage: the [committed summary](evidence/summary.json) describes the original accepted inputs. Full logs and repeated snapshots are in the [local archive](evidence/archive.json), not distributed in Git. Packaging has not rerun the full proof pipeline; the checksummed compatibility fixtures remain available for fresh verification.
 
 The [accepted macOS arm64 run — archived](evidence/archive.json) (`payload/aarch64-apple-darwin-accepted/result.json`)
@@ -36,3 +38,64 @@ Initial local receipt: `.work/runs/default-xsxmt1br/result.json`. It applies to 
 Separate fresh native finding checks reproduced all eight schema rows across both Schemars versions. The heapless IPv4 fixture recorded three allocations/reallocations versus zero for the legacy control; the separate IPv6 control recorded four versus zero. Results and logs are under `.work/revalidation/2026-10-27/findings/`; these observations are not formal proof.
 
 The final verifier run against the finished report inputs also passed. Its local receipt is `.work/runs/default-0f3d7jq3/result.json`; its before and after input fingerprints matched (`925f41b506c67e53aa46bacb488c96c4945f6bd4d3a122fb6dc0a9df7b28466b`). Its extraction, Lean audit, mapping checks and runtime/shift postchecks passed.
+
+## cp acceptance — 2026-10-27 macOS arm64
+
+A fresh `cp` run passed against input commit `029605b32ee36f5b23990c014bb25ae4b82600dc` after the
+shared-infrastructure and ipnet-only import. This is a new execution, separate
+from the historical summaries above. No contracts, maintained generated models,
+source/tool locks or API mappings were changed for acceptance.
+
+Commands, run from the repository root:
+
+```sh
+bash ipnet/2.12.2/scripts/setup.sh --offline
+bash ipnet/2.12.2/scripts/verify.sh --offline
+```
+
+- Target: `aarch64-apple-darwin`; native Rust 1.91.1, extraction Rust nightly-2026-09-17 and Lean 4.35.0, with the locked Aeneas/Charon/CLI tools rechecked before reuse.
+- Source inventory and reviewed standard-library inputs passed; fresh extraction matched the maintained target model.
+- Default, no-default and all-features native suites passed, separately from formal proof.
+- Standard Lake build passed; all **625 theorem roots in 70 modules** passed the transitive dependency/axiom audit. Only `propext`, `Classical.choice` and `Quot.sound` were allowed. All **160 API mappings** matched the theorem inventory.
+- Exact runtime-check configuration and checked shift-overflow postchecks passed.
+- Before/after input files were byte-identical, SHA-256 `89b1cbbb687dd638519c19bfff040cd7eff9d97b16cf52c0d6b55df584d686c4`.
+
+All three current `proofs.toml` finding snippets were also compiled and executed
+with Rust 1.91.1, offline and with locked dependencies. Each schema snippet had
+its own Cargo build directory: the generated schemas rejected the serialized IPv4
+values in the first finding and accepted `a/64` despite failed deserialization in
+the second. The heapless replay observed three allocation/reallocation calls versus
+zero for `serde` plus `ser_as_str`. Those four native executions are counterexample
+observations, not formal coverage of the optional integrations.
+
+The common Python suite completed 105 tests: 104 passed and one existing
+Why3-environment check was skipped. Layout/evidence lint, active documentation links, CI configuration (ipnet only),
+and exact preservation of maintained proof sources passed. Other crate trees are
+unchanged from `main`. No Linux execution, cargo-proofs recording, push or publication
+is claimed. The primary checked the receipts, hashes, mappings and scope; no new
+independent specification or proof review is claimed for this unchanged proof package.
+
+### Current local evidence
+
+The complete fresh pipeline, native replay sources/locks/logs and compact acceptance
+metadata were packed and independently checksum-verified. Availability is **local-only**;
+a checksum is not a public download URL. Historical `evidence/archive.json` and
+`evidence/summary.json` remain unchanged.
+
+- Pipeline receipt: `.work/runs/default-t0ql8i85/result.json`, SHA-256 `2bda6bd4ccfb3ec98b4ed8dde3ce2d49a3d66f975307e76de270585bff01b2b5`.
+- Native replay receipt: `.work/cp-findings/isolated-rust-q90yai1f/result.json`, SHA-256 `f77f81eae34b44836e0d26b111174b8ea65803751a263d9f8efed8acc5cc7e50`.
+- Archive store: `.work/evidence-archives/`; archive SHA-256 `e60379c435bd2c9b9dee5ea61261fa144d32f1bee7cb20c5bec15243b6f97da2`.
+- Archive manifest SHA-256: `7f552f6069ac806847beac8c28c5cffdb941f25474337bf1c704d863fba3b550`; 176 inventoried files.
+- Exact archive members: `payload/verification/result.json`, `payload/verification/audit/result.json`, `payload/verification/inputs-before.json`, `payload/verification/inputs-after.json`, `payload/findings/result.json` and `payload/acceptance.json`.
+- Local archive descriptor and full checked summary: `.work/cp-acceptance/2026-10-27-5rs98ebi/archive.json` and `summary.json` in that directory.
+
+Recheck the retained archive without rerunning verification:
+
+```sh
+python3 scripts/aeneas_evidence.py verify \
+  ipnet/2.12.2/.work/cp-acceptance/2026-10-27-5rs98ebi/archive.json \
+  --store ipnet/2.12.2/.work/evidence-archives
+```
+
+This results file is an output excluded by the runner's fingerprint. Recording this
+acceptance does not change the accepted proof inputs or rewrite older evidence.
