@@ -12,6 +12,8 @@ Aeneas. This skill supplies a workflow, not an automatic algorithm prover.
 
 ## Start or restore a target
 
+For a new crate, follow the [new-crate procedure](../../../verification/templates/aeneas-managed/README.md). It is the primary setup path; the reference below supplies extractor/auditor details. Migrated Aeneas workspaces use managed profiles; unmigrated targets retain their own instructions. Recorded acceptance remains tied to original input fingerprints.
+
 Read [setup and runner](references/setup-and-runner.md) when preparing a target or
 changing its toolchain. Read the target's specification and current results before
 extending its scope. Use [proof patterns](references/proof-patterns.md) for loops,
@@ -21,11 +23,12 @@ to locate the failing stage and design a faithful minimal reproduction. For expe
 whose failures or interruptions must remain analyzable, use the optional
 [trial recorder](../../../verification/trial-recording.md).
 
-1. Establish source identity. Prefer an unchanged upstream submodule plus an external
-   manifest pointing at its source. Pin the Gitlink and verify the actual checkout,
-   every tracked file's bytes and clean status. Compare release source separately
-   against the checksummed registry archive; a Git pin alone does not prove release
-   identity. Keep the outer manifest's semantic build surface consistent with upstream.
+1. Establish source identity. For managed targets, pin the crates.io archive and full
+   file inventory in source.lock.json and restore unchanged source into ignored
+   .work/source. Use full-commit Git retrieval only for unreleased sources. Keep the
+   outer manifest's semantic build surface consistent with the release. Existing
+   unmigrated submodules retain their recorded Gitlink/clean-byte/release checks;
+   migration is explicit, never an implicit change during verification.
 2. Pin proofs-rs, Aeneas, compatible Charon, extraction Rust, native Rust and Lean.
    For an explicit latest-version request, resolve upstream now and record the date
    and commit; the previous target's pins are a restoration baseline, not latest.
@@ -58,7 +61,16 @@ whose failures or interruptions must remain analyzable, use the optional
    source/model trust and excluded APIs in results; neither extraction nor a build
    alone proves a contract.
 
-## Shared commands
+## Managed targets
+
+Use the version-local setup.sh and verify.sh wrappers for targets with
+`aeneas/profiles.toml`. The [management guide](../../../verification/aeneas-management.md)
+describes source/tool locks, profile layout, per-target generated Lean, shared
+ignored tool caches, and the SARIF boundary. Setup logs and repository scripts must
+not be embedded in SARIF. Formal recording still runs standard Lake and CLI audits.
+Do not claim a draft profile is migrated until fresh verification passes.
+
+## Shared commands (legacy/custom runners)
 
 Run from the repository root in Bash. Replace `<crate>/<version>` with the prepared
 target; the source/tool checks described below belong in its surrounding verifier:
@@ -79,8 +91,7 @@ Both output directories must be new. These commands do not install tools, valida
 upstream source identity, prove Rust-to-Lean translation, or publish a proofs.rs report.
 See the reference for configuration and the surrounding runner responsibilities.
 
-The completed [adler2 example](../../../adler2/2.0.1/README.md) illustrates the layout;
-its [results](../../../adler2/2.0.1/verification/results.md) distinguish formal scope,
-native observations, trusted models, and recorder limitations. Reuse patterns, not
-its crate-specific contracts, bounds or API list. Paths from this skill to repository
-root use `../../..`.
+Use the managed template for new targets and each migrated version's README and
+profile results for concrete examples. Reuse patterns, not another crate's contracts,
+bounds, API list or acceptance claims. Paths from this skill to repository root use
+`../../..`.

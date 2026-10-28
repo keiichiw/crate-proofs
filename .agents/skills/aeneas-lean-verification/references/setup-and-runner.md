@@ -4,45 +4,33 @@ The shared Python helpers require Python 3.11 or newer (standard library only).
 `charon`, `aeneas`, `lake` and their compatible toolchains must be on PATH via the
 target environment. They are intentionally not installed or upgraded by the helpers.
 
-## Layout and installation
+## Managed layout and installation
 
-Use the established version-local layout:
+For new targets and explicit migrations, use the common runner described in
+[the management guide](../../../../verification/aeneas-management.md). Each version
+has source.lock.json, an independent Cargo workspace, thin setup/verify wrappers,
+and aeneas/profiles/<name> with tool locks, patches, specifications, proofs and
+evidence. Source and build products stay ignored. Migrated Aeneas workspaces use the managed
+layout; their accepted runs describe original inputs, not proof freshness of subsequent edits. Start with the [new-crate procedure](../../../../verification/templates/aeneas-managed/README.md).
 
-```text
-<crate>/<version>/
-  upstream/                 pinned unchanged Git submodule
-  Cargo.toml, Cargo.lock    independent workspace; lib.path points into upstream
-  scripts/                  env, setup, check-source, check-tools, fingerprint, verify
-  proofs/                   lean-toolchain, lakefile.toml, lake-manifest.json
-    <Generated>.lean       actual extraction
-    Proofs/*.lean          authored proofs, no incomplete placeholders
-  proofs.toml               proofs-rs public API mappings
-  verification/             toolchain pins, specification, inventory, runs, results
-```
+The common setup preserves caller tool homes and checks pinned sources, patch
+application and host builds. Its execution logs stay local; the recorder checks
+provenance and performs standard Lean verification independently. Never replace
+this boundary with a script-provided success marker.
 
-Use `adler2/2.0.1/scripts/setup.sh` as a tested-component recipe, not a generic installer:
-remove its crate path, ADLER_ROOT variable, API names and hardcoded tool pins when
-adapting. Keep provenance checks crate-local. The shared source-capture utility is
-`scripts/capture-crate-release.py`; inspect its CLI before use.
+## Historical layouts
 
-Resolve a compatible tuple from the selected proofs-rs registry/book and Aeneas's
-`charon-pin`, Lean backend toolchain and Charon Rust toolchain. Record exact revisions,
-URLs and feature/platform selection under the target. Build cargo-proofs with `--locked`.
-Use a separate tool installation directory and version-local PATH so existing global
-installations are not silently selected. Unset the native RUSTUP_TOOLCHAIN override
-when building Charon with its own Rust toolchain. On the recorded macOS setup, Aeneas
-uses OCaml/opam and GNU Make; Charon's documentation target required additional tools,
-so its required Rust targets were built separately. Confirm current upstream targets
-before reusing those commands.
-
-The original adler2 tool tuple and minimal proofs-rs audit-variable patch are in its
-`verification/toolchain.json` and `verification/patches/`. They are historical pins,
-not a claim about today's latest versions. The patch avoids Aeneas's reserved `name`
-token; its use must be checked against the newly chosen adapter version.
+Earlier work used submodules, version-local tool installations and custom runners.
+Follow an unmigrated target's own instructions when reproducing its existing work.
+Use the managed new-crate procedure for new work. Full old setup recipes are in local archives identified by each
+profile's evidence/archive.json, not necessarily distributed under evidence/legacy.
+Reader-facing historical documentation is retired; only explicitly inventoried
+compatibility fixtures remain distributed. Never copy historical absolute paths,
+crate identities, success claims or tool patches into a new workspace.
 
 ## Extraction configuration
 
-Example `verification/aeneas.json` (replace all example names):
+Example profile `extraction.json` (replace all example names):
 
 ```json
 {
@@ -56,6 +44,11 @@ Example `verification/aeneas.json` (replace all example names):
 ```
 
 Use definition names as they occur after `def` in generated Lean, not Rust paths.
+Ordinary `entries` may be empty when validated `impl_entries` or
+`foreign_impl_entries` supply at least one root; an empty combined selection is
+rejected. This avoids introducing unrelated generic dictionaries for impl-only
+verification.
+
 Expected `.lean` filenames form an exact inventory, supporting multiple generated
 files. Inspect output once to establish this configuration, then freeze it. Missing
 bodies, unexpected files, extractor nonzero status, `axiom`, `opaque`, `partial def`,
@@ -63,6 +56,49 @@ bodies, unexpected files, extractor nonzero status, `axiom`, `opaque`, `partial 
 parser; investigate a rejection rather than removing the axiom audit. Namespace/source
 span review is still required. `crate::` avoids accidentally selecting a same-named
 sysroot/registry crate, as happened with bare `adler2::` selectors.
+
+For crates whose unrelated declarations cannot be translated, `local_scope` may
+limit traversal while retaining the original selected bodies:
+
+```json
+"local_scope": {
+  "opaque_crate": true,
+  "include": ["crate::buf::take::Take", "crate::buf::take::new",
+              "crate::buf::take::_::limit"]
+}
+```
+
+This passes `--opaque crate` followed by explicit `--include` selectors. Local includes
+also accept the same validated local trait-impl method syntax as `impl_entries`,
+for example `{impl crate::Integer for _}::div_floor`; arbitrary wildcard paths
+remain rejected. A single
+intermediate `_` matches Charon's inherent impl component; arbitrary wildcards
+and a terminal `_` are rejected. Select the needed types and dependency bodies
+as well as entry functions. The generated-file inventory, required-body checks,
+and prohibition on generated axioms still apply. This option cannot be combined
+with `extract_opaque_bodies`, and does not establish coverage of omitted methods.
+
+`dependency_include` selects explicit dependency source paths or trait-impl
+methods such as `{impl num_traits::identities::Zero for _}::is_zero`. These are
+transparent original bodies, not trusted replacements. Arbitrary wildcard paths
+are rejected, and the same complete-output/body/axiom checks apply.
+
+The optional boolean `remove_unused_clauses` (default `false`) passes Charon's
+`--remove-unused-clauses` flag. This can remove unused trait bounds from field-only
+wrappers; it does not assume the corresponding trait's behavioral or safety laws.
+Generated body and axiom checks remain mandatory.
+
+`charon_exclude` optionally lists exact `crate::`, `core::`, `alloc::`, or `std::`
+paths without wildcard components. Every selected generated body must still be
+present, complete and free of application axioms. Excluding an unused trait
+declaration does not establish its operational laws.
+
+The optional boolean `rooted_declarations` (default `false`) selects the locally
+reviewed Aeneas `-rooted-declarations -filter-trait-methods` options. It requires a
+tool build that implements the recorded dependency-closure pass; standard builds
+need not support it. Record the tool patch and regressions. This limits emitted
+declarations to explicit function roots and retained dependencies; it never
+licenses dropping a reachable unsupported operation or changing its result.
 
 ## Theorem inventory
 
@@ -89,9 +125,10 @@ places and in the theorem. Metadata cannot prove the condition is adequate.
 `extracted_but_unproved` is a manually reviewed coverage ledger; an empty list does
 not automatically establish whole-crate correctness.
 
-## Version-local verify runner
+## Runner responsibilities (reference)
 
-Use a fresh directory inside `verification/runs/` (ignored by Git). The runner should:
+Use the common managed runner, which creates a fresh `.work/runs/` directory.
+Do not implement a replacement runner for a new crate. Its responsibilities are:
 
 1. Check source and tool identity, actual Lake dependency revisions and clean sources.
 2. Hash all Rust inputs, manifests/locks, generated and authored Lean, configuration,
@@ -116,7 +153,7 @@ Use direct log redirection if Bash process substitution is blocked by the execut
 sandbox. Keep commands visible in scripts and propagate errors (`set -euo pipefail`
 for Bash). Never overwrite an accepted run to conceal changed inputs or a failed retry.
 
-## proofs.rs recording
+## proofs.rs recording (historical compatibility context)
 
 Local Lean verification and recording are separate. The adler2-tested cargo-proofs
 0.4.0 commit did not initialize submodules in its temporary checkout, and required

@@ -36,7 +36,7 @@ These are reusable proof techniques, not assumptions about the next crate.
   bit arithmetic kept the audit policy unchanged. Always audit transitive dependencies,
   even when source text contains neither sorry nor axioms.
 
-For concrete implementations, inspect `adler2/2.0.1/proofs/Proofs/Compute.lean`,
+For concrete implementations, inspect `adler2/2.0.1/aeneas/profiles/default/proofs/Proofs/Compute.lean`,
 `OuterLoop.lean`, `LaneLoop.lean`, `FinalCombine.lean` and `PublicUpdate.lean`.
 Do not import these as generic lemmas for a different generated crate or copy their
 numeric bounds without a new derivation. Inspect results.md for accepted evidence.

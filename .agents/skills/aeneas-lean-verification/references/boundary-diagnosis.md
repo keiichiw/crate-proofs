@@ -74,3 +74,11 @@ then run the target's normal extraction, correspondence checks, build and audit.
 Compare theorem statements, assumptions, API mappings and exclusions as well as
 names: an unchanged theorem name can conceal a stronger precondition or weaker
 conclusion. Never rewrite old result hashes to make changed inputs appear verified.
+
+## Retain findings
+
+Use the [finding record template](../../../../verification/templates/finding.md)
+and [crate-local storage policy](../../../../verification/findings.md). Keep source
+bugs, tool defects, unsupported boundaries and unreviewed contract questions
+separate. Preserve original counterexamples and evidence identities; reporting
+upstream requires separate authorization.

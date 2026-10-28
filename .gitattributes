@@ -1,4 +1,5 @@
-# Preserve generated evidence byte-for-byte so recorded hashes remain valid.
-**/verification/**/target.coma whitespace=-blank-at-eol,-blank-at-eof
-**/verification/**/versions.txt whitespace=-blank-at-eof
-**/verification/**/*.log whitespace=-blank-at-eol,-blank-at-eof
+# Evidence and fixed patches are byte-identified inputs or execution records.
+# Preserve their line endings and do not apply source whitespace rules to them.
+**/evidence/** -text -whitespace linguist-generated=true
+*.patch -text -whitespace
+**/proofs/Generated/** -text linguist-generated=true

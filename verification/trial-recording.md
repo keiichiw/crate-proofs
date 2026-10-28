@@ -11,10 +11,10 @@ From the repository root, after activating the target's own environment:
 python3 scripts/record-trial.py \
   --output <crate>/<version>/verification/runs/<new-trial-id> \
   --stage aeneas \
-  --input <crate>/<version>/verification/aeneas.json \
+  --input <crate>/<version>/aeneas/profiles/default/extraction.json \
   --purpose 'Test the selected dependency boundary' \
   -- python3 scripts/aeneas-extract.py <crate>/<version> \
-     --config <crate>/<version>/verification/aeneas.json \
+     --config <crate>/<version>/aeneas/profiles/default/extraction.json \
      --output <crate>/<version>/verification/runs/<new-extraction-id>
 ```
 

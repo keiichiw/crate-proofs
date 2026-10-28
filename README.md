@@ -34,18 +34,18 @@ If setup is already complete, run activate and check. Check verifies an independ
 
 ## Aeneas + Lean workflow
 
-For Aeneas targets, use the [Aeneas/Lean skill](.agents/skills/aeneas-lean-verification/SKILL.md).
-It covers unchanged upstream submodules, compatible tool pins, independent specifications,
-actual generated-body proofs, and reproducible local evidence. The shared helpers are:
+For new Aeneas targets, start with the [managed new-crate procedure](verification/templates/aeneas-managed/README.md) and the [Aeneas/Lean skill](.agents/skills/aeneas-lean-verification/SKILL.md).
+The [management guide](verification/aeneas-management.md) describes checksum-pinned
+source restoration, isolated tool caches, profile-specific proofs and setup/verify
+entry points. Existing targets retain their own instructions until migrated.
 
-- `python3 scripts/aeneas-extract.py --help`: config-driven local-crate extraction with expected model/body checks.
-- `python3 scripts/aeneas-audit.py --help`: named-theorem builds, module/API mapping checks and transitive axiom audits.
-
-The [setup/runner reference](.agents/skills/aeneas-lean-verification/references/setup-and-runner.md)
-contains configuration examples and the required source/freshness checks around these helpers.
-Tool installation and mathematical proofs remain target-specific; these helpers do not
-claim automatic verification or proofs.rs recording. Use each target’s version-local
-runner and maintained evidence bundle for its current checked scope.
+Shared helpers include `scripts/aeneas-manage.py` for managed setup/verification,
+`scripts/aeneas-extract.py` for selected-body extraction, and `scripts/aeneas-audit.py`
+for named-theorem and transitive-axiom audits. These do not establish automatic
+whole-crate verification or proofs.rs recording. Read each target's contracts,
+results and trust boundaries; native tests remain separate from formal proof.
+The [evidence guide](verification/publication.md) explains local archives and
+current-input versus historical acceptance.
 
 ## Work by crate
 
@@ -76,3 +76,10 @@ A refresh must prove form_urlencoded first, then review and update percent-encod
 A draft configuration for the Codex cloud environment has been saved. Publishing and checking restoration in a new task remain separate steps. Review source changes under each version's Git control. Only log in to proofs.rs, push, or publish evidence with explicit authorization.
 
 The maintained English translations change fingerprints recorded by historical proof bundles. See the [language change record](verification/language-change.md) for how those bundles should be interpreted.
+
+## Reports and findings
+
+Use the [report-writing skill](.agents/skills/proofs-report-writing/SKILL.md) for
+reader-facing reports and Rust-only finding reproductions. The [finding policy](verification/findings.md)
+and [record template](verification/templates/finding.md) describe crate-local
+investigation records. Drafting does not authorize publication or upstream posting.

@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "supported_targets": [
+    "aarch64-apple-darwin",
+    "x86_64-unknown-linux-gnu"
+  ],
+  "migration_blockers": [
+    "Establish source/tool locks, native surface, extraction inventory, contracts and theorem/API mappings before enabling verification."
+  ],
+  "native": [
+    [
+      "cargo",
+      "test",
+      "--locked"
+    ]
+  ],
+  "extractions": [],
+  "inventory": "theorems.json",
+  "report": "proofs.toml",
+  "lean_dir": "proofs"
+}

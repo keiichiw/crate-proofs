@@ -43,6 +43,10 @@ The httpdate parser separated permissive `RawDate` from `HttpDate`, which carrie
 
 ## 4. Preserve run evidence and freshness
 
+For Aeneas, use the [new-crate procedure](templates/aeneas-managed/README.md) and
+managed setup/verify wrappers. Do not activate the Creusot environment. The Why3,
+Coma and shared activation instructions below apply to Creusot targets only.
+
 Read the existing proof procedure, crate-local `AGENTS.md`, and skill first. Activate the shared repository environment, and use a separate workspace / lockfile / evidence directory for each crate.
 
 - Before compile, record source, contracts/specification, configuration, scripts, toolchain / prover versions and hashes in the manifest. Run in a fresh output location with the proof cache disabled.
