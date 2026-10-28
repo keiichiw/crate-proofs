@@ -181,7 +181,7 @@ def fingerprint(root, profile, store, lock, active=None, runtimes=None):
     if runtime_key not in runtimes:
         runtimes[runtime_key] = runtime_identity(lock)
     result['runtime'] = runtimes[runtime_key]
-    result['source'] = source.inventory(root / '.work/source')
+    result['source'] = source.inventory(source.directory(root))
     lean = root / '.work/build' / name / tools.host() / 'proofs'
     result['lake_dependencies'] = check_lake(lean)
     _, config, _ = configuration(root, name)
@@ -207,10 +207,10 @@ def materialize(root, name, profile, store):
             if child.name != '.lake':
                 shutil.rmtree(child) if child.is_dir() and not child.is_symlink() else child.unlink()
     shutil.copytree(profile / 'proofs', dest, dirs_exist_ok=True,
-                    ignore=shutil.ignore_patterns('.lake', '*.olean', '*.ilean'))
+                    ignore=shutil.ignore_patterns('.lake', '.proofs-toolchain', '*.olean', '*.ilean'))
     backend = store / 'aeneas/backends/lean'
     file = dest / 'lakefile.toml'
-    text = file.read_text().replace('@AENEAS_BACKEND@', str(backend)).replace('@TARGET@', tools.host())
+    text = file.read_text().replace('@AENEAS_BACKEND@', str(backend)).replace('@TARGET@', tools.host()).replace('.proofs-toolchain/aeneas/backends/lean', str(backend))
     known = {'aeneas': backend}
     source_paths, identities, visited = {}, {}, set()
     def collect(crate, profile_name):
@@ -321,7 +321,7 @@ def prepare_lake(lean, offline):
 def native_surface(root):
     """Check semantic Cargo declarations; changed surfaces require explicit reasons."""
     outer = tomllib.loads((root / 'Cargo.toml').read_text())
-    upstream = tomllib.loads((root / '.work/source/Cargo.toml').read_text())
+    upstream = tomllib.loads((source.directory(root) / 'Cargo.toml').read_text())
     policy = json.loads((root / 'source.lock.json').read_text()).get('manifest_exceptions', {})
     differences = []
     for key in ('features', 'dependencies', 'dev-dependencies', 'build-dependencies', 'target'):
@@ -335,7 +335,7 @@ def native_surface(root):
         raise ValueError('Unreviewed manifest differences: ' + ', '.join(differences))
     outer_lib, release_lib = outer.get('lib', {}), upstream.get('lib', {})
     actual_path = (root / outer_lib.get('path', 'src/lib.rs')).resolve()
-    expected_path = (root / '.work/source' / release_lib.get('path', 'src/lib.rs')).resolve()
+    expected_path = (source.directory(root) / release_lib.get('path', 'src/lib.rs')).resolve()
     if actual_path != expected_path:
         raise ValueError('Cargo library does not compile the locked release source')
     if ({k: v for k, v in outer_lib.items() if k != 'path'} !=
@@ -346,7 +346,7 @@ def native_surface(root):
 def check_aliases(root, lock):
     for name in lock.get('aliases', []):
         alias = root / source.relative(name)
-        target = root / '.work/source'
+        target = source.directory(root)
         if alias.is_symlink():
             if alias.resolve() != target.resolve():
                 raise ValueError(f'Incorrect source alias: {alias}')
@@ -478,7 +478,7 @@ def verify(root, name, offline=False, prepared=None):
             if set(expected) != set(extraction['models']):
                 raise ValueError('Extraction comparison inventory is incomplete')
             for generated, maintained in extraction['models'].items():
-                maintained = maintained.replace('@TARGET@', tools.host())
+                maintained = maintained.replace('@TARGET@', tools.host()).replace('.proofs-toolchain/aeneas/backends/lean', str(backend))
                 if (output / generated).read_bytes() != source.contained(profile, maintained).read_bytes():
                     raise ValueError(f'Regenerated model differs: {generated}')
         with (run_dir / 'lean-clean.log').open('wb') as log:
@@ -490,7 +490,7 @@ def verify(root, name, offline=False, prepared=None):
                        '--proofs-toml', source.contained(profile, config['report']),
                        '--output', run_dir / 'audit'], root, log, env)
         commands(config.get('post_checks', []), root, env, run_dir, 'post')
-        source.check(root / '.work/source', json.loads((root / 'source.lock.json').read_text()))
+        source.check(source.directory(root), json.loads((root / 'source.lock.json').read_text()))
         after = fingerprint(root, profile, store, lock)
         source.write_json(run_dir / 'inputs-after.json', after)
         if before != after:
@@ -592,7 +592,7 @@ def main():
     elif args.command == 'doctor':
         print(json.dumps(tools.doctor(), indent=2))
     elif args.command == 'check-source':
-        source.check(root / '.work/source', json.loads((root / 'source.lock.json').read_text()))
+        source.check(source.directory(root), json.loads((root / 'source.lock.json').read_text()))
     else:
         lint(root)
 

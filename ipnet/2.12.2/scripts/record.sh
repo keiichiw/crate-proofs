@@ -1,9 +1,11 @@
 #!/usr/bin/env bash
 set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-bash "$ROOT/scripts/setup.sh"
-source "$ROOT/scripts/env.sh"
-export AENEAS_TOOL_CACHE="${AENEAS_TOOL_CACHE:-$(cd "$ROOT/../.." && pwd)/.work/tools}"
-export AENEAS_ARCHIVE_CACHE="${AENEAS_ARCHIVE_CACHE:-$ROOT/.work/cache}"
-cd "$ROOT/.work/selected-proofs"
-exec cargo proofs run --manifest-path "$ROOT/Cargo.toml" --proofs-config aeneas/profiles/default/proofs.toml -- lake build
+export RUSTUP_TOOLCHAIN=1.91.1
+export ELAN_TOOLCHAIN=leanprover/lean4:v4.35.0
+CLI="${CARGO_PROOFS_BIN:-cargo-proofs}"
+ARGS=(--manifest-path "$ROOT/Cargo.toml" --proofs-config aeneas/profiles/default/proofs.toml)
+"$CLI" proofs prepare "${ARGS[@]}"
+cd "$ROOT/aeneas/profiles/default/proofs"
+lake update
+exec "$CLI" proofs run "${ARGS[@]}" -- lake build

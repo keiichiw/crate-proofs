@@ -6,8 +6,8 @@ name = "Proofs"
 
 [[lean_lib]]
 name = "Ipnet"
-srcDir = "Generated/@TARGET@"
+srcDir = "Generated/aarch64-apple-darwin"
 
 [[require]]
 name = "aeneas"
-path = "@AENEAS_BACKEND@"
+path = ".proofs-toolchain/aeneas/backends/lean"

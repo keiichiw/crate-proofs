@@ -51,6 +51,17 @@ class SourceTests(unittest.TestCase):
         self.assertEqual(first, source.restore(self.root, offline=True, cache=self.cache))
         self.assertTrue((first / 'Cargo.lock').is_file())
 
+    def test_tracked_upstream_is_checked_without_restoration(self):
+        lock = self.fixture()
+        (self.root / 'expanded').rename(self.root / 'upstream')
+        restored = source.restore(self.root, offline=True)
+        self.assertEqual(restored, source.directory(self.root))
+        self.assertFalse((self.root / '.work').exists())
+        (restored / 'src/lib.rs').write_text('changed')
+        with self.assertRaises(ValueError):
+            source.restore(self.root, offline=True)
+        self.assertEqual((restored / 'src/lib.rs').read_text(), 'changed')
+
     def test_parallel_restore(self):
         self.fixture()
         with ThreadPoolExecutor(max_workers=4) as pool:

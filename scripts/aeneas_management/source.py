@@ -1,4 +1,4 @@
-"""Restore immutable sources without adding upstream code to Git."""
+"""Restore immutable sources or validate explicitly tracked upstream snapshots."""
 from contextlib import contextmanager
 import fcntl
 import hashlib
@@ -134,6 +134,9 @@ def download(url, destination):
 
 
 def restore(root, *, offline=False, cache=None):
+    if (Path(root) / 'upstream').is_dir():
+        check(Path(root) / 'upstream', json.loads((Path(root) / 'source.lock.json').read_text()))
+        return Path(root) / 'upstream'
     root = Path(root).resolve()
     lock = json.loads((root / 'source.lock.json').read_text())
     validate_lock(lock)
@@ -188,3 +191,9 @@ def restore(root, *, offline=False, cache=None):
             check(stage, lock)
             stage.rename(target)
     return target
+
+
+def directory(root):
+    """Tracked upstream snapshots take precedence over restored ignored sources."""
+    root = Path(root)
+    return root / ('upstream' if (root / 'upstream').is_dir() else '.work/source')
