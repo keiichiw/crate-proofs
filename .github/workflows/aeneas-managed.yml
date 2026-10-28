@@ -1,0 +1,63 @@
+name: Managed Aeneas native verification
+on:
+  workflow_dispatch:
+    inputs:
+      crate:
+        description: Independent crate workspace
+        required: true
+        type: choice
+        options:
+          - ipnet/2.12.2
+      profile:
+        description: Named profile in aeneas/profiles.toml
+        default: default
+        required: true
+        type: string
+permissions:
+  contents: read
+jobs:
+  verify:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, macos-15]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 180
+    env:
+      CRATE_ROOT: ${{ inputs.crate }}
+      PROOF_PROFILE: ${{ inputs.profile }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Evidence storage tests and publication lint
+        run: |
+          python3 -m unittest discover -s scripts/tests -p test_aeneas_evidence.py -v
+          python3 scripts/aeneas_evidence.py check "$CRATE_ROOT/aeneas/profiles/$PROOF_PROFILE/evidence"
+      - name: Linux prerequisites
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y opam build-essential pkg-config libgmp-dev bubblewrap
+      - name: macOS prerequisites
+        if: runner.os == 'macOS'
+        run: brew install opam gmp pkg-config make
+      - name: Lean toolchain manager
+        shell: bash
+        run: |
+          curl --fail --location --proto '=https' --tlsv1.2 https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh -o "$RUNNER_TEMP/elan-init.sh"
+          sh "$RUNNER_TEMP/elan-init.sh" -y --default-toolchain none
+          echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
+      - name: Layout and prerequisite checks
+        run: |
+          python3 scripts/aeneas-manage.py lint "$CRATE_ROOT"
+          python3 scripts/aeneas-manage.py doctor "$CRATE_ROOT"
+      - name: Restore pinned inputs and build native tools
+        run: bash "$CRATE_ROOT/scripts/setup.sh" --profile "$PROOF_PROFILE"
+      - name: Verify from the fresh checkout
+        run: bash "$CRATE_ROOT/scripts/verify.sh" --profile "$PROOF_PROFILE"
+      - name: Verify again with the populated cache offline
+        run: bash "$CRATE_ROOT/scripts/verify.sh" --profile "$PROOF_PROFILE" --offline

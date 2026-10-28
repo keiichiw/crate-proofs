@@ -1,20 +1,0 @@
-[[92mInfo[39m ] Imported: /Users/keiichiw/workspace/crate-proofs/ipnet/2.12.2/verification/issue-repros/aeneas/runs/check-JvjA9xWu/mutable_dyn_write/repro.llbc
-[?25lApplied prepasses:  [--------------------------------------------------]  0/23 ⠋Applied prepasses:  [##------------------------------------------------]  1/23 ⠋Applied prepasses:  [##########################------------------------] 12/23 ⠋Applied prepasses:  [##################################################] 23/23 ✔️
-[?25h[?25lTranslated globals:  [---------------------------------------------------] 0/0 ⠋Translated globals:  [---------------------------------------------------] 0/0 ✔️
-[?25h[?25lTranslated opaque functions:  [------------------------------------------] 0/2 ⠋Translated opaque functions:  [##########################################] 2/2 ✔️
-[?25h[?25lTranslated transparent functions:  [-------------------------------------] 0/2 ⠋[[91mError[39m] Unsupported cast to a dynamic trait
-Source: 'src/lib.rs', lines 21:15-21:19
-[[93mWarn[39m ] Could not translate the body of function 'ipnet_aeneas_repros::mutable_dyn_write because of previous error
-Name pattern: 'ipnet_aeneas_repros::mutable_dyn_write'
-Definition span: 'src/lib.rs', lines 20:0-22:1
-Source: 'src/lib.rs', lines 21:15-21:19
-Compiler source: interp/Interp.ml, line 629
-
-Translated transparent functions:  [##################-------------------] 1/2 ⠋Translated transparent functions:  [#####################################] 2/2 ⠋Translated transparent functions:  [#####################################] 2/2 ✔️
-[?25h[?25lTranslated trait declarations:  [----------------------------------------] 0/5 ⠋Translated trait declarations:  [########--------------------------------] 1/5 ✔️
-[?25h[?25lTranslated trait impls:  [-----------------------------------------------] 0/7 ⠋Translated trait impls:  [######-----------------------------------------] 1/7 ✔️
-[?25h[?25lPost-processed translated opaque functions:  [---------------------------] 0/2 ⠋Post-processed translated opaque functions:  [#############--------------] 1/2 ⠋Post-processed translated opaque functions:  [###########################] 2/2 ✔️
-[?25h[?25lPost-processed translated transparent functions:  [----------------------] 0/2 ⠋Post-processed translated transparent functions:  [######################] 2/2 ✔️
-[?25h[[92mInfo[39m ] Generated the partial file (because of 1 errors, including 1 unique errors): /Users/keiichiw/workspace/crate-proofs/ipnet/2.12.2/verification/issue-repros/aeneas/runs/check-JvjA9xWu/mutable_dyn_write/Repro.lean
-[[93mWarn[39m ] The crate contains extracted external, unknown definitions: we advise using the option -split-files to allow manually providing these definitions in separate files.
-[[92mInfo[39m ] Total execution time: 0.251327 seconds

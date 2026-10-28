@@ -1,0 +1,51 @@
+{
+  "additional_checks": [
+    [
+      "python3",
+      "scripts/check-model-inputs.py"
+    ]
+  ],
+  "cargo_root": ".",
+  "extractions": [
+    {
+      "config": "extraction.json",
+      "cwd": ".",
+      "models": {
+        "Ipnet.lean": "proofs/Generated/@TARGET@/Ipnet.lean"
+      }
+    }
+  ],
+  "inventory": "theorems.json",
+  "lean_dir": "proofs",
+  "native": [
+    [
+      "cargo",
+      "test",
+      "--locked"
+    ],
+    [
+      "cargo",
+      "test",
+      "--locked",
+      "--no-default-features"
+    ],
+    [
+      "cargo",
+      "test",
+      "--locked",
+      "--all-features"
+    ]
+  ],
+  "post_checks": [
+    [
+      "python3",
+      "scripts/check-extraction-and-shifts.py"
+    ]
+  ],
+  "report": "proofs.toml",
+  "schema_version": 1,
+  "supported_targets": [
+    "aarch64-apple-darwin",
+    "x86_64-unknown-linux-gnu"
+  ]
+}

@@ -1,0 +1,51 @@
+{
+  "extraction_rust": "nightly-2026-09-17",
+  "lean": "leanprover/lean4:v4.35.0",
+  "native_rust": "1.91.1",
+  "opam_sha256": "ccd5b40e39461d88514aee8af0d0e64806d72e3bf3a86d9fc921a11c526691a8",
+  "recipe": "aeneas-opam-v1",
+  "repositories": {
+    "aeneas": {
+      "patches": [
+        {
+          "file": "patches/aeneas-runtime-ipv6-constructor.patch",
+          "kind": "extractor-and-backend-model",
+          "purpose": "Checked U32/U128 shift wrappers; exact erasure of unused unwrap Debug dictionary and trait-filter validation fix; concrete IPv4/IPv6 octet types and Ord::cmp registrations with reviewed trusted Rust correspondence (model-boundaries.md). Exact U32 saturating-add value lemma about the unchanged baseline scalar model. Formatter unchanged. Generated registration metadata and rebuilt OCaml executable are pinned. Exact Result::ok match model for the reviewed drop-free Ipv4Net/PrefixLenError application; map remains extracted. Exact U32 saturating subtraction value lemma about unchanged baseline model. Reviewed U32 trailing_zeros model via fixed-width bit reversal and leading-zero count; trailing_ones remains actual extracted Rust. Result::ok reviewed scope also includes drop-free Ipv6Net. Narrow reviewed Ipv6Addr::new standard constructor model concatenates eight U16 big-endian byte pairs; exact registration, no generic transmute or application model. Reviewed U128 trailing_zeros uses fixed-width128 reversal and leadingZeros with U32 result; actual U128 trailing_ones remains extracted. U128 saturating-add/sub value lemmas describe the unchanged scalar models. Kernel U128/Usize MAX+1 failure lemmas describe unchanged checked addition and introduce no executable model. Lean local-binder allocator avoids ordinary dotted declaration namespace roots, fixing mask parameter shadowing by alpha-renaming; no application model or runtime semantic change. Expose the unchanged BuiltinClone definition and prove its exact Unit clone equation by rfl; no executable model or registration change.",
+          "regressions": "Fresh Ipnet extraction, exact runtime-check configuration, shift overflow examples, source model hashes and complete original theorem audit.",
+          "sha256": "28bb672278bbb11b7ddcf66fb359e3f31fb7b74f900c6da567eac80d1e8ea7ac"
+        }
+      ],
+      "revision": "8e62dc3dc765602833c86b68dceb18a475a50a8f",
+      "tree": "818b384f6f3d2c82f3d39a2205d3f443add1fc84",
+      "url": "https://github.com/AeneasVerif/aeneas.git"
+    },
+    "charon": {
+      "patches": [
+        {
+          "file": "patches/charon-runtime-ipv6-matcher.patch",
+          "kind": "extractor",
+          "purpose": "Lower only true recorded MIR UbChecks (true in runtime and const contexts) and reconstruct divergent panic_nounwind_fmt using existing panic representation. Other settings stay unsupported. Complete inherent implementation name selection by delegating its concrete type to existing matches_ty; reviewed use is exact region-free IPv6 constructor selection, with IPv4 and unrelated methods retained.",
+          "regressions": "Fresh Ipnet extraction, exact runtime-check configuration, shift overflow examples, source model hashes and complete original theorem audit.",
+          "sha256": "8ce7a0e21229fdc3a4ee0ddddcbd7bf6bebd865248a8bbacacc4711edcd62c9c"
+        }
+      ],
+      "revision": "08d7c9d50144bd84848212c24701253585e90d1f",
+      "tree": "8bc8af4729f6833de500e607b24dfd68847ca316",
+      "url": "https://github.com/AeneasVerif/charon.git"
+    },
+    "proofs-rs": {
+      "patches": [
+        {
+          "file": "patches/cargo-proofs-preparation.patch",
+          "purpose": "Prepare pinned sources and patched tools before Cargo discovery; standard Lake/audit-only SARIF; named profile selection, target input provenance and maintained source references. Read-only independent tool-tree replay and actual tracked-file checks prevent shared-index races and index-flag bypass, including fresh checkouts.",
+          "regressions": "CLI unit/integration tests; source tampering/log separation/profile-selection tests; actual Lean/Aeneas extraction and rejection tests. Concurrent checks under held index locks; fresh missing-tree replay; assume-unchanged/skip-worktree tamper rejection.",
+          "sha256": "c6f12abf3e1e3b6f2ec910179612f3a71d51351826f7b3c7bdb97e9df700e5eb"
+        }
+      ],
+      "revision": "2446bcad7d492be2d2036629e5dc94d186a23213",
+      "tree": "e0a369bf354e14861a21819f366f2db0531d8d48",
+      "url": "https://github.com/proofs-rs/proofs-rs.git"
+    }
+  },
+  "schema_version": 1
+}

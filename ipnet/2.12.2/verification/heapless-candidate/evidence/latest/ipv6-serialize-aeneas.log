@@ -1,42 +1,0 @@
-[[92mInfo[39m ] Imported: /Users/keiichiw/workspace/crate-proofs/ipnet/2.12.2/verification/heapless-candidate/runs/check-rt6e1h3s/ipv6-serialize/candidate.llbc
-[?25lApplied prepasses:  [--------------------------------------------------]  0/85 ⠋Applied prepasses:  [--------------------------------------------------]  1/85 ⠋Applied prepasses:  [#######-------------------------------------------] 12/85 ⠋Applied prepasses:  [##################################################] 85/85 ✔️
-[?25h[?25lTranslated globals:  [---------------------------------------------------] 0/3 ⠋Translated globals:  [###################################################] 3/3 ✔️
-[?25h[?25lTranslated opaque functions:  [----------------------------------------]  0/47 ⠋Translated opaque functions:  [########################################] 47/47 ✔️
-[?25h[?25lTranslated transparent functions:  [-------------------------------------] 0/4 ⠋[[91mError[39m] Unsupported cast to a dynamic trait
-Source: 'src/ipnet_serde.rs', lines 143:27-143:35
-[[93mWarn[39m ] Could not translate the body of function 'ipnet::ipnet_serde::{impl serde_core::ser::Serialize for ipnet::ipnet::Ipv6Net}::serialize because of previous error
-Name pattern: 'ipnet::ipnet_serde::{serde_core::ser::Serialize<ipnet::ipnet::Ipv6Net>}::serialize'
-Definition span: 'src/ipnet_serde.rs', lines 136:4-156:5
-Source: 'src/ipnet_serde.rs', lines 143:27-143:35
-Compiler source: interp/Interp.ml, line 629
-
-Translated transparent functions:  [#########----------------------------] 1/4 ⠋Translated transparent functions:  [#####################################] 4/4 ⠙Translated transparent functions:  [#####################################] 4/4 ✔️
-[?25h[?25lTranslated trait declarations:  [--------------------------------------]  0/55 ⠋Translated trait declarations:  [######################----------------] 32/55 ✔️
-[?25h[?25lTranslated trait impls:  [---------------------------------------------]  0/48 ⠋Translated trait impls:  [##########################-------------------] 28/48 ✔️
-[?25h[?25lPost-processed translated opaque functions:  [-------------------------]  0/47 ⠋Post-processed translated opaque functions:  [-------------------------]  1/47 ⠙Post-processed translated opaque functions:  [#########################] 47/47 ✔️
-[?25h[?25lPost-processed translated transparent functions:  [----------------------] 0/4 ⠋Post-processed translated transparent functions:  [#####-----------------] 1/4 ⠋Post-processed translated transparent functions:  [######################] 4/4 ✔️
-[?25h[[93mWarn[39m ] Mutually recursive trait declarations are not supported; the following group of mutually recursive traits is going to be extracted but their model will not type-check:
-'heapless::vec::storage::VecStorage', source: '/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/heapless-0.9.2/src/vec/mod.rs', lines 63:4-63:48
-'heapless::vec::storage::VecSealedStorage', source: '/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/heapless-0.9.2/src/vec/mod.rs', lines 65:4-65:33
-Compiler source: Translate.ml, line 1196
-
-[[93mWarn[39m ] Mutually recursive trait declarations are not supported; the following group of mutually recursive traits is going to be extracted but their model will not type-check:
-'heapless::string::storage::StringStorage', source: '/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/heapless-0.9.2/src/string/mod.rs', lines 89:4-89:48
-'heapless::string::storage::StringStorageSealed', source: '/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/heapless-0.9.2/src/string/mod.rs', lines 90:4-90:49
-Compiler source: Translate.ml, line 1196
-
-[[93mWarn[39m ] Mutually recursive trait declarations are not supported; the following group of mutually recursive traits is going to be extracted but their model will not type-check:
-'serde_core::ser::Serialize', source: '/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde_core-1.0.229/src/ser/mod.rs', lines 234:0-234:19
-'serde_core::ser::Serializer', source: '/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde_core-1.0.229/src/ser/mod.rs', lines 355:0-355:27
-'serde_core::ser::SerializeSeq', source: '/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde_core-1.0.229/src/ser/mod.rs', lines 1518:0-1518:22
-'serde_core::ser::SerializeTuple', source: '/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde_core-1.0.229/src/ser/mod.rs', lines 1624:0-1624:24
-'serde_core::ser::SerializeTupleStruct', source: '/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde_core-1.0.229/src/ser/mod.rs', lines 1675:0-1675:30
-'serde_core::ser::SerializeTupleVariant', source: '/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde_core-1.0.229/src/ser/mod.rs', lines 1739:0-1739:31
-'serde_core::ser::SerializeMap', source: '/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde_core-1.0.229/src/ser/mod.rs', lines 1811:0-1811:22
-'serde_core::ser::SerializeStruct', source: '/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde_core-1.0.229/src/ser/mod.rs', lines 1907:0-1907:25
-'serde_core::ser::SerializeStructVariant', source: '/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde_core-1.0.229/src/ser/mod.rs', lines 1977:0-1977:32
-Compiler source: Translate.ml, line 1196
-
-[[92mInfo[39m ] Generated the partial file (because of 1 errors, including 1 unique errors): /Users/keiichiw/workspace/crate-proofs/ipnet/2.12.2/verification/heapless-candidate/runs/check-rt6e1h3s/ipv6-serialize/Candidate.lean
-[[93mWarn[39m ] The crate contains extracted external, unknown definitions: we advise using the option -split-files to allow manually providing these definitions in separate files.
-[[92mInfo[39m ] Total execution time: 0.510723 seconds

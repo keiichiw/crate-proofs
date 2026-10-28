@@ -1,17 +1,0 @@
-[[92mInfo[39m ] Imported: /Users/keiichiw/workspace/crate-proofs/ipnet/2.12.2/verification/issue-repros/aeneas/runs/check-JvjA9xWu/extend_bytes/repro.llbc
-[?25lApplied prepasses:  [--------------------------------------------------]  0/29 ⠋Applied prepasses:  [#-------------------------------------------------]  1/29 ⠋Applied prepasses:  [####################------------------------------] 12/29 ⠋Applied prepasses:  [##################################################] 29/29 ✔️
-[?25h[?25lTranslated globals:  [---------------------------------------------------] 0/0 ⠋Translated globals:  [---------------------------------------------------] 0/0 ✔️
-[?25h[[91mError[39m] Internal error, please file an issue
-Source: '/rustc/library/core/src/iter/traits/iterator.rs', lines 42:0-42:24
-Uncaught exception:
-  
-  Aeneas.Errors.CFailure(_)
-
-Raised at Aeneas__Errors.craise_opt_span in file "Errors.ml", line 127, characters 4-46
-Called from Aeneas__SymbolicToPureTypes.translate_fun_sigs in file "symbolic/SymbolicToPureTypes.ml", lines 1004-1005, characters 4-57
-Called from Aeneas__Translate.translate_crate_to_pure.translate_method_sig in file "Translate.ml", lines 405-406, characters 10-45
-Called from Stdlib__List.map in file "list.ml", line 89, characters 15-19
-Called from Stdlib__List.map in file "list.ml", line 89, characters 15-19
-Called from Aeneas__Translate.translate_crate_to_pure in file "Translate.ml", lines 422-423, characters 10-71
-Called from Aeneas__Translate.translate_crate in file "Translate.ml", line 2206, characters 31-71
-Called from Dune__exe__Main in file "Main.ml", lines 765-766, characters 8-37
