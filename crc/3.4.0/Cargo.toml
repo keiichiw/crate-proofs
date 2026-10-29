@@ -43,7 +43,7 @@ repository = "https://github.com/mrhooray/crc-rs.git"
 
 [lib]
 name = "crc"
-path = ".work/source/src/lib.rs"
+path = "upstream/src/lib.rs"
 
 [[test]]
 name = "crc"
@@ -51,7 +51,7 @@ path = "tests/crc.rs"
 
 [[bench]]
 name = "bench"
-path = ".work/source/benches/bench.rs"
+path = "upstream/benches/bench.rs"
 harness = true
 
 [dependencies.crc-catalog]
@@ -63,4 +63,4 @@ version = "2.4.0"
 
 [[test]]
 name = "upstream_crc"
-path = ".work/source/tests/crc.rs"
+path = "upstream/tests/crc.rs"

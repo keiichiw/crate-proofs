@@ -8,18 +8,20 @@
       "name": "\u00abcrc-proofs\u00bb",
       "manifestFile": "lake-manifest.json",
       "inherited": false,
-      "dir": "@DEPENDENCY:crc/3.4.0:default@",
+      "dir": "../../default/proofs",
       "copy": false,
       "configFile": "lakefile.toml"
     },
     {
-      "type": "path",
-      "scope": "",
       "name": "aeneas",
-      "manifestFile": "lake-manifest.json",
+      "type": "git",
+      "url": "https://github.com/AeneasVerif/aeneas.git",
+      "rev": "be86ab0f1989d04944292b345b24c435be3ad10a",
+      "inputRev": "be86ab0f1989d04944292b345b24c435be3ad10a",
+      "subDir": "backends/lean",
+      "scope": "",
       "inherited": true,
-      "dir": "@AENEAS_BACKEND@",
-      "copy": false,
+      "manifestFile": "lake-manifest.json",
       "configFile": "lakefile.lean"
     },
     {

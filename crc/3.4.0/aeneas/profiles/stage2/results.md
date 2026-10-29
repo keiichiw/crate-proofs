@@ -62,3 +62,11 @@ before/after fingerprints. It establishes only this profile's stated contracts.
 
 Local-only result: [result.json](/Users/keiichiw/workspace/crate-proofs/.work/current-input-refactor/isolated-checkout/crc/3.4.0/.work/runs/stage2-ruo3_ag1/result.json), SHA-256 `bd12c3e111a62cc06959bdafa37d5ffb6cea05c05bf03189f9b0a877006c9c25`.
 Input fingerprint: SHA-256 `164e5d2fdac8178f5d8a0d75c9c044d9f65eb7032762b1219219a92df9f69b31`. Linux was not run for this result.
+
+## Current-input verification (2026-10-29)
+
+On `aarch64-apple-darwin` (macOS arm64), verification passed with the tracked, unchanged release source under `upstream/` and `cargo-proofs` 0.4.1 based on `344b4797d677636f57ba826dfc6afd22f4c90534` with the concrete API compatibility patch. Native debug, release, upstream and documentation tests passed separately from the formal checks. Fresh extraction and model equality, the Lean build, theorem and axiom audit (700 roots), and unchanged before/after input fingerprints passed. This source, layout and tool migration does not change the contracts or API scope.
+
+The local-only run directory is `.work/runs/stage2-xw_uqhin`. Result SHA-256: `e7d4ab906c609dc1b9bfefcc3072e2ee885e6c1e2583defcd30968f4bc5537af`. Input fingerprint SHA-256: `021c864c2b0b14a80de3a9a441d668f71416f447dd3d52354b577cd87a4c3d58`.
+
+The CLI prerequisite API checks resolved all 75 mappings, but the source gate stopped the CLI before recording. CLI recording and publication were not performed.

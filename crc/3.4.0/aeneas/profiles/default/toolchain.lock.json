@@ -20,14 +20,14 @@
     "proofs-rs": {
       "patches": [
         {
-          "file": "patches/cargo-proofs-preparation.patch",
-          "purpose": "Prepare pinned sources and patched tools before Cargo discovery; standard Lake/audit-only SARIF; named profile selection, target input provenance and maintained source references. Read-only independent tool-tree replay and actual tracked-file checks prevent shared-index races and index-flag bypass, including fresh checkouts.",
-          "regressions": "CLI unit/integration tests; source tampering/log separation/profile-selection tests; actual Lean/Aeneas extraction and rejection tests. Concurrent checks under held index locks; fresh missing-tree replay; assume-unchanged/skip-worktree tamper rejection.",
-          "sha256": "c6f12abf3e1e3b6f2ec910179612f3a71d51351826f7b3c7bdb97e9df700e5eb"
+          "file": "patches/cargo-proofs-concrete-api.patch",
+          "sha256": "a83aceace4c12affb6c138d6c0d8d60ae1d7c2461c75c195f28661fd57cedbb9",
+          "purpose": "Compiler-check configured concrete public root-type API instances, including inherited Clone::clone_from, on the host cfg. Restrict type syntax, match expanded function declarations, reject constants with callable/function-item checks, and reject dependency drift. No source setup hooks or proof-success replacement.",
+          "regressions": "Full cargo-proofs unit/integration tests; real compiler positive CRC-like generic/lane/Clone/lifetime instances; negative invalid word/lane/private/cfg-dead/constant/function-pointer-shadow/injection/non-host cases; actual CRC 21+75 mapping prerequisites."
         }
       ],
-      "revision": "2446bcad7d492be2d2036629e5dc94d186a23213",
-      "tree": "e0a369bf354e14861a21819f366f2db0531d8d48",
+      "revision": "344b4797d677636f57ba826dfc6afd22f4c90534",
+      "tree": "cc290c2cfc467a3a3695ba3f1754f802d5db007f",
       "url": "https://github.com/proofs-rs/proofs-rs.git"
     }
   },

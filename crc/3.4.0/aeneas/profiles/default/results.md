@@ -57,3 +57,11 @@ before/after fingerprints. It establishes only this profile's stated contracts.
 
 Local-only result: [result.json](/Users/keiichiw/workspace/crate-proofs/.work/current-input-refactor/isolated-checkout/crc/3.4.0/.work/runs/default-7zon60u0/result.json), SHA-256 `d3ac95c9662870263b210c06d7a5ed13f46dc787cbbdaac545a843bde95668b8`.
 Input fingerprint: SHA-256 `8b0a1ce2d9bee917273a67e1cc261d1013b827737c5bd75e12b830f2461130d9`. Linux was not run for this result.
+
+## Current-input verification (2026-10-29)
+
+On `aarch64-apple-darwin` (macOS arm64), verification passed with the tracked, unchanged release source under `upstream/` and `cargo-proofs` 0.4.1 based on `344b4797d677636f57ba826dfc6afd22f4c90534` with the concrete API compatibility patch. Native debug, release, upstream and documentation tests passed separately from the formal checks. Fresh extraction and model equality, the Lean build, theorem and axiom audit (63 roots), and unchanged before/after input fingerprints passed. This source, layout and tool migration does not change the contracts or API scope.
+
+The local-only run directory is `.work/runs/default-jkvsns_t`. Result SHA-256: `a5a8fab983acba667a6c17b88371e4eaf76e3a5395084f3948efa720dfd8b28c`. Input fingerprint SHA-256: `3cb0c022100c2d7eba9f313cd8243ae30a42320b334a913f2aad2f016da4fd47`.
+
+The CLI prerequisite API checks resolved all 21 mappings, but the source gate stopped the CLI before recording. CLI recording and publication were not performed.

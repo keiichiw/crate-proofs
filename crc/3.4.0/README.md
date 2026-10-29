@@ -1,8 +1,11 @@
 # crc 3.4.0
 
 The managed Aeneas profiles preserve the existing mathematical contracts and use
-unchanged crates.io source restored from `source.lock.json` into ignored
-`.work/source`. Each version has its own Cargo workspace and lockfile.
+unchanged crates.io source tracked in `upstream/` and checked against
+`source.lock.json`. Each version has its own Cargo workspace and lockfile.
+The original MIT and Apache-2.0 license texts are included both in `upstream/`
+and beside this file; `NOTICE` identifies the release and the generated Lean
+material derived from it.
 
 ```bash
 bash crc/3.4.0/scripts/setup.sh
@@ -44,7 +47,26 @@ profile's `evidence/archive.json`. Verification does not read them. It checks th
 current source lock, catalog, extraction configurations, generated Lean and proof
 inventory directly. Earlier acceptance does not establish current-run success.
 
-`proofs-prepare.toml` and `scripts/record.sh [default|stage2]` prepare a selected
-profile for standard cargo-proofs/Lake recording with separate profile state and
-shared checked cache export. Recording and publication require explicit
-permission; migration performs neither.
+The CLI is cargo-proofs 0.4.1, selected from upstream main at commit
+`344b4797d677636f57ba826dfc6afd22f4c90534` on 2026-10-29. Both profile locks
+record this exact snapshot for reproducibility. Aeneas, Charon and Lean retain
+their existing revisions. A local `cargo-proofs-concrete-api.patch` adds
+opt-in compiler checks for the existing concrete word/lane API mappings,
+including inherited `Clone::clone_from`. It rejects unsupported type syntax,
+invalid/private/non-callable instances, non-host cfg and dependency drift.
+The declaration expansion subprocess alone uses `RUSTC_BOOTSTRAP=1`; function
+items are checked with the normal stable compiler. This is API discovery,
+not a proof result. Standard Lean builds and theorem/axiom audits are unchanged.
+No repository-specific CLI preparation hook is used.
+
+The maintained Lake files use ordinary dependencies and select the generated
+macOS arm64 models explicitly. Stage2 depends on the default proof package via
+a relative path. The shared local verifier materializes separate build copies;
+`scripts/record.sh [default|stage2]` records from the maintained Lake directory
+using the same CLI selected by setup. Run setup first and commit/push all inputs
+before recording. Recording checks maintained Lean proofs; it does not rerun
+Rust-to-Lean extraction. The local verifier above performs that comparison.
+
+The stage2 report includes a finding about reassigning `Crc.algorithm` without
+rebuilding its lookup table. Its native reproduction is distinct from the
+conditional formal contracts. No finding has been submitted upstream or published.

@@ -2,28 +2,30 @@ name = "crc-proofs"
 defaultTargets = ["CrcProofs"]
 [[lean_lib]]
 name = "Crc"
-srcDir = "Generated/@TARGET@"
+srcDir = "Generated/aarch64-apple-darwin"
 [[lean_lib]]
 name = "CrcProofs"
 [[require]]
 name = "aeneas"
-path = "@AENEAS_BACKEND@"
+git = "https://github.com/AeneasVerif/aeneas.git"
+rev = "be86ab0f1989d04944292b345b24c435be3ad10a"
+subDir = "backends/lean"
 
 [[lean_lib]]
 name = "Anchors"
-srcDir = "Generated/@TARGET@"
+srcDir = "Generated/aarch64-apple-darwin"
 
 [[lean_lib]]
 name = "CloneFrom0"
-srcDir = "Generated/@TARGET@"
+srcDir = "Generated/aarch64-apple-darwin"
 globs = ["CloneFrom0.+"]
 
 [[lean_lib]]
 name = "CloneFrom1"
-srcDir = "Generated/@TARGET@"
+srcDir = "Generated/aarch64-apple-darwin"
 globs = ["CloneFrom1.+"]
 
 [[lean_lib]]
 name = "CloneFrom16"
-srcDir = "Generated/@TARGET@"
+srcDir = "Generated/aarch64-apple-darwin"
 globs = ["CloneFrom16.+"]

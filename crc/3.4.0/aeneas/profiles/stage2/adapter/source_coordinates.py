@@ -13,7 +13,7 @@ def canonicalize(path, crate, cwd):
         assert set(record['name'])=={'Local'},record['name']
         value=record['name']['Local'];actual=Path(value)
         actual=actual if actual.is_absolute() else cwd/actual
-        relative=actual.resolve().relative_to((crate/'.work/source').resolve()).as_posix()
+        relative=actual.resolve().relative_to((crate/'upstream').resolve()).as_posix()
         assert relative in lock['files'],relative
         data=actual.read_bytes()
         assert hashlib.sha256(data).hexdigest()==lock['files'][relative]['sha256']

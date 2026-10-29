@@ -1,0 +1,562 @@
+diff --git a/cli/README.md b/cli/README.md
+index 2f513bc3c3accd4d87866b0a59cf3c8f6012b1c3..6fe3f624b96cb9259d63e7ece565dc0a9c4f44d2 100644
+--- a/cli/README.md
++++ b/cli/README.md
+@@ -499,7 +499,27 @@ provenance distinguishes the resolved Aeneas Lean library and executed Lean chec
+ from the Aeneas translator and Charon frontend, both marked not_run. Declaring their
+ patches does not establish that they generated the saved models.
+ 
+-### Macro-generated Rust APIs
++### Concrete API instances (local compatibility patch)
++
++`[tool].concrete_api = true` checks explicitly configured instances such as
++`Crc<u8, Table<0>>::checksum` with the native Rust compiler. It supports public
++structs, enums and aliases declared at the library root, simple root-local type
++arguments, primitive type arguments and integer const arguments. Unsupported
++forms are rejected. This mode is limited to the host cfg and is mutually
++exclusive with `expand_api`.
++
++Discovery expands cfg-selected declarations with `RUSTC_BOOTSTRAP=1` scoped to
++that compiler subprocess, matches a function on an applicable impl, then compiles
++function-item references in an isolated Cargo probe using the selected library
++and features. Callable and zero-sized function-item checks reject associated
++constants, including function-pointer constants. The probe rejects changes to
++the copied locked dependency graph. The inherited standard `Clone::clone_from`
++is checked through the actual trait implementation and compiler resolution.
++
++These are API presence checks, not surrogate crate implementations or formal
++proof results. The standard Lean build and theorem/axiom audit are unchanged.
++
++### Macro-generated Rust APIs (upstream expansion mode)
+ 
+ Aeneas reports that map derive or macro-generated implementations may set
+ `[tool].expand_api = true`. The recorder then enumerates public APIs using the
+diff --git a/cli/src/aeneas.rs b/cli/src/aeneas.rs
+index 95c15d321ae0d9e269872914cf01aa3c3b2cd82f..53336b148daf4d7787c1ba07efe7b1a16f56e12f 100644
+--- a/cli/src/aeneas.rs
++++ b/cli/src/aeneas.rs
+@@ -29,7 +29,12 @@ pub struct Proof {
+ pub fn configuration(tool: &Tool) -> Result<Value> {
+     let mut value = json!({"backend":"lean", "lean_dir": tool.lean_dir, "proofs": tool.proofs,
+         "audit_command":["lake", "env", "lean", "--stdin"], "audit_source":audit_source(tool)});
+-    if tool.expand_api {
++    if tool.concrete_api {
++        value["api_discovery"] = json!({"mode":"compiler_checked_concrete_instances",
++            "command":["cargo", "check", "--offline", "--locked", "--target", "<rustc host>"],
++            "declaration_expansion":{"command":["cargo","rustc","--locked","--lib","--target","<rustc host>","--","-Zunpretty=expanded"],"environment":{"RUSTC_BOOTSTRAP":"1"}},
++            "scope":"Configured public root-type callable instances only; not proof or extraction"});
++    } else if tool.expand_api {
+         value["api_discovery"] = json!({"mode":"compiler_expansion", "command":["cargo","rustc","--locked","--lib","--no-default-features","--features","<selected features>","--","-Zunpretty=expanded"], "environment":{"RUSTC_BOOTSTRAP":"1"}});
+     }
+     if !tool.proof_modules.is_empty() {
+@@ -61,6 +66,10 @@ fn lean_name(s: &str) -> bool {
+ }
+ 
+ pub fn validate(tool: &Tool) -> Result<()> {
++    ensure!(
++        !(tool.concrete_api && tool.expand_api),
++        "Select concrete_api or expand_api, not both"
++    );
+     ensure!(
+         tool.proofs.len() <= crate::MAX_REPORT_CLAIMS,
+         "At most 200 Aeneas API mappings are supported per report"
+@@ -151,6 +160,9 @@ pub fn pinned_version(dir: &Path, version: &str) -> Result<()> {
+ }
+ 
+ fn public_apis(project: &Project, tool: &Tool) -> Result<Vec<scan::Contract>> {
++    if tool.concrete_api {
++        return concrete_public_apis(project, tool);
++    }
+     if !tool.expand_api {
+         return scan::public_contracts(project, false, CreusotTarget::All);
+     }
+@@ -192,6 +204,339 @@ fn public_apis(project: &Project, tool: &Tool) -> Result<Vec<scan::Contract>> {
+     scan::expanded_public_contracts(project, &source)
+ }
+ 
++// The source scanner intentionally identifies declarations, not concrete type/lane
++// instances. This opt-in path asks rustc to resolve each configured function item
++// on a public type declared by this library. It adds no Rust wrapper implementation
++// and supplies no theorem result: the ordinary Lean build/audit still follows.
++fn concrete_public_apis(project: &Project, tool: &Tool) -> Result<Vec<scan::Contract>> {
++    use quote::ToTokens;
++    ensure!(
++        !tool.expand_api,
++        "Select concrete_api or expand_api, not both"
++    );
++    let host_cfg = Command::new("rustc").args(["--print", "cfg"]).output()?;
++    ensure!(host_cfg.status.success(), "Cannot inspect host cfg");
++    let host_cfg = String::from_utf8(host_cfg.stdout)?
++        .lines()
++        .map(String::from)
++        .collect::<BTreeSet<_>>();
++    ensure!(
++        project.cfg == host_cfg,
++        "concrete_api currently supports only the host cfg"
++    );
++    let version = Command::new("rustc").arg("-vV").output()?;
++    ensure!(version.status.success(), "Cannot inspect rustc host");
++    let version = String::from_utf8(version.stdout)?;
++    let host = version
++        .lines()
++        .find_map(|l| l.strip_prefix("host: "))
++        .context("Missing rustc host")?;
++    let parsed = syn::parse_file(&fs::read_to_string(&project.root_source)?)?;
++    let roots = parsed
++        .items
++        .iter()
++        .filter_map(|item| {
++            let (vis, ident) = match item {
++                syn::Item::Struct(i) => (&i.vis, &i.ident),
++                syn::Item::Enum(i) => (&i.vis, &i.ident),
++                syn::Item::Type(i) => (&i.vis, &i.ident),
++                _ => return None,
++            };
++            matches!(vis, syn::Visibility::Public(_)).then(|| ident.to_string())
++        })
++        .collect::<BTreeSet<_>>();
++    fn concrete_type(ty: &syn::Type, roots: &BTreeSet<String>, owner: bool) -> Result<()> {
++        let syn::Type::Path(p) = ty else {
++            anyhow::bail!("Expected a concrete nominal type")
++        };
++        ensure!(
++            p.qself.is_none() && p.path.leading_colon.is_none() && p.path.segments.len() == 1,
++            "Concrete APIs support only root-local types and primitive type arguments"
++        );
++        let s = &p.path.segments[0];
++        let primitive = matches!(
++            s.ident.to_string().as_str(),
++            "u8" | "u16"
++                | "u32"
++                | "u64"
++                | "u128"
++                | "usize"
++                | "i8"
++                | "i16"
++                | "i32"
++                | "i64"
++                | "i128"
++                | "isize"
++                | "bool"
++                | "char"
++                | "f32"
++                | "f64"
++        );
++        ensure!(
++            roots.contains(&s.ident.to_string()) || (!owner && primitive),
++            "Concrete API owner/argument is not a public type declared by the selected library"
++        );
++        match &s.arguments {
++            syn::PathArguments::None => (),
++            syn::PathArguments::AngleBracketed(args) => {
++                for arg in &args.args {
++                    match arg {
++                        syn::GenericArgument::Type(ty) => concrete_type(ty, roots, false)?,
++                        syn::GenericArgument::Const(syn::Expr::Lit(syn::ExprLit {
++                            lit: syn::Lit::Int(_),
++                            ..
++                        })) => (),
++                        _ => anyhow::bail!(
++                            "Concrete API arguments must be types or integer literals"
++                        ),
++                    }
++                }
++            }
++            _ => anyhow::bail!("Unsupported concrete API arguments"),
++        }
++        Ok(())
++    }
++    // Expand only to inspect actual cfg-selected declarations, including derives.
++    // As with expand_api, bootstrap is scoped to this one compiler subprocess.
++    let expansion = tempfile::tempdir()?;
++    let output = Command::new("cargo")
++        .args(["rustc", "--locked", "--lib", "--manifest-path"])
++        .arg(&project.manifest)
++        .args(["--no-default-features", "--target", host])
++        .args(if project.features.is_empty() {
++            vec![]
++        } else {
++            vec![
++                "--features".to_owned(),
++                project
++                    .features
++                    .iter()
++                    .cloned()
++                    .collect::<Vec<_>>()
++                    .join(","),
++            ]
++        })
++        .args(["--", "-Zunpretty=expanded"])
++        .env("RUSTC_BOOTSTRAP", "1")
++        .env("CARGO_TARGET_DIR", expansion.path().join("target"))
++        .current_dir(project.manifest.parent().unwrap())
++        .output()?;
++    ensure!(
++        output.status.success(),
++        "Concrete API declaration expansion failed: {}",
++        String::from_utf8_lossy(&output.stderr)
++    );
++    ensure!(
++        output.stdout.len() <= 8 * 1024 * 1024,
++        "Expanded API source exceeds 8 MiB"
++    );
++    let expanded = syn::parse_file(std::str::from_utf8(&output.stdout)?)?;
++    // Unify the requested instance with an actual impl self type. Lifetimes may
++    // be elided; type and const substitutions must agree at every occurrence.
++    fn matches_instance(pattern: &syn::Type, actual: &syn::Type, generics: &syn::Generics) -> bool {
++        fn unify(
++            pattern: proc_macro2::TokenStream,
++            actual: proc_macro2::TokenStream,
++            variables: &BTreeSet<String>,
++            bindings: &mut std::collections::BTreeMap<String, String>,
++        ) -> bool {
++            use proc_macro2::TokenTree;
++            let a: Vec<_> = pattern.into_iter().collect();
++            let b: Vec<_> = actual.into_iter().collect();
++            if a.len() != b.len() {
++                return false;
++            }
++            a.iter().zip(&b).all(|(a, b)| match (a, b) {
++                (TokenTree::Ident(x), y) if variables.contains(&x.to_string()) => {
++                    let value = y.to_string();
++                    match bindings.get(&x.to_string()) {
++                        Some(old) => old == &value,
++                        None => {
++                            bindings.insert(x.to_string(), value);
++                            true
++                        }
++                    }
++                }
++                (TokenTree::Group(a), TokenTree::Group(b)) => {
++                    a.delimiter() == b.delimiter()
++                        && unify(a.stream(), b.stream(), variables, bindings)
++                }
++                (a, b) => a.to_string() == b.to_string(),
++            })
++        }
++        let mut pattern = pattern.clone();
++        struct Elide;
++        impl syn::visit_mut::VisitMut for Elide {
++            fn visit_angle_bracketed_generic_arguments_mut(
++                &mut self,
++                args: &mut syn::AngleBracketedGenericArguments,
++            ) {
++                args.args = args
++                    .args
++                    .iter()
++                    .filter(|a| !matches!(a, syn::GenericArgument::Lifetime(_)))
++                    .cloned()
++                    .collect();
++                syn::visit_mut::visit_angle_bracketed_generic_arguments_mut(self, args);
++            }
++        }
++        syn::visit_mut::VisitMut::visit_type_mut(&mut Elide, &mut pattern);
++        let variables = generics
++            .params
++            .iter()
++            .filter_map(|g| match g {
++                syn::GenericParam::Type(t) => Some(t.ident.to_string()),
++                syn::GenericParam::Const(c) => Some(c.ident.to_string()),
++                _ => None,
++            })
++            .collect();
++        unify(
++            pattern.to_token_stream(),
++            actual.to_token_stream(),
++            &variables,
++            &mut Default::default(),
++        )
++    }
++    fn method_arity(items: &[syn::Item], ty: &syn::Type, method: &syn::Ident) -> Option<usize> {
++        items.iter().find_map(|item| match item {
++            syn::Item::Mod(m) => m
++                .content
++                .as_ref()
++                .and_then(|(_, items)| method_arity(items, ty, method)),
++            syn::Item::Impl(i) if matches_instance(&i.self_ty, ty, &i.generics) => {
++                // Std Clone's default clone_from is a real public callable, even
++                // though derive emits only clone. Its bound is checked by rustc.
++                let std_clone = i.trait_.as_ref().is_some_and(|(_, path, _)| {
++                    let parts = path
++                        .segments
++                        .iter()
++                        .map(|s| s.ident.to_string())
++                        .collect::<Vec<_>>();
++                    parts == ["core", "clone", "Clone"] || parts == ["std", "clone", "Clone"]
++                });
++                if std_clone && method == "clone_from" {
++                    Some(2)
++                } else {
++                    i.items.iter().find_map(|item| match item {
++                        syn::ImplItem::Fn(f)
++                            if f.sig.ident == *method
++                                && (i.trait_.is_some()
++                                    || matches!(f.vis, syn::Visibility::Public(_))) =>
++                        {
++                            Some(f.sig.inputs.len())
++                        }
++                        _ => None,
++                    })
++                }
++            }
++            _ => None,
++        })
++    }
++    let mut source = String::from("use subject::*;\nconst fn function_item<F>(item:F) { assert!(core::mem::size_of::<F>()==0); core::mem::forget(item); }\n");
++    for arity in 0..=8 {
++        let args = (0..arity)
++            .map(|n| format!("A{n}"))
++            .collect::<Vec<_>>()
++            .join(",");
++        source.push_str(&format!(
++            "fn callable{arity}<F,R{}{}>(_:F) where F: Fn({args})->R {{}}\n",
++            if arity > 0 { "," } else { "" },
++            args
++        ));
++    }
++    source.push_str("fn main() {\n");
++    for proof in &tool.proofs {
++        let (owner, method) = proof
++            .api
++            .rsplit_once("::")
++            .context("Expected Type::method")?;
++        let ty = syn::parse_str::<syn::Type>(owner)?;
++        concrete_type(&ty, &roots, true)?;
++        let method = syn::parse_str::<syn::Ident>(method)?;
++        let arity = method_arity(&expanded.items, &ty, &method).with_context(|| {
++            format!(
++                "Concrete API must name a function on a matching selected impl: {}",
++                proof.api
++            )
++        })?;
++        ensure!(
++            arity <= 8,
++            "Concrete API methods support at most eight arguments"
++        );
++        // Fn rejects non-callable constants. The zero-size const check rejects
++        // callable function-pointer constants too, even with a shadowed type in
++        // a nested module. Neither check executes the selected crate function.
++        source.push_str(&format!(
++            "    callable{arity}(<{}>::{});\n    const _:()=function_item(<{}>::{});\n",
++            ty.to_token_stream(),
++            method,
++            ty.to_token_stream(),
++            method
++        ));
++    }
++    source.push_str("}\n");
++    let temp = tempfile::tempdir()?;
++    fs::create_dir(temp.path().join("src"))?;
++    fs::write(temp.path().join("src/main.rs"), source)?;
++    let dependency = json!({"package":project.name, "path":project.manifest.parent().unwrap(),
++        "default-features":false, "features":project.features});
++    let manifest = json!({"package":{"name":"cargo-proofs-concrete-api-probe", "version":"0.0.0", "edition":"2021"},
++        "workspace":{}, "dependencies":{"subject":dependency}});
++    fs::write(temp.path().join("Cargo.toml"), toml::to_string(&manifest)?)?;
++    let lock = project.manifest.parent().unwrap().join("Cargo.lock");
++    ensure!(
++        lock.is_file(),
++        "Commit Cargo.lock before concrete API discovery"
++    );
++    fs::copy(&lock, temp.path().join("Cargo.lock"))?;
++    // Add only the probe root to the copied lock. Reject dependency drift below.
++    let output = Command::new("cargo")
++        .args(["generate-lockfile", "--offline"])
++        .current_dir(temp.path())
++        .output()?;
++    ensure!(
++        output.status.success(),
++        "Concrete API probe lock failed: {}",
++        String::from_utf8_lossy(&output.stderr)
++    );
++    let packages = |path: &Path| -> Result<BTreeSet<String>> {
++        let lock: toml::Value = toml::from_str(&fs::read_to_string(path)?)?;
++        Ok(lock["package"]
++            .as_array()
++            .context("Missing locked packages")?
++            .iter()
++            .filter(|p| p["name"].as_str() != Some("cargo-proofs-concrete-api-probe"))
++            .map(|p| p.to_string())
++            .collect())
++    };
++    ensure!(
++        packages(&lock)? == packages(&temp.path().join("Cargo.lock"))?,
++        "Concrete API probe changed the locked dependency graph"
++    );
++    let output = Command::new("cargo")
++        .args(["check", "--offline", "--locked", "--target", host])
++        .env("CARGO_TARGET_DIR", temp.path().join("target"))
++        .current_dir(temp.path())
++        .output()?;
++    ensure!(
++        output.status.success(),
++        "Concrete public API check failed: {}",
++        String::from_utf8_lossy(&output.stderr)
++    );
++    Ok(tool
++        .proofs
++        .iter()
++        .map(|p| scan::Contract {
++            api_paths: vec![p.api.clone()],
++            precondition: String::new(),
++            file: project.root_source.clone(),
++            first_line: 1,
++            last_line: 1,
++            harness: p.api.clone(),
++        })
++        .collect())
++}
++
+ pub fn discover(project: &Project, tool: &Tool) -> Result<Vec<scan::Contract>> {
+     validate(tool)?;
+     ensure!(
+@@ -1854,6 +2199,125 @@ mod prepared_toolchain_integration {
+     }
+ }
+ 
++#[cfg(test)]
++mod concrete_api_tests {
++    use super::*;
++    fn fixture() -> (tempfile::TempDir, Project) {
++        let temp = tempfile::tempdir().unwrap();
++        fs::create_dir(temp.path().join("src")).unwrap();
++        fs::write(
++            temp.path().join("Cargo.toml"),
++            "[package]\nname='concrete_fixture'\nversion='0.1.0'\nedition='2021'\n[workspace]\n",
++        )
++        .unwrap();
++        fs::write(
++            temp.path().join("src/lib.rs"),
++            r#"
++#[derive(Clone)] pub struct Table<const L: usize>;
++pub struct Crc<W,I>(W,I);
++pub struct Digest<'a,W,I>(&'a Crc<W,I>);
++pub struct Shadowed;
++impl Shadowed { pub const member:fn()->u8=||1; pub const value:u8=1; }
++mod private_shadow {
++    struct Shadowed;
++    impl Shadowed { pub fn member()->u8 {0} pub fn value()->u8 {0} }
++}
++trait Sealed {} impl Sealed for Table<0> {} impl Sealed for Table<1> {}
++impl<const L:usize> Crc<u8,Table<L>> where Table<L>:Sealed {
++    pub fn checksum(&self, _: &[u8])->u8 {0}
++    fn private_method(&self) {}
++    pub const NOT_A_METHOD: u8=1;
++    #[cfg(any())] pub fn disabled(&self) {}
++}
++impl<const L:usize> Crc<u16,Table<L>> { pub fn checksum(&self, _: &[u8])->u16 {0} }
++impl<'a,const L:usize> Digest<'a,u8,Table<L>> { pub fn finalize(self)->u8 {0} }
++struct Private;
++impl Private { pub fn hidden(&self) {} }
++pub use std::string::String;
++"#,
++        )
++        .unwrap();
++        assert!(Command::new("cargo")
++            .args(["generate-lockfile", "--offline"])
++            .current_dir(temp.path())
++            .status()
++            .unwrap()
++            .success());
++        let project = Project::load(&crate::ProjectArgs {
++            manifest_path: Some(temp.path().join("Cargo.toml")),
++            ..Default::default()
++        })
++        .unwrap();
++        (temp, project)
++    }
++    fn tool(apis: &[&str]) -> Tool {
++        Tool {
++            concrete_api: true,
++            proofs: apis
++                .iter()
++                .enumerate()
++                .map(|(n, api)| Proof {
++                    api: (*api).into(),
++                    module: "Proofs".into(),
++                    theorem: format!("test.spec{n}"),
++                    precondition: "true".into(),
++                })
++                .collect(),
++            ..Default::default()
++        }
++    }
++    #[test]
++    fn concrete_api_accepts_specialized_methods_and_inherited_clone() {
++        let (_temp, project) = fixture();
++        let t = tool(&[
++            "Crc<u8, Table<0>>::checksum",
++            "Crc<u8, Table<1>>::checksum",
++            "Crc<u16, Table<0>>::checksum",
++            "Table<0>::clone",
++            "Table<0>::clone_from",
++            "Digest<u8, Table<1>>::finalize",
++        ]);
++        let apis = concrete_public_apis(&project, &t).unwrap();
++        assert_eq!(apis.len(), 6);
++        assert_eq!(apis[0].api_paths, [t.proofs[0].api.clone()]);
++        assert_eq!(
++            configuration(&t).unwrap()["api_discovery"]["mode"],
++            "compiler_checked_concrete_instances"
++        );
++    }
++    #[test]
++    fn concrete_api_rejects_invalid_or_non_callable_instances() {
++        let (_temp, project) = fixture();
++        for api in [
++            "Crc<u8, Table<16>>::checksum",
++            "Crc<u32, Table<0>>::checksum",
++            "Crc<u8, Table<0>>::private_method",
++            "Crc<u8, Table<0>>::NOT_A_METHOD",
++            "Crc<u8, Table<0>>::disabled",
++            "Crc<u8, Table<0>>::missing",
++            "Private::hidden",
++            "String::new",
++            "Table<{1+1}>::clone",
++            "Shadowed::member",
++            "Shadowed::value",
++        ] {
++            assert!(
++                concrete_public_apis(&project, &tool(&[api])).is_err(),
++                "accepted {api}"
++            );
++        }
++    }
++    #[test]
++    fn concrete_api_rejects_non_host_cfg() {
++        let (_temp, mut project) = fixture();
++        project.cfg.insert("target_arch=\"not_the_host\"".into());
++        assert!(concrete_public_apis(&project, &tool(&["Table<0>::clone"]))
++            .unwrap_err()
++            .to_string()
++            .contains("host cfg"));
++    }
++}
++
+ #[cfg(test)]
+ mod unpatched_project_integration {
+     use super::*;
+diff --git a/cli/src/config.rs b/cli/src/config.rs
+index ca73212ef26f5e64db4fb7f966c4b06a23838974..8cad2d5508ff776db2d576029d81f23bb1d96121 100644
+--- a/cli/src/config.rs
++++ b/cli/src/config.rs
+@@ -75,6 +75,9 @@ impl Report {
+ #[derive(Default, Deserialize, Serialize)]
+ #[serde(deny_unknown_fields)]
+ pub struct Tool {
++    /// Check explicitly mapped concrete root-type APIs with the Rust compiler.
++    #[serde(default, skip_serializing_if = "std::ops::Not::not")]
++    pub concrete_api: bool,
+     #[serde(default, skip_serializing_if = "Option::is_none")]
+     pub charon_patch: Option<PathBuf>,
+     /// Expand Rust macros for public API discovery using the selected native compiler.
+@@ -126,7 +129,8 @@ impl Tool {
+                     && self.proofs.is_empty()
+                     && self.proof_modules.is_empty()
+                     && self.translation_manifest.is_none()
+-                    && !self.expand_api),
++                    && !self.expand_api
++                    && !self.concrete_api),
+             "lean_dir and proofs apply only to Aeneas"
+         );
+         ensure!(

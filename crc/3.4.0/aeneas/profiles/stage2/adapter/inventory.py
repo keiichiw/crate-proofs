@@ -30,7 +30,7 @@ obj={'checked':checked,'recorder_mappings':[{'api':x['api'],'theorem':x['theorem
 report_path=R/'proofs.toml'
 report_text=report_path.read_text()
 report={'report':tomllib.loads(report_text)['report'],
- 'tool':{'name':'aeneas','version':'be86ab0f1989d04944292b345b24c435be3ad10a','lean_dir':'.work/selected-proofs','proofs':mappings}}
+ 'tool':{'name':'aeneas','version':'be86ab0f1989d04944292b345b24c435be3ad10a','lean_dir':'aeneas/profiles/stage2/proofs','concrete_api':True,'proofs':mappings}}
 # JSON strings are valid TOML basic strings for the present ASCII field values.
 # Preserve independently reviewed editorial prose when regenerating mappings.
 for header in re.finditer(r'^\[\s*tool\s*\][ \t]*(?:#.*)?$',report_text,re.M):

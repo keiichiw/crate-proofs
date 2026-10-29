@@ -10,9 +10,9 @@ import json,re
 R=PROFILE
 public=['new','checksum','digest','digest_with_initial','table','update','finalize']
 for n in (8,16,32,64,128):
- s=(CRATE/f'.work/source/src/crc{n}.rs').read_text()
+ s=(CRATE/f'upstream/src/crc{n}.rs').read_text()
  assert re.findall(r'pub const fn (\w+)',s)==public,n
-s=(CRATE/'.work/source/src/lib.rs').read_text()
+s=(CRATE/'upstream/src/lib.rs').read_text()
 assert s.count('#[derive(Clone)]')==2 and '#[derive(Copy, Clone)]' in s
 expected={f'Crc<u{n}, Table<{l}>>::table':f'CrcProofs.table_u{n}_l{l}_spec' for n in (8,16,32,64,128) for l in (0,1,16)}
 for l in (0,1,16):

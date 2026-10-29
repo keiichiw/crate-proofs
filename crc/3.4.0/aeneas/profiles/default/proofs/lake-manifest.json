@@ -3,12 +3,15 @@
   "packagesDir": ".lake/packages",
   "packages": [
     {
-      "type": "path",
-      "scope": "",
       "name": "aeneas",
-      "manifestFile": "lake-manifest.json",
+      "type": "git",
+      "url": "https://github.com/AeneasVerif/aeneas.git",
+      "rev": "be86ab0f1989d04944292b345b24c435be3ad10a",
+      "inputRev": "be86ab0f1989d04944292b345b24c435be3ad10a",
+      "subDir": "backends/lean",
+      "scope": "",
       "inherited": false,
-      "dir": "@AENEAS_BACKEND@",
+      "manifestFile": "lake-manifest.json",
       "configFile": "lakefile.lean"
     },
     {

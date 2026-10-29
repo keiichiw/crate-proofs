@@ -16,13 +16,73 @@ limitations = '''
 The selected executable crate bodies come from the locked crates.io 3.4.0 archive. Extraction uses the described transformations and locally authored bit-reversal models; their correspondence to release execution is supported by structural checks and native observations, not a formal equivalence theorem.
 '''
 environment = '''
-The formal extraction selected the library with Cargo default features; the crate declares no feature flags. The current-input run passed on 2026-10-23 on `aarch64-apple-darwin`; Linux candidate files do not constitute a fresh Linux run. Native tests and independent oracle examples are finite observations, separate from the quantified Lean proofs. Charon and Aeneas are pinned and unpatched; the pinned `cargo-proofs` CLI has a preparation patch for source and tool preparation, provenance and audit handling. Fresh extraction is compared with maintained models and named roots are audited. Earlier full run records are local-only. See the [results](https://github.com/keiichiw/crate-proofs/blob/4e643e6b061aebf357d7c2195d1e16c4c574ddca/crc/3.4.0/aeneas/profiles/stage2/results.md), [theorem inventory](https://github.com/keiichiw/crate-proofs/blob/4e643e6b061aebf357d7c2195d1e16c4c574ddca/crc/3.4.0/aeneas/profiles/stage2/theorems.json), [specification](https://github.com/keiichiw/crate-proofs/blob/4e643e6b061aebf357d7c2195d1e16c4c574ddca/crc/3.4.0/aeneas/profiles/stage2/specification.md), [transformation boundary](https://github.com/keiichiw/crate-proofs/blob/4e643e6b061aebf357d7c2195d1e16c4c574ddca/crc/3.4.0/aeneas/profiles/stage2/trust-boundary.md), [source lock](https://github.com/keiichiw/crate-proofs/blob/4e643e6b061aebf357d7c2195d1e16c4c574ddca/crc/3.4.0/source.lock.json), and [CLI preparation patch](https://github.com/keiichiw/crate-proofs/blob/4e643e6b061aebf357d7c2195d1e16c4c574ddca/crc/3.4.0/aeneas/profiles/stage2/patches/cargo-proofs-preparation.patch). These records predate this editorial revision.
+The selected library uses Cargo default features; the crate declares no feature flags. The target is `aarch64-apple-darwin` (macOS arm64). The unchanged locked release source is kept under `upstream/`; the configuration uses `cargo-proofs` 0.4.1 with a local API-discovery patch and pinned, unpatched Charon and Aeneas. The upstream scanner cannot resolve the concrete CRC word and lane instance names. The opt-in patch checks configuration-selected function declarations and Rust function-item probes, including the default `Clone::clone_from`, against the locked dependency graph and host configuration. It uses no substitute implementations or proof-success markers and changes neither Rust bodies and contracts nor the Lean checker. `RUSTC_BOOTSTRAP` is scoped to declaration expansion; the witness check uses stable Rust. The ordinary Lean build and audit determine proof acceptance. Native tests and independent oracle examples are finite observations, separate from the Lean proofs. The historical run passed on 2026-10-23 under the earlier configuration; it does not establish a fresh run of this configuration. See the historical [results](https://github.com/keiichiw/crate-proofs/blob/06d2413e7a6e8d809f0105df99c97368139fa54c/crc/3.4.0/aeneas/profiles/stage2/results.md), [theorem inventory](https://github.com/keiichiw/crate-proofs/blob/06d2413e7a6e8d809f0105df99c97368139fa54c/crc/3.4.0/aeneas/profiles/stage2/theorems.json), [specification](https://github.com/keiichiw/crate-proofs/blob/06d2413e7a6e8d809f0105df99c97368139fa54c/crc/3.4.0/aeneas/profiles/stage2/specification.md), and [source lock](https://github.com/keiichiw/crate-proofs/blob/06d2413e7a6e8d809f0105df99c97368139fa54c/crc/3.4.0/source.lock.json).
+'''
+
+
+[[report.findings]]
+title = "Reassigning Crc::algorithm can leave the lookup table inconsistent"
+body = '''
+## Description
+
+Reassigning the public `Crc::algorithm` field on a table-backed instance can make `checksum` and a finalized digest disagree with a fresh instance constructed from the field's new algorithm. The assignment is possible in safe Rust, but it is unclear whether changing the field after construction is intended to be supported.
+
+## Steps to Reproduce
+
+Use `crc` 3.4.0:
+
+```toml
+[dependencies]
+crc = "=3.4.0"
+```
+
+Run this program with `cargo run`:
+
+```rust
+use crc::{Algorithm, Crc, Table};
+
+static A: Algorithm<u8> = Algorithm {
+    width: 8,
+    poly: 0x07,
+    init: 0,
+    refin: false,
+    refout: false,
+    xorout: 0,
+    check: 0,
+    residue: 0,
+};
+static B: Algorithm<u8> = Algorithm { poly: 0x31, ..A };
+
+fn main() {
+    let mut changed = Crc::<u8, Table<1>>::new(&A);
+    changed.algorithm = &B;
+    let fresh = Crc::<u8, Table<1>>::new(&B);
+    assert_eq!(changed.checksum(&[1]), fresh.checksum(&[1]));
+}
+```
+
+## Expected Behavior
+
+If reassignment is supported, I would expect the instance to produce the same checksum as a fresh instance using its current algorithm. Otherwise, could the API prevent reassignment or document its effect?
+
+## Actual Behavior
+
+The assertion fails: `changed.checksum(&[1])` returns `0x07`, while the fresh instance returns `0x31`. The same discrepancy occurs with a finalized digest and with `Table<16>` for this one-byte input.
+
+## Environment
+
+`crc` 3.4.0; reproduced in debug and release builds with Rust 1.91.1 on macOS arm64.
+
+## Additional Context
+
+`Crc::new` builds the lookup table from the original algorithm, while assigning `algorithm` does not rebuild it. Constructing a new `Crc` with the desired algorithm avoids the inconsistency. The `Table<16>` observation uses the one-byte tail path.
 '''
 
 [tool]
 name = "aeneas"
 version = "be86ab0f1989d04944292b345b24c435be3ad10a"
-lean_dir = ".work/selected-proofs"
+lean_dir = "aeneas/profiles/stage2/proofs"
+concrete_api = true
 
 [[tool.proofs]]
 api = "Crc<u8, Table<0>>::digest"
