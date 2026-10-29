@@ -1,0 +1,1727 @@
+{
+  "denominator": "171 supported built-in callable instances for five widths and lanes0/1/16, including explicitly counted Clone::clone_from; excludes reexports, blanket methods and custom generic implementations",
+  "supported_callable_instances": 171,
+  "formal_public_instances": 96,
+  "formal_public_percent": 56.14035087719298,
+  "baseline_contract_instances": 21,
+  "stage2_contract_instances": 75,
+  "canonical_checksum_instances": 10,
+  "checksum_instances": 15,
+  "canonical_digest_update_instances": 10,
+  "digest_update_instances": 15,
+  "canonical_message_domain": "all valid CRC widths 1..storage width, both flags, bounded current polynomial, canonical encoded incoming state; checksum additionally bounded xorout (Table1 u8/u16 roots also require bounded init); Table1 current table coherence required; arbitrary representable slices including empty",
+  "word_endpoint_instances": 45,
+  "word_endpoint_warning": "word-level init/finalize contracts cover lanes16 but do not prove its message computation",
+  "constructor_warning": "each constructor mapping has its own explicit domain; current table coherence must still hold after any algorithm-field replacement",
+  "catalog_parameter_domains": {
+    "eligible": 113,
+    "meaning": "source constants satisfy the bounded parameter domain; inventory is not 113 independent formal check-value proofs or partial-width constructor proofs"
+  },
+  "native_callable_instances": 171,
+  "rows": [
+    {
+      "api": "Crc<u8, Table<0>>::new",
+      "storage_width": 8,
+      "lanes": 0,
+      "method": "new",
+      "formal": true,
+      "stage": "stage2",
+      "module": "Stage2Proofs.PartialNoTableConstructors",
+      "theorem": "CrcPartialNoTableConstructors.new_total8",
+      "precondition": "1 <= algorithm.width <= 8; arbitrary polynomial/init/xorout and both flags; resulting algorithm equals input",
+      "contract_kind": "constructor"
+    },
+    {
+      "api": "Crc<u8, Table<0>>::checksum",
+      "storage_width": 8,
+      "lanes": 0,
+      "method": "checksum",
+      "formal": true,
+      "stage": "stage2",
+      "module": "Stage2Proofs.PartialNoTableConstructors",
+      "theorem": "CrcPartialNoTableConstructors.checksum8",
+      "precondition": "1 <= current algorithm.width = w <= 8; raw polynomial = zero-extended width-w poly; raw xorout = zero-extended width-w xorout; arbitrary raw init interpreted by low w bits; both flags arbitrary; any representable byte slice including empty",
+      "contract_kind": "canonical-message"
+    },
+    {
+      "api": "Crc<u8, Table<0>>::digest",
+      "storage_width": 8,
+      "lanes": 0,
+      "method": "digest",
+      "formal": true,
+      "stage": "stage2",
+      "module": "Stage2Proofs.WordProtocolInstances",
+      "theorem": "CrcPublicWordInstances.digest8_lane0_spec",
+      "precondition": "1 <= current algorithm.width <= 8; L in {0,1,16}; arbitrary raw word(s), flags and table; public word-level endpoint contract",
+      "contract_kind": "word-endpoint"
+    },
+    {
+      "api": "Crc<u8, Table<0>>::digest_with_initial",
+      "storage_width": 8,
+      "lanes": 0,
+      "method": "digest_with_initial",
+      "formal": true,
+      "stage": "stage2",
+      "module": "Stage2Proofs.WordProtocolInstances",
+      "theorem": "CrcPublicWordInstances.digest_with_initial8_lane0_spec",
+      "precondition": "1 <= current algorithm.width <= 8; L in {0,1,16}; arbitrary raw word(s), flags and table; public word-level endpoint contract",
+      "contract_kind": "word-endpoint"
+    },
+    {
+      "api": "Crc<u8, Table<0>>::table",
+      "storage_width": 8,
+      "lanes": 0,
+      "method": "table",
+      "formal": true,
+      "stage": "stage1",
+      "theorem": "CrcProofs.table_u8_l0_spec",
+      "contract_kind": "exact-projection-or-clone"
+    },
+    {
+      "api": "Crc<u8, Table<0>>::clone",
+      "storage_width": 8,
+      "lanes": 0,
+      "method": "clone",
+      "formal": false,
+      "limitation": "no accepted public contract"
+    },
+    {
+      "api": "Crc<u8, Table<0>>::clone_from",
+      "storage_width": 8,
+      "lanes": 0,
+      "method": "clone_from",
+      "formal": false,
+      "limitation": "no accepted public contract"
+    },
+    {
+      "api": "Digest<u8, Table<0>>::update",
+      "storage_width": 8,
+      "lanes": 0,
+      "method": "update",
+      "formal": true,
+      "stage": "stage2",
+      "module": "Stage2Proofs.Partial8",
+      "theorem": "CrcPartial8.digest_update_notable",
+      "precondition": "1 <= current algorithm.width = w <= 8; raw polynomial = zero-extended width-w poly; raw digest state = physical(8, refin, canonical width-w state); both flags arbitrary; any representable byte slice including empty",
+      "contract_kind": "canonical-message"
+    },
+    {
+      "api": "Digest<u8, Table<0>>::finalize",
+      "storage_width": 8,
+      "lanes": 0,
+      "method": "finalize",
+      "formal": true,
+      "stage": "stage2",
+      "module": "Stage2Proofs.WordProtocolInstances",
+      "theorem": "CrcPublicWordInstances.digest_finalize8_lane0_spec",
+      "precondition": "1 <= current algorithm.width <= 8; L in {0,1,16}; arbitrary raw word(s), flags and table; public word-level endpoint contract",
+      "contract_kind": "word-endpoint"
+    },
+    {
+      "api": "Digest<u8, Table<0>>::clone",
+      "storage_width": 8,
+      "lanes": 0,
+      "method": "clone",
+      "formal": false,
+      "limitation": "no accepted public contract"
+    },
+    {
+      "api": "Digest<u8, Table<0>>::clone_from",
+      "storage_width": 8,
+      "lanes": 0,
+      "method": "clone_from",
+      "formal": false,
+      "limitation": "no accepted public contract"
+    },
+    {
+      "api": "Crc<u8, Table<1>>::new",
+      "storage_width": 8,
+      "lanes": 1,
+      "method": "new",
+      "formal": true,
+      "stage": "stage2",
+      "module": "Stage2Proofs.PartialConstructor8",
+      "theorem": "CrcPartialConstructor8.new_table1",
+      "precondition": "1 <= algorithm.width = w <= 8; raw polynomial = zero-extended width-w poly; arbitrary init/xorout and both flags; constructor preserves algorithm and establishes current table coherence",
+      "contract_kind": "constructor"
+    },
+    {
+      "api": "Crc<u8, Table<1>>::checksum",
+      "storage_width": 8,
+      "lanes": 1,
+      "method": "checksum",
+      "formal": true,
+      "stage": "stage2",
+      "module": "Stage2Proofs.Partial8",
+      "theorem": "CrcPartial8.checksum_table1",
+      "precondition": "1 <= current algorithm.width = w <= 8; raw polynomial = zero-extended width-w poly; raw xorout = zero-extended width-w xorout; raw init = zero-extended width-w initial; all 256 current table entries = encoded canonical byte transitions from zero; both flags arbitrary; any representable byte slice including empty",
+      "contract_kind": "canonical-message"
+    },
+    {
+      "api": "Crc<u8, Table<1>>::digest",
+      "storage_width": 8,
+      "lanes": 1,
+      "method": "digest",
+      "formal": true,
+      "stage": "stage2",
+      "module": "Stage2Proofs.WordProtocolInstances",
+      "theorem": "CrcPublicWordInstances.digest8_lane1_spec",
+      "precondition": "1 <= current algorithm.width <= 8; L in {0,1,16}; arbitrary raw word(s), flags and table; public word-level endpoint contract",
+      "contract_kind": "word-endpoint"
+    },
+    {
+      "api": "Crc<u8, Table<1>>::digest_with_initial",
+      "storage_width": 8,
+      "lanes": 1,
+      "method": "digest_with_initial",
+      "formal": true,
+      "stage": "stage2",
+      "module": "Stage2Proofs.WordProtocolInstances",
+      "theorem": "CrcPublicWordInstances.digest_with_initial8_lane1_spec",
+      "precondition": "1 <= current algorithm.width <= 8; L in {0,1,16}; arbitrary raw word(s), flags and table; public word-level endpoint contract",
+      "contract_kind": "word-endpoint"
+    },
+    {
+      "api": "Crc<u8, Table<1>>::table",
+      "storage_width": 8,
+      "lanes": 1,
+      "method": "table",
+      "formal": true,
+      "stage": "stage1",
+      "theorem": "CrcProofs.table_u8_l1_spec",
+      "contract_kind": "exact-projection-or-clone"
+    },
+    {
+      "api": "Crc<u8, Table<1>>::clone",
+      "storage_width": 8,
+      "lanes": 1,
+      "method": "clone",
+      "formal": false,
+      "limitation": "no accepted public contract"
+    },
+    {
+      "api": "Crc<u8, Table<1>>::clone_from",
+      "storage_width": 8,
+      "lanes": 1,
+      "method": "clone_from",
+      "formal": false,
+      "limitation": "no accepted public contract"
+    },
+    {
+      "api": "Digest<u8, Table<1>>::update",
+      "storage_width": 8,
+      "lanes": 1,
+      "method": "update",
+      "formal": true,
+      "stage": "stage2",
+      "module": "Stage2Proofs.Partial8",
+      "theorem": "CrcPartial8.digest_update_table1",
+      "precondition": "1 <= current algorithm.width = w <= 8; raw polynomial = zero-extended width-w poly; raw digest state = physical(8, refin, canonical width-w state); all 256 current table entries = encoded canonical byte transitions from zero; both flags arbitrary; any representable byte slice including empty",
+      "contract_kind": "canonical-message"
+    },
+    {
+      "api": "Digest<u8, Table<1>>::finalize",
+      "storage_width": 8,
+      "lanes": 1,
+      "method": "finalize",
+      "formal": true,
+      "stage": "stage2",
+      "module": "Stage2Proofs.WordProtocolInstances",
+      "theorem": "CrcPublicWordInstances.digest_finalize8_lane1_spec",
+      "precondition": "1 <= current algorithm.width <= 8; L in {0,1,16}; arbitrary raw word(s), flags and table; public word-level endpoint contract",
+      "contract_kind": "word-endpoint"
+    },
+    {
+      "api": "Digest<u8, Table<1>>::clone",
+      "storage_width": 8,
+      "lanes": 1,
+      "method": "clone",
+      "formal": false,
+      "limitation": "no accepted public contract"
+    },
+    {
+      "api": "Digest<u8, Table<1>>::clone_from",
+      "storage_width": 8,
+      "lanes": 1,
+      "method": "clone_from",
+      "formal": false,
+      "limitation": "no accepted public contract"
+    },
+    {
+      "api": "Crc<u8, Table<16>>::new",
+      "storage_width": 8,
+      "lanes": 16,
+      "method": "new",
+      "formal": false,
+      "limitation": "no accepted public contract"
+    },
+    {
+      "api": "Crc<u8, Table<16>>::checksum",
+      "storage_width": 8,
+      "lanes": 16,
+      "method": "checksum",
+      "formal": false,
+      "limitation": "optimized sixteen-lane canonical message proof absent"
+    },
+    {
+      "api": "Crc<u8, Table<16>>::digest",
+      "storage_width": 8,
+      "lanes": 16,
+      "method": "digest",
+      "formal": true,
+      "stage": "stage2",
+      "module": "Stage2Proofs.WordProtocolInstances",
+      "theorem": "CrcPublicWordInstances.digest8_lane16_spec",
+      "precondition": "1 <= current algorithm.width <= 8; L in {0,1,16}; arbitrary raw word(s), flags and table; public word-level endpoint contract",
+      "contract_kind": "word-endpoint"
+    },
+    {
+      "api": "Crc<u8, Table<16>>::digest_with_initial",
+      "storage_width": 8,
+      "lanes": 16,
+      "method": "digest_with_initial",
+      "formal": true,
+      "stage": "stage2",
+      "module": "Stage2Proofs.WordProtocolInstances",
+      "theorem": "CrcPublicWordInstances.digest_with_initial8_lane16_spec",
+      "precondition": "1 <= current algorithm.width <= 8; L in {0,1,16}; arbitrary raw word(s), flags and table; public word-level endpoint contract",
+      "contract_kind": "word-endpoint"
+    },
+    {
+      "api": "Crc<u8, Table<16>>::table",
+      "storage_width": 8,
+      "lanes": 16,
+      "method": "table",
+      "formal": true,
+      "stage": "stage1",
+      "theorem": "CrcProofs.table_u8_l16_spec",
+      "contract_kind": "exact-projection-or-clone"
+    },
+    {
+      "api": "Crc<u8, Table<16>>::clone",
+      "storage_width": 8,
+      "lanes": 16,
+      "method": "clone",
+      "formal": false,
+      "limitation": "no accepted public contract"
+    },
+    {
+      "api": "Crc<u8, Table<16>>::clone_from",
+      "storage_width": 8,
+      "lanes": 16,
+      "method": "clone_from",
+      "formal": false,
+      "limitation": "no accepted public contract"
+    },
+    {
+      "api": "Digest<u8, Table<16>>::update",
+      "storage_width": 8,
+      "lanes": 16,
+      "method": "update",
+      "formal": false,
+      "limitation": "optimized sixteen-lane canonical message proof absent"
+    },
+    {
+      "api": "Digest<u8, Table<16>>::finalize",
+      "storage_width": 8,
+      "lanes": 16,
+      "method": "finalize",
+      "formal": true,
+      "stage": "stage2",
+      "module": "Stage2Proofs.WordProtocolInstances",
+      "theorem": "CrcPublicWordInstances.digest_finalize8_lane16_spec",
+      "precondition": "1 <= current algorithm.width <= 8; L in {0,1,16}; arbitrary raw word(s), flags and table; public word-level endpoint contract",
+      "contract_kind": "word-endpoint"
+    },
+    {
+      "api": "Digest<u8, Table<16>>::clone",
+      "storage_width": 8,
+      "lanes": 16,
+      "method": "clone",
+      "formal": false,
+      "limitation": "no accepted public contract"
+    },
+    {
+      "api": "Digest<u8, Table<16>>::clone_from",
+      "storage_width": 8,
+      "lanes": 16,
+      "method": "clone_from",
+      "formal": false,
+      "limitation": "no accepted public contract"
+    },
+    {
+      "api": "Crc<u16, Table<0>>::new",
+      "storage_width": 16,
+      "lanes": 0,
+      "method": "new",
+      "formal": true,
+      "stage": "stage2",
+      "module": "Stage2Proofs.PartialNoTableConstructors",
+      "theorem": "CrcPartialNoTableConstructors.new_total16",
+      "precondition": "1 <= algorithm.width <= 16; arbitrary polynomial/init/xorout and both flags; resulting algorithm equals input",
+      "contract_kind": "constructor"
+    },
+    {
+      "api": "Crc<u16, Table<0>>::checksum",
+      "storage_width": 16,
+      "lanes": 0,
+      "method": "checksum",
+      "formal": true,
+      "stage": "stage2",
+      "module": "Stage2Proofs.PartialNoTableConstructors",
+      "theorem": "CrcPartialNoTableConstructors.checksum16",
+      "precondition": "1 <= current algorithm.width = w <= 16; raw polynomial = zero-extended width-w poly; raw xorout = zero-extended width-w xorout; arbitrary raw init interpreted by low w bits; both flags arbitrary; any representable byte slice including empty",
+      "contract_kind": "canonical-message"
+    },
+    {
+      "api": "Crc<u16, Table<0>>::digest",
+      "storage_width": 16,
+      "lanes": 0,
+      "method": "digest",
+      "formal": true,
+      "stage": "stage2",
+      "module": "Stage2Proofs.WordProtocolInstances",
+      "theorem": "CrcPublicWordInstances.digest16_lane0_spec",
+      "precondition": "1 <= current algorithm.width <= 16; L in {0,1,16}; arbitrary raw word(s), flags and table; public word-level endpoint contract",
+      "contract_kind": "word-endpoint"
+    },
+    {
+      "api": "Crc<u16, Table<0>>::digest_with_initial",
+      "storage_width": 16,
+      "lanes": 0,
+      "method": "digest_with_initial",
+      "formal": true,
+      "stage": "stage2",
+      "module": "Stage2Proofs.WordProtocolInstances",
+      "theorem": "CrcPublicWordInstances.digest_with_initial16_lane0_spec",
+      "precondition": "1 <= current algorithm.width <= 16; L in {0,1,16}; arbitrary raw word(s), flags and table; public word-level endpoint contract",
+      "contract_kind": "word-endpoint"
+    },
+    {
+      "api": "Crc<u16, Table<0>>::table",
+      "storage_width": 16,
+      "lanes": 0,
+      "method": "table",
+      "formal": true,
+      "stage": "stage1",
+      "theorem": "CrcProofs.table_u16_l0_spec",
+      "contract_kind": "exact-projection-or-clone"
+    },
+    {
+      "api": "Crc<u16, Table<0>>::clone",
+      "storage_width": 16,
+      "lanes": 0,
+      "method": "clone",
+      "formal": false,
+      "limitation": "no accepted public contract"
+    },
+    {
+      "api": "Crc<u16, Table<0>>::clone_from",
+      "storage_width": 16,
+      "lanes": 0,
+      "method": "clone_from",
+      "formal": false,
+      "limitation": "no accepted public contract"
+    },
+    {
+      "api": "Digest<u16, Table<0>>::update",
+      "storage_width": 16,
+      "lanes": 0,
+      "method": "update",
+      "formal": true,
+      "stage": "stage2",
+      "module": "Stage2Proofs.Partial16",
+      "theorem": "CrcPartial16.digest_update_notable",
+      "precondition": "1 <= current algorithm.width = w <= 16; raw polynomial = zero-extended width-w poly; raw digest state = physical(16, refin, canonical width-w state); both flags arbitrary; any representable byte slice including empty",
+      "contract_kind": "canonical-message"
+    },
+    {
+      "api": "Digest<u16, Table<0>>::finalize",
+      "storage_width": 16,
+      "lanes": 0,
+      "method": "finalize",
+      "formal": true,
+      "stage": "stage2",
+      "module": "Stage2Proofs.WordProtocolInstances",
+      "theorem": "CrcPublicWordInstances.digest_finalize16_lane0_spec",
+      "precondition": "1 <= current algorithm.width <= 16; L in {0,1,16}; arbitrary raw word(s), flags and table; public word-level endpoint contract",
+      "contract_kind": "word-endpoint"
+    },
+    {
+      "api": "Digest<u16, Table<0>>::clone",
+      "storage_width": 16,
+      "lanes": 0,
+      "method": "clone",
+      "formal": false,
+      "limitation": "no accepted public contract"
+    },
+    {
+      "api": "Digest<u16, Table<0>>::clone_from",
+      "storage_width": 16,
+      "lanes": 0,
+      "method": "clone_from",
+      "formal": false,
+      "limitation": "no accepted public contract"
+    },
+    {
+      "api": "Crc<u16, Table<1>>::new",
+      "storage_width": 16,
+      "lanes": 1,
+      "method": "new",
+      "formal": true,
+      "stage": "stage2",
+      "module": "Stage2Proofs.PartialConstructor16",
+      "theorem": "CrcPartialConstructor16.new_table1",
+      "precondition": "1 <= algorithm.width = w <= 16; raw polynomial = zero-extended width-w poly; arbitrary init/xorout and both flags; constructor preserves algorithm and establishes current table coherence",
+      "contract_kind": "constructor"
+    },
+    {
+      "api": "Crc<u16, Table<1>>::checksum",
+      "storage_width": 16,
+      "lanes": 1,
+      "method": "checksum",
+      "formal": true,
+      "stage": "stage2",
+      "module": "Stage2Proofs.Partial16",
+      "theorem": "CrcPartial16.checksum_table1",
+      "precondition": "1 <= current algorithm.width = w <= 16; raw polynomial = zero-extended width-w poly; raw xorout = zero-extended width-w xorout; raw init = zero-extended width-w initial; all 256 current table entries = encoded canonical byte transitions from zero; both flags arbitrary; any representable byte slice including empty",
+      "contract_kind": "canonical-message"
+    },
+    {
+      "api": "Crc<u16, Table<1>>::digest",
+      "storage_width": 16,
+      "lanes": 1,
+      "method": "digest",
+      "formal": true,
+      "stage": "stage2",
+      "module": "Stage2Proofs.WordProtocolInstances",
+      "theorem": "CrcPublicWordInstances.digest16_lane1_spec",
+      "precondition": "1 <= current algorithm.width <= 16; L in {0,1,16}; arbitrary raw word(s), flags and table; public word-level endpoint contract",
+      "contract_kind": "word-endpoint"
+    },
+    {
+      "api": "Crc<u16, Table<1>>::digest_with_initial",
+      "storage_width": 16,
+      "lanes": 1,
+      "method": "digest_with_initial",
+      "formal": true,
+      "stage": "stage2",
+      "module": "Stage2Proofs.WordProtocolInstances",
+      "theorem": "CrcPublicWordInstances.digest_with_initial16_lane1_spec",
+      "precondition": "1 <= current algorithm.width <= 16; L in {0,1,16}; arbitrary raw word(s), flags and table; public word-level endpoint contract",
+      "contract_kind": "word-endpoint"
+    },
+    {
+      "api": "Crc<u16, Table<1>>::table",
+      "storage_width": 16,
+      "lanes": 1,
+      "method": "table",
+      "formal": true,
+      "stage": "stage1",
+      "theorem": "CrcProofs.table_u16_l1_spec",
+      "contract_kind": "exact-projection-or-clone"
+    },
+    {
+      "api": "Crc<u16, Table<1>>::clone",
+      "storage_width": 16,
+      "lanes": 1,
+      "method": "clone",
+      "formal": false,
+      "limitation": "no accepted public contract"
+    },
+    {
+      "api": "Crc<u16, Table<1>>::clone_from",
+      "storage_width": 16,
+      "lanes": 1,
+      "method": "clone_from",
+      "formal": false,
+      "limitation": "no accepted public contract"
+    },
+    {
+      "api": "Digest<u16, Table<1>>::update",
+      "storage_width": 16,
+      "lanes": 1,
+      "method": "update",
+      "formal": true,
+      "stage": "stage2",
+      "module": "Stage2Proofs.Partial16",
+      "theorem": "CrcPartial16.digest_update_table1",
+      "precondition": "1 <= current algorithm.width = w <= 16; raw polynomial = zero-extended width-w poly; raw digest state = physical(16, refin, canonical width-w state); all 256 current table entries = encoded canonical byte transitions from zero; both flags arbitrary; any representable byte slice including empty",
+      "contract_kind": "canonical-message"
+    },
+    {
+      "api": "Digest<u16, Table<1>>::finalize",
+      "storage_width": 16,
+      "lanes": 1,
+      "method": "finalize",
+      "formal": true,
+      "stage": "stage2",
+      "module": "Stage2Proofs.WordProtocolInstances",
+      "theorem": "CrcPublicWordInstances.digest_finalize16_lane1_spec",
+      "precondition": "1 <= current algorithm.width <= 16; L in {0,1,16}; arbitrary raw word(s), flags and table; public word-level endpoint contract",
+      "contract_kind": "word-endpoint"
+    },
+    {
+      "api": "Digest<u16, Table<1>>::clone",
+      "storage_width": 16,
+      "lanes": 1,
+      "method": "clone",
+      "formal": false,
+      "limitation": "no accepted public contract"
+    },
+    {
+      "api": "Digest<u16, Table<1>>::clone_from",
+      "storage_width": 16,
+      "lanes": 1,
+      "method": "clone_from",
+      "formal": false,
+      "limitation": "no accepted public contract"
+    },
+    {
+      "api": "Crc<u16, Table<16>>::new",
+      "storage_width": 16,
+      "lanes": 16,
+      "method": "new",
+      "formal": false,
+      "limitation": "no accepted public contract"
+    },
+    {
+      "api": "Crc<u16, Table<16>>::checksum",
+      "storage_width": 16,
+      "lanes": 16,
+      "method": "checksum",
+      "formal": false,
+      "limitation": "optimized sixteen-lane canonical message proof absent"
+    },
+    {
+      "api": "Crc<u16, Table<16>>::digest",
+      "storage_width": 16,
+      "lanes": 16,
+      "method": "digest",
+      "formal": true,
+      "stage": "stage2",
+      "module": "Stage2Proofs.WordProtocolInstances",
+      "theorem": "CrcPublicWordInstances.digest16_lane16_spec",
+      "precondition": "1 <= current algorithm.width <= 16; L in {0,1,16}; arbitrary raw word(s), flags and table; public word-level endpoint contract",
+      "contract_kind": "word-endpoint"
+    },
+    {
+      "api": "Crc<u16, Table<16>>::digest_with_initial",
+      "storage_width": 16,
+      "lanes": 16,
+      "method": "digest_with_initial",
+      "formal": true,
+      "stage": "stage2",
+      "module": "Stage2Proofs.WordProtocolInstances",
+      "theorem": "CrcPublicWordInstances.digest_with_initial16_lane16_spec",
+      "precondition": "1 <= current algorithm.width <= 16; L in {0,1,16}; arbitrary raw word(s), flags and table; public word-level endpoint contract",
+      "contract_kind": "word-endpoint"
+    },
+    {
+      "api": "Crc<u16, Table<16>>::table",
+      "storage_width": 16,
+      "lanes": 16,
+      "method": "table",
+      "formal": true,
+      "stage": "stage1",
+      "theorem": "CrcProofs.table_u16_l16_spec",
+      "contract_kind": "exact-projection-or-clone"
+    },
+    {
+      "api": "Crc<u16, Table<16>>::clone",
+      "storage_width": 16,
+      "lanes": 16,
+      "method": "clone",
+      "formal": false,
+      "limitation": "no accepted public contract"
+    },
+    {
+      "api": "Crc<u16, Table<16>>::clone_from",
+      "storage_width": 16,
+      "lanes": 16,
+      "method": "clone_from",
+      "formal": false,
+      "limitation": "no accepted public contract"
+    },
+    {
+      "api": "Digest<u16, Table<16>>::update",
+      "storage_width": 16,
+      "lanes": 16,
+      "method": "update",
+      "formal": false,
+      "limitation": "optimized sixteen-lane canonical message proof absent"
+    },
+    {
+      "api": "Digest<u16, Table<16>>::finalize",
+      "storage_width": 16,
+      "lanes": 16,
+      "method": "finalize",
+      "formal": true,
+      "stage": "stage2",
+      "module": "Stage2Proofs.WordProtocolInstances",
+      "theorem": "CrcPublicWordInstances.digest_finalize16_lane16_spec",
+      "precondition": "1 <= current algorithm.width <= 16; L in {0,1,16}; arbitrary raw word(s), flags and table; public word-level endpoint contract",
+      "contract_kind": "word-endpoint"
+    },
+    {
+      "api": "Digest<u16, Table<16>>::clone",
+      "storage_width": 16,
+      "lanes": 16,
+      "method": "clone",
+      "formal": false,
+      "limitation": "no accepted public contract"
+    },
+    {
+      "api": "Digest<u16, Table<16>>::clone_from",
+      "storage_width": 16,
+      "lanes": 16,
+      "method": "clone_from",
+      "formal": false,
+      "limitation": "no accepted public contract"
+    },
+    {
+      "api": "Crc<u32, Table<0>>::new",
+      "storage_width": 32,
+      "lanes": 0,
+      "method": "new",
+      "formal": true,
+      "stage": "stage2",
+      "module": "Stage2Proofs.PartialNoTableConstructors",
+      "theorem": "CrcPartialNoTableConstructors.new_total32",
+      "precondition": "1 <= algorithm.width <= 32; arbitrary polynomial/init/xorout and both flags; resulting algorithm equals input",
+      "contract_kind": "constructor"
+    },
+    {
+      "api": "Crc<u32, Table<0>>::checksum",
+      "storage_width": 32,
+      "lanes": 0,
+      "method": "checksum",
+      "formal": true,
+      "stage": "stage2",
+      "module": "Stage2Proofs.PartialNoTableConstructors",
+      "theorem": "CrcPartialNoTableConstructors.checksum32",
+      "precondition": "1 <= current algorithm.width = w <= 32; raw polynomial = zero-extended width-w poly; raw xorout = zero-extended width-w xorout; arbitrary raw init interpreted by low w bits; both flags arbitrary; any representable byte slice including empty",
+      "contract_kind": "canonical-message"
+    },
+    {
+      "api": "Crc<u32, Table<0>>::digest",
+      "storage_width": 32,
+      "lanes": 0,
+      "method": "digest",
+      "formal": true,
+      "stage": "stage2",
+      "module": "Stage2Proofs.WordProtocolInstances",
+      "theorem": "CrcPublicWordInstances.digest32_lane0_spec",
+      "precondition": "1 <= current algorithm.width <= 32; L in {0,1,16}; arbitrary raw word(s), flags and table; public word-level endpoint contract",
+      "contract_kind": "word-endpoint"
+    },
+    {
+      "api": "Crc<u32, Table<0>>::digest_with_initial",
+      "storage_width": 32,
+      "lanes": 0,
+      "method": "digest_with_initial",
+      "formal": true,
+      "stage": "stage2",
+      "module": "Stage2Proofs.WordProtocolInstances",
+      "theorem": "CrcPublicWordInstances.digest_with_initial32_lane0_spec",
+      "precondition": "1 <= current algorithm.width <= 32; L in {0,1,16}; arbitrary raw word(s), flags and table; public word-level endpoint contract",
+      "contract_kind": "word-endpoint"
+    },
+    {
+      "api": "Crc<u32, Table<0>>::table",
+      "storage_width": 32,
+      "lanes": 0,
+      "method": "table",
+      "formal": true,
+      "stage": "stage1",
+      "theorem": "CrcProofs.table_u32_l0_spec",
+      "contract_kind": "exact-projection-or-clone"
+    },
+    {
+      "api": "Crc<u32, Table<0>>::clone",
+      "storage_width": 32,
+      "lanes": 0,
+      "method": "clone",
+      "formal": false,
+      "limitation": "no accepted public contract"
+    },
+    {
+      "api": "Crc<u32, Table<0>>::clone_from",
+      "storage_width": 32,
+      "lanes": 0,
+      "method": "clone_from",
+      "formal": false,
+      "limitation": "no accepted public contract"
+    },
+    {
+      "api": "Digest<u32, Table<0>>::update",
+      "storage_width": 32,
+      "lanes": 0,
+      "method": "update",
+      "formal": true,
+      "stage": "stage2",
+      "module": "Stage2Proofs.Partial32",
+      "theorem": "CrcPartial32.digest_update_notable",
+      "precondition": "1 <= current algorithm.width = w <= 32; raw polynomial = zero-extended width-w poly; raw digest state = physical(32, refin, canonical width-w state); both flags arbitrary; any representable byte slice including empty",
+      "contract_kind": "canonical-message"
+    },
+    {
+      "api": "Digest<u32, Table<0>>::finalize",
+      "storage_width": 32,
+      "lanes": 0,
+      "method": "finalize",
+      "formal": true,
+      "stage": "stage2",
+      "module": "Stage2Proofs.WordProtocolInstances",
+      "theorem": "CrcPublicWordInstances.digest_finalize32_lane0_spec",
+      "precondition": "1 <= current algorithm.width <= 32; L in {0,1,16}; arbitrary raw word(s), flags and table; public word-level endpoint contract",
+      "contract_kind": "word-endpoint"
+    },
+    {
+      "api": "Digest<u32, Table<0>>::clone",
+      "storage_width": 32,
+      "lanes": 0,
+      "method": "clone",
+      "formal": false,
+      "limitation": "no accepted public contract"
+    },
+    {
+      "api": "Digest<u32, Table<0>>::clone_from",
+      "storage_width": 32,
+      "lanes": 0,
+      "method": "clone_from",
+      "formal": false,
+      "limitation": "no accepted public contract"
+    },
+    {
+      "api": "Crc<u32, Table<1>>::new",
+      "storage_width": 32,
+      "lanes": 1,
+      "method": "new",
+      "formal": true,
+      "stage": "stage2",
+      "module": "Stage2Proofs.PartialConstructor32",
+      "theorem": "CrcPartialConstructor32.new_table1",
+      "precondition": "1 <= algorithm.width = w <= 32; raw polynomial = zero-extended width-w poly; arbitrary init/xorout and both flags; constructor preserves algorithm and establishes current table coherence",
+      "contract_kind": "constructor"
+    },
+    {
+      "api": "Crc<u32, Table<1>>::checksum",
+      "storage_width": 32,
+      "lanes": 1,
+      "method": "checksum",
+      "formal": true,
+      "stage": "stage2",
+      "module": "Stage2Proofs.Partial32",
+      "theorem": "CrcPartial32.checksum_table1",
+      "precondition": "1 <= current algorithm.width = w <= 32; raw polynomial = zero-extended width-w poly; raw xorout = zero-extended width-w xorout; arbitrary raw init interpreted by low w bits; all 256 current table entries = encoded canonical byte transitions from zero; both flags arbitrary; any representable byte slice including empty",
+      "contract_kind": "canonical-message"
+    },
+    {
+      "api": "Crc<u32, Table<1>>::digest",
+      "storage_width": 32,
+      "lanes": 1,
+      "method": "digest",
+      "formal": true,
+      "stage": "stage2",
+      "module": "Stage2Proofs.WordProtocolInstances",
+      "theorem": "CrcPublicWordInstances.digest32_lane1_spec",
+      "precondition": "1 <= current algorithm.width <= 32; L in {0,1,16}; arbitrary raw word(s), flags and table; public word-level endpoint contract",
+      "contract_kind": "word-endpoint"
+    },
+    {
+      "api": "Crc<u32, Table<1>>::digest_with_initial",
+      "storage_width": 32,
+      "lanes": 1,
+      "method": "digest_with_initial",
+      "formal": true,
+      "stage": "stage2",
+      "module": "Stage2Proofs.WordProtocolInstances",
+      "theorem": "CrcPublicWordInstances.digest_with_initial32_lane1_spec",
+      "precondition": "1 <= current algorithm.width <= 32; L in {0,1,16}; arbitrary raw word(s), flags and table; public word-level endpoint contract",
+      "contract_kind": "word-endpoint"
+    },
+    {
+      "api": "Crc<u32, Table<1>>::table",
+      "storage_width": 32,
+      "lanes": 1,
+      "method": "table",
+      "formal": true,
+      "stage": "stage1",
+      "theorem": "CrcProofs.table_u32_l1_spec",
+      "contract_kind": "exact-projection-or-clone"
+    },
+    {
+      "api": "Crc<u32, Table<1>>::clone",
+      "storage_width": 32,
+      "lanes": 1,
+      "method": "clone",
+      "formal": false,
+      "limitation": "no accepted public contract"
+    },
+    {
+      "api": "Crc<u32, Table<1>>::clone_from",
+      "storage_width": 32,
+      "lanes": 1,
+      "method": "clone_from",
+      "formal": false,
+      "limitation": "no accepted public contract"
+    },
+    {
+      "api": "Digest<u32, Table<1>>::update",
+      "storage_width": 32,
+      "lanes": 1,
+      "method": "update",
+      "formal": true,
+      "stage": "stage2",
+      "module": "Stage2Proofs.Partial32",
+      "theorem": "CrcPartial32.digest_update_table1",
+      "precondition": "1 <= current algorithm.width = w <= 32; raw polynomial = zero-extended width-w poly; raw digest state = physical(32, refin, canonical width-w state); all 256 current table entries = encoded canonical byte transitions from zero; both flags arbitrary; any representable byte slice including empty",
+      "contract_kind": "canonical-message"
+    },
+    {
+      "api": "Digest<u32, Table<1>>::finalize",
+      "storage_width": 32,
+      "lanes": 1,
+      "method": "finalize",
+      "formal": true,
+      "stage": "stage2",
+      "module": "Stage2Proofs.WordProtocolInstances",
+      "theorem": "CrcPublicWordInstances.digest_finalize32_lane1_spec",
+      "precondition": "1 <= current algorithm.width <= 32; L in {0,1,16}; arbitrary raw word(s), flags and table; public word-level endpoint contract",
+      "contract_kind": "word-endpoint"
+    },
+    {
+      "api": "Digest<u32, Table<1>>::clone",
+      "storage_width": 32,
+      "lanes": 1,
+      "method": "clone",
+      "formal": false,
+      "limitation": "no accepted public contract"
+    },
+    {
+      "api": "Digest<u32, Table<1>>::clone_from",
+      "storage_width": 32,
+      "lanes": 1,
+      "method": "clone_from",
+      "formal": false,
+      "limitation": "no accepted public contract"
+    },
+    {
+      "api": "Crc<u32, Table<16>>::new",
+      "storage_width": 32,
+      "lanes": 16,
+      "method": "new",
+      "formal": false,
+      "limitation": "no accepted public contract"
+    },
+    {
+      "api": "Crc<u32, Table<16>>::checksum",
+      "storage_width": 32,
+      "lanes": 16,
+      "method": "checksum",
+      "formal": false,
+      "limitation": "optimized sixteen-lane canonical message proof absent"
+    },
+    {
+      "api": "Crc<u32, Table<16>>::digest",
+      "storage_width": 32,
+      "lanes": 16,
+      "method": "digest",
+      "formal": true,
+      "stage": "stage2",
+      "module": "Stage2Proofs.WordProtocolInstances",
+      "theorem": "CrcPublicWordInstances.digest32_lane16_spec",
+      "precondition": "1 <= current algorithm.width <= 32; L in {0,1,16}; arbitrary raw word(s), flags and table; public word-level endpoint contract",
+      "contract_kind": "word-endpoint"
+    },
+    {
+      "api": "Crc<u32, Table<16>>::digest_with_initial",
+      "storage_width": 32,
+      "lanes": 16,
+      "method": "digest_with_initial",
+      "formal": true,
+      "stage": "stage2",
+      "module": "Stage2Proofs.WordProtocolInstances",
+      "theorem": "CrcPublicWordInstances.digest_with_initial32_lane16_spec",
+      "precondition": "1 <= current algorithm.width <= 32; L in {0,1,16}; arbitrary raw word(s), flags and table; public word-level endpoint contract",
+      "contract_kind": "word-endpoint"
+    },
+    {
+      "api": "Crc<u32, Table<16>>::table",
+      "storage_width": 32,
+      "lanes": 16,
+      "method": "table",
+      "formal": true,
+      "stage": "stage1",
+      "theorem": "CrcProofs.table_u32_l16_spec",
+      "contract_kind": "exact-projection-or-clone"
+    },
+    {
+      "api": "Crc<u32, Table<16>>::clone",
+      "storage_width": 32,
+      "lanes": 16,
+      "method": "clone",
+      "formal": false,
+      "limitation": "no accepted public contract"
+    },
+    {
+      "api": "Crc<u32, Table<16>>::clone_from",
+      "storage_width": 32,
+      "lanes": 16,
+      "method": "clone_from",
+      "formal": false,
+      "limitation": "no accepted public contract"
+    },
+    {
+      "api": "Digest<u32, Table<16>>::update",
+      "storage_width": 32,
+      "lanes": 16,
+      "method": "update",
+      "formal": false,
+      "limitation": "optimized sixteen-lane canonical message proof absent"
+    },
+    {
+      "api": "Digest<u32, Table<16>>::finalize",
+      "storage_width": 32,
+      "lanes": 16,
+      "method": "finalize",
+      "formal": true,
+      "stage": "stage2",
+      "module": "Stage2Proofs.WordProtocolInstances",
+      "theorem": "CrcPublicWordInstances.digest_finalize32_lane16_spec",
+      "precondition": "1 <= current algorithm.width <= 32; L in {0,1,16}; arbitrary raw word(s), flags and table; public word-level endpoint contract",
+      "contract_kind": "word-endpoint"
+    },
+    {
+      "api": "Digest<u32, Table<16>>::clone",
+      "storage_width": 32,
+      "lanes": 16,
+      "method": "clone",
+      "formal": false,
+      "limitation": "no accepted public contract"
+    },
+    {
+      "api": "Digest<u32, Table<16>>::clone_from",
+      "storage_width": 32,
+      "lanes": 16,
+      "method": "clone_from",
+      "formal": false,
+      "limitation": "no accepted public contract"
+    },
+    {
+      "api": "Crc<u64, Table<0>>::new",
+      "storage_width": 64,
+      "lanes": 0,
+      "method": "new",
+      "formal": true,
+      "stage": "stage2",
+      "module": "Stage2Proofs.PartialNoTableConstructors",
+      "theorem": "CrcPartialNoTableConstructors.new_total64",
+      "precondition": "1 <= algorithm.width <= 64; arbitrary polynomial/init/xorout and both flags; resulting algorithm equals input",
+      "contract_kind": "constructor"
+    },
+    {
+      "api": "Crc<u64, Table<0>>::checksum",
+      "storage_width": 64,
+      "lanes": 0,
+      "method": "checksum",
+      "formal": true,
+      "stage": "stage2",
+      "module": "Stage2Proofs.PartialNoTableConstructors",
+      "theorem": "CrcPartialNoTableConstructors.checksum64",
+      "precondition": "1 <= current algorithm.width = w <= 64; raw polynomial = zero-extended width-w poly; raw xorout = zero-extended width-w xorout; arbitrary raw init interpreted by low w bits; both flags arbitrary; any representable byte slice including empty",
+      "contract_kind": "canonical-message"
+    },
+    {
+      "api": "Crc<u64, Table<0>>::digest",
+      "storage_width": 64,
+      "lanes": 0,
+      "method": "digest",
+      "formal": true,
+      "stage": "stage2",
+      "module": "Stage2Proofs.WordProtocolInstances",
+      "theorem": "CrcPublicWordInstances.digest64_lane0_spec",
+      "precondition": "1 <= current algorithm.width <= 64; L in {0,1,16}; arbitrary raw word(s), flags and table; public word-level endpoint contract",
+      "contract_kind": "word-endpoint"
+    },
+    {
+      "api": "Crc<u64, Table<0>>::digest_with_initial",
+      "storage_width": 64,
+      "lanes": 0,
+      "method": "digest_with_initial",
+      "formal": true,
+      "stage": "stage2",
+      "module": "Stage2Proofs.WordProtocolInstances",
+      "theorem": "CrcPublicWordInstances.digest_with_initial64_lane0_spec",
+      "precondition": "1 <= current algorithm.width <= 64; L in {0,1,16}; arbitrary raw word(s), flags and table; public word-level endpoint contract",
+      "contract_kind": "word-endpoint"
+    },
+    {
+      "api": "Crc<u64, Table<0>>::table",
+      "storage_width": 64,
+      "lanes": 0,
+      "method": "table",
+      "formal": true,
+      "stage": "stage1",
+      "theorem": "CrcProofs.table_u64_l0_spec",
+      "contract_kind": "exact-projection-or-clone"
+    },
+    {
+      "api": "Crc<u64, Table<0>>::clone",
+      "storage_width": 64,
+      "lanes": 0,
+      "method": "clone",
+      "formal": false,
+      "limitation": "no accepted public contract"
+    },
+    {
+      "api": "Crc<u64, Table<0>>::clone_from",
+      "storage_width": 64,
+      "lanes": 0,
+      "method": "clone_from",
+      "formal": false,
+      "limitation": "no accepted public contract"
+    },
+    {
+      "api": "Digest<u64, Table<0>>::update",
+      "storage_width": 64,
+      "lanes": 0,
+      "method": "update",
+      "formal": true,
+      "stage": "stage2",
+      "module": "Stage2Proofs.Partial64",
+      "theorem": "CrcPartial64.digest_update_notable",
+      "precondition": "1 <= current algorithm.width = w <= 64; raw polynomial = zero-extended width-w poly; raw digest state = physical(64, refin, canonical width-w state); both flags arbitrary; any representable byte slice including empty",
+      "contract_kind": "canonical-message"
+    },
+    {
+      "api": "Digest<u64, Table<0>>::finalize",
+      "storage_width": 64,
+      "lanes": 0,
+      "method": "finalize",
+      "formal": true,
+      "stage": "stage2",
+      "module": "Stage2Proofs.WordProtocolInstances",
+      "theorem": "CrcPublicWordInstances.digest_finalize64_lane0_spec",
+      "precondition": "1 <= current algorithm.width <= 64; L in {0,1,16}; arbitrary raw word(s), flags and table; public word-level endpoint contract",
+      "contract_kind": "word-endpoint"
+    },
+    {
+      "api": "Digest<u64, Table<0>>::clone",
+      "storage_width": 64,
+      "lanes": 0,
+      "method": "clone",
+      "formal": false,
+      "limitation": "no accepted public contract"
+    },
+    {
+      "api": "Digest<u64, Table<0>>::clone_from",
+      "storage_width": 64,
+      "lanes": 0,
+      "method": "clone_from",
+      "formal": false,
+      "limitation": "no accepted public contract"
+    },
+    {
+      "api": "Crc<u64, Table<1>>::new",
+      "storage_width": 64,
+      "lanes": 1,
+      "method": "new",
+      "formal": true,
+      "stage": "stage2",
+      "module": "Stage2Proofs.PartialConstructor64",
+      "theorem": "CrcPartialConstructor64.new_table1",
+      "precondition": "1 <= algorithm.width = w <= 64; raw polynomial = zero-extended width-w poly; arbitrary init/xorout and both flags; constructor preserves algorithm and establishes current table coherence",
+      "contract_kind": "constructor"
+    },
+    {
+      "api": "Crc<u64, Table<1>>::checksum",
+      "storage_width": 64,
+      "lanes": 1,
+      "method": "checksum",
+      "formal": true,
+      "stage": "stage2",
+      "module": "Stage2Proofs.Partial64",
+      "theorem": "CrcPartial64.checksum_table1",
+      "precondition": "1 <= current algorithm.width = w <= 64; raw polynomial = zero-extended width-w poly; raw xorout = zero-extended width-w xorout; arbitrary raw init interpreted by low w bits; all 256 current table entries = encoded canonical byte transitions from zero; both flags arbitrary; any representable byte slice including empty",
+      "contract_kind": "canonical-message"
+    },
+    {
+      "api": "Crc<u64, Table<1>>::digest",
+      "storage_width": 64,
+      "lanes": 1,
+      "method": "digest",
+      "formal": true,
+      "stage": "stage2",
+      "module": "Stage2Proofs.WordProtocolInstances",
+      "theorem": "CrcPublicWordInstances.digest64_lane1_spec",
+      "precondition": "1 <= current algorithm.width <= 64; L in {0,1,16}; arbitrary raw word(s), flags and table; public word-level endpoint contract",
+      "contract_kind": "word-endpoint"
+    },
+    {
+      "api": "Crc<u64, Table<1>>::digest_with_initial",
+      "storage_width": 64,
+      "lanes": 1,
+      "method": "digest_with_initial",
+      "formal": true,
+      "stage": "stage2",
+      "module": "Stage2Proofs.WordProtocolInstances",
+      "theorem": "CrcPublicWordInstances.digest_with_initial64_lane1_spec",
+      "precondition": "1 <= current algorithm.width <= 64; L in {0,1,16}; arbitrary raw word(s), flags and table; public word-level endpoint contract",
+      "contract_kind": "word-endpoint"
+    },
+    {
+      "api": "Crc<u64, Table<1>>::table",
+      "storage_width": 64,
+      "lanes": 1,
+      "method": "table",
+      "formal": true,
+      "stage": "stage1",
+      "theorem": "CrcProofs.table_u64_l1_spec",
+      "contract_kind": "exact-projection-or-clone"
+    },
+    {
+      "api": "Crc<u64, Table<1>>::clone",
+      "storage_width": 64,
+      "lanes": 1,
+      "method": "clone",
+      "formal": false,
+      "limitation": "no accepted public contract"
+    },
+    {
+      "api": "Crc<u64, Table<1>>::clone_from",
+      "storage_width": 64,
+      "lanes": 1,
+      "method": "clone_from",
+      "formal": false,
+      "limitation": "no accepted public contract"
+    },
+    {
+      "api": "Digest<u64, Table<1>>::update",
+      "storage_width": 64,
+      "lanes": 1,
+      "method": "update",
+      "formal": true,
+      "stage": "stage2",
+      "module": "Stage2Proofs.Partial64",
+      "theorem": "CrcPartial64.digest_update_table1",
+      "precondition": "1 <= current algorithm.width = w <= 64; raw polynomial = zero-extended width-w poly; raw digest state = physical(64, refin, canonical width-w state); all 256 current table entries = encoded canonical byte transitions from zero; both flags arbitrary; any representable byte slice including empty",
+      "contract_kind": "canonical-message"
+    },
+    {
+      "api": "Digest<u64, Table<1>>::finalize",
+      "storage_width": 64,
+      "lanes": 1,
+      "method": "finalize",
+      "formal": true,
+      "stage": "stage2",
+      "module": "Stage2Proofs.WordProtocolInstances",
+      "theorem": "CrcPublicWordInstances.digest_finalize64_lane1_spec",
+      "precondition": "1 <= current algorithm.width <= 64; L in {0,1,16}; arbitrary raw word(s), flags and table; public word-level endpoint contract",
+      "contract_kind": "word-endpoint"
+    },
+    {
+      "api": "Digest<u64, Table<1>>::clone",
+      "storage_width": 64,
+      "lanes": 1,
+      "method": "clone",
+      "formal": false,
+      "limitation": "no accepted public contract"
+    },
+    {
+      "api": "Digest<u64, Table<1>>::clone_from",
+      "storage_width": 64,
+      "lanes": 1,
+      "method": "clone_from",
+      "formal": false,
+      "limitation": "no accepted public contract"
+    },
+    {
+      "api": "Crc<u64, Table<16>>::new",
+      "storage_width": 64,
+      "lanes": 16,
+      "method": "new",
+      "formal": false,
+      "limitation": "no accepted public contract"
+    },
+    {
+      "api": "Crc<u64, Table<16>>::checksum",
+      "storage_width": 64,
+      "lanes": 16,
+      "method": "checksum",
+      "formal": false,
+      "limitation": "optimized sixteen-lane canonical message proof absent"
+    },
+    {
+      "api": "Crc<u64, Table<16>>::digest",
+      "storage_width": 64,
+      "lanes": 16,
+      "method": "digest",
+      "formal": true,
+      "stage": "stage2",
+      "module": "Stage2Proofs.WordProtocolInstances",
+      "theorem": "CrcPublicWordInstances.digest64_lane16_spec",
+      "precondition": "1 <= current algorithm.width <= 64; L in {0,1,16}; arbitrary raw word(s), flags and table; public word-level endpoint contract",
+      "contract_kind": "word-endpoint"
+    },
+    {
+      "api": "Crc<u64, Table<16>>::digest_with_initial",
+      "storage_width": 64,
+      "lanes": 16,
+      "method": "digest_with_initial",
+      "formal": true,
+      "stage": "stage2",
+      "module": "Stage2Proofs.WordProtocolInstances",
+      "theorem": "CrcPublicWordInstances.digest_with_initial64_lane16_spec",
+      "precondition": "1 <= current algorithm.width <= 64; L in {0,1,16}; arbitrary raw word(s), flags and table; public word-level endpoint contract",
+      "contract_kind": "word-endpoint"
+    },
+    {
+      "api": "Crc<u64, Table<16>>::table",
+      "storage_width": 64,
+      "lanes": 16,
+      "method": "table",
+      "formal": true,
+      "stage": "stage1",
+      "theorem": "CrcProofs.table_u64_l16_spec",
+      "contract_kind": "exact-projection-or-clone"
+    },
+    {
+      "api": "Crc<u64, Table<16>>::clone",
+      "storage_width": 64,
+      "lanes": 16,
+      "method": "clone",
+      "formal": false,
+      "limitation": "no accepted public contract"
+    },
+    {
+      "api": "Crc<u64, Table<16>>::clone_from",
+      "storage_width": 64,
+      "lanes": 16,
+      "method": "clone_from",
+      "formal": false,
+      "limitation": "no accepted public contract"
+    },
+    {
+      "api": "Digest<u64, Table<16>>::update",
+      "storage_width": 64,
+      "lanes": 16,
+      "method": "update",
+      "formal": false,
+      "limitation": "optimized sixteen-lane canonical message proof absent"
+    },
+    {
+      "api": "Digest<u64, Table<16>>::finalize",
+      "storage_width": 64,
+      "lanes": 16,
+      "method": "finalize",
+      "formal": true,
+      "stage": "stage2",
+      "module": "Stage2Proofs.WordProtocolInstances",
+      "theorem": "CrcPublicWordInstances.digest_finalize64_lane16_spec",
+      "precondition": "1 <= current algorithm.width <= 64; L in {0,1,16}; arbitrary raw word(s), flags and table; public word-level endpoint contract",
+      "contract_kind": "word-endpoint"
+    },
+    {
+      "api": "Digest<u64, Table<16>>::clone",
+      "storage_width": 64,
+      "lanes": 16,
+      "method": "clone",
+      "formal": false,
+      "limitation": "no accepted public contract"
+    },
+    {
+      "api": "Digest<u64, Table<16>>::clone_from",
+      "storage_width": 64,
+      "lanes": 16,
+      "method": "clone_from",
+      "formal": false,
+      "limitation": "no accepted public contract"
+    },
+    {
+      "api": "Crc<u128, Table<0>>::new",
+      "storage_width": 128,
+      "lanes": 0,
+      "method": "new",
+      "formal": true,
+      "stage": "stage2",
+      "module": "Stage2Proofs.PartialNoTableConstructors",
+      "theorem": "CrcPartialNoTableConstructors.new_total128",
+      "precondition": "1 <= algorithm.width <= 128; arbitrary polynomial/init/xorout and both flags; resulting algorithm equals input",
+      "contract_kind": "constructor"
+    },
+    {
+      "api": "Crc<u128, Table<0>>::checksum",
+      "storage_width": 128,
+      "lanes": 0,
+      "method": "checksum",
+      "formal": true,
+      "stage": "stage2",
+      "module": "Stage2Proofs.PartialNoTableConstructors",
+      "theorem": "CrcPartialNoTableConstructors.checksum128",
+      "precondition": "1 <= current algorithm.width = w <= 128; raw polynomial = zero-extended width-w poly; raw xorout = zero-extended width-w xorout; arbitrary raw init interpreted by low w bits; both flags arbitrary; any representable byte slice including empty",
+      "contract_kind": "canonical-message"
+    },
+    {
+      "api": "Crc<u128, Table<0>>::digest",
+      "storage_width": 128,
+      "lanes": 0,
+      "method": "digest",
+      "formal": true,
+      "stage": "stage2",
+      "module": "Stage2Proofs.WordProtocolInstances",
+      "theorem": "CrcPublicWordInstances.digest128_lane0_spec",
+      "precondition": "1 <= current algorithm.width <= 128; L in {0,1,16}; arbitrary raw word(s), flags and table; public word-level endpoint contract",
+      "contract_kind": "word-endpoint"
+    },
+    {
+      "api": "Crc<u128, Table<0>>::digest_with_initial",
+      "storage_width": 128,
+      "lanes": 0,
+      "method": "digest_with_initial",
+      "formal": true,
+      "stage": "stage2",
+      "module": "Stage2Proofs.WordProtocolInstances",
+      "theorem": "CrcPublicWordInstances.digest_with_initial128_lane0_spec",
+      "precondition": "1 <= current algorithm.width <= 128; L in {0,1,16}; arbitrary raw word(s), flags and table; public word-level endpoint contract",
+      "contract_kind": "word-endpoint"
+    },
+    {
+      "api": "Crc<u128, Table<0>>::table",
+      "storage_width": 128,
+      "lanes": 0,
+      "method": "table",
+      "formal": true,
+      "stage": "stage1",
+      "theorem": "CrcProofs.table_u128_l0_spec",
+      "contract_kind": "exact-projection-or-clone"
+    },
+    {
+      "api": "Crc<u128, Table<0>>::clone",
+      "storage_width": 128,
+      "lanes": 0,
+      "method": "clone",
+      "formal": false,
+      "limitation": "no accepted public contract"
+    },
+    {
+      "api": "Crc<u128, Table<0>>::clone_from",
+      "storage_width": 128,
+      "lanes": 0,
+      "method": "clone_from",
+      "formal": false,
+      "limitation": "no accepted public contract"
+    },
+    {
+      "api": "Digest<u128, Table<0>>::update",
+      "storage_width": 128,
+      "lanes": 0,
+      "method": "update",
+      "formal": true,
+      "stage": "stage2",
+      "module": "Stage2Proofs.Partial128",
+      "theorem": "CrcPartial128.digest_update_notable",
+      "precondition": "1 <= current algorithm.width = w <= 128; raw polynomial = zero-extended width-w poly; raw digest state = physical(128, refin, canonical width-w state); both flags arbitrary; any representable byte slice including empty",
+      "contract_kind": "canonical-message"
+    },
+    {
+      "api": "Digest<u128, Table<0>>::finalize",
+      "storage_width": 128,
+      "lanes": 0,
+      "method": "finalize",
+      "formal": true,
+      "stage": "stage2",
+      "module": "Stage2Proofs.WordProtocolInstances",
+      "theorem": "CrcPublicWordInstances.digest_finalize128_lane0_spec",
+      "precondition": "1 <= current algorithm.width <= 128; L in {0,1,16}; arbitrary raw word(s), flags and table; public word-level endpoint contract",
+      "contract_kind": "word-endpoint"
+    },
+    {
+      "api": "Digest<u128, Table<0>>::clone",
+      "storage_width": 128,
+      "lanes": 0,
+      "method": "clone",
+      "formal": false,
+      "limitation": "no accepted public contract"
+    },
+    {
+      "api": "Digest<u128, Table<0>>::clone_from",
+      "storage_width": 128,
+      "lanes": 0,
+      "method": "clone_from",
+      "formal": false,
+      "limitation": "no accepted public contract"
+    },
+    {
+      "api": "Crc<u128, Table<1>>::new",
+      "storage_width": 128,
+      "lanes": 1,
+      "method": "new",
+      "formal": true,
+      "stage": "stage2",
+      "module": "Stage2Proofs.PartialConstructor128",
+      "theorem": "CrcPartialConstructor128.new_table1",
+      "precondition": "1 <= algorithm.width = w <= 128; raw polynomial = zero-extended width-w poly; arbitrary init/xorout and both flags; constructor preserves algorithm and establishes current table coherence",
+      "contract_kind": "constructor"
+    },
+    {
+      "api": "Crc<u128, Table<1>>::checksum",
+      "storage_width": 128,
+      "lanes": 1,
+      "method": "checksum",
+      "formal": true,
+      "stage": "stage2",
+      "module": "Stage2Proofs.Partial128",
+      "theorem": "CrcPartial128.checksum_table1",
+      "precondition": "1 <= current algorithm.width = w <= 128; raw polynomial = zero-extended width-w poly; raw xorout = zero-extended width-w xorout; arbitrary raw init interpreted by low w bits; all 256 current table entries = encoded canonical byte transitions from zero; both flags arbitrary; any representable byte slice including empty",
+      "contract_kind": "canonical-message"
+    },
+    {
+      "api": "Crc<u128, Table<1>>::digest",
+      "storage_width": 128,
+      "lanes": 1,
+      "method": "digest",
+      "formal": true,
+      "stage": "stage2",
+      "module": "Stage2Proofs.WordProtocolInstances",
+      "theorem": "CrcPublicWordInstances.digest128_lane1_spec",
+      "precondition": "1 <= current algorithm.width <= 128; L in {0,1,16}; arbitrary raw word(s), flags and table; public word-level endpoint contract",
+      "contract_kind": "word-endpoint"
+    },
+    {
+      "api": "Crc<u128, Table<1>>::digest_with_initial",
+      "storage_width": 128,
+      "lanes": 1,
+      "method": "digest_with_initial",
+      "formal": true,
+      "stage": "stage2",
+      "module": "Stage2Proofs.WordProtocolInstances",
+      "theorem": "CrcPublicWordInstances.digest_with_initial128_lane1_spec",
+      "precondition": "1 <= current algorithm.width <= 128; L in {0,1,16}; arbitrary raw word(s), flags and table; public word-level endpoint contract",
+      "contract_kind": "word-endpoint"
+    },
+    {
+      "api": "Crc<u128, Table<1>>::table",
+      "storage_width": 128,
+      "lanes": 1,
+      "method": "table",
+      "formal": true,
+      "stage": "stage1",
+      "theorem": "CrcProofs.table_u128_l1_spec",
+      "contract_kind": "exact-projection-or-clone"
+    },
+    {
+      "api": "Crc<u128, Table<1>>::clone",
+      "storage_width": 128,
+      "lanes": 1,
+      "method": "clone",
+      "formal": false,
+      "limitation": "no accepted public contract"
+    },
+    {
+      "api": "Crc<u128, Table<1>>::clone_from",
+      "storage_width": 128,
+      "lanes": 1,
+      "method": "clone_from",
+      "formal": false,
+      "limitation": "no accepted public contract"
+    },
+    {
+      "api": "Digest<u128, Table<1>>::update",
+      "storage_width": 128,
+      "lanes": 1,
+      "method": "update",
+      "formal": true,
+      "stage": "stage2",
+      "module": "Stage2Proofs.Partial128",
+      "theorem": "CrcPartial128.digest_update_table1",
+      "precondition": "1 <= current algorithm.width = w <= 128; raw polynomial = zero-extended width-w poly; raw digest state = physical(128, refin, canonical width-w state); all 256 current table entries = encoded canonical byte transitions from zero; both flags arbitrary; any representable byte slice including empty",
+      "contract_kind": "canonical-message"
+    },
+    {
+      "api": "Digest<u128, Table<1>>::finalize",
+      "storage_width": 128,
+      "lanes": 1,
+      "method": "finalize",
+      "formal": true,
+      "stage": "stage2",
+      "module": "Stage2Proofs.WordProtocolInstances",
+      "theorem": "CrcPublicWordInstances.digest_finalize128_lane1_spec",
+      "precondition": "1 <= current algorithm.width <= 128; L in {0,1,16}; arbitrary raw word(s), flags and table; public word-level endpoint contract",
+      "contract_kind": "word-endpoint"
+    },
+    {
+      "api": "Digest<u128, Table<1>>::clone",
+      "storage_width": 128,
+      "lanes": 1,
+      "method": "clone",
+      "formal": false,
+      "limitation": "no accepted public contract"
+    },
+    {
+      "api": "Digest<u128, Table<1>>::clone_from",
+      "storage_width": 128,
+      "lanes": 1,
+      "method": "clone_from",
+      "formal": false,
+      "limitation": "no accepted public contract"
+    },
+    {
+      "api": "Crc<u128, Table<16>>::new",
+      "storage_width": 128,
+      "lanes": 16,
+      "method": "new",
+      "formal": false,
+      "limitation": "no accepted public contract"
+    },
+    {
+      "api": "Crc<u128, Table<16>>::checksum",
+      "storage_width": 128,
+      "lanes": 16,
+      "method": "checksum",
+      "formal": false,
+      "limitation": "optimized sixteen-lane canonical message proof absent"
+    },
+    {
+      "api": "Crc<u128, Table<16>>::digest",
+      "storage_width": 128,
+      "lanes": 16,
+      "method": "digest",
+      "formal": true,
+      "stage": "stage2",
+      "module": "Stage2Proofs.WordProtocolInstances",
+      "theorem": "CrcPublicWordInstances.digest128_lane16_spec",
+      "precondition": "1 <= current algorithm.width <= 128; L in {0,1,16}; arbitrary raw word(s), flags and table; public word-level endpoint contract",
+      "contract_kind": "word-endpoint"
+    },
+    {
+      "api": "Crc<u128, Table<16>>::digest_with_initial",
+      "storage_width": 128,
+      "lanes": 16,
+      "method": "digest_with_initial",
+      "formal": true,
+      "stage": "stage2",
+      "module": "Stage2Proofs.WordProtocolInstances",
+      "theorem": "CrcPublicWordInstances.digest_with_initial128_lane16_spec",
+      "precondition": "1 <= current algorithm.width <= 128; L in {0,1,16}; arbitrary raw word(s), flags and table; public word-level endpoint contract",
+      "contract_kind": "word-endpoint"
+    },
+    {
+      "api": "Crc<u128, Table<16>>::table",
+      "storage_width": 128,
+      "lanes": 16,
+      "method": "table",
+      "formal": true,
+      "stage": "stage1",
+      "theorem": "CrcProofs.table_u128_l16_spec",
+      "contract_kind": "exact-projection-or-clone"
+    },
+    {
+      "api": "Crc<u128, Table<16>>::clone",
+      "storage_width": 128,
+      "lanes": 16,
+      "method": "clone",
+      "formal": false,
+      "limitation": "no accepted public contract"
+    },
+    {
+      "api": "Crc<u128, Table<16>>::clone_from",
+      "storage_width": 128,
+      "lanes": 16,
+      "method": "clone_from",
+      "formal": false,
+      "limitation": "no accepted public contract"
+    },
+    {
+      "api": "Digest<u128, Table<16>>::update",
+      "storage_width": 128,
+      "lanes": 16,
+      "method": "update",
+      "formal": false,
+      "limitation": "optimized sixteen-lane canonical message proof absent"
+    },
+    {
+      "api": "Digest<u128, Table<16>>::finalize",
+      "storage_width": 128,
+      "lanes": 16,
+      "method": "finalize",
+      "formal": true,
+      "stage": "stage2",
+      "module": "Stage2Proofs.WordProtocolInstances",
+      "theorem": "CrcPublicWordInstances.digest_finalize128_lane16_spec",
+      "precondition": "1 <= current algorithm.width <= 128; L in {0,1,16}; arbitrary raw word(s), flags and table; public word-level endpoint contract",
+      "contract_kind": "word-endpoint"
+    },
+    {
+      "api": "Digest<u128, Table<16>>::clone",
+      "storage_width": 128,
+      "lanes": 16,
+      "method": "clone",
+      "formal": false,
+      "limitation": "no accepted public contract"
+    },
+    {
+      "api": "Digest<u128, Table<16>>::clone_from",
+      "storage_width": 128,
+      "lanes": 16,
+      "method": "clone_from",
+      "formal": false,
+      "limitation": "no accepted public contract"
+    },
+    {
+      "api": "Table<0>::clone",
+      "lanes": 0,
+      "method": "clone",
+      "formal": true,
+      "contract_kind": "exact-projection-or-clone",
+      "stage": "stage1",
+      "theorem": "CrcProofs.table_clone_l0_spec"
+    },
+    {
+      "api": "Table<0>::clone_from",
+      "lanes": 0,
+      "method": "clone_from",
+      "formal": true,
+      "contract_kind": "exact-projection-or-clone",
+      "stage": "stage1",
+      "theorem": "CrcProofs.table_clone_from_l0_spec"
+    },
+    {
+      "api": "Table<1>::clone",
+      "lanes": 1,
+      "method": "clone",
+      "formal": true,
+      "contract_kind": "exact-projection-or-clone",
+      "stage": "stage1",
+      "theorem": "CrcProofs.table_clone_l1_spec"
+    },
+    {
+      "api": "Table<1>::clone_from",
+      "lanes": 1,
+      "method": "clone_from",
+      "formal": true,
+      "contract_kind": "exact-projection-or-clone",
+      "stage": "stage1",
+      "theorem": "CrcProofs.table_clone_from_l1_spec"
+    },
+    {
+      "api": "Table<16>::clone",
+      "lanes": 16,
+      "method": "clone",
+      "formal": true,
+      "contract_kind": "exact-projection-or-clone",
+      "stage": "stage1",
+      "theorem": "CrcProofs.table_clone_l16_spec"
+    },
+    {
+      "api": "Table<16>::clone_from",
+      "lanes": 16,
+      "method": "clone_from",
+      "formal": true,
+      "contract_kind": "exact-projection-or-clone",
+      "stage": "stage1",
+      "theorem": "CrcProofs.table_clone_from_l16_spec"
+    }
+  ]
+}

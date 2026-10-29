@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "cargo_root": ".",
+  "native": [
+    [
+      "python3",
+      "aeneas/profiles/stage2/adapter/verify.py",
+      "native"
+    ]
+  ],
+  "extractions": [],
+  "additional_checks": [
+    [
+      "python3",
+      "aeneas/profiles/stage2/adapter/verify.py",
+      "extract"
+    ]
+  ],
+  "post_checks": [
+    [
+      "python3",
+      "aeneas/profiles/stage2/adapter/verify.py",
+      "post"
+    ]
+  ],
+  "inventory": "theorems.json",
+  "lean_dir": "proofs",
+  "report": "proofs.toml",
+  "supported_targets": [
+    "aarch64-apple-darwin",
+    "x86_64-unknown-linux-gnu"
+  ]
+}

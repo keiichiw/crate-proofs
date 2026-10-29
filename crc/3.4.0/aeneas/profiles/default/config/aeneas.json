@@ -1,0 +1,34 @@
+{
+  "entries": [
+    "crate::util::crc8",
+    "crate::util::crc16",
+    "crate::util::crc32",
+    "crate::util::crc64",
+    "crate::util::crc128"
+  ],
+  "llbc": "crc.llbc",
+  "cargo_args": [
+    "--lib",
+    "--locked"
+  ],
+  "models": {
+    "Crc.lean": [
+      "util.crc8",
+      "util.crc16",
+      "util.crc32",
+      "util.crc64",
+      "util.crc128"
+    ]
+  },
+  "remove_unused_clauses": true,
+  "local_scope": {
+    "opaque_crate": true,
+    "include": [
+      "crate::util::crc8",
+      "crate::util::crc16",
+      "crate::util::crc32",
+      "crate::util::crc64",
+      "crate::util::crc128"
+    ]
+  }
+}

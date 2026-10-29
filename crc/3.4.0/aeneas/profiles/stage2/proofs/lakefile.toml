@@ -1,0 +1,17 @@
+name = "crc-stage2-proofs"
+defaultTargets = ["Stage2Proofs"]
+[[lean_lib]]
+name = "CrcStage2"
+srcDir = "Generated/@TARGET@"
+globs = ["CrcStage2.+"]
+[[lean_lib]]
+name = "Stage2Proofs"
+[[require]]
+name = "crc-proofs"
+path = "@DEPENDENCY:crc/3.4.0:default@"
+[[lean_lib]]
+name = "CrcBody"
+srcDir = "Generated/@TARGET@"
+globs = ["CrcBody.+"]
+
+

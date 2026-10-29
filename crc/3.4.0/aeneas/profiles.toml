@@ -1,0 +1,9 @@
+schema_version = 1
+default = "default"
+
+[profiles.default]
+path = "aeneas/profiles/default"
+
+[profiles.stage2]
+path = "aeneas/profiles/stage2"
+dependencies = ["default"]

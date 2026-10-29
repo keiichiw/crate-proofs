@@ -1,0 +1,18 @@
+schema_version = 1
+command = ["bash", "scripts/setup.sh"]
+source_lock = "source.lock.json"
+source_dir = ".work/source"
+toolchain_lock = "aeneas/profiles/default/toolchain.lock.json"
+tool_dir = ".work/selected-tools"
+lean_source = "aeneas/profiles/default/proofs"
+lean_build = ".work/build/default/@HOST@/proofs"
+
+[profiles."aeneas/profiles/stage2"]
+schema_version = 1
+command = ["bash", "scripts/setup.sh", "--profile", "stage2"]
+source_lock = "source.lock.json"
+source_dir = ".work/source"
+toolchain_lock = "aeneas/profiles/stage2/toolchain.lock.json"
+tool_dir = ".work/selected-tools"
+lean_source = "aeneas/profiles/stage2/proofs"
+lean_build = ".work/build/stage2/@HOST@/proofs"

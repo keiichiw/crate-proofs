@@ -1,0 +1,416 @@
+{
+  "acceptance_basis": "Original archived inputs; packaging does not rerun verification.",
+  "archive_descriptor": "archive.json",
+  "archive_sha256": "9f60f6051f9ce1375275f964fa5fbfd13dfb2305f868b7bc7e02e32efc666e52",
+  "audit": {
+    "allowed_axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "checked": [
+      {
+        "kind": "support",
+        "module": "CrcProofs.EightPolynomial",
+        "name": "crc.step8_polynomial"
+      },
+      {
+        "kind": "support",
+        "module": "CrcProofs.EightPolynomial",
+        "name": "crc.run8_polynomial"
+      },
+      {
+        "kind": "support",
+        "module": "CrcProofs.EightPolynomial",
+        "name": "crc.crc8_polynomial_spec"
+      },
+      {
+        "kind": "public-contract",
+        "module": "CrcProofs.Table",
+        "name": "CrcProofs.table_u8_l0_spec",
+        "precondition": "true"
+      },
+      {
+        "kind": "public-contract",
+        "module": "CrcProofs.Table",
+        "name": "CrcProofs.table_u8_l1_spec",
+        "precondition": "true"
+      },
+      {
+        "kind": "public-contract",
+        "module": "CrcProofs.Table",
+        "name": "CrcProofs.table_u8_l16_spec",
+        "precondition": "true"
+      },
+      {
+        "kind": "public-contract",
+        "module": "CrcProofs.Table",
+        "name": "CrcProofs.table_u16_l0_spec",
+        "precondition": "true"
+      },
+      {
+        "kind": "public-contract",
+        "module": "CrcProofs.Table",
+        "name": "CrcProofs.table_u16_l1_spec",
+        "precondition": "true"
+      },
+      {
+        "kind": "public-contract",
+        "module": "CrcProofs.Table",
+        "name": "CrcProofs.table_u16_l16_spec",
+        "precondition": "true"
+      },
+      {
+        "kind": "public-contract",
+        "module": "CrcProofs.Table",
+        "name": "CrcProofs.table_u32_l0_spec",
+        "precondition": "true"
+      },
+      {
+        "kind": "public-contract",
+        "module": "CrcProofs.Table",
+        "name": "CrcProofs.table_u32_l1_spec",
+        "precondition": "true"
+      },
+      {
+        "kind": "public-contract",
+        "module": "CrcProofs.Table",
+        "name": "CrcProofs.table_u32_l16_spec",
+        "precondition": "true"
+      },
+      {
+        "kind": "public-contract",
+        "module": "CrcProofs.Table",
+        "name": "CrcProofs.table_u64_l0_spec",
+        "precondition": "true"
+      },
+      {
+        "kind": "public-contract",
+        "module": "CrcProofs.Table",
+        "name": "CrcProofs.table_u64_l1_spec",
+        "precondition": "true"
+      },
+      {
+        "kind": "public-contract",
+        "module": "CrcProofs.Table",
+        "name": "CrcProofs.table_u64_l16_spec",
+        "precondition": "true"
+      },
+      {
+        "kind": "public-contract",
+        "module": "CrcProofs.Table",
+        "name": "CrcProofs.table_u128_l0_spec",
+        "precondition": "true"
+      },
+      {
+        "kind": "public-contract",
+        "module": "CrcProofs.Table",
+        "name": "CrcProofs.table_u128_l1_spec",
+        "precondition": "true"
+      },
+      {
+        "kind": "public-contract",
+        "module": "CrcProofs.Table",
+        "name": "CrcProofs.table_u128_l16_spec",
+        "precondition": "true"
+      },
+      {
+        "kind": "public-contract",
+        "module": "CrcProofs.Table",
+        "name": "CrcProofs.table_clone_l0_spec",
+        "precondition": "true"
+      },
+      {
+        "kind": "public-contract",
+        "module": "CrcProofs.Table",
+        "name": "CrcProofs.table_clone_l1_spec",
+        "precondition": "true"
+      },
+      {
+        "kind": "public-contract",
+        "module": "CrcProofs.Table",
+        "name": "CrcProofs.table_clone_l16_spec",
+        "precondition": "true"
+      },
+      {
+        "kind": "public-contract",
+        "module": "CrcProofs.TableCloneFrom",
+        "name": "CrcProofs.table_clone_from_l0_spec",
+        "precondition": "true"
+      },
+      {
+        "kind": "public-contract",
+        "module": "CrcProofs.TableCloneFrom",
+        "name": "CrcProofs.table_clone_from_l1_spec",
+        "precondition": "true"
+      },
+      {
+        "kind": "public-contract",
+        "module": "CrcProofs.TableCloneFrom",
+        "name": "CrcProofs.table_clone_from_l16_spec",
+        "precondition": "true"
+      },
+      {
+        "kind": "support",
+        "module": "CrcProofs.Util",
+        "name": "crc.body8_ref_spec"
+      },
+      {
+        "kind": "support",
+        "module": "CrcProofs.Util",
+        "name": "crc.body8_msb_spec"
+      },
+      {
+        "kind": "support",
+        "module": "CrcProofs.Util",
+        "name": "crc.loop8_ref_spec"
+      },
+      {
+        "kind": "support",
+        "module": "CrcProofs.Util",
+        "name": "crc.loop8_msb_spec"
+      },
+      {
+        "kind": "support",
+        "module": "CrcProofs.Util",
+        "name": "crc.total_result"
+      },
+      {
+        "kind": "support",
+        "module": "CrcProofs.Util",
+        "name": "crc.crc8_total_spec"
+      },
+      {
+        "kind": "support",
+        "module": "CrcProofs.Wide",
+        "name": "crc.body16_ref_spec"
+      },
+      {
+        "kind": "support",
+        "module": "CrcProofs.Wide",
+        "name": "crc.body16_msb_spec"
+      },
+      {
+        "kind": "support",
+        "module": "CrcProofs.Wide",
+        "name": "crc.loop16_ref_spec"
+      },
+      {
+        "kind": "support",
+        "module": "CrcProofs.Wide",
+        "name": "crc.loop16_msb_spec"
+      },
+      {
+        "kind": "support",
+        "module": "CrcProofs.Wide",
+        "name": "crc.crc16_spec"
+      },
+      {
+        "kind": "support",
+        "module": "CrcProofs.Wide",
+        "name": "crc.body32_ref_spec"
+      },
+      {
+        "kind": "support",
+        "module": "CrcProofs.Wide",
+        "name": "crc.body32_msb_spec"
+      },
+      {
+        "kind": "support",
+        "module": "CrcProofs.Wide",
+        "name": "crc.loop32_ref_spec"
+      },
+      {
+        "kind": "support",
+        "module": "CrcProofs.Wide",
+        "name": "crc.loop32_msb_spec"
+      },
+      {
+        "kind": "support",
+        "module": "CrcProofs.Wide",
+        "name": "crc.crc32_spec"
+      },
+      {
+        "kind": "support",
+        "module": "CrcProofs.Wide",
+        "name": "crc.body64_ref_spec"
+      },
+      {
+        "kind": "support",
+        "module": "CrcProofs.Wide",
+        "name": "crc.body64_msb_spec"
+      },
+      {
+        "kind": "support",
+        "module": "CrcProofs.Wide",
+        "name": "crc.loop64_ref_spec"
+      },
+      {
+        "kind": "support",
+        "module": "CrcProofs.Wide",
+        "name": "crc.loop64_msb_spec"
+      },
+      {
+        "kind": "support",
+        "module": "CrcProofs.Wide",
+        "name": "crc.crc64_spec"
+      },
+      {
+        "kind": "support",
+        "module": "CrcProofs.Wide",
+        "name": "crc.body128_ref_spec"
+      },
+      {
+        "kind": "support",
+        "module": "CrcProofs.Wide",
+        "name": "crc.body128_msb_spec"
+      },
+      {
+        "kind": "support",
+        "module": "CrcProofs.Wide",
+        "name": "crc.loop128_ref_spec"
+      },
+      {
+        "kind": "support",
+        "module": "CrcProofs.Wide",
+        "name": "crc.loop128_msb_spec"
+      },
+      {
+        "kind": "support",
+        "module": "CrcProofs.Wide",
+        "name": "crc.crc128_spec"
+      },
+      {
+        "kind": "support",
+        "module": "CrcProofs.Wide",
+        "name": "crc.lowBit_mul"
+      },
+      {
+        "kind": "support",
+        "module": "CrcProofs.Wide",
+        "name": "crc.step16_polynomial"
+      },
+      {
+        "kind": "support",
+        "module": "CrcProofs.Wide",
+        "name": "crc.step32_polynomial"
+      },
+      {
+        "kind": "support",
+        "module": "CrcProofs.Wide",
+        "name": "crc.step64_polynomial"
+      },
+      {
+        "kind": "support",
+        "module": "CrcProofs.Wide",
+        "name": "crc.step128_polynomial"
+      },
+      {
+        "kind": "support",
+        "module": "CrcProofs.Wide",
+        "name": "crc.run16_polynomial"
+      },
+      {
+        "kind": "support",
+        "module": "CrcProofs.Wide",
+        "name": "crc.crc16_polynomial_spec"
+      },
+      {
+        "kind": "support",
+        "module": "CrcProofs.Wide",
+        "name": "crc.run32_polynomial"
+      },
+      {
+        "kind": "support",
+        "module": "CrcProofs.Wide",
+        "name": "crc.crc32_polynomial_spec"
+      },
+      {
+        "kind": "support",
+        "module": "CrcProofs.Wide",
+        "name": "crc.run64_polynomial"
+      },
+      {
+        "kind": "support",
+        "module": "CrcProofs.Wide",
+        "name": "crc.crc64_polynomial_spec"
+      },
+      {
+        "kind": "support",
+        "module": "CrcProofs.Wide",
+        "name": "crc.run128_polynomial"
+      },
+      {
+        "kind": "support",
+        "module": "CrcProofs.Wide",
+        "name": "crc.crc128_polynomial_spec"
+      }
+    ],
+    "mapping_metadata_checked": true,
+    "scope": "named Lean theorem and transitive axiom audit only",
+    "status": "passed"
+  },
+  "configuration": {
+    "source_lock": {
+      "path": "crc/3.4.0/source.lock.json",
+      "sha256": "44e4c35f7ce01de2d4f9b825a939fb01bc9b926cd63903f1c40d0e60ba9295dc"
+    },
+    "tool_lock": {
+      "path": "crc/3.4.0/aeneas/profiles/default/toolchain.lock.json",
+      "sha256": "cf25047795b186ffa19b95781f017b233e2a034318348f67125f5aa7a09a60ef"
+    },
+    "verification": {
+      "path": "crc/3.4.0/aeneas/profiles/default/verification.json",
+      "sha256": "5dc51a61f16b5e740b63d38debc8f2ccd968ea3dbe33a0e2a17f14c5b8714e09"
+    }
+  },
+  "configured_extractions": [],
+  "configured_native_commands": [
+    [
+      "python3",
+      "aeneas/profiles/default/adapter/verify.py",
+      "native"
+    ]
+  ],
+  "host": "aarch64-apple-darwin",
+  "input_fingerprints": {
+    "after": {
+      "container_member": "payload/aarch64-apple-darwin-2026-10-21-cli-integration/accepted-managed.tar.gz",
+      "member": "inputs-after.json",
+      "sha256": "c4090e1c90ca9d50382a71c78601c2fd6b76c00b15a1ba4c992865fd2bcba1a1"
+    },
+    "before": {
+      "container_member": "payload/aarch64-apple-darwin-2026-10-21-cli-integration/accepted-managed.tar.gz",
+      "member": "inputs-before.json",
+      "sha256": "c4090e1c90ca9d50382a71c78601c2fd6b76c00b15a1ba4c992865fd2bcba1a1"
+    },
+    "equal": true
+  },
+  "kind": "archived-managed-run-summary",
+  "original_audit": {
+    "container_member": "payload/aarch64-apple-darwin-2026-10-21-cli-integration/accepted-managed.tar.gz",
+    "member": "audit/result.json",
+    "sha256": "2f216615d75c8062bac0b0058cfbca881acd30923cab44de07fb73b5de519899"
+  },
+  "original_input_archive_members": [
+    "aarch64-apple-darwin-2026-10-21-cli-integration/accepted-managed.tar.gz",
+    "aarch64-apple-darwin-2026-10-21-cli-integration/accepted-inputs.tar.gz"
+  ],
+  "original_result": {
+    "container_member": "payload/aarch64-apple-darwin-2026-10-21-cli-integration/accepted-managed.tar.gz",
+    "member": "result.json",
+    "sha256": "583bbd8f5a91ba44ccf649717b12c4673fac3882c3c1138951906e6328ea24dd"
+  },
+  "profile": "default",
+  "reported_status": "passed",
+  "sarif": "Not a cargo-proofs recording result.",
+  "schema_version": 1,
+  "scope": "Configured extraction comparisons and named theorem audit; native observations are separate",
+  "stages": {
+    "before_after_fingerprints": "equal",
+    "extraction_and_profile_checks": "See original pipeline receipt and profile configuration.",
+    "lean_build_and_axiom_audit": "passed",
+    "native_tests": "Separate observations in original run; not formal proof."
+  },
+  "target": "aarch64-apple-darwin"
+}

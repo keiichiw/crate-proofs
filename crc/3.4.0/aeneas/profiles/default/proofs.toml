@@ -1,0 +1,145 @@
+[report]
+title = "crc 3.4.0: table access and clone contracts"
+explanation = '''
+For the five built-in word widths and `Table<0>`, `Table<1>`, and `Table<16>`, `Crc::table` succeeds and returns the stored table, regardless of its contents. The zero-sized `Table<0>`, `Table<1>`, and `Table<16>` implementation markers separately have identity `clone` and source-replacement `clone_from` contracts; these do not clone the cached table data. These 21 callable instances are width/lane specializations, not 21 distinct API names. Separate private polynomial-kernel proofs do not establish a checksum result.
+'''
+trusted_assumptions = '''
+The results depend on the Rust-to-LLBC and Aeneas translations, their primitive models, and the Lean kernel. These are not compiler-correctness proofs. The accepted audit permits only Lean's `propext`, `Classical.choice`, and `Quot.sound` as transitive axioms.
+'''
+limitations = '''
+These contracts do not establish that stored tables contain correct CRC transitions, that constructors produce them, or that checksums or digest updates are correct. Custom implementations, other lanes and re-exported dependency APIs are outside the selected scope. The verified source is restored from the locked crates.io 3.4.0 archive; the selected executable crate bodies are unchanged. The extraction and model correspondence checks are evidence for this relationship, not a formal proof of compiler correctness.
+'''
+environment = '''
+The formal extraction selected the library with Cargo default features; the crate declares no feature flags. The current-input run passed on 2026-10-23 on `aarch64-apple-darwin`; Linux candidate files do not constitute a fresh Linux run. Native tests are finite observations, separate from the Lean proofs. The pinned `cargo-proofs` CLI has a preparation patch for source and tool preparation, provenance and audit handling; it does not change the stated CRC contracts. The run checks fresh extraction against maintained models and audits named roots. File-name metadata relocation is checked by inverse whole-JSON equality, rather than proved semantically. Earlier full run records are local-only. See the [results](https://github.com/keiichiw/crate-proofs/blob/4e643e6b061aebf357d7c2195d1e16c4c574ddca/crc/3.4.0/aeneas/profiles/default/results.md), [theorem inventory](https://github.com/keiichiw/crate-proofs/blob/4e643e6b061aebf357d7c2195d1e16c4c574ddca/crc/3.4.0/aeneas/profiles/default/theorems.json), [source lock](https://github.com/keiichiw/crate-proofs/blob/4e643e6b061aebf357d7c2195d1e16c4c574ddca/crc/3.4.0/source.lock.json), and [CLI preparation patch](https://github.com/keiichiw/crate-proofs/blob/4e643e6b061aebf357d7c2195d1e16c4c574ddca/crc/3.4.0/aeneas/profiles/default/patches/cargo-proofs-preparation.patch). These records predate this editorial revision.
+'''
+
+[tool]
+name = "aeneas"
+version = "be86ab0f1989d04944292b345b24c435be3ad10a"
+lean_dir = ".work/selected-proofs"
+
+[[tool.proofs]]
+api = "Crc<u8, Table<0>>::table"
+module = "CrcProofs.Table"
+theorem = "CrcProofs.table_u8_l0_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "Crc<u8, Table<1>>::table"
+module = "CrcProofs.Table"
+theorem = "CrcProofs.table_u8_l1_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "Crc<u8, Table<16>>::table"
+module = "CrcProofs.Table"
+theorem = "CrcProofs.table_u8_l16_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "Crc<u16, Table<0>>::table"
+module = "CrcProofs.Table"
+theorem = "CrcProofs.table_u16_l0_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "Crc<u16, Table<1>>::table"
+module = "CrcProofs.Table"
+theorem = "CrcProofs.table_u16_l1_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "Crc<u16, Table<16>>::table"
+module = "CrcProofs.Table"
+theorem = "CrcProofs.table_u16_l16_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "Crc<u32, Table<0>>::table"
+module = "CrcProofs.Table"
+theorem = "CrcProofs.table_u32_l0_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "Crc<u32, Table<1>>::table"
+module = "CrcProofs.Table"
+theorem = "CrcProofs.table_u32_l1_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "Crc<u32, Table<16>>::table"
+module = "CrcProofs.Table"
+theorem = "CrcProofs.table_u32_l16_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "Crc<u64, Table<0>>::table"
+module = "CrcProofs.Table"
+theorem = "CrcProofs.table_u64_l0_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "Crc<u64, Table<1>>::table"
+module = "CrcProofs.Table"
+theorem = "CrcProofs.table_u64_l1_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "Crc<u64, Table<16>>::table"
+module = "CrcProofs.Table"
+theorem = "CrcProofs.table_u64_l16_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "Crc<u128, Table<0>>::table"
+module = "CrcProofs.Table"
+theorem = "CrcProofs.table_u128_l0_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "Crc<u128, Table<1>>::table"
+module = "CrcProofs.Table"
+theorem = "CrcProofs.table_u128_l1_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "Crc<u128, Table<16>>::table"
+module = "CrcProofs.Table"
+theorem = "CrcProofs.table_u128_l16_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "Table<0>::clone"
+module = "CrcProofs.Table"
+theorem = "CrcProofs.table_clone_l0_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "Table<0>::clone_from"
+module = "CrcProofs.TableCloneFrom"
+theorem = "CrcProofs.table_clone_from_l0_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "Table<1>::clone"
+module = "CrcProofs.Table"
+theorem = "CrcProofs.table_clone_l1_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "Table<1>::clone_from"
+module = "CrcProofs.TableCloneFrom"
+theorem = "CrcProofs.table_clone_from_l1_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "Table<16>::clone"
+module = "CrcProofs.Table"
+theorem = "CrcProofs.table_clone_l16_spec"
+precondition = "true"
+
+[[tool.proofs]]
+api = "Table<16>::clone_from"
+module = "CrcProofs.TableCloneFrom"
+theorem = "CrcProofs.table_clone_from_l16_spec"
+precondition = "true"

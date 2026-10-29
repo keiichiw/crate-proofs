@@ -1,0 +1,3882 @@
+{
+  "checked": [
+    {
+      "name": "CrcByteIndex.masked_shift",
+      "module": "Stage2Proofs.ByteIndex",
+      "kind": "support"
+    },
+    {
+      "name": "CrcByteIndex.aligned_index",
+      "module": "Stage2Proofs.ByteIndex",
+      "kind": "support"
+    },
+    {
+      "name": "CrcByteIndex.reflected_index",
+      "module": "Stage2Proofs.ByteIndex",
+      "kind": "support"
+    },
+    {
+      "name": "CrcByteIndex.shifted_xor_byte",
+      "module": "Stage2Proofs.ByteIndex",
+      "kind": "support"
+    },
+    {
+      "name": "CrcByteIndex.shifted_xor_encoded",
+      "module": "Stage2Proofs.ByteIndex",
+      "kind": "support"
+    },
+    {
+      "name": "CrcByteIndex.highPart_encoded",
+      "module": "Stage2Proofs.ByteIndex",
+      "kind": "support"
+    },
+    {
+      "name": "CrcByteIndex.highPart_injected",
+      "module": "Stage2Proofs.ByteIndex",
+      "kind": "support"
+    },
+    {
+      "name": "CrcCanonical8.injection_step",
+      "module": "Stage2Proofs.ByteMath",
+      "kind": "support"
+    },
+    {
+      "name": "CrcCanonical8.feed_injection",
+      "module": "Stage2Proofs.ByteMath",
+      "kind": "support"
+    },
+    {
+      "name": "CrcCanonical8.byteStep_injection",
+      "module": "Stage2Proofs.ByteMath",
+      "kind": "support"
+    },
+    {
+      "name": "CrcCanonical8.lookup_byteStep",
+      "module": "Stage2Proofs.ByteMath",
+      "kind": "support"
+    },
+    {
+      "name": "CrcCanonical8.lookupRun_correct",
+      "module": "Stage2Proofs.ByteMath",
+      "kind": "support"
+    },
+    {
+      "name": "CrcCanonical8.utility_byteStep",
+      "module": "Stage2Proofs.ByteMath",
+      "kind": "support"
+    },
+    {
+      "name": "CrcCanonicalWide.injection_step",
+      "module": "Stage2Proofs.ByteMathWide",
+      "kind": "support"
+    },
+    {
+      "name": "CrcCanonicalWide.feed_injection",
+      "module": "Stage2Proofs.ByteMathWide",
+      "kind": "support"
+    },
+    {
+      "name": "CrcCanonicalWide.shiftMessage_eq",
+      "module": "Stage2Proofs.ByteMathWide",
+      "kind": "support"
+    },
+    {
+      "name": "CrcCanonicalWide.encodeByte_bit",
+      "module": "Stage2Proofs.ByteMathWide",
+      "kind": "support"
+    },
+    {
+      "name": "CrcCanonicalWide.byteStep_injection",
+      "module": "Stage2Proofs.ByteMathWide",
+      "kind": "support"
+    },
+    {
+      "name": "CrcCanonicalWide.polynomialStep_xor",
+      "module": "Stage2Proofs.ByteMathWide",
+      "kind": "support"
+    },
+    {
+      "name": "CrcCanonicalWide.polynomialRun_xor",
+      "module": "Stage2Proofs.ByteMathWide",
+      "kind": "support"
+    },
+    {
+      "name": "CrcCanonicalWide.polynomialRun_no_feedback",
+      "module": "Stage2Proofs.ByteMathWide",
+      "kind": "support"
+    },
+    {
+      "name": "CrcCanonicalWide.split_state",
+      "module": "Stage2Proofs.ByteMathWide",
+      "kind": "support"
+    },
+    {
+      "name": "CrcCanonicalWide.lowPart_run8",
+      "module": "Stage2Proofs.ByteMathWide",
+      "kind": "support"
+    },
+    {
+      "name": "CrcCanonicalWide.polynomialRun_split8",
+      "module": "Stage2Proofs.ByteMathWide",
+      "kind": "support"
+    },
+    {
+      "name": "CrcConstructor128.utility",
+      "module": "Stage2Proofs.Constructor128",
+      "kind": "support"
+    },
+    {
+      "name": "CrcConstructor128.body_spec",
+      "module": "Stage2Proofs.Constructor128",
+      "kind": "support"
+    },
+    {
+      "name": "CrcConstructor128.loop_spec",
+      "module": "Stage2Proofs.Constructor128",
+      "kind": "support"
+    },
+    {
+      "name": "CrcConstructor128.table_spec",
+      "module": "Stage2Proofs.Constructor128",
+      "kind": "support"
+    },
+    {
+      "name": "CrcConstructor128.new128_coherent_nonref",
+      "module": "Stage2Proofs.Constructor128",
+      "kind": "support"
+    },
+    {
+      "name": "CrcConstructor128.new_checksum128_nonref",
+      "module": "Stage2Proofs.Constructor128",
+      "kind": "support"
+    },
+    {
+      "name": "CrcConstructor128.new_digest_protocol128_nonref",
+      "module": "Stage2Proofs.Constructor128",
+      "kind": "support"
+    },
+    {
+      "name": "CrcConstructor16.utility",
+      "module": "Stage2Proofs.Constructor16",
+      "kind": "support"
+    },
+    {
+      "name": "CrcConstructor16.body_spec",
+      "module": "Stage2Proofs.Constructor16",
+      "kind": "support"
+    },
+    {
+      "name": "CrcConstructor16.loop_spec",
+      "module": "Stage2Proofs.Constructor16",
+      "kind": "support"
+    },
+    {
+      "name": "CrcConstructor16.table_spec",
+      "module": "Stage2Proofs.Constructor16",
+      "kind": "support"
+    },
+    {
+      "name": "CrcConstructor16.new16_coherent_nonref",
+      "module": "Stage2Proofs.Constructor16",
+      "kind": "support"
+    },
+    {
+      "name": "CrcConstructor16.new_checksum16_nonref",
+      "module": "Stage2Proofs.Constructor16",
+      "kind": "support"
+    },
+    {
+      "name": "CrcConstructor16.new_digest_protocol16_nonref",
+      "module": "Stage2Proofs.Constructor16",
+      "kind": "support"
+    },
+    {
+      "name": "CrcConstructor32.utility",
+      "module": "Stage2Proofs.Constructor32",
+      "kind": "support"
+    },
+    {
+      "name": "CrcConstructor32.body_spec",
+      "module": "Stage2Proofs.Constructor32",
+      "kind": "support"
+    },
+    {
+      "name": "CrcConstructor32.loop_spec",
+      "module": "Stage2Proofs.Constructor32",
+      "kind": "support"
+    },
+    {
+      "name": "CrcConstructor32.table_spec",
+      "module": "Stage2Proofs.Constructor32",
+      "kind": "support"
+    },
+    {
+      "name": "CrcConstructor32.new32_coherent_nonref",
+      "module": "Stage2Proofs.Constructor32",
+      "kind": "support"
+    },
+    {
+      "name": "CrcConstructor32.new_checksum32_nonref",
+      "module": "Stage2Proofs.Constructor32",
+      "kind": "support"
+    },
+    {
+      "name": "CrcConstructor32.new_digest_protocol32_nonref",
+      "module": "Stage2Proofs.Constructor32",
+      "kind": "support"
+    },
+    {
+      "name": "CrcConstructor64.utility",
+      "module": "Stage2Proofs.Constructor64",
+      "kind": "support"
+    },
+    {
+      "name": "CrcConstructor64.body_spec",
+      "module": "Stage2Proofs.Constructor64",
+      "kind": "support"
+    },
+    {
+      "name": "CrcConstructor64.loop_spec",
+      "module": "Stage2Proofs.Constructor64",
+      "kind": "support"
+    },
+    {
+      "name": "CrcConstructor64.table_spec",
+      "module": "Stage2Proofs.Constructor64",
+      "kind": "support"
+    },
+    {
+      "name": "CrcConstructor64.new64_coherent_nonref",
+      "module": "Stage2Proofs.Constructor64",
+      "kind": "support"
+    },
+    {
+      "name": "CrcConstructor64.new_checksum64_nonref",
+      "module": "Stage2Proofs.Constructor64",
+      "kind": "support"
+    },
+    {
+      "name": "CrcConstructor64.new_digest_protocol64_nonref",
+      "module": "Stage2Proofs.Constructor64",
+      "kind": "support"
+    },
+    {
+      "name": "CrcConstructor8.body_spec",
+      "module": "Stage2Proofs.Constructor8",
+      "kind": "support"
+    },
+    {
+      "name": "CrcConstructor8.loop_spec",
+      "module": "Stage2Proofs.Constructor8",
+      "kind": "support"
+    },
+    {
+      "name": "CrcConstructor8.table_spec",
+      "module": "Stage2Proofs.Constructor8",
+      "kind": "support"
+    },
+    {
+      "name": "CrcConstructor8.new8_coherent_nonref",
+      "module": "Stage2Proofs.Constructor8",
+      "kind": "support"
+    },
+    {
+      "name": "CrcConstructor8.new8_coherent",
+      "module": "Stage2Proofs.Constructor8",
+      "kind": "support"
+    },
+    {
+      "name": "CrcConstructor8.new_checksum8_canonical",
+      "module": "Stage2Proofs.Constructor8",
+      "kind": "support"
+    },
+    {
+      "name": "CrcConstructor8.new_checksum8_nonref",
+      "module": "Stage2Proofs.Constructor8",
+      "kind": "support"
+    },
+    {
+      "name": "CrcConstructor8.new_digest_protocol8_nonref",
+      "module": "Stage2Proofs.Constructor8",
+      "kind": "support"
+    },
+    {
+      "name": "CrcFullWidth128.checksum_table1",
+      "module": "Stage2Proofs.FullWidth128",
+      "kind": "support"
+    },
+    {
+      "name": "CrcFullWidth128.checksum_notable",
+      "module": "Stage2Proofs.FullWidth128",
+      "kind": "support"
+    },
+    {
+      "name": "CrcFullWidth128.digest_update_table1",
+      "module": "Stage2Proofs.FullWidth128",
+      "kind": "support"
+    },
+    {
+      "name": "CrcFullWidth128.digest_update_notable",
+      "module": "Stage2Proofs.FullWidth128",
+      "kind": "support"
+    },
+    {
+      "name": "CrcFullWidth128.new_table1",
+      "module": "Stage2Proofs.FullWidth128",
+      "kind": "support"
+    },
+    {
+      "name": "CrcFullWidth128.new_checksum_table1",
+      "module": "Stage2Proofs.FullWidth128",
+      "kind": "support"
+    },
+    {
+      "name": "CrcFullWidth128.digest_initial",
+      "module": "Stage2Proofs.FullWidth128",
+      "kind": "support"
+    },
+    {
+      "name": "CrcFullWidth128.digest_default",
+      "module": "Stage2Proofs.FullWidth128",
+      "kind": "support"
+    },
+    {
+      "name": "CrcFullWidth128.digest_finalize",
+      "module": "Stage2Proofs.FullWidth128",
+      "kind": "support"
+    },
+    {
+      "name": "CrcFullWidth16.table1_checksum",
+      "module": "Stage2Proofs.FullWidth16",
+      "kind": "support"
+    },
+    {
+      "name": "CrcFullWidth16.table1_digest_update",
+      "module": "Stage2Proofs.FullWidth16",
+      "kind": "support"
+    },
+    {
+      "name": "CrcFullWidth16.table1_protocol",
+      "module": "Stage2Proofs.FullWidth16",
+      "kind": "support"
+    },
+    {
+      "name": "CrcFullWidth16.notable_checksum",
+      "module": "Stage2Proofs.FullWidth16",
+      "kind": "support"
+    },
+    {
+      "name": "CrcFullWidth16.notable_digest_update",
+      "module": "Stage2Proofs.FullWidth16",
+      "kind": "support"
+    },
+    {
+      "name": "CrcFullWidth16.notable_protocol",
+      "module": "Stage2Proofs.FullWidth16",
+      "kind": "support"
+    },
+    {
+      "name": "CrcFullWidth16.table1_new",
+      "module": "Stage2Proofs.FullWidth16",
+      "kind": "support"
+    },
+    {
+      "name": "CrcFullWidth16.notable_new",
+      "module": "Stage2Proofs.FullWidth16",
+      "kind": "support"
+    },
+    {
+      "name": "CrcFullWidth16.new_checksum_table1",
+      "module": "Stage2Proofs.FullWidth16",
+      "kind": "support"
+    },
+    {
+      "name": "CrcFullWidth16.digest_initial",
+      "module": "Stage2Proofs.FullWidth16",
+      "kind": "support"
+    },
+    {
+      "name": "CrcFullWidth16.digest_default",
+      "module": "Stage2Proofs.FullWidth16",
+      "kind": "support"
+    },
+    {
+      "name": "CrcFullWidth16.digest_finalize",
+      "module": "Stage2Proofs.FullWidth16",
+      "kind": "support"
+    },
+    {
+      "name": "CrcFullWidth32.checksum_table1",
+      "module": "Stage2Proofs.FullWidth32",
+      "kind": "support"
+    },
+    {
+      "name": "CrcFullWidth32.checksum_notable",
+      "module": "Stage2Proofs.FullWidth32",
+      "kind": "support"
+    },
+    {
+      "name": "CrcFullWidth32.digest_update_table1",
+      "module": "Stage2Proofs.FullWidth32",
+      "kind": "support"
+    },
+    {
+      "name": "CrcFullWidth32.digest_update_notable",
+      "module": "Stage2Proofs.FullWidth32",
+      "kind": "support"
+    },
+    {
+      "name": "CrcFullWidth32.new_table1",
+      "module": "Stage2Proofs.FullWidth32",
+      "kind": "support"
+    },
+    {
+      "name": "CrcFullWidth32.new_checksum_table1",
+      "module": "Stage2Proofs.FullWidth32",
+      "kind": "support"
+    },
+    {
+      "name": "CrcFullWidth32.digest_initial",
+      "module": "Stage2Proofs.FullWidth32",
+      "kind": "support"
+    },
+    {
+      "name": "CrcFullWidth32.digest_default",
+      "module": "Stage2Proofs.FullWidth32",
+      "kind": "support"
+    },
+    {
+      "name": "CrcFullWidth32.digest_finalize",
+      "module": "Stage2Proofs.FullWidth32",
+      "kind": "support"
+    },
+    {
+      "name": "CrcFullWidth64.checksum_table1",
+      "module": "Stage2Proofs.FullWidth64",
+      "kind": "support"
+    },
+    {
+      "name": "CrcFullWidth64.digest_update_table1",
+      "module": "Stage2Proofs.FullWidth64",
+      "kind": "support"
+    },
+    {
+      "name": "CrcFullWidth64.checksum_notable",
+      "module": "Stage2Proofs.FullWidth64",
+      "kind": "support"
+    },
+    {
+      "name": "CrcFullWidth64.digest_update_notable",
+      "module": "Stage2Proofs.FullWidth64",
+      "kind": "support"
+    },
+    {
+      "name": "CrcFullWidth64.digest_protocol_table1",
+      "module": "Stage2Proofs.FullWidth64",
+      "kind": "support"
+    },
+    {
+      "name": "CrcFullWidth64.digest_protocol_notable",
+      "module": "Stage2Proofs.FullWidth64",
+      "kind": "support"
+    },
+    {
+      "name": "CrcFullWidth64.new_table1",
+      "module": "Stage2Proofs.FullWidth64",
+      "kind": "support"
+    },
+    {
+      "name": "CrcFullWidth64.new_checksum_table1",
+      "module": "Stage2Proofs.FullWidth64",
+      "kind": "support"
+    },
+    {
+      "name": "CrcFullWidth64.digest_initial",
+      "module": "Stage2Proofs.FullWidth64",
+      "kind": "support"
+    },
+    {
+      "name": "CrcFullWidth64.digest_default",
+      "module": "Stage2Proofs.FullWidth64",
+      "kind": "support"
+    },
+    {
+      "name": "CrcFullWidth64.digest_finalize",
+      "module": "Stage2Proofs.FullWidth64",
+      "kind": "support"
+    },
+    {
+      "name": "CrcFullWidth8.checksum_table1",
+      "module": "Stage2Proofs.FullWidth8",
+      "kind": "support"
+    },
+    {
+      "name": "CrcFullWidth8.checksum_notable",
+      "module": "Stage2Proofs.FullWidth8",
+      "kind": "support"
+    },
+    {
+      "name": "CrcFullWidth8.digest_update_table1",
+      "module": "Stage2Proofs.FullWidth8",
+      "kind": "support"
+    },
+    {
+      "name": "CrcFullWidth8.digest_update_notable",
+      "module": "Stage2Proofs.FullWidth8",
+      "kind": "support"
+    },
+    {
+      "name": "CrcFullWidth8.new_table1",
+      "module": "Stage2Proofs.FullWidth8",
+      "kind": "support"
+    },
+    {
+      "name": "CrcFullWidth8.new_checksum_table1",
+      "module": "Stage2Proofs.FullWidth8",
+      "kind": "support"
+    },
+    {
+      "name": "CrcFullWidth8.digest_initial",
+      "module": "Stage2Proofs.FullWidth8",
+      "kind": "support"
+    },
+    {
+      "name": "CrcFullWidth8.digest_default",
+      "module": "Stage2Proofs.FullWidth8",
+      "kind": "support"
+    },
+    {
+      "name": "CrcFullWidth8.digest_finalize",
+      "module": "Stage2Proofs.FullWidth8",
+      "kind": "support"
+    },
+    {
+      "name": "CrcStage2.scalar_card",
+      "module": "Stage2Proofs.InitFinalize",
+      "kind": "support"
+    },
+    {
+      "name": "CrcStage2.scalar_type_neq",
+      "module": "Stage2Proofs.InitFinalize",
+      "kind": "support"
+    },
+    {
+      "name": "CrcStage2.bitreverse_u8",
+      "module": "Stage2Proofs.InitFinalize",
+      "kind": "support"
+    },
+    {
+      "name": "CrcStage2.reverse_bits_u8",
+      "module": "Stage2Proofs.InitFinalize",
+      "kind": "support"
+    },
+    {
+      "name": "CrcStage2.bitreverse_u16",
+      "module": "Stage2Proofs.InitFinalize",
+      "kind": "support"
+    },
+    {
+      "name": "CrcStage2.reverse_bits_u16",
+      "module": "Stage2Proofs.InitFinalize",
+      "kind": "support"
+    },
+    {
+      "name": "CrcStage2.bitreverse_u32",
+      "module": "Stage2Proofs.InitFinalize",
+      "kind": "support"
+    },
+    {
+      "name": "CrcStage2.reverse_bits_u32",
+      "module": "Stage2Proofs.InitFinalize",
+      "kind": "support"
+    },
+    {
+      "name": "CrcStage2.bitreverse_u64",
+      "module": "Stage2Proofs.InitFinalize",
+      "kind": "support"
+    },
+    {
+      "name": "CrcStage2.reverse_bits_u64",
+      "module": "Stage2Proofs.InitFinalize",
+      "kind": "support"
+    },
+    {
+      "name": "CrcStage2.bitreverse_u128",
+      "module": "Stage2Proofs.InitFinalize",
+      "kind": "support"
+    },
+    {
+      "name": "CrcStage2.reverse_bits_u128",
+      "module": "Stage2Proofs.InitFinalize",
+      "kind": "support"
+    },
+    {
+      "name": "CrcStage2.init8_spec",
+      "module": "Stage2Proofs.InitFinalize",
+      "kind": "support"
+    },
+    {
+      "name": "CrcStage2.finalize8_spec",
+      "module": "Stage2Proofs.InitFinalize",
+      "kind": "support"
+    },
+    {
+      "name": "CrcStage2.init16_spec",
+      "module": "Stage2Proofs.InitFinalize",
+      "kind": "support"
+    },
+    {
+      "name": "CrcStage2.finalize16_spec",
+      "module": "Stage2Proofs.InitFinalize",
+      "kind": "support"
+    },
+    {
+      "name": "CrcStage2.init32_spec",
+      "module": "Stage2Proofs.InitFinalize",
+      "kind": "support"
+    },
+    {
+      "name": "CrcStage2.finalize32_spec",
+      "module": "Stage2Proofs.InitFinalize",
+      "kind": "support"
+    },
+    {
+      "name": "CrcStage2.init64_spec",
+      "module": "Stage2Proofs.InitFinalize",
+      "kind": "support"
+    },
+    {
+      "name": "CrcStage2.finalize64_spec",
+      "module": "Stage2Proofs.InitFinalize",
+      "kind": "support"
+    },
+    {
+      "name": "CrcStage2.init128_spec",
+      "module": "Stage2Proofs.InitFinalize",
+      "kind": "support"
+    },
+    {
+      "name": "CrcStage2.finalize128_spec",
+      "module": "Stage2Proofs.InitFinalize",
+      "kind": "support"
+    },
+    {
+      "name": "CrcNoTable128.utility_eq",
+      "module": "Stage2Proofs.NoTable128",
+      "kind": "support"
+    },
+    {
+      "name": "CrcNoTable128.utility_spec",
+      "module": "Stage2Proofs.NoTable128",
+      "kind": "support"
+    },
+    {
+      "name": "CrcNoTable128.body_spec",
+      "module": "Stage2Proofs.NoTable128",
+      "kind": "support"
+    },
+    {
+      "name": "CrcNoTable128.loop_spec",
+      "module": "Stage2Proofs.NoTable128",
+      "kind": "support"
+    },
+    {
+      "name": "CrcNoTable128.update_table_total",
+      "module": "Stage2Proofs.NoTable128",
+      "kind": "support"
+    },
+    {
+      "name": "CrcNoTable128.step_canonical",
+      "module": "Stage2Proofs.NoTable128",
+      "kind": "support"
+    },
+    {
+      "name": "CrcNoTable128.run_bv",
+      "module": "Stage2Proofs.NoTable128",
+      "kind": "support"
+    },
+    {
+      "name": "CrcNoTable128.update128_canonical",
+      "module": "Stage2Proofs.NoTable128",
+      "kind": "support"
+    },
+    {
+      "name": "CrcNoTable128.digest128_update_canonical",
+      "module": "Stage2Proofs.NoTable128",
+      "kind": "support"
+    },
+    {
+      "name": "CrcNoTable128.checksum128_canonical",
+      "module": "Stage2Proofs.NoTable128",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedNoTable128.utility_eq",
+      "module": "Stage2Proofs.NoTable128Reflected",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedNoTable128.utility_spec",
+      "module": "Stage2Proofs.NoTable128Reflected",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedNoTable128.body_spec",
+      "module": "Stage2Proofs.NoTable128Reflected",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedNoTable128.loop_spec",
+      "module": "Stage2Proofs.NoTable128Reflected",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedNoTable128.update_table_total",
+      "module": "Stage2Proofs.NoTable128Reflected",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedNoTable128.step_decoded",
+      "module": "Stage2Proofs.NoTable128Reflected",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedNoTable128.run_decoded",
+      "module": "Stage2Proofs.NoTable128Reflected",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedNoTable128.update_canonical",
+      "module": "Stage2Proofs.NoTable128Reflected",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedNoTable128.checksum_canonical",
+      "module": "Stage2Proofs.NoTable128Reflected",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedNoTable128.digest_update_canonical",
+      "module": "Stage2Proofs.NoTable128Reflected",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedNoTable128.digest_initial",
+      "module": "Stage2Proofs.NoTable128Reflected",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedNoTable128.digest_protocol_canonical",
+      "module": "Stage2Proofs.NoTable128Reflected",
+      "kind": "support"
+    },
+    {
+      "name": "CrcNoTable16.utility_eq",
+      "module": "Stage2Proofs.NoTable16",
+      "kind": "support"
+    },
+    {
+      "name": "CrcNoTable16.utility_spec",
+      "module": "Stage2Proofs.NoTable16",
+      "kind": "support"
+    },
+    {
+      "name": "CrcNoTable16.body_spec",
+      "module": "Stage2Proofs.NoTable16",
+      "kind": "support"
+    },
+    {
+      "name": "CrcNoTable16.loop_spec",
+      "module": "Stage2Proofs.NoTable16",
+      "kind": "support"
+    },
+    {
+      "name": "CrcNoTable16.update_table_total",
+      "module": "Stage2Proofs.NoTable16",
+      "kind": "support"
+    },
+    {
+      "name": "CrcNoTable16.step_canonical",
+      "module": "Stage2Proofs.NoTable16",
+      "kind": "support"
+    },
+    {
+      "name": "CrcNoTable16.run_bv",
+      "module": "Stage2Proofs.NoTable16",
+      "kind": "support"
+    },
+    {
+      "name": "CrcNoTable16.update16_canonical",
+      "module": "Stage2Proofs.NoTable16",
+      "kind": "support"
+    },
+    {
+      "name": "CrcNoTable16.digest16_update_canonical",
+      "module": "Stage2Proofs.NoTable16",
+      "kind": "support"
+    },
+    {
+      "name": "CrcNoTable16.checksum16_canonical",
+      "module": "Stage2Proofs.NoTable16",
+      "kind": "support"
+    },
+    {
+      "name": "CrcNoTable16.digest_initial",
+      "module": "Stage2Proofs.NoTable16",
+      "kind": "support"
+    },
+    {
+      "name": "CrcNoTable16.digest_protocol_canonical",
+      "module": "Stage2Proofs.NoTable16",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedNoTable16.utility_eq",
+      "module": "Stage2Proofs.NoTable16Reflected",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedNoTable16.utility_spec",
+      "module": "Stage2Proofs.NoTable16Reflected",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedNoTable16.body_spec",
+      "module": "Stage2Proofs.NoTable16Reflected",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedNoTable16.loop_spec",
+      "module": "Stage2Proofs.NoTable16Reflected",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedNoTable16.update_table_total",
+      "module": "Stage2Proofs.NoTable16Reflected",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedNoTable16.step_decoded",
+      "module": "Stage2Proofs.NoTable16Reflected",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedNoTable16.run_decoded",
+      "module": "Stage2Proofs.NoTable16Reflected",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedNoTable16.update_canonical",
+      "module": "Stage2Proofs.NoTable16Reflected",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedNoTable16.checksum_canonical",
+      "module": "Stage2Proofs.NoTable16Reflected",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedNoTable16.digest_update_canonical",
+      "module": "Stage2Proofs.NoTable16Reflected",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedNoTable16.digest_initial",
+      "module": "Stage2Proofs.NoTable16Reflected",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedNoTable16.digest_protocol_canonical",
+      "module": "Stage2Proofs.NoTable16Reflected",
+      "kind": "support"
+    },
+    {
+      "name": "CrcNoTable32.utility_eq",
+      "module": "Stage2Proofs.NoTable32",
+      "kind": "support"
+    },
+    {
+      "name": "CrcNoTable32.utility_spec",
+      "module": "Stage2Proofs.NoTable32",
+      "kind": "support"
+    },
+    {
+      "name": "CrcNoTable32.body_spec",
+      "module": "Stage2Proofs.NoTable32",
+      "kind": "support"
+    },
+    {
+      "name": "CrcNoTable32.loop_spec",
+      "module": "Stage2Proofs.NoTable32",
+      "kind": "support"
+    },
+    {
+      "name": "CrcNoTable32.update_table_total",
+      "module": "Stage2Proofs.NoTable32",
+      "kind": "support"
+    },
+    {
+      "name": "CrcNoTable32.step_canonical",
+      "module": "Stage2Proofs.NoTable32",
+      "kind": "support"
+    },
+    {
+      "name": "CrcNoTable32.run_bv",
+      "module": "Stage2Proofs.NoTable32",
+      "kind": "support"
+    },
+    {
+      "name": "CrcNoTable32.update32_canonical",
+      "module": "Stage2Proofs.NoTable32",
+      "kind": "support"
+    },
+    {
+      "name": "CrcNoTable32.digest32_update_canonical",
+      "module": "Stage2Proofs.NoTable32",
+      "kind": "support"
+    },
+    {
+      "name": "CrcNoTable32.checksum32_canonical",
+      "module": "Stage2Proofs.NoTable32",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedNoTable32.utility_eq",
+      "module": "Stage2Proofs.NoTable32Reflected",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedNoTable32.utility_spec",
+      "module": "Stage2Proofs.NoTable32Reflected",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedNoTable32.body_spec",
+      "module": "Stage2Proofs.NoTable32Reflected",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedNoTable32.loop_spec",
+      "module": "Stage2Proofs.NoTable32Reflected",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedNoTable32.update_table_total",
+      "module": "Stage2Proofs.NoTable32Reflected",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedNoTable32.step_decoded",
+      "module": "Stage2Proofs.NoTable32Reflected",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedNoTable32.run_decoded",
+      "module": "Stage2Proofs.NoTable32Reflected",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedNoTable32.update_canonical",
+      "module": "Stage2Proofs.NoTable32Reflected",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedNoTable32.checksum_canonical",
+      "module": "Stage2Proofs.NoTable32Reflected",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedNoTable32.digest_update_canonical",
+      "module": "Stage2Proofs.NoTable32Reflected",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedNoTable32.digest_initial",
+      "module": "Stage2Proofs.NoTable32Reflected",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedNoTable32.digest_protocol_canonical",
+      "module": "Stage2Proofs.NoTable32Reflected",
+      "kind": "support"
+    },
+    {
+      "name": "CrcNoTable64.utility_eq",
+      "module": "Stage2Proofs.NoTable64",
+      "kind": "support"
+    },
+    {
+      "name": "CrcNoTable64.utility_spec",
+      "module": "Stage2Proofs.NoTable64",
+      "kind": "support"
+    },
+    {
+      "name": "CrcNoTable64.body_spec",
+      "module": "Stage2Proofs.NoTable64",
+      "kind": "support"
+    },
+    {
+      "name": "CrcNoTable64.loop_spec",
+      "module": "Stage2Proofs.NoTable64",
+      "kind": "support"
+    },
+    {
+      "name": "CrcNoTable64.update_table_total",
+      "module": "Stage2Proofs.NoTable64",
+      "kind": "support"
+    },
+    {
+      "name": "CrcNoTable64.step_canonical",
+      "module": "Stage2Proofs.NoTable64",
+      "kind": "support"
+    },
+    {
+      "name": "CrcNoTable64.run_bv",
+      "module": "Stage2Proofs.NoTable64",
+      "kind": "support"
+    },
+    {
+      "name": "CrcNoTable64.update64_canonical",
+      "module": "Stage2Proofs.NoTable64",
+      "kind": "support"
+    },
+    {
+      "name": "CrcNoTable64.digest64_update_canonical",
+      "module": "Stage2Proofs.NoTable64",
+      "kind": "support"
+    },
+    {
+      "name": "CrcNoTable64.checksum64_canonical",
+      "module": "Stage2Proofs.NoTable64",
+      "kind": "support"
+    },
+    {
+      "name": "CrcNoTable64.digest_protocol_canonical",
+      "module": "Stage2Proofs.NoTable64",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedNoTable64.utility_eq",
+      "module": "Stage2Proofs.NoTable64Reflected",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedNoTable64.utility_spec",
+      "module": "Stage2Proofs.NoTable64Reflected",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedNoTable64.body_spec",
+      "module": "Stage2Proofs.NoTable64Reflected",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedNoTable64.loop_spec",
+      "module": "Stage2Proofs.NoTable64Reflected",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedNoTable64.update_table_total",
+      "module": "Stage2Proofs.NoTable64Reflected",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedNoTable64.step_decoded",
+      "module": "Stage2Proofs.NoTable64Reflected",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedNoTable64.run_decoded",
+      "module": "Stage2Proofs.NoTable64Reflected",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedNoTable64.update_canonical",
+      "module": "Stage2Proofs.NoTable64Reflected",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedNoTable64.checksum_canonical",
+      "module": "Stage2Proofs.NoTable64Reflected",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedNoTable64.digest_update_canonical",
+      "module": "Stage2Proofs.NoTable64Reflected",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedNoTable64.digest_initial",
+      "module": "Stage2Proofs.NoTable64Reflected",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedNoTable64.digest_protocol_canonical",
+      "module": "Stage2Proofs.NoTable64Reflected",
+      "kind": "support"
+    },
+    {
+      "name": "CrcNoTable8.utility_eq",
+      "module": "Stage2Proofs.NoTable8",
+      "kind": "support"
+    },
+    {
+      "name": "CrcNoTable8.utility_step",
+      "module": "Stage2Proofs.NoTable8",
+      "kind": "support"
+    },
+    {
+      "name": "CrcNoTable8.body_spec",
+      "module": "Stage2Proofs.NoTable8",
+      "kind": "support"
+    },
+    {
+      "name": "CrcNoTable8.loop_spec",
+      "module": "Stage2Proofs.NoTable8",
+      "kind": "support"
+    },
+    {
+      "name": "CrcNoTable8.update_table_total",
+      "module": "Stage2Proofs.NoTable8",
+      "kind": "support"
+    },
+    {
+      "name": "CrcNoTable8.run_bv",
+      "module": "Stage2Proofs.NoTable8",
+      "kind": "support"
+    },
+    {
+      "name": "CrcNoTable8.update8_canonical",
+      "module": "Stage2Proofs.NoTable8",
+      "kind": "support"
+    },
+    {
+      "name": "CrcNoTable8.checksum8_canonical",
+      "module": "Stage2Proofs.NoTable8",
+      "kind": "support"
+    },
+    {
+      "name": "CrcNoTable8.digest8_update_canonical",
+      "module": "Stage2Proofs.NoTable8",
+      "kind": "support"
+    },
+    {
+      "name": "CrcNoTable8.digest8_update_append",
+      "module": "Stage2Proofs.NoTable8",
+      "kind": "support"
+    },
+    {
+      "name": "CrcNoTable8.checksum_nonref",
+      "module": "Stage2Proofs.NoTable8Refout",
+      "kind": "support"
+    },
+    {
+      "name": "CrcNoTableConstructor16.empty_loop",
+      "module": "Stage2Proofs.NoTableConstructor16",
+      "kind": "support"
+    },
+    {
+      "name": "CrcNoTableConstructor16.table0_total",
+      "module": "Stage2Proofs.NoTableConstructor16",
+      "kind": "support"
+    },
+    {
+      "name": "CrcNoTableConstructor16.new_total",
+      "module": "Stage2Proofs.NoTableConstructor16",
+      "kind": "support"
+    },
+    {
+      "name": "CrcNoTableConstructor32.zero_loop",
+      "module": "Stage2Proofs.NoTableConstructor32",
+      "kind": "support"
+    },
+    {
+      "name": "CrcNoTableConstructor32.table_total",
+      "module": "Stage2Proofs.NoTableConstructor32",
+      "kind": "support"
+    },
+    {
+      "name": "CrcNoTableConstructor32.new_total",
+      "module": "Stage2Proofs.NoTableConstructor32",
+      "kind": "support"
+    },
+    {
+      "name": "CrcNoTableConstructor32.new_checksum",
+      "module": "Stage2Proofs.NoTableConstructor32",
+      "kind": "support"
+    },
+    {
+      "name": "CrcNoTableConstructor8.zero_loop",
+      "module": "Stage2Proofs.NoTableConstructor8",
+      "kind": "support"
+    },
+    {
+      "name": "CrcNoTableConstructor8.table_total",
+      "module": "Stage2Proofs.NoTableConstructor8",
+      "kind": "support"
+    },
+    {
+      "name": "CrcNoTableConstructor8.new_total",
+      "module": "Stage2Proofs.NoTableConstructor8",
+      "kind": "support"
+    },
+    {
+      "name": "CrcNoTableConstructor8.new_checksum",
+      "module": "Stage2Proofs.NoTableConstructor8",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPartial128.coherent_nonref",
+      "module": "Stage2Proofs.Partial128",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPartial128.coherent_reflected",
+      "module": "Stage2Proofs.Partial128",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPartial128.update_table1",
+      "module": "Stage2Proofs.Partial128",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPartial128.digest_update_table1",
+      "module": "Stage2Proofs.Partial128",
+      "kind": "public-contract",
+      "precondition": "1 <= current algorithm.width = w <= 128; raw polynomial = zero-extended width-w poly; raw digest state = physical(128, refin, canonical width-w state); all 256 current table entries = encoded canonical byte transitions from zero; both flags arbitrary; any representable byte slice including empty"
+    },
+    {
+      "name": "CrcPartial128.checksum_table1",
+      "module": "Stage2Proofs.Partial128",
+      "kind": "public-contract",
+      "precondition": "1 <= current algorithm.width = w <= 128; raw polynomial = zero-extended width-w poly; raw xorout = zero-extended width-w xorout; arbitrary raw init interpreted by low w bits; all 256 current table entries = encoded canonical byte transitions from zero; both flags arbitrary; any representable byte slice including empty"
+    },
+    {
+      "name": "CrcPartial128.update_notable",
+      "module": "Stage2Proofs.Partial128",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPartial128.digest_update_notable",
+      "module": "Stage2Proofs.Partial128",
+      "kind": "public-contract",
+      "precondition": "1 <= current algorithm.width = w <= 128; raw polynomial = zero-extended width-w poly; raw digest state = physical(128, refin, canonical width-w state); both flags arbitrary; any representable byte slice including empty"
+    },
+    {
+      "name": "CrcPartial128.checksum_notable",
+      "module": "Stage2Proofs.Partial128",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPartial16.table_run_nonref",
+      "module": "Stage2Proofs.Partial16",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPartial16.table_run_reflected",
+      "module": "Stage2Proofs.Partial16",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPartial16.update_table1_encoded",
+      "module": "Stage2Proofs.Partial16",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPartial16.checksum_table1",
+      "module": "Stage2Proofs.Partial16",
+      "kind": "public-contract",
+      "precondition": "1 <= current algorithm.width = w <= 16; raw polynomial = zero-extended width-w poly; raw xorout = zero-extended width-w xorout; raw init = zero-extended width-w initial; all 256 current table entries = encoded canonical byte transitions from zero; both flags arbitrary; any representable byte slice including empty"
+    },
+    {
+      "name": "CrcPartial16.digest_update_table1",
+      "module": "Stage2Proofs.Partial16",
+      "kind": "public-contract",
+      "precondition": "1 <= current algorithm.width = w <= 16; raw polynomial = zero-extended width-w poly; raw digest state = physical(16, refin, canonical width-w state); all 256 current table entries = encoded canonical byte transitions from zero; both flags arbitrary; any representable byte slice including empty"
+    },
+    {
+      "name": "CrcPartial16.protocol_table1",
+      "module": "Stage2Proofs.Partial16",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPartial16.prepared_poly",
+      "module": "Stage2Proofs.Partial16",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPartial16.notable_run_nonref",
+      "module": "Stage2Proofs.Partial16",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPartial16.notable_run_reflected",
+      "module": "Stage2Proofs.Partial16",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPartial16.update_notable_encoded",
+      "module": "Stage2Proofs.Partial16",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPartial16.checksum_notable",
+      "module": "Stage2Proofs.Partial16",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPartial16.digest_update_notable",
+      "module": "Stage2Proofs.Partial16",
+      "kind": "public-contract",
+      "precondition": "1 <= current algorithm.width = w <= 16; raw polynomial = zero-extended width-w poly; raw digest state = physical(16, refin, canonical width-w state); both flags arbitrary; any representable byte slice including empty"
+    },
+    {
+      "name": "CrcPartial16.protocol_notable",
+      "module": "Stage2Proofs.Partial16",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPartial32.coherent_nonref",
+      "module": "Stage2Proofs.Partial32",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPartial32.coherent_reflected",
+      "module": "Stage2Proofs.Partial32",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPartial32.update_table1",
+      "module": "Stage2Proofs.Partial32",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPartial32.digest_update_table1",
+      "module": "Stage2Proofs.Partial32",
+      "kind": "public-contract",
+      "precondition": "1 <= current algorithm.width = w <= 32; raw polynomial = zero-extended width-w poly; raw digest state = physical(32, refin, canonical width-w state); all 256 current table entries = encoded canonical byte transitions from zero; both flags arbitrary; any representable byte slice including empty"
+    },
+    {
+      "name": "CrcPartial32.checksum_table1",
+      "module": "Stage2Proofs.Partial32",
+      "kind": "public-contract",
+      "precondition": "1 <= current algorithm.width = w <= 32; raw polynomial = zero-extended width-w poly; raw xorout = zero-extended width-w xorout; arbitrary raw init interpreted by low w bits; all 256 current table entries = encoded canonical byte transitions from zero; both flags arbitrary; any representable byte slice including empty"
+    },
+    {
+      "name": "CrcPartial32.notable_fragment",
+      "module": "Stage2Proofs.Partial32",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPartial32.update_notable",
+      "module": "Stage2Proofs.Partial32",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPartial32.digest_update_notable",
+      "module": "Stage2Proofs.Partial32",
+      "kind": "public-contract",
+      "precondition": "1 <= current algorithm.width = w <= 32; raw polynomial = zero-extended width-w poly; raw digest state = physical(32, refin, canonical width-w state); both flags arbitrary; any representable byte slice including empty"
+    },
+    {
+      "name": "CrcPartial32.checksum_notable",
+      "module": "Stage2Proofs.Partial32",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPartial64.update_table1_nonref",
+      "module": "Stage2Proofs.Partial64",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPartial64.update_table1_reflected",
+      "module": "Stage2Proofs.Partial64",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPartial64.update_table1",
+      "module": "Stage2Proofs.Partial64",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPartial64.update_notable_raw",
+      "module": "Stage2Proofs.Partial64",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPartial64.physicalRun_encoded",
+      "module": "Stage2Proofs.Partial64",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPartial64.update_notable",
+      "module": "Stage2Proofs.Partial64",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPartial64.checksum_notable",
+      "module": "Stage2Proofs.Partial64",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPartial64.checksum_table1",
+      "module": "Stage2Proofs.Partial64",
+      "kind": "public-contract",
+      "precondition": "1 <= current algorithm.width = w <= 64; raw polynomial = zero-extended width-w poly; raw xorout = zero-extended width-w xorout; arbitrary raw init interpreted by low w bits; all 256 current table entries = encoded canonical byte transitions from zero; both flags arbitrary; any representable byte slice including empty"
+    },
+    {
+      "name": "CrcPartial64.digest_update_table1",
+      "module": "Stage2Proofs.Partial64",
+      "kind": "public-contract",
+      "precondition": "1 <= current algorithm.width = w <= 64; raw polynomial = zero-extended width-w poly; raw digest state = physical(64, refin, canonical width-w state); all 256 current table entries = encoded canonical byte transitions from zero; both flags arbitrary; any representable byte slice including empty"
+    },
+    {
+      "name": "CrcPartial64.digest_update_notable",
+      "module": "Stage2Proofs.Partial64",
+      "kind": "public-contract",
+      "precondition": "1 <= current algorithm.width = w <= 64; raw polynomial = zero-extended width-w poly; raw digest state = physical(64, refin, canonical width-w state); both flags arbitrary; any representable byte slice including empty"
+    },
+    {
+      "name": "CrcPartial8.table_run_nonref",
+      "module": "Stage2Proofs.Partial8",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPartial8.table_run_reflected",
+      "module": "Stage2Proofs.Partial8",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPartial8.table_run",
+      "module": "Stage2Proofs.Partial8",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPartial8.update_table1_encoded",
+      "module": "Stage2Proofs.Partial8",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPartial8.checksum_table1",
+      "module": "Stage2Proofs.Partial8",
+      "kind": "public-contract",
+      "precondition": "1 <= current algorithm.width = w <= 8; raw polynomial = zero-extended width-w poly; raw xorout = zero-extended width-w xorout; raw init = zero-extended width-w initial; all 256 current table entries = encoded canonical byte transitions from zero; both flags arbitrary; any representable byte slice including empty"
+    },
+    {
+      "name": "CrcPartial8.digest_update_table1",
+      "module": "Stage2Proofs.Partial8",
+      "kind": "public-contract",
+      "precondition": "1 <= current algorithm.width = w <= 8; raw polynomial = zero-extended width-w poly; raw digest state = physical(8, refin, canonical width-w state); all 256 current table entries = encoded canonical byte transitions from zero; both flags arbitrary; any representable byte slice including empty"
+    },
+    {
+      "name": "CrcPartial8.protocol_table1",
+      "module": "Stage2Proofs.Partial8",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPartial8.notable_run_nonref",
+      "module": "Stage2Proofs.Partial8",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPartial8.notable_run_reflected",
+      "module": "Stage2Proofs.Partial8",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPartial8.prepared_poly",
+      "module": "Stage2Proofs.Partial8",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPartial8.update_notable_encoded",
+      "module": "Stage2Proofs.Partial8",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPartial8.checksum_notable",
+      "module": "Stage2Proofs.Partial8",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPartial8.digest_update_notable",
+      "module": "Stage2Proofs.Partial8",
+      "kind": "public-contract",
+      "precondition": "1 <= current algorithm.width = w <= 8; raw polynomial = zero-extended width-w poly; raw digest state = physical(8, refin, canonical width-w state); both flags arbitrary; any representable byte slice including empty"
+    },
+    {
+      "name": "CrcPartial8.protocol_notable",
+      "module": "Stage2Proofs.Partial8",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPartialConstructor128.table_prepared",
+      "module": "Stage2Proofs.PartialConstructor128",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPartialConstructor128.new_table1",
+      "module": "Stage2Proofs.PartialConstructor128",
+      "kind": "public-contract",
+      "precondition": "1 <= algorithm.width = w <= 128; raw polynomial = zero-extended width-w poly; arbitrary init/xorout and both flags; constructor preserves algorithm and establishes current table coherence"
+    },
+    {
+      "name": "CrcPartialConstructor128.new_checksum_table1",
+      "module": "Stage2Proofs.PartialConstructor128",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPartialConstructor128.digest_protocol_table1",
+      "module": "Stage2Proofs.PartialConstructor128",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPartialConstructor128.new_digest_protocol_table1",
+      "module": "Stage2Proofs.PartialConstructor128",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPartialConstructor16.entry_nonref",
+      "module": "Stage2Proofs.PartialConstructor16",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPartialConstructor16.entry_reflected",
+      "module": "Stage2Proofs.PartialConstructor16",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPartialConstructor16.new_table1",
+      "module": "Stage2Proofs.PartialConstructor16",
+      "kind": "public-contract",
+      "precondition": "1 <= algorithm.width = w <= 16; raw polynomial = zero-extended width-w poly; arbitrary init/xorout and both flags; constructor preserves algorithm and establishes current table coherence"
+    },
+    {
+      "name": "CrcPartialConstructor16.new_checksum",
+      "module": "Stage2Proofs.PartialConstructor16",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPartialConstructor16.new_protocol",
+      "module": "Stage2Proofs.PartialConstructor16",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPartialConstructor16.empty_loop",
+      "module": "Stage2Proofs.PartialConstructor16",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPartialConstructor16.new_notable",
+      "module": "Stage2Proofs.PartialConstructor16",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPartialConstructor16.new_checksum_notable",
+      "module": "Stage2Proofs.PartialConstructor16",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPartialConstructor16.new_protocol_notable",
+      "module": "Stage2Proofs.PartialConstructor16",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPartialConstructor32.table_prepared",
+      "module": "Stage2Proofs.PartialConstructor32",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPartialConstructor32.new_table1",
+      "module": "Stage2Proofs.PartialConstructor32",
+      "kind": "public-contract",
+      "precondition": "1 <= algorithm.width = w <= 32; raw polynomial = zero-extended width-w poly; arbitrary init/xorout and both flags; constructor preserves algorithm and establishes current table coherence"
+    },
+    {
+      "name": "CrcPartialConstructor32.new_checksum_table1",
+      "module": "Stage2Proofs.PartialConstructor32",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPartialConstructor32.digest_protocol_table1",
+      "module": "Stage2Proofs.PartialConstructor32",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPartialConstructor32.new_digest_protocol_table1",
+      "module": "Stage2Proofs.PartialConstructor32",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPartialConstructor64.table_prepared",
+      "module": "Stage2Proofs.PartialConstructor64",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPartialConstructor64.new_table1",
+      "module": "Stage2Proofs.PartialConstructor64",
+      "kind": "public-contract",
+      "precondition": "1 <= algorithm.width = w <= 64; raw polynomial = zero-extended width-w poly; arbitrary init/xorout and both flags; constructor preserves algorithm and establishes current table coherence"
+    },
+    {
+      "name": "CrcPartialConstructor64.new_checksum",
+      "module": "Stage2Proofs.PartialConstructor64",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPartialConstructor8.entry_nonref",
+      "module": "Stage2Proofs.PartialConstructor8",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPartialConstructor8.entry_reflected",
+      "module": "Stage2Proofs.PartialConstructor8",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPartialConstructor8.new_table1",
+      "module": "Stage2Proofs.PartialConstructor8",
+      "kind": "public-contract",
+      "precondition": "1 <= algorithm.width = w <= 8; raw polynomial = zero-extended width-w poly; arbitrary init/xorout and both flags; constructor preserves algorithm and establishes current table coherence"
+    },
+    {
+      "name": "CrcPartialConstructor8.new_checksum",
+      "module": "Stage2Proofs.PartialConstructor8",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPartialConstructor8.new_protocol",
+      "module": "Stage2Proofs.PartialConstructor8",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPartialConstructor8.empty_loop",
+      "module": "Stage2Proofs.PartialConstructor8",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPartialConstructor8.new_notable",
+      "module": "Stage2Proofs.PartialConstructor8",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPartialConstructor8.new_checksum_notable",
+      "module": "Stage2Proofs.PartialConstructor8",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPartialConstructor8.new_protocol_notable",
+      "module": "Stage2Proofs.PartialConstructor8",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPartialNoTableConstructors.zero_loop8",
+      "module": "Stage2Proofs.PartialNoTableConstructors",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPartialNoTableConstructors.table_total8",
+      "module": "Stage2Proofs.PartialNoTableConstructors",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPartialNoTableConstructors.new_total8",
+      "module": "Stage2Proofs.PartialNoTableConstructors",
+      "kind": "public-contract",
+      "precondition": "1 <= algorithm.width <= 8; arbitrary polynomial/init/xorout and both flags; resulting algorithm equals input"
+    },
+    {
+      "name": "CrcPartialNoTableConstructors.zero_loop16",
+      "module": "Stage2Proofs.PartialNoTableConstructors",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPartialNoTableConstructors.table_total16",
+      "module": "Stage2Proofs.PartialNoTableConstructors",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPartialNoTableConstructors.new_total16",
+      "module": "Stage2Proofs.PartialNoTableConstructors",
+      "kind": "public-contract",
+      "precondition": "1 <= algorithm.width <= 16; arbitrary polynomial/init/xorout and both flags; resulting algorithm equals input"
+    },
+    {
+      "name": "CrcPartialNoTableConstructors.zero_loop32",
+      "module": "Stage2Proofs.PartialNoTableConstructors",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPartialNoTableConstructors.table_total32",
+      "module": "Stage2Proofs.PartialNoTableConstructors",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPartialNoTableConstructors.new_total32",
+      "module": "Stage2Proofs.PartialNoTableConstructors",
+      "kind": "public-contract",
+      "precondition": "1 <= algorithm.width <= 32; arbitrary polynomial/init/xorout and both flags; resulting algorithm equals input"
+    },
+    {
+      "name": "CrcPartialNoTableConstructors.zero_loop64",
+      "module": "Stage2Proofs.PartialNoTableConstructors",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPartialNoTableConstructors.table_total64",
+      "module": "Stage2Proofs.PartialNoTableConstructors",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPartialNoTableConstructors.new_total64",
+      "module": "Stage2Proofs.PartialNoTableConstructors",
+      "kind": "public-contract",
+      "precondition": "1 <= algorithm.width <= 64; arbitrary polynomial/init/xorout and both flags; resulting algorithm equals input"
+    },
+    {
+      "name": "CrcPartialNoTableConstructors.zero_loop128",
+      "module": "Stage2Proofs.PartialNoTableConstructors",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPartialNoTableConstructors.table_total128",
+      "module": "Stage2Proofs.PartialNoTableConstructors",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPartialNoTableConstructors.new_total128",
+      "module": "Stage2Proofs.PartialNoTableConstructors",
+      "kind": "public-contract",
+      "precondition": "1 <= algorithm.width <= 128; arbitrary polynomial/init/xorout and both flags; resulting algorithm equals input"
+    },
+    {
+      "name": "CrcPartialNoTableConstructors.checksum8",
+      "module": "Stage2Proofs.PartialNoTableConstructors",
+      "kind": "public-contract",
+      "precondition": "1 <= current algorithm.width = w <= 8; raw polynomial = zero-extended width-w poly; raw xorout = zero-extended width-w xorout; arbitrary raw init interpreted by low w bits; both flags arbitrary; any representable byte slice including empty"
+    },
+    {
+      "name": "CrcPartialNoTableConstructors.new_checksum8",
+      "module": "Stage2Proofs.PartialNoTableConstructors",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPartialNoTableConstructors.checksum16",
+      "module": "Stage2Proofs.PartialNoTableConstructors",
+      "kind": "public-contract",
+      "precondition": "1 <= current algorithm.width = w <= 16; raw polynomial = zero-extended width-w poly; raw xorout = zero-extended width-w xorout; arbitrary raw init interpreted by low w bits; both flags arbitrary; any representable byte slice including empty"
+    },
+    {
+      "name": "CrcPartialNoTableConstructors.new_checksum16",
+      "module": "Stage2Proofs.PartialNoTableConstructors",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPartialNoTableConstructors.checksum32",
+      "module": "Stage2Proofs.PartialNoTableConstructors",
+      "kind": "public-contract",
+      "precondition": "1 <= current algorithm.width = w <= 32; raw polynomial = zero-extended width-w poly; raw xorout = zero-extended width-w xorout; arbitrary raw init interpreted by low w bits; both flags arbitrary; any representable byte slice including empty"
+    },
+    {
+      "name": "CrcPartialNoTableConstructors.new_checksum32",
+      "module": "Stage2Proofs.PartialNoTableConstructors",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPartialNoTableConstructors.checksum64",
+      "module": "Stage2Proofs.PartialNoTableConstructors",
+      "kind": "public-contract",
+      "precondition": "1 <= current algorithm.width = w <= 64; raw polynomial = zero-extended width-w poly; raw xorout = zero-extended width-w xorout; arbitrary raw init interpreted by low w bits; both flags arbitrary; any representable byte slice including empty"
+    },
+    {
+      "name": "CrcPartialNoTableConstructors.new_checksum64",
+      "module": "Stage2Proofs.PartialNoTableConstructors",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPartialNoTableConstructors.checksum128",
+      "module": "Stage2Proofs.PartialNoTableConstructors",
+      "kind": "public-contract",
+      "precondition": "1 <= current algorithm.width = w <= 128; raw polynomial = zero-extended width-w poly; raw xorout = zero-extended width-w xorout; arbitrary raw init interpreted by low w bits; both flags arbitrary; any representable byte slice including empty"
+    },
+    {
+      "name": "CrcPartialNoTableConstructors.new_checksum128",
+      "module": "Stage2Proofs.PartialNoTableConstructors",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPublic128.hlo",
+      "module": "Stage2Proofs.Public128",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPublic128.hhi",
+      "module": "Stage2Proofs.Public128",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPublic128.lookup_canonical",
+      "module": "Stage2Proofs.Public128",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPublic128.run_canonical",
+      "module": "Stage2Proofs.Public128",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPublic128.update_canonical",
+      "module": "Stage2Proofs.Public128",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPublic128.checksum_canonical",
+      "module": "Stage2Proofs.Public128",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPublic128.digest_update_canonical",
+      "module": "Stage2Proofs.Public128",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPublic128.digest_protocol_canonical",
+      "module": "Stage2Proofs.Public128",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPublic128.digest_update_nonref_canonical",
+      "module": "Stage2Proofs.Public128",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPublic128.reverse128",
+      "module": "Stage2Proofs.Public128Base",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPublic128.init_identity",
+      "module": "Stage2Proofs.Public128Base",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPublic128.finalize_eq",
+      "module": "Stage2Proofs.Public128Base",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPublic128.finalize_total",
+      "module": "Stage2Proofs.Public128Base",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedTable128.shifted_xor_byte",
+      "module": "Stage2Proofs.Public128Reflected",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedTable128.lookup_canonical",
+      "module": "Stage2Proofs.Public128Reflected",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedTable128.run_canonical",
+      "module": "Stage2Proofs.Public128Reflected",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedTable128.update_canonical",
+      "module": "Stage2Proofs.Public128Reflected",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedTable128.checksum_canonical",
+      "module": "Stage2Proofs.Public128Reflected",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedTable128.digest_update_canonical",
+      "module": "Stage2Proofs.Public128Reflected",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedTable128.digest_protocol_canonical",
+      "module": "Stage2Proofs.Public128Reflected",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPublic16.hlo",
+      "module": "Stage2Proofs.Public16",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPublic16.hhi",
+      "module": "Stage2Proofs.Public16",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPublic16.lookup_canonical",
+      "module": "Stage2Proofs.Public16",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPublic16.run_canonical",
+      "module": "Stage2Proofs.Public16",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPublic16.update_canonical",
+      "module": "Stage2Proofs.Public16",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPublic16.checksum_canonical",
+      "module": "Stage2Proofs.Public16",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPublic16.digest_update_canonical",
+      "module": "Stage2Proofs.Public16",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPublic16.digest_protocol_canonical",
+      "module": "Stage2Proofs.Public16",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPublic16.digest_update_nonref_canonical",
+      "module": "Stage2Proofs.Public16",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPublic16.reverse16",
+      "module": "Stage2Proofs.Public16Base",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPublic16.init_identity",
+      "module": "Stage2Proofs.Public16Base",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPublic16.finalize_eq",
+      "module": "Stage2Proofs.Public16Base",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPublic16.finalize_total",
+      "module": "Stage2Proofs.Public16Base",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedTable16.shifted_xor_byte",
+      "module": "Stage2Proofs.Public16Reflected",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedTable16.lookup_canonical",
+      "module": "Stage2Proofs.Public16Reflected",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedTable16.run_canonical",
+      "module": "Stage2Proofs.Public16Reflected",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedTable16.update_canonical",
+      "module": "Stage2Proofs.Public16Reflected",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedTable16.checksum_canonical",
+      "module": "Stage2Proofs.Public16Reflected",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedTable16.digest_update_canonical",
+      "module": "Stage2Proofs.Public16Reflected",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedTable16.digest_protocol_canonical",
+      "module": "Stage2Proofs.Public16Reflected",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPublic32.hlo",
+      "module": "Stage2Proofs.Public32",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPublic32.hhi",
+      "module": "Stage2Proofs.Public32",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPublic32.lookup_canonical",
+      "module": "Stage2Proofs.Public32",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPublic32.run_canonical",
+      "module": "Stage2Proofs.Public32",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPublic32.update_canonical",
+      "module": "Stage2Proofs.Public32",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPublic32.checksum_canonical",
+      "module": "Stage2Proofs.Public32",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPublic32.digest_update_canonical",
+      "module": "Stage2Proofs.Public32",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPublic32.digest_protocol_canonical",
+      "module": "Stage2Proofs.Public32",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPublic32.digest_update_nonref_canonical",
+      "module": "Stage2Proofs.Public32",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPublic32.reverse32",
+      "module": "Stage2Proofs.Public32Base",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPublic32.init_identity",
+      "module": "Stage2Proofs.Public32Base",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPublic32.finalize_eq",
+      "module": "Stage2Proofs.Public32Base",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPublic32.finalize_total",
+      "module": "Stage2Proofs.Public32Base",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedTable32.shifted_xor_byte",
+      "module": "Stage2Proofs.Public32Reflected",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedTable32.lookup_canonical",
+      "module": "Stage2Proofs.Public32Reflected",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedTable32.run_canonical",
+      "module": "Stage2Proofs.Public32Reflected",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedTable32.update_canonical",
+      "module": "Stage2Proofs.Public32Reflected",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedTable32.checksum_canonical",
+      "module": "Stage2Proofs.Public32Reflected",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedTable32.digest_update_canonical",
+      "module": "Stage2Proofs.Public32Reflected",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedTable32.digest_protocol_canonical",
+      "module": "Stage2Proofs.Public32Reflected",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPublic64.hlo",
+      "module": "Stage2Proofs.Public64",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPublic64.hhi",
+      "module": "Stage2Proofs.Public64",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPublic64.lookup_canonical",
+      "module": "Stage2Proofs.Public64",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPublic64.run_canonical",
+      "module": "Stage2Proofs.Public64",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPublic64.update_canonical",
+      "module": "Stage2Proofs.Public64",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPublic64.checksum_canonical",
+      "module": "Stage2Proofs.Public64",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPublic64.digest_update_canonical",
+      "module": "Stage2Proofs.Public64",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPublic64.digest_protocol_canonical",
+      "module": "Stage2Proofs.Public64",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPublic64.digest_update_nonref_canonical",
+      "module": "Stage2Proofs.Public64",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPublic64.reverse64",
+      "module": "Stage2Proofs.Public64Base",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPublic64.init_identity",
+      "module": "Stage2Proofs.Public64Base",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPublic64.finalize_eq",
+      "module": "Stage2Proofs.Public64Base",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPublic64.finalize_total",
+      "module": "Stage2Proofs.Public64Base",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedTable64.shifted_xor_byte",
+      "module": "Stage2Proofs.Public64Reflected",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedTable64.lookup_canonical",
+      "module": "Stage2Proofs.Public64Reflected",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedTable64.run_canonical",
+      "module": "Stage2Proofs.Public64Reflected",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedTable64.update_canonical",
+      "module": "Stage2Proofs.Public64Reflected",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedTable64.checksum_canonical",
+      "module": "Stage2Proofs.Public64Reflected",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedTable64.digest_update_canonical",
+      "module": "Stage2Proofs.Public64Reflected",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedTable64.digest_protocol_canonical",
+      "module": "Stage2Proofs.Public64Reflected",
+      "kind": "support"
+    },
+    {
+      "name": "CrcBody.fold8_bv",
+      "module": "Stage2Proofs.Public8",
+      "kind": "support"
+    },
+    {
+      "name": "CrcBody.run8_canonical",
+      "module": "Stage2Proofs.Public8",
+      "kind": "support"
+    },
+    {
+      "name": "CrcBody.update8_canonical",
+      "module": "Stage2Proofs.Public8",
+      "kind": "support"
+    },
+    {
+      "name": "CrcBody.checksum8_canonical",
+      "module": "Stage2Proofs.Public8",
+      "kind": "support"
+    },
+    {
+      "name": "CrcBody.digest8_update_canonical",
+      "module": "Stage2Proofs.Public8",
+      "kind": "support"
+    },
+    {
+      "name": "CrcBody.digest8_update_append",
+      "module": "Stage2Proofs.Public8",
+      "kind": "support"
+    },
+    {
+      "name": "CrcBody.digest8_protocol_canonical",
+      "module": "Stage2Proofs.Public8",
+      "kind": "support"
+    },
+    {
+      "name": "CrcBody.init8_identity",
+      "module": "Stage2Proofs.Public8Base",
+      "kind": "support"
+    },
+    {
+      "name": "CrcBody.finalize8_xor",
+      "module": "Stage2Proofs.Public8Base",
+      "kind": "support"
+    },
+    {
+      "name": "CrcBody.digest8_initial",
+      "module": "Stage2Proofs.Public8Base",
+      "kind": "support"
+    },
+    {
+      "name": "CrcBody.digest8_default",
+      "module": "Stage2Proofs.Public8Base",
+      "kind": "support"
+    },
+    {
+      "name": "CrcBody.digest8_finalize",
+      "module": "Stage2Proofs.Public8Base",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflected8.reverse_xor",
+      "module": "Stage2Proofs.ReflectMath8",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflected8.reverse_shiftLeft_one",
+      "module": "Stage2Proofs.ReflectMath8",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflected8.reverse_inputStep",
+      "module": "Stage2Proofs.ReflectMath8",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflected8.byteStep_eq_reverse_byte",
+      "module": "Stage2Proofs.ReflectMath8",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflected8.reverse_polynomialStep",
+      "module": "Stage2Proofs.ReflectMath8",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflected8.reverse_polynomialRun",
+      "module": "Stage2Proofs.ReflectMath8",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflected8.byteStep_injection",
+      "module": "Stage2Proofs.ReflectMath8",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflected8.lookupRun_correct",
+      "module": "Stage2Proofs.ReflectMath8",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedWide.reverse_xor",
+      "module": "Stage2Proofs.ReflectMathWide",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedWide.reverse_shiftLeft_one",
+      "module": "Stage2Proofs.ReflectMathWide",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedWide.reverse_polynomialStep",
+      "module": "Stage2Proofs.ReflectMathWide",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedWide.reverse_polynomialRun",
+      "module": "Stage2Proofs.ReflectMathWide",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedWide.byteStep_eq_reverse_byte",
+      "module": "Stage2Proofs.ReflectMathWide",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedWide.reverse_encodeByte",
+      "module": "Stage2Proofs.ReflectMathWide",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedWide.byteStep_injection",
+      "module": "Stage2Proofs.ReflectMathWide",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedWide.polynomialStep_xor",
+      "module": "Stage2Proofs.ReflectMathWide",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedWide.polynomialRun_xor",
+      "module": "Stage2Proofs.ReflectMathWide",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedWide.polynomialRun_no_feedback",
+      "module": "Stage2Proofs.ReflectMathWide",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedWide.split_state",
+      "module": "Stage2Proofs.ReflectMathWide",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedWide.highBytes_run8",
+      "module": "Stage2Proofs.ReflectMathWide",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedWide.lowByte_mask",
+      "module": "Stage2Proofs.ReflectMathWide",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedWide.polynomialRun_split8",
+      "module": "Stage2Proofs.ReflectMathWide",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedPublic128.reverseScalar_bv",
+      "module": "Stage2Proofs.Reflected128Base",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedPublic128.reverse128",
+      "module": "Stage2Proofs.Reflected128Base",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedPublic128.init_eq",
+      "module": "Stage2Proofs.Reflected128Base",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedPublic128.finalize_eq",
+      "module": "Stage2Proofs.Reflected128Base",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedPublic128.finalize_canonical",
+      "module": "Stage2Proofs.Reflected128Base",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedPublic16.reverseScalar_bv",
+      "module": "Stage2Proofs.Reflected16Base",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedPublic16.reverse16",
+      "module": "Stage2Proofs.Reflected16Base",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedPublic16.init_eq",
+      "module": "Stage2Proofs.Reflected16Base",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedPublic16.finalize_eq",
+      "module": "Stage2Proofs.Reflected16Base",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedPublic16.finalize_canonical",
+      "module": "Stage2Proofs.Reflected16Base",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedPublic32.reverseScalar_bv",
+      "module": "Stage2Proofs.Reflected32Base",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedPublic32.reverse32",
+      "module": "Stage2Proofs.Reflected32Base",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedPublic32.init_eq",
+      "module": "Stage2Proofs.Reflected32Base",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedPublic32.finalize_eq",
+      "module": "Stage2Proofs.Reflected32Base",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedPublic32.finalize_canonical",
+      "module": "Stage2Proofs.Reflected32Base",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedPublic64.reverseScalar_bv",
+      "module": "Stage2Proofs.Reflected64Base",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedPublic64.reverse64",
+      "module": "Stage2Proofs.Reflected64Base",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedPublic64.init_eq",
+      "module": "Stage2Proofs.Reflected64Base",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedPublic64.finalize_eq",
+      "module": "Stage2Proofs.Reflected64Base",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedPublic64.finalize_canonical",
+      "module": "Stage2Proofs.Reflected64Base",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedPublic8.reverseScalar_bv",
+      "module": "Stage2Proofs.Reflected8",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedPublic8.reverse8",
+      "module": "Stage2Proofs.Reflected8",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedPublic8.init_eq",
+      "module": "Stage2Proofs.Reflected8",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedPublic8.finalize_eq",
+      "module": "Stage2Proofs.Reflected8",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedPublic8.finalize_canonical",
+      "module": "Stage2Proofs.Reflected8",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedPublic8.update_canonical",
+      "module": "Stage2Proofs.Reflected8",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedPublic8.checksum_canonical",
+      "module": "Stage2Proofs.Reflected8",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedPublic8.digest_initial",
+      "module": "Stage2Proofs.Reflected8",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedPublic8.digest_update_canonical",
+      "module": "Stage2Proofs.Reflected8",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedPublic8.digest_protocol_canonical",
+      "module": "Stage2Proofs.Reflected8",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedConstructor128.utility",
+      "module": "Stage2Proofs.ReflectedConstructor128",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedConstructor128.body_spec",
+      "module": "Stage2Proofs.ReflectedConstructor128",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedConstructor128.loop_spec",
+      "module": "Stage2Proofs.ReflectedConstructor128",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedConstructor128.table_spec",
+      "module": "Stage2Proofs.ReflectedConstructor128",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedConstructor128.new_coherent",
+      "module": "Stage2Proofs.ReflectedConstructor128",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedConstructor128.new_checksum_canonical",
+      "module": "Stage2Proofs.ReflectedConstructor128",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedConstructor128.new_digest_protocol_canonical",
+      "module": "Stage2Proofs.ReflectedConstructor128",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedConstructor16.utility",
+      "module": "Stage2Proofs.ReflectedConstructor16",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedConstructor16.body_spec",
+      "module": "Stage2Proofs.ReflectedConstructor16",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedConstructor16.loop_spec",
+      "module": "Stage2Proofs.ReflectedConstructor16",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedConstructor16.table_spec",
+      "module": "Stage2Proofs.ReflectedConstructor16",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedConstructor16.new16_coherent",
+      "module": "Stage2Proofs.ReflectedConstructor16",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedConstructor16.new_checksum16",
+      "module": "Stage2Proofs.ReflectedConstructor16",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedConstructor16.new_digest_protocol16",
+      "module": "Stage2Proofs.ReflectedConstructor16",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedConstructor32.utility",
+      "module": "Stage2Proofs.ReflectedConstructor32",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedConstructor32.body_spec",
+      "module": "Stage2Proofs.ReflectedConstructor32",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedConstructor32.loop_spec",
+      "module": "Stage2Proofs.ReflectedConstructor32",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedConstructor32.table_spec",
+      "module": "Stage2Proofs.ReflectedConstructor32",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedConstructor32.new_coherent",
+      "module": "Stage2Proofs.ReflectedConstructor32",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedConstructor32.new_checksum_canonical",
+      "module": "Stage2Proofs.ReflectedConstructor32",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedConstructor32.new_digest_protocol_canonical",
+      "module": "Stage2Proofs.ReflectedConstructor32",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedConstructor64.utility",
+      "module": "Stage2Proofs.ReflectedConstructor64",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedConstructor64.body_spec",
+      "module": "Stage2Proofs.ReflectedConstructor64",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedConstructor64.loop_spec",
+      "module": "Stage2Proofs.ReflectedConstructor64",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedConstructor64.table_spec",
+      "module": "Stage2Proofs.ReflectedConstructor64",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedConstructor64.new64_coherent_reflected",
+      "module": "Stage2Proofs.ReflectedConstructor64",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedConstructor8.body_spec",
+      "module": "Stage2Proofs.ReflectedConstructor8",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedConstructor8.loop_spec",
+      "module": "Stage2Proofs.ReflectedConstructor8",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedConstructor8.table_spec",
+      "module": "Stage2Proofs.ReflectedConstructor8",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedConstructor8.new_coherent",
+      "module": "Stage2Proofs.ReflectedConstructor8",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedConstructor8.new_checksum_canonical",
+      "module": "Stage2Proofs.ReflectedConstructor8",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedConstructor8.new_digest_protocol_canonical",
+      "module": "Stage2Proofs.ReflectedConstructor8",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedNoTable8.utility_eq",
+      "module": "Stage2Proofs.ReflectedNoTable8",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedNoTable8.utility_step",
+      "module": "Stage2Proofs.ReflectedNoTable8",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedNoTable8.body_spec",
+      "module": "Stage2Proofs.ReflectedNoTable8",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedNoTable8.loop_spec",
+      "module": "Stage2Proofs.ReflectedNoTable8",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedNoTable8.update_table_total",
+      "module": "Stage2Proofs.ReflectedNoTable8",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedNoTable8.step_decoded",
+      "module": "Stage2Proofs.ReflectedNoTable8",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedNoTable8.run_decoded",
+      "module": "Stage2Proofs.ReflectedNoTable8",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedNoTable8.update_canonical",
+      "module": "Stage2Proofs.ReflectedNoTable8",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedNoTable8.checksum_canonical",
+      "module": "Stage2Proofs.ReflectedNoTable8",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedNoTable8.digest_update_canonical",
+      "module": "Stage2Proofs.ReflectedNoTable8",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedNoTable8.digest_initial",
+      "module": "Stage2Proofs.ReflectedNoTable8",
+      "kind": "support"
+    },
+    {
+      "name": "CrcReflectedNoTable8.digest_protocol_canonical",
+      "module": "Stage2Proofs.ReflectedNoTable8",
+      "kind": "support"
+    },
+    {
+      "name": "CrcRefout8.reverse8",
+      "module": "Stage2Proofs.Refout8",
+      "kind": "support"
+    },
+    {
+      "name": "CrcRefout8.init_identity",
+      "module": "Stage2Proofs.Refout8",
+      "kind": "support"
+    },
+    {
+      "name": "CrcRefout8.finalize_eq",
+      "module": "Stage2Proofs.Refout8",
+      "kind": "support"
+    },
+    {
+      "name": "CrcRefout8.finalize_total",
+      "module": "Stage2Proofs.Refout8",
+      "kind": "support"
+    },
+    {
+      "name": "CrcRefout8.checksum_canonical",
+      "module": "Stage2Proofs.Refout8",
+      "kind": "support"
+    },
+    {
+      "name": "CrcRefout8.digest_update_canonical",
+      "module": "Stage2Proofs.Refout8",
+      "kind": "support"
+    },
+    {
+      "name": "CrcRefout8.digest_protocol_canonical",
+      "module": "Stage2Proofs.Refout8",
+      "kind": "support"
+    },
+    {
+      "name": "CrcRefout8.digest_update_nonref_canonical",
+      "module": "Stage2Proofs.Refout8",
+      "kind": "support"
+    },
+    {
+      "name": "CrcUpdate128.indexWord_bound",
+      "module": "Stage2Proofs.Update128",
+      "kind": "support"
+    },
+    {
+      "name": "CrcUpdate128.cast_index",
+      "module": "Stage2Proofs.Update128",
+      "kind": "support"
+    },
+    {
+      "name": "CrcUpdate128.body_spec",
+      "module": "Stage2Proofs.Update128",
+      "kind": "support"
+    },
+    {
+      "name": "CrcUpdate128.loop_spec",
+      "module": "Stage2Proofs.Update128",
+      "kind": "support"
+    },
+    {
+      "name": "CrcUpdate128.update_table_total",
+      "module": "Stage2Proofs.Update128",
+      "kind": "support"
+    },
+    {
+      "name": "CrcUpdate128.digest_update_total",
+      "module": "Stage2Proofs.Update128",
+      "kind": "support"
+    },
+    {
+      "name": "CrcUpdate128Reflected.indexWord_bound",
+      "module": "Stage2Proofs.Update128Reflected",
+      "kind": "support"
+    },
+    {
+      "name": "CrcUpdate128Reflected.cast_index",
+      "module": "Stage2Proofs.Update128Reflected",
+      "kind": "support"
+    },
+    {
+      "name": "CrcUpdate128Reflected.body_spec",
+      "module": "Stage2Proofs.Update128Reflected",
+      "kind": "support"
+    },
+    {
+      "name": "CrcUpdate128Reflected.loop_spec",
+      "module": "Stage2Proofs.Update128Reflected",
+      "kind": "support"
+    },
+    {
+      "name": "CrcUpdate128Reflected.update_table_total",
+      "module": "Stage2Proofs.Update128Reflected",
+      "kind": "support"
+    },
+    {
+      "name": "CrcUpdate128Reflected.digest_update_total",
+      "module": "Stage2Proofs.Update128Reflected",
+      "kind": "support"
+    },
+    {
+      "name": "CrcUpdate16.indexWord_bound",
+      "module": "Stage2Proofs.Update16",
+      "kind": "support"
+    },
+    {
+      "name": "CrcUpdate16.body_spec",
+      "module": "Stage2Proofs.Update16",
+      "kind": "support"
+    },
+    {
+      "name": "CrcUpdate16.loop_spec",
+      "module": "Stage2Proofs.Update16",
+      "kind": "support"
+    },
+    {
+      "name": "CrcUpdate16.update_table_total",
+      "module": "Stage2Proofs.Update16",
+      "kind": "support"
+    },
+    {
+      "name": "CrcUpdate16.digest_update_total",
+      "module": "Stage2Proofs.Update16",
+      "kind": "support"
+    },
+    {
+      "name": "CrcUpdate16Reflected.indexWord_bound",
+      "module": "Stage2Proofs.Update16Reflected",
+      "kind": "support"
+    },
+    {
+      "name": "CrcUpdate16Reflected.body_spec",
+      "module": "Stage2Proofs.Update16Reflected",
+      "kind": "support"
+    },
+    {
+      "name": "CrcUpdate16Reflected.loop_spec",
+      "module": "Stage2Proofs.Update16Reflected",
+      "kind": "support"
+    },
+    {
+      "name": "CrcUpdate16Reflected.update_table_total",
+      "module": "Stage2Proofs.Update16Reflected",
+      "kind": "support"
+    },
+    {
+      "name": "CrcUpdate16Reflected.digest_update_total",
+      "module": "Stage2Proofs.Update16Reflected",
+      "kind": "support"
+    },
+    {
+      "name": "CrcUpdate32.indexWord_bound",
+      "module": "Stage2Proofs.Update32",
+      "kind": "support"
+    },
+    {
+      "name": "CrcUpdate32.body_spec",
+      "module": "Stage2Proofs.Update32",
+      "kind": "support"
+    },
+    {
+      "name": "CrcUpdate32.loop_spec",
+      "module": "Stage2Proofs.Update32",
+      "kind": "support"
+    },
+    {
+      "name": "CrcUpdate32.update_table_total",
+      "module": "Stage2Proofs.Update32",
+      "kind": "support"
+    },
+    {
+      "name": "CrcUpdate32.digest_update_total",
+      "module": "Stage2Proofs.Update32",
+      "kind": "support"
+    },
+    {
+      "name": "CrcUpdate32Reflected.indexWord_bound",
+      "module": "Stage2Proofs.Update32Reflected",
+      "kind": "support"
+    },
+    {
+      "name": "CrcUpdate32Reflected.body_spec",
+      "module": "Stage2Proofs.Update32Reflected",
+      "kind": "support"
+    },
+    {
+      "name": "CrcUpdate32Reflected.loop_spec",
+      "module": "Stage2Proofs.Update32Reflected",
+      "kind": "support"
+    },
+    {
+      "name": "CrcUpdate32Reflected.update_table_total",
+      "module": "Stage2Proofs.Update32Reflected",
+      "kind": "support"
+    },
+    {
+      "name": "CrcUpdate32Reflected.digest_update_total",
+      "module": "Stage2Proofs.Update32Reflected",
+      "kind": "support"
+    },
+    {
+      "name": "CrcUpdate64.indexWord_bound",
+      "module": "Stage2Proofs.Update64",
+      "kind": "support"
+    },
+    {
+      "name": "CrcUpdate64.cast_index",
+      "module": "Stage2Proofs.Update64",
+      "kind": "support"
+    },
+    {
+      "name": "CrcUpdate64.body_spec",
+      "module": "Stage2Proofs.Update64",
+      "kind": "support"
+    },
+    {
+      "name": "CrcUpdate64.loop_spec",
+      "module": "Stage2Proofs.Update64",
+      "kind": "support"
+    },
+    {
+      "name": "CrcUpdate64.update_table_total",
+      "module": "Stage2Proofs.Update64",
+      "kind": "support"
+    },
+    {
+      "name": "CrcUpdate64.digest_update_total",
+      "module": "Stage2Proofs.Update64",
+      "kind": "support"
+    },
+    {
+      "name": "CrcUpdate64Reflected.indexWord_bound",
+      "module": "Stage2Proofs.Update64Reflected",
+      "kind": "support"
+    },
+    {
+      "name": "CrcUpdate64Reflected.cast_index",
+      "module": "Stage2Proofs.Update64Reflected",
+      "kind": "support"
+    },
+    {
+      "name": "CrcUpdate64Reflected.body_spec",
+      "module": "Stage2Proofs.Update64Reflected",
+      "kind": "support"
+    },
+    {
+      "name": "CrcUpdate64Reflected.loop_spec",
+      "module": "Stage2Proofs.Update64Reflected",
+      "kind": "support"
+    },
+    {
+      "name": "CrcUpdate64Reflected.update_table_total",
+      "module": "Stage2Proofs.Update64Reflected",
+      "kind": "support"
+    },
+    {
+      "name": "CrcUpdate64Reflected.digest_update_total",
+      "module": "Stage2Proofs.Update64Reflected",
+      "kind": "support"
+    },
+    {
+      "name": "CrcUpdate8.body_spec",
+      "module": "Stage2Proofs.Update8",
+      "kind": "support"
+    },
+    {
+      "name": "CrcUpdate8.loop_spec",
+      "module": "Stage2Proofs.Update8",
+      "kind": "support"
+    },
+    {
+      "name": "CrcUpdate8.update_table_total",
+      "module": "Stage2Proofs.Update8",
+      "kind": "support"
+    },
+    {
+      "name": "CrcUpdate8.digest_update_total",
+      "module": "Stage2Proofs.Update8",
+      "kind": "support"
+    },
+    {
+      "name": "CrcWidthEncoding.encode_xor",
+      "module": "Stage2Proofs.WidthEncoding",
+      "kind": "support"
+    },
+    {
+      "name": "CrcWidthEncoding.encode_msb",
+      "module": "Stage2Proofs.WidthEncoding",
+      "kind": "support"
+    },
+    {
+      "name": "CrcWidthEncoding.encode_shift",
+      "module": "Stage2Proofs.WidthEncoding",
+      "kind": "support"
+    },
+    {
+      "name": "CrcWidthEncoding.encode_inputStep",
+      "module": "Stage2Proofs.WidthEncoding",
+      "kind": "support"
+    },
+    {
+      "name": "CrcWidthEncoding.encode_fold_bits",
+      "module": "Stage2Proofs.WidthEncoding",
+      "kind": "support"
+    },
+    {
+      "name": "CrcWidthEncoding.encode_byteStep",
+      "module": "Stage2Proofs.WidthEncoding",
+      "kind": "support"
+    },
+    {
+      "name": "CrcWidthEncoding.encode_run",
+      "module": "Stage2Proofs.WidthEncoding",
+      "kind": "support"
+    },
+    {
+      "name": "CrcWidthEndpoints.reverse_shiftLeft",
+      "module": "Stage2Proofs.WidthEndpoints",
+      "kind": "support"
+    },
+    {
+      "name": "CrcWidthEndpoints.reverse_encode",
+      "module": "Stage2Proofs.WidthEndpoints",
+      "kind": "support"
+    },
+    {
+      "name": "CrcWidthEndpoints.encode_shiftRight",
+      "module": "Stage2Proofs.WidthEndpoints",
+      "kind": "support"
+    },
+    {
+      "name": "CrcWidthEndpoints.encode_low",
+      "module": "Stage2Proofs.WidthEndpoints",
+      "kind": "support"
+    },
+    {
+      "name": "CrcWidthEndpoints.rawInit_encoded",
+      "module": "Stage2Proofs.WidthEndpoints",
+      "kind": "support"
+    },
+    {
+      "name": "CrcWidthEndpoints.rawFinalize_encoded",
+      "module": "Stage2Proofs.WidthEndpoints",
+      "kind": "support"
+    },
+    {
+      "name": "CrcWidthEndpoints.encode_reflected_byteStep",
+      "module": "Stage2Proofs.WidthEndpoints",
+      "kind": "support"
+    },
+    {
+      "name": "CrcWidthEndpoints.encode_reflected_run",
+      "module": "Stage2Proofs.WidthEndpoints",
+      "kind": "support"
+    },
+    {
+      "name": "CrcWidthEndpoints.encode_run",
+      "module": "Stage2Proofs.WidthEndpoints",
+      "kind": "support"
+    },
+    {
+      "name": "CrcWidthEndpoints.init8_encoded",
+      "module": "Stage2Proofs.WidthEndpoints",
+      "kind": "support"
+    },
+    {
+      "name": "CrcWidthEndpoints.finalize8_encoded",
+      "module": "Stage2Proofs.WidthEndpoints",
+      "kind": "support"
+    },
+    {
+      "name": "CrcWidthEndpoints.init16_encoded",
+      "module": "Stage2Proofs.WidthEndpoints",
+      "kind": "support"
+    },
+    {
+      "name": "CrcWidthEndpoints.finalize16_encoded",
+      "module": "Stage2Proofs.WidthEndpoints",
+      "kind": "support"
+    },
+    {
+      "name": "CrcWidthEndpoints.init32_encoded",
+      "module": "Stage2Proofs.WidthEndpoints",
+      "kind": "support"
+    },
+    {
+      "name": "CrcWidthEndpoints.finalize32_encoded",
+      "module": "Stage2Proofs.WidthEndpoints",
+      "kind": "support"
+    },
+    {
+      "name": "CrcWidthEndpoints.init64_encoded",
+      "module": "Stage2Proofs.WidthEndpoints",
+      "kind": "support"
+    },
+    {
+      "name": "CrcWidthEndpoints.finalize64_encoded",
+      "module": "Stage2Proofs.WidthEndpoints",
+      "kind": "support"
+    },
+    {
+      "name": "CrcWidthEndpoints.init128_encoded",
+      "module": "Stage2Proofs.WidthEndpoints",
+      "kind": "support"
+    },
+    {
+      "name": "CrcWidthEndpoints.finalize128_encoded",
+      "module": "Stage2Proofs.WidthEndpoints",
+      "kind": "support"
+    },
+    {
+      "name": "CrcWidthEndpoints.init8_eq_encoded",
+      "module": "Stage2Proofs.WidthEndpoints",
+      "kind": "support"
+    },
+    {
+      "name": "CrcWidthEndpoints.init16_eq_encoded",
+      "module": "Stage2Proofs.WidthEndpoints",
+      "kind": "support"
+    },
+    {
+      "name": "CrcWidthEndpoints.init32_eq_encoded",
+      "module": "Stage2Proofs.WidthEndpoints",
+      "kind": "support"
+    },
+    {
+      "name": "CrcWidthEndpoints.init64_eq_encoded",
+      "module": "Stage2Proofs.WidthEndpoints",
+      "kind": "support"
+    },
+    {
+      "name": "CrcWidthEndpoints.init128_eq_encoded",
+      "module": "Stage2Proofs.WidthEndpoints",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPublicWordInstances.digest8_lane0_spec",
+      "module": "Stage2Proofs.WordProtocolInstances",
+      "kind": "public-contract",
+      "precondition": "1 <= current algorithm.width <= 8; L in {0,1,16}; arbitrary raw word(s), flags and table; public word-level endpoint contract"
+    },
+    {
+      "name": "CrcPublicWordInstances.digest8_lane1_spec",
+      "module": "Stage2Proofs.WordProtocolInstances",
+      "kind": "public-contract",
+      "precondition": "1 <= current algorithm.width <= 8; L in {0,1,16}; arbitrary raw word(s), flags and table; public word-level endpoint contract"
+    },
+    {
+      "name": "CrcPublicWordInstances.digest8_lane16_spec",
+      "module": "Stage2Proofs.WordProtocolInstances",
+      "kind": "public-contract",
+      "precondition": "1 <= current algorithm.width <= 8; L in {0,1,16}; arbitrary raw word(s), flags and table; public word-level endpoint contract"
+    },
+    {
+      "name": "CrcPublicWordInstances.digest_with_initial8_lane0_spec",
+      "module": "Stage2Proofs.WordProtocolInstances",
+      "kind": "public-contract",
+      "precondition": "1 <= current algorithm.width <= 8; L in {0,1,16}; arbitrary raw word(s), flags and table; public word-level endpoint contract"
+    },
+    {
+      "name": "CrcPublicWordInstances.digest_with_initial8_lane1_spec",
+      "module": "Stage2Proofs.WordProtocolInstances",
+      "kind": "public-contract",
+      "precondition": "1 <= current algorithm.width <= 8; L in {0,1,16}; arbitrary raw word(s), flags and table; public word-level endpoint contract"
+    },
+    {
+      "name": "CrcPublicWordInstances.digest_with_initial8_lane16_spec",
+      "module": "Stage2Proofs.WordProtocolInstances",
+      "kind": "public-contract",
+      "precondition": "1 <= current algorithm.width <= 8; L in {0,1,16}; arbitrary raw word(s), flags and table; public word-level endpoint contract"
+    },
+    {
+      "name": "CrcPublicWordInstances.digest_finalize8_lane0_spec",
+      "module": "Stage2Proofs.WordProtocolInstances",
+      "kind": "public-contract",
+      "precondition": "1 <= current algorithm.width <= 8; L in {0,1,16}; arbitrary raw word(s), flags and table; public word-level endpoint contract"
+    },
+    {
+      "name": "CrcPublicWordInstances.digest_finalize8_lane1_spec",
+      "module": "Stage2Proofs.WordProtocolInstances",
+      "kind": "public-contract",
+      "precondition": "1 <= current algorithm.width <= 8; L in {0,1,16}; arbitrary raw word(s), flags and table; public word-level endpoint contract"
+    },
+    {
+      "name": "CrcPublicWordInstances.digest_finalize8_lane16_spec",
+      "module": "Stage2Proofs.WordProtocolInstances",
+      "kind": "public-contract",
+      "precondition": "1 <= current algorithm.width <= 8; L in {0,1,16}; arbitrary raw word(s), flags and table; public word-level endpoint contract"
+    },
+    {
+      "name": "CrcPublicWordInstances.digest16_lane0_spec",
+      "module": "Stage2Proofs.WordProtocolInstances",
+      "kind": "public-contract",
+      "precondition": "1 <= current algorithm.width <= 16; L in {0,1,16}; arbitrary raw word(s), flags and table; public word-level endpoint contract"
+    },
+    {
+      "name": "CrcPublicWordInstances.digest16_lane1_spec",
+      "module": "Stage2Proofs.WordProtocolInstances",
+      "kind": "public-contract",
+      "precondition": "1 <= current algorithm.width <= 16; L in {0,1,16}; arbitrary raw word(s), flags and table; public word-level endpoint contract"
+    },
+    {
+      "name": "CrcPublicWordInstances.digest16_lane16_spec",
+      "module": "Stage2Proofs.WordProtocolInstances",
+      "kind": "public-contract",
+      "precondition": "1 <= current algorithm.width <= 16; L in {0,1,16}; arbitrary raw word(s), flags and table; public word-level endpoint contract"
+    },
+    {
+      "name": "CrcPublicWordInstances.digest_with_initial16_lane0_spec",
+      "module": "Stage2Proofs.WordProtocolInstances",
+      "kind": "public-contract",
+      "precondition": "1 <= current algorithm.width <= 16; L in {0,1,16}; arbitrary raw word(s), flags and table; public word-level endpoint contract"
+    },
+    {
+      "name": "CrcPublicWordInstances.digest_with_initial16_lane1_spec",
+      "module": "Stage2Proofs.WordProtocolInstances",
+      "kind": "public-contract",
+      "precondition": "1 <= current algorithm.width <= 16; L in {0,1,16}; arbitrary raw word(s), flags and table; public word-level endpoint contract"
+    },
+    {
+      "name": "CrcPublicWordInstances.digest_with_initial16_lane16_spec",
+      "module": "Stage2Proofs.WordProtocolInstances",
+      "kind": "public-contract",
+      "precondition": "1 <= current algorithm.width <= 16; L in {0,1,16}; arbitrary raw word(s), flags and table; public word-level endpoint contract"
+    },
+    {
+      "name": "CrcPublicWordInstances.digest_finalize16_lane0_spec",
+      "module": "Stage2Proofs.WordProtocolInstances",
+      "kind": "public-contract",
+      "precondition": "1 <= current algorithm.width <= 16; L in {0,1,16}; arbitrary raw word(s), flags and table; public word-level endpoint contract"
+    },
+    {
+      "name": "CrcPublicWordInstances.digest_finalize16_lane1_spec",
+      "module": "Stage2Proofs.WordProtocolInstances",
+      "kind": "public-contract",
+      "precondition": "1 <= current algorithm.width <= 16; L in {0,1,16}; arbitrary raw word(s), flags and table; public word-level endpoint contract"
+    },
+    {
+      "name": "CrcPublicWordInstances.digest_finalize16_lane16_spec",
+      "module": "Stage2Proofs.WordProtocolInstances",
+      "kind": "public-contract",
+      "precondition": "1 <= current algorithm.width <= 16; L in {0,1,16}; arbitrary raw word(s), flags and table; public word-level endpoint contract"
+    },
+    {
+      "name": "CrcPublicWordInstances.digest32_lane0_spec",
+      "module": "Stage2Proofs.WordProtocolInstances",
+      "kind": "public-contract",
+      "precondition": "1 <= current algorithm.width <= 32; L in {0,1,16}; arbitrary raw word(s), flags and table; public word-level endpoint contract"
+    },
+    {
+      "name": "CrcPublicWordInstances.digest32_lane1_spec",
+      "module": "Stage2Proofs.WordProtocolInstances",
+      "kind": "public-contract",
+      "precondition": "1 <= current algorithm.width <= 32; L in {0,1,16}; arbitrary raw word(s), flags and table; public word-level endpoint contract"
+    },
+    {
+      "name": "CrcPublicWordInstances.digest32_lane16_spec",
+      "module": "Stage2Proofs.WordProtocolInstances",
+      "kind": "public-contract",
+      "precondition": "1 <= current algorithm.width <= 32; L in {0,1,16}; arbitrary raw word(s), flags and table; public word-level endpoint contract"
+    },
+    {
+      "name": "CrcPublicWordInstances.digest_with_initial32_lane0_spec",
+      "module": "Stage2Proofs.WordProtocolInstances",
+      "kind": "public-contract",
+      "precondition": "1 <= current algorithm.width <= 32; L in {0,1,16}; arbitrary raw word(s), flags and table; public word-level endpoint contract"
+    },
+    {
+      "name": "CrcPublicWordInstances.digest_with_initial32_lane1_spec",
+      "module": "Stage2Proofs.WordProtocolInstances",
+      "kind": "public-contract",
+      "precondition": "1 <= current algorithm.width <= 32; L in {0,1,16}; arbitrary raw word(s), flags and table; public word-level endpoint contract"
+    },
+    {
+      "name": "CrcPublicWordInstances.digest_with_initial32_lane16_spec",
+      "module": "Stage2Proofs.WordProtocolInstances",
+      "kind": "public-contract",
+      "precondition": "1 <= current algorithm.width <= 32; L in {0,1,16}; arbitrary raw word(s), flags and table; public word-level endpoint contract"
+    },
+    {
+      "name": "CrcPublicWordInstances.digest_finalize32_lane0_spec",
+      "module": "Stage2Proofs.WordProtocolInstances",
+      "kind": "public-contract",
+      "precondition": "1 <= current algorithm.width <= 32; L in {0,1,16}; arbitrary raw word(s), flags and table; public word-level endpoint contract"
+    },
+    {
+      "name": "CrcPublicWordInstances.digest_finalize32_lane1_spec",
+      "module": "Stage2Proofs.WordProtocolInstances",
+      "kind": "public-contract",
+      "precondition": "1 <= current algorithm.width <= 32; L in {0,1,16}; arbitrary raw word(s), flags and table; public word-level endpoint contract"
+    },
+    {
+      "name": "CrcPublicWordInstances.digest_finalize32_lane16_spec",
+      "module": "Stage2Proofs.WordProtocolInstances",
+      "kind": "public-contract",
+      "precondition": "1 <= current algorithm.width <= 32; L in {0,1,16}; arbitrary raw word(s), flags and table; public word-level endpoint contract"
+    },
+    {
+      "name": "CrcPublicWordInstances.digest64_lane0_spec",
+      "module": "Stage2Proofs.WordProtocolInstances",
+      "kind": "public-contract",
+      "precondition": "1 <= current algorithm.width <= 64; L in {0,1,16}; arbitrary raw word(s), flags and table; public word-level endpoint contract"
+    },
+    {
+      "name": "CrcPublicWordInstances.digest64_lane1_spec",
+      "module": "Stage2Proofs.WordProtocolInstances",
+      "kind": "public-contract",
+      "precondition": "1 <= current algorithm.width <= 64; L in {0,1,16}; arbitrary raw word(s), flags and table; public word-level endpoint contract"
+    },
+    {
+      "name": "CrcPublicWordInstances.digest64_lane16_spec",
+      "module": "Stage2Proofs.WordProtocolInstances",
+      "kind": "public-contract",
+      "precondition": "1 <= current algorithm.width <= 64; L in {0,1,16}; arbitrary raw word(s), flags and table; public word-level endpoint contract"
+    },
+    {
+      "name": "CrcPublicWordInstances.digest_with_initial64_lane0_spec",
+      "module": "Stage2Proofs.WordProtocolInstances",
+      "kind": "public-contract",
+      "precondition": "1 <= current algorithm.width <= 64; L in {0,1,16}; arbitrary raw word(s), flags and table; public word-level endpoint contract"
+    },
+    {
+      "name": "CrcPublicWordInstances.digest_with_initial64_lane1_spec",
+      "module": "Stage2Proofs.WordProtocolInstances",
+      "kind": "public-contract",
+      "precondition": "1 <= current algorithm.width <= 64; L in {0,1,16}; arbitrary raw word(s), flags and table; public word-level endpoint contract"
+    },
+    {
+      "name": "CrcPublicWordInstances.digest_with_initial64_lane16_spec",
+      "module": "Stage2Proofs.WordProtocolInstances",
+      "kind": "public-contract",
+      "precondition": "1 <= current algorithm.width <= 64; L in {0,1,16}; arbitrary raw word(s), flags and table; public word-level endpoint contract"
+    },
+    {
+      "name": "CrcPublicWordInstances.digest_finalize64_lane0_spec",
+      "module": "Stage2Proofs.WordProtocolInstances",
+      "kind": "public-contract",
+      "precondition": "1 <= current algorithm.width <= 64; L in {0,1,16}; arbitrary raw word(s), flags and table; public word-level endpoint contract"
+    },
+    {
+      "name": "CrcPublicWordInstances.digest_finalize64_lane1_spec",
+      "module": "Stage2Proofs.WordProtocolInstances",
+      "kind": "public-contract",
+      "precondition": "1 <= current algorithm.width <= 64; L in {0,1,16}; arbitrary raw word(s), flags and table; public word-level endpoint contract"
+    },
+    {
+      "name": "CrcPublicWordInstances.digest_finalize64_lane16_spec",
+      "module": "Stage2Proofs.WordProtocolInstances",
+      "kind": "public-contract",
+      "precondition": "1 <= current algorithm.width <= 64; L in {0,1,16}; arbitrary raw word(s), flags and table; public word-level endpoint contract"
+    },
+    {
+      "name": "CrcPublicWordInstances.digest128_lane0_spec",
+      "module": "Stage2Proofs.WordProtocolInstances",
+      "kind": "public-contract",
+      "precondition": "1 <= current algorithm.width <= 128; L in {0,1,16}; arbitrary raw word(s), flags and table; public word-level endpoint contract"
+    },
+    {
+      "name": "CrcPublicWordInstances.digest128_lane1_spec",
+      "module": "Stage2Proofs.WordProtocolInstances",
+      "kind": "public-contract",
+      "precondition": "1 <= current algorithm.width <= 128; L in {0,1,16}; arbitrary raw word(s), flags and table; public word-level endpoint contract"
+    },
+    {
+      "name": "CrcPublicWordInstances.digest128_lane16_spec",
+      "module": "Stage2Proofs.WordProtocolInstances",
+      "kind": "public-contract",
+      "precondition": "1 <= current algorithm.width <= 128; L in {0,1,16}; arbitrary raw word(s), flags and table; public word-level endpoint contract"
+    },
+    {
+      "name": "CrcPublicWordInstances.digest_with_initial128_lane0_spec",
+      "module": "Stage2Proofs.WordProtocolInstances",
+      "kind": "public-contract",
+      "precondition": "1 <= current algorithm.width <= 128; L in {0,1,16}; arbitrary raw word(s), flags and table; public word-level endpoint contract"
+    },
+    {
+      "name": "CrcPublicWordInstances.digest_with_initial128_lane1_spec",
+      "module": "Stage2Proofs.WordProtocolInstances",
+      "kind": "public-contract",
+      "precondition": "1 <= current algorithm.width <= 128; L in {0,1,16}; arbitrary raw word(s), flags and table; public word-level endpoint contract"
+    },
+    {
+      "name": "CrcPublicWordInstances.digest_with_initial128_lane16_spec",
+      "module": "Stage2Proofs.WordProtocolInstances",
+      "kind": "public-contract",
+      "precondition": "1 <= current algorithm.width <= 128; L in {0,1,16}; arbitrary raw word(s), flags and table; public word-level endpoint contract"
+    },
+    {
+      "name": "CrcPublicWordInstances.digest_finalize128_lane0_spec",
+      "module": "Stage2Proofs.WordProtocolInstances",
+      "kind": "public-contract",
+      "precondition": "1 <= current algorithm.width <= 128; L in {0,1,16}; arbitrary raw word(s), flags and table; public word-level endpoint contract"
+    },
+    {
+      "name": "CrcPublicWordInstances.digest_finalize128_lane1_spec",
+      "module": "Stage2Proofs.WordProtocolInstances",
+      "kind": "public-contract",
+      "precondition": "1 <= current algorithm.width <= 128; L in {0,1,16}; arbitrary raw word(s), flags and table; public word-level endpoint contract"
+    },
+    {
+      "name": "CrcPublicWordInstances.digest_finalize128_lane16_spec",
+      "module": "Stage2Proofs.WordProtocolInstances",
+      "kind": "public-contract",
+      "precondition": "1 <= current algorithm.width <= 128; L in {0,1,16}; arbitrary raw word(s), flags and table; public word-level endpoint contract"
+    },
+    {
+      "name": "CrcPublicWords.init8_eq",
+      "module": "Stage2Proofs.WordProtocols",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPublicWords.finalize8_eq",
+      "module": "Stage2Proofs.WordProtocols",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPublicWords.digest_with_initial8_spec",
+      "module": "Stage2Proofs.WordProtocols",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPublicWords.digest8_spec",
+      "module": "Stage2Proofs.WordProtocols",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPublicWords.digest_finalize8_spec",
+      "module": "Stage2Proofs.WordProtocols",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPublicWords.init16_eq",
+      "module": "Stage2Proofs.WordProtocols",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPublicWords.finalize16_eq",
+      "module": "Stage2Proofs.WordProtocols",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPublicWords.digest_with_initial16_spec",
+      "module": "Stage2Proofs.WordProtocols",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPublicWords.digest16_spec",
+      "module": "Stage2Proofs.WordProtocols",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPublicWords.digest_finalize16_spec",
+      "module": "Stage2Proofs.WordProtocols",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPublicWords.init32_eq",
+      "module": "Stage2Proofs.WordProtocols",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPublicWords.finalize32_eq",
+      "module": "Stage2Proofs.WordProtocols",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPublicWords.digest_with_initial32_spec",
+      "module": "Stage2Proofs.WordProtocols",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPublicWords.digest32_spec",
+      "module": "Stage2Proofs.WordProtocols",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPublicWords.digest_finalize32_spec",
+      "module": "Stage2Proofs.WordProtocols",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPublicWords.init64_eq",
+      "module": "Stage2Proofs.WordProtocols",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPublicWords.finalize64_eq",
+      "module": "Stage2Proofs.WordProtocols",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPublicWords.digest_with_initial64_spec",
+      "module": "Stage2Proofs.WordProtocols",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPublicWords.digest64_spec",
+      "module": "Stage2Proofs.WordProtocols",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPublicWords.digest_finalize64_spec",
+      "module": "Stage2Proofs.WordProtocols",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPublicWords.init128_eq",
+      "module": "Stage2Proofs.WordProtocols",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPublicWords.finalize128_eq",
+      "module": "Stage2Proofs.WordProtocols",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPublicWords.digest_with_initial128_spec",
+      "module": "Stage2Proofs.WordProtocols",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPublicWords.digest128_spec",
+      "module": "Stage2Proofs.WordProtocols",
+      "kind": "support"
+    },
+    {
+      "name": "CrcPublicWords.digest_finalize128_spec",
+      "module": "Stage2Proofs.WordProtocols",
+      "kind": "support"
+    }
+  ],
+  "recorder_mappings": [
+    {
+      "api": "Crc<u8, Table<0>>::digest",
+      "theorem": "CrcPublicWordInstances.digest8_lane0_spec"
+    },
+    {
+      "api": "Crc<u8, Table<0>>::digest_with_initial",
+      "theorem": "CrcPublicWordInstances.digest_with_initial8_lane0_spec"
+    },
+    {
+      "api": "Digest<u8, Table<0>>::finalize",
+      "theorem": "CrcPublicWordInstances.digest_finalize8_lane0_spec"
+    },
+    {
+      "api": "Crc<u8, Table<1>>::digest",
+      "theorem": "CrcPublicWordInstances.digest8_lane1_spec"
+    },
+    {
+      "api": "Crc<u8, Table<1>>::digest_with_initial",
+      "theorem": "CrcPublicWordInstances.digest_with_initial8_lane1_spec"
+    },
+    {
+      "api": "Digest<u8, Table<1>>::finalize",
+      "theorem": "CrcPublicWordInstances.digest_finalize8_lane1_spec"
+    },
+    {
+      "api": "Crc<u8, Table<16>>::digest",
+      "theorem": "CrcPublicWordInstances.digest8_lane16_spec"
+    },
+    {
+      "api": "Crc<u8, Table<16>>::digest_with_initial",
+      "theorem": "CrcPublicWordInstances.digest_with_initial8_lane16_spec"
+    },
+    {
+      "api": "Digest<u8, Table<16>>::finalize",
+      "theorem": "CrcPublicWordInstances.digest_finalize8_lane16_spec"
+    },
+    {
+      "api": "Crc<u8, Table<0>>::checksum",
+      "theorem": "CrcPartialNoTableConstructors.checksum8"
+    },
+    {
+      "api": "Digest<u8, Table<0>>::update",
+      "theorem": "CrcPartial8.digest_update_notable"
+    },
+    {
+      "api": "Crc<u8, Table<1>>::checksum",
+      "theorem": "CrcPartial8.checksum_table1"
+    },
+    {
+      "api": "Digest<u8, Table<1>>::update",
+      "theorem": "CrcPartial8.digest_update_table1"
+    },
+    {
+      "api": "Crc<u8, Table<1>>::new",
+      "theorem": "CrcPartialConstructor8.new_table1"
+    },
+    {
+      "api": "Crc<u8, Table<0>>::new",
+      "theorem": "CrcPartialNoTableConstructors.new_total8"
+    },
+    {
+      "api": "Crc<u16, Table<0>>::digest",
+      "theorem": "CrcPublicWordInstances.digest16_lane0_spec"
+    },
+    {
+      "api": "Crc<u16, Table<0>>::digest_with_initial",
+      "theorem": "CrcPublicWordInstances.digest_with_initial16_lane0_spec"
+    },
+    {
+      "api": "Digest<u16, Table<0>>::finalize",
+      "theorem": "CrcPublicWordInstances.digest_finalize16_lane0_spec"
+    },
+    {
+      "api": "Crc<u16, Table<1>>::digest",
+      "theorem": "CrcPublicWordInstances.digest16_lane1_spec"
+    },
+    {
+      "api": "Crc<u16, Table<1>>::digest_with_initial",
+      "theorem": "CrcPublicWordInstances.digest_with_initial16_lane1_spec"
+    },
+    {
+      "api": "Digest<u16, Table<1>>::finalize",
+      "theorem": "CrcPublicWordInstances.digest_finalize16_lane1_spec"
+    },
+    {
+      "api": "Crc<u16, Table<16>>::digest",
+      "theorem": "CrcPublicWordInstances.digest16_lane16_spec"
+    },
+    {
+      "api": "Crc<u16, Table<16>>::digest_with_initial",
+      "theorem": "CrcPublicWordInstances.digest_with_initial16_lane16_spec"
+    },
+    {
+      "api": "Digest<u16, Table<16>>::finalize",
+      "theorem": "CrcPublicWordInstances.digest_finalize16_lane16_spec"
+    },
+    {
+      "api": "Crc<u16, Table<0>>::checksum",
+      "theorem": "CrcPartialNoTableConstructors.checksum16"
+    },
+    {
+      "api": "Digest<u16, Table<0>>::update",
+      "theorem": "CrcPartial16.digest_update_notable"
+    },
+    {
+      "api": "Crc<u16, Table<1>>::checksum",
+      "theorem": "CrcPartial16.checksum_table1"
+    },
+    {
+      "api": "Digest<u16, Table<1>>::update",
+      "theorem": "CrcPartial16.digest_update_table1"
+    },
+    {
+      "api": "Crc<u16, Table<1>>::new",
+      "theorem": "CrcPartialConstructor16.new_table1"
+    },
+    {
+      "api": "Crc<u16, Table<0>>::new",
+      "theorem": "CrcPartialNoTableConstructors.new_total16"
+    },
+    {
+      "api": "Crc<u32, Table<0>>::digest",
+      "theorem": "CrcPublicWordInstances.digest32_lane0_spec"
+    },
+    {
+      "api": "Crc<u32, Table<0>>::digest_with_initial",
+      "theorem": "CrcPublicWordInstances.digest_with_initial32_lane0_spec"
+    },
+    {
+      "api": "Digest<u32, Table<0>>::finalize",
+      "theorem": "CrcPublicWordInstances.digest_finalize32_lane0_spec"
+    },
+    {
+      "api": "Crc<u32, Table<1>>::digest",
+      "theorem": "CrcPublicWordInstances.digest32_lane1_spec"
+    },
+    {
+      "api": "Crc<u32, Table<1>>::digest_with_initial",
+      "theorem": "CrcPublicWordInstances.digest_with_initial32_lane1_spec"
+    },
+    {
+      "api": "Digest<u32, Table<1>>::finalize",
+      "theorem": "CrcPublicWordInstances.digest_finalize32_lane1_spec"
+    },
+    {
+      "api": "Crc<u32, Table<16>>::digest",
+      "theorem": "CrcPublicWordInstances.digest32_lane16_spec"
+    },
+    {
+      "api": "Crc<u32, Table<16>>::digest_with_initial",
+      "theorem": "CrcPublicWordInstances.digest_with_initial32_lane16_spec"
+    },
+    {
+      "api": "Digest<u32, Table<16>>::finalize",
+      "theorem": "CrcPublicWordInstances.digest_finalize32_lane16_spec"
+    },
+    {
+      "api": "Crc<u32, Table<0>>::checksum",
+      "theorem": "CrcPartialNoTableConstructors.checksum32"
+    },
+    {
+      "api": "Digest<u32, Table<0>>::update",
+      "theorem": "CrcPartial32.digest_update_notable"
+    },
+    {
+      "api": "Crc<u32, Table<1>>::checksum",
+      "theorem": "CrcPartial32.checksum_table1"
+    },
+    {
+      "api": "Digest<u32, Table<1>>::update",
+      "theorem": "CrcPartial32.digest_update_table1"
+    },
+    {
+      "api": "Crc<u32, Table<1>>::new",
+      "theorem": "CrcPartialConstructor32.new_table1"
+    },
+    {
+      "api": "Crc<u32, Table<0>>::new",
+      "theorem": "CrcPartialNoTableConstructors.new_total32"
+    },
+    {
+      "api": "Crc<u64, Table<0>>::digest",
+      "theorem": "CrcPublicWordInstances.digest64_lane0_spec"
+    },
+    {
+      "api": "Crc<u64, Table<0>>::digest_with_initial",
+      "theorem": "CrcPublicWordInstances.digest_with_initial64_lane0_spec"
+    },
+    {
+      "api": "Digest<u64, Table<0>>::finalize",
+      "theorem": "CrcPublicWordInstances.digest_finalize64_lane0_spec"
+    },
+    {
+      "api": "Crc<u64, Table<1>>::digest",
+      "theorem": "CrcPublicWordInstances.digest64_lane1_spec"
+    },
+    {
+      "api": "Crc<u64, Table<1>>::digest_with_initial",
+      "theorem": "CrcPublicWordInstances.digest_with_initial64_lane1_spec"
+    },
+    {
+      "api": "Digest<u64, Table<1>>::finalize",
+      "theorem": "CrcPublicWordInstances.digest_finalize64_lane1_spec"
+    },
+    {
+      "api": "Crc<u64, Table<16>>::digest",
+      "theorem": "CrcPublicWordInstances.digest64_lane16_spec"
+    },
+    {
+      "api": "Crc<u64, Table<16>>::digest_with_initial",
+      "theorem": "CrcPublicWordInstances.digest_with_initial64_lane16_spec"
+    },
+    {
+      "api": "Digest<u64, Table<16>>::finalize",
+      "theorem": "CrcPublicWordInstances.digest_finalize64_lane16_spec"
+    },
+    {
+      "api": "Crc<u64, Table<0>>::checksum",
+      "theorem": "CrcPartialNoTableConstructors.checksum64"
+    },
+    {
+      "api": "Digest<u64, Table<0>>::update",
+      "theorem": "CrcPartial64.digest_update_notable"
+    },
+    {
+      "api": "Crc<u64, Table<1>>::checksum",
+      "theorem": "CrcPartial64.checksum_table1"
+    },
+    {
+      "api": "Digest<u64, Table<1>>::update",
+      "theorem": "CrcPartial64.digest_update_table1"
+    },
+    {
+      "api": "Crc<u64, Table<1>>::new",
+      "theorem": "CrcPartialConstructor64.new_table1"
+    },
+    {
+      "api": "Crc<u128, Table<0>>::digest",
+      "theorem": "CrcPublicWordInstances.digest128_lane0_spec"
+    },
+    {
+      "api": "Crc<u128, Table<0>>::digest_with_initial",
+      "theorem": "CrcPublicWordInstances.digest_with_initial128_lane0_spec"
+    },
+    {
+      "api": "Digest<u128, Table<0>>::finalize",
+      "theorem": "CrcPublicWordInstances.digest_finalize128_lane0_spec"
+    },
+    {
+      "api": "Crc<u128, Table<1>>::digest",
+      "theorem": "CrcPublicWordInstances.digest128_lane1_spec"
+    },
+    {
+      "api": "Crc<u128, Table<1>>::digest_with_initial",
+      "theorem": "CrcPublicWordInstances.digest_with_initial128_lane1_spec"
+    },
+    {
+      "api": "Digest<u128, Table<1>>::finalize",
+      "theorem": "CrcPublicWordInstances.digest_finalize128_lane1_spec"
+    },
+    {
+      "api": "Crc<u128, Table<16>>::digest",
+      "theorem": "CrcPublicWordInstances.digest128_lane16_spec"
+    },
+    {
+      "api": "Crc<u128, Table<16>>::digest_with_initial",
+      "theorem": "CrcPublicWordInstances.digest_with_initial128_lane16_spec"
+    },
+    {
+      "api": "Digest<u128, Table<16>>::finalize",
+      "theorem": "CrcPublicWordInstances.digest_finalize128_lane16_spec"
+    },
+    {
+      "api": "Crc<u128, Table<0>>::checksum",
+      "theorem": "CrcPartialNoTableConstructors.checksum128"
+    },
+    {
+      "api": "Digest<u128, Table<0>>::update",
+      "theorem": "CrcPartial128.digest_update_notable"
+    },
+    {
+      "api": "Crc<u128, Table<1>>::checksum",
+      "theorem": "CrcPartial128.checksum_table1"
+    },
+    {
+      "api": "Digest<u128, Table<1>>::update",
+      "theorem": "CrcPartial128.digest_update_table1"
+    },
+    {
+      "api": "Crc<u128, Table<1>>::new",
+      "theorem": "CrcPartialConstructor128.new_table1"
+    },
+    {
+      "api": "Crc<u64, Table<0>>::new",
+      "theorem": "CrcPartialNoTableConstructors.new_total64"
+    },
+    {
+      "api": "Crc<u128, Table<0>>::new",
+      "theorem": "CrcPartialNoTableConstructors.new_total128"
+    }
+  ],
+  "scope": "actual canonical checksum/update under explicit valid-domain/state invariants; separate public word-level endpoints, full-width constructors and supporting lemmas; optimized 16-lane message computation excluded"
+}

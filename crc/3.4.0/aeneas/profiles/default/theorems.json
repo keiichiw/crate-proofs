@@ -1,0 +1,427 @@
+{
+  "checked": [
+    {
+      "name": "crc.step8_polynomial",
+      "module": "CrcProofs.EightPolynomial",
+      "kind": "support"
+    },
+    {
+      "name": "crc.run8_polynomial",
+      "module": "CrcProofs.EightPolynomial",
+      "kind": "support"
+    },
+    {
+      "name": "crc.crc8_polynomial_spec",
+      "module": "CrcProofs.EightPolynomial",
+      "kind": "support"
+    },
+    {
+      "name": "CrcProofs.table_u8_l0_spec",
+      "module": "CrcProofs.Table",
+      "precondition": "true",
+      "kind": "public-contract"
+    },
+    {
+      "name": "CrcProofs.table_u8_l1_spec",
+      "module": "CrcProofs.Table",
+      "precondition": "true",
+      "kind": "public-contract"
+    },
+    {
+      "name": "CrcProofs.table_u8_l16_spec",
+      "module": "CrcProofs.Table",
+      "precondition": "true",
+      "kind": "public-contract"
+    },
+    {
+      "name": "CrcProofs.table_u16_l0_spec",
+      "module": "CrcProofs.Table",
+      "precondition": "true",
+      "kind": "public-contract"
+    },
+    {
+      "name": "CrcProofs.table_u16_l1_spec",
+      "module": "CrcProofs.Table",
+      "precondition": "true",
+      "kind": "public-contract"
+    },
+    {
+      "name": "CrcProofs.table_u16_l16_spec",
+      "module": "CrcProofs.Table",
+      "precondition": "true",
+      "kind": "public-contract"
+    },
+    {
+      "name": "CrcProofs.table_u32_l0_spec",
+      "module": "CrcProofs.Table",
+      "precondition": "true",
+      "kind": "public-contract"
+    },
+    {
+      "name": "CrcProofs.table_u32_l1_spec",
+      "module": "CrcProofs.Table",
+      "precondition": "true",
+      "kind": "public-contract"
+    },
+    {
+      "name": "CrcProofs.table_u32_l16_spec",
+      "module": "CrcProofs.Table",
+      "precondition": "true",
+      "kind": "public-contract"
+    },
+    {
+      "name": "CrcProofs.table_u64_l0_spec",
+      "module": "CrcProofs.Table",
+      "precondition": "true",
+      "kind": "public-contract"
+    },
+    {
+      "name": "CrcProofs.table_u64_l1_spec",
+      "module": "CrcProofs.Table",
+      "precondition": "true",
+      "kind": "public-contract"
+    },
+    {
+      "name": "CrcProofs.table_u64_l16_spec",
+      "module": "CrcProofs.Table",
+      "precondition": "true",
+      "kind": "public-contract"
+    },
+    {
+      "name": "CrcProofs.table_u128_l0_spec",
+      "module": "CrcProofs.Table",
+      "precondition": "true",
+      "kind": "public-contract"
+    },
+    {
+      "name": "CrcProofs.table_u128_l1_spec",
+      "module": "CrcProofs.Table",
+      "precondition": "true",
+      "kind": "public-contract"
+    },
+    {
+      "name": "CrcProofs.table_u128_l16_spec",
+      "module": "CrcProofs.Table",
+      "precondition": "true",
+      "kind": "public-contract"
+    },
+    {
+      "name": "CrcProofs.table_clone_l0_spec",
+      "module": "CrcProofs.Table",
+      "precondition": "true",
+      "kind": "public-contract"
+    },
+    {
+      "name": "CrcProofs.table_clone_l1_spec",
+      "module": "CrcProofs.Table",
+      "precondition": "true",
+      "kind": "public-contract"
+    },
+    {
+      "name": "CrcProofs.table_clone_l16_spec",
+      "module": "CrcProofs.Table",
+      "precondition": "true",
+      "kind": "public-contract"
+    },
+    {
+      "name": "CrcProofs.table_clone_from_l0_spec",
+      "module": "CrcProofs.TableCloneFrom",
+      "precondition": "true",
+      "kind": "public-contract"
+    },
+    {
+      "name": "CrcProofs.table_clone_from_l1_spec",
+      "module": "CrcProofs.TableCloneFrom",
+      "precondition": "true",
+      "kind": "public-contract"
+    },
+    {
+      "name": "CrcProofs.table_clone_from_l16_spec",
+      "module": "CrcProofs.TableCloneFrom",
+      "precondition": "true",
+      "kind": "public-contract"
+    },
+    {
+      "name": "crc.body8_ref_spec",
+      "module": "CrcProofs.Util",
+      "kind": "support"
+    },
+    {
+      "name": "crc.body8_msb_spec",
+      "module": "CrcProofs.Util",
+      "kind": "support"
+    },
+    {
+      "name": "crc.loop8_ref_spec",
+      "module": "CrcProofs.Util",
+      "kind": "support"
+    },
+    {
+      "name": "crc.loop8_msb_spec",
+      "module": "CrcProofs.Util",
+      "kind": "support"
+    },
+    {
+      "name": "crc.total_result",
+      "module": "CrcProofs.Util",
+      "kind": "support"
+    },
+    {
+      "name": "crc.crc8_total_spec",
+      "module": "CrcProofs.Util",
+      "kind": "support"
+    },
+    {
+      "name": "crc.body16_ref_spec",
+      "module": "CrcProofs.Wide",
+      "kind": "support"
+    },
+    {
+      "name": "crc.body16_msb_spec",
+      "module": "CrcProofs.Wide",
+      "kind": "support"
+    },
+    {
+      "name": "crc.loop16_ref_spec",
+      "module": "CrcProofs.Wide",
+      "kind": "support"
+    },
+    {
+      "name": "crc.loop16_msb_spec",
+      "module": "CrcProofs.Wide",
+      "kind": "support"
+    },
+    {
+      "name": "crc.crc16_spec",
+      "module": "CrcProofs.Wide",
+      "kind": "support"
+    },
+    {
+      "name": "crc.body32_ref_spec",
+      "module": "CrcProofs.Wide",
+      "kind": "support"
+    },
+    {
+      "name": "crc.body32_msb_spec",
+      "module": "CrcProofs.Wide",
+      "kind": "support"
+    },
+    {
+      "name": "crc.loop32_ref_spec",
+      "module": "CrcProofs.Wide",
+      "kind": "support"
+    },
+    {
+      "name": "crc.loop32_msb_spec",
+      "module": "CrcProofs.Wide",
+      "kind": "support"
+    },
+    {
+      "name": "crc.crc32_spec",
+      "module": "CrcProofs.Wide",
+      "kind": "support"
+    },
+    {
+      "name": "crc.body64_ref_spec",
+      "module": "CrcProofs.Wide",
+      "kind": "support"
+    },
+    {
+      "name": "crc.body64_msb_spec",
+      "module": "CrcProofs.Wide",
+      "kind": "support"
+    },
+    {
+      "name": "crc.loop64_ref_spec",
+      "module": "CrcProofs.Wide",
+      "kind": "support"
+    },
+    {
+      "name": "crc.loop64_msb_spec",
+      "module": "CrcProofs.Wide",
+      "kind": "support"
+    },
+    {
+      "name": "crc.crc64_spec",
+      "module": "CrcProofs.Wide",
+      "kind": "support"
+    },
+    {
+      "name": "crc.body128_ref_spec",
+      "module": "CrcProofs.Wide",
+      "kind": "support"
+    },
+    {
+      "name": "crc.body128_msb_spec",
+      "module": "CrcProofs.Wide",
+      "kind": "support"
+    },
+    {
+      "name": "crc.loop128_ref_spec",
+      "module": "CrcProofs.Wide",
+      "kind": "support"
+    },
+    {
+      "name": "crc.loop128_msb_spec",
+      "module": "CrcProofs.Wide",
+      "kind": "support"
+    },
+    {
+      "name": "crc.crc128_spec",
+      "module": "CrcProofs.Wide",
+      "kind": "support"
+    },
+    {
+      "name": "crc.lowBit_mul",
+      "module": "CrcProofs.Wide",
+      "kind": "support"
+    },
+    {
+      "name": "crc.step16_polynomial",
+      "module": "CrcProofs.Wide",
+      "kind": "support"
+    },
+    {
+      "name": "crc.step32_polynomial",
+      "module": "CrcProofs.Wide",
+      "kind": "support"
+    },
+    {
+      "name": "crc.step64_polynomial",
+      "module": "CrcProofs.Wide",
+      "kind": "support"
+    },
+    {
+      "name": "crc.step128_polynomial",
+      "module": "CrcProofs.Wide",
+      "kind": "support"
+    },
+    {
+      "name": "crc.run16_polynomial",
+      "module": "CrcProofs.Wide",
+      "kind": "support"
+    },
+    {
+      "name": "crc.crc16_polynomial_spec",
+      "module": "CrcProofs.Wide",
+      "kind": "support"
+    },
+    {
+      "name": "crc.run32_polynomial",
+      "module": "CrcProofs.Wide",
+      "kind": "support"
+    },
+    {
+      "name": "crc.crc32_polynomial_spec",
+      "module": "CrcProofs.Wide",
+      "kind": "support"
+    },
+    {
+      "name": "crc.run64_polynomial",
+      "module": "CrcProofs.Wide",
+      "kind": "support"
+    },
+    {
+      "name": "crc.crc64_polynomial_spec",
+      "module": "CrcProofs.Wide",
+      "kind": "support"
+    },
+    {
+      "name": "crc.run128_polynomial",
+      "module": "CrcProofs.Wide",
+      "kind": "support"
+    },
+    {
+      "name": "crc.crc128_polynomial_spec",
+      "module": "CrcProofs.Wide",
+      "kind": "support"
+    }
+  ],
+  "recorder_mappings": [
+    {
+      "api": "Crc<u8, Table<0>>::table",
+      "theorem": "CrcProofs.table_u8_l0_spec"
+    },
+    {
+      "api": "Crc<u8, Table<1>>::table",
+      "theorem": "CrcProofs.table_u8_l1_spec"
+    },
+    {
+      "api": "Crc<u8, Table<16>>::table",
+      "theorem": "CrcProofs.table_u8_l16_spec"
+    },
+    {
+      "api": "Crc<u16, Table<0>>::table",
+      "theorem": "CrcProofs.table_u16_l0_spec"
+    },
+    {
+      "api": "Crc<u16, Table<1>>::table",
+      "theorem": "CrcProofs.table_u16_l1_spec"
+    },
+    {
+      "api": "Crc<u16, Table<16>>::table",
+      "theorem": "CrcProofs.table_u16_l16_spec"
+    },
+    {
+      "api": "Crc<u32, Table<0>>::table",
+      "theorem": "CrcProofs.table_u32_l0_spec"
+    },
+    {
+      "api": "Crc<u32, Table<1>>::table",
+      "theorem": "CrcProofs.table_u32_l1_spec"
+    },
+    {
+      "api": "Crc<u32, Table<16>>::table",
+      "theorem": "CrcProofs.table_u32_l16_spec"
+    },
+    {
+      "api": "Crc<u64, Table<0>>::table",
+      "theorem": "CrcProofs.table_u64_l0_spec"
+    },
+    {
+      "api": "Crc<u64, Table<1>>::table",
+      "theorem": "CrcProofs.table_u64_l1_spec"
+    },
+    {
+      "api": "Crc<u64, Table<16>>::table",
+      "theorem": "CrcProofs.table_u64_l16_spec"
+    },
+    {
+      "api": "Crc<u128, Table<0>>::table",
+      "theorem": "CrcProofs.table_u128_l0_spec"
+    },
+    {
+      "api": "Crc<u128, Table<1>>::table",
+      "theorem": "CrcProofs.table_u128_l1_spec"
+    },
+    {
+      "api": "Crc<u128, Table<16>>::table",
+      "theorem": "CrcProofs.table_u128_l16_spec"
+    },
+    {
+      "api": "Table<0>::clone",
+      "theorem": "CrcProofs.table_clone_l0_spec"
+    },
+    {
+      "api": "Table<0>::clone_from",
+      "theorem": "CrcProofs.table_clone_from_l0_spec"
+    },
+    {
+      "api": "Table<1>::clone",
+      "theorem": "CrcProofs.table_clone_l1_spec"
+    },
+    {
+      "api": "Table<1>::clone_from",
+      "theorem": "CrcProofs.table_clone_from_l1_spec"
+    },
+    {
+      "api": "Table<16>::clone",
+      "theorem": "CrcProofs.table_clone_l16_spec"
+    },
+    {
+      "api": "Table<16>::clone_from",
+      "theorem": "CrcProofs.table_clone_from_l16_spec"
+    }
+  ],
+  "scope": "public exact projections/identities; separate private polynomial kernels, not complete canonical CRC"
+}

@@ -1,0 +1,475 @@
+[report]
+title = "crc 3.4.0: selected checksum and digest contracts"
+explanation = '''
+For the built-in `Table<0>` and `Table<1>` implementations at word widths 8, 16, 32, 64 and 128, the selected `checksum` bodies succeed and agree with a direct CRC register model on every representable byte slice, including empty input. The model feeds each byte in the input-reflection order, applies output reflection and XOR at the end, and appends no zero block. The selected `update` bodies succeed from any encoded canonical state, advance it by that model and retain the CRC object. Both reflection flags may vary independently.
+
+These statements require `1 <= width <=` the storage width and a polynomial within that width; checksum additionally requires bounded XOR output. For all `Table<0>` and for `Table<1>` u32, u64 and u128 checksum contracts, the initial value is interpreted by its low `width` bits. The `Table<1>` u8 and u16 checksum contracts instead require bounded initial values. `Table<1>` requires its current cached table to match the current width, polynomial and input-reflection flag. Update requires the incoming state to encode a canonical width-bit state. Exact per-instance premises appear with the mappings below. For all three built-in lanes and valid widths, `digest_with_initial` retains the CRC object and initializes from the low width bits of its input; `digest` uses the algorithm initial value. `finalize` succeeds for any raw digest word and applies the specified word-level reflection, shift and XOR operations. These endpoint contracts do not by themselves prove a canonical message computation. The selected `Table<0>` constructors succeed and retain the algorithm under their recorded width conditions; selected `Table<1>` constructors also establish table coherence under their recorded polynomial bounds. Actual two-chunk update equivalence is separately proved for full-width unreflected u8; no all-width chunking theorem is claimed.
+
+This profile adds 75 callable instances to the default profile's 21, for 96 of 171 supported built-in instances. These count parameter and lane specializations, not distinct API names; supporting lemmas are not additional API coverage.
+'''
+trusted_assumptions = '''
+The results depend on Rust-to-LLBC and Aeneas translation, primitive models, and the Lean kernel. Local bit-reversal definitions are assumed to match Rust's standard operations. The type-only normalization lifts the built-in table associated type to the exact array type; an independent structural checker compares function bodies and permits only the specified type-reference changes. A display-name change preserves indices and operations, and negative guards reject unsupported normalization shapes. File-name relocation is checked by inverse equality of the complete JSON tree. These checks support the transformations but are not semantic preservation or compiler-correctness proofs. The transitive audit permits only `propext`, `Classical.choice`, and `Quot.sound`.
+'''
+limitations = '''
+`Algorithm` fields are public, so invalid widths or out-of-range parameters are not ruled out by Rust types. `Crc.algorithm` can also be replaced after construction, leaving a `Table<1>` cache stale; construction alone does not establish coherence after such a change. `Table<0>` has no cached-table coherence requirement. The canonical `Table<16>` message computation, custom implementations, other lanes and re-exported dependency APIs are outside this coverage. The proofs do not validate catalogue `check` or `residue` values.
+
+The selected executable crate bodies come from the locked crates.io 3.4.0 archive. Extraction uses the described transformations and locally authored bit-reversal models; their correspondence to release execution is supported by structural checks and native observations, not a formal equivalence theorem.
+'''
+environment = '''
+The formal extraction selected the library with Cargo default features; the crate declares no feature flags. The current-input run passed on 2026-10-23 on `aarch64-apple-darwin`; Linux candidate files do not constitute a fresh Linux run. Native tests and independent oracle examples are finite observations, separate from the quantified Lean proofs. Charon and Aeneas are pinned and unpatched; the pinned `cargo-proofs` CLI has a preparation patch for source and tool preparation, provenance and audit handling. Fresh extraction is compared with maintained models and named roots are audited. Earlier full run records are local-only. See the [results](https://github.com/keiichiw/crate-proofs/blob/4e643e6b061aebf357d7c2195d1e16c4c574ddca/crc/3.4.0/aeneas/profiles/stage2/results.md), [theorem inventory](https://github.com/keiichiw/crate-proofs/blob/4e643e6b061aebf357d7c2195d1e16c4c574ddca/crc/3.4.0/aeneas/profiles/stage2/theorems.json), [specification](https://github.com/keiichiw/crate-proofs/blob/4e643e6b061aebf357d7c2195d1e16c4c574ddca/crc/3.4.0/aeneas/profiles/stage2/specification.md), [transformation boundary](https://github.com/keiichiw/crate-proofs/blob/4e643e6b061aebf357d7c2195d1e16c4c574ddca/crc/3.4.0/aeneas/profiles/stage2/trust-boundary.md), [source lock](https://github.com/keiichiw/crate-proofs/blob/4e643e6b061aebf357d7c2195d1e16c4c574ddca/crc/3.4.0/source.lock.json), and [CLI preparation patch](https://github.com/keiichiw/crate-proofs/blob/4e643e6b061aebf357d7c2195d1e16c4c574ddca/crc/3.4.0/aeneas/profiles/stage2/patches/cargo-proofs-preparation.patch). These records predate this editorial revision.
+'''
+
+[tool]
+name = "aeneas"
+version = "be86ab0f1989d04944292b345b24c435be3ad10a"
+lean_dir = ".work/selected-proofs"
+
+[[tool.proofs]]
+api = "Crc<u8, Table<0>>::digest"
+module = "Stage2Proofs.WordProtocolInstances"
+theorem = "CrcPublicWordInstances.digest8_lane0_spec"
+precondition = "1 <= current algorithm.width <= 8; L in {0,1,16}; arbitrary raw word(s), flags and table; public word-level endpoint contract"
+
+[[tool.proofs]]
+api = "Crc<u8, Table<0>>::digest_with_initial"
+module = "Stage2Proofs.WordProtocolInstances"
+theorem = "CrcPublicWordInstances.digest_with_initial8_lane0_spec"
+precondition = "1 <= current algorithm.width <= 8; L in {0,1,16}; arbitrary raw word(s), flags and table; public word-level endpoint contract"
+
+[[tool.proofs]]
+api = "Digest<u8, Table<0>>::finalize"
+module = "Stage2Proofs.WordProtocolInstances"
+theorem = "CrcPublicWordInstances.digest_finalize8_lane0_spec"
+precondition = "1 <= current algorithm.width <= 8; L in {0,1,16}; arbitrary raw word(s), flags and table; public word-level endpoint contract"
+
+[[tool.proofs]]
+api = "Crc<u8, Table<1>>::digest"
+module = "Stage2Proofs.WordProtocolInstances"
+theorem = "CrcPublicWordInstances.digest8_lane1_spec"
+precondition = "1 <= current algorithm.width <= 8; L in {0,1,16}; arbitrary raw word(s), flags and table; public word-level endpoint contract"
+
+[[tool.proofs]]
+api = "Crc<u8, Table<1>>::digest_with_initial"
+module = "Stage2Proofs.WordProtocolInstances"
+theorem = "CrcPublicWordInstances.digest_with_initial8_lane1_spec"
+precondition = "1 <= current algorithm.width <= 8; L in {0,1,16}; arbitrary raw word(s), flags and table; public word-level endpoint contract"
+
+[[tool.proofs]]
+api = "Digest<u8, Table<1>>::finalize"
+module = "Stage2Proofs.WordProtocolInstances"
+theorem = "CrcPublicWordInstances.digest_finalize8_lane1_spec"
+precondition = "1 <= current algorithm.width <= 8; L in {0,1,16}; arbitrary raw word(s), flags and table; public word-level endpoint contract"
+
+[[tool.proofs]]
+api = "Crc<u8, Table<16>>::digest"
+module = "Stage2Proofs.WordProtocolInstances"
+theorem = "CrcPublicWordInstances.digest8_lane16_spec"
+precondition = "1 <= current algorithm.width <= 8; L in {0,1,16}; arbitrary raw word(s), flags and table; public word-level endpoint contract"
+
+[[tool.proofs]]
+api = "Crc<u8, Table<16>>::digest_with_initial"
+module = "Stage2Proofs.WordProtocolInstances"
+theorem = "CrcPublicWordInstances.digest_with_initial8_lane16_spec"
+precondition = "1 <= current algorithm.width <= 8; L in {0,1,16}; arbitrary raw word(s), flags and table; public word-level endpoint contract"
+
+[[tool.proofs]]
+api = "Digest<u8, Table<16>>::finalize"
+module = "Stage2Proofs.WordProtocolInstances"
+theorem = "CrcPublicWordInstances.digest_finalize8_lane16_spec"
+precondition = "1 <= current algorithm.width <= 8; L in {0,1,16}; arbitrary raw word(s), flags and table; public word-level endpoint contract"
+
+[[tool.proofs]]
+api = "Crc<u8, Table<0>>::checksum"
+module = "Stage2Proofs.PartialNoTableConstructors"
+theorem = "CrcPartialNoTableConstructors.checksum8"
+precondition = "1 <= current algorithm.width = w <= 8; raw polynomial = zero-extended width-w poly; raw xorout = zero-extended width-w xorout; arbitrary raw init interpreted by low w bits; both flags arbitrary; any representable byte slice including empty"
+
+[[tool.proofs]]
+api = "Digest<u8, Table<0>>::update"
+module = "Stage2Proofs.Partial8"
+theorem = "CrcPartial8.digest_update_notable"
+precondition = "1 <= current algorithm.width = w <= 8; raw polynomial = zero-extended width-w poly; raw digest state = physical(8, refin, canonical width-w state); both flags arbitrary; any representable byte slice including empty"
+
+[[tool.proofs]]
+api = "Crc<u8, Table<1>>::checksum"
+module = "Stage2Proofs.Partial8"
+theorem = "CrcPartial8.checksum_table1"
+precondition = "1 <= current algorithm.width = w <= 8; raw polynomial = zero-extended width-w poly; raw xorout = zero-extended width-w xorout; raw init = zero-extended width-w initial; all 256 current table entries = encoded canonical byte transitions from zero; both flags arbitrary; any representable byte slice including empty"
+
+[[tool.proofs]]
+api = "Digest<u8, Table<1>>::update"
+module = "Stage2Proofs.Partial8"
+theorem = "CrcPartial8.digest_update_table1"
+precondition = "1 <= current algorithm.width = w <= 8; raw polynomial = zero-extended width-w poly; raw digest state = physical(8, refin, canonical width-w state); all 256 current table entries = encoded canonical byte transitions from zero; both flags arbitrary; any representable byte slice including empty"
+
+[[tool.proofs]]
+api = "Crc<u8, Table<1>>::new"
+module = "Stage2Proofs.PartialConstructor8"
+theorem = "CrcPartialConstructor8.new_table1"
+precondition = "1 <= algorithm.width = w <= 8; raw polynomial = zero-extended width-w poly; arbitrary init/xorout and both flags; constructor preserves algorithm and establishes current table coherence"
+
+[[tool.proofs]]
+api = "Crc<u8, Table<0>>::new"
+module = "Stage2Proofs.PartialNoTableConstructors"
+theorem = "CrcPartialNoTableConstructors.new_total8"
+precondition = "1 <= algorithm.width <= 8; arbitrary polynomial/init/xorout and both flags; resulting algorithm equals input"
+
+[[tool.proofs]]
+api = "Crc<u16, Table<0>>::digest"
+module = "Stage2Proofs.WordProtocolInstances"
+theorem = "CrcPublicWordInstances.digest16_lane0_spec"
+precondition = "1 <= current algorithm.width <= 16; L in {0,1,16}; arbitrary raw word(s), flags and table; public word-level endpoint contract"
+
+[[tool.proofs]]
+api = "Crc<u16, Table<0>>::digest_with_initial"
+module = "Stage2Proofs.WordProtocolInstances"
+theorem = "CrcPublicWordInstances.digest_with_initial16_lane0_spec"
+precondition = "1 <= current algorithm.width <= 16; L in {0,1,16}; arbitrary raw word(s), flags and table; public word-level endpoint contract"
+
+[[tool.proofs]]
+api = "Digest<u16, Table<0>>::finalize"
+module = "Stage2Proofs.WordProtocolInstances"
+theorem = "CrcPublicWordInstances.digest_finalize16_lane0_spec"
+precondition = "1 <= current algorithm.width <= 16; L in {0,1,16}; arbitrary raw word(s), flags and table; public word-level endpoint contract"
+
+[[tool.proofs]]
+api = "Crc<u16, Table<1>>::digest"
+module = "Stage2Proofs.WordProtocolInstances"
+theorem = "CrcPublicWordInstances.digest16_lane1_spec"
+precondition = "1 <= current algorithm.width <= 16; L in {0,1,16}; arbitrary raw word(s), flags and table; public word-level endpoint contract"
+
+[[tool.proofs]]
+api = "Crc<u16, Table<1>>::digest_with_initial"
+module = "Stage2Proofs.WordProtocolInstances"
+theorem = "CrcPublicWordInstances.digest_with_initial16_lane1_spec"
+precondition = "1 <= current algorithm.width <= 16; L in {0,1,16}; arbitrary raw word(s), flags and table; public word-level endpoint contract"
+
+[[tool.proofs]]
+api = "Digest<u16, Table<1>>::finalize"
+module = "Stage2Proofs.WordProtocolInstances"
+theorem = "CrcPublicWordInstances.digest_finalize16_lane1_spec"
+precondition = "1 <= current algorithm.width <= 16; L in {0,1,16}; arbitrary raw word(s), flags and table; public word-level endpoint contract"
+
+[[tool.proofs]]
+api = "Crc<u16, Table<16>>::digest"
+module = "Stage2Proofs.WordProtocolInstances"
+theorem = "CrcPublicWordInstances.digest16_lane16_spec"
+precondition = "1 <= current algorithm.width <= 16; L in {0,1,16}; arbitrary raw word(s), flags and table; public word-level endpoint contract"
+
+[[tool.proofs]]
+api = "Crc<u16, Table<16>>::digest_with_initial"
+module = "Stage2Proofs.WordProtocolInstances"
+theorem = "CrcPublicWordInstances.digest_with_initial16_lane16_spec"
+precondition = "1 <= current algorithm.width <= 16; L in {0,1,16}; arbitrary raw word(s), flags and table; public word-level endpoint contract"
+
+[[tool.proofs]]
+api = "Digest<u16, Table<16>>::finalize"
+module = "Stage2Proofs.WordProtocolInstances"
+theorem = "CrcPublicWordInstances.digest_finalize16_lane16_spec"
+precondition = "1 <= current algorithm.width <= 16; L in {0,1,16}; arbitrary raw word(s), flags and table; public word-level endpoint contract"
+
+[[tool.proofs]]
+api = "Crc<u16, Table<0>>::checksum"
+module = "Stage2Proofs.PartialNoTableConstructors"
+theorem = "CrcPartialNoTableConstructors.checksum16"
+precondition = "1 <= current algorithm.width = w <= 16; raw polynomial = zero-extended width-w poly; raw xorout = zero-extended width-w xorout; arbitrary raw init interpreted by low w bits; both flags arbitrary; any representable byte slice including empty"
+
+[[tool.proofs]]
+api = "Digest<u16, Table<0>>::update"
+module = "Stage2Proofs.Partial16"
+theorem = "CrcPartial16.digest_update_notable"
+precondition = "1 <= current algorithm.width = w <= 16; raw polynomial = zero-extended width-w poly; raw digest state = physical(16, refin, canonical width-w state); both flags arbitrary; any representable byte slice including empty"
+
+[[tool.proofs]]
+api = "Crc<u16, Table<1>>::checksum"
+module = "Stage2Proofs.Partial16"
+theorem = "CrcPartial16.checksum_table1"
+precondition = "1 <= current algorithm.width = w <= 16; raw polynomial = zero-extended width-w poly; raw xorout = zero-extended width-w xorout; raw init = zero-extended width-w initial; all 256 current table entries = encoded canonical byte transitions from zero; both flags arbitrary; any representable byte slice including empty"
+
+[[tool.proofs]]
+api = "Digest<u16, Table<1>>::update"
+module = "Stage2Proofs.Partial16"
+theorem = "CrcPartial16.digest_update_table1"
+precondition = "1 <= current algorithm.width = w <= 16; raw polynomial = zero-extended width-w poly; raw digest state = physical(16, refin, canonical width-w state); all 256 current table entries = encoded canonical byte transitions from zero; both flags arbitrary; any representable byte slice including empty"
+
+[[tool.proofs]]
+api = "Crc<u16, Table<1>>::new"
+module = "Stage2Proofs.PartialConstructor16"
+theorem = "CrcPartialConstructor16.new_table1"
+precondition = "1 <= algorithm.width = w <= 16; raw polynomial = zero-extended width-w poly; arbitrary init/xorout and both flags; constructor preserves algorithm and establishes current table coherence"
+
+[[tool.proofs]]
+api = "Crc<u16, Table<0>>::new"
+module = "Stage2Proofs.PartialNoTableConstructors"
+theorem = "CrcPartialNoTableConstructors.new_total16"
+precondition = "1 <= algorithm.width <= 16; arbitrary polynomial/init/xorout and both flags; resulting algorithm equals input"
+
+[[tool.proofs]]
+api = "Crc<u32, Table<0>>::digest"
+module = "Stage2Proofs.WordProtocolInstances"
+theorem = "CrcPublicWordInstances.digest32_lane0_spec"
+precondition = "1 <= current algorithm.width <= 32; L in {0,1,16}; arbitrary raw word(s), flags and table; public word-level endpoint contract"
+
+[[tool.proofs]]
+api = "Crc<u32, Table<0>>::digest_with_initial"
+module = "Stage2Proofs.WordProtocolInstances"
+theorem = "CrcPublicWordInstances.digest_with_initial32_lane0_spec"
+precondition = "1 <= current algorithm.width <= 32; L in {0,1,16}; arbitrary raw word(s), flags and table; public word-level endpoint contract"
+
+[[tool.proofs]]
+api = "Digest<u32, Table<0>>::finalize"
+module = "Stage2Proofs.WordProtocolInstances"
+theorem = "CrcPublicWordInstances.digest_finalize32_lane0_spec"
+precondition = "1 <= current algorithm.width <= 32; L in {0,1,16}; arbitrary raw word(s), flags and table; public word-level endpoint contract"
+
+[[tool.proofs]]
+api = "Crc<u32, Table<1>>::digest"
+module = "Stage2Proofs.WordProtocolInstances"
+theorem = "CrcPublicWordInstances.digest32_lane1_spec"
+precondition = "1 <= current algorithm.width <= 32; L in {0,1,16}; arbitrary raw word(s), flags and table; public word-level endpoint contract"
+
+[[tool.proofs]]
+api = "Crc<u32, Table<1>>::digest_with_initial"
+module = "Stage2Proofs.WordProtocolInstances"
+theorem = "CrcPublicWordInstances.digest_with_initial32_lane1_spec"
+precondition = "1 <= current algorithm.width <= 32; L in {0,1,16}; arbitrary raw word(s), flags and table; public word-level endpoint contract"
+
+[[tool.proofs]]
+api = "Digest<u32, Table<1>>::finalize"
+module = "Stage2Proofs.WordProtocolInstances"
+theorem = "CrcPublicWordInstances.digest_finalize32_lane1_spec"
+precondition = "1 <= current algorithm.width <= 32; L in {0,1,16}; arbitrary raw word(s), flags and table; public word-level endpoint contract"
+
+[[tool.proofs]]
+api = "Crc<u32, Table<16>>::digest"
+module = "Stage2Proofs.WordProtocolInstances"
+theorem = "CrcPublicWordInstances.digest32_lane16_spec"
+precondition = "1 <= current algorithm.width <= 32; L in {0,1,16}; arbitrary raw word(s), flags and table; public word-level endpoint contract"
+
+[[tool.proofs]]
+api = "Crc<u32, Table<16>>::digest_with_initial"
+module = "Stage2Proofs.WordProtocolInstances"
+theorem = "CrcPublicWordInstances.digest_with_initial32_lane16_spec"
+precondition = "1 <= current algorithm.width <= 32; L in {0,1,16}; arbitrary raw word(s), flags and table; public word-level endpoint contract"
+
+[[tool.proofs]]
+api = "Digest<u32, Table<16>>::finalize"
+module = "Stage2Proofs.WordProtocolInstances"
+theorem = "CrcPublicWordInstances.digest_finalize32_lane16_spec"
+precondition = "1 <= current algorithm.width <= 32; L in {0,1,16}; arbitrary raw word(s), flags and table; public word-level endpoint contract"
+
+[[tool.proofs]]
+api = "Crc<u32, Table<0>>::checksum"
+module = "Stage2Proofs.PartialNoTableConstructors"
+theorem = "CrcPartialNoTableConstructors.checksum32"
+precondition = "1 <= current algorithm.width = w <= 32; raw polynomial = zero-extended width-w poly; raw xorout = zero-extended width-w xorout; arbitrary raw init interpreted by low w bits; both flags arbitrary; any representable byte slice including empty"
+
+[[tool.proofs]]
+api = "Digest<u32, Table<0>>::update"
+module = "Stage2Proofs.Partial32"
+theorem = "CrcPartial32.digest_update_notable"
+precondition = "1 <= current algorithm.width = w <= 32; raw polynomial = zero-extended width-w poly; raw digest state = physical(32, refin, canonical width-w state); both flags arbitrary; any representable byte slice including empty"
+
+[[tool.proofs]]
+api = "Crc<u32, Table<1>>::checksum"
+module = "Stage2Proofs.Partial32"
+theorem = "CrcPartial32.checksum_table1"
+precondition = "1 <= current algorithm.width = w <= 32; raw polynomial = zero-extended width-w poly; raw xorout = zero-extended width-w xorout; arbitrary raw init interpreted by low w bits; all 256 current table entries = encoded canonical byte transitions from zero; both flags arbitrary; any representable byte slice including empty"
+
+[[tool.proofs]]
+api = "Digest<u32, Table<1>>::update"
+module = "Stage2Proofs.Partial32"
+theorem = "CrcPartial32.digest_update_table1"
+precondition = "1 <= current algorithm.width = w <= 32; raw polynomial = zero-extended width-w poly; raw digest state = physical(32, refin, canonical width-w state); all 256 current table entries = encoded canonical byte transitions from zero; both flags arbitrary; any representable byte slice including empty"
+
+[[tool.proofs]]
+api = "Crc<u32, Table<1>>::new"
+module = "Stage2Proofs.PartialConstructor32"
+theorem = "CrcPartialConstructor32.new_table1"
+precondition = "1 <= algorithm.width = w <= 32; raw polynomial = zero-extended width-w poly; arbitrary init/xorout and both flags; constructor preserves algorithm and establishes current table coherence"
+
+[[tool.proofs]]
+api = "Crc<u32, Table<0>>::new"
+module = "Stage2Proofs.PartialNoTableConstructors"
+theorem = "CrcPartialNoTableConstructors.new_total32"
+precondition = "1 <= algorithm.width <= 32; arbitrary polynomial/init/xorout and both flags; resulting algorithm equals input"
+
+[[tool.proofs]]
+api = "Crc<u64, Table<0>>::digest"
+module = "Stage2Proofs.WordProtocolInstances"
+theorem = "CrcPublicWordInstances.digest64_lane0_spec"
+precondition = "1 <= current algorithm.width <= 64; L in {0,1,16}; arbitrary raw word(s), flags and table; public word-level endpoint contract"
+
+[[tool.proofs]]
+api = "Crc<u64, Table<0>>::digest_with_initial"
+module = "Stage2Proofs.WordProtocolInstances"
+theorem = "CrcPublicWordInstances.digest_with_initial64_lane0_spec"
+precondition = "1 <= current algorithm.width <= 64; L in {0,1,16}; arbitrary raw word(s), flags and table; public word-level endpoint contract"
+
+[[tool.proofs]]
+api = "Digest<u64, Table<0>>::finalize"
+module = "Stage2Proofs.WordProtocolInstances"
+theorem = "CrcPublicWordInstances.digest_finalize64_lane0_spec"
+precondition = "1 <= current algorithm.width <= 64; L in {0,1,16}; arbitrary raw word(s), flags and table; public word-level endpoint contract"
+
+[[tool.proofs]]
+api = "Crc<u64, Table<1>>::digest"
+module = "Stage2Proofs.WordProtocolInstances"
+theorem = "CrcPublicWordInstances.digest64_lane1_spec"
+precondition = "1 <= current algorithm.width <= 64; L in {0,1,16}; arbitrary raw word(s), flags and table; public word-level endpoint contract"
+
+[[tool.proofs]]
+api = "Crc<u64, Table<1>>::digest_with_initial"
+module = "Stage2Proofs.WordProtocolInstances"
+theorem = "CrcPublicWordInstances.digest_with_initial64_lane1_spec"
+precondition = "1 <= current algorithm.width <= 64; L in {0,1,16}; arbitrary raw word(s), flags and table; public word-level endpoint contract"
+
+[[tool.proofs]]
+api = "Digest<u64, Table<1>>::finalize"
+module = "Stage2Proofs.WordProtocolInstances"
+theorem = "CrcPublicWordInstances.digest_finalize64_lane1_spec"
+precondition = "1 <= current algorithm.width <= 64; L in {0,1,16}; arbitrary raw word(s), flags and table; public word-level endpoint contract"
+
+[[tool.proofs]]
+api = "Crc<u64, Table<16>>::digest"
+module = "Stage2Proofs.WordProtocolInstances"
+theorem = "CrcPublicWordInstances.digest64_lane16_spec"
+precondition = "1 <= current algorithm.width <= 64; L in {0,1,16}; arbitrary raw word(s), flags and table; public word-level endpoint contract"
+
+[[tool.proofs]]
+api = "Crc<u64, Table<16>>::digest_with_initial"
+module = "Stage2Proofs.WordProtocolInstances"
+theorem = "CrcPublicWordInstances.digest_with_initial64_lane16_spec"
+precondition = "1 <= current algorithm.width <= 64; L in {0,1,16}; arbitrary raw word(s), flags and table; public word-level endpoint contract"
+
+[[tool.proofs]]
+api = "Digest<u64, Table<16>>::finalize"
+module = "Stage2Proofs.WordProtocolInstances"
+theorem = "CrcPublicWordInstances.digest_finalize64_lane16_spec"
+precondition = "1 <= current algorithm.width <= 64; L in {0,1,16}; arbitrary raw word(s), flags and table; public word-level endpoint contract"
+
+[[tool.proofs]]
+api = "Crc<u64, Table<0>>::checksum"
+module = "Stage2Proofs.PartialNoTableConstructors"
+theorem = "CrcPartialNoTableConstructors.checksum64"
+precondition = "1 <= current algorithm.width = w <= 64; raw polynomial = zero-extended width-w poly; raw xorout = zero-extended width-w xorout; arbitrary raw init interpreted by low w bits; both flags arbitrary; any representable byte slice including empty"
+
+[[tool.proofs]]
+api = "Digest<u64, Table<0>>::update"
+module = "Stage2Proofs.Partial64"
+theorem = "CrcPartial64.digest_update_notable"
+precondition = "1 <= current algorithm.width = w <= 64; raw polynomial = zero-extended width-w poly; raw digest state = physical(64, refin, canonical width-w state); both flags arbitrary; any representable byte slice including empty"
+
+[[tool.proofs]]
+api = "Crc<u64, Table<1>>::checksum"
+module = "Stage2Proofs.Partial64"
+theorem = "CrcPartial64.checksum_table1"
+precondition = "1 <= current algorithm.width = w <= 64; raw polynomial = zero-extended width-w poly; raw xorout = zero-extended width-w xorout; arbitrary raw init interpreted by low w bits; all 256 current table entries = encoded canonical byte transitions from zero; both flags arbitrary; any representable byte slice including empty"
+
+[[tool.proofs]]
+api = "Digest<u64, Table<1>>::update"
+module = "Stage2Proofs.Partial64"
+theorem = "CrcPartial64.digest_update_table1"
+precondition = "1 <= current algorithm.width = w <= 64; raw polynomial = zero-extended width-w poly; raw digest state = physical(64, refin, canonical width-w state); all 256 current table entries = encoded canonical byte transitions from zero; both flags arbitrary; any representable byte slice including empty"
+
+[[tool.proofs]]
+api = "Crc<u64, Table<1>>::new"
+module = "Stage2Proofs.PartialConstructor64"
+theorem = "CrcPartialConstructor64.new_table1"
+precondition = "1 <= algorithm.width = w <= 64; raw polynomial = zero-extended width-w poly; arbitrary init/xorout and both flags; constructor preserves algorithm and establishes current table coherence"
+
+[[tool.proofs]]
+api = "Crc<u128, Table<0>>::digest"
+module = "Stage2Proofs.WordProtocolInstances"
+theorem = "CrcPublicWordInstances.digest128_lane0_spec"
+precondition = "1 <= current algorithm.width <= 128; L in {0,1,16}; arbitrary raw word(s), flags and table; public word-level endpoint contract"
+
+[[tool.proofs]]
+api = "Crc<u128, Table<0>>::digest_with_initial"
+module = "Stage2Proofs.WordProtocolInstances"
+theorem = "CrcPublicWordInstances.digest_with_initial128_lane0_spec"
+precondition = "1 <= current algorithm.width <= 128; L in {0,1,16}; arbitrary raw word(s), flags and table; public word-level endpoint contract"
+
+[[tool.proofs]]
+api = "Digest<u128, Table<0>>::finalize"
+module = "Stage2Proofs.WordProtocolInstances"
+theorem = "CrcPublicWordInstances.digest_finalize128_lane0_spec"
+precondition = "1 <= current algorithm.width <= 128; L in {0,1,16}; arbitrary raw word(s), flags and table; public word-level endpoint contract"
+
+[[tool.proofs]]
+api = "Crc<u128, Table<1>>::digest"
+module = "Stage2Proofs.WordProtocolInstances"
+theorem = "CrcPublicWordInstances.digest128_lane1_spec"
+precondition = "1 <= current algorithm.width <= 128; L in {0,1,16}; arbitrary raw word(s), flags and table; public word-level endpoint contract"
+
+[[tool.proofs]]
+api = "Crc<u128, Table<1>>::digest_with_initial"
+module = "Stage2Proofs.WordProtocolInstances"
+theorem = "CrcPublicWordInstances.digest_with_initial128_lane1_spec"
+precondition = "1 <= current algorithm.width <= 128; L in {0,1,16}; arbitrary raw word(s), flags and table; public word-level endpoint contract"
+
+[[tool.proofs]]
+api = "Digest<u128, Table<1>>::finalize"
+module = "Stage2Proofs.WordProtocolInstances"
+theorem = "CrcPublicWordInstances.digest_finalize128_lane1_spec"
+precondition = "1 <= current algorithm.width <= 128; L in {0,1,16}; arbitrary raw word(s), flags and table; public word-level endpoint contract"
+
+[[tool.proofs]]
+api = "Crc<u128, Table<16>>::digest"
+module = "Stage2Proofs.WordProtocolInstances"
+theorem = "CrcPublicWordInstances.digest128_lane16_spec"
+precondition = "1 <= current algorithm.width <= 128; L in {0,1,16}; arbitrary raw word(s), flags and table; public word-level endpoint contract"
+
+[[tool.proofs]]
+api = "Crc<u128, Table<16>>::digest_with_initial"
+module = "Stage2Proofs.WordProtocolInstances"
+theorem = "CrcPublicWordInstances.digest_with_initial128_lane16_spec"
+precondition = "1 <= current algorithm.width <= 128; L in {0,1,16}; arbitrary raw word(s), flags and table; public word-level endpoint contract"
+
+[[tool.proofs]]
+api = "Digest<u128, Table<16>>::finalize"
+module = "Stage2Proofs.WordProtocolInstances"
+theorem = "CrcPublicWordInstances.digest_finalize128_lane16_spec"
+precondition = "1 <= current algorithm.width <= 128; L in {0,1,16}; arbitrary raw word(s), flags and table; public word-level endpoint contract"
+
+[[tool.proofs]]
+api = "Crc<u128, Table<0>>::checksum"
+module = "Stage2Proofs.PartialNoTableConstructors"
+theorem = "CrcPartialNoTableConstructors.checksum128"
+precondition = "1 <= current algorithm.width = w <= 128; raw polynomial = zero-extended width-w poly; raw xorout = zero-extended width-w xorout; arbitrary raw init interpreted by low w bits; both flags arbitrary; any representable byte slice including empty"
+
+[[tool.proofs]]
+api = "Digest<u128, Table<0>>::update"
+module = "Stage2Proofs.Partial128"
+theorem = "CrcPartial128.digest_update_notable"
+precondition = "1 <= current algorithm.width = w <= 128; raw polynomial = zero-extended width-w poly; raw digest state = physical(128, refin, canonical width-w state); both flags arbitrary; any representable byte slice including empty"
+
+[[tool.proofs]]
+api = "Crc<u128, Table<1>>::checksum"
+module = "Stage2Proofs.Partial128"
+theorem = "CrcPartial128.checksum_table1"
+precondition = "1 <= current algorithm.width = w <= 128; raw polynomial = zero-extended width-w poly; raw xorout = zero-extended width-w xorout; arbitrary raw init interpreted by low w bits; all 256 current table entries = encoded canonical byte transitions from zero; both flags arbitrary; any representable byte slice including empty"
+
+[[tool.proofs]]
+api = "Digest<u128, Table<1>>::update"
+module = "Stage2Proofs.Partial128"
+theorem = "CrcPartial128.digest_update_table1"
+precondition = "1 <= current algorithm.width = w <= 128; raw polynomial = zero-extended width-w poly; raw digest state = physical(128, refin, canonical width-w state); all 256 current table entries = encoded canonical byte transitions from zero; both flags arbitrary; any representable byte slice including empty"
+
+[[tool.proofs]]
+api = "Crc<u128, Table<1>>::new"
+module = "Stage2Proofs.PartialConstructor128"
+theorem = "CrcPartialConstructor128.new_table1"
+precondition = "1 <= algorithm.width = w <= 128; raw polynomial = zero-extended width-w poly; arbitrary init/xorout and both flags; constructor preserves algorithm and establishes current table coherence"
+
+[[tool.proofs]]
+api = "Crc<u64, Table<0>>::new"
+module = "Stage2Proofs.PartialNoTableConstructors"
+theorem = "CrcPartialNoTableConstructors.new_total64"
+precondition = "1 <= algorithm.width <= 64; arbitrary polynomial/init/xorout and both flags; resulting algorithm equals input"
+
+[[tool.proofs]]
+api = "Crc<u128, Table<0>>::new"
+module = "Stage2Proofs.PartialNoTableConstructors"
+theorem = "CrcPartialNoTableConstructors.new_total128"
+precondition = "1 <= algorithm.width <= 128; arbitrary polynomial/init/xorout and both flags; resulting algorithm equals input"

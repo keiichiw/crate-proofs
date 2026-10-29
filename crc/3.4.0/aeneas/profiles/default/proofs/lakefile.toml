@@ -1,0 +1,29 @@
+name = "crc-proofs"
+defaultTargets = ["CrcProofs"]
+[[lean_lib]]
+name = "Crc"
+srcDir = "Generated/@TARGET@"
+[[lean_lib]]
+name = "CrcProofs"
+[[require]]
+name = "aeneas"
+path = "@AENEAS_BACKEND@"
+
+[[lean_lib]]
+name = "Anchors"
+srcDir = "Generated/@TARGET@"
+
+[[lean_lib]]
+name = "CloneFrom0"
+srcDir = "Generated/@TARGET@"
+globs = ["CloneFrom0.+"]
+
+[[lean_lib]]
+name = "CloneFrom1"
+srcDir = "Generated/@TARGET@"
+globs = ["CloneFrom1.+"]
+
+[[lean_lib]]
+name = "CloneFrom16"
+srcDir = "Generated/@TARGET@"
+globs = ["CloneFrom16.+"]
