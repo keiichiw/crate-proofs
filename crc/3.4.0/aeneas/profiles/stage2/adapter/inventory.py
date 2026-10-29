@@ -27,12 +27,21 @@ for m in mappings:
  x.update(kind='public-contract',precondition=m['precondition'])
 obj={'checked':checked,'recorder_mappings':[{'api':x['api'],'theorem':x['theorem']} for x in mappings],
  'scope':'actual canonical checksum/update under explicit valid-domain/state invariants; separate public word-level endpoints, full-width constructors and supporting lemmas; optimized 16-lane message computation excluded'}
-report={'report':{'title':'crc 3.4.0: canonical checksum and incremental update',
- 'explanation':'Stage-2 extension. API mappings retain exact preconditions; baseline 21 contracts remain separately recorded. Native tests are separate.'},
+report_path=R/'proofs.toml'
+report_text=report_path.read_text()
+report={'report':tomllib.loads(report_text)['report'],
  'tool':{'name':'aeneas','version':'be86ab0f1989d04944292b345b24c435be3ad10a','lean_dir':'.work/selected-proofs','proofs':mappings}}
 # JSON strings are valid TOML basic strings for the present ASCII field values.
+# Preserve independently reviewed editorial prose when regenerating mappings.
+for header in re.finditer(r'^\[\s*tool\s*\][ \t]*(?:#.*)?$',report_text,re.M):
+ try:prefix=tomllib.loads(report_text[:header.start()])
+ except tomllib.TOMLDecodeError:continue # A literal header inside multiline prose.
+ if prefix=={'report':report['report']}:
+  report_prefix=report_text[:header.start()]
+  break
+else:raise ValueError('Missing top-level tool table')
 lines=[]
-for section in ('report','tool'):
+for section in ('tool',):
  lines.append('['+section+']')
  for k,v in report[section].items():
   if k!='proofs':lines.append(k+' = '+json.dumps(v))
@@ -41,10 +50,12 @@ for m in mappings:
  lines.append('[[tool.proofs]]')
  for k in ('api','module','theorem','precondition'):lines.append(k+' = '+json.dumps(m[k]))
  lines.append('')
-outputs={R/'theorems.json':json.dumps(obj,indent=2)+'\n',R/'proofs.toml':'\n'.join(lines),
+outputs={R/'theorems.json':json.dumps(obj,indent=2)+'\n',R/'proofs.toml':report_prefix+'\n'.join(lines),
  R/'proofs/Stage2Proofs.lean':''.join('import '+m+'\n' for m in modules)}
 assert tomllib.loads(outputs[R/'proofs.toml'])==report
 for path,value in outputs.items():
- if a.check:assert path.read_text()==value,path
+ if a.check:
+  if path==report_path:assert tomllib.loads(path.read_text())==report,path
+  else:assert path.read_text()==value,path
  else:path.write_text(value)
 print(f'PASS {len(checked)} named theorems, {len(modules)} modules, {len(mappings)} explicit public mappings')
