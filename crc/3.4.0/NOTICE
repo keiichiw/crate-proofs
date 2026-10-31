@@ -33,11 +33,11 @@ Its Apache-2.0 license is included in licenses/aeneas/LICENSE for attribution of
 generator-produced boilerplate and library material. This does not remove the
 upstream crc notices applicable to the translated implementation.
 
-The cargo-proofs concrete-API compatibility patches are local modifications
-against proofs-rs commit 344b4797d677636f57ba826dfc6afd22f4c90534:
+The selected cargo-proofs CLI is unmodified upstream proofs-rs at revision
+224bc1094792267e72dca5742bbcb714ec755ee6:
 https://github.com/proofs-rs/proofs-rs
 Copyright (c) 2026 cargo-proofs contributors
 Original license: MIT OR Apache-2.0
-The original texts are included in licenses/cargo-proofs/LICENSE-MIT and
-licenses/cargo-proofs/LICENSE-APACHE. The patches change API discovery and its
-tests/documentation; they do not replace Lean checking or change CRC code.
+The original texts are retained in licenses/cargo-proofs/LICENSE-MIT and
+licenses/cargo-proofs/LICENSE-APACHE. No local cargo-proofs patch is distributed
+with this version's current tool configuration.

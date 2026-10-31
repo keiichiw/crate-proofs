@@ -18,16 +18,9 @@
       "url": "https://github.com/AeneasVerif/charon.git"
     },
     "proofs-rs": {
-      "patches": [
-        {
-          "file": "patches/cargo-proofs-concrete-api.patch",
-          "sha256": "a83aceace4c12affb6c138d6c0d8d60ae1d7c2461c75c195f28661fd57cedbb9",
-          "purpose": "Compiler-check configured concrete public root-type API instances, including inherited Clone::clone_from, on the host cfg. Restrict type syntax, match expanded function declarations, reject constants with callable/function-item checks, and reject dependency drift. No source setup hooks or proof-success replacement.",
-          "regressions": "Full cargo-proofs unit/integration tests; real compiler positive CRC-like generic/lane/Clone/lifetime instances; negative invalid word/lane/private/cfg-dead/constant/function-pointer-shadow/injection/non-host cases; actual CRC 21+75 mapping prerequisites."
-        }
-      ],
-      "revision": "344b4797d677636f57ba826dfc6afd22f4c90534",
-      "tree": "cc290c2cfc467a3a3695ba3f1754f802d5db007f",
+      "patches": [],
+      "revision": "224bc1094792267e72dca5742bbcb714ec755ee6",
+      "tree": "22c44380d6ef7ec95460cfed35f4872237873ac2",
       "url": "https://github.com/proofs-rs/proofs-rs.git"
     }
   },

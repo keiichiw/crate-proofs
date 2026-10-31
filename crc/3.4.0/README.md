@@ -47,12 +47,12 @@ profile's `evidence/archive.json`. Verification does not read them. It checks th
 current source lock, catalog, extraction configurations, generated Lean and proof
 inventory directly. Earlier acceptance does not establish current-run success.
 
-The CLI is cargo-proofs 0.4.1, selected from upstream main at commit
-`344b4797d677636f57ba826dfc6afd22f4c90534` on 2026-10-29. Both profile locks
-record this exact snapshot for reproducibility. Aeneas, Charon and Lean retain
-their existing revisions. A local `cargo-proofs-concrete-api.patch` adds
-opt-in compiler checks for the existing concrete word/lane API mappings,
-including inherited `Clone::clone_from`. It rejects unsupported type syntax,
+The CLI is unmodified cargo-proofs 0.4.1 from upstream main at commit
+`224bc1094792267e72dca5742bbcb714ec755ee6`, which includes proofs-rs PR #93.
+Both profile locks record its exact source tree with no local CLI patches.
+Aeneas, Charon and Lean retain their existing revisions. The upstream
+`concrete_api` mode checks existing concrete word/lane API mappings, including
+inherited `Clone::clone_from`. It rejects unsupported type syntax,
 invalid/private/non-callable instances, non-host cfg and dependency drift.
 The declaration expansion subprocess alone uses `RUSTC_BOOTSTRAP=1`; function
 items are checked with the normal stable compiler. This is API discovery,
