@@ -1,16 +1,38 @@
 [report]
 title = "crc 3.4.0: table access and clone contracts"
 explanation = '''
-For the five built-in word widths and `Table<0>`, `Table<1>`, and `Table<16>`, `Crc::table` succeeds and returns the stored table, regardless of its contents. The zero-sized `Table<0>`, `Table<1>`, and `Table<16>` implementation markers separately have identity `clone` and source-replacement `clone_from` contracts; these do not clone the cached table data. These 21 callable instances are width/lane specializations, not 21 distinct API names. Separate private polynomial-kernel proofs do not establish a checksum result.
+The built-in table implementations are called lanes here: `Table<0>`, `Table<1>` and `Table<16>`. For each combination of lane and storage type (`u8`, `u16`, `u32`, `u64` or `u128`), `Crc::table` succeeds and returns the stored table. This does not imply that the table contains correct CRC transitions.
+
+Values of `Table<0>`, `Table<1>` and `Table<16>` are zero-sized markers. Any cached table belongs to the `Crc`, not the marker. For these markers, `clone` returns an identical marker and `clone_from` replaces the target marker with the source; neither clones cached table data.
+
+The 21 callable instances comprise 15 `Crc::table` instances (5 storage types × 3 lanes) and 6 marker instances (`clone` and `clone_from` for each of 3 markers). These are specializations, not 21 distinct API names.
 '''
 trusted_assumptions = '''
-The results depend on the Rust-to-LLBC and Aeneas translations, their primitive models, and the Lean kernel. These are not compiler-correctness proofs. The accepted audit permits only Lean's `propext`, `Classical.choice`, and `Quot.sound` as transitive axioms.
+The proofs check a translated model of the Rust code and depend on Rust-to-LLBC translation (LLBC is the intermediate representation consumed by Aeneas), Aeneas translation, their primitive models, and the Lean kernel. These are not compiler-correctness proofs. The accepted audit permits only Lean's `propext`, `Classical.choice`, and `Quot.sound` as transitive axioms.
 '''
 limitations = '''
-These contracts do not establish that stored tables contain correct CRC transitions, that constructors produce them, or that checksums or digest updates are correct. Custom implementations, other lanes and re-exported dependency APIs are outside the selected scope. The verified source is restored from the locked crates.io 3.4.0 archive; the selected executable crate bodies are unchanged. The extraction and model correspondence checks are evidence for this relationship, not a formal proof of compiler correctness.
+These contracts do not establish that stored tables contain correct CRC transitions, that constructors produce them, or that checksums or digest updates are correct. Custom implementations, other lanes and re-exported dependency APIs are outside the selected scope. This profile also includes supporting polynomial-kernel proofs; they do not prove end-to-end checksums.
+
+The verified source is taken from the locked crates.io 3.4.0 archive; the selected executable crate bodies are unchanged from that archive. The existing Rust-to-Lean translation (not rerun in this recording) and model correspondence checks support the correspondence between the proved Lean model and the release source; see Trusted assumptions for the translation boundary.
 '''
 environment = '''
-The selected library uses Cargo default features; the crate declares no feature flags. The target is `aarch64-apple-darwin` (macOS arm64). The unchanged locked release source is kept under `upstream/`; the configuration uses `cargo-proofs` 0.4.1 with a local API-discovery patch and pinned, unpatched Charon and Aeneas. The upstream scanner cannot resolve the concrete CRC word and lane instance names. The opt-in patch checks configuration-selected function declarations and Rust function-item probes, including the default `Clone::clone_from`, against the locked dependency graph and host configuration. It uses no substitute implementations or proof-success markers and changes neither Rust bodies and contracts nor the Lean checker. `RUSTC_BOOTSTRAP` is scoped to declaration expansion; the witness check uses stable Rust. The ordinary Lean build and audit determine proof acceptance. Native tests are finite observations, separate from the Lean proofs. The historical run passed on 2026-10-23 under the earlier configuration; it does not establish a fresh run of this configuration. See the historical [results](https://github.com/keiichiw/crate-proofs/blob/06d2413e7a6e8d809f0105df99c97368139fa54c/crc/3.4.0/aeneas/profiles/default/results.md), [theorem inventory](https://github.com/keiichiw/crate-proofs/blob/06d2413e7a6e8d809f0105df99c97368139fa54c/crc/3.4.0/aeneas/profiles/default/theorems.json), and [source lock](https://github.com/keiichiw/crate-proofs/blob/06d2413e7a6e8d809f0105df99c97368139fa54c/crc/3.4.0/source.lock.json).
+This recording rechecked existing Lean proofs; it did not regenerate Lean from Rust. The standard Lean build and axiom audits passed. Theorem and evidence metadata was collected from the existing Lean proofs. Native tests are finite observations, separate from the formal proofs.
+
+# Reproduction details
+
+The official CLI's opt-in `concrete_api` discovery checks that the configured callable functions exist for the selected build. It does not prove their behavior or translate Rust to Lean. For this check:
+
+- Declaration expansion selects the active configuration; `RUSTC_BOOTSTRAP` is scoped to that expansion.
+- Stable Rust function-item probes check the selected instances against the locked dependency graph and host configuration, including the inherited `Clone::clone_from`.
+
+The recording covers 21 contracts, one per configured callable instance. Its configuration and identifiers are:
+
+- Target: macOS arm64 (`aarch64-apple-darwin`); Cargo default features, with no crate feature flags.
+- Source: locked release under `upstream/`, [revision d035889](https://github.com/keiichiw/crate-proofs/tree/d0358890f8bdc8e72a376d225667ac162f89e3b8).
+- Official unpatched CLI: [revision 224bc10](https://github.com/proofs-rs/proofs-rs/commit/224bc1094792267e72dca5742bbcb714ec755ee6), including merged PR #93.
+- Run: `7fc579bc-5df9-436e-8bc3-6f40eba1ee43`.
+
+The 2026-10-23 run used an earlier configuration and is historical evidence for that configuration. See the historical [results](https://github.com/keiichiw/crate-proofs/blob/06d2413e7a6e8d809f0105df99c97368139fa54c/crc/3.4.0/aeneas/profiles/default/results.md), [theorem inventory](https://github.com/keiichiw/crate-proofs/blob/06d2413e7a6e8d809f0105df99c97368139fa54c/crc/3.4.0/aeneas/profiles/default/theorems.json), and [source lock](https://github.com/keiichiw/crate-proofs/blob/06d2413e7a6e8d809f0105df99c97368139fa54c/crc/3.4.0/source.lock.json).
 '''
 
 [tool]

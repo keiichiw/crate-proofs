@@ -1,22 +1,76 @@
 [report]
 title = "crc 3.4.0: selected checksum and digest contracts"
 explanation = '''
-For the built-in `Table<0>` and `Table<1>` implementations at word widths 8, 16, 32, 64 and 128, the selected `checksum` bodies succeed and agree with a direct CRC register model on every representable byte slice, including empty input. The model feeds each byte in the input-reflection order, applies output reflection and XOR at the end, and appends no zero block. The selected `update` bodies succeed from any encoded canonical state, advance it by that model and retain the CRC object. Both reflection flags may vary independently.
+This profile proves conditional contracts for the built-in table implementations, or lanes: `Table<0>`, `Table<1>` and `Table<16>`.
 
-These statements require `1 <= width <=` the storage width and a polynomial within that width; checksum additionally requires bounded XOR output. For all `Table<0>` and for `Table<1>` u32, u64 and u128 checksum contracts, the initial value is interpreted by its low `width` bits. The `Table<1>` u8 and u16 checksum contracts instead require bounded initial values. `Table<1>` requires its current cached table to match the current width, polynomial and input-reflection flag. Update requires the incoming state to encode a canonical width-bit state. Exact per-instance premises appear with the mappings below. For all three built-in lanes and valid widths, `digest_with_initial` retains the CRC object and initializes from the low width bits of its input; `digest` uses the algorithm initial value. `finalize` succeeds for any raw digest word and applies the specified word-level reflection, shift and XOR operations. These endpoint contracts do not by themselves prove a canonical message computation. The selected `Table<0>` constructors succeed and retain the algorithm under their recorded width conditions; selected `Table<1>` constructors also establish table coherence under their recorded polynomial bounds. Actual two-chunk update equivalence is separately proved for full-width unreflected u8; no all-width chunking theorem is claimed.
+**Proved:** Under the conditions below, selected `checksum` and `update` methods for `Table<0>` and `Table<1>` agree with a reference CRC register model. For all three lanes, selected digest initialization and finalization methods satisfy the contracts described below.
 
-This profile adds 75 callable instances to the default profile's 21, for 96 of 171 supported built-in instances. These count parameter and lane specializations, not distinct API names; supporting lemmas are not additional API coverage.
+**Not proved:** The `Table<16>` checksum and update results for a message. Its initialization and finalization contracts cover the start and end of a digest, not the bytes processed between them.
+
+**Terms.** Storage width is the bit size of the integer type (`u8`, `u16`, `u32`, `u64` or `u128`). Below, `width` means `Algorithm::width`, the CRC width, which may be smaller. A canonical digest state encodes a register value that fits within `width` bits; the encoding depends on `width` and input reflection (`refin`).
+
+**Conditions for checksum and update:** These claims are established under all applicable conditions below:
+
+- **Parameters, both methods:** `1 <= width <=` storage width, and polynomial `poly` fits within `width` bits.
+- **Final XOR, checksum:** `xorout` fits within `width` bits.
+- **Initial value, checksum:** the contract depends on the lane and storage type.
+  - For `Table<0>` with any storage type and `Table<1>` with u32, u64 or u128, the contract uses the low `width` bits of `init`; `init` need not fit within `width` bits.
+  - For `Table<1>` with u8 or u16, `init` must fit within `width` bits.
+- **Cache, `Table<1>`:** the current cached table must match the current `width`, `poly` and `refin`. Reassigning the public `Crc::algorithm` field in safe Rust can break this coherence. `Table<0>` has no cached-table coherence requirement.
+- **Incoming state, update:** the digest state must encode a register value that fits within `width` bits.
+
+The reference model is described in Trusted assumptions. Each claim's details contain its authoritative formal statement, preconditions and theorem reference.
+
+The accompanying finding records finite observations for `Table<1>` and `Table<16>`; those observations do not extend the proof coverage.
+
+**Checksum and update.** Under these conditions, the selected methods succeed for every representable byte slice, including empty input; both reflection flags may vary independently. Checksum agrees with the reference model and update advances the encoded state by the reference model. In the Lean model of the translated code, the digest retains the same `Crc` object.
+
+**Digest and finalize.** For all three lanes and valid widths (`1 <= width <=` storage width), `digest_with_initial` retains the `Crc` object in the Lean model and initializes from the low `width` bits of its argument; `digest` uses `init`. `finalize` succeeds for any raw digest word (the stored word before final processing), applying the specified word-level reflection, shift and XOR.
+
+**Constructors.** Selected `Table<0>` constructors succeed and retain the algorithm under their recorded width conditions; selected `Table<1>` constructors also establish cache coherence under their recorded polynomial bounds.
+
+**Chunked updates.** For both `Table<0>` and `Table<1>`, restricted to u8 storage with `width = 8` and `refin = false`, additional proofs show that two successive selected updates equal an update of the concatenated input under the recorded premises. No all-width chunking theorem is claimed.
+
+The 75 callable instances here and 21 in the default profile total 96 of 171 supported built-in instances in the coverage inventory; the remaining 75 are not formally covered by these profiles. The inventory counts callable specializations across five storage widths and lanes 0, 1 and 16, including `Clone::clone_from`. It excludes re-exports, blanket methods and custom generic implementations. These are not distinct API names, and supporting lemmas are not additional API coverage. Native observations are separate from formal coverage.
 '''
 trusted_assumptions = '''
-The results depend on Rust-to-LLBC and Aeneas translation, primitive models, and the Lean kernel. Local bit-reversal definitions are assumed to match Rust's standard operations. The type-only normalization lifts the built-in table associated type to the exact array type; an independent structural checker compares function bodies and permits only the specified type-reference changes. A display-name change preserves indices and operations, and negative guards reject unsupported normalization shapes. File-name relocation is checked by inverse equality of the complete JSON tree. These checks support the transformations but are not semantic preservation or compiler-correctness proofs. The transitive audit permits only `propext`, `Classical.choice`, and `Quot.sound`.
+The results depend on Rust-to-LLBC (the intermediate representation consumed by Aeneas) and Aeneas translation, primitive models, and the Lean kernel. Local bit-reversal definitions are assumed to match Rust's standard operations.
+
+**Reference model.** The model feeds each byte in input-reflection order, applies output reflection and XOR at the end, and appends no zero block.
+
+The proofs concern the translated program after three transformations used to normalize types and names and make source file references portable. If these transformations changed behavior, the proofs could describe a different program. Structural checks support their correspondence to the original translation, but do not formally prove it:
+
+- Type-only normalization lifts the built-in table associated type to the exact array type. An independent checker compares function bodies and permits only the specified type-reference changes; negative guards reject unsupported normalization shapes.
+- A display-name change preserves indices and operations.
+- File-name relocation is checked by inverse equality of the complete JSON tree.
+
+These checks are not semantic-preservation or compiler-correctness proofs. The transitive audit permits only `propext`, `Classical.choice`, and `Quot.sound`.
 '''
 limitations = '''
-`Algorithm` fields are public, so invalid widths or out-of-range parameters are not ruled out by Rust types. `Crc.algorithm` can also be replaced after construction, leaving a `Table<1>` cache stale; construction alone does not establish coherence after such a change. `Table<0>` has no cached-table coherence requirement. The canonical `Table<16>` message computation, custom implementations, other lanes and re-exported dependency APIs are outside this coverage. The proofs do not validate catalogue `check` or `residue` values.
+**Conditions for users.** `Algorithm` fields are public, so Rust types do not rule out invalid widths or out-of-range parameters. The public `algorithm` field of `Crc` can be replaced after construction, potentially leaving a stale cache. In addition to the parameter conditions, `Table<1>` checksum and update require the current table to be coherent with the current algorithm; construction alone does not establish coherence after a change. `Table<0>` has no cached-table coherence requirement.
 
-The selected executable crate bodies come from the locked crates.io 3.4.0 archive. Extraction uses the described transformations and locally authored bit-reversal models; their correspondence to release execution is supported by structural checks and native observations, not a formal equivalence theorem.
+**Not covered.** `Table<16>` checksum and update over message bytes, custom implementations, other lanes and re-exported dependency APIs are outside this coverage. The proofs do not validate catalogue `check` or `residue` values.
+
+The selected executable crate bodies come from the locked crates.io 3.4.0 archive. The existing Rust-to-Lean translation (not rerun in this recording) uses the described transformations and locally authored bit-reversal models; their correspondence to release execution is supported by structural checks and native observations, not a formal equivalence theorem.
 '''
 environment = '''
-The selected library uses Cargo default features; the crate declares no feature flags. The target is `aarch64-apple-darwin` (macOS arm64). The unchanged locked release source is kept under `upstream/`; the configuration uses `cargo-proofs` 0.4.1 with a local API-discovery patch and pinned, unpatched Charon and Aeneas. The upstream scanner cannot resolve the concrete CRC word and lane instance names. The opt-in patch checks configuration-selected function declarations and Rust function-item probes, including the default `Clone::clone_from`, against the locked dependency graph and host configuration. It uses no substitute implementations or proof-success markers and changes neither Rust bodies and contracts nor the Lean checker. `RUSTC_BOOTSTRAP` is scoped to declaration expansion; the witness check uses stable Rust. The ordinary Lean build and audit determine proof acceptance. Native tests and independent oracle examples are finite observations, separate from the Lean proofs. The historical run passed on 2026-10-23 under the earlier configuration; it does not establish a fresh run of this configuration. See the historical [results](https://github.com/keiichiw/crate-proofs/blob/06d2413e7a6e8d809f0105df99c97368139fa54c/crc/3.4.0/aeneas/profiles/stage2/results.md), [theorem inventory](https://github.com/keiichiw/crate-proofs/blob/06d2413e7a6e8d809f0105df99c97368139fa54c/crc/3.4.0/aeneas/profiles/stage2/theorems.json), [specification](https://github.com/keiichiw/crate-proofs/blob/06d2413e7a6e8d809f0105df99c97368139fa54c/crc/3.4.0/aeneas/profiles/stage2/specification.md), and [source lock](https://github.com/keiichiw/crate-proofs/blob/06d2413e7a6e8d809f0105df99c97368139fa54c/crc/3.4.0/source.lock.json).
+This recording rechecked existing Lean proofs; it did not regenerate Lean from Rust. The standard Lean build and axiom audits passed. Theorem and evidence metadata was collected from the existing Lean proofs. Native tests and independent oracle examples are finite observations, separate from the formal proofs.
+
+# Reproduction details
+
+The official CLI's opt-in `concrete_api` discovery checks that the configured callable functions exist for the selected build. It does not prove their behavior or translate Rust to Lean. For this check:
+
+- Declaration expansion selects the active configuration; `RUSTC_BOOTSTRAP` is scoped to that expansion.
+- Stable Rust function-item probes check the selected instances against the locked dependency graph and host configuration.
+
+The recording covers 75 contracts, one per configured callable instance. Its configuration and identifiers are:
+
+- Target: macOS arm64 (`aarch64-apple-darwin`); Cargo default features, with no crate feature flags.
+- Source: locked release under `upstream/`, [revision d035889](https://github.com/keiichiw/crate-proofs/tree/d0358890f8bdc8e72a376d225667ac162f89e3b8).
+- Official unpatched CLI: [revision 224bc10](https://github.com/proofs-rs/proofs-rs/commit/224bc1094792267e72dca5742bbcb714ec755ee6), including merged PR #93.
+- Run: `2981087e-e14c-442f-b9a6-b9b0139e90ae`.
+
+The 2026-10-23 run used an earlier configuration and is historical evidence for that configuration. See the historical [results](https://github.com/keiichiw/crate-proofs/blob/06d2413e7a6e8d809f0105df99c97368139fa54c/crc/3.4.0/aeneas/profiles/stage2/results.md), [theorem inventory](https://github.com/keiichiw/crate-proofs/blob/06d2413e7a6e8d809f0105df99c97368139fa54c/crc/3.4.0/aeneas/profiles/stage2/theorems.json), [specification](https://github.com/keiichiw/crate-proofs/blob/06d2413e7a6e8d809f0105df99c97368139fa54c/crc/3.4.0/aeneas/profiles/stage2/specification.md), and [source lock](https://github.com/keiichiw/crate-proofs/blob/06d2413e7a6e8d809f0105df99c97368139fa54c/crc/3.4.0/source.lock.json).
 '''
 
 

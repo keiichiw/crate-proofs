@@ -15,7 +15,7 @@ class InventoryReport(unittest.TestCase):
             'none': None,
             'prose': ('selected checksum and digest contracts', 'reviewed CRC contracts'),
             'literal_table_in_title': ('selected checksum and digest contracts', 'reviewed [tool] contracts'),
-            'literal_table_in_prose': ('For the built-in', '[tool]\nFor the built-in'),
+            'literal_table_in_prose': ("explanation = '''\n", "explanation = '''\n[tool]\n"),
             'api': ('Crc<u8, Table<0>>::digest"', 'Crc<u8, Table<1>>::digest"'),
             'theorem': ('CrcPublicWordInstances.digest8_lane0_spec', 'Unknown.theorem'),
             'module': ('Stage2Proofs.WordProtocolInstances', 'Unknown.Module'),

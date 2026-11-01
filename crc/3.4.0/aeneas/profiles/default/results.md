@@ -55,7 +55,7 @@ run completed the configured native checks and oracles, fresh extraction/model
 comparisons, standard Lake build, named theorem/axiom audits and unchanged
 before/after fingerprints. It establishes only this profile's stated contracts.
 
-Local-only result: [result.json](/Users/keiichiw/workspace/crate-proofs/.work/current-input-refactor/isolated-checkout/crc/3.4.0/.work/runs/default-7zon60u0/result.json), SHA-256 `d3ac95c9662870263b210c06d7a5ed13f46dc787cbbdaac545a843bde95668b8`.
+Local-only result (relative to the historical version checkout; not distributed): `.work/runs/default-7zon60u0/result.json`, SHA-256 `d3ac95c9662870263b210c06d7a5ed13f46dc787cbbdaac545a843bde95668b8`.
 Input fingerprint: SHA-256 `8b0a1ce2d9bee917273a67e1cc261d1013b827737c5bd75e12b830f2461130d9`. Linux was not run for this result.
 
 ## Current-input verification (2026-10-29)
@@ -64,4 +64,8 @@ On `aarch64-apple-darwin` (macOS arm64), verification passed with the tracked, u
 
 The local-only run directory is `.work/runs/default-jkvsns_t`. Result SHA-256: `a5a8fab983acba667a6c17b88371e4eaf76e3a5395084f3948efa720dfd8b28c`. Input fingerprint SHA-256: `3cb0c022100c2d7eba9f313cd8243ae30a42320b334a913f2aad2f016da4fd47`.
 
-The CLI prerequisite API checks resolved all 21 mappings, but the source gate stopped the CLI before recording. CLI recording and publication were not performed.
+In that 2026-10-29 verification, the CLI prerequisite API checks resolved all 21 mappings, but the source gate stopped the CLI before recording. CLI recording and publication were not performed in that verification.
+
+## Official CLI recording
+
+The official unpatched `cargo-proofs` CLI at `224bc1094792267e72dca5742bbcb714ec755ee6` (including merged PR #93) recorded 21 contracts from source revision `d0358890f8bdc8e72a376d225667ac162f89e3b8` as run `7fc579bc-5df9-436e-8bc3-6f40eba1ee43`. The standard Lean build, formal extraction and axiom audits passed. Rust-to-Lean translation was not rerun as part of this recording.

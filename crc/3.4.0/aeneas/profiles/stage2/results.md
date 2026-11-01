@@ -60,7 +60,7 @@ run completed the configured native checks and oracles, fresh extraction/model
 comparisons, standard Lake build, named theorem/axiom audits and unchanged
 before/after fingerprints. It establishes only this profile's stated contracts.
 
-Local-only result: [result.json](/Users/keiichiw/workspace/crate-proofs/.work/current-input-refactor/isolated-checkout/crc/3.4.0/.work/runs/stage2-ruo3_ag1/result.json), SHA-256 `bd12c3e111a62cc06959bdafa37d5ffb6cea05c05bf03189f9b0a877006c9c25`.
+Local-only result (relative to the historical version checkout; not distributed): `.work/runs/stage2-ruo3_ag1/result.json`, SHA-256 `bd12c3e111a62cc06959bdafa37d5ffb6cea05c05bf03189f9b0a877006c9c25`.
 Input fingerprint: SHA-256 `164e5d2fdac8178f5d8a0d75c9c044d9f65eb7032762b1219219a92df9f69b31`. Linux was not run for this result.
 
 ## Current-input verification (2026-10-29)
@@ -69,4 +69,8 @@ On `aarch64-apple-darwin` (macOS arm64), verification passed with the tracked, u
 
 The local-only run directory is `.work/runs/stage2-xw_uqhin`. Result SHA-256: `e7d4ab906c609dc1b9bfefcc3072e2ee885e6c1e2583defcd30968f4bc5537af`. Input fingerprint SHA-256: `021c864c2b0b14a80de3a9a441d668f71416f447dd3d52354b577cd87a4c3d58`.
 
-The CLI prerequisite API checks resolved all 75 mappings, but the source gate stopped the CLI before recording. CLI recording and publication were not performed.
+In that 2026-10-29 verification, the CLI prerequisite API checks resolved all 75 mappings, but the source gate stopped the CLI before recording. CLI recording and publication were not performed in that verification.
+
+## Official CLI recording
+
+The official unpatched `cargo-proofs` CLI at `224bc1094792267e72dca5742bbcb714ec755ee6` (including merged PR #93) recorded 75 contracts from source revision `d0358890f8bdc8e72a376d225667ac162f89e3b8` as run `2981087e-e14c-442f-b9a6-b9b0139e90ae`. The standard Lean build, formal extraction and axiom audits passed. Rust-to-Lean translation was not rerun as part of this recording.
